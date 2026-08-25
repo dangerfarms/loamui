@@ -12,12 +12,6 @@
     margin-block-end: 0.75rem;
   }
 
-  .lead {
-    color: var(--fui-text-muted);
-    font-size: var(--fui-text-lg);
-    margin-block-end: 2rem;
-  }
-
   h2 {
     font-size: var(--fui-text-xl);
     font-weight: 700;
@@ -35,6 +29,14 @@
     color: var(--fui-text);
     margin-block-end: 1rem;
     text-wrap: pretty;
+  }
+
+  /* The lead is the paragraph that opens a page (immediately after its
+     h1) — styled by position, no wrapper class. */
+  h1 + p {
+    color: var(--fui-text-muted);
+    font-size: var(--fui-text-lg);
+    margin-block-end: 2rem;
   }
 
   a {

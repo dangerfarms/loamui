@@ -12,5 +12,4 @@ storybook-static/
 !.env.example
 coverage/
 
-comments.md
-DECISIONS.md
+local/

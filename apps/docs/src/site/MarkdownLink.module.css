@@ -1,0 +1,14 @@
+.link {
+  color: var(--fui-text-muted);
+  display: inline flow-root;
+  font-size: var(--fui-text-xs);
+  margin-block-end: 1rem;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, currentcolor 40%, transparent);
+  text-underline-offset: 2px;
+
+  &:hover {
+    color: var(--fui-text);
+    text-decoration-color: var(--fui-primary);
+  }
+}

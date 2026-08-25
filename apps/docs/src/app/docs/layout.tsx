@@ -1,4 +1,5 @@
 import { Sidebar } from "@/site/Sidebar";
+import { MarkdownLink } from "@/site/MarkdownLink";
 import classes from "./layout.module.css";
 
 export default function DocsLayout({ children }: { children: React.ReactNode }) {
@@ -9,7 +10,10 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
           <Sidebar />
         </div>
       </aside>
-      <div className={classes.content}>{children}</div>
+      <div className={classes.content}>
+        <MarkdownLink />
+        {children}
+      </div>
     </div>
   );
 }

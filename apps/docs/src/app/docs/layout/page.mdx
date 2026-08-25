@@ -1,0 +1,199 @@
+import prose from "../prose.module.css";
+
+export const metadata = {
+  title: "Layout compositions",
+  description:
+    "Layout is CSS's job: algorithmic, token-disciplined compositions instead of layout components.",
+};
+
+export const box = {
+  background: "var(--fui-primary-soft)",
+  border: "1px solid var(--fui-border)",
+  borderRadius: "var(--fui-radius-sm)",
+  padding: "0.4rem 0.6rem",
+  fontSize: "var(--fui-text-sm)",
+};
+
+# Layout compositions
+
+Layout in FarmUI is CSS, not components: small algorithmic compositions you apply as classes, tuned with registered `--fui-*` knobs whose defaults come from the fluid space scale. No media queries, no JavaScript, no React API: the layout manages itself from its content and container.
+
+## Why not layout components?
+
+A `<Stack gap="md">` component is three declarations of CSS
+wearing a JavaScript costume. The judgment a library should contribute (token-valued
+spacing, rows that always wrap, overflow-`safe` alignment, never reordering
+content visually) lives just as well in a stylesheet, where it also works outside React,
+serialises into any content model, and themes through the cascade. So the compositions are
+the product; any component wrapper is optional sugar that belongs to the consumer.
+
+## Stack
+
+Space elements along the block axis.
+
+```html
+<div class="fui-stack" style="--fui-stack-gap: var(--fui-space-lg)">…</div>
+```
+
+<div className={prose.block}>
+  <div className="fui-stack" style={{ maxInlineSize: "20rem" }}>
+    <div style={box}>One</div>
+    <div style={box}>Two</div>
+    <div style={box}>Three</div>
+  </div>
+</div>
+
+## Cluster
+
+A row that wraps like text: tags, action rows, metadata. Alignment is overflow-`safe`
+so focusable items are never clipped.
+
+<div className={prose.block}>
+  <div className="fui-cluster" style={{ maxInlineSize: "18rem" }}>
+    <div style={box}>Tag</div>
+    <div style={box}>Another tag</div>
+    <div style={box}>Longer tag here</div>
+    <div style={box}>Wraps</div>
+  </div>
+</div>
+
+## Switcher
+
+Equal-width items in a row, until the container is narrower than the threshold, when every
+item goes full width. The flip is computed by the layout itself (a `flex-basis`
+calc), not a media query, so it works at any nesting depth.
+
+```html
+<div class="fui-switcher" style="--fui-switcher-threshold: 30rem">
+  <div>A</div><div>B</div><div>C</div>
+</div>
+```
+
+<div className={prose.block}>
+  <div style={{ display: "grid", gap: "0.75rem" }}>
+    <div className="fui-switcher" style={{ inlineSize: "min(34rem, 100%)" }}>
+      <div style={box}>A</div>
+      <div style={box}>B</div>
+      <div style={box}>C</div>
+    </div>
+    <div className="fui-switcher" style={{ inlineSize: "16rem" }}>
+      <div style={box}>A</div>
+      <div style={box}>B</div>
+      <div style={box}>C</div>
+    </div>
+  </div>
+</div>
+
+## Sidebar
+
+A fixed-preference side element beside fluid content; the pair stacks the moment the content
+would drop below its minimum share. Reversing the sides is a DOM-order change, deliberately:
+a visual-only reversal would detach tab order from what the user sees.
+
+<div className={prose.block}>
+  <div className="fui-sidebar">
+    <div style={box}>Sidebar</div>
+    <div style={box}>
+      Main content flows beside the sidebar until it would drop below its minimum share, then
+      the pair stacks.
+    </div>
+  </div>
+</div>
+
+## Grid
+
+As many equal columns as fit, each at least the minimum (`--fui-grid-min`);
+columns grow to share the remainder. Explicit-span grids (a 12-column skeleton with
+`span 4` / `span 8` children) are deliberately not a composition.
+That's bespoke page structure, so write grid CSS for it: named template areas say what
+the page means, spans are one rule away.
+
+```html
+<div class="fui-grid" style="--fui-grid-min: 8rem">…</div>
+```
+
+<div className={prose.block}>
+  <div className="fui-grid" style={{ "--fui-grid-min": "8rem" }}>
+    <div style={box}>One</div>
+    <div style={box}>Two</div>
+    <div style={box}>Three</div>
+    <div style={box}>Four</div>
+  </div>
+</div>
+
+When card children need their internal rows to align across the grid (every title, body and
+footer on one baseline), give the card `grid-row: span 3` and
+`grid-template-rows: subgrid` — the children adopt the parent's tracks, no
+fixed heights, no measuring:
+
+```css
+.fui-grid > .card {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid; /* title / body / footer share tracks */
+}
+```
+
+## Container
+
+Centre page content at a comfortable measure with a fluid gutter
+(`--fui-container-max`, default `70rem`;
+`--fui-container-gutter`). The page-shell composition: one wrapper per region,
+not per element.
+
+```html
+<main class="fui-container">…</main>
+```
+
+## Frame
+
+Reserve an aspect ratio and crop media to it (`--fui-frame-ratio`, default
+`16 / 9`) — the image can load late without shifting the page.
+
+```html
+<div class="fui-frame" style="--fui-frame-ratio: 1 / 1">
+  <img src="…" alt="…" />
+</div>
+```
+
+## Center
+
+Centre a column of content at a readable measure (`--fui-center-max`, default
+`60ch`). Centring a single item on both axes is one declaration
+(`place-content: center` on a grid), not a composition.
+
+<div className={prose.block}>
+  <div className="fui-center" style={{ "--fui-center-max": "24ch" }}>
+    <div style={box}>A centred column, capped at a readable measure.</div>
+  </div>
+</div>
+
+## What FarmUI deliberately doesn't ship
+
+- **No Flex utility.** A generic flex wrapper is the platform's flexbox
+  wearing props: it adds a vocabulary without adding judgment. Where a row should wrap and
+  space itself, that judgment exists as `.fui-cluster`; for anything else, write
+  flexbox.
+- **No spacer component.** Spacer elements are what `gap` exists to
+  replace: spacing belongs to the layout that owns it, not to phantom children in the
+  content.
+- **No 12-column span grid.** An explicit-span page skeleton
+  (`span 4` / `span 8`) is bespoke page structure, not a reusable
+  algorithm; write grid CSS for it, with named template areas that say what the page means.
+
+## Driving compositions from data
+
+Because a composition is a class plus token-valued properties, any data-driven renderer (a
+page builder, a visual editor, a template engine) can expose layout as constrained choices
+and map them straight onto this surface:
+
+```json
+{ "layout": "sidebar", "gap": "space-lg", "side": "18rem" }
+→ <section class="fui-sidebar"
+           style="--fui-sidebar-gap: var(--fui-space-lg); --fui-sidebar-side: 18rem">
+```
+
+The choices are enums over tokens, so a theme restyles every layout automatically, nothing
+runs at runtime, and the stored data stays renderer-agnostic. Guardrails travel with the
+compositions: a renderer cannot produce an unwrappable row or a clipped focus target,
+because those judgments are inside the CSS.
