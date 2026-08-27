@@ -5,12 +5,12 @@ import prose from "../prose.module.css";
 export const metadata = {
   title: "Tokens",
   description:
-    "The token primitive: a handful of semantic decisions, everything else derived — and the theming that falls out of it.",
+    "The token primitive: a handful of semantic decisions, everything else derived, and the theming that falls out of it.",
 };
 
 # Tokens
 
-The first of FarmUI's three primitives: a handful of semantic custom properties that every component reads. Four hues, eight neutrals, and fluid scales — everything else is derived by recipe, so theming is overriding `--fui-*` values at any scope. No `ThemeProvider`, no JavaScript.
+The first of FarmUI's three primitives: a handful of semantic custom properties that every component reads. A small palette of colours and neutrals, plus fluid scales: everything else is derived by recipe, so theming is overriding `--fui-*` values at any scope. No `ThemeProvider`, no JavaScript.
 
 ## The surface
 
@@ -24,13 +24,13 @@ arithmetic:
 
 ## Rebrand in one line
 
-One token carries the brand: `--fui-primary`. Everything else — the soft tint, hover, active,
-solid fills, focus rings — is _derived_ from it by recipe, so there is nothing else to keep in
+One token carries the brand: `--fui-color-primary`. Everything else (the soft tint, hover, active,
+solid fills, focus rings) is _derived_ from it by recipe, so there is nothing else to keep in
 sync:
 
 ```css
 :root {
-  --fui-primary: light-dark(oklch(0.62 0.2 275), oklch(0.72 0.17 275)); /* violet */
+  --fui-color-primary: light-dark(oklch(0.62 0.2 275), oklch(0.72 0.17 275)); /* violet */
 }
 ```
 
@@ -42,11 +42,11 @@ CSS and differ only in where the token is set:
 
 ```tsx
 <div style={{ "--fui-context": "primary" }}>
-  <Button>Default brand</Button>   {/* --fui-primary resolves at :root */}
+  <Button>Default brand</Button>   {/* --fui-color-primary resolves at :root */}
 </div>
 
 <div style={{
-  "--fui-primary": "light-dark(oklch(0.62 0.2 275), oklch(0.72 0.17 275))",
+  "--fui-color-primary": "light-dark(oklch(0.62 0.2 275), oklch(0.72 0.17 275))",
   "--fui-context": "primary",
 }}>
   <Button>Violet brand</Button>    {/* …resolves here instead */}
@@ -59,7 +59,7 @@ CSS and differ only in where the token is set:
       style={{
         "--fui-context": "primary",
         padding: "1.5rem",
-        border: "1px solid var(--fui-border)",
+        border: "1px solid var(--fui-color-line)",
         borderRadius: "var(--fui-radius-lg)",
       }}
     >
@@ -67,10 +67,10 @@ CSS and differ only in where the token is set:
     </div>
     <div
       style={{
-        "--fui-primary": "light-dark(oklch(0.62 0.2 275), oklch(0.72 0.17 275))",
+        "--fui-color-primary": "light-dark(oklch(0.62 0.2 275), oklch(0.72 0.17 275))",
         "--fui-context": "primary",
         padding: "1.5rem",
-        border: "1px solid var(--fui-border)",
+        border: "1px solid var(--fui-color-line)",
         borderRadius: "var(--fui-radius-lg)",
       }}
     >
@@ -102,7 +102,7 @@ The same mechanism gives you an inverted "on-dark" section: set `data-theme="dar
 (or `color-scheme: dark` in its CSS; the attribute is just a setter for it) and every
 `light-dark()` token flips. One caveat: colours already resolved on an ancestor inherit as
 resolved values and don't re-resolve, so the inverted region must also re-declare `color` (e.g.
-`color: var(--fui-text)`) for descendants to pick up the flipped value.
+`color: var(--fui-color-fg)`) for descendants to pick up the flipped value.
 
 <div className={prose.callout}>
   This is one instance of FarmUI's baseline posture:{" "}
@@ -115,8 +115,8 @@ resolved values and don't re-resolve, so the inverted region must also re-declar
 ## Contexts
 
 A **context** declares what a region _means_, as a custom property (`--fui-context`) that every
-FarmUI component inside adopts. The mechanics — the vocabulary, one-element regions, why the
-property lives on an ancestor — are the [Contextualism guide](/docs/contextualism)'s subject;
+FarmUI component inside adopts. The mechanics (the vocabulary, one-element regions, why the
+property lives on an ancestor) are the [Contextualism guide](/docs/contextualism)'s subject;
 what matters for theming is that a context remaps _semantic colour tokens only_, so it composes
 with everything on this page:
 
@@ -127,7 +127,7 @@ with everything on this page:
       display: "grid",
       gap: "0.75rem",
       padding: "1.25rem",
-      border: "1px solid var(--fui-border)",
+      border: "1px solid var(--fui-color-line)",
       borderRadius: "var(--fui-radius-lg)",
       maxInlineSize: "26rem",
     }}
@@ -152,7 +152,7 @@ with everything on this page:
 ```tsx
 <section className="danger-zone">
   {/* everything inside adopts the danger accent: buttons, checked
-      states, carets, text selection — even focus rings */}
+      states, carets, text selection: even focus rings */}
   <Checkbox label="I understand this is permanent" />
   <Button>Delete</Button>
 </section>
@@ -168,12 +168,12 @@ with everything on this page:
 
 Start here when theming:
 
-- `--fui-primary`: the brand colour (the soft tint, solid fill, focus ring and hover/active
+- `--fui-color-primary`: the brand colour (the soft tint, solid fill, focus ring and hover/active
   states all derive; there is nothing else to sync)
-- `--fui-bg`, `--fui-surface`, `--fui-text`, `--fui-border`: surfaces & text
+- `--fui-color-bg`, `--fui-color-surface`, `--fui-color-fg`, `--fui-color-line`: surfaces & text
 - `--fui-radius-md`, `--fui-radius-lg`: corner rounding
-- `--fui-font-sans`: the UI font family (an input hook: unset by default, and anything you set
-  flows through the whole stack)
+- `--fui-font`, `--fui-font-display`: the body and heading font families (both `system-ui` by
+  default; set either and it flows through the whole stack)
 - `--fui-duration-sm/md/lg`, `--fui-ease`: motion by intent (micro feedback, defaults, overlay
   enter/exit)
 
@@ -208,12 +208,12 @@ you three escape hatches, and none of them need `!important`.
 ### 1. Target the class names
 
 Every component's scope root has a stable, prefixed class: `.fui-Button`, `.fui-Card`,
-`.fui-Input-field`, and so on — the parts inside are plain elements and short classes, shown in
+`.fui-Input-field`, and so on. The parts inside are plain elements and short classes, shown in
 each component's CSS tab. Because FarmUI's styles live inside a CSS `@layer`, any rule you write
 _outside_ a layer automatically beats them; you never fight specificity:
 
 ```css
-/* Unlayered CSS always wins over FarmUI's layered CSS — no !important */
+/* Unlayered CSS always wins over FarmUI's layered CSS: no !important */
 .fui-Button {
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -246,10 +246,9 @@ Prefer explicit control over the cascade? Declare a layer _after_ FarmUI's and p
 there; they win by layer order, no matter the selector specificity:
 
 ```css
-/* Declare the full order once — correct wherever it appears,
+/* Declare the full order once: correct wherever it appears,
    before or after importing FarmUI's stylesheet. */
-@layer farmui.reset, farmui.tokens, farmui.elements, farmui.layout,
-  farmui.components, app;
+@layer farmui.tokens, farmui.elements, farmui.components, app;
 
 @layer app {
   .fui-Tabs .tab {

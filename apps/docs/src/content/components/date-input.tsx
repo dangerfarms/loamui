@@ -183,7 +183,7 @@ const doc: ComponentContent = {
     {
       name: "DateInput.Description",
       description:
-        "Helper text linked to the group — give an example date. Native <p> props are forwarded.",
+        "Helper text linked to the group: give an example date. Native <p> props are forwarded.",
     },
     {
       name: "DateInput.Error",

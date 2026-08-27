@@ -19,7 +19,7 @@ const doc: ComponentContent = {
     {
       title: "Initials",
       description:
-        "With no image, initials are derived from name. There is no color prop: the initials background answers the surrounding --fui-context region (a style query is answered by ancestors, never by the declaring element itself), exactly like Badge — wrap a single avatar in a one-element span, or let it inherit from a larger region. See the Contextualism guide.",
+        "With no image, initials are derived from name. There is no color prop: the initials background answers the surrounding --fui-context region (a style query is answered by ancestors, never by the declaring element itself), exactly like Badge. Wrap a single avatar in a one-element span, or let it inherit from a larger region. See the Contextualism guide.",
       code: `<Avatar name="Jane Doe" />
 <span style={{ "--fui-context": "info" }}><Avatar name="Amara Okafor" /></span>
 <span style={{ "--fui-context": "success" }}><Avatar name="Sam Reed" /></span>

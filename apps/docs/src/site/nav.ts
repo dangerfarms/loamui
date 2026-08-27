@@ -15,20 +15,28 @@ export interface NavItem {
 export const GETTING_STARTED: { name: string; href: string }[] = [
   { name: "Introduction", href: "/docs" },
   { name: "Installation", href: "/docs/installation" },
+  { name: "Contextualism", href: "/docs/contextualism" },
+  { name: "Layout", href: "/docs/layout" },
+  { name: "Typography", href: "/docs/typography" },
+  { name: "Accessibility", href: "/docs/accessibility" },
+];
+
+// The two style primitives sit at the head of the Primitives section, above
+// the three primitives, in reading order. Moved out of Getting started so the
+// sidebar reads tokens → element styles → components, primitive to primitive.
+// Components is a peer destination (its own overview page); the component
+// categories nest beneath it in the sidebar.
+export const PRIMITIVES: { name: string; href: string }[] = [
   { name: "Tokens", href: "/docs/tokens" },
   { name: "Element styles", href: "/docs/element-styles" },
-  { name: "Contextualism", href: "/docs/contextualism" },
-  { name: "Composition", href: "/docs/composition" },
-  { name: "Gatekeeping", href: "/docs/gatekeeping" },
-  { name: "Layout", href: "/docs/layout" },
-  { name: "Accessibility", href: "/docs/accessibility" },
+  { name: "Components", href: "/docs/components" },
 ];
 
 export const CATEGORY_ORDER = [
   "Inputs",
   "Data display",
   "Feedback",
-  "Overlays",
+  "Disclosures",
   "Navigation",
 ] as const;
 
@@ -132,12 +140,6 @@ export const COMPONENTS: NavItem[] = [
     description: "Display rows and columns of data.",
   },
   {
-    name: "Details",
-    slug: "details",
-    category: "Data display",
-    description: "Native disclosure for secondary content.",
-  },
-  {
     name: "Separator",
     slug: "separator",
     category: "Data display",
@@ -174,35 +176,41 @@ export const COMPONENTS: NavItem[] = [
     category: "Feedback",
     description: "Transient notifications.",
   },
-  // Overlays
+  // Disclosures
+  {
+    name: "Details",
+    slug: "details",
+    category: "Disclosures",
+    description: "Native disclosure for secondary content.",
+  },
   {
     name: "Tooltip",
     slug: "tooltip",
-    category: "Overlays",
+    category: "Disclosures",
     description: "Reveal info on hover or focus.",
   },
   {
     name: "Modal",
     slug: "modal",
-    category: "Overlays",
+    category: "Disclosures",
     description: "A focused dialog over the page.",
   },
   {
     name: "Drawer",
     slug: "drawer",
-    category: "Overlays",
+    category: "Disclosures",
     description: "An edge-anchored panel that slides in.",
   },
   {
     name: "Popover",
     slug: "popover",
-    category: "Overlays",
+    category: "Disclosures",
     description: "Floating content anchored to a trigger.",
   },
   {
     name: "Menu",
     slug: "menu",
-    category: "Overlays",
+    category: "Disclosures",
     description: "A list of actions opened from a trigger.",
   },
   // Navigation
@@ -244,6 +252,3 @@ export function componentsByCategory() {
     items: COMPONENTS.filter((c) => c.category === category),
   })).filter((g) => g.items.length > 0);
 }
-
-/** The canonical "browse components" destination: the first item in nav order. */
-export const FIRST_COMPONENT_HREF = `/docs/components/${COMPONENTS[0]?.slug ?? ""}`;

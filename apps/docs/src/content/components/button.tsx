@@ -75,7 +75,7 @@ const doc: ComponentContent = {
               containerType: "inline-size",
               inlineSize: "14rem",
               padding: "0.75rem",
-              border: "1px dashed var(--fui-border)",
+              border: "1px dashed var(--fui-color-line)",
               borderRadius: "var(--fui-radius-md)",
             }}
           >
@@ -87,7 +87,7 @@ const doc: ComponentContent = {
               inlineSize: "24rem",
               maxInlineSize: "100%",
               padding: "0.75rem",
-              border: "1px dashed var(--fui-border)",
+              border: "1px dashed var(--fui-color-line)",
               borderRadius: "var(--fui-radius-md)",
             }}
           >
@@ -201,7 +201,7 @@ const doc: ComponentContent = {
       name: "render",
       type: "RenderProp",
       description:
-        "Substitute the rendered element; the Button's classes and wiring merge onto yours (see the Composition guide). Not for navigation: a call-to-action that goes somewhere is a SignpostLink.",
+        "Substitute the rendered element; the Button's classes and wiring merge onto yours. Not for navigation: a call-to-action that goes somewhere is a SignpostLink.",
     },
     {
       name: "...others",
@@ -213,7 +213,7 @@ const doc: ComponentContent = {
     {
       name: "--fui-button-color",
       syntax: "CSS color",
-      default: "var(--fui-text)",
+      default: "var(--fui-color-fg)",
       description:
         "The button's single colour channel. Set it to recolour one instance or a wrapper component; background, border, hover and active are all derived from it.",
     },

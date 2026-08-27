@@ -30,14 +30,14 @@ const doc: ComponentContent = {
     {
       title: "Router link",
       description:
-        "Substitute the element with render to keep client-side navigation — the label may live on either element, and the arrow anatomy wraps it.",
+        "Substitute the element with render to keep client-side navigation. The label may live on either element, and the arrow anatomy wraps it.",
       code: `<SignpostLink render={<Link href="/apply">Start your application</Link>} />`,
       render: () => <SignpostLink render={<a href="#apply">Start your application</a>} />,
     },
   ],
   whenToUse: [
     "To signpost the way into a task from a content page: 'Start your application', 'Book an appointment', 'Go to checkout'.",
-    "Where a design asks for a button-sized call-to-action that navigates — this keeps real link semantics with button-scale prominence.",
+    "Where a design asks for a button-sized call-to-action that navigates: this keeps real link semantics with button-scale prominence.",
     "One per destination: a signpost stands out because the links around it are plain.",
   ],
   whenNotToUse: [
@@ -48,11 +48,11 @@ const doc: ComponentContent = {
   howItWorks: [
     {
       title: "Going, not doing",
-      body: "The element must match the behaviour: navigation is an <a>, actions are a <button>. A signpost is the navigational counterpart to Button — link semantics (right-click, middle-click, open-in-new-tab, link announcement) with enough visual weight to carry a call-to-action. If the destination mutates state when it loads, it was an action all along; use a Button and a handler.",
+      body: "The element must match the behaviour: navigation is an <a>, actions are a <button>. A signpost is the navigational counterpart to Button: link semantics (right-click, middle-click, open-in-new-tab, link announcement) with enough visual weight to carry a call-to-action. If the destination mutates state when it loads, it was an action all along; use a Button and a handler.",
     },
     {
       title: "The arrow is decoration",
-      body: "The circled arrow is aria-hidden: assistive technology hears only the label and the link role. It rides the font size in em, so the whole signpost rescales as one piece if a consumer changes font-size — no size prop.",
+      body: "The circled arrow is aria-hidden: assistive technology hears only the label and the link role. It rides the font size in em, so the whole signpost rescales as one piece if a consumer changes font-size. No size prop.",
     },
   ],
   accessibility: [
@@ -65,7 +65,7 @@ const doc: ComponentContent = {
     {
       name: "render",
       type: "RenderProp",
-      description: "Substitute the built-in <a> — e.g. a router link: render={<Link href=… />}.",
+      description: "Substitute the built-in <a>, e.g. a router link: render={<Link href=… />}.",
     },
     {
       name: "...others",

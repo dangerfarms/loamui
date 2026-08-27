@@ -3,38 +3,48 @@ import prose from "../prose.module.css";
 export const metadata = {
   title: "Element styles",
   description:
-    "The element-styles primitive: enhanced default styles for native HTML, page-wide — plain markup is already styled before any component appears.",
+    "The element-styles primitive: enhanced default styles for native HTML, page-wide. Plain markup is already styled before any component appears.",
 };
 
 export const stage = {
-  border: "1px solid var(--fui-border)",
+  border: "1px solid var(--fui-color-line)",
   borderRadius: "var(--fui-radius-md)",
   padding: "1.25rem",
 };
 
 # Element styles
 
-The second of FarmUI's three primitives: enhanced default styles for the native elements themselves, applied page-wide by the `farmui.elements` layer. Importing the stylesheet opts you in — plain HTML is already styled before a single component appears, and everything on this page is bare markup with no classes.
+The second of FarmUI's three primitives: enhanced default styles for the native elements themselves, applied page-wide by the `farmui.elements` layer. Importing the stylesheet opts you in: plain HTML is already styled before a single component appears, and everything on this page is bare markup with no classes.
 
 ## Typography
 
-Headings use the fluid type scale with balanced wrapping and the strong text tier
-(`--fui-text-strong`), so they sit a step darker than body copy in light and a
-step brighter in dark; every element derives its own line-height from its font size
-(`calc(0.5rem + 2ex)`), so leading tracks the text it leads. Margins are additive
-— blocks carry only a block-end margin, and the extra space before a heading comes from an
-adjacent-sibling rule — so nothing needs unsetting at the top of a container. Tables
-collapse their borders and start-align their headers; inline `code`, `kbd` and `samp` all get
-the same chip.
+Headings use the display font (`--fui-font-display`) at the fluid type scale with balanced
+wrapping and the strong text tier (`--fui-color-fg-strong`), so they sit a step darker than body
+copy in light and a step brighter in dark. Body copy rides the same fluid scale (`--fui-text-md`),
+and the OpenType defaults do the fine work: common ligatures and old-style figures in running
+text, lining figures in headings, hanging punctuation, and automatic hyphenation. Every element
+derives its own line-height from its font size (`calc(0.5rem + 2ex)`), so leading tracks the text
+it leads. Margins are additive: blocks carry only a block-end margin, and the extra space before a
+heading comes from an adjacent-sibling rule, so nothing needs unsetting at the top of a container.
+Tables collapse their borders and start-align their headers; inline `code`, `kbd` and `samp` all
+get the same chip.
 
 <div className={prose.block}>
   <div style={stage}>
     <h3>Prose, unstyled by you</h3>
     <p>
-      A paragraph with a <a href="#element-styles">link</a> whose decoration carries the
-      affordance: dimmed at rest, primary on hover. Inline <code>code</code> gets a chip,{" "}
-      <mark>marks are tinted</mark>, and <abbr title="HyperText Markup Language">HTML</abbr>{" "}
-      keeps its dotted underline.
+      {"A paragraph with a "}
+      <a href="#element-styles">link</a>
+      {" in the accessible blue. Inline "}
+      <code>code</code>
+      {" gets a chip, "}
+      <mark>marks are highlighted</mark>
+      {" in yellow, and "}
+      <abbr title="HyperText Markup Language">HTML</abbr>
+      {" keeps its dotted underline."}
+    </p>
+    <p>
+      {"The OpenType defaults are on: numerals ride the text at 1863, 2048 and 90210, and common ligatures knit the letter pairs in words like office, fluff and final."}
     </p>
     <ul>
       <li>List markers are muted</li>
@@ -47,10 +57,10 @@ the same chip.
 ## Forms without components
 
 Native controls wear the component recipes: buttons get the Button anatomy on the neutral
-text channel — raised at rest, settling when pressed, because raised means pressable —
+text channel (raised at rest, settling when pressed, because raised means pressable);
 textual fields get the Input field look, and checkboxes, radios, ranges and progress bars
-are accent-coloured natives. A plain HTML form dropped into a FarmUI page is presentable
-before you reach for a component — and the components remain the upgrade path (fluid sizing,
+are native `accent-color` controls, driven by the neutral primary. A plain HTML form dropped into a FarmUI page is presentable
+before you reach for a component. The components remain the upgrade path (fluid sizing,
 context adaptation, field wiring).
 
 <div className={prose.block}>
@@ -85,25 +95,26 @@ context adaptation, field wiring).
 
 - Every element shares one `:focus-visible` ring, offset so the page shows
   through the gap; it survives forced colours and follows border radius.
-- Text selection, caret colour and form `accent-color` all take the brand token,
-  so a rebrand reaches even the parts without classes.
+- Text selection uses the highlight token (yellow), while the caret and form
+  `accent-color` take the neutral primary, so a rebrand reaches even the parts
+  without classes.
 - Anything with an `id` gets scroll margin, so anchored headings never hide under
   sticky chrome.
 - Disabled controls (and everything inside them) show a `not-allowed` cursor;
   images, video and SVG never overflow their container.
 - The page reserves its scrollbar gutter so content never jumps, and in-page scrolling is
-  smooth — only for people who haven't asked for reduced motion.
+  smooth for anyone who hasn't asked for reduced motion.
 
 ## Overridable by design
 
 The layer keeps every rule beatable: anything you write outside a layer wins, and the
-components layer wins for a component's own parts. There is no specificity to fight —
+components layer wins for a component's own parts. There is no specificity to fight:
 the element styles are a floor, not a ceiling:
 
 ```css
 /* Your unlayered CSS always beats the elements layer */
 blockquote {
-  border-inline-start-color: var(--fui-primary);
+  border-inline-start-color: var(--fui-color-primary);
 }
 ```
 

@@ -15,7 +15,7 @@ const doc: ComponentContent = {
   <Popover.Popup>
     <Popover.Title>Anchored panel</Popover.Title>
     <Popover.Description>
-      Rendered in the browser's top layer — click outside or press Escape to close.
+      Rendered in the browser's top layer. Click outside or press Escape to close.
     </Popover.Description>
   </Popover.Popup>
 </Popover.Root>`,
@@ -46,7 +46,7 @@ const doc: ComponentContent = {
     {
       title: "Substituting the trigger element",
       description:
-        "The built-in trigger is a FarmUI Button. To use a different element, pass it via render; the wiring (popovertarget, aria-expanded, anchor name) merges onto it. See the Composition guide for the full contract.",
+        "The built-in trigger is a FarmUI Button. To use a different element, pass it via render; the wiring (popovertarget, aria-expanded, anchor name) merges onto it.",
       code: `<Popover.Root>
   <Popover.Trigger
     render={<button type="button" aria-label="Filters">⚙</button>}
@@ -113,7 +113,8 @@ const doc: ComponentContent = {
         {
           name: "render",
           type: "element | (props) => node",
-          description: "Substitute your own action element (a button — triggers act, links go).",
+          description:
+            "Substitute your own action element (a button, since triggers act and links go).",
         },
       ],
     },

@@ -87,7 +87,7 @@ export const NarrowContainer: Story = {
           containerType: "inline-size",
           inlineSize: "14rem",
           padding: "1rem",
-          border: "1px dashed var(--fui-border)",
+          border: "1px dashed var(--fui-color-line)",
         }}
       >
         <Button>Full width in a narrow container</Button>
@@ -97,7 +97,7 @@ export const NarrowContainer: Story = {
           containerType: "inline-size",
           inlineSize: "28rem",
           padding: "1rem",
-          border: "1px dashed var(--fui-border)",
+          border: "1px dashed var(--fui-color-line)",
         }}
       >
         <Button>Natural width in a wide one</Button>

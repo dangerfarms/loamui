@@ -1,6 +1,6 @@
 .wrap {
-  background: var(--fui-bg-subtle);
-  border: 1px solid var(--fui-border);
+  background: var(--fui-color-bg-subtle);
+  border: 1px solid var(--fui-color-line);
   border-radius: var(--fui-radius-md);
   overflow: hidden;
   position: relative;
@@ -20,11 +20,11 @@
 }
 
 .copy {
-  background: var(--fui-surface);
-  border: 1px solid var(--fui-border);
+  background: var(--fui-color-surface);
+  border: 1px solid var(--fui-color-line);
   border-radius: var(--fui-radius-sm);
   box-shadow: none;
-  color: var(--fui-text-muted);
+  color: var(--fui-color-fg-muted);
   cursor: pointer;
   font-size: var(--fui-text-xs);
   font-weight: 600;
@@ -38,7 +38,7 @@
   z-index: 1;
 
   &:hover {
-    border-color: var(--fui-border-strong);
-    color: var(--fui-text);
+    border-color: var(--fui-color-line-strong);
+    color: var(--fui-color-fg);
   }
 }

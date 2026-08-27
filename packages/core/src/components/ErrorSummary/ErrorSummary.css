@@ -1,12 +1,12 @@
 @scope (.fui-ErrorSummary) {
   :scope {
-    background: var(--fui-danger-soft);
-    border: 2px solid var(--fui-danger);
+    background: var(--fui-color-danger-soft);
+    border: 2px solid var(--fui-color-danger);
     border-radius: var(--fui-radius-md);
     padding: var(--fui-space-lg);
 
     &:focus-visible {
-      outline: var(--fui-ring-width) solid var(--fui-danger-ring);
+      outline: var(--fui-ring-width) solid var(--fui-color-danger-ring);
       outline-offset: 2px;
     }
   }
@@ -33,8 +33,8 @@
 
   a {
     color: light-dark(
-      color-mix(in oklab, var(--fui-danger) 70%, oklch(0% 0 0deg)),
-      color-mix(in oklab, var(--fui-danger) 55%, oklch(100% 0 0deg))
+      color-mix(in oklab, var(--fui-color-danger) 70%, oklch(0% 0 0deg)),
+      color-mix(in oklab, var(--fui-color-danger) 55%, oklch(100% 0 0deg))
     );
     font-size: var(--fui-text-sm);
     font-weight: 600;

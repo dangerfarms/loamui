@@ -1,6 +1,6 @@
 .footer {
-  background: var(--fui-bg-subtle);
-  border-block-start: 1px solid var(--fui-border);
+  background: var(--fui-color-bg-subtle);
+  border-block-start: 1px solid var(--fui-color-line);
   margin-block-start: 6rem;
   padding-block: 3.5rem 2rem;
 }
@@ -17,7 +17,7 @@
 }
 
 .tagline {
-  color: var(--fui-text-muted);
+  color: var(--fui-color-fg-muted);
   font-size: var(--fui-text-sm);
   margin-block: 0.9rem 1.1rem;
   max-inline-size: 22rem;
@@ -25,14 +25,14 @@
 
 .gh {
   align-items: center;
-  color: var(--fui-text);
+  color: var(--fui-color-fg);
   display: inline flex;
   font-size: var(--fui-text-sm);
   font-weight: 600;
   gap: 0.45rem;
 
   &:hover {
-    color: var(--fui-primary);
+    color: var(--fui-color-primary);
   }
 }
 
@@ -62,18 +62,18 @@
 }
 
 .col a {
-  color: var(--fui-text-muted);
+  color: var(--fui-color-fg-muted);
   font-size: var(--fui-text-sm);
   transition: color var(--fui-duration-md) var(--fui-ease);
 
   &:hover {
-    color: var(--fui-primary);
+    color: var(--fui-color-primary);
   }
 }
 
 .bottom {
-  border-block-start: 1px solid var(--fui-border);
-  color: var(--fui-text-dim);
+  border-block-start: 1px solid var(--fui-color-line);
+  color: var(--fui-color-fg-dim);
   display: block flex;
   flex-wrap: wrap;
   font-size: var(--fui-text-sm);

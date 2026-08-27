@@ -81,7 +81,7 @@ const doc: ComponentContent = {
           name: "optional",
           type: "boolean",
           default: "false",
-          description: 'Appends "(optional)" — optional is marked in words, not with an asterisk.',
+          description: 'Appends "(optional)". Optional is marked in words, not with an asterisk.',
         },
       ],
     },

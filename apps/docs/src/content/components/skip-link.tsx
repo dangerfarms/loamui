@@ -21,7 +21,7 @@ const doc: ComponentContent = {
     },
   ],
   whenToUse: [
-    "On every page with repeated header content — navigation, search, branding — before the main content.",
+    "On every page with repeated header content (navigation, search, branding), before the main content.",
     "As the very first element inside <body>, so it is the first Tab stop on the page.",
   ],
   whenNotToUse: [
@@ -31,7 +31,7 @@ const doc: ComponentContent = {
   howItWorks: [
     {
       title: "Hidden is the unfocused state",
-      body: "The link is clipped to a pixel until it receives focus, then appears fixed at the top corner — above every overlay, because a skip link that opens beneath a toast is invisible to the person who needs it most. It reveals on :focus rather than :focus-visible: assistive technology can focus it without triggering keyboard heuristics, and it must appear for every focus.",
+      body: "The link is clipped to a pixel until it receives focus, then appears fixed at the top corner, above every overlay, because a skip link that opens beneath a toast is invisible to the person who needs it most. It reveals on :focus rather than :focus-visible: assistive technology can focus it without triggering keyboard heuristics, and it must appear for every focus.",
     },
     {
       title: "The target is a landmark",

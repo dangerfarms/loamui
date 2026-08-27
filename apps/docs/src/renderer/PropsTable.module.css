@@ -1,5 +1,5 @@
 .scroll {
-  border: 1px solid var(--fui-border);
+  border: 1px solid var(--fui-color-line);
   border-radius: var(--fui-radius-lg);
   overflow-inline: auto;
 }
@@ -11,14 +11,14 @@
 
   th,
   td {
-    border-block-end: 1px solid var(--fui-border);
+    border-block-end: 1px solid var(--fui-color-line);
     padding: 0.7rem 1rem;
     text-align: start;
     vertical-align: top;
   }
 
   td:last-child {
-    color: var(--fui-text-muted);
+    color: var(--fui-color-fg-muted);
     min-inline-size: 16rem;
   }
 
@@ -27,35 +27,35 @@
   }
 
   th {
-    background: var(--fui-bg-subtle);
-    color: var(--fui-text-muted);
+    background: var(--fui-color-bg-subtle);
+    color: var(--fui-color-fg-muted);
     font-weight: 600;
     white-space: nowrap;
   }
 }
 
 .name {
-  color: var(--fui-primary);
+  color: var(--fui-color-primary);
   font-family: var(--fui-font-mono);
   font-size: var(--fui-text-sm);
   font-weight: 600;
 }
 
 .type {
-  background: var(--fui-bg-subtle);
+  background: var(--fui-color-bg-subtle);
   border-radius: var(--fui-radius-sm);
-  color: var(--fui-text);
+  color: var(--fui-color-fg);
   font-family: var(--fui-font-mono);
   font-size: var(--fui-text-xs);
   padding: 0.1rem 0.35rem;
 }
 
 .default {
-  color: var(--fui-text-muted);
+  color: var(--fui-color-fg-muted);
   font-family: var(--fui-font-mono);
   font-size: var(--fui-text-xs);
 }
 
 .dim {
-  color: var(--fui-text-dim);
+  color: var(--fui-color-fg-dim);
 }

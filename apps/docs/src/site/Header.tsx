@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { FIRST_COMPONENT_HREF } from "@/site/nav";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
 import { CommandMenu } from "./CommandMenu";
@@ -19,7 +18,7 @@ export function Header() {
           <nav className={classes.nav} aria-label="Primary">
             <Link href="/docs/tokens">Tokens</Link>
             <Link href="/docs/element-styles">Element styles</Link>
-            <Link href={FIRST_COMPONENT_HREF}>Components</Link>
+            <Link href="/docs/components">Components</Link>
           </nav>
         </div>
 

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { Field, Fieldset, Checkbox, Radio, RadioGroup, SwitchControl, Range } from "../index";
 
 afterEach(cleanup);
@@ -38,6 +38,29 @@ describe("Inline controls composed inside Field", () => {
     );
     expect(screen.getByRole("radiogroup")).toHaveAttribute("aria-invalid", "true");
     expect(screen.getByRole("radio")).not.toHaveAttribute("aria-invalid");
+  });
+
+  it("opens required radio errors on submit, then clears them on selection or reset", () => {
+    render(
+      <form>
+        <RadioGroup label="Plan" name="plan">
+          <Radio value="free" label="Free" required />
+          <Radio value="pro" label="Pro" />
+        </RadioGroup>
+      </form>,
+    );
+
+    const group = screen.getByRole("radiogroup");
+    const free = screen.getByLabelText("Free");
+    fireEvent.invalid(free);
+    expect(group).toHaveAttribute("aria-invalid", "true");
+
+    fireEvent.click(screen.getByLabelText("Pro"));
+    expect(group).not.toHaveAttribute("aria-invalid");
+
+    fireEvent.invalid(free);
+    fireEvent.reset(group.closest("form")!);
+    expect(group).not.toHaveAttribute("aria-invalid");
   });
 
   it("wires a SwitchControl from Field context (label + describedby)", () => {

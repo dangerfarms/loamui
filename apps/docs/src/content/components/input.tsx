@@ -56,7 +56,7 @@ const doc: ComponentContent = {
     {
       title: "Error state",
       description:
-        "A Field.Error after the control marks the field invalid and is announced: no error prop, the message's presence is the state.",
+        "A Field.Error before the control marks the field invalid and is announced: no error prop, the message's presence is the state.",
       code: `<Field.Root>
   <Field.Label>Email</Field.Label>
   <Field.Error>
@@ -69,17 +69,20 @@ const doc: ComponentContent = {
     {
       title: "Native validation",
       description:
-        'Constraint validation is detected too: with required or type="email", the field styles itself via :user-invalid after you interact with it: no Field.Error, no state, nothing running in the browser. Try typing a non-email and tabbing away.',
-      code: `<Field.Root>
-  <Field.Label>Work email</Field.Label>
-  <Input type="email" required />
-</Field.Root>`,
+        'Native constraints such as required and type="email" are announced and styled after a submit attempt, not on blur. Existing errors clear as soon as the value becomes valid.',
+      code: `<form>
+  <Field.Root>
+    <Field.Label>Work email</Field.Label>
+    <Input type="email" required />
+  </Field.Root>
+  <Button type="submit">Check email</Button>
+</form>`,
       render: () => <InputNativeValidationDemo />,
     },
     {
       title: "With sections",
       description:
-        "Sections sit inside the field but outside the accessible name, so the Field.Label still does the naming — a placeholder alone never can.",
+        "Sections sit inside the field but outside the accessible name, so the Field.Label still does the naming. A placeholder alone never can.",
       code: `<Field.Root>
   <Field.Label>Handle</Field.Label>
   <Input leftSection="@" />
@@ -164,7 +167,7 @@ const doc: ComponentContent = {
     "Field.Description and Field.Error are linked via aria-describedby, and a rendered error also sets aria-invalid, announced together when the field gains focus.",
     'Field.Error uses role="alert" so the message is announced as it appears.',
     "leftSection / rightSection render your content beside the input but outside its accessible name. Mark visual content like currency symbols or icons aria-hidden, and carry the unit in the label or description so non-visual users get it too.",
-    "Mark optional fields in words (Field.Label's optional prop) rather than asterisking required ones: required lives on the control as the native required attribute, which drives validation and :user-invalid styling.",
+    "Mark optional fields in words (Field.Label's optional prop) rather than asterisking required ones: required lives on the control as the native required attribute, which drives validation after submission.",
   ],
   props: [
     {

@@ -46,5 +46,6 @@ export * from "./components/SkipLink/index";
 export * from "./components/Breadcrumbs/index";
 export * from "./components/Pagination/index";
 
-// Layout is CSS, not components: see src/layout.css (fui-stack, fui-cluster,
-// fui-switcher, fui-sidebar, fui-grid, fui-container, fui-frame, fui-center).
+// Layout is not a FarmUI concern: compose native CSS layout modules (flow,
+// grid, flex, multicol) with the space tokens inside your own components.
+// See the Layout guide in the docs.

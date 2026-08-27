@@ -22,18 +22,18 @@
   }
 
   span.optional {
-    color: var(--fui-text-muted);
+    color: var(--fui-color-fg-muted);
     font-weight: 400;
   }
 
   p.description {
-    color: var(--fui-text-muted);
+    color: var(--fui-color-fg-muted);
     font-size: var(--fui-text-sm);
     margin: 0;
   }
 
   p.error {
-    color: var(--fui-danger);
+    color: var(--fui-color-danger);
     font-size: var(--fui-text-sm);
     margin: 0;
   }

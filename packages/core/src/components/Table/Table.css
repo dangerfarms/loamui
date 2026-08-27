@@ -26,14 +26,14 @@
     }
 
     caption {
-      color: var(--fui-text-muted);
+      color: var(--fui-color-fg-muted);
       font-size: var(--fui-text-xs);
       padding-block: var(--fui-space-sm);
       text-align: start;
     }
 
     :where(th, td) {
-      border-block-end: 1px solid var(--fui-border);
+      border-block-end: 1px solid var(--fui-color-line);
       padding-block: var(--fui-space-md);
       padding-inline: var(--fui-space-lg);
       text-align: start;
@@ -41,8 +41,8 @@
     }
 
     :where(thead th) {
-      border-block-end: 1px solid var(--fui-border-strong);
-      color: var(--fui-text-muted);
+      border-block-end: 1px solid var(--fui-color-line-strong);
+      color: var(--fui-color-fg-muted);
       font-size: var(--fui-text-xs);
       font-weight: 600;
       letter-spacing: 0.03em;
@@ -55,20 +55,22 @@
     }
 
     &[data-col-borders] :where(th, td):not(:last-child) {
-      border-inline-end: 1px solid var(--fui-border);
+      border-inline-end: 1px solid var(--fui-color-line);
     }
 
     &[data-striped] :where(tbody tr:nth-child(even)) {
-      background: var(--fui-bg-subtle);
+      background: var(--fui-color-bg-subtle);
     }
 
-    &[data-hover] :where(tbody tr) {
-      transition: background var(--fui-duration-md) var(--fui-ease);
+    @media (prefers-reduced-motion: no-preference) {
+      &[data-hover] :where(tbody tr) {
+        transition: background var(--fui-duration-md) var(--fui-ease);
+      }
     }
 
     @media (hover: hover) {
       &[data-hover] :where(tbody tr:hover) {
-        background: var(--fui-surface-hover);
+        background: var(--fui-color-surface-hover);
       }
     }
   }

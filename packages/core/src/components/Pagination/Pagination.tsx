@@ -1,6 +1,6 @@
 "use client";
 
-import type { HTMLAttributes } from "react";
+import type { HTMLAttributes, MouseEvent, ReactNode } from "react";
 import { cx } from "../../utils";
 
 export interface PaginationProps extends Omit<HTMLAttributes<HTMLElement>, "onChange"> {
@@ -8,8 +8,10 @@ export interface PaginationProps extends Omit<HTMLAttributes<HTMLElement>, "onCh
   total: number;
   /** The active page (1-based). */
   value: number;
-  /** Called with the new page when a control is activated. */
-  onChange: (page: number) => void;
+  /** Build the destination URL for a page. */
+  getHref: (page: number) => string;
+  /** Optionally intercept navigation for a client router. */
+  onNavigate?: (page: number, event: MouseEvent<HTMLAnchorElement>) => void;
   /**
    * Number of sibling pages shown on each side of the active page.
    * @default 1
@@ -103,15 +105,17 @@ function EdgeIcon({ dir }: { dir: "first" | "last" }) {
 }
 
 /**
- * Controlled page navigator.
+ * Link-first page navigator.
  *
- * Renders previous/next controls (plus optional first/last edges) and numbered
- * page buttons with ellipsis gaps. The active page carries `aria-current="page"`.
+ * Every available destination is a real link. Client routers can intercept
+ * `onNavigate`; without JavaScript the href still works. The active page
+ * carries `aria-current="page"`.
  */
 export function Pagination({
   total,
   value,
-  onChange,
+  getHref,
+  onNavigate,
   siblings = 1,
   withEdges = false,
   className,
@@ -123,35 +127,46 @@ export function Pagination({
   const atStart = active <= 1;
   const atEnd = active >= total;
 
-  const go = (page: number) => {
+  const pageLink = (
+    page: number,
+    label: string,
+    children: ReactNode,
+    options: { active?: boolean; disabled?: boolean; rel?: "prev" | "next" } = {},
+  ) => {
     const clamped = Math.min(Math.max(page, 1), total);
-    if (clamped !== active) onChange(clamped);
+    if (options.disabled) {
+      return (
+        <span className="control" data-disabled aria-hidden="true">
+          {children}
+        </span>
+      );
+    }
+    return (
+      <a
+        className="control"
+        href={getHref(clamped)}
+        rel={options.rel}
+        data-active={options.active || undefined}
+        aria-current={options.active ? "page" : undefined}
+        aria-label={label}
+        onClick={(event) => onNavigate?.(clamped, event)}
+      >
+        {children}
+      </a>
+    );
   };
 
   return (
     <nav aria-label={ariaLabel} className={cx("fui-Pagination", className)} {...rest}>
       <ul>
         {withEdges && (
-          <li>
-            <button
-              type="button"
-              onClick={() => !atStart && go(1)}
-              aria-disabled={atStart || undefined}
-              aria-label="First page"
-            >
-              <EdgeIcon dir="first" />
-            </button>
-          </li>
+          <li>{pageLink(1, "First page", <EdgeIcon dir="first" />, { disabled: atStart })}</li>
         )}
         <li>
-          <button
-            type="button"
-            onClick={() => !atStart && go(active - 1)}
-            aria-disabled={atStart || undefined}
-            aria-label="Previous page"
-          >
-            <ChevronIcon dir="left" />
-          </button>
+          {pageLink(active - 1, "Previous page", <ChevronIcon dir="left" />, {
+            disabled: atStart,
+            rel: "prev",
+          })}
         </li>
 
         {items.map((item, index) => {
@@ -163,42 +178,17 @@ export function Pagination({
             );
           }
           const isActive = item === active;
-          return (
-            <li key={item}>
-              <button
-                type="button"
-                data-active={isActive || undefined}
-                aria-current={isActive ? "page" : undefined}
-                aria-label={`Page ${item}`}
-                onClick={() => go(item)}
-              >
-                {item}
-              </button>
-            </li>
-          );
+          return <li key={item}>{pageLink(item, `Page ${item}`, item, { active: isActive })}</li>;
         })}
 
         <li>
-          <button
-            type="button"
-            onClick={() => !atEnd && go(active + 1)}
-            aria-disabled={atEnd || undefined}
-            aria-label="Next page"
-          >
-            <ChevronIcon dir="right" />
-          </button>
+          {pageLink(active + 1, "Next page", <ChevronIcon dir="right" />, {
+            disabled: atEnd,
+            rel: "next",
+          })}
         </li>
         {withEdges && (
-          <li>
-            <button
-              type="button"
-              onClick={() => !atEnd && go(total)}
-              aria-disabled={atEnd || undefined}
-              aria-label="Last page"
-            >
-              <EdgeIcon dir="last" />
-            </button>
-          </li>
+          <li>{pageLink(total, "Last page", <EdgeIcon dir="last" />, { disabled: atEnd })}</li>
         )}
       </ul>
     </nav>

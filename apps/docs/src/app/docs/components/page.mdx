@@ -1,0 +1,31 @@
+import prose from "../prose.module.css";
+
+export const metadata = {
+  title: "Components",
+  description:
+    "The third primitive: a small, curated set of accessible components composed from tokens and element styles.",
+};
+
+# Components
+
+The third of FarmUI's three primitives, built on the two beneath it. [Tokens](/docs/tokens) supply the colour and scale; [element styles](/docs/element-styles) supply the native baseline. Most of a component's look is decided before its own stylesheet exists, which is why the set stays small: components add the anatomy a bare element cannot, and nothing more.
+
+## When to reach for one
+
+Reach for a component when a native element needs structure it does not have on its own: a field that wires a label, description and error together; a dialog that traps focus; a menu with roving keyboard focus. For everything else, the two primitives beneath already carry the styling, so you compose the rest yourself rather than installing a component for it.
+
+## What makes a FarmUI component
+
+- **Context decides, props don't.** No size, variant or colour props. A region declares its intent and the components inside adapt; the container's width decides how they size.
+- **Compose, don't configure.** Compound components expose their parts, element substitution goes through the `render` prop, and icons and loaders are detected children, not slot props.
+- **Accessible by construction.** Real semantics, keyboard support and a shared focus-visible ring come from the platform, then the component wires the ARIA the platform leaves to you.
+
+## Finding your way
+
+The components are grouped by job in the sidebar: **Inputs**, **Data display**, **Feedback**, **Disclosures** and **Navigation**. Every page shows live examples, the real CSS that ships, and guidance on when to use it and when not.
+
+<div className={prose.callout}>
+  Because components are built from tokens and element styles, your own components can be too. A
+  scoped class on a semantic element, styled with tokens, is a component in your codebase that
+  themes through the cascade and needs no library at all.
+</div>

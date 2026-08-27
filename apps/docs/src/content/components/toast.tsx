@@ -92,7 +92,7 @@ const doc: ComponentContent = {
     },
     {
       title: "Reserve high priority for failures",
-      body: 'priority: "high" renders role="alert", which interrupts whatever a screen reader is saying. That cost is justified when something the user attempted has failed — and almost never otherwise. Success confirmations use the default polite announcement.',
+      body: 'priority: "high" renders role="alert", which interrupts whatever a screen reader is saying. That cost is justified when something the user attempted has failed, and almost never otherwise. Success confirmations use the default polite announcement.',
     },
     {
       title: "An action in a toast must exist somewhere else too",
@@ -225,7 +225,7 @@ const doc: ComponentContent = {
           {
             name: "id",
             type: "string",
-            description: "Stable id — adding again with the same id updates the toast in place.",
+            description: "Stable id; adding again with the same id updates the toast in place.",
           },
         ],
       },

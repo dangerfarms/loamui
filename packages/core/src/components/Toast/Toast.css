@@ -27,8 +27,8 @@
 
   div.toast {
     align-items: flex-start;
-    background: var(--fui-surface);
-    border: 1px solid var(--fui-border);
+    background: var(--fui-color-surface);
+    border: 1px solid var(--fui-color-line);
     border-radius: var(--fui-radius-md);
     box-shadow: var(--fui-shadow-lg);
     display: block flex;
@@ -64,7 +64,7 @@
   }
 
   div.description {
-    color: var(--fui-text-muted);
+    color: var(--fui-color-fg-muted);
     font-size: var(--fui-text-sm);
     overflow-wrap: break-word;
 
@@ -79,7 +79,7 @@
     border: 0;
     border-radius: var(--fui-radius-sm);
     box-shadow: none;
-    color: var(--fui-text-muted);
+    color: var(--fui-color-fg-muted);
     cursor: pointer;
     display: inline grid;
     flex-shrink: 0;
@@ -95,8 +95,8 @@
 
     @media (hover: hover) {
       &:hover {
-        background: var(--fui-bg-subtle);
-        color: var(--fui-text);
+        background: var(--fui-color-bg-subtle);
+        color: var(--fui-color-fg);
       }
     }
   }

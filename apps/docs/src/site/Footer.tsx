@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Logo } from "./Logo";
 import { GitHubIcon } from "./Icons";
 import classes from "./Footer.module.css";
-import { FIRST_COMPONENT_HREF } from "@/site/nav";
 
 const COLUMNS = [
   {
@@ -12,7 +11,7 @@ const COLUMNS = [
       { label: "Installation", href: "/docs/installation" },
       { label: "Tokens", href: "/docs/tokens" },
       { label: "Element styles", href: "/docs/element-styles" },
-      { label: "Components", href: FIRST_COMPONENT_HREF },
+      { label: "Components", href: "/docs/components" },
     ],
   },
   {

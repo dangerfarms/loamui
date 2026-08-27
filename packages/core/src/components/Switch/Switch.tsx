@@ -1,10 +1,11 @@
 "use client";
 
-import { useId } from "react";
+import { useId, useMemo } from "react";
 import type { InputHTMLAttributes, ReactNode, Ref } from "react";
 import { cx } from "../../utils";
 import { useFieldControlProps } from "../Field/Field";
 import { useUserInvalid } from "../../use-user-invalid";
+import { composeRefs } from "../../render";
 
 export interface SwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {
   /** Label rendered beside the toggle. */
@@ -36,14 +37,16 @@ function SwitchControl({
   disabled,
   "aria-invalid": ariaInvalid,
   "aria-describedby": ariaDescribedby,
-  onBlur,
+  onInput,
   onInvalid,
   ref,
   ...rest
 }: SwitchControlProps) {
   const field = useFieldControlProps();
 
-  const { nativeInvalid, checkOnBlur, checkOnInvalid } = useUserInvalid();
+  const { nativeInvalid, validationRef, checkOnInput, checkOnInvalid } =
+    useUserInvalid<HTMLInputElement>();
+  const inputRef = useMemo(() => composeRefs(ref, validationRef), [ref, validationRef]);
   const resolvedAriaInvalid = ariaInvalid ?? field["aria-invalid"] ?? (nativeInvalid || undefined);
 
   return (
@@ -51,7 +54,7 @@ function SwitchControl({
       {/* role-has-required-aria-props is off for this file (.oxlintrc):
           the native checkbox's checkedness maps to aria-checked */}
       <input
-        ref={ref}
+        ref={inputRef}
         id={id ?? field.id}
         type="checkbox"
         role="switch"
@@ -60,9 +63,9 @@ function SwitchControl({
         {...rest}
         aria-invalid={resolvedAriaInvalid}
         aria-describedby={ariaDescribedby ?? field["aria-describedby"]}
-        onBlur={(e) => {
-          onBlur?.(e);
-          checkOnBlur(e);
+        onInput={(e) => {
+          onInput?.(e);
+          checkOnInput(e);
         }}
         onInvalid={(e) => {
           onInvalid?.(e);

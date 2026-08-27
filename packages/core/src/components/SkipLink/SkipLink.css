@@ -3,11 +3,11 @@
      appearing on focus never shifts the page; z-index above every
      overlay. */
   :scope {
-    background: var(--fui-surface);
-    border: 1px solid var(--fui-border-strong);
+    background: var(--fui-color-surface);
+    border: 1px solid var(--fui-color-line-strong);
     border-radius: var(--fui-radius-md);
     box-shadow: var(--fui-shadow-lg);
-    color: var(--fui-text);
+    color: var(--fui-color-fg);
     font-size: var(--fui-text-sm);
     font-weight: 600;
     inset-block-start: var(--fui-space-sm);

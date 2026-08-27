@@ -3,8 +3,8 @@
    the exclusivity. */
 @scope (.fui-Details) to ([class*="fui-"]) {
   :scope {
-    background: var(--fui-surface);
-    border: 1px solid var(--fui-border);
+    background: var(--fui-color-surface);
+    border: 1px solid var(--fui-color-line);
     border-radius: var(--fui-radius-md);
     inline-size: 100%;
     overflow: clip;
@@ -21,8 +21,11 @@
       list-style: none;
       padding-block: var(--fui-space-md);
       padding-inline: var(--fui-space-lg);
-      transition: background var(--fui-duration-md) var(--fui-ease);
       user-select: none;
+
+      @media (prefers-reduced-motion: no-preference) {
+        transition: background var(--fui-duration-md) var(--fui-ease);
+      }
     }
   }
 
@@ -31,7 +34,7 @@
   }
 
   :scope[open] > summary {
-    color: var(--fui-primary);
+    color: var(--fui-color-primary);
   }
 
   span.label {
@@ -39,19 +42,22 @@
   }
 
   svg.chevron {
-    color: var(--fui-text-muted);
+    color: var(--fui-color-fg-muted);
     flex: none;
     rotate: 0deg;
-    transition: rotate var(--fui-duration-md) var(--fui-ease);
 
     :scope[open] > summary & {
-      color: var(--fui-primary);
+      color: var(--fui-color-primary);
       rotate: 180deg;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition: rotate var(--fui-duration-md) var(--fui-ease);
     }
   }
 
   div.content {
-    color: var(--fui-text-muted);
+    color: var(--fui-color-fg-muted);
     font-size: var(--fui-text-sm);
     line-height: 1.55;
     padding-block: 0 var(--fui-space-lg);
@@ -60,7 +66,7 @@
 
   @media (hover: hover) {
     :scope > summary:hover {
-      background: var(--fui-surface-hover);
+      background: var(--fui-color-surface-hover);
     }
   }
 

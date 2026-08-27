@@ -115,4 +115,4 @@ export interface ComponentDoc extends ComponentContent {
   description: string;
 }
 
-export type Category = "Inputs" | "Data display" | "Feedback" | "Overlays" | "Navigation";
+export type Category = "Inputs" | "Data display" | "Feedback" | "Disclosures" | "Navigation";

@@ -71,7 +71,7 @@ properties; `oklch()` / `light-dark()` / `color-mix()`; container queries; and
 is the entry and only orchestrates — the cascade-layer order plus `layer()`
 imports; `src/tokens.css` holds every design token (four bands: inputs →
 neutrals → derived → scales, with Utopia calculator URLs committed
-above the fluid scales); `src/reset.css` and `src/elements.css` are their
+above the fluid scales); `src/elements.css` is its
 layers' contents. **Component CSS files contain no `@layer`** — the layer is
 assigned by the orchestrator's imports in dev and by `scripts/build-css.mjs`
 in the built artifact (the build errors if a component file declares one).
@@ -244,14 +244,48 @@ scale as their labels.
 pnpm build
 pnpm check-types
 pnpm lint
+pnpm lint:md
 pnpm format
 ```
 
-All four should pass cleanly. Please use
+All five should pass cleanly. Please use
 [Conventional Commits](https://www.conventionalcommits.org/) for commit messages
 (`feat:`, `fix:`, `docs:`, `refactor:`, …).
 
-- `pnpm --filter @farmui/core test` — the a11y and interaction suites
+- `pnpm --filter @farmui/core test` runs the a11y and interaction suites.
+- `pnpm lint:md` runs the rumdl Markdown linter over the hand-authored docs.
+
+## References
+
+The reading behind the conventions in this guide, grouped by topic. Reach for
+these when a change touches an area you have not worked in before.
+
+**Primitives (the library's shape).** The framing of a small set of primitives
+that agents compose into bespoke UI:
+
+- [JavaScript frameworks heading into 2026](https://dev.to/playfulprogramming/javascript-frameworks-heading-into-2026-2hel)
+
+**Contextual design.** How a region declares meaning and components adapt,
+built on container queries and modern colour:
+
+- [Container queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries)
+- [`light-dark()`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark) and [`color-mix()`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix)
+- Brand-on-interaction: [moderncss.ai](https://moderncss.ai/) and [npmx.dev](https://npmx.dev/)
+
+**CSS layout modules.** Pick the module by the shape of the content, per the
+[Layout guide](./apps/docs/src/app/docs/layout/page.mdx):
+
+- [A guide to CSS layout](https://www.smashingmagazine.com/2018/05/guide-css-layout/)
+- [Flow](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Display/Flow_layout), [Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout), [Flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Flexible_box_layout), [Multi-column](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Multicol_layout/Basic_concepts)
+
+**Rhythmic and fluid type scales.** How the type scale is tuned per container:
+
+- [Designing with fluid type scales](https://utopia.fyi/blog/designing-with-fluid-type-scales/)
+- [Utopia](https://utopia.fyi/)
+
+**Design safety.** Small, checkable rules that keep visuals honest:
+
+- [Safe design rules](https://anthonyhobday.com/sideprojects/saferules/)
 
 ## Releasing
 

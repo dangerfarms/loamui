@@ -29,7 +29,7 @@ import skeleton from "@/content/components/skeleton";
 import loader from "@/content/components/loader";
 import toast from "@/content/components/toast";
 
-// Overlays
+// Disclosures
 import tooltip from "@/content/components/tooltip";
 import modal from "@/content/components/modal";
 import drawer from "@/content/components/drawer";
@@ -44,8 +44,8 @@ import skipLink from "@/content/components/skip-link";
 import breadcrumbs from "@/content/components/breadcrumbs";
 import pagination from "@/content/components/pagination";
 
-// Layout is CSS compositions, not components — see the Layout guide
-// (/docs/layout) and @farmui/core's layout.css.
+// Layout is not a component: compose native CSS layout modules with the space
+// tokens. See the Layout guide (/docs/layout).
 
 const content: ComponentContent[] = [
   field,

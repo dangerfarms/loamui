@@ -1,7 +1,7 @@
 @scope (.fui-Card) to ([class*="fui-"]) {
   :scope {
-    background: var(--fui-surface);
-    border: 1px solid var(--fui-border);
+    background: var(--fui-color-surface);
+    border: 1px solid var(--fui-color-line);
     border-radius: var(--_radius, var(--fui-radius-lg));
     display: block flow;
     padding: var(--fui-space-lg);

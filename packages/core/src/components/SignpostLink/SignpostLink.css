@@ -2,7 +2,7 @@
   :scope {
     align-items: center;
     border-radius: var(--fui-radius-sm);
-    color: var(--fui-text-strong);
+    color: var(--fui-color-fg-strong);
     display: inline flex;
     font-size: var(--fui-text-md);
     font-weight: 600;
@@ -20,7 +20,7 @@
     text-underline-offset: 0.15em;
 
     :scope:active & {
-      text-decoration-color: var(--fui-primary-strong);
+      text-decoration-color: var(--fui-color-primary-strong);
       text-decoration-thickness: max(0.16em, 2px);
       text-underline-offset: 0.15em;
       transition: none;
@@ -39,10 +39,10 @@
      with on-strong — the audited pairing — and a context region recolours
      it by re-answering the token. */
   span.icon {
-    background: var(--fui-primary-strong);
+    background: var(--fui-color-primary-strong);
     block-size: 1.5em;
     border-radius: var(--fui-radius-full);
-    color: var(--fui-on-strong);
+    color: var(--fui-color-on-strong);
     display: inline grid;
     flex-shrink: 0;
     inline-size: 1.5em;
@@ -60,7 +60,7 @@
 
   @media (hover: hover) {
     :scope:hover span.label {
-      text-decoration-color: var(--fui-primary);
+      text-decoration-color: var(--fui-color-primary);
       text-decoration-thickness: max(0.16em, 2px);
       text-underline-offset: 0.3em;
     }

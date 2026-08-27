@@ -2,21 +2,22 @@
  * Button — one colour channel (--_color); every look derives from it via
  * color-mix and relative colour. Appearance is decided by context, not
  * props. The one instance-level escape hatch is the public
- * --fui-button-color property (registered in reset.css).
+ * --fui-button-color property (registered in elements.css).
  */
 @scope (.fui-Button) {
   :scope {
-    --_color: var(--fui-button-color, var(--fui-text));
+    --_color: var(--fui-button-color, var(--fui-color-fg));
 
     background: light-dark(
-      color-mix(in oklab, var(--_color), var(--fui-bg) 90%),
-      color-mix(in oklab, var(--_color), var(--fui-bg) 75%)
+      color-mix(in oklab, var(--_color), var(--fui-color-bg) 90%),
+      color-mix(in oklab, var(--_color), var(--fui-color-bg) 75%)
     );
 
     /* Tints mix in oklab (cartesian), not oklch: hue interpolation against
        the near-achromatic page background rotates the channel's hue;
        cartesian mixing only desaturates, so the hue survives. */
-    border: 1px solid color-mix(in oklab, var(--_color), var(--fui-bg) 80%);
+    border: 1px solid
+      color-mix(in oklab, var(--_color), var(--fui-color-bg) 80%);
     border-radius: var(--fui-button-radius, var(--fui-radius-md));
     box-shadow: var(--fui-shadow-raised);
 
@@ -35,10 +36,6 @@
     padding-inline: var(--fui-space-lg);
     text-align: center;
     text-decoration: none;
-    transition:
-      background var(--fui-duration-sm) var(--fui-ease),
-      border-color var(--fui-duration-sm) var(--fui-ease),
-      color var(--fui-duration-sm) var(--fui-ease);
 
     /* Identity at rest — the pressed shift transitions both ways. */
     translate: 0 0;
@@ -47,8 +44,8 @@
 
     &:active:not(:disabled) {
       background: light-dark(
-        color-mix(in oklab, var(--_color), var(--fui-bg) 85%),
-        color-mix(in oklab, var(--_color), var(--fui-bg) 70%)
+        color-mix(in oklab, var(--_color), var(--fui-color-bg) 85%),
+        color-mix(in oklab, var(--_color), var(--fui-color-bg) 70%)
       );
       box-shadow: var(--fui-shadow-sm);
       color: light-dark(
@@ -65,8 +62,8 @@
     @media (hover: hover) {
       &:hover:not(:disabled) {
         background: light-dark(
-          color-mix(in oklab, var(--_color), var(--fui-bg) 85%),
-          color-mix(in oklab, var(--_color), var(--fui-bg) 70%)
+          color-mix(in oklab, var(--_color), var(--fui-color-bg) 85%),
+          color-mix(in oklab, var(--_color), var(--fui-color-bg) 70%)
         );
         color: light-dark(
           oklch(from var(--_color) calc(l - 0.2) c h),
@@ -112,7 +109,7 @@
   /* Context: within a primary region — THE action of the area. */
   @container (style(--fui-context: primary)) {
     :scope {
-      --_color: var(--fui-primary);
+      --_color: var(--fui-color-primary);
     }
   }
 
@@ -121,25 +118,25 @@
      these rules key the button's own channel.) */
   @container (style(--fui-context: danger)) {
     :scope {
-      --_color: var(--fui-danger);
+      --_color: var(--fui-color-danger);
     }
   }
 
   @container (style(--fui-context: success)) {
     :scope {
-      --_color: var(--fui-success);
+      --_color: var(--fui-color-success);
     }
   }
 
   @container (style(--fui-context: warning)) {
     :scope {
-      --_color: var(--fui-warning);
+      --_color: var(--fui-color-warning);
     }
   }
 
   @container (style(--fui-context: info)) {
     :scope {
-      --_color: var(--fui-info);
+      --_color: var(--fui-color-info);
     }
   }
 

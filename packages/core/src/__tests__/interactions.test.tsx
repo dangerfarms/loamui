@@ -1,5 +1,6 @@
 import { describe, it, expect, afterEach, vi } from "vitest";
 import { useState } from "react";
+import type { MouseEvent as ReactMouseEvent } from "react";
 import { render, screen, cleanup, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
@@ -70,6 +71,53 @@ describe("Tabs", () => {
 
     await user.keyboard("{ArrowLeft}");
     expect(screen.getByRole("tab", { name: "Account" })).toHaveAttribute("aria-selected", "true");
+  });
+
+  it("falls back to the first enabled tab when an uncontrolled value is stale", async () => {
+    render(
+      <Tabs defaultValue="missing">
+        <TabsList>
+          <TabsTab value="disabled" disabled>
+            Disabled
+          </TabsTab>
+          <TabsTab value="first">First available</TabsTab>
+          <TabsTab value="second">Second available</TabsTab>
+        </TabsList>
+        <TabsPanel value="disabled">Disabled panel</TabsPanel>
+        <TabsPanel value="first">First panel</TabsPanel>
+        <TabsPanel value="second">Second panel</TabsPanel>
+      </Tabs>,
+    );
+
+    await waitFor(() =>
+      expect(screen.getByRole("tab", { name: "First available" })).toHaveAttribute(
+        "aria-selected",
+        "true",
+      ),
+    );
+    expect(screen.getByText("First panel")).toBeVisible();
+  });
+
+  it("reverses horizontal arrow movement in right-to-left content", async () => {
+    const user = userEvent.setup();
+    render(
+      <div dir="rtl">
+        <Tabs defaultValue="b">
+          <TabsList>
+            <TabsTab value="a">Alpha</TabsTab>
+            <TabsTab value="b">Beta</TabsTab>
+            <TabsTab value="c">Gamma</TabsTab>
+          </TabsList>
+          <TabsPanel value="a">Alpha panel</TabsPanel>
+          <TabsPanel value="b">Beta panel</TabsPanel>
+          <TabsPanel value="c">Gamma panel</TabsPanel>
+        </Tabs>
+      </div>,
+    );
+
+    screen.getByRole("tab", { name: "Beta" }).focus();
+    await user.keyboard("{ArrowRight}");
+    expect(screen.getByRole("tab", { name: "Alpha" })).toHaveAttribute("aria-selected", "true");
   });
 });
 
@@ -839,34 +887,48 @@ describe("composition contract regressions", () => {
 
 describe("Pagination", () => {
   it("windows pages around the active one with ellipses", () => {
-    render(<Pagination total={10} value={5} onChange={() => {}} />);
+    render(<Pagination total={10} value={5} getHref={(page) => `/results?page=${page}`} />);
     for (const page of ["1", "4", "5", "6", "10"]) {
-      expect(screen.getByRole("button", { name: `Page ${page}` })).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: `Page ${page}` })).toHaveAttribute(
+        "href",
+        `/results?page=${page}`,
+      );
     }
-    expect(screen.queryByRole("button", { name: "Page 2" })).toBeNull();
-    expect(screen.getByRole("button", { name: "Page 5" })).toHaveAttribute("aria-current", "page");
+    expect(screen.queryByRole("link", { name: "Page 2" })).toBeNull();
+    expect(screen.getByRole("link", { name: "Page 5" })).toHaveAttribute("aria-current", "page");
   });
 
-  it("activating a page and the boundary controls calls onChange correctly", async () => {
+  it("exposes prev/next relationships and lets client routers intercept navigation", async () => {
     const user = userEvent.setup();
-    const onChange = vi.fn();
-    render(<Pagination total={10} value={5} onChange={onChange} />);
-    await user.click(screen.getByRole("button", { name: "Page 6" }));
-    expect(onChange).toHaveBeenCalledWith(6);
-    await user.click(screen.getByRole("button", { name: "Previous page" }));
-    expect(onChange).toHaveBeenCalledWith(4);
+    const onNavigate = vi.fn((_page, event: ReactMouseEvent<HTMLAnchorElement>) =>
+      event.preventDefault(),
+    );
+    render(
+      <Pagination
+        total={10}
+        value={5}
+        getHref={(page) => `/results?page=${page}`}
+        onNavigate={onNavigate}
+      />,
+    );
+    await user.click(screen.getByRole("link", { name: "Page 6" }));
+    expect(onNavigate).toHaveBeenLastCalledWith(6, expect.anything());
+    const previous = screen.getByRole("link", { name: "Previous page" });
+    expect(previous).toHaveAttribute("rel", "prev");
+    await user.click(previous);
+    expect(onNavigate).toHaveBeenLastCalledWith(4, expect.anything());
+    expect(screen.getByRole("link", { name: "Next page" })).toHaveAttribute("rel", "next");
   });
 
-  it("boundary controls stay focusable but inert at the edges", async () => {
-    const user = userEvent.setup();
-    const onChange = vi.fn();
-    render(<Pagination total={3} value={1} onChange={onChange} />);
-    const prev = screen.getByRole("button", { name: "Previous page" });
-    expect(prev).toHaveAttribute("aria-disabled", "true");
-    prev.focus();
-    expect(prev).toHaveFocus();
-    await user.click(prev);
-    expect(onChange).not.toHaveBeenCalled();
+  it("renders boundary placeholders outside the tab and accessibility order", () => {
+    const { container } = render(
+      <Pagination total={3} value={1} getHref={(page) => `/results?page=${page}`} />,
+    );
+    expect(screen.queryByRole("link", { name: "Previous page" })).toBeNull();
+    expect(container.querySelector("span.control[data-disabled]")).toHaveAttribute(
+      "aria-hidden",
+      "true",
+    );
   });
 });
 

@@ -1,10 +1,10 @@
 .trigger {
   background: transparent;
   block-size: 2.25rem;
-  border: 1px solid var(--fui-border);
+  border: 1px solid var(--fui-color-line);
   border-radius: var(--fui-radius-md);
   box-shadow: none;
-  color: var(--fui-text-muted);
+  color: var(--fui-color-fg-muted);
   cursor: pointer;
   display: none;
   inline-size: 2.25rem;
@@ -16,9 +16,9 @@
     background var(--fui-duration-md) var(--fui-ease);
 
   &:hover {
-    background: var(--fui-surface-hover);
-    border-color: var(--fui-border-strong);
-    color: var(--fui-text);
+    background: var(--fui-color-surface-hover);
+    border-color: var(--fui-color-line-strong);
+    color: var(--fui-color-fg);
   }
 
   @media (width <= 62rem) {

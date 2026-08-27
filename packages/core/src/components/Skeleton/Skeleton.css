@@ -42,11 +42,11 @@
      default; the moving shimmer is opt-in motion (below), so
      reduced-motion users need no override. */
   :scope::after {
-    background-color: color-mix(in oklab, var(--fui-text) 8%, transparent);
+    background-color: color-mix(in oklab, var(--fui-color-fg) 8%, transparent);
     background-image: linear-gradient(
       90deg,
       transparent 0%,
-      color-mix(in oklab, var(--fui-text) 7%, transparent) 50%,
+      color-mix(in oklab, var(--fui-color-fg) 7%, transparent) 50%,
       transparent 100%
     );
     content: "";

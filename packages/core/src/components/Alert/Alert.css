@@ -7,7 +7,7 @@
  */
 @scope (.fui-Alert) to ([class*="fui-"]) {
   :scope {
-    --_accent: var(--fui-text);
+    --_accent: var(--fui-color-fg);
 
     align-items: flex-start;
 
@@ -15,15 +15,16 @@
        far from the channel, so an 88% mix would read near-black (same
        compensation as Button's 90%/75%). */
     background: light-dark(
-      color-mix(in oklab, var(--_accent), var(--fui-bg) 88%),
-      color-mix(in oklab, var(--_accent), var(--fui-bg) 70%)
+      color-mix(in oklab, var(--_accent), var(--fui-color-bg) 88%),
+      color-mix(in oklab, var(--_accent), var(--fui-color-bg) 70%)
     );
 
     /* Tints mix in oklab (cartesian), not oklch: hue interpolation against
        the near-achromatic page background rotates the channel's hue (the
        declared hue of an achromatic colour still interpolates); cartesian
        mixing only desaturates, so the channel's hue survives. */
-    border: 1px solid color-mix(in oklab, var(--_accent), var(--fui-bg) 55%);
+    border: 1px solid
+      color-mix(in oklab, var(--_accent), var(--fui-color-bg) 55%);
     border-radius: var(--fui-radius-md);
     display: block flex;
     font-size: var(--fui-text-sm);
@@ -68,43 +69,43 @@
   /* The message carries full-strength text; next to a title it recedes to
      muted so the accent-coloured heading leads. */
   div.message {
-    color: var(--fui-text);
+    color: var(--fui-color-fg);
 
     :scope:has(> div.body > div.title) > div.body > & {
-      color: var(--fui-text-muted);
+      color: var(--fui-color-fg-muted);
     }
   }
 
   /* Context: within a status region — the channel takes the status colour.
-     (Even though the region also remaps --fui-primary, the alert keys its
+     (Even though the region also remaps --fui-color-primary, the alert keys its
      own channel because its rest state is neutral text, not primary.) */
   @container (style(--fui-context: primary)) {
     :scope {
-      --_accent: var(--fui-primary);
+      --_accent: var(--fui-color-primary);
     }
   }
 
   @container (style(--fui-context: success)) {
     :scope {
-      --_accent: var(--fui-success);
+      --_accent: var(--fui-color-success);
     }
   }
 
   @container (style(--fui-context: warning)) {
     :scope {
-      --_accent: var(--fui-warning);
+      --_accent: var(--fui-color-warning);
     }
   }
 
   @container (style(--fui-context: info)) {
     :scope {
-      --_accent: var(--fui-info);
+      --_accent: var(--fui-color-info);
     }
   }
 
   @container (style(--fui-context: danger)) {
     :scope {
-      --_accent: var(--fui-danger);
+      --_accent: var(--fui-color-danger);
     }
   }
 }

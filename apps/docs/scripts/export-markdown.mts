@@ -226,7 +226,7 @@ try {
 }
 
 // ---- llms.txt ----------------------------------------------------------
-const guideOrder = ["/docs", "/docs/installation", "/docs/tokens", "/docs/element-styles", "/docs/contextualism", "/docs/composition", "/docs/gatekeeping", "/docs/layout", "/docs/accessibility"];
+const guideOrder = ["/docs", "/docs/installation", "/docs/tokens", "/docs/element-styles", "/docs/components", "/docs/contextualism", "/docs/layout", "/docs/accessibility"];
 const sorted = [...guides].sort((a, b) => {
   const ia = guideOrder.indexOf(a.route), ib = guideOrder.indexOf(b.route);
   return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);

@@ -20,7 +20,7 @@
   }
 
   span.optional {
-    color: var(--fui-text-muted);
+    color: var(--fui-color-fg-muted);
     font-weight: 400;
   }
 }

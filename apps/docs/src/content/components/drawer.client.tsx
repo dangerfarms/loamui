@@ -7,12 +7,19 @@ const navLinks = ["Dashboard", "Orders", "Customers", "Settings"];
 
 function DrawerNav() {
   return (
-    <nav className="fui-stack" style={{ marginBlock: "var(--fui-space-sm)" }}>
+    <nav
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "var(--fui-space-md)",
+        marginBlock: "var(--fui-space-sm)",
+      }}
+    >
       {navLinks.map((label) => (
         <a
           key={label}
           href={`#${label.toLowerCase()}`}
-          style={{ color: "var(--fui-text)", textDecoration: "none" }}
+          style={{ color: "var(--fui-color-fg)", textDecoration: "none" }}
         >
           {label}
         </a>
@@ -37,7 +44,14 @@ export function DrawerDemo() {
 
 export function DrawerSidesDemo() {
   return (
-    <div className="fui-cluster">
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "var(--fui-space-sm)",
+        alignItems: "center",
+      }}
+    >
       {(["start", "end", "top", "bottom"] as DrawerSide[]).map((side) => (
         <Drawer.Root key={side}>
           <Drawer.Trigger>From {side}</Drawer.Trigger>
@@ -56,7 +70,14 @@ export function DrawerSidesDemo() {
 
 export function DrawerSizesDemo() {
   return (
-    <div className="fui-cluster">
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "var(--fui-space-sm)",
+        alignItems: "center",
+      }}
+    >
       {(["sm", "md", "lg"] as const).map((size) => (
         <Drawer.Root key={size}>
           <Drawer.Trigger>Open {size}</Drawer.Trigger>

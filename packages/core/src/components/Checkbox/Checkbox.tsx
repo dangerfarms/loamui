@@ -15,24 +15,24 @@ export interface CheckboxProps extends Omit<
   label?: ReactNode;
   /** Helper text rendered below the label. */
   description?: ReactNode;
-  /** Render the "partially checked" (dash) visual state. */
+  /** Render the "partially checked" (dash) state. */
   indeterminate?: boolean;
   /** Root wrapper class. */
   wrapperClassName?: string;
   ref?: Ref<HTMLInputElement>;
 }
 
-/** The bare checkbox box + input, minus any label. */
+/** The bare control, minus any label. */
 export type CheckboxControlProps = Omit<
   CheckboxProps,
   "label" | "description" | "wrapperClassName"
 >;
 
 /**
- * The bare box + `<input type="checkbox">`. When rendered
- * inside a `Field` it reads its id / describedby / aria-invalid from context
- * (`<Field.Label><Checkbox /> …</Field.Label>`); otherwise it uses its own
- * props.
+ * A plain `<input type="checkbox">` — the elements layer paints it with the
+ * platform's own `accent-color`, so there is no custom box or SVG. When
+ * rendered inside a `Field` it reads its id / describedby / aria-invalid
+ * from context; otherwise it uses its own props.
  */
 function CheckboxControl({
   indeterminate = false,
@@ -41,16 +41,19 @@ function CheckboxControl({
   disabled,
   "aria-invalid": ariaInvalid,
   "aria-describedby": ariaDescribedby,
-  onBlur,
+  onInput,
   onInvalid,
   ref,
   ...rest
 }: CheckboxControlProps) {
   const field = useFieldControlProps();
   const innerRef = useRef<HTMLInputElement>(null);
-  // Memoised so React doesn't detach/re-attach the composed ref every
-  // render (a consumer's callback ref would fire twice per render).
-  const inputRef = useMemo(() => composeRefs(ref, innerRef), [ref]);
+  const { nativeInvalid, validationRef, checkOnInput, checkOnInvalid } =
+    useUserInvalid<HTMLInputElement>();
+  const inputRef = useMemo(
+    () => composeRefs(composeRefs(ref, innerRef), validationRef),
+    [ref, validationRef],
+  );
 
   useEffect(() => {
     if (innerRef.current) {
@@ -58,58 +61,38 @@ function CheckboxControl({
     }
   }, [indeterminate]);
 
-  const { nativeInvalid, checkOnBlur, checkOnInvalid } = useUserInvalid();
   const resolvedAriaInvalid = ariaInvalid ?? field["aria-invalid"] ?? (nativeInvalid || undefined);
   const resolvedId = id ?? field.id;
   const describedBy = ariaDescribedby ?? field["aria-describedby"];
 
   return (
-    <span className="fui-Checkbox-box" data-disabled={disabled || undefined}>
-      <input
-        ref={inputRef}
-        id={resolvedId}
-        type="checkbox"
-        className={className}
-        disabled={disabled}
-        {...rest}
-        aria-invalid={resolvedAriaInvalid}
-        aria-describedby={describedBy}
-        onBlur={(e) => {
-          onBlur?.(e);
-          checkOnBlur(e);
-        }}
-        onInvalid={(e) => {
-          onInvalid?.(e);
-          checkOnInvalid(e);
-        }}
-      />
-      <svg className="check" viewBox="0 0 16 16" fill="none" aria-hidden>
-        <path
-          className="tick"
-          d="M3.5 8.5l3 3 6-6.5"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          className="dash"
-          d="M4 8h8"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-      </svg>
-    </span>
+    <input
+      ref={inputRef}
+      id={resolvedId}
+      type="checkbox"
+      className={cx("fui-Checkbox", className)}
+      disabled={disabled}
+      {...rest}
+      aria-invalid={resolvedAriaInvalid}
+      aria-describedby={describedBy}
+      onInput={(e) => {
+        onInput?.(e);
+        checkOnInput(e);
+      }}
+      onInvalid={(e) => {
+        onInvalid?.(e);
+        checkOnInvalid(e);
+      }}
+    />
   );
 }
 
 /**
- * A styled `<input type="checkbox">`.
+ * A native `<input type="checkbox">`.
  *
- * The `label`/`description` props render an accessible inline row;
- * errors compose via `Field.Error`. Without them you get only the box, which self-wires when placed
- * inside a `Field`.
+ * The `label`/`description` props render an accessible inline row; errors
+ * compose via `Field.Error`. Without them you get only the control, which
+ * self-wires when placed inside a `Field`.
  */
 export function Checkbox({
   label,

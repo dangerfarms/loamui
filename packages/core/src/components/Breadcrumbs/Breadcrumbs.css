@@ -1,21 +1,21 @@
 @scope (.fui-Breadcrumbs) {
   :scope {
-    color: var(--fui-text-muted);
+    color: var(--fui-color-fg-muted);
     font-size: var(--fui-text-sm);
-  }
 
-  li {
-    margin-block: 0;
-  }
+    ol {
+      align-items: center;
+      display: block flex;
+      flex-wrap: wrap;
+      gap: var(--fui-space-sm);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
 
-  ol {
-    align-items: center;
-    display: block flex;
-    flex-wrap: wrap;
-    gap: var(--fui-space-sm);
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    li {
+      margin-block: 0;
+    }
   }
 }
 
@@ -28,34 +28,37 @@
     align-items: center;
     display: inline flex;
     min-inline-size: 0;
-  }
 
-  :scope:not(:first-child)::before {
-    color: var(--fui-text-dim);
+    &:not(:first-child)::before {
+      color: var(--fui-color-fg-dim);
 
-    /* The empty alt keeps the glyph out of the accessibility tree. */
-    content: var(--_separator, "/") / "";
-    margin-inline-end: var(--fui-space-sm);
-    user-select: none;
-  }
+      /* The empty alt keeps the glyph out of the accessibility tree. */
+      content: var(--_separator, "/") / "";
+      margin-inline-end: var(--fui-space-sm);
+      user-select: none;
+    }
 
-  :scope :where(a) {
-    border-radius: var(--fui-radius-sm);
-    color: var(--fui-text-muted);
-    padding-inline: 2px;
-    text-decoration: none;
-    transition: color var(--fui-duration-md) var(--fui-ease);
+    :where(a) {
+      border-radius: var(--fui-radius-sm);
+      color: var(--fui-color-fg-muted);
+      padding-inline: 2px;
+      text-decoration: none;
 
-    @media (hover: hover) {
-      &:hover {
-        color: var(--fui-primary);
-        text-decoration: underline;
+      @media (prefers-reduced-motion: no-preference) {
+        transition: color var(--fui-duration-md) var(--fui-ease);
+      }
+
+      @media (hover: hover) {
+        &:hover {
+          color: var(--fui-color-primary);
+          text-decoration: underline;
+        }
       }
     }
-  }
 
-  :scope[data-current] {
-    color: var(--fui-text);
-    font-weight: 600;
+    &[data-current] {
+      color: var(--fui-color-fg);
+      font-weight: 600;
+    }
   }
 }

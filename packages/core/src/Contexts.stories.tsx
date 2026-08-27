@@ -25,9 +25,9 @@ function Zone({ children, style, ...rest }: HTMLAttributes<HTMLDivElement>) {
         display: "grid",
         gap: "1rem",
         padding: "1.25rem",
-        border: "1px solid var(--fui-border)",
+        border: "1px solid var(--fui-color-line)",
         borderRadius: "var(--fui-radius-lg)",
-        background: "var(--fui-bg)",
+        background: "var(--fui-color-bg)",
         maxInlineSize: "26rem",
         ...style,
       }}
@@ -82,13 +82,13 @@ export const DangerContext: Story = {
 export const InvertedRegion: Story = {
   render: () => (
     <Zone style={{ colorScheme: "dark" } as CSSProperties}>
-      <strong style={{ color: "var(--fui-text)" }}>An on-dark section</strong>
+      <strong style={{ color: "var(--fui-color-fg)" }}>An on-dark section</strong>
       <label
         style={{
           display: "flex",
           gap: "0.5rem",
           alignItems: "center",
-          color: "var(--fui-text)",
+          color: "var(--fui-color-fg)",
         }}
       >
         <CheckboxControl defaultChecked /> Dark-scheme tokens throughout

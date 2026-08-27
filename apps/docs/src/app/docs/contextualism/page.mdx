@@ -44,7 +44,7 @@ Only a handful of contexts cover almost everything:
 
 ## Declaring meaning: `--fui-context`
 
-Context is a registered custom property — **not** a data attribute. It
+Context is a registered custom property, **not** a data attribute. It
 inherits, so the nearest ancestor that sets it wins, and component CSS reads it with a
 container style query:
 
@@ -58,7 +58,7 @@ Alert is a descendant of the Alert root, so the root's declaration reaches it.
 /* the library reads context like this */
 @container (style(--fui-context: danger)) {
   .fui-Button {
-    --_color: var(--fui-danger);
+    --_color: var(--fui-color-danger);
   }
 }
 ```
@@ -68,7 +68,7 @@ stylesheet. This is the idiomatic form: the region already has a class and a CSS
 the declaration is a semantic fact about it, so it lives with the rest of its styling:
 
 ```css
-/* danger-zone.css — the region declares what it means */
+/* danger-zone.css: the region declares what it means */
 .danger-zone {
   --fui-context: danger;
 }
@@ -100,7 +100,7 @@ consequence still lives in the stylesheets:
       display: "grid",
       gap: "0.75rem",
       padding: "1.25rem",
-      border: "1px solid var(--fui-border)",
+      border: "1px solid var(--fui-color-line)",
       borderRadius: "var(--fui-radius-lg)",
       maxInlineSize: "26rem",
     }}
@@ -146,15 +146,15 @@ lightness shifts:
 
 ```css
 .fui-Button {
-  --_color: var(--fui-button-color, var(--fui-text));
+  --_color: var(--fui-button-color, var(--fui-color-fg));
 
-  border: 1px solid color-mix(in oklab, var(--_color), var(--fui-bg) 80%);
+  border: 1px solid color-mix(in oklab, var(--_color), var(--fui-color-bg) 80%);
   background: light-dark(
-    color-mix(in oklab, var(--_color), var(--fui-bg) 90%),
-    color-mix(in oklab, var(--_color), var(--fui-bg) 75%)
+    color-mix(in oklab, var(--_color), var(--fui-color-bg) 90%),
+    color-mix(in oklab, var(--_color), var(--fui-color-bg) 75%)
   );
 
-  /* text is the channel deepened for contrast — the raw channel
+  /* text is the channel deepened for contrast: the raw channel
      can't hold 4.5:1 on its own tint */
   color: light-dark(
     color-mix(in oklab, var(--_color) 70%, oklch(0% 0 0deg)),
@@ -207,7 +207,7 @@ of the layout, not per instance of the button:
         containerType: "inline-size",
         inlineSize: "14rem",
         padding: "0.75rem",
-        border: "1px dashed var(--fui-border)",
+        border: "1px dashed var(--fui-color-line)",
         borderRadius: "var(--fui-radius-md)",
       }}
     >
@@ -219,7 +219,7 @@ of the layout, not per instance of the button:
         inlineSize: "24rem",
         maxInlineSize: "100%",
         padding: "0.75rem",
-        border: "1px dashed var(--fui-border)",
+        border: "1px dashed var(--fui-color-line)",
         borderRadius: "var(--fui-radius-md)",
       }}
     >
@@ -229,7 +229,7 @@ of the layout, not per instance of the button:
 </div>
 
 When the design wants stacked full-width actions in a wide container, that intent is still
-declared on the region, not the buttons — and it is declared as actual layout: a grid (or
+declared on the region, not the buttons. It is declared as actual layout: a grid (or
 stacked flex) region stretches its buttons natively, so there is no attribute or prop to
 remember. The arrangement is the declaration.
 
@@ -264,13 +264,13 @@ message; there is no `invalid` prop anywhere in the library:
 /* the label tints when an error is present */
 @scope (.fui-Field:has(> p.error)) to ([class*="fui-"]) {
   label {
-    color: var(--fui-danger);
+    color: var(--fui-color-danger);
   }
 }
 
 /* the box keys off the control's own accessibility state */
 .fui-Input-field:has(input[aria-invalid="true"]) {
-  border-color: var(--fui-danger);
+  border-color: var(--fui-color-danger);
 }
 ```
 
@@ -282,10 +282,10 @@ Accessibility state still flows through React (`aria-invalid` is wired onto the
 control because screen readers can't run `:has()`), but it is _derived from the same
 source_: the presence of the error message. One source of truth, no prop to forget.
 
-The platform itself is a detection source too. Fields also match `:user-invalid`,
-so native constraint validation (`required`, `type="email"`)
-styles the field after the user interacts: no error prop, no state, no JavaScript at all.
-And an _icon-only_ button is detected from its accessible name: the
+The platform itself is a detection source too. Native constraint validation
+(`required`, `type="email"`) opens the field's invalid state only after an attempted
+submission, then clears it once subsequent input is valid. No error prop or parallel
+validation model is required. And an _icon-only_ button is detected from its accessible name: the
 `aria-label` that accessibility requires anyway is what gives it square padding,
 via `[aria-label]:has(svg)`. The correct markup and the correct look are the same
 thing.
@@ -300,11 +300,11 @@ instance, a decision the surrounding design already made.
 
 ## Browser support
 
-Everything contextualism uses is Baseline. Container style queries — the mechanism behind
-`--fui-context` — became Baseline Newly Available in May 2026, when the last
+Everything contextualism uses is Baseline. Container style queries (the mechanism behind
+`--fui-context`) became Baseline Newly Available in May 2026, when the last
 engine shipped them. Container size queries, `:has()` and
 `color-mix()` are Baseline Widely Available; relative colour syntax has been
 Newly Available since 2024. In a browser that predates a feature, contexts degrade to the
-neutral defaults — everything stays functional and accessible — and per our
+neutral defaults (everything stays functional and accessible), and per our
 [browser policy](https://github.com/dangerfarms/farmui/blob/main/CONTRIBUTING.md)
 there are no polyfills.

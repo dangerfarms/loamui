@@ -1,5 +1,5 @@
 // Build dist/styles.css: the cascade-layer order, then the base files
-// (tokens, reset, elements — each declaring its own layer), then every
+// (tokens and elements, each declaring its own layer), then every
 // component's CSS wrapped into `farmui.components` here. Component source
 // files contain no `@layer` — the layer is assigned at build time (and by
 // the src/styles.css orchestrator's `layer()` imports during dev).
@@ -13,10 +13,10 @@ const componentsDir = join(src, "components");
 
 const header = `/*!\n * FarmUI — @farmui/core\n * The complete, static stylesheet. Import once at your app root:\n *   import "@farmui/core/styles.css";\n * Nothing runs at runtime — no CSS-in-JS.\n */\n\n`;
 const layerOrder =
-  "@layer farmui.reset, farmui.tokens, farmui.elements, farmui.layout, farmui.components;\n";
+  "@layer farmui.tokens, farmui.elements, farmui.components;\n";
 
 let out = header + layerOrder;
-for (const base of ["tokens.css", "reset.css", "elements.css", "layout.css"]) {
+for (const base of ["tokens.css", "elements.css"]) {
   out += "\n" + readFileSync(join(src, base), "utf8").trim() + "\n";
 }
 

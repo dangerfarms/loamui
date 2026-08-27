@@ -1,10 +1,10 @@
 .trigger {
   align-items: center;
-  background: var(--fui-bg-subtle);
-  border: 1px solid var(--fui-border);
+  background: var(--fui-color-bg-subtle);
+  border: 1px solid var(--fui-color-line);
   border-radius: var(--fui-radius-md);
   box-shadow: none;
-  color: var(--fui-text-muted);
+  color: var(--fui-color-fg-muted);
   cursor: pointer;
   display: inline flex;
   font-size: var(--fui-text-sm);
@@ -14,7 +14,7 @@
   transition: border-color var(--fui-duration-md) var(--fui-ease);
 
   &:hover {
-    border-color: var(--fui-border-strong);
+    border-color: var(--fui-color-line-strong);
   }
 }
 
@@ -24,8 +24,8 @@
 }
 
 .kbd {
-  background: var(--fui-surface);
-  border: 1px solid var(--fui-border);
+  background: var(--fui-color-surface);
+  border: 1px solid var(--fui-color-line);
   border-radius: var(--fui-radius-sm);
   font-family: var(--fui-font);
   font-size: var(--fui-text-xs);
@@ -33,8 +33,8 @@
 }
 
 .panel {
-  background: var(--fui-surface);
-  border: 1px solid var(--fui-border);
+  background: var(--fui-color-surface);
+  border: 1px solid var(--fui-color-line);
   border-radius: var(--fui-radius-lg);
   box-shadow: var(--fui-shadow-lg);
   inline-size: min(100% - 2rem, 34rem);
@@ -64,8 +64,8 @@
 
 .searchRow {
   align-items: center;
-  border-block-end: 1px solid var(--fui-border);
-  color: var(--fui-text-muted);
+  border-block-end: 1px solid var(--fui-color-line);
+  color: var(--fui-color-fg-muted);
   display: block flex;
   gap: 0.6rem;
   padding: 0.85rem 1rem;
@@ -74,7 +74,7 @@
 .input {
   background: transparent;
   border: none;
-  color: var(--fui-text);
+  color: var(--fui-color-fg);
   flex: 1;
   font: inherit;
   font-size: var(--fui-text-md);
@@ -95,7 +95,7 @@
   border: none;
   border-radius: var(--fui-radius-sm);
   box-shadow: none;
-  color: var(--fui-text);
+  color: var(--fui-color-fg);
   cursor: pointer;
   display: block flex;
   font-size: var(--fui-text-sm);
@@ -106,18 +106,18 @@
   text-align: start;
 
   &[data-active] {
-    background: var(--fui-primary-soft);
-    color: color-mix(in oklch, var(--fui-primary) 88%, oklch(0% 0 0deg));
+    background: var(--fui-color-primary-soft);
+    color: color-mix(in oklch, var(--fui-color-primary) 88%, oklch(0% 0 0deg));
   }
 }
 
 .hint {
-  color: var(--fui-text-dim);
+  color: var(--fui-color-fg-dim);
   font-size: var(--fui-text-xs);
 }
 
 .empty {
-  color: var(--fui-text-muted);
+  color: var(--fui-color-fg-muted);
   font-size: var(--fui-text-sm);
   padding: 1.5rem;
   text-align: center;

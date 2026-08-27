@@ -15,8 +15,24 @@
   padding: 0;
 }
 
+/* The Primitives section: Tokens, Element styles and Components read as three
+   peer links under one heading; the component categories nest beneath the
+   Components primitive by indentation (no rail, no second section header). */
+.section {
+  display: block flex;
+  flex-direction: column;
+}
+
+.sectionTitle {
+  color: var(--fui-color-fg-strong);
+  font-size: var(--fui-text-sm);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.6rem;
+}
+
 .groupTitle {
-  color: var(--fui-text-dim);
+  color: var(--fui-color-fg-dim);
   font-size: var(--fui-text-xs);
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -24,10 +40,55 @@
   text-transform: uppercase;
 }
 
+/* The three primitive links (Tokens, Element styles, Components) — one ramp,
+   so all three read as siblings. */
+.primitiveList {
+  display: block flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* The component categories sit one step in from the Components primitive that
+   heads them, so the tree reads as its children. */
+.componentTree {
+  margin-block-start: 0.2rem;
+  padding-inline-start: 0.6rem;
+}
+
+.subgroup {
+  margin-block-start: 0.75rem;
+
+  &:first-child {
+    margin-block-start: 0.35rem;
+  }
+}
+
+.categoryTitle {
+  color: var(--fui-color-fg-dim);
+  font-size: var(--fui-text-xs);
+  font-weight: 600;
+  margin-block-end: 0.35rem;
+  padding-inline-start: 0.6rem;
+}
+
+/* Items step in once more, so the ramp is primitive → category → item. */
+.itemList {
+  display: block flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  list-style: none;
+  margin: 0;
+  padding-block: 0;
+  padding-inline: 0.3rem 0;
+}
+
 .link {
   border-inline-start: 2px solid transparent;
   border-radius: var(--fui-radius-sm);
-  color: var(--fui-text-muted);
+  color: var(--fui-color-fg-muted);
   display: block flow;
   font-size: var(--fui-text-sm);
   padding: 0.35rem 0.6rem;
@@ -36,13 +97,13 @@
     background var(--fui-duration-md) var(--fui-ease);
 
   &:hover {
-    background: var(--fui-surface-hover);
-    color: var(--fui-text);
+    background: var(--fui-color-surface-hover);
+    color: var(--fui-color-fg);
   }
 
   &[data-active] {
-    background: var(--fui-primary-soft);
-    color: var(--fui-primary);
+    background: var(--fui-color-primary-soft);
+    color: var(--fui-color-primary);
     font-weight: 600;
   }
 }

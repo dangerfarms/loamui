@@ -13,7 +13,7 @@
  */
 @scope (.fui-Tabs-list) {
   :scope {
-    border-block-end: 1px solid var(--fui-border);
+    border-block-end: 1px solid var(--fui-color-line);
     display: block flex;
     gap: var(--fui-space-xs);
   }
@@ -28,7 +28,7 @@
     border-block-end: 2px solid transparent;
     border-radius: var(--fui-radius-sm) var(--fui-radius-sm) 0 0;
     box-shadow: none;
-    color: var(--fui-text-muted);
+    color: var(--fui-color-fg-muted);
     display: inline flex;
     font-family: inherit;
     font-size: var(--fui-text-sm);
@@ -39,10 +39,6 @@
     padding-block: var(--fui-space-md);
     padding-inline: var(--fui-space-lg);
     position: relative;
-    transition:
-      color var(--fui-duration-sm) var(--fui-ease),
-      border-color var(--fui-duration-sm) var(--fui-ease),
-      background var(--fui-duration-sm) var(--fui-ease);
 
     &:focus-visible {
       border-radius: var(--fui-radius-sm) var(--fui-radius-sm) 0 0;
@@ -53,18 +49,25 @@
     }
 
     &[data-active] {
-      border-block-end-color: var(--fui-primary);
-      color: var(--fui-primary);
+      border-block-end-color: var(--fui-color-primary);
+      color: var(--fui-color-primary);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition:
+        color var(--fui-duration-sm) var(--fui-ease),
+        border-color var(--fui-duration-sm) var(--fui-ease),
+        background var(--fui-duration-sm) var(--fui-ease);
     }
 
     @media (hover: hover) {
       &:hover:not(:disabled) {
         background: color-mix(
           in oklch,
-          var(--fui-primary-soft) 50%,
+          var(--fui-color-primary-soft) 50%,
           transparent
         );
-        color: var(--fui-text);
+        color: var(--fui-color-fg);
       }
     }
   }

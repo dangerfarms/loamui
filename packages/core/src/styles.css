@@ -5,12 +5,10 @@
  * scripts/build-css.mjs for the built artifact).
  */
 
-@layer farmui.reset, farmui.tokens, farmui.elements, farmui.layout, farmui.components;
+@layer farmui.tokens, farmui.elements, farmui.components;
 
 @import url("./tokens.css");
-@import url("./reset.css");
 @import url("./elements.css");
-@import url("./layout.css");
 @import url("./components/Details/Details.css") layer(farmui.components);
 @import url("./components/SignpostLink/SignpostLink.css")
 layer(farmui.components);

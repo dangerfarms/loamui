@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SearchIcon } from "./Icons";
-import { COMPONENTS, GETTING_STARTED } from "./nav";
+import { COMPONENTS, GETTING_STARTED, PRIMITIVES } from "./nav";
 import classes from "./CommandMenu.module.css";
 
 interface Result {
@@ -17,6 +17,11 @@ const ALL: Result[] = [
     label: g.name,
     hint: "Guide",
     href: g.href,
+  })),
+  ...PRIMITIVES.map((p) => ({
+    label: p.name,
+    hint: "Primitive",
+    href: p.href,
   })),
   ...COMPONENTS.map((c) => ({
     label: c.name,

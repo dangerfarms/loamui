@@ -9,8 +9,8 @@
    carries its own scope (same engine as Popover). */
 @scope (.fui-Menu-popup) to ([class*="fui-"]) {
   :scope {
-    background: var(--fui-surface);
-    border: 1px solid var(--fui-border);
+    background: var(--fui-color-surface);
+    border: 1px solid var(--fui-color-line);
     border-radius: var(--fui-radius-md);
     box-shadow: var(--fui-shadow-lg);
     inline-size: max-content;
@@ -93,7 +93,7 @@
     border: 0;
     border-radius: var(--fui-radius-sm);
     box-shadow: none;
-    color: var(--fui-text);
+    color: var(--fui-color-fg);
     cursor: default;
     display: block flex;
     font: inherit;
@@ -108,16 +108,15 @@
     padding-inline: var(--fui-space-sm);
     text-align: start;
     text-decoration: none;
-    transition: background var(--fui-duration-sm) var(--fui-ease);
     user-select: none;
     white-space: nowrap;
 
     &:focus:not([aria-disabled="true"]) {
-      background: var(--fui-primary-soft);
+      background: var(--fui-color-primary-soft);
     }
 
     &[aria-disabled="true"] {
-      color: var(--fui-text-dim);
+      color: var(--fui-color-fg-dim);
     }
 
     svg {
@@ -126,15 +125,19 @@
       inline-size: 1em;
     }
 
+    @media (prefers-reduced-motion: no-preference) {
+      transition: background var(--fui-duration-sm) var(--fui-ease);
+    }
+
     @media (hover: hover) {
       &:hover:not([aria-disabled="true"]) {
-        background: var(--fui-primary-soft);
+        background: var(--fui-color-primary-soft);
       }
     }
   }
 
   div.group-label {
-    color: var(--fui-text-muted);
+    color: var(--fui-color-fg-muted);
     font-size: var(--fui-text-xs);
     font-weight: 600;
     letter-spacing: 0.02em;
@@ -145,7 +148,7 @@
 
   hr {
     border: 0;
-    border-block-start: 1px solid var(--fui-border);
+    border-block-start: 1px solid var(--fui-color-line);
     margin-block: var(--fui-space-xs);
     margin-inline: calc(-1 * var(--fui-space-xs));
   }

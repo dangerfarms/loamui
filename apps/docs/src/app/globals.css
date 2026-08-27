@@ -76,8 +76,8 @@
   }
 
   body {
-    background: var(--fui-bg);
-    color: var(--fui-text);
+    background: var(--fui-color-bg);
+    color: var(--fui-color-fg);
     font-family: var(--fui-font);
     font-size: var(--fui-text-md);
 
@@ -109,7 +109,7 @@
 
   .eyebrow {
     align-items: center;
-    color: var(--fui-primary);
+    color: var(--fui-color-primary);
     display: inline flex;
     font-size: var(--fui-text-xs);
     font-weight: 600;

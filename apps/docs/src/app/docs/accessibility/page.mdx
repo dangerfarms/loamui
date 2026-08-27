@@ -1,4 +1,3 @@
-
 export const metadata = {
   title: "Accessibility",
   description:
@@ -21,7 +20,7 @@ FarmUI's accessibility comes from the platform first: real elements with built-i
   `role="alert"` and interrupts. Field errors are `role="alert"` and joined to their control via
   composed `aria-describedby`.
 - Every page's first Tab stop should be a [SkipLink](/docs/components/skip-link) to the main
-  content — keyboard and screen-reader users otherwise re-traverse the whole header on every page.
+  content. Keyboard and screen-reader users otherwise re-traverse the whole header on every page.
   Point it at a focusable landmark (`<main id="content" tabIndex={-1}>`); this site does exactly
   that.
 
@@ -29,7 +28,7 @@ FarmUI's accessibility comes from the platform first: real elements with built-i
 
 - **Menu** implements the APG menu-button pattern: ArrowDown/ArrowUp on the trigger open and focus
   the first/last item; inside, arrow keys rove real focus (looping), Home/End jump, typing jumps
-  to the next matching item, and Escape or activation returns focus to the trigger. Focus moves —
+  to the next matching item, and Escape or activation returns focus to the trigger. Focus moves;
   it is never trapped.
 - **Tabs** follow the tabs pattern with `aria-selected` wiring, and inactive panels stay reachable
   by find-in-page (`hidden="until-found"` where supported; a match activates the tab).
@@ -79,11 +78,11 @@ opt-in:
 
 Accessibility state is derived from one source of truth rather than set by hand. A field is
 invalid exactly when it contains a rendered error message: the CSS detects it with `:has()` and
-`aria-invalid` is wired from the same fact. On the native validation path, the platform's own
-`:user-invalid` verdict is mirrored onto `aria-invalid` at blur and submit, so what assistive
-technology hears always matches what the screen shows. Icon-only buttons are detected by the
-`aria-label` they must carry anyway; the compact style only appears when the button is correctly
-labelled.
+`aria-invalid` is wired from the same fact. On the native validation path, an attempted submission
+opens the invalid state; later input clears it as soon as the value is valid. The same state is
+mirrored onto `aria-invalid`, so what assistive technology hears always matches what the screen
+shows. Icon-only buttons are detected by the `aria-label` they must carry anyway; the compact style
+only appears when the button is correctly labelled.
 
 ## Forms guidance
 
@@ -92,7 +91,7 @@ Optional fields are marked with the word "(optional)"; there is no asterisk conv
 requirement itself is conveyed by the native `required` attribute. Buttons act, links navigate: a
 button that navigates breaks right-click, middle-click and open-in-new-tab.
 
-## How this is tested — and the limits
+## How this is tested, and the limits
 
 - An axe audit runs over a representative render of every component in the unit suite, and
   keyboard behaviour (roving focus, looping, typeahead, focus return, dismissal) is asserted by

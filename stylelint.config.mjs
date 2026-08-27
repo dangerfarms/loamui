@@ -16,11 +16,7 @@ export default {
   reportDescriptionlessDisables: true,
   reportInvalidScopeDisables: true,
   reportNeedlessDisables: true,
-  referenceFiles: [
-    "packages/core/src/tokens.css",
-    "packages/core/src/reset.css",
-    "packages/core/src/layout.css",
-  ],
+  referenceFiles: ["packages/core/src/tokens.css"],
   rules: {
     "csstools/use-nesting": "always",
     "no-unknown-custom-properties": true,
@@ -59,8 +55,7 @@ export default {
       },
       referenceFiles: [
         "packages/core/src/tokens.css",
-        "packages/core/src/reset.css",
-        "apps/docs/src/app/globals.css",
+            "apps/docs/src/app/globals.css",
       ],
     },
   ],

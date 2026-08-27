@@ -12,7 +12,14 @@ export function ModalDemo() {
         <Modal.Description>
           They&apos;ll receive an email invitation to join your workspace.
         </Modal.Description>
-        <div className="fui-cluster">
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "var(--fui-space-sm)",
+            alignItems: "center",
+          }}
+        >
           <span style={{ "--fui-context": "primary" } as CSSProperties}>
             <Modal.Close>Send invite</Modal.Close>
           </span>
@@ -34,7 +41,14 @@ export function ModalAlertDemo() {
         <Modal.Description>
           &ldquo;report-final-v2.pdf&rdquo; will be permanently deleted. This cannot be undone.
         </Modal.Description>
-        <div className="fui-cluster">
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "var(--fui-space-sm)",
+            alignItems: "center",
+          }}
+        >
           <Modal.Close autoFocus>Cancel</Modal.Close>
           <span style={{ "--fui-context": "danger" } as CSSProperties}>
             <Modal.Close>Delete</Modal.Close>
@@ -47,7 +61,14 @@ export function ModalAlertDemo() {
 
 export function ModalSizesDemo() {
   return (
-    <div className="fui-cluster">
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "var(--fui-space-sm)",
+        alignItems: "center",
+      }}
+    >
       {(["sm", "md", "lg"] as const).map((size) => (
         <Modal.Root key={size}>
           <Modal.Trigger>Open {size}</Modal.Trigger>

@@ -3,13 +3,13 @@
 }
 
 .header {
-  border-block-end: 1px solid var(--fui-border);
+  border-block-end: 1px solid var(--fui-color-line);
   margin-block-end: 2rem;
   padding-block-end: 1.5rem;
 }
 
 .category {
-  color: var(--fui-primary);
+  color: var(--fui-color-primary);
   font-size: var(--fui-text-sm);
   font-weight: 600;
 }
@@ -22,7 +22,7 @@
 }
 
 .lead {
-  color: var(--fui-text-muted);
+  color: var(--fui-color-fg-muted);
   font-size: var(--fui-text-lg);
   text-wrap: pretty;
 }
@@ -46,11 +46,11 @@
 }
 
 .usageNote {
-  background: var(--fui-primary-soft);
+  background: var(--fui-color-primary-soft);
   border: 1px solid
-    color-mix(in oklab, var(--fui-primary), var(--fui-border) 55%);
+    color-mix(in oklab, var(--fui-color-primary), var(--fui-color-line) 55%);
   border-radius: var(--fui-radius-md);
-  color: var(--fui-text-muted);
+  color: var(--fui-color-fg-muted);
   font-size: var(--fui-text-sm);
   margin-block-end: 1.5rem;
   padding: 0.75rem 1rem;
@@ -68,8 +68,8 @@
 }
 
 .guidanceCard {
-  background: var(--fui-surface);
-  border: 1px solid var(--fui-border);
+  background: var(--fui-color-surface);
+  border: 1px solid var(--fui-color-line);
   border-radius: var(--fui-radius-lg);
   padding: 1rem 1.25rem;
 }
@@ -86,15 +86,15 @@
 }
 
 .guidanceYes {
-  color: var(--fui-primary);
+  color: var(--fui-color-primary);
 }
 
 .guidanceNo {
-  color: var(--fui-danger);
+  color: var(--fui-color-danger);
 }
 
 .guidanceList {
-  color: var(--fui-text-muted);
+  color: var(--fui-color-fg-muted);
   display: block flex;
   flex-direction: column;
   font-size: var(--fui-text-sm);
@@ -104,7 +104,7 @@
 }
 
 .a11yList {
-  color: var(--fui-text);
+  color: var(--fui-color-fg);
   display: block flex;
   flex-direction: column;
   font-size: var(--fui-text-sm);
@@ -124,7 +124,7 @@
 }
 
 .demoDesc {
-  color: var(--fui-text-muted);
+  color: var(--fui-color-fg-muted);
   font-size: var(--fui-text-sm);
   margin-block-end: 0.75rem;
   text-wrap: pretty;

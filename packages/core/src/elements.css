@@ -2,23 +2,51 @@
  * FarmUI — element styles (the `farmui.elements` layer).
  *
  * One of the library's three primitives: enhanced default styles for the
- * native elements themselves, page-wide. Importing the stylesheet opts the
- * app in; the cascade keeps every rule overridable — anything the app
- * writes outside a layer wins, and the components layer wins for a
- * component's own parts. No `:where()` armour is needed for that, so
- * selectors here are plain.
+ * native elements themselves, page-wide. We modernise the browser's
+ * sensible defaults to improve UX and accessibility — building on them,
+ * not resetting them. Importing the stylesheet opts the app in; the
+ * cascade keeps every rule overridable — anything the app writes outside a
+ * layer wins, and the components layer wins for a component's own parts. No
+ * `:where()` armour is needed for that, so selectors here are plain.
  *
  * Margins are additive: blocks carry only a block-end margin, and extra
  * space before a heading comes from an adjacent-sibling rule — nothing
  * needs "unsetting" at the top of a container.
  */
 
+/* Registered channels (must live outside a layer). The radius channel is
+   set inline by several components; without inherits: false it would
+   cascade into everything nested inside them. The contextualism channel
+   inherits by design — nearest ancestor that sets it wins. */
+@property --_radius {
+  inherits: false;
+  syntax: "*";
+}
+
+@property --fui-context {
+  inherits: true;
+  syntax: "*";
+}
+
+@property --fui-button-color {
+  inherits: true;
+  syntax: "*";
+}
+
 @layer farmui.elements {
-  /* Computed line-height, declared universally on purpose: line-height
-     inherits as a COMPUTED value, so a body-level calc would freeze at the
-     body's font size. Per-element, every font size derives its own
-     leading; 2ex tracks the font's actual x-height. */
-  * {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  /* Computed leading, declared broadly on purpose: line-height inherits as a
+     COMPUTED value, so a body-level calc would freeze at the body's font size.
+     Per-element, every font size derives its own leading, and 2ex tracks the
+     font's actual x-height. Form controls and sub/sup set their own leading
+     directly, so they are excluded here rather than overridden, keeping the
+     rule additive. */
+  :where(:not(button, input, select, textarea, sub, sup)) {
     line-height: calc(0.5rem + 2ex);
   }
 
@@ -30,10 +58,22 @@
     }
   }
 
+  /* Body carries the reading text. OpenType and hyphenation defaults come
+     from the platform's own typographic wisdom: old-style proportional
+     figures in copy, common ligatures, hanging punctuation, and hyphenated
+     justification where the language allows. */
   body {
-    background-color: var(--fui-bg);
-    color: var(--fui-text);
+    background-color: var(--fui-color-bg);
+    color: var(--fui-color-fg);
     font-family: var(--fui-font);
+    font-kerning: normal;
+    font-optical-sizing: auto;
+    font-size: var(--fui-text-md);
+    font-variant-ligatures: common-ligatures contextual;
+    font-variant-numeric: oldstyle-nums proportional-nums;
+    hanging-punctuation: first allow-end last;
+    hyphenate-limit-chars: 7 4 3;
+    hyphens: auto;
     margin: 0;
     text-size-adjust: none;
     text-wrap: pretty;
@@ -41,13 +81,19 @@
 
   /* ── Typography ─────────────────────────────────────────────────── */
 
+  /* Headings use the display family and tighten slightly with size — the
+     tightening is in `em`, so it scales with the font automatically (larger
+     headings sit tighter). Lining figures suit display type. */
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    color: var(--fui-text-strong);
+    color: var(--fui-color-fg-strong);
+    font-family: var(--fui-font-display);
+    font-variant-numeric: lining-nums proportional-nums;
+    letter-spacing: -0.02em;
     margin-block: 0 var(--fui-space-sm);
     text-wrap: balance;
   }
@@ -105,12 +151,12 @@
   }
 
   li::marker {
-    color: var(--fui-text-muted);
+    color: var(--fui-color-fg-muted);
   }
 
   blockquote {
-    border-inline-start: 3px solid var(--fui-border-strong);
-    color: var(--fui-text-muted);
+    border-inline-start: 3px solid var(--fui-color-line-strong);
+    color: var(--fui-color-fg-muted);
     margin-block: 0 var(--fui-space-md);
     margin-inline: 0;
     padding-inline-start: var(--fui-space-lg);
@@ -118,7 +164,7 @@
 
   hr {
     border: none;
-    border-block-start: 1px solid var(--fui-border);
+    border-block-start: 1px solid var(--fui-color-line);
     margin-block: var(--fui-space-lg);
   }
 
@@ -127,15 +173,15 @@
   }
 
   figcaption {
-    color: var(--fui-text-muted);
+    color: var(--fui-color-fg-muted);
     font-size: var(--fui-text-sm);
     margin-block-start: var(--fui-space-xs);
   }
 
   mark {
-    background: var(--fui-warning-soft);
+    background: var(--fui-color-highlight);
     border-radius: var(--fui-radius-sm);
-    color: inherit;
+    color: oklch(20% 0 0deg);
     padding-inline: 0.15em;
   }
 
@@ -172,31 +218,39 @@
 
   /* ── Links ──────────────────────────────────────────────────────── */
 
-  /* Text colour stays the text's; the DECORATION carries the affordance
-     (dimmed at rest, primary on hover/focus, strong when active). */
-  a:any-link {
-    color: inherit;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    text-decoration-color: color-mix(in oklab, currentcolor 60%, transparent);
-    text-decoration-skip-ink: auto;
-    text-decoration-thickness: max(0.08em, 1px);
-    text-underline-offset: 0.15em;
-    transition: text-decoration-color var(--fui-duration-md) var(--fui-ease);
+  /* Links default to the accessible blue, with the classic visited (toward
+     purple) and active (toward red) hue shifts derived by relative colour —
+     the most legible, most familiar link affordance. A project can override
+     --fui-color-link with the brand where it wants to. */
+  a {
+    &:any-link {
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      text-decoration-color: oklch(from currentcolor l c h / 60%);
+      text-decoration-skip-ink: auto;
+      text-decoration-thickness: max(0.08em, 1px);
+      text-underline-offset: 0.15em;
 
-    &:focus-within {
-      text-decoration-color: var(--fui-primary);
-      text-decoration-thickness: max(0.16em, 2px);
+      @media (prefers-reduced-motion: no-preference) {
+        transition: text-decoration-color var(--fui-duration-md) var(--fui-ease);
+      }
+    }
+
+    &:link {
+      color: var(--fui-color-link);
+    }
+
+    &:visited {
+      color: oklch(from var(--fui-color-link) l c calc(h + 35));
     }
 
     &:active {
-      text-decoration-color: var(--fui-primary-strong);
+      color: oklch(from var(--fui-color-link) l c calc(h + 100));
     }
 
     @media (hover: hover) {
       &:hover {
-        text-decoration-color: var(--fui-primary);
-        text-decoration-thickness: max(0.16em, 2px);
+        text-decoration: none;
       }
     }
   }
@@ -212,16 +266,19 @@
   }
 
   :is(code, kbd, samp):not(pre *) {
-    background: var(--fui-bg-subtle);
+    background: var(--fui-color-bg-subtle);
     border-radius: var(--fui-radius-sm);
     padding: 0.1em 0.35em;
   }
 
   pre {
-    background: var(--fui-bg-subtle);
+    background: var(--fui-color-bg-subtle);
     border-radius: var(--fui-radius-md);
     margin-block: 0 var(--fui-space-md);
-    overflow-inline: auto;
+
+    /* overflow (shorthand), not the logical overflow-inline: the latter is not
+       yet Baseline, so code blocks would not scroll in some browsers. */
+    overflow: auto;
     padding: var(--fui-space-md);
   }
 
@@ -251,8 +308,8 @@
   select,
   textarea,
   progress {
-    accent-color: var(--fui-primary);
-    caret-color: var(--fui-primary);
+    accent-color: var(--fui-color-primary);
+    caret-color: var(--fui-color-primary);
   }
 
   button,
@@ -271,23 +328,24 @@
   input:is([type="button"], [type="reset"], [type="submit"]),
   ::file-selector-button {
     background: light-dark(
-      color-mix(in oklab, var(--fui-text), var(--fui-bg) 90%),
-      color-mix(in oklab, var(--fui-text), var(--fui-bg) 75%)
+      color-mix(in oklab, var(--fui-color-fg), var(--fui-color-bg) 90%),
+      color-mix(in oklab, var(--fui-color-fg), var(--fui-color-bg) 75%)
     );
-    border: 1px solid color-mix(in oklab, var(--fui-text), var(--fui-bg) 80%);
+    border: 1px solid
+      color-mix(in oklab, var(--fui-color-fg), var(--fui-color-bg) 80%);
     border-radius: var(--fui-radius-md);
     box-shadow: var(--fui-shadow-raised);
     color: light-dark(
-      color-mix(in oklab, var(--fui-text) 70%, oklch(0% 0 0deg)),
-      color-mix(in oklab, var(--fui-text) 55%, oklch(100% 0 0deg))
+      color-mix(in oklab, var(--fui-color-fg) 70%, oklch(0% 0 0deg)),
+      color-mix(in oklab, var(--fui-color-fg) 55%, oklch(100% 0 0deg))
     );
+    cursor: pointer;
     font-size: var(--fui-text-sm);
     font-weight: 600;
     line-height: 1.2;
     padding-block: var(--fui-space-sm);
     padding-inline: var(--fui-space-lg);
     text-align: center;
-    transition: background var(--fui-duration-sm) var(--fui-ease);
     user-select: none;
     white-space: nowrap;
 
@@ -295,11 +353,15 @@
       box-shadow: var(--fui-shadow-sm);
     }
 
+    @media (prefers-reduced-motion: no-preference) {
+      transition: background var(--fui-duration-sm) var(--fui-ease);
+    }
+
     @media (hover: hover) {
       &:hover:not(:disabled) {
         background: light-dark(
-          color-mix(in oklab, var(--fui-text), var(--fui-bg) 85%),
-          color-mix(in oklab, var(--fui-text), var(--fui-bg) 70%)
+          color-mix(in oklab, var(--fui-color-fg), var(--fui-color-bg) 85%),
+          color-mix(in oklab, var(--fui-color-fg), var(--fui-color-bg) 70%)
         );
       }
     }
@@ -320,8 +382,8 @@
   ),
   select,
   textarea {
-    background: var(--fui-surface);
-    border: 1px solid var(--fui-border-strong);
+    background: var(--fui-color-surface);
+    border: 1px solid var(--fui-color-line-strong);
     border-radius: var(--fui-radius-md);
     font-size: var(--fui-text-sm);
     line-height: 1.2;
@@ -334,7 +396,7 @@
   }
 
   fieldset {
-    border: 1px solid var(--fui-border);
+    border: 1px solid var(--fui-color-line);
     border-radius: var(--fui-radius-md);
     padding: var(--fui-space-lg);
   }
@@ -354,7 +416,7 @@
      outline survives forced-colors, follows radius, and isn't clipped by
      overflow. */
   :focus-visible {
-    outline: var(--fui-ring-width) solid var(--fui-ring-color);
+    outline: var(--fui-ring-width) solid var(--fui-color-ring);
     outline-offset: 2px;
   }
 
@@ -366,7 +428,8 @@
   /* ── Page behaviours ────────────────────────────────────────────── */
 
   ::selection {
-    background: var(--fui-primary-ring);
+    background: var(--fui-color-highlight);
+    color: oklch(20% 0 0deg);
   }
 
   /* Anchored targets never hide beneath sticky chrome. */
@@ -381,7 +444,7 @@
     pre,
     mark {
       background: none;
-      border: 1px solid var(--fui-border);
+      border: 1px solid var(--fui-color-line);
     }
 
     button,

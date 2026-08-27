@@ -98,7 +98,7 @@ const doc: ComponentContent = {
           name: "render",
           type: "RenderProp",
           description:
-            "Substitute the built-in <a> — e.g. a router link; the wiring (href, focus handling) merges onto it.",
+            "Substitute the built-in <a>, e.g. a router link; the wiring (href, focus handling) merges onto it.",
         },
         {
           name: "href",

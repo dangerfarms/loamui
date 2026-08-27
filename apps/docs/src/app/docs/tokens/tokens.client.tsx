@@ -2,43 +2,64 @@
 
 import { useEffect, useState } from "react";
 
-type TokenGroup = { title: string; note: string; tokens: string[]; swatch?: boolean };
+type TokenGroup = {
+  title: string;
+  note: string;
+  tokens: string[];
+  swatch?: boolean;
+  shadow?: boolean;
+};
 
 const GROUPS: TokenGroup[] = [
   {
-    title: "Hues",
-    note: "The colour decisions a theme makes. Everything else below derives from these by recipe.",
-    tokens: ["--fui-primary", "--fui-danger", "--fui-warning", "--fui-info"],
+    title: "Brand & status",
+    note: "The colour decisions a theme makes. Primary is neutral (black/white) by default, the white-label starting point; accent is the chromatic flourish; success/danger/warning/info are the status hues; link and highlight round out the platform defaults.",
+    tokens: [
+      "--fui-color-primary",
+      "--fui-color-accent",
+      "--fui-color-success",
+      "--fui-color-danger",
+      "--fui-color-warning",
+      "--fui-color-info",
+      "--fui-color-link",
+      "--fui-color-highlight",
+    ],
     swatch: true,
   },
   {
     title: "Neutrals",
     note: "Surfaces, text and borders.",
     tokens: [
-      "--fui-bg",
-      "--fui-bg-subtle",
-      "--fui-surface",
-      "--fui-text",
-      "--fui-text-strong",
-      "--fui-text-muted",
-      "--fui-border",
-      "--fui-border-strong",
-      "--fui-on-strong",
+      "--fui-color-bg",
+      "--fui-color-bg-subtle",
+      "--fui-color-surface",
+      "--fui-color-fg",
+      "--fui-color-fg-strong",
+      "--fui-color-fg-muted",
+      "--fui-color-fg-dim",
+      "--fui-color-line",
+      "--fui-color-line-strong",
+      "--fui-color-on-strong",
     ],
     swatch: true,
   },
   {
     title: "Derived",
-    note: "Recipes, not decisions: soft tints, solid fills and rings computed from the hues. Rebrand --fui-primary and these follow.",
+    note: "Recipes, not decisions: soft tints, solid fills and rings computed from the hues. Rebrand --fui-color-primary and these follow.",
     tokens: [
-      "--fui-primary-soft",
-      "--fui-primary-strong",
-      "--fui-danger-soft",
-      "--fui-danger-strong",
-      "--fui-surface-hover",
-      "--fui-ring-color",
+      "--fui-color-primary-soft",
+      "--fui-color-primary-strong",
+      "--fui-color-danger-soft",
+      "--fui-color-danger-strong",
+      "--fui-color-surface-hover",
+      "--fui-color-ring",
     ],
     swatch: true,
+  },
+  {
+    title: "Fonts",
+    note: "Two families a theme can swap (body and display), plus a monospace for code. System by default.",
+    tokens: ["--fui-font", "--fui-font-display", "--fui-font-mono"],
   },
   {
     title: "Type scale",
@@ -71,10 +92,20 @@ const GROUPS: TokenGroup[] = [
       "--fui-radius-sm",
       "--fui-radius-md",
       "--fui-radius-lg",
+      "--fui-radius-xl",
+      "--fui-radius-full",
       "--fui-duration-sm",
       "--fui-duration-md",
       "--fui-duration-lg",
+      "--fui-ease",
+      "--fui-ease-elastic",
     ],
+  },
+  {
+    title: "Elevation",
+    note: "Layered light-dark() shadows: a real drop in light; in dark the drop goes transparent and an inset top highlight carries the bevel, so the light source stays consistent.",
+    tokens: ["--fui-shadow-sm", "--fui-shadow-raised", "--fui-shadow-md", "--fui-shadow-lg"],
+    shadow: true,
   },
 ];
 
@@ -102,10 +133,10 @@ export function ComputedTokens() {
       {GROUPS.map((g) => (
         <section key={g.title} style={{ minInlineSize: 0 }}>
           <h3 style={{ marginBlockEnd: "0.25rem" }}>{g.title}</h3>
-          <p style={{ color: "var(--fui-text-muted)", marginBlockEnd: "0.75rem" }}>{g.note}</p>
+          <p style={{ color: "var(--fui-color-fg-muted)", marginBlockEnd: "0.75rem" }}>{g.note}</p>
           <div
             style={{
-              border: "1px solid var(--fui-border)",
+              border: "1px solid var(--fui-color-line)",
               borderRadius: "var(--fui-radius-md)",
               overflow: "clip",
             }}
@@ -115,7 +146,7 @@ export function ComputedTokens() {
                 key={t}
                 style={{
                   alignItems: "center",
-                  borderBlockStart: i > 0 ? "1px solid var(--fui-border)" : undefined,
+                  borderBlockStart: i > 0 ? "1px solid var(--fui-color-line)" : undefined,
                   display: "flex",
                   fontFamily: "var(--fui-font-mono)",
                   fontSize: "var(--fui-text-sm)",
@@ -129,7 +160,7 @@ export function ComputedTokens() {
                     style={{
                       background: `var(${t})`,
                       blockSize: "1.25rem",
-                      border: "1px solid var(--fui-border)",
+                      border: "1px solid var(--fui-color-line)",
                       borderRadius: "var(--fui-radius-sm)",
                       display: "inline-block",
                       flexShrink: 0,
@@ -137,10 +168,24 @@ export function ComputedTokens() {
                     }}
                   />
                 )}
+                {g.shadow && (
+                  <span
+                    aria-hidden
+                    style={{
+                      background: "var(--fui-color-surface)",
+                      blockSize: "1.75rem",
+                      borderRadius: "var(--fui-radius-sm)",
+                      boxShadow: `var(${t})`,
+                      display: "inline-block",
+                      flexShrink: 0,
+                      inlineSize: "1.75rem",
+                    }}
+                  />
+                )}
                 <span style={{ flexShrink: 0 }}>{t}</span>
                 <span
                   style={{
-                    color: "var(--fui-text-muted)",
+                    color: "var(--fui-color-fg-muted)",
                     marginInlineStart: "auto",
                     minInlineSize: 0,
                     overflow: "hidden",
@@ -156,7 +201,7 @@ export function ComputedTokens() {
           </div>
         </section>
       ))}
-      <p style={{ color: "var(--fui-text-muted)", fontSize: "var(--fui-text-sm)" }}>
+      <p style={{ color: "var(--fui-color-fg-muted)", fontSize: "var(--fui-text-sm)" }}>
         Values are read live from the loaded stylesheet with getComputedStyle, in your current
         colour scheme; fluid values show their computed size at this viewport.
       </p>

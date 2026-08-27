@@ -2,13 +2,13 @@
   :scope {
     align-self: stretch;
     border: 0;
-    border-block-start: 1px solid var(--fui-border);
+    border-block-start: 1px solid var(--fui-color-line);
     margin: 0;
 
     &[data-orientation="vertical"] {
       block-size: auto;
       border-block-start: 0;
-      border-inline-start: 1px solid var(--fui-border);
+      border-inline-start: 1px solid var(--fui-color-line);
       inline-size: 0;
       min-block-size: 1em;
     }

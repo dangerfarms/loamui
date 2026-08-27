@@ -2,7 +2,7 @@
   :scope {
     --_h: 0.625rem;
 
-    background: var(--fui-bg-subtle);
+    background: var(--fui-color-bg-subtle);
     block-size: var(--_h);
     border-radius: var(--_radius, var(--fui-radius-full));
     display: block flow;
@@ -24,10 +24,10 @@
     /* The fill IS the primary token — a `--fui-context` region re-answers
        it (see the Contexts section of tokens.css), so status needs no
        component code here. */
-    background: var(--fui-primary-strong);
+    background: var(--fui-color-primary-strong);
     block-size: 100%;
     border-radius: inherit;
-    color: var(--fui-on-strong);
+    color: var(--fui-color-on-strong);
     display: block flex;
     inline-size: 0;
     justify-content: flex-end;
@@ -48,8 +48,8 @@
   div.bar[data-striped] {
     background-image: repeating-linear-gradient(
       45deg,
-      color-mix(in oklch, var(--fui-on-strong) 22%, transparent) 0,
-      color-mix(in oklch, var(--fui-on-strong) 22%, transparent) 0.5rem,
+      color-mix(in oklch, var(--fui-color-on-strong) 22%, transparent) 0,
+      color-mix(in oklch, var(--fui-color-on-strong) 22%, transparent) 0.5rem,
       transparent 0.5rem,
       transparent 1rem
     );

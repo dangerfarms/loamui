@@ -9,8 +9,8 @@
    carries its own scope. */
 @scope (.fui-Popover-popup) to ([class*="fui-"]) {
   :scope {
-    background: var(--fui-surface);
-    border: 1px solid var(--fui-border);
+    background: var(--fui-color-surface);
+    border: 1px solid var(--fui-color-line);
     border-radius: var(--fui-radius-md);
     box-shadow: var(--fui-shadow-lg);
     inline-size: max-content;
@@ -94,7 +94,7 @@
   }
 
   p.description {
-    color: var(--fui-text-muted);
+    color: var(--fui-color-fg-muted);
     margin-block-end: 0;
     margin-inline: 0;
 

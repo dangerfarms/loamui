@@ -8,9 +8,10 @@
     align-items: center;
     block-size: var(--_size);
 
-    /* The brand token, so context remaps recolour the loader; parts draw
-       with currentColor from here. */
-    color: var(--fui-primary);
+    /* The accent — a loader is a pure indicator, and indicators carry the
+       chromatic flourish while everything else stays neutral. A context
+       region still recolours it (context remaps the accent too). */
+    color: var(--fui-color-accent);
     display: inline flex;
     inline-size: var(--_size);
     justify-content: center;

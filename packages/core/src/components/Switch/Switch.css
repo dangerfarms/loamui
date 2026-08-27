@@ -58,20 +58,23 @@
   }
 
   span.track {
-    background: var(--fui-border-strong);
+    background: var(--fui-color-line-strong);
     block-size: var(--_track-h);
     border-radius: var(--fui-radius-full);
     flex-shrink: 0;
     inline-size: var(--_track-w);
     padding: var(--_gap);
     position: relative;
-    transition:
-      background var(--fui-duration-sm) var(--fui-ease),
-      box-shadow var(--fui-duration-md) var(--fui-ease);
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition:
+        background var(--fui-duration-sm) var(--fui-ease),
+        box-shadow var(--fui-duration-md) var(--fui-ease);
+    }
   }
 
   span.thumb {
-    background: var(--fui-on-strong);
+    background: var(--fui-color-on-strong);
     block-size: calc(var(--_track-h) - 2 * var(--_gap));
     border-radius: var(--fui-radius-full);
     box-shadow: var(--fui-shadow-sm);
@@ -84,7 +87,7 @@
   }
 
   input:checked + span.track {
-    background: var(--fui-primary);
+    background: var(--fui-color-primary);
 
     span.thumb {
       translate: calc(var(--_track-w) - var(--_track-h)) 0;
@@ -96,17 +99,16 @@
     outline: none;
 
     + span.track {
-      outline: var(--fui-ring-width) solid var(--fui-ring-color);
+      outline: var(--fui-ring-width) solid var(--fui-color-ring);
       outline-offset: 2px;
     }
   }
 
-  /* Invalid is detected from the input's own state, the family selector:
-     ARIA (from a composed Field.Error) or native :user-invalid. */
-  input:is([aria-invalid="true"], :user-invalid) + span.track {
-    --fui-ring-color: var(--fui-danger-ring);
+  /* Invalid after a composed Field error or a native submit attempt. */
+  input[aria-invalid="true"] + span.track {
+    --fui-color-ring: var(--fui-color-danger-ring);
 
-    box-shadow: inset 0 0 0 1px var(--fui-danger);
+    box-shadow: inset 0 0 0 1px var(--fui-color-danger);
   }
 
   /* The wrapper ancestor sits outside the scope root; the subject (the
@@ -115,8 +117,8 @@
     :is(.fui-Switch-wrapper, :scope):hover input:not(:disabled) + span.track {
       background: color-mix(
         in oklch,
-        var(--fui-border-strong) 80%,
-        var(--fui-primary)
+        var(--fui-color-line-strong) 80%,
+        var(--fui-color-primary)
       );
     }
   }
@@ -162,7 +164,7 @@
   }
 
   span.description {
-    color: var(--fui-text-muted);
+    color: var(--fui-color-fg-muted);
     font-size: var(--fui-text-xs);
   }
 }

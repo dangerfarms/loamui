@@ -17,7 +17,7 @@ const doc: ComponentContent = {
     <Modal.Description>
       They'll receive an email invitation to join your workspace.
     </Modal.Description>
-    <div className="fui-cluster">
+    <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--fui-space-sm)", alignItems: "center" }}>
       <span style={{ "--fui-context": "primary" }}>
         <Modal.Close>Send invite</Modal.Close>
       </span>
@@ -40,7 +40,7 @@ const doc: ComponentContent = {
     <Modal.Description>
       "report-final-v2.pdf" will be permanently deleted. This cannot be undone.
     </Modal.Description>
-    <div className="fui-cluster">
+    <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--fui-space-sm)", alignItems: "center" }}>
       <Modal.Close autoFocus>Cancel</Modal.Close>
       <span style={{ "--fui-context": "danger" }}>
         <Modal.Close>Delete</Modal.Close>
@@ -103,7 +103,7 @@ const doc: ComponentContent = {
     },
   ],
   accessibility: [
-    "Built on the native <dialog> opened with showModal(): the browser provides the top layer, ::backdrop, real focus containment, Escape handling, and restores focus to the trigger on close — none of it re-implemented in JavaScript.",
+    "Built on the native <dialog> opened with showModal(): the browser provides the top layer, ::backdrop, real focus containment, Escape handling, and restores focus to the trigger on close. None of it re-implemented in JavaScript.",
     "Modal.Title and Modal.Description automatically label and describe the dialog via aria-labelledby / aria-describedby.",
     "Light dismiss (clicking the backdrop) uses the closedby attribute where supported, with a small feature-detected coordinate-check fallback elsewhere: no polyfills, per the browser support policy.",
     "Body scroll is locked while open.",

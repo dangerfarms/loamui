@@ -53,7 +53,7 @@ export const Sizes: Story = {
  */
 export const Contexts: Story = {
   render: (args) => {
-    const primary = { color: "var(--fui-primary)" } as CSSProperties;
+    const primary = { color: "var(--fui-color-primary)" } as CSSProperties;
     return (
       <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
         <Loader {...args} style={primary} label="Primary loader" />

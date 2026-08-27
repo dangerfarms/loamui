@@ -247,7 +247,7 @@ const cases: Array<[string, ReactElement]> = [
       <Breadcrumbs.Item current>Billing</Breadcrumbs.Item>
     </Breadcrumbs.Root>,
   ],
-  ["Pagination", <Pagination total={5} value={1} onChange={() => {}} />],
+  ["Pagination", <Pagination total={5} value={1} getHref={(page) => `?page=${page}`} />],
 ];
 
 // Colour-contrast needs a real browser to compute styles (jsdom can't), so we

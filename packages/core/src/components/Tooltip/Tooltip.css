@@ -12,11 +12,11 @@
     --_gap: var(--fui-space-xs);
     --_arrow: 0.3125rem;
 
-    background: var(--fui-text);
+    background: var(--fui-color-fg);
     border: 0;
     border-radius: var(--fui-radius-sm);
     box-shadow: var(--fui-shadow-md);
-    color: var(--fui-bg);
+    color: var(--fui-color-bg);
     font-size: var(--fui-text-xs);
     inline-size: max-content;
     margin: 0;
@@ -146,25 +146,25 @@
     position: absolute;
 
     :scope[data-position="top"] & {
-      border-block-start-color: var(--fui-text);
+      border-block-start-color: var(--fui-color-fg);
       inset-block-start: 100%;
       inset-inline-start: calc(50% - var(--_arrow));
     }
 
     :scope[data-position="bottom"] & {
-      border-block-end-color: var(--fui-text);
+      border-block-end-color: var(--fui-color-fg);
       inset-block-end: 100%;
       inset-inline-start: calc(50% - var(--_arrow));
     }
 
     :scope[data-position="left"] & {
-      border-inline-start-color: var(--fui-text);
+      border-inline-start-color: var(--fui-color-fg);
       inset-block-start: calc(50% - var(--_arrow));
       inset-inline-start: 100%;
     }
 
     :scope[data-position="right"] & {
-      border-inline-end-color: var(--fui-text);
+      border-inline-end-color: var(--fui-color-fg);
       inset-block-start: calc(50% - var(--_arrow));
       inset-inline-end: 100%;
     }
@@ -176,28 +176,28 @@
        them keep the requested-side arrow. */
     @container anchored(fallback: flip-block) {
       :scope[data-position="top"] & {
-        border-block-end-color: var(--fui-text);
+        border-block-end-color: var(--fui-color-fg);
         border-block-start-color: transparent;
         inset-block: auto 100%;
       }
 
       :scope[data-position="bottom"] & {
         border-block-end-color: transparent;
-        border-block-start-color: var(--fui-text);
+        border-block-start-color: var(--fui-color-fg);
         inset-block: 100% auto;
       }
     }
 
     @container anchored(fallback: flip-inline) {
       :scope[data-position="left"] & {
-        border-inline-end-color: var(--fui-text);
+        border-inline-end-color: var(--fui-color-fg);
         border-inline-start-color: transparent;
         inset-inline: auto 100%;
       }
 
       :scope[data-position="right"] & {
         border-inline-end-color: transparent;
-        border-inline-start-color: var(--fui-text);
+        border-inline-start-color: var(--fui-color-fg);
         inset-inline: 100% auto;
       }
     }

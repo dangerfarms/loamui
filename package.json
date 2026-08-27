@@ -7,6 +7,7 @@
     "check-types": "turbo run check-types",
     "test": "turbo run test",
     "lint": "turbo run lint",
+    "lint:md": "rumdl check .",
     "format": "oxfmt \"**/*.{ts,tsx}\" && prettier --write \"**/*.{css,md}\"",
     "format:check": "oxfmt --check \"**/*.{ts,tsx}\" && prettier --check \"**/*.{css,md}\""
   },
@@ -14,6 +15,7 @@
     "oxfmt": "0.63.0",
     "oxlint": "^1.73.0",
     "prettier": "^3.7.4",
+    "rumdl": "^0.2.60",
     "stylelint": "^17.14.0",
     "stylelint-config-alphabetical-order": "^2.0.0",
     "stylelint-config-modern": "^1.0.0",
@@ -23,7 +25,7 @@
     "typescript": "5.9.2"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.13"
   },
   "packageManager": "pnpm@11.1.0+sha512.0c44e842e5686b2c061a81adda8b2258bd8818e9704b2cf2c63d56b931a7b2e910092e085027003b96ca3911ab56a07f6df5abaed2be9925034cdd686a535b14"
 }

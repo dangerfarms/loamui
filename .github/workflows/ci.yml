@@ -18,6 +18,7 @@ jobs:
         env:
           PAGES: "true"
       - run: pnpm -r lint
+      - run: pnpm lint:md
       - run: pnpm format:check
       - run: pnpm --filter @farmui/core exec tsc --noEmit
       - run: npx tsc --noEmit

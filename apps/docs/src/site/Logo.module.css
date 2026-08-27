@@ -19,9 +19,9 @@
 }
 
 .word {
-  color: var(--fui-text);
+  color: var(--fui-color-fg);
 }
 
 .ui {
-  color: var(--fui-primary);
+  color: var(--fui-color-primary);
 }

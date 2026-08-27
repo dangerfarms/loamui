@@ -21,7 +21,7 @@ Import the token stylesheet **once** at the root of your app. It defines the `--
 tokens and the base layer that every component builds on.
 
 ```tsx
-// Next.js App Router — app/layout.tsx
+// Next.js App Router: app/layout.tsx
 import "@farmui/core/styles.css";
 ```
 
@@ -57,7 +57,7 @@ plain CSS.
 
 <div className={prose.callout}>
   FarmUI ships static CSS with cascade layers. If you use your own
-  <code> @layer</code> order, the FarmUI layers are named <code>farmui.reset</code>,{" "}
-  <code>farmui.tokens</code>, <code>farmui.elements</code>, <code>farmui.layout</code> and{" "}
+  <code> @layer</code> order, the FarmUI layers are named{" "}
+  <code>farmui.tokens</code>, <code>farmui.elements</code> and{" "}
   <code>farmui.components</code>.
 </div>

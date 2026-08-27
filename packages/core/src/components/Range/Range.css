@@ -6,7 +6,7 @@
     --_thumb: 1.25em;
 
     /* accent-color paints the filled portion + thumb robustly cross-browser. */
-    accent-color: var(--fui-primary);
+    accent-color: var(--fui-color-primary);
     appearance: none;
     background: transparent;
     cursor: pointer;
@@ -15,7 +15,7 @@
     margin: 0;
 
     &[aria-invalid="true"] {
-      accent-color: var(--fui-danger);
+      accent-color: var(--fui-color-danger);
     }
 
     &[data-disabled] {
@@ -29,20 +29,20 @@
 
   /* ---- Track ---- */
   :scope::-webkit-slider-runnable-track {
-    background: var(--fui-border-strong);
+    background: var(--fui-color-line-strong);
     block-size: var(--_track-h);
     border-radius: var(--fui-radius-full);
   }
 
   :scope::-moz-range-track {
-    background: var(--fui-border-strong);
+    background: var(--fui-color-line-strong);
     block-size: var(--_track-h);
     border-radius: var(--fui-radius-full);
   }
 
   /* Firefox paints the filled portion explicitly. */
   :scope::-moz-range-progress {
-    background: var(--fui-primary);
+    background: var(--fui-color-primary);
     block-size: var(--_track-h);
     border-radius: var(--fui-radius-full);
   }
@@ -50,9 +50,9 @@
   /* ---- Thumb ---- */
   :scope::-webkit-slider-thumb {
     appearance: none;
-    background: var(--fui-primary);
+    background: var(--fui-color-primary);
     block-size: var(--_thumb);
-    border: 2px solid var(--fui-on-strong);
+    border: 2px solid var(--fui-color-on-strong);
     border-radius: var(--fui-radius-full);
     box-shadow: var(--fui-shadow-sm);
     inline-size: var(--_thumb);
@@ -69,9 +69,9 @@
   }
 
   :scope::-moz-range-thumb {
-    background: var(--fui-primary);
+    background: var(--fui-color-primary);
     block-size: var(--_thumb);
-    border: 2px solid var(--fui-on-strong);
+    border: 2px solid var(--fui-color-on-strong);
     border-radius: var(--fui-radius-full);
     box-shadow: var(--fui-shadow-sm);
     inline-size: var(--_thumb);
@@ -93,11 +93,11 @@
   }
 
   :scope:focus-visible::-webkit-slider-thumb {
-    box-shadow: 0 0 0 var(--fui-ring-width) var(--fui-ring-color);
+    box-shadow: 0 0 0 var(--fui-ring-width) var(--fui-color-ring);
   }
 
   :scope:focus-visible::-moz-range-thumb {
-    box-shadow: 0 0 0 var(--fui-ring-width) var(--fui-ring-color);
+    box-shadow: 0 0 0 var(--fui-ring-width) var(--fui-color-ring);
   }
 
   @media (hover: hover) {
