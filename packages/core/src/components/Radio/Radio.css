@@ -1,9 +1,10 @@
 /* The control is a native radio — the elements layer paints it with
-   accent-color (the neutral primary). The component adds size, the invalid
+   accent-color (the neutral primary's audited -strong, so a --loam-context
+   region keeps 3:1 under the dot). The component adds size, the invalid
    affordance, the label row and the group layout. */
 @scope (.loam-Radio) {
   :scope {
-    accent-color: var(--loam-color-primary);
+    accent-color: var(--loam-color-primary-strong);
     block-size: 1.15em;
     flex-shrink: 0;
     inline-size: 1.15em;

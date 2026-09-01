@@ -13,6 +13,17 @@ export function InputBasicDemo() {
   );
 }
 
+export function InputDisabledDemo() {
+  return (
+    <div style={{ maxInlineSize: "20rem", inlineSize: "100%" }}>
+      <Field.Root>
+        <Field.Label>Account ID</Field.Label>
+        <Input defaultValue="acct_8f2c" disabled />
+      </Field.Root>
+    </div>
+  );
+}
+
 export function InputContainersDemo() {
   return (
     <div style={{ display: "grid", gap: "1rem", inlineSize: "100%" }}>

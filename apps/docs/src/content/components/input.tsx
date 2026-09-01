@@ -4,6 +4,7 @@ import {
   InputBasicDemo,
   InputContainersDemo,
   InputDescriptionDemo,
+  InputDisabledDemo,
   InputErrorDemo,
   InputNativeValidationDemo,
   InputNumericDemo,
@@ -78,6 +79,16 @@ const doc: ComponentContent = {
   <Button type="submit">Check email</Button>
 </form>`,
       render: () => <InputNativeValidationDemo />,
+    },
+    {
+      title: "Disabled",
+      description:
+        "The disabled attribute forwards to the native input: the field is dimmed, skipped by the tab sequence, and shows the not-allowed cursor.",
+      code: `<Field.Root>
+  <Field.Label>Account ID</Field.Label>
+  <Input defaultValue="acct_8f2c" disabled />
+</Field.Root>`,
+      render: () => <InputDisabledDemo />,
     },
     {
       title: "With sections",

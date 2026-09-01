@@ -1,9 +1,10 @@
 /* The control is a native checkbox — the elements layer paints it with
-   accent-color (the neutral primary). The component adds only a comfortable
+   accent-color (the neutral primary's audited -strong, so a --loam-context
+   region keeps 3:1 under the tick). The component adds only a comfortable
    size, the invalid affordance, and the label row. */
 @scope (.loam-Checkbox) {
   :scope {
-    accent-color: var(--loam-color-primary);
+    accent-color: var(--loam-color-primary-strong);
     block-size: 1.15em;
     flex-shrink: 0;
     inline-size: 1.15em;

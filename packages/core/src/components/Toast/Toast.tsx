@@ -22,6 +22,21 @@ import type { RenderProp } from "../../render";
 import { Button } from "../Button/Button";
 
 /**
+ * The exit-transition length, read from the `--loam-duration-lg` token so a
+ * retimed theme stays in sync (no hard-coded magic number to drift). Falls
+ * back to 300ms where computed styles are unavailable (e.g. jsdom).
+ */
+function exitDurationMs(): number {
+  if (typeof getComputedStyle !== "function" || typeof document === "undefined") return 300;
+  const raw = getComputedStyle(document.documentElement)
+    .getPropertyValue("--loam-duration-lg")
+    .trim();
+  if (raw.endsWith("ms")) return parseFloat(raw) || 300;
+  if (raw.endsWith("s")) return (parseFloat(raw) || 0.3) * 1000;
+  return 300;
+}
+
+/**
  * Transient notifications, composed from parts.
  *
  * The Viewport renders with `popover="manual"`, so the browser provides the
@@ -165,12 +180,13 @@ function ToastProvider({ timeout = 5000, limit = 3, children }: ToastProviderPro
       const timer = timers.current.get(id);
       if (timer?.handle) clearTimeout(timer.handle);
       timers.current.delete(id);
-      // Must match the CSS exit transition (--loam-duration-lg = 300ms):
-      // shorter unmounts mid-animation, longer leaves a ghost node.
+      // Matches the CSS exit transition (--loam-duration-lg), read from the
+      // token so a retimed theme can't desync: shorter unmounts mid-animation,
+      // longer leaves a ghost node.
       const handle = setTimeout(() => {
         exitTimers.current.delete(handle);
         remove(id);
-      }, 300);
+      }, exitDurationMs());
       exitTimers.current.add(handle);
     },
     [remove],

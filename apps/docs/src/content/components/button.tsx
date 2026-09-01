@@ -1,6 +1,7 @@
 import { Button, Checkbox, Loader } from "@loamui/core";
 import type { CSSProperties } from "react";
 import type { ComponentContent } from "@/renderer/types";
+import { Example } from "@/renderer/Example";
 
 const doc: ComponentContent = {
   slug: "button",
@@ -57,11 +58,11 @@ const doc: ComponentContent = {
       description:
         "There are no size or fullWidth props. Padding and font are fluid (container-relative tokens), so the button is sized by the space it lives in. Width is the parent's decision: a container of 16rem or less makes a button span it, a grid or stacked-flex region stretches its buttons (that is the platform's own layout at work), and a flex row shrink-wraps them to their labels.",
       code: `<div style={{ containerType: "inline-size", inlineSize: "14rem" }}>
-  <Button>Narrow: full width</Button>
+  <Button>Save changes</Button>
 </div>
 
 <div style={{ containerType: "inline-size", inlineSize: "24rem" }}>
-  <Button>Wide: natural width</Button>
+  <Button>Save changes</Button>
 </div>
 
 <div style={{ display: "grid", gap: "0.75rem", inlineSize: "18rem" }}>
@@ -69,41 +70,50 @@ const doc: ComponentContent = {
   <Button>Cancel</Button>
 </div>`,
       render: () => (
-        <div style={{ display: "grid", gap: "0.75rem" }}>
-          <div
-            style={{
-              containerType: "inline-size",
-              inlineSize: "14rem",
-              padding: "0.75rem",
-              border: "1px dashed var(--loam-color-line)",
-              borderRadius: "var(--loam-radius-md)",
-            }}
+        <div style={{ display: "grid", gap: "1.25rem" }}>
+          <Example label="Container ≤ 16rem — the button spans it">
+            <div
+              style={{
+                containerType: "inline-size",
+                inlineSize: "14rem",
+                padding: "0.75rem",
+                border: "1px dashed var(--loam-color-line)",
+                borderRadius: "var(--loam-radius-md)",
+              }}
+            >
+              <Button>Save changes</Button>
+            </div>
+          </Example>
+          <Example label="Room to spare — natural width">
+            <div
+              style={{
+                containerType: "inline-size",
+                inlineSize: "24rem",
+                maxInlineSize: "100%",
+                padding: "0.75rem",
+                border: "1px dashed var(--loam-color-line)",
+                borderRadius: "var(--loam-radius-md)",
+              }}
+            >
+              <Button>Save changes</Button>
+            </div>
+          </Example>
+          <Example
+            label="A stacked region stretches its buttons"
+            style={{ justifyItems: "stretch" }}
           >
-            <Button>Narrow: full width</Button>
-          </div>
-          <div
-            style={{
-              containerType: "inline-size",
-              inlineSize: "24rem",
-              maxInlineSize: "100%",
-              padding: "0.75rem",
-              border: "1px dashed var(--loam-color-line)",
-              borderRadius: "var(--loam-radius-md)",
-            }}
-          >
-            <Button>Wide: natural width</Button>
-          </div>
-          <div style={{ display: "grid", gap: "0.75rem", inlineSize: "min(100%, 18rem)" }}>
-            <Button>Save changes</Button>
-            <Button>Cancel</Button>
-          </div>
+            <div style={{ display: "grid", gap: "0.75rem", inlineSize: "min(100%, 18rem)" }}>
+              <Button>Save changes</Button>
+              <Button>Cancel</Button>
+            </div>
+          </Example>
         </div>
       ),
     },
     {
-      title: "Icons and loading, composed as children",
+      title: "Icons, composed as children",
       description:
-        "There are no leftSection, rightSection or loading props. An svg child is detected via :has() and gets flex layout, a gap and 1em sizing. A composed Loader is detected and sized the same way. Icon-only is detected from the accessible name: add the aria-label the icon-only case requires anyway and the button becomes square.",
+        "There are no leftSection or rightSection props. An svg child is detected via :has() and gets flex layout, a gap and 1em sizing. Icon-only is detected from the accessible name: add the aria-label an icon-only button needs anyway and it becomes square.",
       code: `<Button>
   <svg viewBox="0 -0.5 25 25" fill="none" aria-hidden>
     <path d="M5.5 12.5L10.167 17L19.5 8" stroke="currentColor"
@@ -111,41 +121,53 @@ const doc: ComponentContent = {
   </svg>
   Approve
 </Button>
+
 <Button aria-label="Approve">
   <svg>…</svg>
-</Button>
-<Button disabled>
+</Button>`,
+      render: () => (
+        <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap" }}>
+          <Example label="With a label">
+            <Button>
+              <svg viewBox="0 -0.5 25 25" fill="none" aria-hidden>
+                <path
+                  d="M5.5 12.5L10.167 17L19.5 8"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              Approve
+            </Button>
+          </Example>
+          <Example label="Icon-only — squares from its aria-label">
+            <Button aria-label="Approve">
+              <svg viewBox="0 -0.5 25 25" fill="none" aria-hidden>
+                <path
+                  d="M5.5 12.5L10.167 17L19.5 8"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Button>
+          </Example>
+        </div>
+      ),
+    },
+    {
+      title: "Loading state",
+      description:
+        "There is no loading prop. For a genuine busy state, add disabled and compose a Loader (marked aria-hidden so it isn't announced) into the children — it is detected and sized like an icon. This is the one sanctioned use of a disabled button; see “Avoid disabled buttons” below.",
+      code: `<Button disabled>
   <Loader aria-hidden /> Saving
 </Button>`,
       render: () => (
-        <>
-          <Button>
-            <svg viewBox="0 -0.5 25 25" fill="none" aria-hidden>
-              <path
-                d="M5.5 12.5L10.167 17L19.5 8"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            Approve
-          </Button>
-          <Button aria-label="Approve">
-            <svg viewBox="0 -0.5 25 25" fill="none" aria-hidden>
-              <path
-                d="M5.5 12.5L10.167 17L19.5 8"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Button>
-          <Button disabled>
-            <Loader aria-hidden /> Saving
-          </Button>
-        </>
+        <Button disabled>
+          <Loader aria-hidden /> Saving
+        </Button>
       ),
     },
   ],

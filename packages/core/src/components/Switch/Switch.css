@@ -87,7 +87,10 @@
   }
 
   input:checked + span.track {
-    background: var(--loam-color-primary);
+    /* -strong, not raw primary: in a --loam-context region the fill becomes
+       that status's audited -strong colour, so the on-strong thumb keeps 3:1
+       (WCAG 1.4.11) in every context — raw warning could not. */
+    background: var(--loam-color-primary-strong);
 
     span.thumb {
       translate: calc(var(--_track-w) - var(--_track-h)) 0;

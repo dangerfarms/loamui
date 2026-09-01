@@ -1,4 +1,4 @@
-@scope (.loam-ErrorSummary) {
+@scope (.loam-ErrorSummary) to ([class*="loam-"]) {
   :scope {
     background: var(--loam-color-danger-soft);
     border: 2px solid var(--loam-color-danger);

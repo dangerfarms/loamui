@@ -44,7 +44,8 @@
       border-radius: var(--loam-radius-sm) var(--loam-radius-sm) 0 0;
     }
 
-    &:disabled {
+    &[aria-disabled="true"] {
+      cursor: default;
       opacity: 0.5;
     }
 
@@ -61,7 +62,7 @@
     }
 
     @media (hover: hover) {
-      &:hover:not(:disabled) {
+      &:hover:not([aria-disabled="true"]) {
         background: color-mix(
           in oklch,
           var(--loam-color-primary-soft) 50%,
@@ -100,10 +101,15 @@
   }
 
   /* Forced colors: guarantee the active underline with a system colour.
-     Must come after the base rule — same specificity, order decides. */
+     Must come after the base rule — same specificity, order decides.
+     aria-disabled (unlike :disabled) gets no automatic GrayText, so name it. */
   @media (forced-colors: active) {
     button.tab[data-active] {
       border-block-end-color: Highlight;
+    }
+
+    button.tab[aria-disabled="true"] {
+      color: GrayText;
     }
   }
 }

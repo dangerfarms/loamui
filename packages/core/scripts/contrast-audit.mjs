@@ -216,6 +216,10 @@ for (const scheme of ["light", "dark"]) {
   const t = (n) => T(n, scheme);
   check("text on bg", scheme, t("--loam-color-fg"), t("--loam-color-bg"), 4.5);
   check("link on bg", scheme, t("--loam-color-link"), t("--loam-color-bg"), 4.5);
+  check("link on surface", scheme, t("--loam-color-link"), t("--loam-color-surface"), 4.5);
+  // <mark> and ::selection paint a fixed dark text on the highlight fill; the
+  // dark stays put but the highlight token could drift, so lock the pair.
+  check("mark/selection text on highlight", scheme, resolve("oklch(20% 0 0deg)", scheme), t("--loam-color-highlight"), 4.5);
   check("text-strong (headings) on bg", scheme, t("--loam-color-fg-strong"), t("--loam-color-bg"), 4.5);
   check("text-strong (headings) on surface", scheme, t("--loam-color-fg-strong"), t("--loam-color-surface"), 4.5);
   check("text-muted on bg", scheme, t("--loam-color-fg-muted"), t("--loam-color-bg"), 4.5);
@@ -240,9 +244,11 @@ for (const scheme of ["light", "dark"]) {
   }
   check("input border-strong vs surface", scheme, t("--loam-color-line-strong"), t("--loam-color-surface"), 3.0);
   // Checked Checkbox/Radio/Switch/Slider paint their glyph (tick, dot,
-  // thumb) in --loam-color-on-strong over the raw primary fill — a non-text
-  // state indicator, so the 1.4.11 3:1 bar applies.
-  check("checked-control glyph on primary", scheme, t("--loam-color-on-strong"), t("--loam-color-primary"), 3.0);
+  // thumb) in --loam-color-on-strong over the -strong fill — a non-text
+  // state indicator, so the 1.4.11 3:1 bar applies. In a --loam-context
+  // region the fill becomes that status's -strong, already audited for
+  // on-strong at 4.5:1 above, so every context clears 3:1 too.
+  check("checked-control glyph on primary-strong", scheme, t("--loam-color-on-strong"), t("--loam-color-primary-strong"), 3.0);
   // Accent is a graphical indicator (e.g. the Loader arc) painted on the page
   // background — a non-text object, so the 1.4.11 3:1 bar applies.
   check("accent indicator on bg", scheme, t("--loam-color-accent"), t("--loam-color-bg"), 3.0);

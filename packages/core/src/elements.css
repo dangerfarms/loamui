@@ -6,8 +6,10 @@
  * sensible defaults to improve UX and accessibility — building on them,
  * not resetting them. Importing the stylesheet opts the app in; the
  * cascade keeps every rule overridable — anything the app writes outside a
- * layer wins, and the components layer wins for a component's own parts. No
- * `:where()` armour is needed for that, so selectors here are plain.
+ * layer wins, and the components layer wins for a component's own parts, so
+ * selectors here are plain type selectors, not `:where()` armour. (The one
+ * `:where()` below is a deliberate exception: it holds the additive
+ * line-height default at zero specificity so a control's own leading wins.)
  *
  * Margins are additive: blocks carry only a block-end margin, and extra
  * space before a heading comes from an adjacent-sibling rule — nothing
@@ -315,7 +317,7 @@
   select,
   textarea,
   progress {
-    accent-color: var(--loam-color-primary);
+    accent-color: var(--loam-color-primary-strong);
     caret-color: var(--loam-color-primary);
   }
 
