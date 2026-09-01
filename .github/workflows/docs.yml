@@ -26,7 +26,6 @@ jobs:
       - run: pnpm -r build
         env:
           PAGES: "true"
-          BASE_PATH: /loamui
       - uses: actions/upload-pages-artifact@v3
         with:
           path: apps/docs/out
