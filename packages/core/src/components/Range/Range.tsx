@@ -35,7 +35,7 @@ export function Range({
       ref={ref}
       id={id ?? field.id}
       type="range"
-      className={cx("fui-Range", className)}
+      className={cx("loam-Range", className)}
       data-disabled={disabled || undefined}
       min={min}
       max={max}

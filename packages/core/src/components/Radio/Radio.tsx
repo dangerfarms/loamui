@@ -64,7 +64,7 @@ function RadioControl({
       ref={ref}
       id={resolvedId}
       type="radio"
-      className={cx("fui-Radio", className)}
+      className={cx("loam-Radio", className)}
       disabled={disabled}
       {...rest}
       aria-describedby={describedBy}
@@ -102,7 +102,7 @@ export function Radio({
 
   return (
     <label
-      className={cx("fui-Radio-wrapper", wrapperClassName)}
+      className={cx("loam-Radio-wrapper", wrapperClassName)}
       htmlFor={inputId}
       data-disabled={disabled || undefined}
     >

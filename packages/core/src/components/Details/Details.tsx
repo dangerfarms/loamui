@@ -31,7 +31,7 @@ function DetailsRoot({ defaultOpen, name, className, children, ref, ...rest }: D
   return (
     <details
       ref={ref}
-      className={cx("fui-Details", className)}
+      className={cx("loam-Details", className)}
       name={name}
       open={defaultOpen}
       {...rest}

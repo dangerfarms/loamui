@@ -52,7 +52,7 @@ export function Input({
   const inputRef = useMemo(() => composeRefs(ref, validationRef), [ref, validationRef]);
   return (
     <div
-      className={cx("fui-Input-field", wrapperClassName)}
+      className={cx("loam-Input-field", wrapperClassName)}
       data-disabled={disabled || undefined}
       style={style}
     >

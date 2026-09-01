@@ -13,7 +13,7 @@ import {
 const doc: ComponentContent = {
   slug: "input",
   lead: "The single-line text box. Compose it inside a Field for its label, description and error.",
-  importLine: `import { Field, Input } from "@farmui/core";`,
+  importLine: `import { Field, Input } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",

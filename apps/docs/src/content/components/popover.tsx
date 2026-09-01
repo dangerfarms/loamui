@@ -4,7 +4,7 @@ import { PopoverDemo, PopoverFormDemo, PopoverLinkTriggerDemo } from "./popover.
 const doc: ComponentContent = {
   slug: "popover",
   lead: "A click-triggered floating panel, composed from parts and rendered in the browser's top layer via the native popover attribute.",
-  importLine: `import { Button, Field, Input, Popover } from "@farmui/core";`,
+  importLine: `import { Button, Field, Input, Popover } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",
@@ -46,7 +46,7 @@ const doc: ComponentContent = {
     {
       title: "Substituting the trigger element",
       description:
-        "The built-in trigger is a FarmUI Button. To use a different element, pass it via render; the wiring (popovertarget, aria-expanded, anchor name) merges onto it.",
+        "The built-in trigger is a LoamUI Button. To use a different element, pass it via render; the wiring (popovertarget, aria-expanded, anchor name) merges onto it.",
       code: `<Popover.Root>
   <Popover.Trigger
     render={<button type="button" aria-label="Filters">⚙</button>}
@@ -108,7 +108,7 @@ const doc: ComponentContent = {
     {
       name: "Popover.Trigger",
       description:
-        "A FarmUI Button wired as the popup's invoker (popovertarget, aria-expanded, anchor name); it adapts to context like any Button. All native <button> props are forwarded.",
+        "A LoamUI Button wired as the popup's invoker (popovertarget, aria-expanded, anchor name); it adapts to context like any Button. All native <button> props are forwarded.",
       props: [
         {
           name: "render",

@@ -2,33 +2,33 @@ import prose from "../prose.module.css";
 
 export const metadata = {
   title: "Installation",
-  description: "Install FarmUI in any React framework.",
+  description: "Install LoamUI in any React framework.",
 };
 
 # Installation
 
-FarmUI works in any React 19 setup. There's no provider and no build plugin: just a package and a stylesheet.
+LoamUI works in any React 19 setup. There's no provider and no build plugin: just a package and a stylesheet.
 
 ## 1. Install the package
 
 ```bash
-pnpm add @farmui/core
+pnpm add @loamui/core
 ```
 
 ## 2. Import the styles
 
-Import the token stylesheet **once** at the root of your app. It defines the `--fui-*` design
+Import the token stylesheet **once** at the root of your app. It defines the `--loam-*` design
 tokens and the base layer that every component builds on.
 
 ```tsx
 // Next.js App Router: app/layout.tsx
-import "@farmui/core/styles.css";
+import "@loamui/core/styles.css";
 ```
 
 ## 3. Use a component
 
 ```tsx
-import { Button, Field, Input } from "@farmui/core";
+import { Button, Field, Input } from "@loamui/core";
 
 export function SignIn() {
   return (
@@ -47,17 +47,17 @@ export function SignIn() {
 
 ### Next.js
 
-FarmUI components are React Server Component friendly. Interactive components mark themselves
+LoamUI components are React Server Component friendly. Interactive components mark themselves
 `"use client"` as needed, so you can drop them anywhere.
 
 ### Vite
 
-Import `@farmui/core/styles.css` in your `main.tsx` entry. No plugin required; the styles are
+Import `@loamui/core/styles.css` in your `main.tsx` entry. No plugin required; the styles are
 plain CSS.
 
 <div className={prose.callout}>
-  FarmUI ships static CSS with cascade layers. If you use your own
-  <code> @layer</code> order, the FarmUI layers are named{" "}
-  <code>farmui.tokens</code>, <code>farmui.elements</code> and{" "}
-  <code>farmui.components</code>.
+  LoamUI ships static CSS with cascade layers. If you use your own
+  <code> @layer</code> order, the LoamUI layers are named{" "}
+  <code>loamui.tokens</code>, <code>loamui.elements</code> and{" "}
+  <code>loamui.components</code>.
 </div>

@@ -7,8 +7,8 @@ export const metadata = {
 };
 
 export const stage = {
-  border: "1px solid var(--fui-color-line)",
-  borderRadius: "var(--fui-radius-md)",
+  border: "1px solid var(--loam-color-line)",
+  borderRadius: "var(--loam-radius-md)",
   padding: "1.25rem",
 };
 
@@ -22,12 +22,12 @@ Every size is a `clamp()` that grows with the container, so the scale itself cha
 
 <div className={prose.block}>
   <div style={stage}>
-    <p style={{ fontSize: "var(--fui-text-3xl)", margin: 0, fontFamily: "var(--fui-font-display)" }}>
+    <p style={{ fontSize: "var(--loam-text-3xl)", margin: 0, fontFamily: "var(--loam-font-display)" }}>
       {"Display"}
     </p>
-    <p style={{ fontSize: "var(--fui-text-xl)", margin: 0 }}>{"Heading"}</p>
-    <p style={{ fontSize: "var(--fui-text-md)", margin: 0 }}>{"Body copy sits at the base step."}</p>
-    <p style={{ fontSize: "var(--fui-text-sm)", margin: 0, color: "var(--fui-color-fg-muted)" }}>
+    <p style={{ fontSize: "var(--loam-text-xl)", margin: 0 }}>{"Heading"}</p>
+    <p style={{ fontSize: "var(--loam-text-md)", margin: 0 }}>{"Body copy sits at the base step."}</p>
+    <p style={{ fontSize: "var(--loam-text-sm)", margin: 0, color: "var(--loam-color-fg-muted)" }}>
       {"Small print steps down for secondary text."}
     </p>
   </div>
@@ -37,7 +37,7 @@ The rhythm is not only horizontal. Leading is derived from each element's own si
 
 ## Two families, and considered figures
 
-Body text uses `--fui-font`; headings use `--fui-font-display`, so a design can pin two complementary typefaces without touching a component. The element styles also switch on the OpenType features that make text read well: old-style proportional figures in running prose, lining figures in headings, common ligatures, and hanging punctuation. Where numbers must align in a column, a data context can ask for tabular figures, and the machinery is already there to answer.
+Body text uses `--loam-font`; headings use `--loam-font-display`, so a design can pin two complementary typefaces without touching a component. The element styles also switch on the OpenType features that make text read well: old-style proportional figures in running prose, lining figures in headings, common ligatures, and hanging punctuation. Where numbers must align in a column, a data context can ask for tabular figures, and the machinery is already there to answer.
 
 ## Typography components are yours to name
 
@@ -46,15 +46,15 @@ There is no `Heading` or `Text` component, because meaningful typography is doma
 ```css
 @scope (h1.headline) {
   :scope {
-    font-family: var(--fui-font-display);
+    font-family: var(--loam-font-display);
     font-variant-caps: small-caps;
   }
 }
 
 @scope (p.byline) {
   :scope {
-    color: var(--fui-color-fg-muted);
-    font-size: var(--fui-text-sm);
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
   }
 }
 ```
@@ -62,7 +62,7 @@ There is no `Heading` or `Text` component, because meaningful typography is doma
 <div className={prose.block}>
   <div style={stage}>
     <h2 style={{ fontVariantCaps: "small-caps", marginBlockStart: 0 }}>{"The harvest comes early"}</h2>
-    <p style={{ color: "var(--fui-color-fg-muted)", fontSize: "var(--fui-text-sm)", marginBlock: 0 }}>
+    <p style={{ color: "var(--loam-color-fg-muted)", fontSize: "var(--loam-text-sm)", marginBlock: 0 }}>
       {"By a staff reporter"}
     </p>
     <p style={{ marginBlockEnd: 0 }}>

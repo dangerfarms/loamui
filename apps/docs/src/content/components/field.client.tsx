@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { Button, Field, Input } from "@farmui/core";
+import { Button, Field, Input } from "@loamui/core";
 
 export function FieldComposeDemo() {
   return (
@@ -45,7 +45,7 @@ export function FieldCustomControlDemo() {
     <div style={{ maxInlineSize: "20rem", inlineSize: "100%" }}>
       <Field.Root>
         <Field.Label>Amount</Field.Label>
-        <Field.Description>A bare native input, not a FarmUI control.</Field.Description>
+        <Field.Description>A bare native input, not a LoamUI control.</Field.Description>
         <Field.Control render={(props) => <input {...props} inputMode="decimal" />} />
       </Field.Root>
     </div>

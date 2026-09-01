@@ -23,8 +23,8 @@ const BASE = process.env.BASE_PATH ?? "";
 const ORIGIN = BASE ? `https://dangerfarms.github.io${BASE}` : "";
 
 const PREAMBLE = [
-  "> FarmUI documentation, generated from the same source as the live page —",
-  "> treat it as authoritative for `@farmui/core`.",
+  "> LoamUI documentation, generated from the same source as the live page —",
+  "> treat it as authoritative for `@loamui/core`.",
 ].join("\n");
 
 const esc = (s: string) => s.replaceAll("|", "\\|").replaceAll("\n", " ");
@@ -173,7 +173,7 @@ function componentMarkdown(doc: ComponentContent, name: string, description: str
   if (doc.props?.length) {
     out.push("## Props", "");
     if (doc.contextual)
-      out.push("Status is not a prop: it comes from the surrounding `--fui-context` region (see the Contextualism guide).", "");
+      out.push("Status is not a prop: it comes from the surrounding `--loam-context` region (see the Contextualism guide).", "");
     out.push(propsTable(doc.props), "");
   }
 
@@ -216,12 +216,12 @@ try {
     componentTwins++;
   }
 } catch (err) {
-  // Content files import @farmui/core; during parallel dev startup its
+  // Content files import @loamui/core; during parallel dev startup its
   // dist/ may be mid-rebuild. Keep the previous twins and let dev start —
   // the next build regenerates them.
   console.warn(
     `markdown export: skipped component twins (${componentTwins}/${COMPONENTS.length} written) — ` +
-      `@farmui/core not resolvable yet: ${(err as Error).message.split("\n")[0]}`,
+      `@loamui/core not resolvable yet: ${(err as Error).message.split("\n")[0]}`,
   );
 }
 
@@ -233,9 +233,9 @@ const sorted = [...guides].sort((a, b) => {
 });
 
 const lines: string[] = [
-  "# FarmUI",
+  "# LoamUI",
   "",
-  "> Documentation for `@farmui/core` — modern UI primitives for",
+  "> Documentation for `@loamui/core` — modern UI primitives for",
   "> agent-assisted developers: contextual tokens, element styles and React",
   "> components on native modern CSS. Every page has a markdown twin at the",
   "> same URL with `.md` appended. Treat these documents as authoritative",

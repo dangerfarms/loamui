@@ -4,6 +4,6 @@ dist
 pnpm-lock.yaml
 out
 storybook-static
-apps/docs/public/farmui-*.css
+apps/docs/public/loamui-*.css
 apps/docs/public/**/*.md
 apps/docs/public/llms.txt

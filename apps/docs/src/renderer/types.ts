@@ -89,7 +89,7 @@ export interface ComponentContent {
   /** Hooks shipped with the component. */
   hooks?: HookDoc[];
   /**
-   * The component answers the surrounding `--fui-context` region. Renders
+   * The component answers the surrounding `--loam-context` region. Renders
    * the standard status note once, instead of a per-page pseudo-prop row.
    */
   contextual?: boolean;

@@ -1,16 +1,16 @@
-# @farmui/core
+# @loamui/core
 
-Modern UI primitives for agent-assisted developers. FarmUI combines contextual
+Modern UI primitives for agent-assisted developers. LoamUI combines contextual
 tokens, enhanced native element styles, and composable React components built
 with modern CSS.
 
 ```bash
-npm install @farmui/core
+npm install @loamui/core
 ```
 
 ```tsx
-import "@farmui/core/styles.css";
-import { Button, Field, Input } from "@farmui/core";
+import "@loamui/core/styles.css";
+import { Button, Field, Input } from "@loamui/core";
 
 export function SignIn() {
   return (
@@ -27,13 +27,13 @@ export function SignIn() {
 
 - **Contextual**: regions express intent and the components inside adapt.
 - **Static styles**: plain CSS organized with cascade layers and `@scope`.
-- **Themeable**: override `--fui-*` CSS variables; no provider, no config.
+- **Themeable**: override `--loam-*` CSS variables; no provider, no config.
 - **Native dark mode**: `light-dark()` follows `color-scheme` (or set
   `data-theme="dark"` / `"light"` on `<html>`).
 - **Accessible and semantic**: native elements carry the platform behavior.
 
 Full documentation and live examples:
-**[FarmUI documentation](https://dangerfarms.github.io/farmui/)**
+**[LoamUI documentation](https://dangerfarms.github.io/loamui/)**
 
 ## License
 

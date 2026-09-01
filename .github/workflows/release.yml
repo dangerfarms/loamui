@@ -21,13 +21,13 @@ jobs:
           TAG_VERSION="${GITHUB_REF_NAME#v}"
           PKG_VERSION="$(node -p "require('./packages/core/package.json').version")"
           if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
-            echo "Tag v$TAG_VERSION does not match @farmui/core version $PKG_VERSION — bump the package version before tagging."
+            echo "Tag v$TAG_VERSION does not match @loamui/core version $PKG_VERSION — bump the package version before tagging."
             exit 1
           fi
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @farmui/core build
-      - run: pnpm --filter @farmui/core lint
-      - run: pnpm --filter @farmui/core test
-      - run: pnpm --filter @farmui/core publish --access public --provenance --no-git-checks
+      - run: pnpm --filter @loamui/core build
+      - run: pnpm --filter @loamui/core lint
+      - run: pnpm --filter @loamui/core test
+      - run: pnpm --filter @loamui/core publish --access public --provenance --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

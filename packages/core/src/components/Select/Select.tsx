@@ -48,7 +48,7 @@ export function Select({
 
   return (
     <div
-      className={cx("fui-Select-field", wrapperClassName)}
+      className={cx("loam-Select-field", wrapperClassName)}
       data-disabled={disabled || undefined}
       style={style}
     >

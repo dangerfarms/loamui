@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import type { CSSProperties } from "react";
-import { Avatar, Badge, Button, Field, Input, Switch } from "@farmui/core";
+import { Avatar, Badge, Button, Field, Input, Switch } from "@loamui/core";
 import classes from "./home.module.css";
 
 export function InstallSnippet() {
   const [copied, setCopied] = useState(false);
   const copy = async () => {
     try {
-      await navigator.clipboard.writeText("pnpm add @farmui/core");
+      await navigator.clipboard.writeText("pnpm add @loamui/core");
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
@@ -19,7 +19,7 @@ export function InstallSnippet() {
   return (
     <div className={classes.install}>
       <span className={classes.installPrompt}>$</span>
-      <span>pnpm add @farmui/core</span>
+      <span>pnpm add @loamui/core</span>
       <button className={classes.installCopy} onClick={copy} type="button">
         {copied ? "Copied" : "Copy"}
       </button>
@@ -27,7 +27,7 @@ export function InstallSnippet() {
   );
 }
 
-/** Interactive "settings" card that shows real FarmUI components in the hero. */
+/** Interactive "settings" card that shows real LoamUI components in the hero. */
 export function HeroShowcase() {
   const [notify, setNotify] = useState(true);
   const [name, setName] = useState("jamie@acme.com");
@@ -44,7 +44,7 @@ export function HeroShowcase() {
           style={
             {
               marginInlineStart: "auto",
-              "--fui-context": "primary",
+              "--loam-context": "primary",
             } as CSSProperties
           }
         >
@@ -71,7 +71,7 @@ export function HeroShowcase() {
         <span
           style={
             {
-              "--fui-context": notify ? "primary" : undefined,
+              "--loam-context": notify ? "primary" : undefined,
             } as CSSProperties
           }
         >

@@ -1,7 +1,7 @@
 .header {
   backdrop-filter: blur(12px) saturate(1.4);
-  background: color-mix(in oklch, var(--fui-color-bg) 82%, transparent);
-  border-block-end: 1px solid var(--fui-color-line);
+  background: color-mix(in oklch, var(--loam-color-bg) 82%, transparent);
+  border-block-end: 1px solid var(--loam-color-line);
   inset-block-start: 0;
   position: sticky;
   z-index: 50;
@@ -25,19 +25,19 @@
 }
 
 .nav {
-  color: var(--fui-color-fg-muted);
+  color: var(--loam-color-fg-muted);
   display: block flex;
-  font-size: var(--fui-text-sm);
+  font-size: var(--loam-text-sm);
   font-weight: 550;
   gap: 1.25rem;
 
   a {
     color: inherit;
     text-decoration: none;
-    transition: color var(--fui-duration-md) var(--fui-ease);
+    transition: color var(--loam-duration-md) var(--loam-ease);
 
     &:hover {
-      color: var(--fui-color-fg);
+      color: var(--loam-color-fg);
     }
   }
 }
@@ -45,21 +45,21 @@
 /* Matches ThemeToggle's .btn box so the icon buttons read as a set. */
 .stars {
   block-size: 2.25rem;
-  border: 1px solid var(--fui-color-line);
-  border-radius: var(--fui-radius-md);
-  color: var(--fui-color-fg-muted);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-md);
+  color: var(--loam-color-fg-muted);
   display: block grid;
   inline-size: 2.25rem;
   place-items: center;
   transition:
-    color var(--fui-duration-md) var(--fui-ease),
-    border-color var(--fui-duration-md) var(--fui-ease),
-    background var(--fui-duration-md) var(--fui-ease);
+    color var(--loam-duration-md) var(--loam-ease),
+    border-color var(--loam-duration-md) var(--loam-ease),
+    background var(--loam-duration-md) var(--loam-ease);
 
   &:hover {
-    background: var(--fui-color-surface-hover);
-    border-color: var(--fui-color-line-strong);
-    color: var(--fui-color-fg);
+    background: var(--loam-color-surface-hover);
+    border-color: var(--loam-color-line-strong);
+    color: var(--loam-color-fg);
   }
 }
 

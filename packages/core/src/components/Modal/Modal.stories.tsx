@@ -19,11 +19,11 @@ const meta = {
           style={{
             display: "flex",
             flexWrap: "wrap",
-            gap: "var(--fui-space-sm)",
+            gap: "var(--loam-space-sm)",
             alignItems: "center",
           }}
         >
-          <span style={{ "--fui-context": "primary" } as CSSProperties}>
+          <span style={{ "--loam-context": "primary" } as CSSProperties}>
             <Modal.Close>Send invite</Modal.Close>
           </span>
           <Modal.Close>Cancel</Modal.Close>
@@ -50,7 +50,7 @@ export const Playground: Story = {};
 export const AlertDialog: Story = {
   render: () => (
     <Modal.Root>
-      <span style={{ "--fui-context": "danger" } as CSSProperties}>
+      <span style={{ "--loam-context": "danger" } as CSSProperties}>
         <Modal.Trigger>Delete file</Modal.Trigger>
       </span>
       <Modal.Popup alert size="sm">
@@ -60,12 +60,12 @@ export const AlertDialog: Story = {
           style={{
             display: "flex",
             flexWrap: "wrap",
-            gap: "var(--fui-space-sm)",
+            gap: "var(--loam-space-sm)",
             alignItems: "center",
           }}
         >
           <Modal.Close autoFocus>Cancel</Modal.Close>
-          <span style={{ "--fui-context": "danger" } as CSSProperties}>
+          <span style={{ "--loam-context": "danger" } as CSSProperties}>
             <Modal.Close>Delete</Modal.Close>
           </span>
         </div>
@@ -81,7 +81,7 @@ export const Sizes: Story = {
       style={{
         display: "flex",
         flexWrap: "wrap",
-        gap: "var(--fui-space-sm)",
+        gap: "var(--loam-space-sm)",
         alignItems: "center",
       }}
     >
@@ -110,7 +110,7 @@ export const WithHeaderClose: Story = {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBlockEnd: "var(--fui-space-sm)",
+            marginBlockEnd: "var(--loam-space-sm)",
           }}
         >
           <Modal.Title style={{ margin: 0 }}>Settings</Modal.Title>

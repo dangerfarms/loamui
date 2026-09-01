@@ -1,11 +1,11 @@
 import type { HTMLAttributes, Ref } from "react";
-import { cx, type FarmUISize } from "../../utils";
+import { cx, type LoamUISize } from "../../utils";
 
 export interface ProgressProps extends Omit<HTMLAttributes<HTMLDivElement>, "color"> {
   /** Fill amount, 0–100. @default 0 */
   value?: number;
   /** Track thickness. @default "md" */
-  size?: FarmUISize;
+  size?: LoamUISize;
   /** Overlay diagonal stripes on the filled bar. */
   striped?: boolean;
   /** Animate the stripes (implies `striped`). */
@@ -20,8 +20,8 @@ const clamp = (n: number) => Math.min(100, Math.max(0, n));
 /**
  * A horizontal bar showing completion of a task.
  *
- * The bar fills with the primary colour, re-answered by any --fui-context
- * region: declare `--fui-context` on a region (an ancestor — a style
+ * The bar fills with the primary colour, re-answered by any --loam-context
+ * region: declare `--loam-context` on a region (an ancestor — a style
  * query never matches the element that declares it, so a one-element
  * region is a wrapper) and the token remap recolours the fill.
  */
@@ -47,7 +47,7 @@ export function Progress({
       aria-valuenow={rounded}
       aria-valuemin={0}
       aria-valuemax={100}
-      className={cx("fui-Progress", className)}
+      className={cx("loam-Progress", className)}
       data-size={size}
       style={style}
       {...rest}

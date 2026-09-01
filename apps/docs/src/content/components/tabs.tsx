@@ -1,10 +1,10 @@
-import { Tabs, TabsList, TabsTab, TabsPanel } from "@farmui/core";
+import { Tabs, TabsList, TabsTab, TabsPanel } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
 
 const doc: ComponentContent = {
   slug: "tabs",
   lead: "One visible panel from a related set, chosen from a tab list in the same view.",
-  importLine: `import { Tabs, TabsList, TabsTab, TabsPanel } from "@farmui/core";`,
+  importLine: `import { Tabs, TabsList, TabsTab, TabsPanel } from "@loamui/core";`,
   demos: [
     {
       title: "Basic",

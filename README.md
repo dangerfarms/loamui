@@ -1,17 +1,17 @@
-# FarmUI
+# LoamUI
 
 **Modern UI primitives for agent-assisted developers.** Contextual tokens,
 element styles and React components, built on Google's Modern Web Guidelines
 for quickly building bespoke UIs that are accessible, adaptable and fast.
 
-[![npm](https://img.shields.io/npm/v/@farmui/core.svg)](https://www.npmjs.com/package/@farmui/core)
-[![license](https://img.shields.io/npm/l/@farmui/core.svg)](./LICENSE)
+[![npm](https://img.shields.io/npm/v/@loamui/core.svg)](https://www.npmjs.com/package/@loamui/core)
+[![license](https://img.shields.io/npm/l/@loamui/core.svg)](./LICENSE)
 
-## Why FarmUI?
+## Why LoamUI?
 
 Agent-assisted developers want solid primitives their agents can build bespoke
 components and interfaces from — not hundreds of pre-made components locked
-into last decade's paradigms. FarmUI offers three primitives, each following
+into last decade's paradigms. LoamUI offers three primitives, each following
 the Chrome team's guidance for the modern web, steeped in UX best practices
 and inspired by Base UI's component composition architecture — a combination
 no other library offers:
@@ -23,7 +23,7 @@ no other library offers:
   preference. Plain markup is presentable before any component appears.
 - **Components** — a small set of carefully chosen, contextually styled
   components. No size, variant or colour props: a region declares what it
-  means (`--fui-context`) and everything inside adapts.
+  means (`--loam-context`) and everything inside adapts.
 
 All of it is plain, static CSS — cascade layers, `@scope`, `light-dark()`,
 container queries, anchor positioning — so nothing runs in the browser and
@@ -32,14 +32,14 @@ nothing extra ships to your users.
 ## Installation
 
 ```bash
-npm install @farmui/core
+npm install @loamui/core
 ```
 
 Import the stylesheet once at your app root, then use any component:
 
 ```tsx
-import "@farmui/core/styles.css";
-import { Button } from "@farmui/core";
+import "@loamui/core/styles.css";
+import { Button } from "@loamui/core";
 
 export default function App() {
   return <Button>Get started</Button>;
@@ -47,14 +47,14 @@ export default function App() {
 ```
 
 That's the whole setup — no provider, no config. See the
-[documentation](https://dangerfarms.github.io/farmui/) for every component, live examples and the
+[documentation](https://dangerfarms.github.io/loamui/) for every component, live examples and the
 theming guide.
 
 ## Repository layout
 
 This is a pnpm + Turborepo monorepo:
 
-- [`packages/core`](./packages/core) — `@farmui/core`, the component library.
+- [`packages/core`](./packages/core) — `@loamui/core`, the component library.
 - [`apps/docs`](./apps/docs) — the marketing site and documentation (Next.js).
 
 ## Development

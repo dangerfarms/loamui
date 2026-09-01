@@ -70,7 +70,7 @@ function CheckboxControl({
       ref={inputRef}
       id={resolvedId}
       type="checkbox"
-      className={cx("fui-Checkbox", className)}
+      className={cx("loam-Checkbox", className)}
       disabled={disabled}
       {...rest}
       aria-invalid={resolvedAriaInvalid}
@@ -117,7 +117,7 @@ export function Checkbox({
 
   return (
     <div
-      className={cx("fui-Checkbox-wrapper", wrapperClassName)}
+      className={cx("loam-Checkbox-wrapper", wrapperClassName)}
       data-disabled={disabled || undefined}
     >
       <label htmlFor={fieldId}>

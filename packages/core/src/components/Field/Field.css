@@ -1,40 +1,40 @@
 /*
  * Field — parts are targeted from within the @scope; the root keeps a
- * `fui-` class so the scope root is unambiguous and app styles can find it.
- * The scope stops at any nested fui-classed element: the field hosts
+ * `loam-` class so the scope root is unambiguous and app styles can find it.
+ * The scope stops at any nested loam-classed element: the field hosts
  * controls it doesn't own (a Checkbox has its own label), and the donut
  * keeps these type selectors on the field's own parts only.
  */
-@scope (.fui-Field) to ([class*="fui-"]) {
+@scope (.loam-Field) to ([class*="loam-"]) {
   :scope {
     display: block flex;
     flex-direction: column;
-    gap: var(--fui-space-xs);
+    gap: var(--loam-space-xs);
     inline-size: 100%;
   }
 
   label {
     align-items: center;
     display: block flex;
-    font-size: var(--fui-text-sm);
+    font-size: var(--loam-text-sm);
     font-weight: 500;
-    gap: var(--fui-space-sm);
+    gap: var(--loam-space-sm);
   }
 
   span.optional {
-    color: var(--fui-color-fg-muted);
+    color: var(--loam-color-fg-muted);
     font-weight: 400;
   }
 
   p.description {
-    color: var(--fui-color-fg-muted);
-    font-size: var(--fui-text-sm);
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
     margin: 0;
   }
 
   p.error {
-    color: var(--fui-color-danger);
-    font-size: var(--fui-text-sm);
+    color: var(--loam-color-danger);
+    font-size: var(--loam-text-sm);
     margin: 0;
   }
 }
@@ -42,7 +42,7 @@
 /* The screen-reader-only "Error: " prefix inside error messages:
    role="alert" announces the text, and the prefix makes it unmistakable
    out of context. Self-scoped; shared by every error renderer. */
-@scope (.fui-Error-prefix) {
+@scope (.loam-Error-prefix) {
   :scope {
     block-size: 1px;
     border: 0;

@@ -144,7 +144,7 @@ function DateInputRoot({
     <DateInputContext value={value}>
       <Fieldset.Root
         id={id}
-        className={cx("fui-DateInput", className)}
+        className={cx("loam-DateInput", className)}
         aria-describedby={describedBy}
         {...rest}
       >
@@ -188,7 +188,7 @@ function DateInputError({ parts, className, children, ...rest }: DateInputErrorP
   if (!hasContent) return null;
   return (
     <p id={ctx.errorId} role="alert" className={cx("error", className)} {...rest}>
-      <span className="fui-Error-prefix">Error: </span>
+      <span className="loam-Error-prefix">Error: </span>
       {children}
     </p>
   );

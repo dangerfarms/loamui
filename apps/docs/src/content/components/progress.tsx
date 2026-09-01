@@ -1,11 +1,11 @@
-import { Progress } from "@farmui/core";
+import { Progress } from "@loamui/core";
 import type { CSSProperties } from "react";
 import type { ComponentContent } from "@/renderer/types";
 
 const doc: ComponentContent = {
   slug: "progress",
   lead: "A horizontal bar showing completion of a task.",
-  importLine: `import { Progress } from "@farmui/core";`,
+  importLine: `import { Progress } from "@loamui/core";`,
   demos: [
     {
       title: "Basic",
@@ -35,27 +35,27 @@ const doc: ComponentContent = {
     {
       title: "Contexts",
       description:
-        "There is no color prop. Declare --fui-context on a one-element wrapper region (a style query is answered by ancestors, never by the declaring element itself), or let it inherit from a region that already means something. See the Contextualism guide.",
+        "There is no color prop. Declare --loam-context on a one-element wrapper region (a style query is answered by ancestors, never by the declaring element itself), or let it inherit from a region that already means something. See the Contextualism guide.",
       code: `<Progress value={50} />
-<div style={{ "--fui-context": "warning" }}>
+<div style={{ "--loam-context": "warning" }}>
   <Progress value={88} />
 </div>
-<div style={{ "--fui-context": "danger" }}>
+<div style={{ "--loam-context": "danger" }}>
   <Progress value={98} />
 </div>
-<div style={{ "--fui-context": "success" }}>
+<div style={{ "--loam-context": "success" }}>
   <Progress value={100} />
 </div>`,
       render: () => (
         <div style={{ display: "grid", gap: "0.75rem", inlineSize: "100%" }}>
           <Progress value={50} />
-          <div style={{ "--fui-context": "warning" } as CSSProperties}>
+          <div style={{ "--loam-context": "warning" } as CSSProperties}>
             <Progress value={88} />
           </div>
-          <div style={{ "--fui-context": "danger" } as CSSProperties}>
+          <div style={{ "--loam-context": "danger" } as CSSProperties}>
             <Progress value={98} />
           </div>
-          <div style={{ "--fui-context": "success" } as CSSProperties}>
+          <div style={{ "--loam-context": "success" } as CSSProperties}>
             <Progress value={100} />
           </div>
         </div>

@@ -9,7 +9,7 @@ import {
 const doc: ComponentContent = {
   slug: "date-input",
   lead: "Composable labelled fields for a date the user already knows.",
-  importLine: `import { DateInput } from "@farmui/core";`,
+  importLine: `import { DateInput } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",

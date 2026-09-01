@@ -8,13 +8,13 @@ export const metadata = {
 
 # Components
 
-The third of FarmUI's three primitives, built on the two beneath it. [Tokens](/docs/tokens) supply the colour and scale; [element styles](/docs/element-styles) supply the native baseline. Most of a component's look is decided before its own stylesheet exists, which is why the set stays small: components add the anatomy a bare element cannot, and nothing more.
+The third of LoamUI's three primitives, built on the two beneath it. [Tokens](/docs/tokens) supply the colour and scale; [element styles](/docs/element-styles) supply the native baseline. Most of a component's look is decided before its own stylesheet exists, which is why the set stays small: components add the anatomy a bare element cannot, and nothing more.
 
 ## When to reach for one
 
 Reach for a component when a native element needs structure it does not have on its own: a field that wires a label, description and error together; a dialog that traps focus; a menu with roving keyboard focus. For everything else, the two primitives beneath already carry the styling, so you compose the rest yourself rather than installing a component for it.
 
-## What makes a FarmUI component
+## What makes a LoamUI component
 
 - **Context decides, props don't.** No size, variant or colour props. A region declares its intent and the components inside adapt; the container's width decides how they size.
 - **Compose, don't configure.** Compound components expose their parts, element substitution goes through the `render` prop, and icons and loaders are detected children, not slot props.

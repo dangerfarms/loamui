@@ -40,7 +40,7 @@ export function Textarea({
   const textareaRef = useMemo(() => composeRefs(ref, validationRef), [ref, validationRef]);
   return (
     <div
-      className={cx("fui-Textarea-field", wrapperClassName)}
+      className={cx("loam-Textarea-field", wrapperClassName)}
       data-disabled={disabled || undefined}
       style={style}
     >

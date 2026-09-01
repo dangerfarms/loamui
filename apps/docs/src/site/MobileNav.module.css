@@ -1,24 +1,24 @@
 .trigger {
   background: transparent;
   block-size: 2.25rem;
-  border: 1px solid var(--fui-color-line);
-  border-radius: var(--fui-radius-md);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-md);
   box-shadow: none;
-  color: var(--fui-color-fg-muted);
+  color: var(--loam-color-fg-muted);
   cursor: pointer;
   display: none;
   inline-size: 2.25rem;
   padding: 0;
   place-items: center;
   transition:
-    color var(--fui-duration-md) var(--fui-ease),
-    border-color var(--fui-duration-md) var(--fui-ease),
-    background var(--fui-duration-md) var(--fui-ease);
+    color var(--loam-duration-md) var(--loam-ease),
+    border-color var(--loam-duration-md) var(--loam-ease),
+    background var(--loam-duration-md) var(--loam-ease);
 
   &:hover {
-    background: var(--fui-color-surface-hover);
-    border-color: var(--fui-color-line-strong);
-    color: var(--fui-color-fg);
+    background: var(--loam-color-surface-hover);
+    border-color: var(--loam-color-line-strong);
+    color: var(--loam-color-fg);
   }
 
   @media (width <= 62rem) {

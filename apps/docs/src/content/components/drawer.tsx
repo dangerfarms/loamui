@@ -9,7 +9,7 @@ import {
 const doc: ComponentContent = {
   slug: "drawer",
   lead: "An edge-anchored panel that slides in over the page, built on the native <dialog> element and the browser's top layer.",
-  importLine: `import { Drawer } from "@farmui/core";`,
+  importLine: `import { Drawer } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",
@@ -20,7 +20,7 @@ const doc: ComponentContent = {
   <Drawer.Panel side="start">
     <Drawer.Title>Navigation</Drawer.Title>
     <Drawer.Description>Jump to a section of the app.</Drawer.Description>
-    <nav style={{ display: "flex", flexDirection: "column", gap: "var(--fui-space-md)" }}>
+    <nav style={{ display: "flex", flexDirection: "column", gap: "var(--loam-space-md)" }}>
       <a href="#dashboard">Dashboard</a>
       <a href="#orders">Orders</a>
       <a href="#customers">Customers</a>
@@ -121,7 +121,7 @@ const doc: ComponentContent = {
     },
     {
       name: "Drawer.Trigger",
-      description: "A FarmUI Button that opens the drawer.",
+      description: "A LoamUI Button that opens the drawer.",
       props: [
         {
           name: "render",
@@ -161,7 +161,7 @@ const doc: ComponentContent = {
     {
       name: "Drawer.Close",
       description:
-        "A FarmUI Button that closes the drawer; compose as many as you need (a footer action, a header ×). Supports render like the Trigger.",
+        "A LoamUI Button that closes the drawer; compose as many as you need (a footer action, a header ×). Supports render like the Trigger.",
     },
   ],
 };

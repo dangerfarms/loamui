@@ -1,13 +1,13 @@
-@scope (.fui-Breadcrumbs) {
+@scope (.loam-Breadcrumbs) {
   :scope {
-    color: var(--fui-color-fg-muted);
-    font-size: var(--fui-text-sm);
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
 
     ol {
       align-items: center;
       display: block flex;
       flex-wrap: wrap;
-      gap: var(--fui-space-sm);
+      gap: var(--loam-space-sm);
       list-style: none;
       margin: 0;
       padding: 0;
@@ -20,44 +20,44 @@
 }
 
 /*
- * Items are scoped to their own root: an <li class="fui-Breadcrumbs-item"> is
+ * Items are scoped to their own root: an <li class="loam-Breadcrumbs-item"> is
  * rendered by the standalone Item component, without the root class on it.
  */
-@scope (.fui-Breadcrumbs-item) to ([class*="fui-"]) {
+@scope (.loam-Breadcrumbs-item) to ([class*="loam-"]) {
   :scope {
     align-items: center;
     display: inline flex;
     min-inline-size: 0;
 
     &:not(:first-child)::before {
-      color: var(--fui-color-fg-dim);
+      color: var(--loam-color-fg-dim);
 
       /* The empty alt keeps the glyph out of the accessibility tree. */
       content: var(--_separator, "/") / "";
-      margin-inline-end: var(--fui-space-sm);
+      margin-inline-end: var(--loam-space-sm);
       user-select: none;
     }
 
     :where(a) {
-      border-radius: var(--fui-radius-sm);
-      color: var(--fui-color-fg-muted);
+      border-radius: var(--loam-radius-sm);
+      color: var(--loam-color-fg-muted);
       padding-inline: 2px;
       text-decoration: none;
 
       @media (prefers-reduced-motion: no-preference) {
-        transition: color var(--fui-duration-md) var(--fui-ease);
+        transition: color var(--loam-duration-md) var(--loam-ease);
       }
 
       @media (hover: hover) {
         &:hover {
-          color: var(--fui-color-primary);
+          color: var(--loam-color-primary);
           text-decoration: underline;
         }
       }
     }
 
     &[data-current] {
-      color: var(--fui-color-fg);
+      color: var(--loam-color-fg);
       font-weight: 600;
     }
   }

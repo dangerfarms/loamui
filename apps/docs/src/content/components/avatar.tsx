@@ -1,4 +1,4 @@
-import { Avatar, AvatarGroup } from "@farmui/core";
+import { Avatar, AvatarGroup } from "@loamui/core";
 import type { CSSProperties } from "react";
 import type { ComponentContent } from "@/renderer/types";
 
@@ -8,7 +8,7 @@ const IMG =
 const doc: ComponentContent = {
   slug: "avatar",
   lead: "An image, initials, or fallback glyph representing a user.",
-  importLine: `import { Avatar, AvatarGroup } from "@farmui/core";`,
+  importLine: `import { Avatar, AvatarGroup } from "@loamui/core";`,
   demos: [
     {
       title: "Image",
@@ -19,18 +19,18 @@ const doc: ComponentContent = {
     {
       title: "Initials",
       description:
-        "With no image, initials are derived from name. There is no color prop: the initials background answers the surrounding --fui-context region (a style query is answered by ancestors, never by the declaring element itself), exactly like Badge. Wrap a single avatar in a one-element span, or let it inherit from a larger region. See the Contextualism guide.",
+        "With no image, initials are derived from name. There is no color prop: the initials background answers the surrounding --loam-context region (a style query is answered by ancestors, never by the declaring element itself), exactly like Badge. Wrap a single avatar in a one-element span, or let it inherit from a larger region. See the Contextualism guide.",
       code: `<Avatar name="Jane Doe" />
-<span style={{ "--fui-context": "info" }}><Avatar name="Amara Okafor" /></span>
-<span style={{ "--fui-context": "success" }}><Avatar name="Sam Reed" /></span>
+<span style={{ "--loam-context": "info" }}><Avatar name="Amara Okafor" /></span>
+<span style={{ "--loam-context": "success" }}><Avatar name="Sam Reed" /></span>
 <Avatar />`,
       render: () => (
         <>
           <Avatar name="Jane Doe" />
-          <span style={{ "--fui-context": "info" } as CSSProperties}>
+          <span style={{ "--loam-context": "info" } as CSSProperties}>
             <Avatar name="Amara Okafor" />
           </span>
-          <span style={{ "--fui-context": "success" } as CSSProperties}>
+          <span style={{ "--loam-context": "success" } as CSSProperties}>
             <Avatar name="Sam Reed" />
           </span>
           <Avatar />

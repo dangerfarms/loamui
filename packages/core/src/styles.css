@@ -1,46 +1,46 @@
 /**
- * FarmUI — @farmui/core stylesheet entry: the cascade-layer order, then
- * imports. Import once at your app root: `import "@farmui/core/styles.css"`.
+ * LoamUI — @loamui/core stylesheet entry: the cascade-layer order, then
+ * imports. Import once at your app root: `import "@loamui/core/styles.css"`.
  * Component files contain no `@layer` — the layer is assigned here (and by
  * scripts/build-css.mjs for the built artifact).
  */
 
-@layer farmui.tokens, farmui.elements, farmui.components;
+@layer loamui.tokens, loamui.elements, loamui.components;
 
 @import url("./tokens.css");
 @import url("./elements.css");
-@import url("./components/Details/Details.css") layer(farmui.components);
+@import url("./components/Details/Details.css") layer(loamui.components);
 @import url("./components/SignpostLink/SignpostLink.css")
-layer(farmui.components);
-@import url("./components/SkipLink/SkipLink.css") layer(farmui.components);
-@import url("./components/Alert/Alert.css") layer(farmui.components);
-@import url("./components/Avatar/Avatar.css") layer(farmui.components);
-@import url("./components/Badge/Badge.css") layer(farmui.components);
-@import url("./components/Breadcrumbs/Breadcrumbs.css") layer(farmui.components);
-@import url("./components/Button/Button.css") layer(farmui.components);
-@import url("./components/Card/Card.css") layer(farmui.components);
-@import url("./components/Checkbox/Checkbox.css") layer(farmui.components);
-@import url("./components/DateInput/DateInput.css") layer(farmui.components);
-@import url("./components/Drawer/Drawer.css") layer(farmui.components);
+layer(loamui.components);
+@import url("./components/SkipLink/SkipLink.css") layer(loamui.components);
+@import url("./components/Alert/Alert.css") layer(loamui.components);
+@import url("./components/Avatar/Avatar.css") layer(loamui.components);
+@import url("./components/Badge/Badge.css") layer(loamui.components);
+@import url("./components/Breadcrumbs/Breadcrumbs.css") layer(loamui.components);
+@import url("./components/Button/Button.css") layer(loamui.components);
+@import url("./components/Card/Card.css") layer(loamui.components);
+@import url("./components/Checkbox/Checkbox.css") layer(loamui.components);
+@import url("./components/DateInput/DateInput.css") layer(loamui.components);
+@import url("./components/Drawer/Drawer.css") layer(loamui.components);
 @import url("./components/ErrorSummary/ErrorSummary.css")
-layer(farmui.components);
-@import url("./components/Field/Field.css") layer(farmui.components);
-@import url("./components/Fieldset/Fieldset.css") layer(farmui.components);
-@import url("./components/Input/Input.css") layer(farmui.components);
-@import url("./components/Loader/Loader.css") layer(farmui.components);
-@import url("./components/Menu/Menu.css") layer(farmui.components);
-@import url("./components/Modal/Modal.css") layer(farmui.components);
-@import url("./components/Pagination/Pagination.css") layer(farmui.components);
-@import url("./components/Popover/Popover.css") layer(farmui.components);
-@import url("./components/Progress/Progress.css") layer(farmui.components);
-@import url("./components/Radio/Radio.css") layer(farmui.components);
-@import url("./components/Select/Select.css") layer(farmui.components);
-@import url("./components/Separator/Separator.css") layer(farmui.components);
-@import url("./components/Skeleton/Skeleton.css") layer(farmui.components);
-@import url("./components/Range/Range.css") layer(farmui.components);
-@import url("./components/Switch/Switch.css") layer(farmui.components);
-@import url("./components/Table/Table.css") layer(farmui.components);
-@import url("./components/Tabs/Tabs.css") layer(farmui.components);
-@import url("./components/Textarea/Textarea.css") layer(farmui.components);
-@import url("./components/Toast/Toast.css") layer(farmui.components);
-@import url("./components/Tooltip/Tooltip.css") layer(farmui.components);
+layer(loamui.components);
+@import url("./components/Field/Field.css") layer(loamui.components);
+@import url("./components/Fieldset/Fieldset.css") layer(loamui.components);
+@import url("./components/Input/Input.css") layer(loamui.components);
+@import url("./components/Loader/Loader.css") layer(loamui.components);
+@import url("./components/Menu/Menu.css") layer(loamui.components);
+@import url("./components/Modal/Modal.css") layer(loamui.components);
+@import url("./components/Pagination/Pagination.css") layer(loamui.components);
+@import url("./components/Popover/Popover.css") layer(loamui.components);
+@import url("./components/Progress/Progress.css") layer(loamui.components);
+@import url("./components/Radio/Radio.css") layer(loamui.components);
+@import url("./components/Select/Select.css") layer(loamui.components);
+@import url("./components/Separator/Separator.css") layer(loamui.components);
+@import url("./components/Skeleton/Skeleton.css") layer(loamui.components);
+@import url("./components/Range/Range.css") layer(loamui.components);
+@import url("./components/Switch/Switch.css") layer(loamui.components);
+@import url("./components/Table/Table.css") layer(loamui.components);
+@import url("./components/Tabs/Tabs.css") layer(loamui.components);
+@import url("./components/Textarea/Textarea.css") layer(loamui.components);
+@import url("./components/Toast/Toast.css") layer(loamui.components);
+@import url("./components/Tooltip/Tooltip.css") layer(loamui.components);

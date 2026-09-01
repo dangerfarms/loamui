@@ -1,6 +1,6 @@
 "use client";
 
-import { Field, Textarea } from "@farmui/core";
+import { Field, Textarea } from "@loamui/core";
 
 export function TextareaBasicDemo() {
   return (

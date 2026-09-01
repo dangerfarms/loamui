@@ -1,4 +1,4 @@
-public/farmui-*.css
+public/loamui-*.css
 next-env.d.ts
 public/**/*.md
 public/llms.txt

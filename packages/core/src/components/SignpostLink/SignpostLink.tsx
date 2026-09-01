@@ -49,7 +49,7 @@ function anatomy(label: ReactNode) {
  */
 export function SignpostLink({ render, className, children, ref, ...rest }: SignpostLinkProps) {
   if (render) {
-    const wiring = { ref, className: cx("fui-SignpostLink", className), ...rest };
+    const wiring = { ref, className: cx("loam-SignpostLink", className), ...rest };
     if (isValidElement<Record<string, unknown>>(render)) {
       // The label may arrive on either element; re-cloning wraps it in the
       // arrow anatomy so element children can't bypass the markup.
@@ -59,7 +59,7 @@ export function SignpostLink({ render, className, children, ref, ...rest }: Sign
     return <>{renderWithProps(render, { ...wiring, children: anatomy(children) })}</>;
   }
   return (
-    <a ref={ref} className={cx("fui-SignpostLink", className)} {...rest}>
+    <a ref={ref} className={cx("loam-SignpostLink", className)} {...rest}>
       {anatomy(children)}
     </a>
   );

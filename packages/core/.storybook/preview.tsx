@@ -13,9 +13,9 @@ const withTheme: Decorator = (Story, ctx) => {
   return (
     <div
       style={{
-        background: "var(--fui-bg)",
-        color: "var(--fui-text)",
-        fontFamily: "var(--fui-font)",
+        background: "var(--loam-bg)",
+        color: "var(--loam-text)",
+        fontFamily: "var(--loam-font)",
         padding: "2rem",
         minHeight: "100vh",
       }}

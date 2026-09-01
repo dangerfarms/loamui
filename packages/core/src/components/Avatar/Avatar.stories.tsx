@@ -25,17 +25,17 @@ export const Image: Story = {
 };
 
 /**
- * The initials background answers the surrounding `--fui-context` region;
+ * The initials background answers the surrounding `--loam-context` region;
  * there is no color prop.
  */
 export const Contexts: Story = {
   render: (args) => (
     <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
       <Avatar {...args} name="Ada Lovelace" />
-      <span style={{ "--fui-context": "info" } as CSSProperties}>
+      <span style={{ "--loam-context": "info" } as CSSProperties}>
         <Avatar {...args} name="Grace Hopper" />
       </span>
-      <span style={{ "--fui-context": "danger" } as CSSProperties}>
+      <span style={{ "--loam-context": "danger" } as CSSProperties}>
         <Avatar {...args} name="Alan Turing" />
       </span>
     </div>

@@ -1,49 +1,53 @@
 /**
- * FarmUI — design tokens (the `farmui.tokens` layer).
+ * LoamUI — design tokens (the `loamui.tokens` layer).
  * Components reference tokens, never raw values, so theming is token
  * remapping at any scope. Bands: inputs → neutrals → derived → scales.
- * Every colour is prefixed `--fui-color-`; there are no raw colour
+ * Every colour is prefixed `--loam-color-`; there are no raw colour
  * primitives on this surface — the inputs ARE the palette, and everything
  * else is derived from them.
  */
 
-@layer farmui.tokens {
+@layer loamui.tokens {
   :root {
     /* ── 1. Inputs — the decisions a theme makes ───────────────────── */
 
     /* Two font families, both system by default — a theme swaps either.
        Body carries copy; display carries headings (designs typically pair
        a body and a display face). */
-    --fui-font: system-ui, sans-serif;
-    --fui-font-display: var(--fui-font);
-    --fui-font-mono:
+    --loam-font: system-ui, sans-serif;
+    --loam-font-display: var(--loam-font);
+    --loam-font-mono:
       ui-monospace, "SF Mono", "JetBrains Mono", menlo, consolas, monospace;
 
     /* Primary is the neutral action colour — near-black in light, near-white
        in dark. That is the white-label default: a theme remaps this one line
-       to brand. Green is reserved for success; accent is the small
-       chromatic flourish (indicators, highlights). */
-    --fui-color-primary: light-dark(
+       to brand. Success owns green; accent is the small chromatic flourish
+       (violet by default, for indicators and highlights), kept distinct in hue
+       from the status colours so the two roles never read as the same. */
+    --loam-color-primary: light-dark(
       oklch(25% 0.006 160deg),
       oklch(92% 0.004 160deg)
     );
-    --fui-color-accent: light-dark(
-      oklch(62% 0.17 145deg),
-      oklch(72% 0.16 145deg)
+    --loam-color-accent: light-dark(
+      oklch(48% 0.25 305deg),
+      oklch(70% 0.17 305deg)
     );
 
     /* Status hues. Each derives the same family as primary (soft, strong,
        ring), so a context region can remap the family wholesale. */
-    --fui-color-success: light-dark(
+    --loam-color-success: light-dark(
       oklch(56% 0.13 150deg),
       oklch(68% 0.13 150deg)
     );
-    --fui-color-danger: light-dark(oklch(58% 0.2 25deg), oklch(66% 0.19 25deg));
-    --fui-color-warning: light-dark(
+    --loam-color-danger: light-dark(
+      oklch(58% 0.2 25deg),
+      oklch(66% 0.19 25deg)
+    );
+    --loam-color-warning: light-dark(
       oklch(72% 0.16 75deg),
       oklch(79% 0.15 80deg)
     );
-    --fui-color-info: light-dark(
+    --loam-color-info: light-dark(
       oklch(58% 0.16 245deg),
       oklch(68% 0.15 245deg)
     );
@@ -51,52 +55,55 @@
     /* Link: accessible blue — the most legible default for `a` tags. A
        project can override with the primary colour where the brand calls
        for it. */
-    --fui-color-link: light-dark(
+    --loam-color-link: light-dark(
       oklch(50% 0.12 250deg),
       oklch(70% 0.12 250deg)
     );
 
     /* Highlight: bright yellow for `<mark>` and `::selection`, matching the
        web platform's own default. */
-    --fui-color-highlight: light-dark(
+    --loam-color-highlight: light-dark(
       oklch(92% 0.15 100deg),
       oklch(86% 0.16 100deg)
     );
 
     /* ── 2. Neutrals ───────────────────────────────────────────────── */
 
-    --fui-color-bg: light-dark(oklch(100% 0 0deg), oklch(17% 0.008 160deg));
-    --fui-color-bg-subtle: light-dark(
+    --loam-color-bg: light-dark(oklch(100% 0 0deg), oklch(17% 0.008 160deg));
+    --loam-color-bg-subtle: light-dark(
       oklch(98% 0.004 160deg),
       oklch(21% 0.008 160deg)
     );
-    --fui-color-surface: light-dark(
+    --loam-color-surface: light-dark(
       oklch(100% 0 0deg),
       oklch(23% 0.008 160deg)
     );
 
     /* Foreground — text, but also icons, illustrations and chart fills;
        strong and dim/muted variants. Backgrounds are never dimmed. */
-    --fui-color-fg: light-dark(oklch(24% 0.02 160deg), oklch(96% 0.006 160deg));
-    --fui-color-fg-strong: light-dark(
+    --loam-color-fg: light-dark(
+      oklch(24% 0.02 160deg),
+      oklch(96% 0.006 160deg)
+    );
+    --loam-color-fg-strong: light-dark(
       oklch(15% 0.02 160deg),
       oklch(99% 0 0deg)
     );
-    --fui-color-fg-muted: light-dark(
+    --loam-color-fg-muted: light-dark(
       oklch(52% 0.02 160deg),
       oklch(72% 0.015 160deg)
     );
-    --fui-color-fg-dim: light-dark(
+    --loam-color-fg-dim: light-dark(
       oklch(55% 0.015 160deg),
       oklch(66% 0.012 160deg)
     );
 
     /* Line — borders, and separators too. */
-    --fui-color-line: light-dark(
+    --loam-color-line: light-dark(
       oklch(91% 0.006 160deg),
       oklch(32% 0.01 160deg)
     );
-    --fui-color-line-strong: light-dark(
+    --loam-color-line-strong: light-dark(
       oklch(62% 0.012 160deg),
       oklch(60% 0.014 160deg)
     );
@@ -104,7 +111,7 @@
     /* The one foreground that reads on every solid status fill: near-white
        in light (where the fills darken), near-black in dark (where the
        fills stay raw) — the only pairing all statuses hold AA with. */
-    --fui-color-on-strong: light-dark(
+    --loam-color-on-strong: light-dark(
       oklch(99% 0 0deg),
       oklch(17% 0.01 160deg)
     );
@@ -114,141 +121,141 @@
     /* Soft tints: pinned lightness and chroma, the colour's own hue —
        relative colour keeps every soft on one recipe, so a rebrand or a
        new status derives its tint for free. */
-    --fui-color-primary-soft: light-dark(
-      oklch(from var(--fui-color-primary) 96% 0.02 h),
-      oklch(from var(--fui-color-primary) 28% 0.03 h)
+    --loam-color-primary-soft: light-dark(
+      oklch(from var(--loam-color-primary) 96% 0.02 h),
+      oklch(from var(--loam-color-primary) 28% 0.03 h)
     );
-    --fui-color-success-soft: light-dark(
-      oklch(from var(--fui-color-success) 96% 0.035 h),
-      oklch(from var(--fui-color-success) 31% 0.075 h)
+    --loam-color-success-soft: light-dark(
+      oklch(from var(--loam-color-success) 96% 0.035 h),
+      oklch(from var(--loam-color-success) 31% 0.075 h)
     );
-    --fui-color-danger-soft: light-dark(
-      oklch(from var(--fui-color-danger) 96% 0.035 h),
-      oklch(from var(--fui-color-danger) 31% 0.075 h)
+    --loam-color-danger-soft: light-dark(
+      oklch(from var(--loam-color-danger) 96% 0.035 h),
+      oklch(from var(--loam-color-danger) 31% 0.075 h)
     );
-    --fui-color-warning-soft: light-dark(
-      oklch(from var(--fui-color-warning) 96% 0.035 h),
-      oklch(from var(--fui-color-warning) 31% 0.075 h)
+    --loam-color-warning-soft: light-dark(
+      oklch(from var(--loam-color-warning) 96% 0.035 h),
+      oklch(from var(--loam-color-warning) 31% 0.075 h)
     );
-    --fui-color-info-soft: light-dark(
-      oklch(from var(--fui-color-info) 96% 0.035 h),
-      oklch(from var(--fui-color-info) 31% 0.075 h)
+    --loam-color-info-soft: light-dark(
+      oklch(from var(--loam-color-info) 96% 0.035 h),
+      oklch(from var(--loam-color-info) 31% 0.075 h)
     );
 
-    /* Solid-fill variants: AA for --fui-color-on-strong. In light the colour
+    /* Solid-fill variants: AA for --loam-color-on-strong. In light the colour
        darkens 22%; in dark the raw colour already carries dark text.
        Audited pairs — see scripts/contrast-audit.mjs. */
-    --fui-color-primary-strong: light-dark(
-      color-mix(in oklab, var(--fui-color-primary), oklch(0% 0 0deg) 22%),
-      var(--fui-color-primary)
+    --loam-color-primary-strong: light-dark(
+      color-mix(in oklab, var(--loam-color-primary), oklch(0% 0 0deg) 22%),
+      var(--loam-color-primary)
     );
-    --fui-color-success-strong: light-dark(
-      color-mix(in oklab, var(--fui-color-success), oklch(0% 0 0deg) 22%),
-      var(--fui-color-success)
+    --loam-color-success-strong: light-dark(
+      color-mix(in oklab, var(--loam-color-success), oklch(0% 0 0deg) 22%),
+      var(--loam-color-success)
     );
-    --fui-color-danger-strong: light-dark(
-      color-mix(in oklab, var(--fui-color-danger), oklch(0% 0 0deg) 22%),
-      var(--fui-color-danger)
+    --loam-color-danger-strong: light-dark(
+      color-mix(in oklab, var(--loam-color-danger), oklch(0% 0 0deg) 22%),
+      var(--loam-color-danger)
     );
-    --fui-color-warning-strong: light-dark(
-      color-mix(in oklab, var(--fui-color-warning), oklch(0% 0 0deg) 22%),
-      var(--fui-color-warning)
+    --loam-color-warning-strong: light-dark(
+      color-mix(in oklab, var(--loam-color-warning), oklch(0% 0 0deg) 22%),
+      var(--loam-color-warning)
     );
-    --fui-color-info-strong: light-dark(
-      color-mix(in oklab, var(--fui-color-info), oklch(0% 0 0deg) 22%),
-      var(--fui-color-info)
+    --loam-color-info-strong: light-dark(
+      color-mix(in oklab, var(--loam-color-info), oklch(0% 0 0deg) 22%),
+      var(--loam-color-info)
     );
 
     /* Status focus rings alias the solid fills — one audited family covers
        both jobs, and an opaque ring holds its contrast on any surface. */
-    --fui-color-primary-ring: var(--fui-color-primary-strong);
-    --fui-color-success-ring: var(--fui-color-success-strong);
-    --fui-color-danger-ring: var(--fui-color-danger-strong);
-    --fui-color-warning-ring: var(--fui-color-warning-strong);
-    --fui-color-info-ring: var(--fui-color-info-strong);
+    --loam-color-primary-ring: var(--loam-color-primary-strong);
+    --loam-color-success-ring: var(--loam-color-success-strong);
+    --loam-color-danger-ring: var(--loam-color-danger-strong);
+    --loam-color-warning-ring: var(--loam-color-warning-strong);
+    --loam-color-info-ring: var(--loam-color-info-strong);
 
     /* Hover lift for surfaces: derived, so a re-themed surface keeps its
        own hover for free. */
-    --fui-color-surface-hover: light-dark(
-      oklch(from var(--fui-color-surface) 97% c h),
-      oklch(from var(--fui-color-surface) 27% c h)
+    --loam-color-surface-hover: light-dark(
+      oklch(from var(--loam-color-surface) 97% c h),
+      oklch(from var(--loam-color-surface) 27% c h)
     );
 
     /* Active focus-ring colour, remapped contextually (e.g. fields with a
        detected error switch it to the danger ring). Pairs with the fixed
-       --fui-ring-width below. */
-    --fui-color-ring: var(--fui-color-primary-ring);
+       --loam-ring-width below. */
+    --loam-color-ring: var(--loam-color-primary-ring);
 
     /* ── 4. Scales & fixed constants ───────────────────────────────── */
 
     /* Fluid type scale — cqi falls back to the small viewport where no
        container is declared. Regenerate, don't hand-edit:
        https://utopia.fyi/type/calculator/?c=320,16,1.125,1240,18,1.25,4,2 */
-    --fui-text-xs: clamp(0.72rem, 0.8145rem - 0.122cqi, 0.7901rem);
-    --fui-text-sm: clamp(0.8889rem, 0.885rem + 0.0193cqi, 0.9rem);
-    --fui-text-md: clamp(1rem, 0.9565rem + 0.2174cqi, 1.125rem);
-    --fui-text-lg: clamp(1.125rem, 1.0272rem + 0.4891cqi, 1.4063rem);
-    --fui-text-xl: clamp(1.2656rem, 1.0944rem + 0.856cqi, 1.7578rem);
-    --fui-text-2xl: clamp(1.4238rem, 1.1548rem + 1.3451cqi, 2.1973rem);
-    --fui-text-3xl: clamp(1.6018rem, 1.2036rem + 1.9909cqi, 2.7466rem);
+    --loam-text-xs: clamp(0.72rem, 0.8145rem - 0.122cqi, 0.7901rem);
+    --loam-text-sm: clamp(0.8889rem, 0.885rem + 0.0193cqi, 0.9rem);
+    --loam-text-md: clamp(1rem, 0.9565rem + 0.2174cqi, 1.125rem);
+    --loam-text-lg: clamp(1.125rem, 1.0272rem + 0.4891cqi, 1.4063rem);
+    --loam-text-xl: clamp(1.2656rem, 1.0944rem + 0.856cqi, 1.7578rem);
+    --loam-text-2xl: clamp(1.4238rem, 1.1548rem + 1.3451cqi, 2.1973rem);
+    --loam-text-3xl: clamp(1.6018rem, 1.2036rem + 1.9909cqi, 2.7466rem);
 
     /* Fluid spacing scale — minimums are the fixed values, so nothing
        shrinks below them. Regenerate, don't hand-edit:
        https://utopia.fyi/space/calculator/?c=320,16,1.125,1240,18,1.25&s=0.25|0.5|0.75,1.5 */
-    --fui-space-xs: clamp(0.25rem, 0.2391rem + 0.0543cqi, 0.2813rem);
-    --fui-space-sm: clamp(0.5rem, 0.4783rem + 0.1087cqi, 0.5625rem);
-    --fui-space-md: clamp(0.75rem, 0.7174rem + 0.163cqi, 0.8438rem);
-    --fui-space-lg: clamp(1rem, 0.9565rem + 0.2174cqi, 1.125rem);
-    --fui-space-xl: clamp(1.5rem, 1.4348rem + 0.3261cqi, 1.6875rem);
+    --loam-space-xs: clamp(0.25rem, 0.2391rem + 0.0543cqi, 0.2813rem);
+    --loam-space-sm: clamp(0.5rem, 0.4783rem + 0.1087cqi, 0.5625rem);
+    --loam-space-md: clamp(0.75rem, 0.7174rem + 0.163cqi, 0.8438rem);
+    --loam-space-lg: clamp(1rem, 0.9565rem + 0.2174cqi, 1.125rem);
+    --loam-space-xl: clamp(1.5rem, 1.4348rem + 0.3261cqi, 1.6875rem);
 
     /* Radius — deliberately fixed: corner rounding shouldn't breathe with
        the viewport. */
-    --fui-radius-sm: 0.375rem;
-    --fui-radius-md: 0.5rem;
-    --fui-radius-lg: 0.75rem;
-    --fui-radius-xl: 1rem;
-    --fui-radius-full: 9999px;
+    --loam-radius-sm: 0.375rem;
+    --loam-radius-md: 0.5rem;
+    --loam-radius-lg: 0.75rem;
+    --loam-radius-xl: 1rem;
+    --loam-radius-full: 9999px;
 
     /* Elevation — a real drop in light; in dark the drop goes transparent
        and an inset top highlight carries the bevel, so the light source
        stays consistent (a shadow below a surface makes no sense on a dark
        canvas). */
-    --fui-shadow-sm:
+    --loam-shadow-sm:
       inset 0 1px 0 0 light-dark(transparent, oklch(100% 0 0deg / 6%)),
       0 1px 2px light-dark(oklch(20% 0.02 160deg / 8%), transparent);
-    --fui-shadow-raised:
+    --loam-shadow-raised:
       inset 0 1px 0 0
         light-dark(oklch(100% 0 0deg / 60%), oklch(100% 0 0deg / 10%)),
       0 1px 2px light-dark(oklch(20% 0.02 160deg / 10%), transparent),
       0 2px 4px light-dark(oklch(20% 0.02 160deg / 7%), transparent),
       0 4px 8px light-dark(oklch(20% 0.02 160deg / 4%), transparent);
-    --fui-shadow-md:
+    --loam-shadow-md:
       inset 0 1px 0 0 light-dark(transparent, oklch(100% 0 0deg / 6%)),
       0 4px 6px -1px light-dark(oklch(20% 0.02 160deg / 10%), transparent),
       0 2px 4px -2px light-dark(oklch(20% 0.02 160deg / 8%), transparent);
-    --fui-shadow-lg:
+    --loam-shadow-lg:
       inset 0 1px 0 0 light-dark(transparent, oklch(100% 0 0deg / 8%)),
       0 12px 20px -6px light-dark(oklch(20% 0.02 160deg / 14%), transparent),
       0 4px 8px -4px light-dark(oklch(20% 0.02 160deg / 10%), transparent);
 
     /* Motion — sm: micro feedback; md: default transitions; lg: overlay
        enter/exit and large movement; elastic: sparingly. */
-    --fui-duration-sm: 100ms;
-    --fui-duration-md: 175ms;
-    --fui-duration-lg: 300ms;
-    --fui-ease: cubic-bezier(0.4, 0, 0.2, 1);
-    --fui-ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --loam-duration-sm: 100ms;
+    --loam-duration-md: 175ms;
+    --loam-duration-lg: 300ms;
+    --loam-ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --loam-ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
 
     /* Fixed interaction constants: chosen once, not derived. Ring width pairs
-       with the derived --fui-color-ring; disabled opacity may be remapped by a
+       with the derived --loam-color-ring; disabled opacity may be remapped by a
        component locally. */
-    --fui-ring-width: 3px;
-    --fui-disabled-opacity: 0.55;
+    --loam-ring-width: 3px;
+    --loam-disabled-opacity: 0.55;
 
     color-scheme: light dark;
 
     /* No control-sizing tokens: inputs and buttons align by a shared derived
-       anatomy (padding-block --fui-space-sm + --fui-text-sm × 1.2 + 1px
+       anatomy (padding-block --loam-space-sm + --loam-text-sm × 1.2 + 1px
        borders). Do not add height tokens. */
   }
 
@@ -263,56 +270,56 @@
   }
 
   /*
-   * Contexts — `--fui-context: success|warning|info|danger` on any region
+   * Contexts — `--loam-context: success|warning|info|danger` on any region
    * re-answers the semantic tokens via container style queries. Colour
    * tokens ONLY — never spacing, sizing, or layout.
    */
-  @container (style(--fui-context: danger)) {
-    :where([class*="fui-"], [class*="fui-"] *) {
-      --fui-color-primary: var(--fui-color-danger);
-      --fui-color-accent: var(--fui-color-danger);
-      --fui-color-primary-soft: var(--fui-color-danger-soft);
-      --fui-color-primary-ring: var(--fui-color-danger-ring);
+  @container (style(--loam-context: danger)) {
+    :where([class*="loam-"], [class*="loam-"] *) {
+      --loam-color-primary: var(--loam-color-danger);
+      --loam-color-accent: var(--loam-color-danger);
+      --loam-color-primary-soft: var(--loam-color-danger-soft);
+      --loam-color-primary-ring: var(--loam-color-danger-ring);
 
-      /* --fui-color-ring and --fui-color-primary-strong bake their var()s AT
+      /* --loam-color-ring and --loam-color-primary-strong bake their var()s AT
          :root — custom properties resolve var() where declared, so both
          must be re-answered directly here or focus rings and solid fills
          would stay brand-coloured. */
-      --fui-color-ring: var(--fui-color-danger-ring);
-      --fui-color-primary-strong: var(--fui-color-danger-strong);
+      --loam-color-ring: var(--loam-color-danger-ring);
+      --loam-color-primary-strong: var(--loam-color-danger-strong);
     }
   }
 
-  @container (style(--fui-context: success)) {
-    :where([class*="fui-"], [class*="fui-"] *) {
-      --fui-color-primary: var(--fui-color-success);
-      --fui-color-accent: var(--fui-color-success);
-      --fui-color-primary-soft: var(--fui-color-success-soft);
-      --fui-color-primary-ring: var(--fui-color-success-ring);
-      --fui-color-ring: var(--fui-color-success-ring);
-      --fui-color-primary-strong: var(--fui-color-success-strong);
+  @container (style(--loam-context: success)) {
+    :where([class*="loam-"], [class*="loam-"] *) {
+      --loam-color-primary: var(--loam-color-success);
+      --loam-color-accent: var(--loam-color-success);
+      --loam-color-primary-soft: var(--loam-color-success-soft);
+      --loam-color-primary-ring: var(--loam-color-success-ring);
+      --loam-color-ring: var(--loam-color-success-ring);
+      --loam-color-primary-strong: var(--loam-color-success-strong);
     }
   }
 
-  @container (style(--fui-context: warning)) {
-    :where([class*="fui-"], [class*="fui-"] *) {
-      --fui-color-primary: var(--fui-color-warning);
-      --fui-color-accent: var(--fui-color-warning);
-      --fui-color-primary-soft: var(--fui-color-warning-soft);
-      --fui-color-primary-ring: var(--fui-color-warning-ring);
-      --fui-color-ring: var(--fui-color-warning-ring);
-      --fui-color-primary-strong: var(--fui-color-warning-strong);
+  @container (style(--loam-context: warning)) {
+    :where([class*="loam-"], [class*="loam-"] *) {
+      --loam-color-primary: var(--loam-color-warning);
+      --loam-color-accent: var(--loam-color-warning);
+      --loam-color-primary-soft: var(--loam-color-warning-soft);
+      --loam-color-primary-ring: var(--loam-color-warning-ring);
+      --loam-color-ring: var(--loam-color-warning-ring);
+      --loam-color-primary-strong: var(--loam-color-warning-strong);
     }
   }
 
-  @container (style(--fui-context: info)) {
-    :where([class*="fui-"], [class*="fui-"] *) {
-      --fui-color-primary: var(--fui-color-info);
-      --fui-color-accent: var(--fui-color-info);
-      --fui-color-primary-soft: var(--fui-color-info-soft);
-      --fui-color-primary-ring: var(--fui-color-info-ring);
-      --fui-color-ring: var(--fui-color-info-ring);
-      --fui-color-primary-strong: var(--fui-color-info-strong);
+  @container (style(--loam-context: info)) {
+    :where([class*="loam-"], [class*="loam-"] *) {
+      --loam-color-primary: var(--loam-color-info);
+      --loam-color-accent: var(--loam-color-info);
+      --loam-color-primary-soft: var(--loam-color-info-soft);
+      --loam-color-primary-ring: var(--loam-color-info-ring);
+      --loam-color-ring: var(--loam-color-info-ring);
+      --loam-color-primary-strong: var(--loam-color-info-strong);
     }
   }
 }

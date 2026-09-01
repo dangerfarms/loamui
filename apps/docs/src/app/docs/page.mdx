@@ -3,23 +3,23 @@ import prose from "./prose.module.css";
 
 export const metadata = {
   title: "Introduction",
-  description: "FarmUI is a React component library rebuilt on native modern CSS.",
+  description: "LoamUI is a React component library rebuilt on native modern CSS.",
 };
 
 # Introduction
 
-FarmUI is a React component library that trusts the platform: native elements carry the semantics, plain CSS carries the styling, and every component ships with axe and keyboard tests.
+LoamUI is a React component library that trusts the platform: native elements carry the semantics, plain CSS carries the styling, and every component ships with axe and keyboard tests.
 
-## Why FarmUI?
+## Why LoamUI?
 
-Most component libraries ship a styling engine to your users' browsers. FarmUI doesn't. Every
+Most component libraries ship a styling engine to your users' browsers. LoamUI doesn't. Every
 component is styled with plain CSS (cascade layers, custom properties, `light-dark()`,
 `color-mix()`, container queries and logical properties), so there's nothing to run at runtime and
 nothing extra to download.
 
 - **Zero-runtime.** Styles are static CSS. No CSS-in-JS, no serialization cost, fully compatible
   with React Server Components.
-- **Themeable with variables.** Rebrand the whole library by overriding `--fui-*` tokens. No
+- **Themeable with variables.** Rebrand the whole library by overriding `--loam-*` tokens. No
   provider required.
 - **Native dark mode.** Powered by CSS `light-dark()`: one toggle flips `color-scheme`.
 - **Accessible by default.** Semantic HTML, focus management, and keyboard support baked in.
@@ -31,13 +31,13 @@ nothing extra to download.
 Add the package and import the stylesheet once at your app root:
 
 ```bash
-pnpm add @farmui/core
+pnpm add @loamui/core
 ```
 
 ```tsx
 // app/layout.tsx
-import "@farmui/core/styles.css";
-import { Button } from "@farmui/core";
+import "@loamui/core/styles.css";
+import { Button } from "@loamui/core";
 
 export default function Page() {
   return <Button>Get started</Button>;

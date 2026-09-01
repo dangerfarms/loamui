@@ -26,10 +26,10 @@ const COLUMNS = [
   {
     title: "Community",
     links: [
-      { label: "GitHub", href: "https://github.com/dangerfarms/farmui" },
+      { label: "GitHub", href: "https://github.com/dangerfarms/loamui" },
       {
         label: "Changelog",
-        href: "https://github.com/dangerfarms/farmui/releases",
+        href: "https://github.com/dangerfarms/loamui/releases",
       },
     ],
   },
@@ -46,7 +46,7 @@ export function Footer() {
           </p>
           <a
             className={classes.gh}
-            href="https://github.com/dangerfarms/farmui"
+            href="https://github.com/dangerfarms/loamui"
             target="_blank"
             rel="noreferrer"
           >
@@ -70,7 +70,7 @@ export function Footer() {
         </div>
       </div>
       <div className={`container ${classes.bottom}`}>
-        <span>© {new Date().getFullYear()} FarmUI. Built by Danger Farms.</span>
+        <span>© {new Date().getFullYear()} LoamUI. Built by Danger Farms.</span>
         <span>Built with modern CSS.</span>
       </div>
     </footer>

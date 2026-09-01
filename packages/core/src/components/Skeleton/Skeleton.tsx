@@ -54,7 +54,7 @@ export function Skeleton({
   return (
     <div
       ref={ref}
-      className={cx("fui-Skeleton", className)}
+      className={cx("loam-Skeleton", className)}
       aria-hidden
       data-circle={circle || undefined}
       style={{ ...declared, ...style } as CSSProperties}

@@ -13,8 +13,8 @@ const withMDX = createMDX({
 
 // GitHub Pages / static-export mode is opt-in via env, so `pnpm dev` and the
 // normal `pnpm build` are unaffected:
-//   PAGES=true BASE_PATH=/farmui pnpm --filter @farmui/docs build
-// For a custom domain (e.g. farmui.dev) leave BASE_PATH empty and add a CNAME.
+//   PAGES=true BASE_PATH=/loamui pnpm --filter @loamui/docs build
+// For a custom domain (e.g. loamui.dev) leave BASE_PATH empty and add a CNAME.
 const isPages = process.env.PAGES === "true";
 const basePath = process.env.BASE_PATH || "";
 

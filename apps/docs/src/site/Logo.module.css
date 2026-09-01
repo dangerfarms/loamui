@@ -1,7 +1,7 @@
 .logo {
   align-items: center;
   display: inline flex;
-  font-size: var(--fui-text-lg);
+  font-size: var(--loam-text-lg);
   font-weight: 800;
   gap: 0.55rem;
   letter-spacing: -0.03em;
@@ -10,8 +10,8 @@
 .mark {
   background: var(--site-gradient);
   block-size: 2rem;
-  border-radius: var(--fui-radius-md);
-  box-shadow: var(--fui-shadow-sm);
+  border-radius: var(--loam-radius-md);
+  box-shadow: var(--loam-shadow-sm);
   color: oklch(100% 0 0deg);
   display: block grid;
   inline-size: 2rem;
@@ -19,9 +19,9 @@
 }
 
 .word {
-  color: var(--fui-color-fg);
+  color: var(--loam-color-fg);
 }
 
 .ui {
-  color: var(--fui-color-primary);
+  color: var(--loam-color-primary);
 }

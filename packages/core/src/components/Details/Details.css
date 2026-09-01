@@ -1,11 +1,11 @@
 /* The native disclosure, standalone: each Details is its own boxed
    surface. A set sharing a `name` needs no wrapper — the browser owns
    the exclusivity. */
-@scope (.fui-Details) to ([class*="fui-"]) {
+@scope (.loam-Details) to ([class*="loam-"]) {
   :scope {
-    background: var(--fui-color-surface);
-    border: 1px solid var(--fui-color-line);
-    border-radius: var(--fui-radius-md);
+    background: var(--loam-color-surface);
+    border: 1px solid var(--loam-color-line);
+    border-radius: var(--loam-radius-md);
     inline-size: 100%;
     overflow: clip;
 
@@ -13,18 +13,18 @@
       align-items: center;
       cursor: pointer;
       display: block flex;
-      font-size: var(--fui-text-md);
+      font-size: var(--loam-text-md);
       font-weight: 600;
-      gap: var(--fui-space-md);
+      gap: var(--loam-space-md);
       justify-content: space-between;
       line-height: 1.4;
       list-style: none;
-      padding-block: var(--fui-space-md);
-      padding-inline: var(--fui-space-lg);
+      padding-block: var(--loam-space-md);
+      padding-inline: var(--loam-space-lg);
       user-select: none;
 
       @media (prefers-reduced-motion: no-preference) {
-        transition: background var(--fui-duration-md) var(--fui-ease);
+        transition: background var(--loam-duration-md) var(--loam-ease);
       }
     }
   }
@@ -34,7 +34,7 @@
   }
 
   :scope[open] > summary {
-    color: var(--fui-color-primary);
+    color: var(--loam-color-primary);
   }
 
   span.label {
@@ -42,31 +42,31 @@
   }
 
   svg.chevron {
-    color: var(--fui-color-fg-muted);
+    color: var(--loam-color-fg-muted);
     flex: none;
     rotate: 0deg;
 
     :scope[open] > summary & {
-      color: var(--fui-color-primary);
+      color: var(--loam-color-primary);
       rotate: 180deg;
     }
 
     @media (prefers-reduced-motion: no-preference) {
-      transition: rotate var(--fui-duration-md) var(--fui-ease);
+      transition: rotate var(--loam-duration-md) var(--loam-ease);
     }
   }
 
   div.content {
-    color: var(--fui-color-fg-muted);
-    font-size: var(--fui-text-sm);
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
     line-height: 1.55;
-    padding-block: 0 var(--fui-space-lg);
-    padding-inline: var(--fui-space-lg);
+    padding-block: 0 var(--loam-space-lg);
+    padding-inline: var(--loam-space-lg);
   }
 
   @media (hover: hover) {
     :scope > summary:hover {
-      background: var(--fui-color-surface-hover);
+      background: var(--loam-color-surface-hover);
     }
   }
 
@@ -85,8 +85,8 @@
         block-size: 0;
         overflow-block: clip;
         transition:
-          block-size var(--fui-duration-md) var(--fui-ease),
-          content-visibility var(--fui-duration-md) var(--fui-ease)
+          block-size var(--loam-duration-md) var(--loam-ease),
+          content-visibility var(--loam-duration-md) var(--loam-ease)
             allow-discrete;
       }
 

@@ -1,4 +1,4 @@
-/* FarmUI's stylesheets are linked as static files in layout.tsx (see
+/* LoamUI's stylesheets are linked as static files in layout.tsx (see
    scripts/sync-css.mjs) — they're finished build artifacts using
    ahead-of-toolchain CSS the app bundler can't parse yet. */
 
@@ -53,7 +53,7 @@
 }
 
 @layer site.base {
-  /* FarmUI's fluid tokens use cqi — declaring the page main as a container
+  /* LoamUI's fluid tokens use cqi — declaring the page main as a container
      makes the docs' own typography container-relative, demonstrating the
      opt-in documented in the theming guide. */
   main {
@@ -61,25 +61,29 @@
   }
 
   :root {
-    /* FarmUI ships a clean system stack by default; the site pins a nicer one. */
-    --fui-font-sans: "Inter var", "Inter";
+    /* The site uses LoamUI's own default typography (system stack) rather than
+       pinning its own, so the docs render in the same fonts they document. */
     --site-max: 76rem;
     --site-nav-h: 4rem;
-    --site-radius: var(--fui-radius-lg);
+    --site-radius: var(--loam-radius-lg);
 
-    /* Signature marketing gradient — brand green → teal */
+    /* The brand mark and gradient text derive from the LoamUI accent token, so
+       the docs site consumes the same primitive it documents: change
+       --loam-color-accent and the whole site's brand follows. Relative colour
+       sweeps the accent toward a neighbouring hue for depth, and it inherits
+       the token's light-dark() so the gradient adapts to the colour scheme. */
     --site-gradient: linear-gradient(
       135deg,
-      oklch(68% 0.16 149deg),
-      oklch(72% 0.13 190deg)
+      var(--loam-color-accent),
+      oklch(from var(--loam-color-accent) l c calc(h - 35))
     );
   }
 
   body {
-    background: var(--fui-color-bg);
-    color: var(--fui-color-fg);
-    font-family: var(--fui-font);
-    font-size: var(--fui-text-md);
+    background: var(--loam-color-bg);
+    color: var(--loam-color-fg);
+    font-family: var(--loam-font);
+    font-size: var(--loam-text-md);
 
     /* Fallback fonts render at the webfont's own aspect — no reflow jolt
        while the pinned font loads. */
@@ -91,7 +95,7 @@
   code,
   pre,
   kbd {
-    font-family: var(--fui-font-mono);
+    font-family: var(--loam-font-mono);
   }
 }
 
@@ -109,9 +113,9 @@
 
   .eyebrow {
     align-items: center;
-    color: var(--fui-color-primary);
+    color: var(--loam-color-primary);
     display: inline flex;
-    font-size: var(--fui-text-xs);
+    font-size: var(--loam-text-xs);
     font-weight: 600;
     gap: 0.4rem;
     letter-spacing: 0.04em;

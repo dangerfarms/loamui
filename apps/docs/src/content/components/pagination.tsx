@@ -4,7 +4,7 @@ import { PaginationDemo, PaginationEdgesDemo, PaginationManyDemo } from "./pagin
 const doc: ComponentContent = {
   slug: "pagination",
   lead: "Navigate through pages of content with real, addressable links.",
-  importLine: `import { Pagination } from "@farmui/core";`,
+  importLine: `import { Pagination } from "@loamui/core";`,
   demos: [
     {
       title: "Basic",

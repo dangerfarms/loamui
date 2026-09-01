@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Toast, Toasts, useToast } from "@farmui/core";
+import { Button, Toast, Toasts, useToast } from "@loamui/core";
 
 function SaveButton() {
   const toast = useToast();

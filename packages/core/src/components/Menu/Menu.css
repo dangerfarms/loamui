@@ -1,4 +1,4 @@
-@scope (.fui-Menu) {
+@scope (.loam-Menu) {
   :scope {
     display: inline flow-root;
     position: relative;
@@ -7,20 +7,20 @@
 
 /* The popup escapes the wrapper into the top layer when enhanced, so it
    carries its own scope (same engine as Popover). */
-@scope (.fui-Menu-popup) to ([class*="fui-"]) {
+@scope (.loam-Menu-popup) to ([class*="loam-"]) {
   :scope {
-    background: var(--fui-color-surface);
-    border: 1px solid var(--fui-color-line);
-    border-radius: var(--fui-radius-md);
-    box-shadow: var(--fui-shadow-lg);
+    background: var(--loam-color-surface);
+    border: 1px solid var(--loam-color-line);
+    border-radius: var(--loam-radius-md);
+    box-shadow: var(--loam-shadow-lg);
     inline-size: max-content;
     margin: 0;
     max-inline-size: min(18rem, 90vi);
     min-inline-size: 11rem;
-    padding: var(--fui-space-xs);
+    padding: var(--loam-space-xs);
 
     /* Enhanced: top layer + anchor positioning, tethered to the trigger. */
-    @supports (anchor-name: --fui-probe) {
+    @supports (anchor-name: --loam-probe) {
       /* The UA gives [popover] `inset: 0`; clear it so only the insets each
          branch sets take part, otherwise the box is over-constrained. */
       inset: auto;
@@ -29,11 +29,11 @@
       position-try: flip-block;
 
       &[data-position="bottom"] {
-        inset-block-start: calc(anchor(end) + var(--fui-space-xs));
+        inset-block-start: calc(anchor(end) + var(--loam-space-xs));
       }
 
       &[data-position="top"] {
-        inset-block-end: calc(anchor(start) + var(--fui-space-xs));
+        inset-block-end: calc(anchor(start) + var(--loam-space-xs));
       }
 
       @media (prefers-reduced-motion: no-preference) {
@@ -41,10 +41,10 @@
            snappier than panels. */
         opacity: 1;
         transition:
-          opacity var(--fui-duration-md) var(--fui-ease),
-          translate var(--fui-duration-md) var(--fui-ease),
-          display var(--fui-duration-md) var(--fui-ease) allow-discrete,
-          overlay var(--fui-duration-md) var(--fui-ease) allow-discrete;
+          opacity var(--loam-duration-md) var(--loam-ease),
+          translate var(--loam-duration-md) var(--loam-ease),
+          display var(--loam-duration-md) var(--loam-ease) allow-discrete,
+          overlay var(--loam-duration-md) var(--loam-ease) allow-discrete;
         translate: 0 0;
 
         /* Exit: transition back to the closed state (see Modal). */
@@ -72,17 +72,17 @@
 
     /* Fallback: no anchor positioning (and no top layer) — anchor to the
        wrapper as a normal absolutely-positioned panel. */
-    @supports not (anchor-name: --fui-probe) {
+    @supports not (anchor-name: --loam-probe) {
       inset-inline-start: 0;
       position: absolute;
       z-index: 50;
 
       &[data-position="bottom"] {
-        inset-block-start: calc(100% + var(--fui-space-xs));
+        inset-block-start: calc(100% + var(--loam-space-xs));
       }
 
       &[data-position="top"] {
-        inset-block-end: calc(100% + var(--fui-space-xs));
+        inset-block-end: calc(100% + var(--loam-space-xs));
       }
     }
   }
@@ -91,32 +91,32 @@
     align-items: center;
     background: none;
     border: 0;
-    border-radius: var(--fui-radius-sm);
+    border-radius: var(--loam-radius-sm);
     box-shadow: none;
-    color: var(--fui-color-fg);
+    color: var(--loam-color-fg);
     cursor: default;
     display: block flex;
     font: inherit;
-    font-size: var(--fui-text-sm);
-    gap: var(--fui-space-sm);
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-sm);
     inline-size: 100%;
 
     /* Focus IS the highlight in a menu (roving focus, APG pattern); the
        elements-layer ring is for tabbable controls, not menu items. */
     outline: none;
-    padding-block: var(--fui-space-sm);
-    padding-inline: var(--fui-space-sm);
+    padding-block: var(--loam-space-sm);
+    padding-inline: var(--loam-space-sm);
     text-align: start;
     text-decoration: none;
     user-select: none;
     white-space: nowrap;
 
     &:focus:not([aria-disabled="true"]) {
-      background: var(--fui-color-primary-soft);
+      background: var(--loam-color-primary-soft);
     }
 
     &[aria-disabled="true"] {
-      color: var(--fui-color-fg-dim);
+      color: var(--loam-color-fg-dim);
     }
 
     svg {
@@ -126,31 +126,31 @@
     }
 
     @media (prefers-reduced-motion: no-preference) {
-      transition: background var(--fui-duration-sm) var(--fui-ease);
+      transition: background var(--loam-duration-sm) var(--loam-ease);
     }
 
     @media (hover: hover) {
       &:hover:not([aria-disabled="true"]) {
-        background: var(--fui-color-primary-soft);
+        background: var(--loam-color-primary-soft);
       }
     }
   }
 
   div.group-label {
-    color: var(--fui-color-fg-muted);
-    font-size: var(--fui-text-xs);
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-xs);
     font-weight: 600;
     letter-spacing: 0.02em;
-    padding-block: var(--fui-space-xs);
-    padding-inline: var(--fui-space-sm);
+    padding-block: var(--loam-space-xs);
+    padding-inline: var(--loam-space-sm);
     text-transform: uppercase;
   }
 
   hr {
     border: 0;
-    border-block-start: 1px solid var(--fui-color-line);
-    margin-block: var(--fui-space-xs);
-    margin-inline: calc(-1 * var(--fui-space-xs));
+    border-block-start: 1px solid var(--loam-color-line);
+    margin-block: var(--loam-space-xs);
+    margin-inline: calc(-1 * var(--loam-space-xs));
   }
 
   /* Forced colors: the roving highlight is background-only, and

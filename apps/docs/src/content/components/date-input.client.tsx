@@ -1,6 +1,6 @@
 "use client";
 
-import { DateInput } from "@farmui/core";
+import { DateInput } from "@loamui/core";
 
 export function DateInputDemo() {
   return (

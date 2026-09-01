@@ -1,4 +1,4 @@
-# rumdl — Markdown linter for FarmUI's hand-authored docs.
+# rumdl — Markdown linter for LoamUI's hand-authored docs.
 #
 # rumdl honours .gitignore, so the generated documentation twins under
 # apps/docs/public/docs/** and the private working notes in local/** are

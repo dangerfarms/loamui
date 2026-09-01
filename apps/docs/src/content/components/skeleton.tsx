@@ -1,11 +1,11 @@
-import { Skeleton } from "@farmui/core";
+import { Skeleton } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
 import { SkeletonSwapDemo } from "./skeleton.client";
 
 const doc: ComponentContent = {
   slug: "skeleton",
   lead: "An animated placeholder shown while content loads.",
-  importLine: `import { Skeleton } from "@farmui/core";`,
+  importLine: `import { Skeleton } from "@loamui/core";`,
   demos: [
     {
       title: "Basic lines",
@@ -60,11 +60,11 @@ const doc: ComponentContent = {
     {
       title: "Custom sizes",
       description:
-        "Use width and height for cards or thumbnails; shape comes from --fui-skeleton-radius or circle.",
+        "Use width and height for cards or thumbnails; shape comes from --loam-skeleton-radius or circle.",
       code: `<Skeleton
   width="8rem"
   height="8rem"
-  style={{ "--fui-skeleton-radius": "var(--fui-radius-lg)" }}
+  style={{ "--loam-skeleton-radius": "var(--loam-radius-lg)" }}
 />
 <Skeleton width="8rem" height="8rem" circle />`,
       render: () => (
@@ -72,7 +72,7 @@ const doc: ComponentContent = {
           <Skeleton
             width="8rem"
             height="8rem"
-            style={{ "--fui-skeleton-radius": "var(--fui-radius-lg)" } as React.CSSProperties}
+            style={{ "--loam-skeleton-radius": "var(--loam-radius-lg)" } as React.CSSProperties}
           />
           <Skeleton width="8rem" height="8rem" circle />
         </>
@@ -150,9 +150,9 @@ const doc: ComponentContent = {
   ],
   cssProps: [
     {
-      name: "--fui-skeleton-radius",
+      name: "--loam-skeleton-radius",
       syntax: "CSS length",
-      default: "var(--fui-radius-md)",
+      default: "var(--loam-radius-md)",
       description: "Corner rounding of the placeholder; set per instance or on a region.",
     },
   ],

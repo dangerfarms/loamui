@@ -44,7 +44,7 @@ importers:
 
   apps/docs:
     dependencies:
-      '@farmui/core':
+      '@loamui/core':
         specifier: workspace:*
         version: link:../../packages/core
       next:

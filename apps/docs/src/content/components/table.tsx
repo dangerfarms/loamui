@@ -1,4 +1,4 @@
-import { Table } from "@farmui/core";
+import { Table } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
 
 const rows = [
@@ -11,7 +11,7 @@ const rows = [
 const doc: ComponentContent = {
   slug: "table",
   lead: "A styled data table composed from native thead/tbody/tr/th/td markup.",
-  importLine: `import { Table } from "@farmui/core";`,
+  importLine: `import { Table } from "@loamui/core";`,
   demos: [
     {
       title: "Basic",

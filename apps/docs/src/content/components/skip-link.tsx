@@ -1,10 +1,10 @@
-import { SkipLink } from "@farmui/core";
+import { SkipLink } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
 
 const doc: ComponentContent = {
   slug: "skip-link",
   lead: "The first focusable element on the page: a link straight to the main content, visible only while focused.",
-  importLine: `import { SkipLink } from "@farmui/core";`,
+  importLine: `import { SkipLink } from "@loamui/core";`,
   demos: [
     {
       title: "Basic",

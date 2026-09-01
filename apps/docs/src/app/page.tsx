@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button, SignpostLink } from "@farmui/core";
+import { Button, SignpostLink } from "@loamui/core";
 import { CodeBlock } from "@/renderer/CodeBlock";
 import { COMPONENTS, componentsByCategory } from "@/site/nav";
 import { BoltIcon, CheckIcon, GitHubIcon } from "@/site/Icons";
@@ -79,7 +79,7 @@ const GATES = [
   "Zero runtime",
 ];
 
-const FARMUI_CODE = `import { Button, SignpostLink } from "@farmui/core";
+const LOAMUI_CODE = `import { Button, SignpostLink } from "@loamui/core";
 
 <Button>Save changes</Button>;`;
 
@@ -124,7 +124,7 @@ const TECHNIQUES = [
   {
     name: "@layer",
     desc: "A predictable cascade: no specificity wars, no !important.",
-    code: "@layer farmui.components { … }",
+    code: "@layer loamui.components { … }",
   },
   {
     name: "clamp()",
@@ -134,7 +134,7 @@ const TECHNIQUES = [
   {
     name: "@scope",
     desc: "Encapsulation in the browser, so parts keep plain names.",
-    code: "@scope (.fui-Field) { label { … } }",
+    code: "@scope (.loam-Field) { label { … } }",
   },
 ];
 
@@ -163,7 +163,7 @@ export default function HomePage() {
             <div className={c.ctaRow}>
               <SignpostLink render={<Link href="/docs" />}>Get started</SignpostLink>
               <a
-                href="https://github.com/dangerfarms/farmui"
+                href="https://github.com/dangerfarms/loamui"
                 target="_blank"
                 rel="noreferrer"
                 className={c.plainLink}
@@ -200,7 +200,7 @@ export default function HomePage() {
           <h2 className={c.sectionTitle}>Built on Google&rsquo;s Modern Web Guidance.</h2>
           <p className={c.sectionSub}>
             Every primitive follows the Chrome team&rsquo;s guidance for the modern web. That is why
-            interfaces built with FarmUI are fast and accessible, a combination no other library
+            interfaces built with LoamUI are fast and accessible, a combination no other library
             offers. Three tenets run through everything:
           </p>
         </div>
@@ -245,7 +245,7 @@ export default function HomePage() {
             <h2 className={c.sectionTitle}>Context decides, props don&rsquo;t.</h2>
             <p className={c.sectionSub}>
               Components carry no size, variant or colour props. A region declares what it means (
-              <code>--fui-context</code>) and components inside adopt it; a container&rsquo;s width
+              <code>--loam-context</code>) and components inside adopt it; a container&rsquo;s width
               decides how components size. Drop components on a page and they fit. The{" "}
               <Link href="/docs/contextualism">Contextualism guide</Link> alone is enough for an
               agent to use it.
@@ -269,10 +269,10 @@ export default function HomePage() {
             language="css"
             code={`/* a named region declares its meaning */
 .danger-zone {
-  --fui-context: danger;
+  --loam-context: danger;
 }
 
-/* every FarmUI component inside adopts it:
+/* every LoamUI component inside adopts it:
    buttons, checked states, carets, focus
    rings. No props, no wrappers */`}
           />
@@ -307,7 +307,7 @@ export default function HomePage() {
               Quality that doesn&rsquo;t depend on who wrote the code.
             </h2>
             <p className={c.sectionSub}>
-              Agent-assisted development needs gates, not vibes. FarmUI&rsquo;s quality bar is
+              Agent-assisted development needs gates, not vibes. LoamUI&rsquo;s quality bar is
               enforced by deterministic tooling: a stylelint config with every rule on, a contrast
               audit that reads the colour recipes out of the real stylesheets, and axe and
               interaction tests on every component. The same gates run for human and agent alike.
@@ -329,10 +329,10 @@ export default function HomePage() {
    stylesheet and asserts every derived
    pairing holds its contrast. Change a
    recipe and CI tells you what broke */
---fui-color-primary-strong: light-dark(
-  color-mix(in oklab, var(--fui-color-primary),
+--loam-color-primary-strong: light-dark(
+  color-mix(in oklab, var(--loam-color-primary),
     oklch(0% 0 0deg) 22%),
-  var(--fui-color-primary)
+  var(--loam-color-primary)
 );`}
           />
         </div>
@@ -382,7 +382,7 @@ export default function HomePage() {
           <span className="eyebrow">See the difference</span>
           <h2 className={c.sectionTitle}>Same button. Cleaner everything.</h2>
           <p className={c.sectionSub}>
-            FarmUI keeps styling in one shared, cacheable stylesheet, so your markup stays readable.
+            LoamUI keeps styling in one shared, cacheable stylesheet, so your markup stays readable.
             Utility frameworks inline dozens of classes onto every element; runtime CSS-in-JS
             serializes styles on each render.
           </p>
@@ -390,10 +390,10 @@ export default function HomePage() {
         <div className={c.compare}>
           <div className={c.compareCol} data-good>
             <div className={c.compareHead}>
-              <span className={c.compareTag}>FarmUI</span>
+              <span className={c.compareTag}>LoamUI</span>
               <Button>Save changes</Button>
             </div>
-            <CodeBlock code={FARMUI_CODE} />
+            <CodeBlock code={LOAMUI_CODE} />
             <p className={c.compareNote}>
               One prop. Styles live in shared CSS: <strong>0&nbsp;kb</strong> runtime, works with
               any build tool.
@@ -421,7 +421,7 @@ export default function HomePage() {
           <span className="eyebrow">Under the hood</span>
           <h2 className={c.sectionTitle}>Modern CSS, put to work.</h2>
           <p className={c.sectionSub}>
-            No abstractions over the platform: FarmUI ships the same modern CSS features you&rsquo;d
+            No abstractions over the platform: LoamUI ships the same modern CSS features you&rsquo;d
             reach for by hand, so nothing runs at runtime.
           </p>
         </div>

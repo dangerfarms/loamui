@@ -1,20 +1,20 @@
 .trigger {
   align-items: center;
-  background: var(--fui-color-bg-subtle);
-  border: 1px solid var(--fui-color-line);
-  border-radius: var(--fui-radius-md);
+  background: var(--loam-color-bg-subtle);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-md);
   box-shadow: none;
-  color: var(--fui-color-fg-muted);
+  color: var(--loam-color-fg-muted);
   cursor: pointer;
   display: inline flex;
-  font-size: var(--fui-text-sm);
+  font-size: var(--loam-text-sm);
   gap: 0.5rem;
   min-inline-size: 12rem;
   padding: 0.4rem 0.6rem;
-  transition: border-color var(--fui-duration-md) var(--fui-ease);
+  transition: border-color var(--loam-duration-md) var(--loam-ease);
 
   &:hover {
-    border-color: var(--fui-color-line-strong);
+    border-color: var(--loam-color-line-strong);
   }
 }
 
@@ -24,19 +24,19 @@
 }
 
 .kbd {
-  background: var(--fui-color-surface);
-  border: 1px solid var(--fui-color-line);
-  border-radius: var(--fui-radius-sm);
-  font-family: var(--fui-font);
-  font-size: var(--fui-text-xs);
+  background: var(--loam-color-surface);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-sm);
+  font-family: var(--loam-font);
+  font-size: var(--loam-text-xs);
   padding: 0.1rem 0.35rem;
 }
 
 .panel {
-  background: var(--fui-color-surface);
-  border: 1px solid var(--fui-color-line);
-  border-radius: var(--fui-radius-lg);
-  box-shadow: var(--fui-shadow-lg);
+  background: var(--loam-color-surface);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-lg);
+  box-shadow: var(--loam-shadow-lg);
   inline-size: min(100% - 2rem, 34rem);
   margin-block-start: 12vb;
   margin-inline: auto;
@@ -64,8 +64,8 @@
 
 .searchRow {
   align-items: center;
-  border-block-end: 1px solid var(--fui-color-line);
-  color: var(--fui-color-fg-muted);
+  border-block-end: 1px solid var(--loam-color-line);
+  color: var(--loam-color-fg-muted);
   display: block flex;
   gap: 0.6rem;
   padding: 0.85rem 1rem;
@@ -74,10 +74,10 @@
 .input {
   background: transparent;
   border: none;
-  color: var(--fui-color-fg);
+  color: var(--loam-color-fg);
   flex: 1;
   font: inherit;
-  font-size: var(--fui-text-md);
+  font-size: var(--loam-text-md);
   outline: none;
 }
 
@@ -93,12 +93,12 @@
   align-items: center;
   background: transparent;
   border: none;
-  border-radius: var(--fui-radius-sm);
+  border-radius: var(--loam-radius-sm);
   box-shadow: none;
-  color: var(--fui-color-fg);
+  color: var(--loam-color-fg);
   cursor: pointer;
   display: block flex;
-  font-size: var(--fui-text-sm);
+  font-size: var(--loam-text-sm);
   font-weight: 400;
   inline-size: 100%;
   justify-content: space-between;
@@ -106,19 +106,19 @@
   text-align: start;
 
   &[data-active] {
-    background: var(--fui-color-primary-soft);
-    color: color-mix(in oklch, var(--fui-color-primary) 88%, oklch(0% 0 0deg));
+    background: color-mix(in oklab, var(--loam-color-accent) 14%, transparent);
+    color: var(--loam-color-accent);
   }
 }
 
 .hint {
-  color: var(--fui-color-fg-dim);
-  font-size: var(--fui-text-xs);
+  color: var(--loam-color-fg-dim);
+  font-size: var(--loam-text-xs);
 }
 
 .empty {
-  color: var(--fui-color-fg-muted);
-  font-size: var(--fui-text-sm);
+  color: var(--loam-color-fg-muted);
+  font-size: var(--loam-text-sm);
   padding: 1.5rem;
   text-align: center;
 }

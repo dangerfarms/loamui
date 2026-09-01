@@ -19,7 +19,7 @@ export const Default: Story = {};
 /** A context region recolours the arrow's circle like any solid fill. */
 export const InContextRegion: Story = {
   render: (args) => (
-    <div style={{ "--fui-context": "danger" } as React.CSSProperties}>
+    <div style={{ "--loam-context": "danger" } as React.CSSProperties}>
       <SignpostLink {...args} href="#appeal">
         Appeal this decision
       </SignpostLink>

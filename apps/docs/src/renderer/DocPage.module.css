@@ -3,14 +3,14 @@
 }
 
 .header {
-  border-block-end: 1px solid var(--fui-color-line);
+  border-block-end: 1px solid var(--loam-color-line);
   margin-block-end: 2rem;
   padding-block-end: 1.5rem;
 }
 
 .category {
-  color: var(--fui-color-primary);
-  font-size: var(--fui-text-sm);
+  color: var(--loam-color-primary);
+  font-size: var(--loam-text-sm);
   font-weight: 600;
 }
 
@@ -22,8 +22,8 @@
 }
 
 .lead {
-  color: var(--fui-color-fg-muted);
-  font-size: var(--fui-text-lg);
+  color: var(--loam-color-fg-muted);
+  font-size: var(--loam-text-lg);
   text-wrap: pretty;
 }
 
@@ -33,25 +33,25 @@
 }
 
 .h2 {
-  font-size: var(--fui-text-xl);
+  font-size: var(--loam-text-xl);
   font-weight: 700;
   margin-block-end: 1rem;
   scroll-margin-block-start: 5rem;
 }
 
 .h3 {
-  font-size: var(--fui-text-md);
+  font-size: var(--loam-text-md);
   font-weight: 650;
   margin-block-end: 0.35rem;
 }
 
 .usageNote {
-  background: var(--fui-color-primary-soft);
+  background: var(--loam-color-primary-soft);
   border: 1px solid
-    color-mix(in oklab, var(--fui-color-primary), var(--fui-color-line) 55%);
-  border-radius: var(--fui-radius-md);
-  color: var(--fui-color-fg-muted);
-  font-size: var(--fui-text-sm);
+    color-mix(in oklab, var(--loam-color-primary), var(--loam-color-line) 55%);
+  border-radius: var(--loam-radius-md);
+  color: var(--loam-color-fg-muted);
+  font-size: var(--loam-text-sm);
   margin-block-end: 1.5rem;
   padding: 0.75rem 1rem;
 }
@@ -68,16 +68,16 @@
 }
 
 .guidanceCard {
-  background: var(--fui-color-surface);
-  border: 1px solid var(--fui-color-line);
-  border-radius: var(--fui-radius-lg);
+  background: var(--loam-color-surface);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-lg);
   padding: 1rem 1.25rem;
 }
 
 .guidanceHeading {
   align-items: center;
   display: block flex;
-  font-size: var(--fui-text-sm);
+  font-size: var(--loam-text-sm);
   font-weight: 700;
   gap: 0.4rem;
   letter-spacing: 0.03em;
@@ -86,28 +86,28 @@
 }
 
 .guidanceYes {
-  color: var(--fui-color-primary);
+  color: var(--loam-color-primary);
 }
 
 .guidanceNo {
-  color: var(--fui-color-danger);
+  color: var(--loam-color-danger);
 }
 
 .guidanceList {
-  color: var(--fui-color-fg-muted);
+  color: var(--loam-color-fg-muted);
   display: block flex;
   flex-direction: column;
-  font-size: var(--fui-text-sm);
+  font-size: var(--loam-text-sm);
   gap: 0.5rem;
   margin: 0;
   padding-inline-start: 1.1rem;
 }
 
 .a11yList {
-  color: var(--fui-color-fg);
+  color: var(--loam-color-fg);
   display: block flex;
   flex-direction: column;
-  font-size: var(--fui-text-sm);
+  font-size: var(--loam-text-sm);
   gap: 0.6rem;
   margin: 0;
   padding-inline-start: 1.1rem;
@@ -124,8 +124,8 @@
 }
 
 .demoDesc {
-  color: var(--fui-color-fg-muted);
-  font-size: var(--fui-text-sm);
+  color: var(--loam-color-fg-muted);
+  font-size: var(--loam-text-sm);
   margin-block-end: 0.75rem;
   text-wrap: pretty;
 }

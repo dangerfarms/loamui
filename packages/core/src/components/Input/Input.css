@@ -1,30 +1,30 @@
-@scope (.fui-Input-field) to ([class*="fui-"]) {
+@scope (.loam-Input-field) to ([class*="loam-"]) {
   :scope {
     align-items: center;
-    background: var(--fui-color-surface);
-    border: 1px solid var(--fui-color-line-strong);
-    border-radius: var(--_radius, var(--fui-radius-md));
+    background: var(--loam-color-surface);
+    border: 1px solid var(--loam-color-line-strong);
+    border-radius: var(--_radius, var(--loam-radius-md));
     display: block flex;
-    font-size: var(--fui-text-sm);
-    gap: var(--fui-space-sm);
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-sm);
     line-height: 1.2;
 
     /* Height is derived, not declared: same stack as Button (padding-block
        space-sm + text-sm × 1.2 + 1px border), so inputs and buttons align
        by construction at every container width. */
-    padding-block: var(--fui-space-sm);
-    padding-inline: var(--fui-space-md);
+    padding-block: var(--loam-space-sm);
+    padding-inline: var(--loam-space-md);
 
     &:focus-within {
-      border-color: var(--fui-color-primary);
-      outline: var(--fui-ring-width) solid var(--fui-color-ring);
+      border-color: var(--loam-color-primary);
+      outline: var(--loam-ring-width) solid var(--loam-color-ring);
       outline-offset: 2px;
     }
 
     @media (prefers-reduced-motion: no-preference) {
       transition:
-        border-color var(--fui-duration-sm) var(--fui-ease),
-        box-shadow var(--fui-duration-md) var(--fui-ease);
+        border-color var(--loam-duration-sm) var(--loam-ease),
+        box-shadow var(--loam-duration-md) var(--loam-ease);
     }
   }
 
@@ -36,29 +36,29 @@
   :scope:has(input:autofill) {
     border-color: color-mix(
       in oklab,
-      var(--fui-color-primary) 50%,
-      var(--fui-color-line-strong)
+      var(--loam-color-primary) 50%,
+      var(--loam-color-line-strong)
     );
   }
 
   :scope:has(input:-webkit-autofill) {
     border-color: color-mix(
       in oklab,
-      var(--fui-color-primary) 50%,
-      var(--fui-color-line-strong)
+      var(--loam-color-primary) 50%,
+      var(--loam-color-line-strong)
     );
   }
 
   /* Invalid after a composed Field.Error or a native submit attempt. */
   :scope:has(input[aria-invalid="true"]) {
-    --fui-color-ring: var(--fui-color-danger-ring);
+    --loam-color-ring: var(--loam-color-danger-ring);
 
-    border-color: var(--fui-color-danger);
+    border-color: var(--loam-color-danger);
   }
 
   :scope[data-disabled] {
-    background: var(--fui-color-bg-subtle);
-    opacity: var(--fui-disabled-opacity);
+    background: var(--loam-color-bg-subtle);
+    opacity: var(--loam-disabled-opacity);
   }
 
   input {
@@ -76,7 +76,7 @@
   }
 
   input::placeholder {
-    color: var(--fui-color-fg-dim);
+    color: var(--loam-color-fg-dim);
   }
 
   /* background-color cannot be overridden on an autofilled field; an inset
@@ -84,17 +84,25 @@
      see the wrapper rules above. */
   input:autofill {
     box-shadow: inset 0 0 0 100px
-      color-mix(in oklab, var(--fui-color-primary) 8%, var(--fui-color-surface));
+      color-mix(
+        in oklab,
+        var(--loam-color-primary) 8%,
+        var(--loam-color-surface)
+      );
   }
 
   input:-webkit-autofill {
     box-shadow: inset 0 0 0 100px
-      color-mix(in oklab, var(--fui-color-primary) 8%, var(--fui-color-surface));
+      color-mix(
+        in oklab,
+        var(--loam-color-primary) 8%,
+        var(--loam-color-surface)
+      );
   }
 
   span.section {
     align-items: center;
-    color: var(--fui-color-fg-muted);
+    color: var(--loam-color-fg-muted);
     display: inline flex;
     flex-shrink: 0;
 

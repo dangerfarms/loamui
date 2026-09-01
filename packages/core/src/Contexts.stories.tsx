@@ -5,7 +5,7 @@ import { Button, CheckboxControl, Input, Range, SwitchControl } from "./index";
 /**
  * Contextual meaning as a custom property.
  *
- * Declare `--fui-context: danger` on any region and every FarmUI component
+ * Declare `--loam-context: danger` on any region and every LoamUI component
  * inside adopts that meaning via container style queries; no component
  * contains context code. See the Contexts section of tokens.css and the
  * Contextualism docs.
@@ -25,9 +25,9 @@ function Zone({ children, style, ...rest }: HTMLAttributes<HTMLDivElement>) {
         display: "grid",
         gap: "1rem",
         padding: "1.25rem",
-        border: "1px solid var(--fui-color-line)",
-        borderRadius: "var(--fui-radius-lg)",
-        background: "var(--fui-color-bg)",
+        border: "1px solid var(--loam-color-line)",
+        borderRadius: "var(--loam-radius-lg)",
+        background: "var(--loam-color-bg)",
         maxInlineSize: "26rem",
         ...style,
       }}
@@ -48,7 +48,7 @@ function Zone({ children, style, ...rest }: HTMLAttributes<HTMLDivElement>) {
 export const DangerContext: Story = {
   render: () => (
     <div style={{ display: "grid", gap: "1.5rem" }}>
-      <Zone style={{ "--fui-context": "danger" } as CSSProperties}>
+      <Zone style={{ "--loam-context": "danger" } as CSSProperties}>
         <strong>Delete workspace</strong>
         <label style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
           <CheckboxControl defaultChecked /> I understand this is permanent
@@ -66,7 +66,7 @@ export const DangerContext: Story = {
       </Zone>
 
       <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
-        <span style={{ "--fui-context": "danger" } as CSSProperties}>
+        <span style={{ "--loam-context": "danger" } as CSSProperties}>
           <Button>One-element danger region</Button>
         </span>
         <Button>Normal button outside the region</Button>
@@ -82,13 +82,13 @@ export const DangerContext: Story = {
 export const InvertedRegion: Story = {
   render: () => (
     <Zone style={{ colorScheme: "dark" } as CSSProperties}>
-      <strong style={{ color: "var(--fui-color-fg)" }}>An on-dark section</strong>
+      <strong style={{ color: "var(--loam-color-fg)" }}>An on-dark section</strong>
       <label
         style={{
           display: "flex",
           gap: "0.5rem",
           alignItems: "center",
-          color: "var(--fui-color-fg)",
+          color: "var(--loam-color-fg)",
         }}
       >
         <CheckboxControl defaultChecked /> Dark-scheme tokens throughout

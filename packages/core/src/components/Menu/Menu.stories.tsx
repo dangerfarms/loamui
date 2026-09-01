@@ -114,7 +114,7 @@ export const DisabledItems: Story = {
 };
 
 /**
- * Contextual meaning as a custom property: declare `--fui-context: danger`
+ * Contextual meaning as a custom property: declare `--loam-context: danger`
  * on a region (here, the danger-zone Group) and the items inside adopt the
  * danger accent — no `color` prop, no component-level context code.
  */
@@ -127,7 +127,7 @@ export const DangerContext: Story = {
           <Menu.Item onClick={() => {}}>Rename</Menu.Item>
           <Menu.Item onClick={() => {}}>Duplicate</Menu.Item>
           <Menu.Separator />
-          <Menu.Group style={{ "--fui-context": "danger" } as CSSProperties}>
+          <Menu.Group style={{ "--loam-context": "danger" } as CSSProperties}>
             <Menu.GroupLabel>Danger zone</Menu.GroupLabel>
             <Menu.Item onClick={() => {}}>Delete workspace</Menu.Item>
           </Menu.Group>

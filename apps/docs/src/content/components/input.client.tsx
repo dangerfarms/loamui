@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Field, Input } from "@farmui/core";
+import { Button, Field, Input } from "@loamui/core";
 
 export function InputBasicDemo() {
   return (
@@ -22,8 +22,8 @@ export function InputContainersDemo() {
           inlineSize: "16rem",
           maxInlineSize: "100%",
           padding: "0.75rem",
-          border: "1px dashed var(--fui-color-line)",
-          borderRadius: "var(--fui-radius-md)",
+          border: "1px dashed var(--loam-color-line)",
+          borderRadius: "var(--loam-radius-md)",
         }}
       >
         <Field.Root>
@@ -37,8 +37,8 @@ export function InputContainersDemo() {
           inlineSize: "30rem",
           maxInlineSize: "100%",
           padding: "0.75rem",
-          border: "1px dashed var(--fui-color-line)",
-          borderRadius: "var(--fui-radius-md)",
+          border: "1px dashed var(--loam-color-line)",
+          borderRadius: "var(--loam-radius-md)",
         }}
       >
         <Field.Root>

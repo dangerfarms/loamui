@@ -1,5 +1,5 @@
 {
-  "name": "@farmui/docs",
+  "name": "@loamui/docs",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -12,7 +12,7 @@
     "lint": "oxlint --config ../../.oxlintrc.json src && stylelint \"src/**/*.css\""
   },
   "dependencies": {
-    "@farmui/core": "workspace:*",
+    "@loamui/core": "workspace:*",
     "next": "^16.2.2",
     "prism-react-renderer": "^2.3.1",
     "react": "19.2.0",

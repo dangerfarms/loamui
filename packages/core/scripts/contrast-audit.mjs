@@ -82,7 +82,7 @@ const mixOklab = (c1, c2, w2) => {
 // here (a flat text scan would let the last block win and audit the
 // wrong colours).
 const decls = {};
-postcss.parse(css).walkDecls(/^--fui-/, (decl) => {
+postcss.parse(css).walkDecls(/^--loam-/, (decl) => {
   for (let p = decl.parent; p; p = p.parent) {
     if (p.type === "atrule" && p.name !== "layer") return;
   }
@@ -166,9 +166,9 @@ const labelRecipes = [
   labelWeights("components/Button/Button.css", "--_color"),
   labelWeights("components/Badge/Badge.css", "--_color"),
   labelWeights("components/Alert/Alert.css", "--_accent"),
-  labelWeights("components/ErrorSummary/ErrorSummary.css", "--fui-color-danger"),
-  labelWeights("elements.css", "--fui-color-fg"),
-  labelWeights("components/Pagination/Pagination.css", "--fui-color-fg"),
+  labelWeights("components/ErrorSummary/ErrorSummary.css", "--loam-color-danger"),
+  labelWeights("elements.css", "--loam-color-fg"),
+  labelWeights("components/Pagination/Pagination.css", "--loam-color-fg"),
 ];
 for (const r of labelRecipes.slice(1)) {
   if (r.light !== labelRecipes[0].light || r.dark !== labelRecipes[0].dark) {
@@ -187,18 +187,18 @@ const mixedLabel = (colour, scheme) =>
 function tintWeights(file, channel) {
   const text = readFileSync(src(file), "utf8");
   const re = new RegExp(
-    String.raw`light-dark\(\s*color-mix\(in oklab,\s*var\(${channel}\),\s*var\(--fui-color-bg\)\s+([\d.]+)%\s*\),\s*color-mix\(in oklab,\s*var\(${channel}\),\s*var\(--fui-color-bg\)\s+([\d.]+)%\s*\)\s*\)`,
+    String.raw`light-dark\(\s*color-mix\(in oklab,\s*var\(${channel}\),\s*var\(--loam-color-bg\)\s+([\d.]+)%\s*\),\s*color-mix\(in oklab,\s*var\(${channel}\),\s*var\(--loam-color-bg\)\s+([\d.]+)%\s*\)\s*\)`,
   );
   const m = text.match(re);
   if (!m) throw new Error(`tint recipe not found in ${file} — update this audit alongside the recipe`);
   return { light: +m[1] / 100, dark: +m[2] / 100 };
 }
 const TINT = tintWeights("components/Button/Button.css", "--_color");
-const elementsTint = tintWeights("elements.css", "--fui-color-fg");
+const elementsTint = tintWeights("elements.css", "--loam-color-fg");
 if (elementsTint.light !== TINT.light || elementsTint.dark !== TINT.dark) {
   throw new Error("native button tint in elements.css has drifted from Button.css");
 }
-const paginationTint = tintWeights("components/Pagination/Pagination.css", "--fui-color-fg");
+const paginationTint = tintWeights("components/Pagination/Pagination.css", "--loam-color-fg");
 if (paginationTint.light !== TINT.light || paginationTint.dark !== TINT.dark) {
   throw new Error("Pagination control tint has drifted from Button.css");
 }
@@ -214,37 +214,40 @@ function check(name, scheme, fg, bg, need) {
 
 for (const scheme of ["light", "dark"]) {
   const t = (n) => T(n, scheme);
-  check("text on bg", scheme, t("--fui-color-fg"), t("--fui-color-bg"), 4.5);
-  check("link on bg", scheme, t("--fui-color-link"), t("--fui-color-bg"), 4.5);
-  check("text-strong (headings) on bg", scheme, t("--fui-color-fg-strong"), t("--fui-color-bg"), 4.5);
-  check("text-strong (headings) on surface", scheme, t("--fui-color-fg-strong"), t("--fui-color-surface"), 4.5);
-  check("text-muted on bg", scheme, t("--fui-color-fg-muted"), t("--fui-color-bg"), 4.5);
-  check("text-dim (placeholder) on surface", scheme, t("--fui-color-fg-dim"), t("--fui-color-surface"), 4.5);
-  check("danger text (Field.Error) on bg", scheme, t("--fui-color-danger"), t("--fui-color-bg"), 4.5);
-  check("fill text on primary-strong", scheme, t("--fui-color-on-strong"), t("--fui-color-primary-strong"), 4.5);
-  check("fill text on success-strong", scheme, t("--fui-color-on-strong"), t("--fui-color-success-strong"), 4.5);
-  check("fill text on danger-strong", scheme, t("--fui-color-on-strong"), t("--fui-color-danger-strong"), 4.5);
-  check("fill text on warning-strong", scheme, t("--fui-color-on-strong"), t("--fui-color-warning-strong"), 4.5);
-  check("fill text on info-strong", scheme, t("--fui-color-on-strong"), t("--fui-color-info-strong"), 4.5);
-  check("ErrorSummary link on danger-soft", scheme, mixedLabel(t("--fui-color-danger"), scheme), t("--fui-color-danger-soft"), 4.5);
+  check("text on bg", scheme, t("--loam-color-fg"), t("--loam-color-bg"), 4.5);
+  check("link on bg", scheme, t("--loam-color-link"), t("--loam-color-bg"), 4.5);
+  check("text-strong (headings) on bg", scheme, t("--loam-color-fg-strong"), t("--loam-color-bg"), 4.5);
+  check("text-strong (headings) on surface", scheme, t("--loam-color-fg-strong"), t("--loam-color-surface"), 4.5);
+  check("text-muted on bg", scheme, t("--loam-color-fg-muted"), t("--loam-color-bg"), 4.5);
+  check("text-dim (placeholder) on surface", scheme, t("--loam-color-fg-dim"), t("--loam-color-surface"), 4.5);
+  check("danger text (Field.Error) on bg", scheme, t("--loam-color-danger"), t("--loam-color-bg"), 4.5);
+  check("fill text on primary-strong", scheme, t("--loam-color-on-strong"), t("--loam-color-primary-strong"), 4.5);
+  check("fill text on success-strong", scheme, t("--loam-color-on-strong"), t("--loam-color-success-strong"), 4.5);
+  check("fill text on danger-strong", scheme, t("--loam-color-on-strong"), t("--loam-color-danger-strong"), 4.5);
+  check("fill text on warning-strong", scheme, t("--loam-color-on-strong"), t("--loam-color-warning-strong"), 4.5);
+  check("fill text on info-strong", scheme, t("--loam-color-on-strong"), t("--loam-color-info-strong"), 4.5);
+  check("ErrorSummary link on danger-soft", scheme, mixedLabel(t("--loam-color-danger"), scheme), t("--loam-color-danger-soft"), 4.5);
   for (const s of ["primary", "success", "danger", "warning", "info"]) {
-    const colour = t(`--fui-color-${s}`);
-    const tint = mixOklab(colour, t("--fui-color-bg"), scheme === "light" ? TINT.light : TINT.dark);
+    const colour = t(`--loam-color-${s}`);
+    const tint = mixOklab(colour, t("--loam-color-bg"), scheme === "light" ? TINT.light : TINT.dark);
     check(`button ${s} text on its tint`, scheme, mixedLabel(colour, scheme), tint, 4.5);
   }
   {
     // The elements layer's native button: neutral text channel on its tint.
-    const colour = t("--fui-color-fg");
-    const tint = mixOklab(colour, t("--fui-color-bg"), scheme === "light" ? TINT.light : TINT.dark);
+    const colour = t("--loam-color-fg");
+    const tint = mixOklab(colour, t("--loam-color-bg"), scheme === "light" ? TINT.light : TINT.dark);
     check("native button text on its tint", scheme, mixedLabel(colour, scheme), tint, 4.5);
   }
-  check("input border-strong vs surface", scheme, t("--fui-color-line-strong"), t("--fui-color-surface"), 3.0);
+  check("input border-strong vs surface", scheme, t("--loam-color-line-strong"), t("--loam-color-surface"), 3.0);
   // Checked Checkbox/Radio/Switch/Slider paint their glyph (tick, dot,
-  // thumb) in --fui-color-on-strong over the raw primary fill — a non-text
+  // thumb) in --loam-color-on-strong over the raw primary fill — a non-text
   // state indicator, so the 1.4.11 3:1 bar applies.
-  check("checked-control glyph on primary", scheme, t("--fui-color-on-strong"), t("--fui-color-primary"), 3.0);
+  check("checked-control glyph on primary", scheme, t("--loam-color-on-strong"), t("--loam-color-primary"), 3.0);
+  // Accent is a graphical indicator (e.g. the Loader arc) painted on the page
+  // background — a non-text object, so the 1.4.11 3:1 bar applies.
+  check("accent indicator on bg", scheme, t("--loam-color-accent"), t("--loam-color-bg"), 3.0);
   for (const s of ["primary", "success", "danger", "warning", "info"]) {
-    check(`${s} focus ring vs bg`, scheme, t(`--fui-color-${s}-ring`), t("--fui-color-bg"), 3.0);
+    check(`${s} focus ring vs bg`, scheme, t(`--loam-color-${s}-ring`), t("--loam-color-bg"), 3.0);
   }
 }
 

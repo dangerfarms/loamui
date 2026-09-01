@@ -107,7 +107,7 @@ function TabsBase({
 
   return (
     <TabsContext value={ctx}>
-      <div className={cx("fui-Tabs", className)} {...rest}>
+      <div className={cx("loam-Tabs", className)} {...rest}>
         {children}
       </div>
     </TabsContext>
@@ -183,7 +183,7 @@ export function TabsList({ className, children, ...rest }: TabsListProps) {
       {...rest}
       ref={listRef}
       role="tablist"
-      className={cx("fui-Tabs-list", className)}
+      className={cx("loam-Tabs-list", className)}
       onKeyDown={onKeyDown}
     >
       {children}

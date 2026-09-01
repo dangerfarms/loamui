@@ -23,7 +23,7 @@ export interface FieldsetRootProps extends FieldsetHTMLAttributes<HTMLFieldSetEl
 
 function FieldsetRoot({ className, children, ref, ...rest }: FieldsetRootProps) {
   return (
-    <fieldset ref={ref} className={cx("fui-Fieldset", className)} {...rest}>
+    <fieldset ref={ref} className={cx("loam-Fieldset", className)} {...rest}>
       {children}
     </fieldset>
   );

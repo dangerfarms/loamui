@@ -4,7 +4,7 @@ import { DetailsBasicDemo, DetailsDefaultOpenDemo, DetailsExclusiveDemo } from "
 const doc: ComponentContent = {
   slug: "details",
   lead: "The platform's disclosure widget: a styled native <details>/<summary>, composed from parts.",
-  importLine: `import { Details } from "@farmui/core";`,
+  importLine: `import { Details } from "@loamui/core";`,
   demos: [
     {
       title: "Basic",
@@ -66,7 +66,7 @@ const doc: ComponentContent = {
     },
     {
       title: "No accordion component",
-      body: "FarmUI deliberately ships no Accordion root and no separate Collapsible: one Details is the platform's complete disclosure widget, and a stack of them sharing a name is the accordion pattern. The grouping lives in HTML, where the browser can act on it; a wrapper component would only re-state what the name attribute already says.",
+      body: "LoamUI deliberately ships no Accordion root and no separate Collapsible: one Details is the platform's complete disclosure widget, and a stack of them sharing a name is the accordion pattern. The grouping lives in HTML, where the browser can act on it; a wrapper component would only re-state what the name attribute already says.",
     },
   ],
   accessibility: [

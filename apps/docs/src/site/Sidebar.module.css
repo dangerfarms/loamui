@@ -24,16 +24,16 @@
 }
 
 .sectionTitle {
-  color: var(--fui-color-fg-strong);
-  font-size: var(--fui-text-sm);
+  color: var(--loam-color-fg-strong);
+  font-size: var(--loam-text-sm);
   font-weight: 700;
   letter-spacing: 0.03em;
   margin: 0 0 0.6rem;
 }
 
 .groupTitle {
-  color: var(--fui-color-fg-dim);
-  font-size: var(--fui-text-xs);
+  color: var(--loam-color-fg-dim);
+  font-size: var(--loam-text-xs);
   font-weight: 700;
   letter-spacing: 0.05em;
   margin-block-end: 0.6rem;
@@ -67,8 +67,8 @@
 }
 
 .categoryTitle {
-  color: var(--fui-color-fg-dim);
-  font-size: var(--fui-text-xs);
+  color: var(--loam-color-fg-dim);
+  font-size: var(--loam-text-xs);
   font-weight: 600;
   margin-block-end: 0.35rem;
   padding-inline-start: 0.6rem;
@@ -87,23 +87,23 @@
 
 .link {
   border-inline-start: 2px solid transparent;
-  border-radius: var(--fui-radius-sm);
-  color: var(--fui-color-fg-muted);
+  border-radius: var(--loam-radius-sm);
+  color: var(--loam-color-fg-muted);
   display: block flow;
-  font-size: var(--fui-text-sm);
+  font-size: var(--loam-text-sm);
   padding: 0.35rem 0.6rem;
   transition:
-    color var(--fui-duration-md) var(--fui-ease),
-    background var(--fui-duration-md) var(--fui-ease);
+    color var(--loam-duration-md) var(--loam-ease),
+    background var(--loam-duration-md) var(--loam-ease);
 
   &:hover {
-    background: var(--fui-color-surface-hover);
-    color: var(--fui-color-fg);
+    background: var(--loam-color-surface-hover);
+    color: var(--loam-color-fg);
   }
 
   &[data-active] {
-    background: var(--fui-color-primary-soft);
-    color: var(--fui-color-primary);
+    background: color-mix(in oklab, var(--loam-color-accent) 14%, transparent);
+    color: var(--loam-color-accent);
     font-weight: 600;
   }
 }

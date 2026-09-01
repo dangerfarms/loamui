@@ -10,12 +10,12 @@ import {
 const doc: ComponentContent = {
   slug: "field",
   lead: "A composable form-field primitive that wires label, description, error and accessibility for any control.",
-  importLine: `import { Field } from "@farmui/core";`,
+  importLine: `import { Field } from "@loamui/core";`,
   demos: [
     {
       title: "Composing a field",
       description:
-        "Assemble the parts in order (label, description, error, control): the message sits above the control so it is read before the answer is given. Field.Root links the label to the control and gathers the description and error into aria-describedby; the FarmUI controls (Input, Select, Textarea, Range) self-wire from the surrounding field, so no extra part is needed around them.",
+        "Assemble the parts in order (label, description, error, control): the message sits above the control so it is read before the answer is given. Field.Root links the label to the control and gathers the description and error into aria-describedby; the LoamUI controls (Input, Select, Textarea, Range) self-wire from the surrounding field, so no extra part is needed around them.",
       code: `<Field.Root>
   <Field.Label>Email</Field.Label>
   <Field.Description>We'll only use this to reply.</Field.Description>
@@ -72,7 +72,7 @@ const doc: ComponentContent = {
         "Field.Control wires the field's id, aria-describedby and aria-invalid onto any element: an element to clone, or a function receiving the typed props. The built-in controls never need it; reach for it when bringing your own.",
       code: `<Field.Root>
   <Field.Label>Amount</Field.Label>
-  <Field.Description>A bare native input, not a FarmUI control.</Field.Description>
+  <Field.Description>A bare native input, not a LoamUI control.</Field.Description>
   <Field.Control
     render={(props) => <input {...props} inputMode="decimal" />}
   />
@@ -103,7 +103,7 @@ const doc: ComponentContent = {
     },
     {
       title: "Styling state from outside",
-      body: 'Everything the family knows about a field is expressed in selectors you can target: [aria-invalid="true"] on the control, :has(> p.error) on the .fui-Field root, [data-disabled] on control boxes, and :focus-within on the field box. There are no visual state props to mirror; the DOM is the contract.',
+      body: 'Everything the family knows about a field is expressed in selectors you can target: [aria-invalid="true"] on the control, :has(> p.error) on the .loam-Field root, [data-disabled] on control boxes, and :focus-within on the field box. There are no visual state props to mirror; the DOM is the contract.',
     },
     {
       title: "One error, one place, one wording",
@@ -132,7 +132,7 @@ const doc: ComponentContent = {
     "Field.Root generates one id and hands it to Field.Label (via htmlFor) and to the control, so label and control are always associated.",
     "Description and error ids are added to the control's aria-describedby only when those parts are present.",
     'Any Field.Error with content sets aria-invalid on the control and is announced with role="alert"; a visually hidden "Error: " prefix makes the announcement unmistakable out of context.',
-    "The FarmUI controls read this wiring from context; Field.Control hands it to arbitrary elements, letting you keep semantic, native controls instead of re-implementing them.",
+    "The LoamUI controls read this wiring from context; Field.Control hands it to arbitrary elements, letting you keep semantic, native controls instead of re-implementing them.",
   ],
   parts: [
     {
@@ -166,7 +166,7 @@ const doc: ComponentContent = {
     {
       name: "Field.Control",
       description:
-        "Wires id, aria-describedby and aria-invalid onto an arbitrary element. The FarmUI controls self-wire from the field and don't need it.",
+        "Wires id, aria-describedby and aria-invalid onto an arbitrary element. The LoamUI controls self-wire from the field and don't need it.",
       props: [
         {
           name: "render",

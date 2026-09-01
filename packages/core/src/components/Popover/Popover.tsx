@@ -107,7 +107,7 @@ function PopoverRoot({
 
   const autoId = useId();
   const popupId = `${cssSafeId(autoId)}-popup`;
-  const anchorName = `--fui-anchor-${popupId}`;
+  const anchorName = `--loam-anchor-${popupId}`;
 
   const openRef = useRef(open);
   openRef.current = open;
@@ -154,7 +154,7 @@ function PopoverRoot({
 
   return (
     <PopoverContext value={value}>
-      <span className={cx("fui-Popover", className)} {...rest}>
+      <span className={cx("loam-Popover", className)} {...rest}>
         {children}
       </span>
     </PopoverContext>
@@ -179,7 +179,7 @@ export interface PopoverTriggerProps extends ButtonHTMLAttributes<HTMLButtonElem
   /**
    * Substitute your own element as the trigger
    * (`render={<a href="…" />}`) or pass a function receiving the wiring
-   * props. Without it, the Trigger renders a FarmUI Button.
+   * props. Without it, the Trigger renders a LoamUI Button.
    */
   render?: RenderProp<PopoverTriggerRenderProps>;
 }
@@ -272,7 +272,7 @@ function PopoverPopup({
   useEffect(() => {
     if (enhanced || !open) return;
     const onPointer = (e: MouseEvent) => {
-      const root = ref.current?.closest(".fui-Popover");
+      const root = ref.current?.closest(".loam-Popover");
       if (root && !root.contains(e.target as Node)) setOpen(false);
     };
     const onKey = (e: KeyboardEvent) => {
@@ -299,7 +299,7 @@ function PopoverPopup({
       hidden={enhanced || open ? undefined : true}
       aria-labelledby={ctx.hasTitle ? ctx.titleId : undefined}
       aria-describedby={ctx.hasDescription ? ctx.descriptionId : undefined}
-      className={cx("fui-Popover-popup", className)}
+      className={cx("loam-Popover-popup", className)}
       data-position={position}
       data-open={open || undefined}
       style={{ ...style, positionAnchor: ctx.anchorName } as CSSProperties}
@@ -342,7 +342,7 @@ export interface PopoverCloseRenderProps {
 }
 
 export interface PopoverCloseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  /** Substitute your own element; defaults to a FarmUI Button. */
+  /** Substitute your own element; defaults to a LoamUI Button. */
   render?: RenderProp<PopoverCloseRenderProps>;
 }
 

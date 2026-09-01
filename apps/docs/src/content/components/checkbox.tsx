@@ -1,10 +1,10 @@
-import { Checkbox } from "@farmui/core";
+import { Checkbox } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
 
 const doc: ComponentContent = {
   slug: "checkbox",
   lead: "A native checkbox with an adjacent label and description.",
-  importLine: `import { Checkbox, CheckboxControl } from "@farmui/core";`,
+  importLine: `import { Checkbox, CheckboxControl } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",

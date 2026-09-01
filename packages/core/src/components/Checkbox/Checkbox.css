@@ -1,9 +1,9 @@
 /* The control is a native checkbox — the elements layer paints it with
    accent-color (the neutral primary). The component adds only a comfortable
    size, the invalid affordance, and the label row. */
-@scope (.fui-Checkbox) {
+@scope (.loam-Checkbox) {
   :scope {
-    accent-color: var(--fui-color-primary);
+    accent-color: var(--loam-color-primary);
     block-size: 1.15em;
     flex-shrink: 0;
     inline-size: 1.15em;
@@ -15,23 +15,23 @@
        replaces the elements-layer :focus-visible ring; the focus ring itself
        turns danger-coloured. Mirrors Switch. */
     &[aria-invalid="true"] {
-      --fui-color-ring: var(--fui-color-danger-ring);
+      --loam-color-ring: var(--loam-color-danger-ring);
 
-      box-shadow: 0 0 0 2px var(--fui-color-danger);
+      box-shadow: 0 0 0 2px var(--loam-color-danger);
     }
   }
 }
 
 /* The labelled form: an inline row with the control beside its text.
    Donut: the label body hosts consumer content. */
-@scope (.fui-Checkbox-wrapper) to ([class*="fui-"]) {
+@scope (.loam-Checkbox-wrapper) to ([class*="loam-"]) {
   :scope {
     display: block flex;
     flex-direction: column;
-    gap: var(--fui-space-xs);
+    gap: var(--loam-space-xs);
 
     &[data-disabled] {
-      opacity: var(--fui-disabled-opacity);
+      opacity: var(--loam-disabled-opacity);
     }
   }
 
@@ -39,7 +39,7 @@
     align-items: flex-start;
     cursor: pointer;
     display: block flex;
-    gap: var(--fui-space-sm);
+    gap: var(--loam-space-sm);
 
     &:has(input:disabled) {
       cursor: not-allowed;
@@ -53,13 +53,13 @@
   }
 
   span.label {
-    font-size: var(--fui-text-sm);
+    font-size: var(--loam-text-sm);
     font-weight: 500;
     line-height: 1.35;
   }
 
   span.description {
-    color: var(--fui-color-fg-muted);
-    font-size: var(--fui-text-xs);
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-xs);
   }
 }

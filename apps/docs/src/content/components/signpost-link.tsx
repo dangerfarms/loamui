@@ -1,10 +1,10 @@
-import { SignpostLink } from "@farmui/core";
+import { SignpostLink } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
 
 const doc: ComponentContent = {
   slug: "signpost-link",
   lead: "A prominent navigational link: the signpost to a task's starting point.",
-  importLine: `import { SignpostLink } from "@farmui/core";`,
+  importLine: `import { SignpostLink } from "@loamui/core";`,
   contextual: true,
   demos: [
     {
@@ -18,11 +18,11 @@ const doc: ComponentContent = {
       title: "Contexts",
       description:
         "The arrow's circle is a solid status fill, so a context region recolours it like any other component.",
-      code: `<div style={{ "--fui-context": "danger" }}>
+      code: `<div style={{ "--loam-context": "danger" }}>
   <SignpostLink href="#appeal">Appeal this decision</SignpostLink>
 </div>`,
       render: () => (
-        <div style={{ "--fui-context": "danger" } as React.CSSProperties}>
+        <div style={{ "--loam-context": "danger" } as React.CSSProperties}>
           <SignpostLink href="#appeal">Appeal this decision</SignpostLink>
         </div>
       ),

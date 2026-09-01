@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Field, Input, Popover } from "@farmui/core";
+import { Button, Field, Input, Popover } from "@loamui/core";
 
 export function PopoverDemo() {
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { Fieldset, Checkbox, Radio, RadioGroup } from "@farmui/core";
+import { Fieldset, Checkbox, Radio, RadioGroup } from "@loamui/core";
 
 export function FieldsetCheckboxDemo() {
   return (

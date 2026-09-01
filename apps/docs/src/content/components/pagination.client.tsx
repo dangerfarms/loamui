@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Pagination } from "@farmui/core";
+import { Pagination } from "@loamui/core";
 
 const pageHref = (page: number) => `?page=${page}`;
 

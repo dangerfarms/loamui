@@ -66,7 +66,7 @@ describe("Button render polymorphism", () => {
     render(<Button render={<a href="/signup" />}>Get started</Button>);
     const link = screen.getByRole("link", { name: "Get started" });
     expect(link).toHaveAttribute("href", "/signup");
-    expect(link).toHaveClass("fui-Button");
+    expect(link).toHaveClass("loam-Button");
   });
 });
 

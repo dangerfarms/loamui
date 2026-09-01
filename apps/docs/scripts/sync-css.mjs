@@ -1,4 +1,4 @@
-// Copies the built FarmUI stylesheets into public/ so they're served as
+// Copies the built LoamUI stylesheets into public/ so they're served as
 // static files (<link> in layout.tsx) instead of being re-parsed by the app
 // bundler. The library CSS is a finished build artifact — and it uses
 // ahead-of-toolchain syntax (e.g. `@container anchored()`) that lightningcss
@@ -14,7 +14,7 @@ const publicDir = join(here, "..", "public");
 
 mkdirSync(publicDir, { recursive: true });
 
-for (const [pkg, out] of [["core", "farmui-core.css"]]) {
+for (const [pkg, out] of [["core", "loamui-core.css"]]) {
   copyFileSync(join(repo, "packages", pkg, "dist", "styles.css"), join(publicDir, out));
 }
 console.log("sync-css: copied core stylesheet to public/");

@@ -192,8 +192,8 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
           </h2>
           {doc.contextual && (
             <p className={classes.demoDesc}>
-              Status is not a prop: it comes from the surrounding <code>--fui-context</code> region.
-              See the <a href="/docs/contextualism">Contextualism guide</a>.
+              Status is not a prop: it comes from the surrounding <code>--loam-context</code>{" "}
+              region. See the <a href="/docs/contextualism">Contextualism guide</a>.
             </p>
           )}
           <PropsTable rows={doc.props} />

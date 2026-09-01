@@ -699,7 +699,7 @@ describe("Popover", () => {
       </Popover.Root>,
     );
     const trigger = screen.getByRole("button", { name: "Menu" });
-    expect(trigger).toHaveClass("fui-Button");
+    expect(trigger).toHaveClass("loam-Button");
     expect(trigger).toHaveAttribute("aria-haspopup", "dialog");
 
     await user.click(trigger);
@@ -840,7 +840,7 @@ describe("SignpostLink", () => {
     );
     const link = screen.getByRole("link", { name: "Start your application" });
     expect(link).toHaveAttribute("data-router-link");
-    expect(link).toHaveClass("fui-SignpostLink");
+    expect(link).toHaveClass("loam-SignpostLink");
   });
 
   it("a label on the substituted element is wrapped in the arrow anatomy", () => {

@@ -8,7 +8,7 @@ const meta = {
   render: (args) => (
     <Card {...args} style={{ maxWidth: "20rem" }}>
       <h3 style={{ margin: "0 0 0.5rem" }}>North Field</h3>
-      <p style={{ margin: 0, color: "var(--fui-color-fg-muted)" }}>
+      <p style={{ margin: 0, color: "var(--loam-color-fg-muted)" }}>
         42 hectares of winter wheat, sown last October and on track for an early-August harvest.
       </p>
     </Card>

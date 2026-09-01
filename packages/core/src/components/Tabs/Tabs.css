@@ -1,47 +1,47 @@
-@scope (.fui-Tabs) {
+@scope (.loam-Tabs) {
   :scope {
     display: block flex;
     flex-direction: column;
-    gap: var(--fui-space-lg);
+    gap: var(--loam-space-lg);
     inline-size: 100%;
   }
 }
 
 /*
  * The list is scoped to its own root: Tabs.List renders without the
- * .fui-Tabs class on it (and, unlike Tab/Panel, is not context-guarded).
+ * .loam-Tabs class on it (and, unlike Tab/Panel, is not context-guarded).
  */
-@scope (.fui-Tabs-list) {
+@scope (.loam-Tabs-list) {
   :scope {
-    border-block-end: 1px solid var(--fui-color-line);
+    border-block-end: 1px solid var(--loam-color-line);
     display: block flex;
-    gap: var(--fui-space-xs);
+    gap: var(--loam-space-xs);
   }
 }
 
 /* Tab and Panel can only render inside <Tabs> (their context throws outside). */
-@scope (.fui-Tabs) to ([class*="fui-"]) {
+@scope (.loam-Tabs) to ([class*="loam-"]) {
   button.tab {
     align-items: center;
     background: transparent;
     border: none;
     border-block-end: 2px solid transparent;
-    border-radius: var(--fui-radius-sm) var(--fui-radius-sm) 0 0;
+    border-radius: var(--loam-radius-sm) var(--loam-radius-sm) 0 0;
     box-shadow: none;
-    color: var(--fui-color-fg-muted);
+    color: var(--loam-color-fg-muted);
     display: inline flex;
     font-family: inherit;
-    font-size: var(--fui-text-sm);
+    font-size: var(--loam-text-sm);
     font-weight: 600;
-    gap: var(--fui-space-sm);
+    gap: var(--loam-space-sm);
     line-height: 1;
     margin-block-end: -1px;
-    padding-block: var(--fui-space-md);
-    padding-inline: var(--fui-space-lg);
+    padding-block: var(--loam-space-md);
+    padding-inline: var(--loam-space-lg);
     position: relative;
 
     &:focus-visible {
-      border-radius: var(--fui-radius-sm) var(--fui-radius-sm) 0 0;
+      border-radius: var(--loam-radius-sm) var(--loam-radius-sm) 0 0;
     }
 
     &:disabled {
@@ -49,25 +49,25 @@
     }
 
     &[data-active] {
-      border-block-end-color: var(--fui-color-primary);
-      color: var(--fui-color-primary);
+      border-block-end-color: var(--loam-color-primary);
+      color: var(--loam-color-primary);
     }
 
     @media (prefers-reduced-motion: no-preference) {
       transition:
-        color var(--fui-duration-sm) var(--fui-ease),
-        border-color var(--fui-duration-sm) var(--fui-ease),
-        background var(--fui-duration-sm) var(--fui-ease);
+        color var(--loam-duration-sm) var(--loam-ease),
+        border-color var(--loam-duration-sm) var(--loam-ease),
+        background var(--loam-duration-sm) var(--loam-ease);
     }
 
     @media (hover: hover) {
       &:hover:not(:disabled) {
         background: color-mix(
           in oklch,
-          var(--fui-color-primary-soft) 50%,
+          var(--loam-color-primary-soft) 50%,
           transparent
         );
-        color: var(--fui-color-fg);
+        color: var(--loam-color-fg);
       }
     }
   }
@@ -85,11 +85,11 @@
   }
 
   div.panel {
-    font-size: var(--fui-text-md);
+    font-size: var(--loam-text-md);
     line-height: 1.55;
 
     &:focus-visible {
-      border-radius: var(--fui-radius-sm);
+      border-radius: var(--loam-radius-sm);
     }
   }
 

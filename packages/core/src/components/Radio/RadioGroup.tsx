@@ -96,7 +96,7 @@ export function RadioGroup({
         // radiogroup (not the fieldset's implicit group): the precise role,
         // and the one ARIA allows aria-invalid on.
         role="radiogroup"
-        className={cx("fui-Radio-group", className)}
+        className={cx("loam-Radio-group", className)}
         aria-describedby={cx(descId, errId) || undefined}
         aria-invalid={invalid || undefined}
         onInvalid={() => setNativeInvalid(true)}
@@ -110,7 +110,7 @@ export function RadioGroup({
         )}
         {error && (
           <span className="error" id={errId} role="alert">
-            <span className="fui-Error-prefix">Error: </span>
+            <span className="loam-Error-prefix">Error: </span>
             {error}
           </span>
         )}

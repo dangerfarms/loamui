@@ -13,20 +13,20 @@
   }
 
   h2 {
-    font-size: var(--fui-text-xl);
+    font-size: var(--loam-text-xl);
     font-weight: 700;
     margin-block: 2.5rem 1rem;
     scroll-margin-block-start: 5rem;
   }
 
   h3 {
-    font-size: var(--fui-text-lg);
+    font-size: var(--loam-text-lg);
     font-weight: 650;
     margin-block: 1.75rem 0.6rem;
   }
 
   p {
-    color: var(--fui-color-fg);
+    color: var(--loam-color-fg);
     margin-block-end: 1rem;
     text-wrap: pretty;
   }
@@ -34,13 +34,13 @@
   /* The lead is the paragraph that opens a page (immediately after its
      h1) — styled by position, no wrapper class. */
   h1 + p {
-    color: var(--fui-color-fg-muted);
-    font-size: var(--fui-text-lg);
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-lg);
     margin-block-end: 2rem;
   }
 
   a {
-    color: var(--fui-color-primary);
+    color: var(--loam-color-primary);
     font-weight: 550;
     text-decoration: underline;
     text-underline-offset: 2px;
@@ -55,14 +55,14 @@
   }
 
   li {
-    color: var(--fui-color-fg);
+    color: var(--loam-color-fg);
   }
 
   code {
-    background: var(--fui-color-bg-subtle);
-    border: 1px solid var(--fui-color-line);
-    border-radius: var(--fui-radius-sm);
-    font-family: var(--fui-font-mono);
+    background: var(--loam-color-bg-subtle);
+    border: 1px solid var(--loam-color-line);
+    border-radius: var(--loam-radius-sm);
+    font-family: var(--loam-font-mono);
     font-size: 0.85em;
     padding: 0.1rem 0.35rem;
   }
@@ -73,15 +73,20 @@
 }
 
 .callout {
-  background: var(--fui-color-primary-soft);
-  border: 1px solid
-    color-mix(in oklab, var(--fui-color-primary), var(--fui-color-line) 55%);
-  border-radius: var(--fui-radius-md);
-  font-size: var(--fui-text-sm);
+  background: var(--loam-color-info-soft);
+  border: 1px solid color-mix(in oklab, var(--loam-color-info), transparent 65%);
+  border-radius: var(--loam-radius-md);
+  font-size: var(--loam-text-sm);
   margin-block: 1.5rem;
-  padding: 1rem 1.15rem;
+  padding: var(--loam-space-lg);
+
+  /* The last block's own margin would stack under the padding, making the
+     bottom gap larger than the top — reset it so the padding reads even. */
+  > :last-child {
+    margin-block-end: 0;
+  }
 
   code {
-    background: color-mix(in oklch, var(--fui-color-bg) 60%, transparent);
+    background: color-mix(in oklch, var(--loam-color-bg) 60%, transparent);
   }
 }

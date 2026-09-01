@@ -1,10 +1,10 @@
-import { Separator } from "@farmui/core";
+import { Separator } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
 
 const doc: ComponentContent = {
   slug: "separator",
   lead: "A native <hr> for boundaries that mean something: announced as a separator, not just drawn as a line.",
-  importLine: `import { Separator } from "@farmui/core";`,
+  importLine: `import { Separator } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",

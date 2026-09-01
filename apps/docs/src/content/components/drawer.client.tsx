@@ -1,7 +1,7 @@
 "use client";
 
-import { Drawer } from "@farmui/core";
-import type { DrawerSide } from "@farmui/core";
+import { Drawer } from "@loamui/core";
+import type { DrawerSide } from "@loamui/core";
 
 const navLinks = ["Dashboard", "Orders", "Customers", "Settings"];
 
@@ -11,15 +11,15 @@ function DrawerNav() {
       style={{
         display: "flex",
         flexDirection: "column",
-        gap: "var(--fui-space-md)",
-        marginBlock: "var(--fui-space-sm)",
+        gap: "var(--loam-space-md)",
+        marginBlock: "var(--loam-space-sm)",
       }}
     >
       {navLinks.map((label) => (
         <a
           key={label}
           href={`#${label.toLowerCase()}`}
-          style={{ color: "var(--fui-color-fg)", textDecoration: "none" }}
+          style={{ color: "var(--loam-color-fg)", textDecoration: "none" }}
         >
           {label}
         </a>
@@ -48,7 +48,7 @@ export function DrawerSidesDemo() {
       style={{
         display: "flex",
         flexWrap: "wrap",
-        gap: "var(--fui-space-sm)",
+        gap: "var(--loam-space-sm)",
         alignItems: "center",
       }}
     >
@@ -74,7 +74,7 @@ export function DrawerSizesDemo() {
       style={{
         display: "flex",
         flexWrap: "wrap",
-        gap: "var(--fui-space-sm)",
+        gap: "var(--loam-space-sm)",
         alignItems: "center",
       }}
     >
@@ -102,7 +102,7 @@ export function DrawerHeaderCloseDemo() {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBlockEnd: "var(--fui-space-sm)",
+            marginBlockEnd: "var(--loam-space-sm)",
           }}
         >
           <Drawer.Title style={{ margin: 0 }}>Filters</Drawer.Title>

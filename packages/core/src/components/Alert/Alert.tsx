@@ -7,7 +7,7 @@ export interface AlertRootProps extends Omit<HTMLAttributes<HTMLDivElement>, "co
 
 function AlertRoot({ className, children, ref, ...rest }: AlertRootProps) {
   return (
-    <div ref={ref} role="alert" className={cx("fui-Alert", className)} {...rest}>
+    <div ref={ref} role="alert" className={cx("loam-Alert", className)} {...rest}>
       {children}
     </div>
   );
@@ -59,13 +59,13 @@ export interface AlertProps extends Omit<AlertRootProps, "title"> {
 /**
  * A prominent message box for conveying status or feedback.
  *
- * Neutral until a --fui-context region says otherwise: declare
- * `--fui-context` on a region (an ancestor — a style query never matches
+ * Neutral until a --loam-context region says otherwise: declare
+ * `--loam-context` on a region (an ancestor — a style query never matches
  * the element that declares it, so a one-element region is a wrapper) and
  * the look derives from that status's colour:
  *
  * ```tsx
- * <div style={{ "--fui-context": "warning" } as React.CSSProperties}>
+ * <div style={{ "--loam-context": "warning" } as React.CSSProperties}>
  *   <Alert title="Heads up">A new version is available.</Alert>
  * </div>
  * ```

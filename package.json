@@ -1,5 +1,5 @@
 {
-  "name": "farmui-monorepo",
+  "name": "loamui-monorepo",
   "private": true,
   "scripts": {
     "build": "turbo run build",

@@ -4,7 +4,7 @@ import { ToastActionDemo, ToastDemo, ToastPersistentDemo, ToastPriorityDemo } fr
 const doc: ComponentContent = {
   slug: "toast",
   lead: "Transient notifications announced by native live regions and rendered in the browser's top layer.",
-  importLine: `import { Button, Toast, Toasts, useToast } from "@farmui/core";`,
+  importLine: `import { Button, Toast, Toasts, useToast } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",
@@ -162,7 +162,7 @@ const doc: ComponentContent = {
     {
       name: "Toast.Action",
       description:
-        "A FarmUI Button inside a toast; activating it runs onAction and dismisses that toast. Native <button> props are forwarded.",
+        "A LoamUI Button inside a toast; activating it runs onAction and dismisses that toast. Native <button> props are forwarded.",
       props: [
         {
           name: "toastId",

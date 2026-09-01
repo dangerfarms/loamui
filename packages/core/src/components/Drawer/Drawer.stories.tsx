@@ -13,7 +13,7 @@ const meta = {
       <Drawer.Panel side="start">
         <Drawer.Title>Navigation</Drawer.Title>
         <Drawer.Description>Jump to a section of the app.</Drawer.Description>
-        <nav style={{ display: "flex", flexDirection: "column", gap: "var(--fui-space-md)" }}>
+        <nav style={{ display: "flex", flexDirection: "column", gap: "var(--loam-space-md)" }}>
           <a href="#dashboard">Dashboard</a>
           <a href="#orders">Orders</a>
           <a href="#customers">Customers</a>
@@ -42,7 +42,7 @@ export const Sides: Story = {
       style={{
         display: "flex",
         flexWrap: "wrap",
-        gap: "var(--fui-space-sm)",
+        gap: "var(--loam-space-sm)",
         alignItems: "center",
       }}
     >
@@ -69,7 +69,7 @@ export const Sizes: Story = {
       style={{
         display: "flex",
         flexWrap: "wrap",
-        gap: "var(--fui-space-sm)",
+        gap: "var(--loam-space-sm)",
         alignItems: "center",
       }}
     >
@@ -98,7 +98,7 @@ export const WithHeaderClose: Story = {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBlockEnd: "var(--fui-space-sm)",
+            marginBlockEnd: "var(--loam-space-sm)",
           }}
         >
           <Drawer.Title style={{ margin: 0 }}>Filters</Drawer.Title>

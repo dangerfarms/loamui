@@ -1,5 +1,5 @@
 import type { CSSProperties, HTMLAttributes, Ref } from "react";
-import { cx, type FarmUISize } from "../../utils";
+import { cx, type LoamUISize } from "../../utils";
 
 export interface LoaderProps extends Omit<HTMLAttributes<HTMLSpanElement>, "color"> {
   /**
@@ -7,13 +7,13 @@ export interface LoaderProps extends Omit<HTMLAttributes<HTMLSpanElement>, "colo
    * size comes from context: 1.5rem standalone, or the composing
    * component's answer (a Button sizes it at 1em, like its icons).
    */
-  size?: FarmUISize | number;
+  size?: LoamUISize | number;
   /** Accessible label announced to assistive tech. @default "Loading" */
   label?: string;
   ref?: Ref<HTMLSpanElement>;
 }
 
-const sizeVar: Record<FarmUISize, string> = {
+const sizeVar: Record<LoamUISize, string> = {
   sm: "1rem",
   md: "1.5rem",
   lg: "2.25rem",
@@ -22,7 +22,7 @@ const sizeVar: Record<FarmUISize, string> = {
 /**
  * An animated indicator for pending, indeterminate work.
  *
- * Coloured by the brand token, so a `--fui-context` region recolours it
+ * Coloured by the brand token, so a `--loam-context` region recolours it
  * with no prop; the parts draw with `currentColor`, so a plain `color:`
  * declaration on the loader (or an ancestor's channel) overrides.
  */
@@ -41,7 +41,7 @@ export function Loader({ size, label = "Loading", className, style, ref, ...rest
       ref={ref}
       role="status"
       aria-label={label}
-      className={cx("fui-Loader", className)}
+      className={cx("loam-Loader", className)}
       style={vars}
       {...rest}
     >

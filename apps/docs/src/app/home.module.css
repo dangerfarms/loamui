@@ -9,7 +9,7 @@
 .heroBg {
   background: radial-gradient(
     ellipse 60% 50% at 50% -10%,
-    color-mix(in oklch, var(--fui-color-primary) 22%, transparent),
+    color-mix(in oklch, var(--loam-color-primary) 22%, transparent),
     transparent 70%
   );
   inset: 0;
@@ -19,8 +19,8 @@
 
 .heroBg::after {
   background-image:
-    linear-gradient(var(--fui-color-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--fui-color-line) 1px, transparent 1px);
+    linear-gradient(var(--loam-color-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--loam-color-line) 1px, transparent 1px);
   background-size: 3rem 3rem;
   content: "";
   inset: 0;
@@ -46,22 +46,22 @@
 
 .badgeRow {
   align-items: center;
-  background: var(--fui-color-surface);
-  border: 1px solid var(--fui-color-line);
-  border-radius: var(--fui-radius-full);
-  color: var(--fui-color-fg-muted);
+  background: var(--loam-color-surface);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-full);
+  color: var(--loam-color-fg-muted);
   display: inline flex;
-  font-size: var(--fui-text-sm);
+  font-size: var(--loam-text-sm);
   gap: 0.5rem;
   margin-block-end: 1.5rem;
   padding: 0.3rem 0.5rem;
 }
 
 .badgePill {
-  background: var(--fui-color-primary);
-  border-radius: var(--fui-radius-full);
-  color: var(--fui-color-on-strong);
-  font-size: var(--fui-text-xs);
+  background: var(--loam-color-primary);
+  border-radius: var(--loam-radius-full);
+  color: var(--loam-color-on-strong);
+  font-size: var(--loam-text-xs);
   font-weight: 700;
   padding: 0.15rem 0.6rem;
 }
@@ -75,7 +75,7 @@
 }
 
 .subtitle {
-  color: var(--fui-color-fg-muted);
+  color: var(--loam-color-fg-muted);
   font-size: clamp(1.05rem, 0.9786rem + 0.3571vi, 1.3rem);
   margin-block: 1.5rem;
   max-inline-size: 34rem;
@@ -92,9 +92,9 @@
 /* Secondary navigation beside a SignpostLink. */
 .plainLink {
   align-items: center;
-  color: var(--fui-color-fg);
+  color: var(--loam-color-fg);
   display: inline flex;
-  font-size: var(--fui-text-md);
+  font-size: var(--loam-text-md);
   font-weight: 600;
   gap: 0.5rem;
   padding-block: 0.65rem;
@@ -102,37 +102,37 @@
 
 .install {
   align-items: center;
-  background: var(--fui-color-bg-subtle);
-  border: 1px solid var(--fui-color-line);
-  border-radius: var(--fui-radius-md);
-  color: var(--fui-color-fg);
+  background: var(--loam-color-bg-subtle);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-md);
+  color: var(--loam-color-fg);
   display: inline flex;
-  font-family: var(--fui-font-mono);
-  font-size: var(--fui-text-sm);
+  font-family: var(--loam-font-mono);
+  font-size: var(--loam-text-sm);
   gap: 0.75rem;
   margin-block-start: 1.5rem;
   padding: 0.6rem 0.6rem 0.6rem 1rem;
 }
 
 .installPrompt {
-  color: var(--fui-color-fg-dim);
+  color: var(--loam-color-fg-dim);
 }
 
 .installCopy {
-  background: var(--fui-color-surface);
-  border: 1px solid var(--fui-color-line);
-  border-radius: var(--fui-radius-sm);
+  background: var(--loam-color-surface);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-sm);
   box-shadow: none;
-  color: var(--fui-color-fg-muted);
+  color: var(--loam-color-fg-muted);
   cursor: pointer;
-  font-family: var(--fui-font);
-  font-size: var(--fui-text-xs);
+  font-family: var(--loam-font);
+  font-size: var(--loam-text-xs);
   font-weight: 600;
   margin-inline-start: 0.25rem;
   padding: 0.3rem 0.55rem;
 
   &:hover {
-    color: var(--fui-color-fg);
+    color: var(--loam-color-fg);
   }
 }
 
@@ -142,10 +142,10 @@
 }
 
 .showcaseCard {
-  background: var(--fui-color-surface);
-  border: 1px solid var(--fui-color-line);
-  border-radius: var(--fui-radius-xl);
-  box-shadow: var(--fui-shadow-lg);
+  background: var(--loam-color-surface);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-xl);
+  box-shadow: var(--loam-shadow-lg);
   display: block flex;
   flex-direction: column;
   gap: 1rem;
@@ -164,26 +164,26 @@
 }
 
 .showcaseHandle {
-  color: var(--fui-color-fg-muted);
-  font-size: var(--fui-text-sm);
+  color: var(--loam-color-fg-muted);
+  font-size: var(--loam-text-sm);
 }
 
 .showcaseRow {
   align-items: center;
-  border-block-start: 1px solid var(--fui-color-line);
+  border-block-start: 1px solid var(--loam-color-line);
   display: block flex;
-  font-size: var(--fui-text-sm);
+  font-size: var(--loam-text-sm);
   gap: 1rem;
   justify-content: space-between;
   padding-block: 0.5rem;
 }
 
 .showcaseLabel {
-  color: var(--fui-color-fg-muted);
+  color: var(--loam-color-fg-muted);
 }
 
 .showcaseSwitch {
-  color: var(--fui-color-fg-muted);
+  color: var(--loam-color-fg-muted);
   flex: 1;
   justify-content: space-between;
 }
@@ -211,16 +211,16 @@
 }
 
 .sectionSub {
-  color: var(--fui-color-fg-muted);
-  font-size: var(--fui-text-lg);
+  color: var(--loam-color-fg-muted);
+  font-size: var(--loam-text-lg);
   margin-block-start: 0.85rem;
 }
 
 /* ---------- Stats ---------- */
 .stats {
-  background: var(--fui-color-bg-subtle);
-  border: 1px solid var(--fui-color-line);
-  border-radius: var(--fui-radius-xl);
+  background: var(--loam-color-bg-subtle);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-xl);
   display: block grid;
   gap: 1rem;
   grid-template-columns: repeat(4, 1fr);
@@ -243,8 +243,8 @@
 }
 
 .statLabel {
-  color: var(--fui-color-fg-muted);
-  font-size: var(--fui-text-sm);
+  color: var(--loam-color-fg-muted);
+  font-size: var(--loam-text-sm);
 }
 
 /* ---------- Feature grid ---------- */
@@ -263,25 +263,25 @@
 }
 
 .feature {
-  background: var(--fui-color-surface);
-  border: 1px solid var(--fui-color-line);
-  border-radius: var(--fui-radius-lg);
+  background: var(--loam-color-surface);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-lg);
   padding: 1.5rem;
   transition:
-    border-color var(--fui-duration-md) var(--fui-ease),
-    transform var(--fui-duration-md) var(--fui-ease);
+    border-color var(--loam-duration-md) var(--loam-ease),
+    transform var(--loam-duration-md) var(--loam-ease);
 
   &:hover {
-    border-color: var(--fui-color-line-strong);
+    border-color: var(--loam-color-line-strong);
     transform: translateY(-2px);
   }
 }
 
 .featureIcon {
-  background: var(--fui-color-primary-soft);
+  background: var(--loam-color-primary-soft);
   block-size: 2.5rem;
-  border-radius: var(--fui-radius-md);
-  color: var(--fui-color-primary);
+  border-radius: var(--loam-radius-md);
+  color: var(--loam-color-primary);
   display: block grid;
   inline-size: 2.5rem;
   margin-block-end: 1rem;
@@ -289,18 +289,18 @@
 }
 
 .featureTitle {
-  font-size: var(--fui-text-lg);
+  font-size: var(--loam-text-lg);
   font-weight: 700;
   margin-block-end: 0.4rem;
 }
 
 .featureText {
-  color: var(--fui-color-fg-muted);
-  font-size: var(--fui-text-sm);
+  color: var(--loam-color-fg-muted);
+  font-size: var(--loam-text-sm);
 
   code {
-    color: var(--fui-color-primary);
-    font-family: var(--fui-font-mono);
+    color: var(--loam-color-primary);
+    font-family: var(--loam-font-mono);
     font-size: 0.85em;
   }
 }
@@ -318,18 +318,18 @@
 
 .shout {
   align-items: center;
-  background: var(--fui-color-surface);
-  border: 1px solid var(--fui-color-line);
-  border-radius: var(--fui-radius-full);
-  color: var(--fui-color-fg);
+  background: var(--loam-color-surface);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-full);
+  color: var(--loam-color-fg);
   display: inline flex;
-  font-size: var(--fui-text-sm);
+  font-size: var(--loam-text-sm);
   font-weight: 550;
   gap: 0.4rem;
   padding: 0.4rem 0.8rem;
 
   svg {
-    color: var(--fui-color-primary);
+    color: var(--loam-color-primary);
   }
 }
 
@@ -346,22 +346,22 @@
 }
 
 .compareCol {
-  background: var(--fui-color-surface);
-  border: 1px solid var(--fui-color-line);
-  border-radius: var(--fui-radius-lg);
+  background: var(--loam-color-surface);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-lg);
   min-inline-size: 0;
   padding: 1.25rem;
 
   &[data-good] {
     background: color-mix(
       in oklch,
-      var(--fui-color-primary-soft) 40%,
-      var(--fui-color-surface)
+      var(--loam-color-primary-soft) 40%,
+      var(--loam-color-surface)
     );
     border-color: color-mix(
       in oklch,
-      var(--fui-color-primary) 40%,
-      var(--fui-color-line)
+      var(--loam-color-primary) 40%,
+      var(--loam-color-line)
     );
   }
 }
@@ -375,35 +375,35 @@
 }
 
 .compareTag {
-  color: var(--fui-color-primary);
-  font-size: var(--fui-text-xs);
+  color: var(--loam-color-primary);
+  font-size: var(--loam-text-xs);
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 
   &[data-alt] {
-    color: var(--fui-color-fg-muted);
+    color: var(--loam-color-fg-muted);
   }
 }
 
 .compareNote {
-  color: var(--fui-color-fg-muted);
-  font-size: var(--fui-text-sm);
+  color: var(--loam-color-fg-muted);
+  font-size: var(--loam-text-sm);
   margin-block-start: 1rem;
 }
 
 /* A hand-rolled "utility-class" button, for the comparison only */
 .rawBtn {
   align-items: center;
-  background: color-mix(in oklch, var(--fui-color-primary) 12%, transparent);
+  background: color-mix(in oklch, var(--loam-color-primary) 12%, transparent);
   block-size: 2.5rem;
   border: none;
-  border-radius: var(--fui-radius-md);
+  border-radius: var(--loam-radius-md);
   box-shadow: none;
-  color: var(--fui-color-primary);
+  color: var(--loam-color-primary);
   cursor: pointer;
   display: inline flex;
-  font-size: var(--fui-text-sm);
+  font-size: var(--loam-text-sm);
   font-weight: 500;
   justify-content: center;
   padding-inline: 1rem;
@@ -428,47 +428,47 @@
 }
 
 .techCard {
-  background: var(--fui-color-surface);
-  border: 1px solid var(--fui-color-line);
-  border-radius: var(--fui-radius-lg);
+  background: var(--loam-color-surface);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-lg);
   display: block flex;
   flex-direction: column;
   gap: 0.6rem;
   padding: 1.25rem;
   transition:
-    border-color var(--fui-duration-md) var(--fui-ease),
-    transform var(--fui-duration-md) var(--fui-ease);
+    border-color var(--loam-duration-md) var(--loam-ease),
+    transform var(--loam-duration-md) var(--loam-ease);
 
   &:hover {
-    border-color: var(--fui-color-primary);
+    border-color: var(--loam-color-primary);
     transform: translateY(-2px);
   }
 }
 
 .techName {
   align-self: flex-start;
-  background: var(--fui-color-primary-soft);
-  border-radius: var(--fui-radius-sm);
-  color: var(--fui-color-primary);
-  font-family: var(--fui-font-mono);
-  font-size: var(--fui-text-sm);
+  background: color-mix(in oklab, var(--loam-color-accent) 14%, transparent);
+  border-radius: var(--loam-radius-sm);
+  color: var(--loam-color-accent);
+  font-family: var(--loam-font-mono);
+  font-size: var(--loam-text-sm);
   font-weight: 700;
   padding: 0.2rem 0.5rem;
 }
 
 .techDesc {
-  color: var(--fui-color-fg-muted);
+  color: var(--loam-color-fg-muted);
   flex: 1;
-  font-size: var(--fui-text-sm);
+  font-size: var(--loam-text-sm);
 }
 
 .techCode {
-  background: var(--fui-color-bg-subtle);
-  border: 1px solid var(--fui-color-line);
-  border-radius: var(--fui-radius-sm);
-  color: var(--fui-color-fg);
-  font-family: var(--fui-font-mono);
-  font-size: var(--fui-text-xs);
+  background: var(--loam-color-bg-subtle);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-sm);
+  color: var(--loam-color-fg);
+  font-family: var(--loam-font-mono);
+  font-size: var(--loam-text-xs);
   line-height: 1.5;
   margin: 0;
   overflow-wrap: break-word;
@@ -498,17 +498,17 @@
 }
 
 .splitItem {
-  color: var(--fui-color-fg);
+  color: var(--loam-color-fg);
   display: block flex;
-  font-size: var(--fui-text-md);
+  font-size: var(--loam-text-md);
   gap: 0.6rem;
 }
 
 .splitCheck {
-  background: var(--fui-color-primary);
+  background: var(--loam-color-primary);
   block-size: 1.4rem;
-  border-radius: var(--fui-radius-full);
-  color: var(--fui-color-on-strong);
+  border-radius: var(--loam-radius-full);
+  color: var(--loam-color-on-strong);
   display: block grid;
   flex-shrink: 0;
   inline-size: 1.4rem;
@@ -531,29 +531,30 @@
 }
 
 .cat {
-  background: var(--fui-color-surface);
-  border: 1px solid var(--fui-color-line);
-  border-radius: var(--fui-radius-lg);
+  background: var(--loam-color-surface);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-lg);
   display: block flow;
   padding: 1.4rem;
   transition:
-    border-color var(--fui-duration-md) var(--fui-ease),
-    background var(--fui-duration-md) var(--fui-ease);
+    border-color var(--loam-duration-md) var(--loam-ease),
+    background var(--loam-duration-md) var(--loam-ease);
 
   &:hover {
-    background: var(--fui-color-primary-soft);
-    border-color: var(--fui-color-primary);
+    background: var(--loam-color-primary-soft);
+    border-color: var(--loam-color-primary);
   }
 }
 
 .catTitle {
+  color: var(--loam-color-accent);
   font-weight: 700;
   margin-block-end: 0.35rem;
 }
 
 .catItems {
-  color: var(--fui-color-fg-muted);
-  font-size: var(--fui-text-sm);
+  color: var(--loam-color-fg-muted);
+  font-size: var(--loam-text-sm);
 }
 
 /* ---------- Final CTA ---------- */
@@ -561,12 +562,12 @@
   background:
     radial-gradient(
       ellipse 80% 120% at 50% 0%,
-      color-mix(in oklch, var(--fui-color-primary) 20%, transparent),
+      color-mix(in oklch, var(--loam-color-primary) 20%, transparent),
       transparent 70%
     ),
-    var(--fui-color-bg-subtle);
-  border: 1px solid var(--fui-color-line);
-  border-radius: var(--fui-radius-xl);
+    var(--loam-color-bg-subtle);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-xl);
   margin-block: clamp(3rem, 2.429rem + 2.857vi, 5rem);
   overflow: hidden;
   padding: clamp(2.5rem, 1.929rem + 2.857vi, 4.5rem);
@@ -581,8 +582,8 @@
 }
 
 .ctaSub {
-  color: var(--fui-color-fg-muted);
-  font-size: var(--fui-text-lg);
+  color: var(--loam-color-fg-muted);
+  font-size: var(--loam-text-lg);
   margin-block: 1rem 2rem;
 }
 

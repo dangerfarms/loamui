@@ -1,11 +1,11 @@
-import { Switch } from "@farmui/core";
+import { Switch } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
 import { SwitchFieldDemo } from "./switch.client";
 
 const doc: ComponentContent = {
   slug: "switch",
   lead: "An on/off toggle for a single setting that takes effect immediately.",
-  importLine: `import { Field, Switch, SwitchControl } from "@farmui/core";`,
+  importLine: `import { Field, Switch, SwitchControl } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",

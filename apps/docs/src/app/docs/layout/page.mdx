@@ -7,22 +7,22 @@ export const metadata = {
 };
 
 export const box = {
-  background: "var(--fui-color-primary-soft)",
-  border: "1px solid var(--fui-color-line)",
-  borderRadius: "var(--fui-radius-sm)",
+  background: "var(--loam-color-primary-soft)",
+  border: "1px solid var(--loam-color-line)",
+  borderRadius: "var(--loam-radius-sm)",
   padding: "0.4rem 0.6rem",
-  fontSize: "var(--fui-text-sm)",
+  fontSize: "var(--loam-text-sm)",
 };
 
 export const stage = {
-  border: "1px solid var(--fui-color-line)",
-  borderRadius: "var(--fui-radius-md)",
+  border: "1px solid var(--loam-color-line)",
+  borderRadius: "var(--loam-radius-md)",
   padding: "1.25rem",
 };
 
 # Layout
 
-FarmUI ships no layout components. Layout is a native CSS concern, and the platform already has four layout modules that cover the cases a UI runs into. Pick the one that fits the shape of the content, write it in the component that owns that content, and reach for the space tokens for every gap. This page is itself laid out this way.
+LoamUI ships no layout components. Layout is a native CSS concern, and the platform already has four layout modules that cover the cases a UI runs into. Pick the one that fits the shape of the content, write it in the component that owns that content, and reach for the space tokens for every gap. This page is itself laid out this way.
 
 ## Pick the module by the shape of the content
 
@@ -55,7 +55,7 @@ Grid is the two-dimensional module: use it when rows and columns both matter. Pr
 @scope (.dashboard) {
   :scope {
     display: grid;
-    gap: var(--fui-space-lg);
+    gap: var(--loam-space-lg);
     grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
   }
 }
@@ -66,7 +66,7 @@ Grid is the two-dimensional module: use it when rows and columns both matter. Pr
     style={{
       ...stage,
       display: "grid",
-      gap: "var(--fui-space-md)",
+      gap: "var(--loam-space-md)",
       gridTemplateColumns: "repeat(auto-fit, minmax(min(8rem, 100%), 1fr))",
     }}
   >
@@ -86,14 +86,14 @@ Flex is the one-dimensional module: a row (or column) of items that share a line
   :scope {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--fui-space-sm);
+    gap: var(--loam-space-sm);
     align-items: safe center;
   }
 }
 ```
 
 <div className={prose.block}>
-  <div style={{ ...stage, display: "flex", flexWrap: "wrap", gap: "var(--fui-space-sm)" }}>
+  <div style={{ ...stage, display: "flex", flexWrap: "wrap", gap: "var(--loam-space-sm)" }}>
     <div style={box}>Save</div>
     <div style={box}>Save and continue</div>
     <div style={box}>Cancel</div>
@@ -108,7 +108,7 @@ Multi-column flows a single stream of text across balanced columns, the way a ne
 @scope (.article) {
   :scope {
     columns: 18rem;
-    gap: var(--fui-space-xl);
+    gap: var(--loam-space-xl);
   }
 }
 ```
@@ -119,11 +119,11 @@ Whichever module you pick, the gaps come from the fluid space scale, not hard-co
 
 ```css
 /* the scale, smallest to largest */
-gap: var(--fui-space-xs); /* 4px  → 4.5px  */
-gap: var(--fui-space-sm); /* 8px  → 9px    */
-gap: var(--fui-space-md); /* 12px → 13.5px */
-gap: var(--fui-space-lg); /* 16px → 18px   */
-gap: var(--fui-space-xl); /* 24px → 27px   */
+gap: var(--loam-space-xs); /* 4px  → 4.5px  */
+gap: var(--loam-space-sm); /* 8px  → 9px    */
+gap: var(--loam-space-md); /* 12px → 13.5px */
+gap: var(--loam-space-lg); /* 16px → 18px   */
+gap: var(--loam-space-xl); /* 24px → 27px   */
 ```
 
 <div className={prose.callout}>

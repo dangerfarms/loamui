@@ -1,6 +1,6 @@
 "use client";
 
-import { Field, Select } from "@farmui/core";
+import { Field, Select } from "@loamui/core";
 
 const countryOptions = (
   <>

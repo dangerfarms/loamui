@@ -157,7 +157,7 @@ export function Pagination({
   };
 
   return (
-    <nav aria-label={ariaLabel} className={cx("fui-Pagination", className)} {...rest}>
+    <nav aria-label={ariaLabel} className={cx("loam-Pagination", className)} {...rest}>
       <ul>
         {withEdges && (
           <li>{pageLink(1, "First page", <EdgeIcon dir="first" />, { disabled: atStart })}</li>

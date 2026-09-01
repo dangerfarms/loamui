@@ -6,7 +6,7 @@ import { MobileNav } from "./MobileNav";
 import { GitHubIcon } from "./Icons";
 import classes from "./Header.module.css";
 
-const GITHUB_URL = "https://github.com/dangerfarms/farmui";
+const GITHUB_URL = "https://github.com/dangerfarms/loamui";
 
 export function Header() {
   return (
@@ -31,7 +31,7 @@ export function Header() {
             href={GITHUB_URL}
             target="_blank"
             rel="noreferrer"
-            aria-label="FarmUI on GitHub"
+            aria-label="LoamUI on GitHub"
           >
             <GitHubIcon width={16} height={16} />
           </a>

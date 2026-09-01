@@ -1,14 +1,14 @@
 .wrap {
-  background: var(--fui-color-bg-subtle);
-  border: 1px solid var(--fui-color-line);
-  border-radius: var(--fui-radius-md);
+  background: var(--loam-color-bg-subtle);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-md);
   overflow: hidden;
   position: relative;
 }
 
 .pre {
   background: transparent;
-  font-size: var(--fui-text-sm);
+  font-size: var(--loam-text-sm);
   line-height: 1.6;
   margin: 0;
   overflow-inline: auto;
@@ -20,25 +20,25 @@
 }
 
 .copy {
-  background: var(--fui-color-surface);
-  border: 1px solid var(--fui-color-line);
-  border-radius: var(--fui-radius-sm);
+  background: var(--loam-color-surface);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-sm);
   box-shadow: none;
-  color: var(--fui-color-fg-muted);
+  color: var(--loam-color-fg-muted);
   cursor: pointer;
-  font-size: var(--fui-text-xs);
+  font-size: var(--loam-text-xs);
   font-weight: 600;
   inset-block-start: 0.5rem;
   inset-inline-end: 0.5rem;
   padding: 0.25rem 0.6rem;
   position: absolute;
   transition:
-    color var(--fui-duration-md) var(--fui-ease),
-    border-color var(--fui-duration-md) var(--fui-ease);
+    color var(--loam-duration-md) var(--loam-ease),
+    border-color var(--loam-duration-md) var(--loam-ease);
   z-index: 1;
 
   &:hover {
-    border-color: var(--fui-color-line-strong);
-    color: var(--fui-color-fg);
+    border-color: var(--loam-color-line-strong);
+    color: var(--loam-color-fg);
   }
 }

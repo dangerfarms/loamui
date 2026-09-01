@@ -10,7 +10,7 @@ import {
 const doc: ComponentContent = {
   slug: "select",
   lead: "A styled wrapper around a native select, accessible and zero-JS. Compose it inside a Field for its label, description and error.",
-  importLine: `import { Field, Select } from "@farmui/core";`,
+  importLine: `import { Field, Select } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",

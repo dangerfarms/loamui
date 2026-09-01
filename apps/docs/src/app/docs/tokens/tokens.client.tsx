@@ -15,14 +15,14 @@ const GROUPS: TokenGroup[] = [
     title: "Brand & status",
     note: "The colour decisions a theme makes. Primary is neutral (black/white) by default, the white-label starting point; accent is the chromatic flourish; success/danger/warning/info are the status hues; link and highlight round out the platform defaults.",
     tokens: [
-      "--fui-color-primary",
-      "--fui-color-accent",
-      "--fui-color-success",
-      "--fui-color-danger",
-      "--fui-color-warning",
-      "--fui-color-info",
-      "--fui-color-link",
-      "--fui-color-highlight",
+      "--loam-color-primary",
+      "--loam-color-accent",
+      "--loam-color-success",
+      "--loam-color-danger",
+      "--loam-color-warning",
+      "--loam-color-info",
+      "--loam-color-link",
+      "--loam-color-highlight",
     ],
     swatch: true,
   },
@@ -30,81 +30,81 @@ const GROUPS: TokenGroup[] = [
     title: "Neutrals",
     note: "Surfaces, text and borders.",
     tokens: [
-      "--fui-color-bg",
-      "--fui-color-bg-subtle",
-      "--fui-color-surface",
-      "--fui-color-fg",
-      "--fui-color-fg-strong",
-      "--fui-color-fg-muted",
-      "--fui-color-fg-dim",
-      "--fui-color-line",
-      "--fui-color-line-strong",
-      "--fui-color-on-strong",
+      "--loam-color-bg",
+      "--loam-color-bg-subtle",
+      "--loam-color-surface",
+      "--loam-color-fg",
+      "--loam-color-fg-strong",
+      "--loam-color-fg-muted",
+      "--loam-color-fg-dim",
+      "--loam-color-line",
+      "--loam-color-line-strong",
+      "--loam-color-on-strong",
     ],
     swatch: true,
   },
   {
     title: "Derived",
-    note: "Recipes, not decisions: soft tints, solid fills and rings computed from the hues. Rebrand --fui-color-primary and these follow.",
+    note: "Recipes, not decisions: soft tints, solid fills and rings computed from the hues. Rebrand --loam-color-primary and these follow.",
     tokens: [
-      "--fui-color-primary-soft",
-      "--fui-color-primary-strong",
-      "--fui-color-danger-soft",
-      "--fui-color-danger-strong",
-      "--fui-color-surface-hover",
-      "--fui-color-ring",
+      "--loam-color-primary-soft",
+      "--loam-color-primary-strong",
+      "--loam-color-danger-soft",
+      "--loam-color-danger-strong",
+      "--loam-color-surface-hover",
+      "--loam-color-ring",
     ],
     swatch: true,
   },
   {
     title: "Fonts",
     note: "Two families a theme can swap (body and display), plus a monospace for code. System by default.",
-    tokens: ["--fui-font", "--fui-font-display", "--fui-font-mono"],
+    tokens: ["--loam-font", "--loam-font-display", "--loam-font-mono"],
   },
   {
     title: "Type scale",
     note: "Fluid clamp() values in container units: they respond to the nearest container, or the viewport without one.",
     tokens: [
-      "--fui-text-xs",
-      "--fui-text-sm",
-      "--fui-text-md",
-      "--fui-text-lg",
-      "--fui-text-xl",
-      "--fui-text-2xl",
-      "--fui-text-3xl",
+      "--loam-text-xs",
+      "--loam-text-sm",
+      "--loam-text-md",
+      "--loam-text-lg",
+      "--loam-text-xl",
+      "--loam-text-2xl",
+      "--loam-text-3xl",
     ],
   },
   {
     title: "Spacing",
     note: "The same fluid construction; minimums are the fixed values, so nothing shrinks below them.",
     tokens: [
-      "--fui-space-xs",
-      "--fui-space-sm",
-      "--fui-space-md",
-      "--fui-space-lg",
-      "--fui-space-xl",
+      "--loam-space-xs",
+      "--loam-space-sm",
+      "--loam-space-md",
+      "--loam-space-lg",
+      "--loam-space-xl",
     ],
   },
   {
     title: "Radius & motion",
     note: "Deliberately fixed: rounding and durations don't breathe with the viewport.",
     tokens: [
-      "--fui-radius-sm",
-      "--fui-radius-md",
-      "--fui-radius-lg",
-      "--fui-radius-xl",
-      "--fui-radius-full",
-      "--fui-duration-sm",
-      "--fui-duration-md",
-      "--fui-duration-lg",
-      "--fui-ease",
-      "--fui-ease-elastic",
+      "--loam-radius-sm",
+      "--loam-radius-md",
+      "--loam-radius-lg",
+      "--loam-radius-xl",
+      "--loam-radius-full",
+      "--loam-duration-sm",
+      "--loam-duration-md",
+      "--loam-duration-lg",
+      "--loam-ease",
+      "--loam-ease-elastic",
     ],
   },
   {
     title: "Elevation",
     note: "Layered light-dark() shadows: a real drop in light; in dark the drop goes transparent and an inset top highlight carries the bevel, so the light source stays consistent.",
-    tokens: ["--fui-shadow-sm", "--fui-shadow-raised", "--fui-shadow-md", "--fui-shadow-lg"],
+    tokens: ["--loam-shadow-sm", "--loam-shadow-raised", "--loam-shadow-md", "--loam-shadow-lg"],
     shadow: true,
   },
 ];
@@ -133,11 +133,11 @@ export function ComputedTokens() {
       {GROUPS.map((g) => (
         <section key={g.title} style={{ minInlineSize: 0 }}>
           <h3 style={{ marginBlockEnd: "0.25rem" }}>{g.title}</h3>
-          <p style={{ color: "var(--fui-color-fg-muted)", marginBlockEnd: "0.75rem" }}>{g.note}</p>
+          <p style={{ color: "var(--loam-color-fg-muted)", marginBlockEnd: "0.75rem" }}>{g.note}</p>
           <div
             style={{
-              border: "1px solid var(--fui-color-line)",
-              borderRadius: "var(--fui-radius-md)",
+              border: "1px solid var(--loam-color-line)",
+              borderRadius: "var(--loam-radius-md)",
               overflow: "clip",
             }}
           >
@@ -146,10 +146,10 @@ export function ComputedTokens() {
                 key={t}
                 style={{
                   alignItems: "center",
-                  borderBlockStart: i > 0 ? "1px solid var(--fui-color-line)" : undefined,
+                  borderBlockStart: i > 0 ? "1px solid var(--loam-color-line)" : undefined,
                   display: "flex",
-                  fontFamily: "var(--fui-font-mono)",
-                  fontSize: "var(--fui-text-sm)",
+                  fontFamily: "var(--loam-font-mono)",
+                  fontSize: "var(--loam-text-sm)",
                   gap: "0.75rem",
                   padding: "0.5rem 0.75rem",
                 }}
@@ -160,8 +160,8 @@ export function ComputedTokens() {
                     style={{
                       background: `var(${t})`,
                       blockSize: "1.25rem",
-                      border: "1px solid var(--fui-color-line)",
-                      borderRadius: "var(--fui-radius-sm)",
+                      border: "1px solid var(--loam-color-line)",
+                      borderRadius: "var(--loam-radius-sm)",
                       display: "inline-block",
                       flexShrink: 0,
                       inlineSize: "1.25rem",
@@ -172,9 +172,9 @@ export function ComputedTokens() {
                   <span
                     aria-hidden
                     style={{
-                      background: "var(--fui-color-surface)",
+                      background: "var(--loam-color-surface)",
                       blockSize: "1.75rem",
-                      borderRadius: "var(--fui-radius-sm)",
+                      borderRadius: "var(--loam-radius-sm)",
                       boxShadow: `var(${t})`,
                       display: "inline-block",
                       flexShrink: 0,
@@ -185,7 +185,7 @@ export function ComputedTokens() {
                 <span style={{ flexShrink: 0 }}>{t}</span>
                 <span
                   style={{
-                    color: "var(--fui-color-fg-muted)",
+                    color: "var(--loam-color-fg-muted)",
                     marginInlineStart: "auto",
                     minInlineSize: 0,
                     overflow: "hidden",
@@ -201,7 +201,7 @@ export function ComputedTokens() {
           </div>
         </section>
       ))}
-      <p style={{ color: "var(--fui-color-fg-muted)", fontSize: "var(--fui-text-sm)" }}>
+      <p style={{ color: "var(--loam-color-fg-muted)", fontSize: "var(--loam-text-sm)" }}>
         Values are read live from the loaded stylesheet with getComputedStyle, in your current
         colour scheme; fluid values show their computed size at this viewport.
       </p>

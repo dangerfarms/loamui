@@ -1,6 +1,6 @@
 "use client";
 
-import { Field, Input } from "@farmui/core";
+import { Field, Input } from "@loamui/core";
 
 /** A field whose invalid state is detected from the rendered error message. */
 export function DetectedErrorDemo() {

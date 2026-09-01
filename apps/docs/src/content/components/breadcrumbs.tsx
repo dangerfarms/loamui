@@ -8,7 +8,7 @@ import type { ComponentContent } from "@/renderer/types";
 const doc: ComponentContent = {
   slug: "breadcrumbs",
   lead: "The path to the current page, with each ancestor a link back up the hierarchy.",
-  importLine: `import { Breadcrumbs } from "@farmui/core";`,
+  importLine: `import { Breadcrumbs } from "@loamui/core";`,
   demos: [
     {
       title: "Basic",

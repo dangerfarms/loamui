@@ -1,6 +1,6 @@
 "use client";
 
-import { Modal } from "@farmui/core";
+import { Modal } from "@loamui/core";
 import type { CSSProperties } from "react";
 
 export function ModalDemo() {
@@ -16,11 +16,11 @@ export function ModalDemo() {
           style={{
             display: "flex",
             flexWrap: "wrap",
-            gap: "var(--fui-space-sm)",
+            gap: "var(--loam-space-sm)",
             alignItems: "center",
           }}
         >
-          <span style={{ "--fui-context": "primary" } as CSSProperties}>
+          <span style={{ "--loam-context": "primary" } as CSSProperties}>
             <Modal.Close>Send invite</Modal.Close>
           </span>
           <Modal.Close>Cancel</Modal.Close>
@@ -33,7 +33,7 @@ export function ModalDemo() {
 export function ModalAlertDemo() {
   return (
     <Modal.Root>
-      <span style={{ "--fui-context": "danger" } as CSSProperties}>
+      <span style={{ "--loam-context": "danger" } as CSSProperties}>
         <Modal.Trigger>Delete file</Modal.Trigger>
       </span>
       <Modal.Popup alert size="sm">
@@ -45,12 +45,12 @@ export function ModalAlertDemo() {
           style={{
             display: "flex",
             flexWrap: "wrap",
-            gap: "var(--fui-space-sm)",
+            gap: "var(--loam-space-sm)",
             alignItems: "center",
           }}
         >
           <Modal.Close autoFocus>Cancel</Modal.Close>
-          <span style={{ "--fui-context": "danger" } as CSSProperties}>
+          <span style={{ "--loam-context": "danger" } as CSSProperties}>
             <Modal.Close>Delete</Modal.Close>
           </span>
         </div>
@@ -65,7 +65,7 @@ export function ModalSizesDemo() {
       style={{
         display: "flex",
         flexWrap: "wrap",
-        gap: "var(--fui-space-sm)",
+        gap: "var(--loam-space-sm)",
         alignItems: "center",
       }}
     >
@@ -93,7 +93,7 @@ export function ModalHeaderCloseDemo() {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBlockEnd: "var(--fui-space-sm)",
+            marginBlockEnd: "var(--loam-space-sm)",
           }}
         >
           <Modal.Title style={{ margin: 0 }}>Settings</Modal.Title>

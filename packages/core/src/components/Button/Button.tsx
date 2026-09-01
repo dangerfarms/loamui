@@ -22,10 +22,10 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
  *
  * ```tsx
  * <Button>Neutral by default</Button>
- * <p style={{ "--fui-context": "primary" }}>
+ * <p style={{ "--loam-context": "primary" }}>
  *   <Button>The main action of this region</Button>
  * </p>
- * <section style={{ "--fui-context": "danger" }}>
+ * <section style={{ "--loam-context": "danger" }}>
  *   <Button>Delete</Button>                                  // danger region
  * </section>
  * ```
@@ -37,7 +37,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
  * detected (`:has(svg)`) — compose them as children, no slot props. An
  * icon-only button is detected from its accessible name: give it an
  * `aria-label` (required for accessibility anyway) and it becomes square.
- * For a one-off colour set the public `--fui-button-color` property; for a
+ * For a one-off colour set the public `--loam-button-color` property; for a
  * house style, wrap it (the SecondaryButton pattern).
  */
 export function Button({ render, className, children, ref, ...rest }: ButtonProps) {
@@ -46,7 +46,7 @@ export function Button({ render, className, children, ref, ...rest }: ButtonProp
       <>
         {renderWithProps(render, {
           ref,
-          className: cx("fui-Button", className),
+          className: cx("loam-Button", className),
           children,
           ...rest,
         })}
@@ -56,7 +56,7 @@ export function Button({ render, className, children, ref, ...rest }: ButtonProp
   return (
     // type="button" unless overridden: a bare <button> inside a form is a
     // native submit, so "Cancel" buttons would submit the form.
-    <button ref={ref} type="button" className={cx("fui-Button", className)} {...rest}>
+    <button ref={ref} type="button" className={cx("loam-Button", className)} {...rest}>
       {children}
     </button>
   );

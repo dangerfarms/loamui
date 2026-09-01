@@ -1,13 +1,13 @@
 /*
  * Everything here derives from a single --_accent channel (the same
  * derivation scheme as Button's --_color).
- * There is no color prop; the surrounding --fui-context region picks the
+ * There is no color prop; the surrounding --loam-context region picks the
  * accent. The message stays
- * --fui-text-based so long copy remains readable on the tint.
+ * --loam-text-based so long copy remains readable on the tint.
  */
-@scope (.fui-Alert) to ([class*="fui-"]) {
+@scope (.loam-Alert) to ([class*="loam-"]) {
   :scope {
-    --_accent: var(--fui-color-fg);
+    --_accent: var(--loam-color-fg);
 
     align-items: flex-start;
 
@@ -15,8 +15,8 @@
        far from the channel, so an 88% mix would read near-black (same
        compensation as Button's 90%/75%). */
     background: light-dark(
-      color-mix(in oklab, var(--_accent), var(--fui-color-bg) 88%),
-      color-mix(in oklab, var(--_accent), var(--fui-color-bg) 70%)
+      color-mix(in oklab, var(--_accent), var(--loam-color-bg) 88%),
+      color-mix(in oklab, var(--_accent), var(--loam-color-bg) 70%)
     );
 
     /* Tints mix in oklab (cartesian), not oklch: hue interpolation against
@@ -24,13 +24,13 @@
        declared hue of an achromatic colour still interpolates); cartesian
        mixing only desaturates, so the channel's hue survives. */
     border: 1px solid
-      color-mix(in oklab, var(--_accent), var(--fui-color-bg) 55%);
-    border-radius: var(--fui-radius-md);
+      color-mix(in oklab, var(--_accent), var(--loam-color-bg) 55%);
+    border-radius: var(--loam-radius-md);
     display: block flex;
-    font-size: var(--fui-text-sm);
-    gap: var(--fui-space-md);
-    padding-block: var(--fui-space-md);
-    padding-inline: var(--fui-space-lg);
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-md);
+    padding-block: var(--loam-space-md);
+    padding-inline: var(--loam-space-lg);
   }
 
   span.icon {
@@ -39,7 +39,7 @@
     color: var(--_accent);
     display: inline flex;
     flex: none;
-    font-size: var(--fui-text-md);
+    font-size: var(--loam-text-md);
     inline-size: 1.25em;
     justify-content: center;
     margin-block-start: 0.05em;
@@ -48,7 +48,7 @@
   div.body {
     display: block flex;
     flex-direction: column;
-    gap: var(--fui-space-xs);
+    gap: var(--loam-space-xs);
     min-inline-size: 0;
   }
 
@@ -61,7 +61,7 @@
       color-mix(in oklab, var(--_accent) 70%, oklch(0% 0 0deg)),
       color-mix(in oklab, var(--_accent) 55%, oklch(100% 0 0deg))
     );
-    font-size: var(--fui-text-sm);
+    font-size: var(--loam-text-sm);
     font-weight: 600;
     line-height: 1.4;
   }
@@ -69,43 +69,43 @@
   /* The message carries full-strength text; next to a title it recedes to
      muted so the accent-coloured heading leads. */
   div.message {
-    color: var(--fui-color-fg);
+    color: var(--loam-color-fg);
 
     :scope:has(> div.body > div.title) > div.body > & {
-      color: var(--fui-color-fg-muted);
+      color: var(--loam-color-fg-muted);
     }
   }
 
   /* Context: within a status region — the channel takes the status colour.
-     (Even though the region also remaps --fui-color-primary, the alert keys its
+     (Even though the region also remaps --loam-color-primary, the alert keys its
      own channel because its rest state is neutral text, not primary.) */
-  @container (style(--fui-context: primary)) {
+  @container (style(--loam-context: primary)) {
     :scope {
-      --_accent: var(--fui-color-primary);
+      --_accent: var(--loam-color-primary);
     }
   }
 
-  @container (style(--fui-context: success)) {
+  @container (style(--loam-context: success)) {
     :scope {
-      --_accent: var(--fui-color-success);
+      --_accent: var(--loam-color-success);
     }
   }
 
-  @container (style(--fui-context: warning)) {
+  @container (style(--loam-context: warning)) {
     :scope {
-      --_accent: var(--fui-color-warning);
+      --_accent: var(--loam-color-warning);
     }
   }
 
-  @container (style(--fui-context: info)) {
+  @container (style(--loam-context: info)) {
     :scope {
-      --_accent: var(--fui-color-info);
+      --_accent: var(--loam-color-info);
     }
   }
 
-  @container (style(--fui-context: danger)) {
+  @container (style(--loam-context: danger)) {
     :scope {
-      --_accent: var(--fui-color-danger);
+      --_accent: var(--loam-color-danger);
     }
   }
 }

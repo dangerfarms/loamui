@@ -1,9 +1,9 @@
-@scope (.fui-Switch-wrapper) to ([class*="fui-"]) {
+@scope (.loam-Switch-wrapper) to ([class*="loam-"]) {
   :scope {
     align-items: center;
     cursor: pointer;
     display: inline flex;
-    gap: var(--fui-space-sm);
+    gap: var(--loam-space-sm);
 
     &:has(input:disabled) {
       cursor: not-allowed;
@@ -17,13 +17,13 @@
   /* Inside the labelled wrapper the wrapper does the disabled fade (the bare
      control's :not guard, in the control scope, stops the two compounding). */
   :scope[data-disabled] {
-    opacity: var(--fui-disabled-opacity);
+    opacity: var(--loam-disabled-opacity);
   }
 }
 
 /* Size variables live on the control so the bare SwitchControl (composed
    inside a Field) sizes itself without the labelled wrapper. */
-@scope (.fui-Switch-control) {
+@scope (.loam-Switch-control) {
   :scope {
     --_track-w: 2.7778em;
     --_track-h: 1.5278em;
@@ -32,14 +32,14 @@
     align-items: center;
     cursor: pointer;
     display: inline flex;
-    font-size: var(--fui-text-sm);
+    font-size: var(--loam-text-sm);
     position: relative;
   }
 
   /* Bare control fades itself; inside the labelled wrapper the wrapper does
      (the :not guard stops the two from compounding). */
-  :scope[data-disabled]:where(:not(.fui-Switch-wrapper *)) {
-    opacity: var(--fui-disabled-opacity);
+  :scope[data-disabled]:where(:not(.loam-Switch-wrapper *)) {
+    opacity: var(--loam-disabled-opacity);
   }
 
   /* Visually hide the native control but keep it in the a11y tree &
@@ -58,9 +58,9 @@
   }
 
   span.track {
-    background: var(--fui-color-line-strong);
+    background: var(--loam-color-line-strong);
     block-size: var(--_track-h);
-    border-radius: var(--fui-radius-full);
+    border-radius: var(--loam-radius-full);
     flex-shrink: 0;
     inline-size: var(--_track-w);
     padding: var(--_gap);
@@ -68,26 +68,26 @@
 
     @media (prefers-reduced-motion: no-preference) {
       transition:
-        background var(--fui-duration-sm) var(--fui-ease),
-        box-shadow var(--fui-duration-md) var(--fui-ease);
+        background var(--loam-duration-sm) var(--loam-ease),
+        box-shadow var(--loam-duration-md) var(--loam-ease);
     }
   }
 
   span.thumb {
-    background: var(--fui-color-on-strong);
+    background: var(--loam-color-on-strong);
     block-size: calc(var(--_track-h) - 2 * var(--_gap));
-    border-radius: var(--fui-radius-full);
-    box-shadow: var(--fui-shadow-sm);
+    border-radius: var(--loam-radius-full);
+    box-shadow: var(--loam-shadow-sm);
     display: block flow;
     inline-size: calc(var(--_track-h) - 2 * var(--_gap));
 
     @media (prefers-reduced-motion: no-preference) {
-      transition: translate var(--fui-duration-md) var(--fui-ease-elastic);
+      transition: translate var(--loam-duration-md) var(--loam-ease-elastic);
     }
   }
 
   input:checked + span.track {
-    background: var(--fui-color-primary);
+    background: var(--loam-color-primary);
 
     span.thumb {
       translate: calc(var(--_track-w) - var(--_track-h)) 0;
@@ -99,26 +99,26 @@
     outline: none;
 
     + span.track {
-      outline: var(--fui-ring-width) solid var(--fui-color-ring);
+      outline: var(--loam-ring-width) solid var(--loam-color-ring);
       outline-offset: 2px;
     }
   }
 
   /* Invalid after a composed Field error or a native submit attempt. */
   input[aria-invalid="true"] + span.track {
-    --fui-color-ring: var(--fui-color-danger-ring);
+    --loam-color-ring: var(--loam-color-danger-ring);
 
-    box-shadow: inset 0 0 0 1px var(--fui-color-danger);
+    box-shadow: inset 0 0 0 1px var(--loam-color-danger);
   }
 
   /* The wrapper ancestor sits outside the scope root; the subject (the
      track) stays in scope. */
   @media (hover: hover) {
-    :is(.fui-Switch-wrapper, :scope):hover input:not(:disabled) + span.track {
+    :is(.loam-Switch-wrapper, :scope):hover input:not(:disabled) + span.track {
       background: color-mix(
         in oklch,
-        var(--fui-color-line-strong) 80%,
-        var(--fui-color-primary)
+        var(--loam-color-line-strong) 80%,
+        var(--loam-color-primary)
       );
     }
   }
@@ -148,23 +148,23 @@
   }
 }
 
-@scope (.fui-Switch-wrapper) to ([class*="fui-"]) {
+@scope (.loam-Switch-wrapper) to ([class*="loam-"]) {
   span.label {
-    font-size: var(--fui-text-sm);
+    font-size: var(--loam-text-sm);
     font-weight: 500;
     line-height: 1.35;
   }
 }
 
-@scope (.fui-Switch-field) to ([class*="fui-"]) {
+@scope (.loam-Switch-field) to ([class*="loam-"]) {
   :scope {
     display: block flex;
     flex-direction: column;
-    gap: var(--fui-space-xs);
+    gap: var(--loam-space-xs);
   }
 
   span.description {
-    color: var(--fui-color-fg-muted);
-    font-size: var(--fui-text-xs);
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-xs);
   }
 }

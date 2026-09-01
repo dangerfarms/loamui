@@ -1,10 +1,10 @@
-import { Radio, RadioGroup } from "@farmui/core";
+import { Radio, RadioGroup } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
 
 const doc: ComponentContent = {
   slug: "radio",
   lead: "A single choice from a small set of visible, mutually exclusive options.",
-  importLine: `import { Radio, RadioGroup, RadioControl } from "@farmui/core";`,
+  importLine: `import { Radio, RadioGroup, RadioControl } from "@loamui/core";`,
   demos: [
     {
       title: "Basic group",

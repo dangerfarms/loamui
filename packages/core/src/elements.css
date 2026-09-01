@@ -1,5 +1,5 @@
 /**
- * FarmUI — element styles (the `farmui.elements` layer).
+ * LoamUI — element styles (the `loamui.elements` layer).
  *
  * One of the library's three primitives: enhanced default styles for the
  * native elements themselves, page-wide. We modernise the browser's
@@ -23,17 +23,17 @@
   syntax: "*";
 }
 
-@property --fui-context {
+@property --loam-context {
   inherits: true;
   syntax: "*";
 }
 
-@property --fui-button-color {
+@property --loam-button-color {
   inherits: true;
   syntax: "*";
 }
 
-@layer farmui.elements {
+@layer loamui.elements {
   *,
   *::before,
   *::after {
@@ -63,12 +63,12 @@
      figures in copy, common ligatures, hanging punctuation, and hyphenated
      justification where the language allows. */
   body {
-    background-color: var(--fui-color-bg);
-    color: var(--fui-color-fg);
-    font-family: var(--fui-font);
+    background-color: var(--loam-color-bg);
+    color: var(--loam-color-fg);
+    font-family: var(--loam-font);
     font-kerning: normal;
     font-optical-sizing: auto;
-    font-size: var(--fui-text-md);
+    font-size: var(--loam-text-md);
     font-variant-ligatures: common-ligatures contextual;
     font-variant-numeric: oldstyle-nums proportional-nums;
     hanging-punctuation: first allow-end last;
@@ -90,41 +90,41 @@
   h4,
   h5,
   h6 {
-    color: var(--fui-color-fg-strong);
-    font-family: var(--fui-font-display);
+    color: var(--loam-color-fg-strong);
+    font-family: var(--loam-font-display);
     font-variant-numeric: lining-nums proportional-nums;
     letter-spacing: -0.02em;
-    margin-block: 0 var(--fui-space-sm);
+    margin-block: 0 var(--loam-space-sm);
     text-wrap: balance;
   }
 
   h1 {
-    font-size: var(--fui-text-3xl);
+    font-size: var(--loam-text-3xl);
     font-weight: 700;
   }
 
   h2 {
-    font-size: var(--fui-text-2xl);
+    font-size: var(--loam-text-2xl);
     font-weight: 700;
   }
 
   h3 {
-    font-size: var(--fui-text-xl);
+    font-size: var(--loam-text-xl);
     font-weight: 700;
   }
 
   h4 {
-    font-size: var(--fui-text-lg);
+    font-size: var(--loam-text-lg);
     font-weight: 600;
   }
 
   h5 {
-    font-size: var(--fui-text-md);
+    font-size: var(--loam-text-md);
     font-weight: 600;
   }
 
   h6 {
-    font-size: var(--fui-text-sm);
+    font-size: var(--loam-text-sm);
     font-weight: 600;
   }
 
@@ -132,55 +132,55 @@
      a heading that opens its container needs no reset. */
   :is(p, ul, ol, dl, pre, blockquote, figure, table)
     + :is(h1, h2, h3, h4, h5, h6) {
-    margin-block-start: var(--fui-space-xl);
+    margin-block-start: var(--loam-space-xl);
   }
 
   p {
-    margin-block: 0 var(--fui-space-md);
+    margin-block: 0 var(--loam-space-md);
     overflow-wrap: break-word;
   }
 
   ul,
   ol {
-    margin-block: 0 var(--fui-space-md);
-    padding-inline-start: var(--fui-space-xl);
+    margin-block: 0 var(--loam-space-md);
+    padding-inline-start: var(--loam-space-xl);
   }
 
   li {
-    margin-block-end: var(--fui-space-xs);
+    margin-block-end: var(--loam-space-xs);
   }
 
   li::marker {
-    color: var(--fui-color-fg-muted);
+    color: var(--loam-color-fg-muted);
   }
 
   blockquote {
-    border-inline-start: 3px solid var(--fui-color-line-strong);
-    color: var(--fui-color-fg-muted);
-    margin-block: 0 var(--fui-space-md);
+    border-inline-start: 3px solid var(--loam-color-line-strong);
+    color: var(--loam-color-fg-muted);
+    margin-block: 0 var(--loam-space-md);
     margin-inline: 0;
-    padding-inline-start: var(--fui-space-lg);
+    padding-inline-start: var(--loam-space-lg);
   }
 
   hr {
     border: none;
-    border-block-start: 1px solid var(--fui-color-line);
-    margin-block: var(--fui-space-lg);
+    border-block-start: 1px solid var(--loam-color-line);
+    margin-block: var(--loam-space-lg);
   }
 
   small {
-    font-size: var(--fui-text-sm);
+    font-size: var(--loam-text-sm);
   }
 
   figcaption {
-    color: var(--fui-color-fg-muted);
-    font-size: var(--fui-text-sm);
-    margin-block-start: var(--fui-space-xs);
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    margin-block-start: var(--loam-space-xs);
   }
 
   mark {
-    background: var(--fui-color-highlight);
-    border-radius: var(--fui-radius-sm);
+    background: var(--loam-color-highlight);
+    border-radius: var(--loam-radius-sm);
     color: oklch(20% 0 0deg);
     padding-inline: 0.15em;
   }
@@ -221,7 +221,7 @@
   /* Links default to the accessible blue, with the classic visited (toward
      purple) and active (toward red) hue shifts derived by relative colour —
      the most legible, most familiar link affordance. A project can override
-     --fui-color-link with the brand where it wants to. */
+     --loam-color-link with the brand where it wants to. */
   a {
     &:any-link {
       cursor: pointer;
@@ -232,20 +232,21 @@
       text-underline-offset: 0.15em;
 
       @media (prefers-reduced-motion: no-preference) {
-        transition: text-decoration-color var(--fui-duration-md) var(--fui-ease);
+        transition: text-decoration-color var(--loam-duration-md)
+          var(--loam-ease);
       }
     }
 
     &:link {
-      color: var(--fui-color-link);
+      color: var(--loam-color-link);
     }
 
     &:visited {
-      color: oklch(from var(--fui-color-link) l c calc(h + 35));
+      color: oklch(from var(--loam-color-link) l c calc(h + 35));
     }
 
     &:active {
-      color: oklch(from var(--fui-color-link) l c calc(h + 100));
+      color: oklch(from var(--loam-color-link) l c calc(h + 100));
     }
 
     @media (hover: hover) {
@@ -261,25 +262,25 @@
   kbd,
   samp,
   pre {
-    font-family: var(--fui-font-mono);
+    font-family: var(--loam-font-mono);
     font-size: 0.925em;
   }
 
   :is(code, kbd, samp):not(pre *) {
-    background: var(--fui-color-bg-subtle);
-    border-radius: var(--fui-radius-sm);
+    background: var(--loam-color-bg-subtle);
+    border-radius: var(--loam-radius-sm);
     padding: 0.1em 0.35em;
   }
 
   pre {
-    background: var(--fui-color-bg-subtle);
-    border-radius: var(--fui-radius-md);
-    margin-block: 0 var(--fui-space-md);
+    background: var(--loam-color-bg-subtle);
+    border-radius: var(--loam-radius-md);
+    margin-block: 0 var(--loam-space-md);
 
     /* overflow (shorthand), not the logical overflow-inline: the latter is not
        yet Baseline, so code blocks would not scroll in some browsers. */
     overflow: auto;
-    padding: var(--fui-space-md);
+    padding: var(--loam-space-md);
   }
 
   /* ── Media ──────────────────────────────────────────────────────── */
@@ -308,8 +309,8 @@
   select,
   textarea,
   progress {
-    accent-color: var(--fui-color-primary);
-    caret-color: var(--fui-color-primary);
+    accent-color: var(--loam-color-primary);
+    caret-color: var(--loam-color-primary);
   }
 
   button,
@@ -328,40 +329,40 @@
   input:is([type="button"], [type="reset"], [type="submit"]),
   ::file-selector-button {
     background: light-dark(
-      color-mix(in oklab, var(--fui-color-fg), var(--fui-color-bg) 90%),
-      color-mix(in oklab, var(--fui-color-fg), var(--fui-color-bg) 75%)
+      color-mix(in oklab, var(--loam-color-fg), var(--loam-color-bg) 90%),
+      color-mix(in oklab, var(--loam-color-fg), var(--loam-color-bg) 75%)
     );
     border: 1px solid
-      color-mix(in oklab, var(--fui-color-fg), var(--fui-color-bg) 80%);
-    border-radius: var(--fui-radius-md);
-    box-shadow: var(--fui-shadow-raised);
+      color-mix(in oklab, var(--loam-color-fg), var(--loam-color-bg) 80%);
+    border-radius: var(--loam-radius-md);
+    box-shadow: var(--loam-shadow-raised);
     color: light-dark(
-      color-mix(in oklab, var(--fui-color-fg) 70%, oklch(0% 0 0deg)),
-      color-mix(in oklab, var(--fui-color-fg) 55%, oklch(100% 0 0deg))
+      color-mix(in oklab, var(--loam-color-fg) 70%, oklch(0% 0 0deg)),
+      color-mix(in oklab, var(--loam-color-fg) 55%, oklch(100% 0 0deg))
     );
     cursor: pointer;
-    font-size: var(--fui-text-sm);
+    font-size: var(--loam-text-sm);
     font-weight: 600;
     line-height: 1.2;
-    padding-block: var(--fui-space-sm);
-    padding-inline: var(--fui-space-lg);
+    padding-block: var(--loam-space-sm);
+    padding-inline: var(--loam-space-lg);
     text-align: center;
     user-select: none;
     white-space: nowrap;
 
     &:active:not(:disabled) {
-      box-shadow: var(--fui-shadow-sm);
+      box-shadow: var(--loam-shadow-sm);
     }
 
     @media (prefers-reduced-motion: no-preference) {
-      transition: background var(--fui-duration-sm) var(--fui-ease);
+      transition: background var(--loam-duration-sm) var(--loam-ease);
     }
 
     @media (hover: hover) {
       &:hover:not(:disabled) {
         background: light-dark(
-          color-mix(in oklab, var(--fui-color-fg), var(--fui-color-bg) 85%),
-          color-mix(in oklab, var(--fui-color-fg), var(--fui-color-bg) 70%)
+          color-mix(in oklab, var(--loam-color-fg), var(--loam-color-bg) 85%),
+          color-mix(in oklab, var(--loam-color-fg), var(--loam-color-bg) 70%)
         );
       }
     }
@@ -382,28 +383,28 @@
   ),
   select,
   textarea {
-    background: var(--fui-color-surface);
-    border: 1px solid var(--fui-color-line-strong);
-    border-radius: var(--fui-radius-md);
-    font-size: var(--fui-text-sm);
+    background: var(--loam-color-surface);
+    border: 1px solid var(--loam-color-line-strong);
+    border-radius: var(--loam-radius-md);
+    font-size: var(--loam-text-sm);
     line-height: 1.2;
-    padding-block: var(--fui-space-sm);
-    padding-inline: var(--fui-space-md);
+    padding-block: var(--loam-space-sm);
+    padding-inline: var(--loam-space-md);
   }
 
   ::file-selector-button {
-    margin-inline-end: var(--fui-space-md);
+    margin-inline-end: var(--loam-space-md);
   }
 
   fieldset {
-    border: 1px solid var(--fui-color-line);
-    border-radius: var(--fui-radius-md);
-    padding: var(--fui-space-lg);
+    border: 1px solid var(--loam-color-line);
+    border-radius: var(--loam-radius-md);
+    padding: var(--loam-space-lg);
   }
 
   legend {
     font-weight: 500;
-    padding-inline: var(--fui-space-xs);
+    padding-inline: var(--loam-space-xs);
   }
 
   summary {
@@ -416,7 +417,7 @@
      outline survives forced-colors, follows radius, and isn't clipped by
      overflow. */
   :focus-visible {
-    outline: var(--fui-ring-width) solid var(--fui-color-ring);
+    outline: var(--loam-ring-width) solid var(--loam-color-ring);
     outline-offset: 2px;
   }
 
@@ -428,13 +429,13 @@
   /* ── Page behaviours ────────────────────────────────────────────── */
 
   ::selection {
-    background: var(--fui-color-highlight);
+    background: var(--loam-color-highlight);
     color: oklch(20% 0 0deg);
   }
 
   /* Anchored targets never hide beneath sticky chrome. */
   [id] {
-    scroll-margin-block-start: var(--fui-space-xl);
+    scroll-margin-block-start: var(--loam-space-xl);
   }
 
   /* ── Print ──────────────────────────────────────────────────────── */
@@ -444,7 +445,7 @@
     pre,
     mark {
       background: none;
-      border: 1px solid var(--fui-color-line);
+      border: 1px solid var(--loam-color-line);
     }
 
     button,
@@ -455,7 +456,7 @@
 
     a[href^="http"]::after {
       content: " (" attr(href) ")";
-      font-size: var(--fui-text-xs);
+      font-size: var(--loam-text-xs);
     }
   }
 }

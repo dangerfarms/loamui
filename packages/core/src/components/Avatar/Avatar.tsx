@@ -67,7 +67,7 @@ export function Avatar({ src, alt, name, className, style, children, ref, ...res
   return (
     <span
       ref={ref}
-      className={cx("fui-Avatar", className)}
+      className={cx("loam-Avatar", className)}
       role={src || (!accessibleName && !consumerNamed) ? undefined : "img"}
       aria-label={src ? undefined : accessibleName}
       aria-hidden={!src && !accessibleName && !consumerNamed ? true : undefined}
@@ -93,7 +93,7 @@ export interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {
  */
 export function AvatarGroup({ className, style, children, ref, ...rest }: AvatarGroupProps) {
   return (
-    <div ref={ref} className={cx("fui-Avatar-group", className)} style={style} {...rest}>
+    <div ref={ref} className={cx("loam-Avatar-group", className)} style={style} {...rest}>
       {children}
     </div>
   );

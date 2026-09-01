@@ -50,7 +50,7 @@ function SwitchControl({
   const resolvedAriaInvalid = ariaInvalid ?? field["aria-invalid"] ?? (nativeInvalid || undefined);
 
   return (
-    <span className="fui-Switch-control" data-disabled={disabled || undefined}>
+    <span className="loam-Switch-control" data-disabled={disabled || undefined}>
       {/* role-has-required-aria-props is off for this file (.oxlintrc):
           the native checkbox's checkedness maps to aria-checked */}
       <input
@@ -110,7 +110,7 @@ export function Switch({
 
   const labelRow = (
     <label
-      className={cx("fui-Switch-wrapper", !description ? wrapperClassName : undefined)}
+      className={cx("loam-Switch-wrapper", !description ? wrapperClassName : undefined)}
       htmlFor={inputId}
       data-label-position={labelPosition}
       data-disabled={disabled || undefined}
@@ -130,7 +130,10 @@ export function Switch({
   if (!description) return labelRow;
 
   return (
-    <div className={cx("fui-Switch-field", wrapperClassName)} data-disabled={disabled || undefined}>
+    <div
+      className={cx("loam-Switch-field", wrapperClassName)}
+      data-disabled={disabled || undefined}
+    >
       {labelRow}
       {description && (
         <span className="description" id={descId}>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Avatar, Button, Skeleton } from "@farmui/core";
+import { Avatar, Button, Skeleton } from "@loamui/core";
 
 export function SkeletonSwapDemo() {
   const [loading, setLoading] = useState(true);

@@ -23,7 +23,7 @@ function subscribe(onChange: () => void) {
 }
 
 function themeSnapshot(): Theme {
-  const stored = localStorage.getItem("farmui-theme");
+  const stored = localStorage.getItem("loamui-theme");
   if (stored === "light" || stored === "dark") return stored;
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
@@ -43,10 +43,10 @@ export function ThemeToggle() {
     try {
       if (next === system) {
         delete document.documentElement.dataset.theme;
-        localStorage.removeItem("farmui-theme");
+        localStorage.removeItem("loamui-theme");
       } else {
         document.documentElement.dataset.theme = next;
-        localStorage.setItem("farmui-theme", next);
+        localStorage.setItem("loamui-theme", next);
       }
     } catch {
       /* ignore */

@@ -1,9 +1,9 @@
 /* The control is a native radio — the elements layer paints it with
    accent-color (the neutral primary). The component adds size, the invalid
    affordance, the label row and the group layout. */
-@scope (.fui-Radio) {
+@scope (.loam-Radio) {
   :scope {
-    accent-color: var(--fui-color-primary);
+    accent-color: var(--loam-color-primary);
     block-size: 1.15em;
     flex-shrink: 0;
     inline-size: 1.15em;
@@ -16,28 +16,28 @@
    aria-invalid rule). The danger ring is a box-shadow so it stacks with rather
    than replaces the elements-layer :focus-visible ring; the focus ring itself
    turns danger-coloured. Mirrors Switch. */
-@scope (.fui-Radio-group[aria-invalid="true"]) {
-  .fui-Radio {
-    --fui-color-ring: var(--fui-color-danger-ring);
+@scope (.loam-Radio-group[aria-invalid="true"]) {
+  .loam-Radio {
+    --loam-color-ring: var(--loam-color-danger-ring);
 
-    box-shadow: 0 0 0 2px var(--fui-color-danger);
+    box-shadow: 0 0 0 2px var(--loam-color-danger);
   }
 }
 
 /* ---- Single radio (labelled row) ---- */
-@scope (.fui-Radio-wrapper) to ([class*="fui-"]) {
+@scope (.loam-Radio-wrapper) to ([class*="loam-"]) {
   :scope {
     align-items: flex-start;
     cursor: pointer;
     display: inline flex;
-    gap: var(--fui-space-sm);
+    gap: var(--loam-space-sm);
 
     &:has(input:disabled) {
       cursor: not-allowed;
     }
 
     &[data-disabled] {
-      opacity: var(--fui-disabled-opacity);
+      opacity: var(--loam-disabled-opacity);
     }
   }
 
@@ -49,42 +49,42 @@
   }
 
   span.label {
-    font-size: var(--fui-text-sm);
+    font-size: var(--loam-text-sm);
     font-weight: 500;
   }
 
   span.description {
-    color: var(--fui-color-fg-muted);
-    font-size: var(--fui-text-xs);
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-xs);
   }
 }
 
 /* ---- Group ---- (a Fieldset — reset/legend come from the Fieldset layer) */
-@scope (.fui-Radio-group) to ([class*="fui-"]) {
+@scope (.loam-Radio-group) to ([class*="loam-"]) {
   :scope {
-    gap: var(--fui-space-xs);
+    gap: var(--loam-space-xs);
   }
 
   span.description {
-    color: var(--fui-color-fg-muted);
-    font-size: var(--fui-text-xs);
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-xs);
   }
 
   [data-orientation] {
     display: block flex;
     flex-direction: column;
-    gap: var(--fui-space-sm);
-    margin-block-start: var(--fui-space-xs);
+    gap: var(--loam-space-sm);
+    margin-block-start: var(--loam-space-xs);
   }
 
   [data-orientation="horizontal"] {
     flex-flow: row wrap;
-    gap: var(--fui-space-lg);
+    gap: var(--loam-space-lg);
   }
 
   span.error {
-    color: var(--fui-color-danger);
-    font-size: var(--fui-text-xs);
-    margin-block-start: var(--fui-space-xs);
+    color: var(--loam-color-danger);
+    font-size: var(--loam-text-xs);
+    margin-block-start: var(--loam-space-xs);
   }
 }

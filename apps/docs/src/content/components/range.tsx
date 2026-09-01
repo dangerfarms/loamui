@@ -1,11 +1,11 @@
-import { Range } from "@farmui/core";
+import { Range } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
 import { RangeDisabledDemo, RangeFieldDemo, RangeStepsDemo, RangeValueDemo } from "./range.client";
 
 const doc: ComponentContent = {
   slug: "range",
   lead: "Pick a numeric value from a continuous range. Compose it inside a Field for its label, description and error.",
-  importLine: `import { Field, Range } from "@farmui/core";`,
+  importLine: `import { Field, Range } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",
