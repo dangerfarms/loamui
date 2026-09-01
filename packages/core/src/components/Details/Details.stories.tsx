@@ -7,7 +7,7 @@ const meta = {
   tags: ["autodocs"],
   render: () => (
     <Details.Root>
-      <Details.Summary>What is FarmUI?</Details.Summary>
+      <Details.Summary>What is LoamUI?</Details.Summary>
       <Details.Content>A React component library built on the native web platform.</Details.Content>
     </Details.Root>
   ),

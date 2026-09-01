@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Drawer } from "@farmui/core";
+import { Drawer } from "@loamui/core";
 import { NavLinks } from "./NavLinks";
 import classes from "./MobileNav.module.css";
 
@@ -28,7 +28,7 @@ function MenuIcon() {
 /**
  * The mobile navigation: a hamburger that opens the documentation nav in a
  * Drawer. Shown only where the header nav and sidebar collapse (≤62rem). The
- * FarmUI Drawer gives the top layer, focus containment, Escape and
+ * LoamUI Drawer gives the top layer, focus containment, Escape and
  * focus-restore for free; we drive open state so it closes on navigation.
  */
 export function MobileNav() {

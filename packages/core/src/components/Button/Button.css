@@ -2,23 +2,24 @@
  * Button — one colour channel (--_color); every look derives from it via
  * color-mix and relative colour. Appearance is decided by context, not
  * props. The one instance-level escape hatch is the public
- * --fui-button-color property (registered in reset.css).
+ * --loam-button-color property (registered in elements.css).
  */
-@scope (.fui-Button) {
+@scope (.loam-Button) {
   :scope {
-    --_color: var(--fui-button-color, var(--fui-text));
+    --_color: var(--loam-button-color, var(--loam-color-fg));
 
     background: light-dark(
-      color-mix(in oklab, var(--_color), var(--fui-bg) 90%),
-      color-mix(in oklab, var(--_color), var(--fui-bg) 75%)
+      color-mix(in oklab, var(--_color), var(--loam-color-bg) 90%),
+      color-mix(in oklab, var(--_color), var(--loam-color-bg) 75%)
     );
 
     /* Tints mix in oklab (cartesian), not oklch: hue interpolation against
        the near-achromatic page background rotates the channel's hue;
        cartesian mixing only desaturates, so the hue survives. */
-    border: 1px solid color-mix(in oklab, var(--_color), var(--fui-bg) 80%);
-    border-radius: var(--fui-button-radius, var(--fui-radius-md));
-    box-shadow: var(--fui-shadow-raised);
+    border: 1px solid
+      color-mix(in oklab, var(--_color), var(--loam-color-bg) 80%);
+    border-radius: var(--loam-button-radius, var(--loam-radius-md));
+    box-shadow: var(--loam-shadow-raised);
 
     /* Text is the channel's hue mixed for AA on the tint, the same
        recipe as Badge and Alert; raw --_color sat below 4.5:1 on its
@@ -28,17 +29,13 @@
       color-mix(in oklab, var(--_color) 55%, oklch(100% 0 0deg))
     );
     display: inline flow-root;
-    font-size: var(--fui-text-sm);
+    font-size: var(--loam-text-sm);
     font-weight: 600;
     line-height: 1.2;
-    padding-block: var(--fui-space-sm);
-    padding-inline: var(--fui-space-lg);
+    padding-block: var(--loam-space-sm);
+    padding-inline: var(--loam-space-lg);
     text-align: center;
     text-decoration: none;
-    transition:
-      background var(--fui-duration-sm) var(--fui-ease),
-      border-color var(--fui-duration-sm) var(--fui-ease),
-      color var(--fui-duration-sm) var(--fui-ease);
 
     /* Identity at rest — the pressed shift transitions both ways. */
     translate: 0 0;
@@ -47,10 +44,10 @@
 
     &:active:not(:disabled) {
       background: light-dark(
-        color-mix(in oklab, var(--_color), var(--fui-bg) 85%),
-        color-mix(in oklab, var(--_color), var(--fui-bg) 70%)
+        color-mix(in oklab, var(--_color), var(--loam-color-bg) 85%),
+        color-mix(in oklab, var(--_color), var(--loam-color-bg) 70%)
       );
-      box-shadow: var(--fui-shadow-sm);
+      box-shadow: var(--loam-shadow-sm);
       color: light-dark(
         oklch(from var(--_color) calc(l - 0.2) c h),
         oklch(from var(--_color) calc(l + 0.2) c h)
@@ -59,14 +56,14 @@
     }
 
     &:disabled {
-      opacity: var(--fui-disabled-opacity);
+      opacity: var(--loam-disabled-opacity);
     }
 
     @media (hover: hover) {
       &:hover:not(:disabled) {
         background: light-dark(
-          color-mix(in oklab, var(--_color), var(--fui-bg) 85%),
-          color-mix(in oklab, var(--_color), var(--fui-bg) 70%)
+          color-mix(in oklab, var(--_color), var(--loam-color-bg) 85%),
+          color-mix(in oklab, var(--_color), var(--loam-color-bg) 70%)
         );
         color: light-dark(
           oklch(from var(--_color) calc(l - 0.2) c h),
@@ -78,22 +75,22 @@
     /* The pressed shift and shadow drop are motion — opt-in only. */
     @media (prefers-reduced-motion: no-preference) {
       transition:
-        background var(--fui-duration-sm) var(--fui-ease),
-        border-color var(--fui-duration-sm) var(--fui-ease),
-        color var(--fui-duration-sm) var(--fui-ease),
-        box-shadow var(--fui-duration-md) var(--fui-ease),
-        translate var(--fui-duration-md) var(--fui-ease);
+        background var(--loam-duration-sm) var(--loam-ease),
+        border-color var(--loam-duration-sm) var(--loam-ease),
+        color var(--loam-duration-sm) var(--loam-ease),
+        box-shadow var(--loam-duration-md) var(--loam-ease),
+        translate var(--loam-duration-md) var(--loam-ease);
     }
   }
 
   /* A composed Loader is an icon here: the same detection, layout and 1em
      sizing (answered through the loader's inherited size hook). */
-  :scope:has(svg, .fui-Loader) {
-    --fui-loader-size: 1em;
+  :scope:has(svg, .loam-Loader) {
+    --loam-loader-size: 1em;
 
     align-items: center;
     display: inline flex;
-    gap: var(--fui-space-sm);
+    gap: var(--loam-space-sm);
     justify-content: center;
 
     svg {
@@ -105,41 +102,41 @@
   /* Icon-only is detected from the accessible name, not DOM shape: an
      icon-only button MUST carry an aria-label, and `svg:only-child` can't
      tell "icon + bare text" from "icon alone" (text nodes aren't elements). */
-  :scope[aria-label]:has(svg, .fui-Loader) {
-    padding-inline: var(--fui-space-sm);
+  :scope[aria-label]:has(svg, .loam-Loader) {
+    padding-inline: var(--loam-space-sm);
   }
 
   /* Context: within a primary region — THE action of the area. */
-  @container (style(--fui-context: primary)) {
+  @container (style(--loam-context: primary)) {
     :scope {
-      --_color: var(--fui-primary);
+      --_color: var(--loam-color-primary);
     }
   }
 
   /* Context: within a status region. (The region also re-answers the semantic
      tokens for every other component — see the Contexts section of tokens.css;
      these rules key the button's own channel.) */
-  @container (style(--fui-context: danger)) {
+  @container (style(--loam-context: danger)) {
     :scope {
-      --_color: var(--fui-danger);
+      --_color: var(--loam-color-danger);
     }
   }
 
-  @container (style(--fui-context: success)) {
+  @container (style(--loam-context: success)) {
     :scope {
-      --_color: var(--fui-success);
+      --_color: var(--loam-color-success);
     }
   }
 
-  @container (style(--fui-context: warning)) {
+  @container (style(--loam-context: warning)) {
     :scope {
-      --_color: var(--fui-warning);
+      --_color: var(--loam-color-warning);
     }
   }
 
-  @container (style(--fui-context: info)) {
+  @container (style(--loam-context: info)) {
     :scope {
-      --_color: var(--fui-info);
+      --_color: var(--loam-color-info);
     }
   }
 

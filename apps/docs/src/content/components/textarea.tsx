@@ -4,7 +4,7 @@ import { TextareaBasicDemo, TextareaDescriptionDemo, TextareaErrorDemo } from ".
 const doc: ComponentContent = {
   slug: "textarea",
   lead: "The multi-line text box. Compose it inside a Field for its label, description and error.",
-  importLine: `import { Field, Textarea } from "@farmui/core";`,
+  importLine: `import { Field, Textarea } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",
@@ -58,7 +58,7 @@ const doc: ComponentContent = {
     },
     {
       title: "Limits live in the description",
-      body: "State a length limit up front in the Field.Description (“Your answer must be 200 characters or fewer”) rather than springing it as an error after the user has written too much. FarmUI does not ship a live character counter, so keep the validation message in exactly the words the description used: the rule then reads the same before and after the mistake.",
+      body: "State a length limit up front in the Field.Description (“Your answer must be 200 characters or fewer”) rather than springing it as an error after the user has written too much. LoamUI does not ship a live character counter, so keep the validation message in exactly the words the description used: the rule then reads the same before and after the mistake.",
     },
     {
       title: "Never disable copy and paste",

@@ -1,25 +1,25 @@
 /* The bare control is the `<input type="range">` itself — no wrapper element
    in that form — so the input is its own scope root. */
-@scope (.fui-Range) {
+@scope (.loam-Range) {
   :scope {
     --_track-h: 0.4167em;
     --_thumb: 1.25em;
 
     /* accent-color paints the filled portion + thumb robustly cross-browser. */
-    accent-color: var(--fui-primary);
+    accent-color: var(--loam-color-primary);
     appearance: none;
     background: transparent;
     cursor: pointer;
-    font-size: var(--fui-text-sm);
+    font-size: var(--loam-text-sm);
     inline-size: 100%;
     margin: 0;
 
     &[aria-invalid="true"] {
-      accent-color: var(--fui-danger);
+      accent-color: var(--loam-color-danger);
     }
 
     &[data-disabled] {
-      opacity: var(--fui-disabled-opacity);
+      opacity: var(--loam-disabled-opacity);
     }
 
     &:disabled {
@@ -29,32 +29,32 @@
 
   /* ---- Track ---- */
   :scope::-webkit-slider-runnable-track {
-    background: var(--fui-border-strong);
+    background: var(--loam-color-line-strong);
     block-size: var(--_track-h);
-    border-radius: var(--fui-radius-full);
+    border-radius: var(--loam-radius-full);
   }
 
   :scope::-moz-range-track {
-    background: var(--fui-border-strong);
+    background: var(--loam-color-line-strong);
     block-size: var(--_track-h);
-    border-radius: var(--fui-radius-full);
+    border-radius: var(--loam-radius-full);
   }
 
   /* Firefox paints the filled portion explicitly. */
   :scope::-moz-range-progress {
-    background: var(--fui-primary);
+    background: var(--loam-color-primary);
     block-size: var(--_track-h);
-    border-radius: var(--fui-radius-full);
+    border-radius: var(--loam-radius-full);
   }
 
   /* ---- Thumb ---- */
   :scope::-webkit-slider-thumb {
     appearance: none;
-    background: var(--fui-primary);
+    background: var(--loam-color-primary);
     block-size: var(--_thumb);
-    border: 2px solid var(--fui-on-strong);
-    border-radius: var(--fui-radius-full);
-    box-shadow: var(--fui-shadow-sm);
+    border: 2px solid var(--loam-color-on-strong);
+    border-radius: var(--loam-radius-full);
+    box-shadow: var(--loam-shadow-sm);
     inline-size: var(--_thumb);
     margin-block-start: calc((var(--_track-h) - var(--_thumb)) / 2);
 
@@ -63,17 +63,17 @@
 
     @media (prefers-reduced-motion: no-preference) {
       transition:
-        scale var(--fui-duration-md) var(--fui-ease),
-        box-shadow var(--fui-duration-md) var(--fui-ease);
+        scale var(--loam-duration-md) var(--loam-ease),
+        box-shadow var(--loam-duration-md) var(--loam-ease);
     }
   }
 
   :scope::-moz-range-thumb {
-    background: var(--fui-primary);
+    background: var(--loam-color-primary);
     block-size: var(--_thumb);
-    border: 2px solid var(--fui-on-strong);
-    border-radius: var(--fui-radius-full);
-    box-shadow: var(--fui-shadow-sm);
+    border: 2px solid var(--loam-color-on-strong);
+    border-radius: var(--loam-radius-full);
+    box-shadow: var(--loam-shadow-sm);
     inline-size: var(--_thumb);
 
     /* Identity at rest — the hover grow transitions both ways. */
@@ -81,8 +81,8 @@
 
     @media (prefers-reduced-motion: no-preference) {
       transition:
-        scale var(--fui-duration-md) var(--fui-ease),
-        box-shadow var(--fui-duration-md) var(--fui-ease);
+        scale var(--loam-duration-md) var(--loam-ease),
+        box-shadow var(--loam-duration-md) var(--loam-ease);
     }
   }
 
@@ -93,11 +93,11 @@
   }
 
   :scope:focus-visible::-webkit-slider-thumb {
-    box-shadow: 0 0 0 var(--fui-ring-width) var(--fui-ring-color);
+    box-shadow: 0 0 0 var(--loam-ring-width) var(--loam-color-ring);
   }
 
   :scope:focus-visible::-moz-range-thumb {
-    box-shadow: 0 0 0 var(--fui-ring-width) var(--fui-ring-color);
+    box-shadow: 0 0 0 var(--loam-ring-width) var(--loam-color-ring);
   }
 
   @media (hover: hover) {

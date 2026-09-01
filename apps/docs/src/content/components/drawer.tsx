@@ -9,7 +9,7 @@ import {
 const doc: ComponentContent = {
   slug: "drawer",
   lead: "An edge-anchored panel that slides in over the page, built on the native <dialog> element and the browser's top layer.",
-  importLine: `import { Drawer } from "@farmui/core";`,
+  importLine: `import { Drawer } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",
@@ -20,7 +20,7 @@ const doc: ComponentContent = {
   <Drawer.Panel side="start">
     <Drawer.Title>Navigation</Drawer.Title>
     <Drawer.Description>Jump to a section of the app.</Drawer.Description>
-    <nav className="fui-stack">
+    <nav style={{ display: "flex", flexDirection: "column", gap: "var(--loam-space-md)" }}>
       <a href="#dashboard">Dashboard</a>
       <a href="#orders">Orders</a>
       <a href="#customers">Customers</a>
@@ -34,7 +34,7 @@ const doc: ComponentContent = {
     {
       title: "Sides",
       description:
-        "side anchors the panel to an edge and picks the slide direction. It is logical (start / end / top / bottom), so start and end follow the writing mode — inline-start is the left in LTR, the right in RTL.",
+        "side anchors the panel to an edge and picks the slide direction. It is logical (start / end / top / bottom), so start and end follow the writing mode: inline-start is the left in LTR, the right in RTL.",
       code: `<Drawer.Panel side="start">…</Drawer.Panel>
 <Drawer.Panel side="end">…</Drawer.Panel>
 <Drawer.Panel side="top">…</Drawer.Panel>
@@ -70,18 +70,18 @@ const doc: ComponentContent = {
     "On narrow screens, to hold navigation that sits in a persistent sidebar on wider ones.",
   ],
   whenNotToUse: [
-    "For a focused, must-answer task or a destructive confirmation, use Modal — a dialog centred on the decision, not parked at an edge.",
+    "For a focused, must-answer task or a destructive confirmation, use Modal, a dialog centred on the decision, not parked at an edge.",
     "For a small set of actions opened from a control, use Menu; for supplementary content anchored to a trigger, use Popover.",
     "For primary navigation that fits on wide screens, use a persistent sidebar or nav bar rather than hiding it behind a trigger.",
   ],
   howItWorks: [
     {
       title: "Anchor to a logical edge",
-      body: "side is logical, not physical: start and end follow the writing mode so a start drawer opens from the left in LTR and the right in RTL, matching where users expect the back edge to be. Reach for top / bottom for sheets — a bottom sheet is the thumb-friendly choice for actions on touch devices.",
+      body: "side is logical, not physical: start and end follow the writing mode so a start drawer opens from the left in LTR and the right in RTL, matching where users expect the back edge to be. Reach for top / bottom for sheets: a bottom sheet is the thumb-friendly choice for actions on touch devices.",
     },
     {
       title: "A drawer is dismissible by nature",
-      body: "Unlike an alert dialog, a drawer light-dismisses: clicking the backdrop or pressing Escape closes it. That is the right contract for navigation and browsing — never put a decision the user must not dismiss by accident in a drawer; use Modal's alert for that.",
+      body: "Unlike an alert dialog, a drawer light-dismisses: clicking the backdrop or pressing Escape closes it. That is the right contract for navigation and browsing. Never put a decision the user must not dismiss by accident in a drawer; use Modal's alert for that.",
     },
     {
       title: "Always render a Title",
@@ -93,7 +93,7 @@ const doc: ComponentContent = {
     },
   ],
   accessibility: [
-    "Built on the native <dialog> opened with showModal(): the browser provides the top layer, ::backdrop, real focus containment, Escape handling, and restores focus to the trigger on close — none of it re-implemented in JavaScript.",
+    "Built on the native <dialog> opened with showModal(): the browser provides the top layer, ::backdrop, real focus containment, Escape handling, and restores focus to the trigger on close, none of it re-implemented in JavaScript.",
     "Drawer.Title and Drawer.Description automatically label and describe the dialog via aria-labelledby / aria-describedby.",
     "Light dismiss (clicking the backdrop) uses the closedby attribute where supported, with a small feature-detected coordinate-check fallback elsewhere: no polyfills, per the browser support policy.",
     "The slide transition lives inside prefers-reduced-motion: no-preference, so users who ask for reduced motion get an instant open with no movement.",
@@ -121,7 +121,7 @@ const doc: ComponentContent = {
     },
     {
       name: "Drawer.Trigger",
-      description: "A FarmUI Button that opens the drawer.",
+      description: "A LoamUI Button that opens the drawer.",
       props: [
         {
           name: "render",
@@ -161,7 +161,7 @@ const doc: ComponentContent = {
     {
       name: "Drawer.Close",
       description:
-        "A FarmUI Button that closes the drawer; compose as many as you need (a footer action, a header ×). Supports render like the Trigger.",
+        "A LoamUI Button that closes the drawer; compose as many as you need (a footer action, a header ×). Supports render like the Trigger.",
     },
   ],
 };

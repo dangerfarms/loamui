@@ -76,7 +76,7 @@ export function renderWithProps<P extends object>(render: RenderProp<P>, props: 
   if (typeof render === "function") {
     if (process.env.NODE_ENV !== "production" && /^[A-Z]/.test(render.name)) {
       console.error(
-        `FarmUI: \`render\` received a component reference (\`render={${render.name}}\`). ` +
+        `LoamUI: \`render\` received a component reference (\`render={${render.name}}\`). ` +
           `Pass an element instead — \`render={<${render.name} />}\` — or a function of the wiring props.`,
       );
     }

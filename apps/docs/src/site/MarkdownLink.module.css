@@ -1,0 +1,14 @@
+.link {
+  color: var(--loam-color-fg-muted);
+  display: inline flow-root;
+  font-size: var(--loam-text-xs);
+  margin-block-end: 1rem;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, currentcolor 40%, transparent);
+  text-underline-offset: 2px;
+
+  &:hover {
+    color: var(--loam-color-fg);
+    text-decoration-color: var(--loam-color-primary);
+  }
+}

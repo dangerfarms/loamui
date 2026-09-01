@@ -165,7 +165,7 @@ function ToastProvider({ timeout = 5000, limit = 3, children }: ToastProviderPro
       const timer = timers.current.get(id);
       if (timer?.handle) clearTimeout(timer.handle);
       timers.current.delete(id);
-      // Must match the CSS exit transition (--fui-duration-lg = 300ms):
+      // Must match the CSS exit transition (--loam-duration-lg = 300ms):
       // shorter unmounts mid-animation, longer leaves a ghost node.
       const handle = setTimeout(() => {
         exitTimers.current.delete(handle);
@@ -186,7 +186,7 @@ function ToastProvider({ timeout = 5000, limit = 3, children }: ToastProviderPro
 
   const add = useCallback(
     (options: ToastOptions) => {
-      const id = options.id ?? `fui-toast-${++toastCounter}`;
+      const id = options.id ?? `loam-toast-${++toastCounter}`;
       const data: ToastData = { priority: "normal", ...options, id };
       const prev = toastsRef.current;
       const appended = prev.some((t) => t.id === id)
@@ -296,7 +296,7 @@ function ToastViewport({ className, children, ...rest }: ToastViewportProps) {
       role="region"
       tabIndex={-1}
       popover={enhanced ? "manual" : undefined}
-      className={cx("fui-Toast-viewport", className)}
+      className={cx("loam-Toast-viewport", className)}
       data-empty={ctx.toasts.length === 0 || undefined}
       // no-noninteractive-element-interactions is off for this file
       // (.oxlintrc): hover/focus pause the timers (WCAG 2.2.1); the
@@ -364,7 +364,7 @@ export interface ToastActionProps extends ButtonHTMLAttributes<HTMLButtonElement
   /** The toast this action belongs to (its activation dismisses it). */
   toastId: string;
   onAction?: () => void;
-  /** Substitute your own element; defaults to a FarmUI Button. */
+  /** Substitute your own element; defaults to a LoamUI Button. */
   render?: RenderProp<ToastActionRenderProps>;
 }
 

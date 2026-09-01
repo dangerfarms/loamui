@@ -1,4 +1,4 @@
-import { Table } from "@farmui/core";
+import { Table } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
 
 const rows = [
@@ -11,7 +11,7 @@ const rows = [
 const doc: ComponentContent = {
   slug: "table",
   lead: "A styled data table composed from native thead/tbody/tr/th/td markup.",
-  importLine: `import { Table } from "@farmui/core";`,
+  importLine: `import { Table } from "@loamui/core";`,
   demos: [
     {
       title: "Basic",
@@ -127,7 +127,7 @@ const doc: ComponentContent = {
   ],
   howItWorks: [
     {
-      title: "The markup is yours — keep it semantic",
+      title: "The markup is yours: keep it semantic",
       body: 'Table styles native thead/tbody/tr/th/td and re-implements nothing, so whatever semantics you write are exactly what assistive tech receives. That cuts both ways: mark header cells <th scope="col"> (or scope="row" for row headers) so each data cell is announced with its headers, and never reach for a table where the content is not actually tabular.',
     },
     {

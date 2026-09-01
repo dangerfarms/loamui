@@ -1,25 +1,25 @@
-import { Button, Checkbox, Loader } from "@farmui/core";
+import { Button, Checkbox, Loader } from "@loamui/core";
 import type { CSSProperties } from "react";
 import type { ComponentContent } from "@/renderer/types";
 
 const doc: ComponentContent = {
   slug: "button",
   lead: "A native button whose appearance is decided by its context, not by props.",
-  importLine: `import { Button } from "@farmui/core";`,
+  importLine: `import { Button } from "@loamui/core";`,
   demos: [
     {
       title: "Contexts",
       description:
-        "Buttons are neutral by default. Declare --fui-context on a region and the buttons inside re-answer their colour; there are no variant props. See the Contextualism guide.",
+        "Buttons are neutral by default. Declare --loam-context on a region and the buttons inside re-answer their colour; there are no variant props. See the Contextualism guide.",
       code: `<Button>Neutral</Button>
 
-<div style={{ "--fui-context": "primary" }}>
+<div style={{ "--loam-context": "primary" }}>
   <Button>Save changes</Button>
 </div>`,
       render: () => (
         <div style={{ display: "grid", gap: "0.75rem", justifyItems: "start" }}>
           <Button>Neutral</Button>
-          <div style={{ "--fui-context": "primary" } as CSSProperties}>
+          <div style={{ "--loam-context": "primary" } as CSSProperties}>
             <Button>Save changes</Button>
           </div>
         </div>
@@ -28,8 +28,8 @@ const doc: ComponentContent = {
     {
       title: "A region adapts every component",
       description:
-        "--fui-context isn't a button feature: everything in the region answers it. Here the checkbox's fill, the button's tint and the loader's stroke all take the danger colour, and focus rings inside follow. Intent is declared once on the container, not as a colour prop on each control.",
-      code: `<div style={{ "--fui-context": "danger" }}>
+        "--loam-context isn't a button feature: everything in the region answers it. Here the checkbox's fill, the button's tint and the loader's stroke all take the danger colour, and focus rings inside follow. Intent is declared once on the container, not as a colour prop on each control.",
+      code: `<div style={{ "--loam-context": "danger" }}>
   <Checkbox label="Also delete backups" defaultChecked />
   <Button>Delete account</Button>
   <Loader label="Deleting" />
@@ -38,7 +38,7 @@ const doc: ComponentContent = {
         <div
           style={
             {
-              "--fui-context": "danger",
+              "--loam-context": "danger",
               display: "flex",
               gap: "1rem",
               flexWrap: "wrap",
@@ -75,8 +75,8 @@ const doc: ComponentContent = {
               containerType: "inline-size",
               inlineSize: "14rem",
               padding: "0.75rem",
-              border: "1px dashed var(--fui-border)",
-              borderRadius: "var(--fui-radius-md)",
+              border: "1px dashed var(--loam-color-line)",
+              borderRadius: "var(--loam-radius-md)",
             }}
           >
             <Button>Narrow: full width</Button>
@@ -87,8 +87,8 @@ const doc: ComponentContent = {
               inlineSize: "24rem",
               maxInlineSize: "100%",
               padding: "0.75rem",
-              border: "1px dashed var(--fui-border)",
-              borderRadius: "var(--fui-radius-md)",
+              border: "1px dashed var(--loam-color-line)",
+              borderRadius: "var(--loam-radius-md)",
             }}
           >
             <Button>Wide: natural width</Button>
@@ -176,7 +176,7 @@ const doc: ComponentContent = {
     },
     {
       title: "One primary action per section",
-      body: `Emphasis is a property of the region, not the button: wrap the section's single most important action in a primary context (--fui-context: "primary") and leave every other button neutral. Two "primary" buttons side by side ask the user to make a decision the interface should have made: if everything is emphasised, nothing is.`,
+      body: `Emphasis is a property of the region, not the button: wrap the section's single most important action in a primary context (--loam-context: "primary") and leave every other button neutral. Two "primary" buttons side by side ask the user to make a decision the interface should have made: if everything is emphasised, nothing is.`,
     },
   ],
   accessibility: [
@@ -201,7 +201,7 @@ const doc: ComponentContent = {
       name: "render",
       type: "RenderProp",
       description:
-        "Substitute the rendered element; the Button's classes and wiring merge onto yours (see the Composition guide). Not for navigation: a call-to-action that goes somewhere is a SignpostLink.",
+        "Substitute the rendered element; the Button's classes and wiring merge onto yours. Not for navigation: a call-to-action that goes somewhere is a SignpostLink.",
     },
     {
       name: "...others",
@@ -211,16 +211,16 @@ const doc: ComponentContent = {
   ],
   cssProps: [
     {
-      name: "--fui-button-color",
+      name: "--loam-button-color",
       syntax: "CSS color",
-      default: "var(--fui-text)",
+      default: "var(--loam-color-fg)",
       description:
         "The button's single colour channel. Set it to recolour one instance or a wrapper component; background, border, hover and active are all derived from it.",
     },
     {
-      name: "--fui-button-radius",
+      name: "--loam-button-radius",
       syntax: "CSS length",
-      default: "var(--fui-radius-md)",
+      default: "var(--loam-radius-md)",
       description: "Corner rounding; set it per instance or on a wrapper component.",
     },
   ],

@@ -5,12 +5,12 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Header } from "@/site/Header";
 import { Footer } from "@/site/Footer";
-import { SkipLink } from "@farmui/core";
+import { SkipLink } from "@loamui/core";
 
 export const metadata: Metadata = {
   title: {
-    default: "FarmUI — Modern UI primitives for agent-assisted developers",
-    template: "%s · FarmUI",
+    default: "LoamUI — Modern UI primitives for agent-assisted developers",
+    template: "%s · LoamUI",
   },
   description:
     "Contextual tokens, element styles and React components, built on Google's Modern Web Guidelines for quickly building bespoke UIs that are accessible, adaptable and fast.",
@@ -27,7 +27,7 @@ export const viewport: Viewport = {
 const themeInit = `
 (function () {
   try {
-    var t = localStorage.getItem("farmui-theme");
+    var t = localStorage.getItem("loamui-theme");
     if (t === "light" || t === "dark") {
       document.documentElement.dataset.theme = t;
     }
@@ -39,11 +39,11 @@ const themeInit = `
 // it changes — the URL is otherwise identical across deploys.
 function libraryCssHref(base: string): string {
   try {
-    const css = readFileSync(join(process.cwd(), "public", "farmui-core.css"));
+    const css = readFileSync(join(process.cwd(), "public", "loamui-core.css"));
     const v = createHash("sha256").update(css).digest("hex").slice(0, 8);
-    return `${base}/farmui-core.css?v=${v}`;
+    return `${base}/loamui-core.css?v=${v}`;
   } catch {
-    return `${base}/farmui-core.css`;
+    return `${base}/loamui-core.css`;
   }
 }
 

@@ -1,8 +1,10 @@
 "use client";
 
+import { useMemo } from "react";
 import type { Ref, TextareaHTMLAttributes } from "react";
 import { useFieldControlProps } from "../Field/Field";
 import { useUserInvalid } from "../../use-user-invalid";
+import { composeRefs } from "../../render";
 import { cx } from "../../utils";
 
 export interface TextareaProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "size"> {
@@ -27,21 +29,23 @@ export function Textarea({
   id,
   "aria-invalid": ariaInvalid,
   "aria-describedby": ariaDescribedby,
-  onBlur,
+  onInput,
   onInvalid,
   ref,
   ...rest
 }: TextareaProps) {
   const field = useFieldControlProps();
-  const { nativeInvalid, checkOnBlur, checkOnInvalid } = useUserInvalid();
+  const { nativeInvalid, validationRef, checkOnInput, checkOnInvalid } =
+    useUserInvalid<HTMLTextAreaElement>();
+  const textareaRef = useMemo(() => composeRefs(ref, validationRef), [ref, validationRef]);
   return (
     <div
-      className={cx("fui-Textarea-field", wrapperClassName)}
+      className={cx("loam-Textarea-field", wrapperClassName)}
       data-disabled={disabled || undefined}
       style={style}
     >
       <textarea
-        ref={ref}
+        ref={textareaRef}
         className={className}
         rows={rows}
         disabled={disabled}
@@ -49,9 +53,9 @@ export function Textarea({
         {...rest}
         aria-invalid={ariaInvalid ?? field["aria-invalid"] ?? (nativeInvalid || undefined)}
         aria-describedby={ariaDescribedby ?? field["aria-describedby"]}
-        onBlur={(e) => {
-          onBlur?.(e);
-          checkOnBlur(e);
+        onInput={(e) => {
+          onInput?.(e);
+          checkOnInput(e);
         }}
         onInvalid={(e) => {
           onInvalid?.(e);

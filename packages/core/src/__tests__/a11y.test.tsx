@@ -136,13 +136,13 @@ const cases: Array<[string, ReactElement]> = [
   ],
   [
     "Alert",
-    <div style={{ "--fui-context": "info" } as CSSProperties}>
+    <div style={{ "--loam-context": "info" } as CSSProperties}>
       <Alert title="Heads up">A new version is available.</Alert>
     </div>,
   ],
   [
     "Alert (composed)",
-    <div style={{ "--fui-context": "warning" } as CSSProperties}>
+    <div style={{ "--loam-context": "warning" } as CSSProperties}>
       <Alert.Root>
         <Alert.Body>
           <Alert.Title>Storage almost full</Alert.Title>
@@ -235,7 +235,7 @@ const cases: Array<[string, ReactElement]> = [
   [
     "Details",
     <Details.Root>
-      <Details.Summary>What is FarmUI?</Details.Summary>
+      <Details.Summary>What is LoamUI?</Details.Summary>
       <Details.Content>A component library.</Details.Content>
     </Details.Root>,
   ],
@@ -247,7 +247,7 @@ const cases: Array<[string, ReactElement]> = [
       <Breadcrumbs.Item current>Billing</Breadcrumbs.Item>
     </Breadcrumbs.Root>,
   ],
-  ["Pagination", <Pagination total={5} value={1} onChange={() => {}} />],
+  ["Pagination", <Pagination total={5} value={1} getHref={(page) => `?page=${page}`} />],
 ];
 
 // Colour-contrast needs a real browser to compute styles (jsdom can't), so we
@@ -292,7 +292,7 @@ describe("accessibility (axe)", () => {
 describe("Avatar naming", () => {
   it("is decorative when it has no name from any source", () => {
     const { container } = render(<Avatar />);
-    const root = container.querySelector(".fui-Avatar");
+    const root = container.querySelector(".loam-Avatar");
     expect(root).toHaveAttribute("aria-hidden", "true");
     expect(root).not.toHaveAttribute("role");
   });

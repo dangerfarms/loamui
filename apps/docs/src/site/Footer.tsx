@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Logo } from "./Logo";
 import { GitHubIcon } from "./Icons";
 import classes from "./Footer.module.css";
-import { FIRST_COMPONENT_HREF } from "@/site/nav";
 
 const COLUMNS = [
   {
@@ -12,7 +11,7 @@ const COLUMNS = [
       { label: "Installation", href: "/docs/installation" },
       { label: "Tokens", href: "/docs/tokens" },
       { label: "Element styles", href: "/docs/element-styles" },
-      { label: "Components", href: FIRST_COMPONENT_HREF },
+      { label: "Components", href: "/docs/components" },
     ],
   },
   {
@@ -27,10 +26,10 @@ const COLUMNS = [
   {
     title: "Community",
     links: [
-      { label: "GitHub", href: "https://github.com/dangerfarms/farmui" },
+      { label: "GitHub", href: "https://github.com/dangerfarms/loamui" },
       {
         label: "Changelog",
-        href: "https://github.com/dangerfarms/farmui/releases",
+        href: "https://github.com/dangerfarms/loamui/releases",
       },
     ],
   },
@@ -47,7 +46,7 @@ export function Footer() {
           </p>
           <a
             className={classes.gh}
-            href="https://github.com/dangerfarms/farmui"
+            href="https://github.com/dangerfarms/loamui"
             target="_blank"
             rel="noreferrer"
           >
@@ -71,7 +70,7 @@ export function Footer() {
         </div>
       </div>
       <div className={`container ${classes.bottom}`}>
-        <span>© {new Date().getFullYear()} FarmUI. Built by Danger Farms.</span>
+        <span>© {new Date().getFullYear()} LoamUI. Built by Danger Farms.</span>
         <span>Built with modern CSS.</span>
       </div>
     </footer>

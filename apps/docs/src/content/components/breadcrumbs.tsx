@@ -8,7 +8,7 @@ import type { ComponentContent } from "@/renderer/types";
 const doc: ComponentContent = {
   slug: "breadcrumbs",
   lead: "The path to the current page, with each ancestor a link back up the hierarchy.",
-  importLine: `import { Breadcrumbs } from "@farmui/core";`,
+  importLine: `import { Breadcrumbs } from "@loamui/core";`,
   demos: [
     {
       title: "Basic",
@@ -56,7 +56,7 @@ const doc: ComponentContent = {
   howItWorks: [
     {
       title: "The current page ends the trail, unlinked",
-      body: 'The last crumb is the page the user is on: mark it current and give it no href. It then renders as plain text with aria-current="page". A link to the page you are already on is a no-op that costs a click and misleads assistive technology. And never render breadcrumbs on the homepage: there is no path above it to show. The alternative convention — ending the trail at the parent section and letting the page\'s own heading anchor it — is equally valid; pick one and keep it consistent.',
+      body: 'The last crumb is the page the user is on: mark it current and give it no href. It then renders as plain text with aria-current="page". A link to the page you are already on is a no-op that costs a click and misleads assistive technology. And never render breadcrumbs on the homepage: there is no path above it to show. The alternative convention (ending the trail at the parent section and letting the page\'s own heading anchor it) is equally valid; pick one and keep it consistent.',
     },
     {
       title: "A trail needs a real hierarchy",

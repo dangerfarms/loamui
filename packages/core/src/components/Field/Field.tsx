@@ -113,7 +113,7 @@ function FieldRoot({ id, className, children, ...rest }: FieldRootProps) {
 
   return (
     <FieldContext value={value}>
-      <div className={cx("fui-Field", className)} {...rest}>
+      <div className={cx("loam-Field", className)} {...rest}>
         {children}
       </div>
     </FieldContext>
@@ -162,7 +162,7 @@ function FieldError({ className, children, ...rest }: FieldErrorProps) {
   if (!hasContent) return null;
   return (
     <p className={cx("error", className)} id={ctx.errorId} role="alert" {...rest}>
-      <span className="fui-Error-prefix">Error: </span>
+      <span className="loam-Error-prefix">Error: </span>
       {children}
     </p>
   );

@@ -3,7 +3,7 @@ export function cx(...args: Array<string | false | null | undefined>): string {
   return args.filter(Boolean).join(" ");
 }
 
-/** Shared size type used across FarmUI controls. */
-export type FarmUISize = "sm" | "md" | "lg";
+/** Shared size type used across LoamUI controls. */
+export type LoamUISize = "sm" | "md" | "lg";
 
-/** Border-radius token keys shared across FarmUI controls. */
+/** Border-radius token keys shared across LoamUI controls. */

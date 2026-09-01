@@ -1,21 +1,24 @@
-@scope (.fui-Textarea-field) {
+@scope (.loam-Textarea-field) {
   :scope {
-    background: var(--fui-surface);
-    border: 1px solid var(--fui-border-strong);
-    border-radius: var(--_radius, var(--fui-radius-md));
+    background: var(--loam-color-surface);
+    border: 1px solid var(--loam-color-line-strong);
+    border-radius: var(--_radius, var(--loam-radius-md));
     display: block flex;
-    font-size: var(--fui-text-sm);
+    font-size: var(--loam-text-sm);
     line-height: 1.2;
-    padding-block: var(--fui-space-sm);
-    padding-inline: var(--fui-space-md);
-    transition:
-      border-color var(--fui-duration-sm) var(--fui-ease),
-      box-shadow var(--fui-duration-md) var(--fui-ease);
+    padding-block: var(--loam-space-sm);
+    padding-inline: var(--loam-space-md);
 
     &:focus-within {
-      border-color: var(--fui-primary);
-      outline: var(--fui-ring-width) solid var(--fui-ring-color);
+      border-color: var(--loam-color-primary);
+      outline: var(--loam-ring-width) solid var(--loam-color-ring);
       outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition:
+        border-color var(--loam-duration-sm) var(--loam-ease),
+        box-shadow var(--loam-duration-md) var(--loam-ease);
     }
   }
 
@@ -27,28 +30,28 @@
   :scope:has(textarea:autofill) {
     border-color: color-mix(
       in oklab,
-      var(--fui-primary) 50%,
-      var(--fui-border-strong)
+      var(--loam-color-primary) 50%,
+      var(--loam-color-line-strong)
     );
   }
 
   :scope:has(textarea:-webkit-autofill) {
     border-color: color-mix(
       in oklab,
-      var(--fui-primary) 50%,
-      var(--fui-border-strong)
+      var(--loam-color-primary) 50%,
+      var(--loam-color-line-strong)
     );
   }
 
-  :scope:has(textarea:is([aria-invalid="true"], :user-invalid)) {
-    --fui-ring-color: var(--fui-danger-ring);
+  :scope:has(textarea[aria-invalid="true"]) {
+    --loam-color-ring: var(--loam-color-danger-ring);
 
-    border-color: var(--fui-danger);
+    border-color: var(--loam-color-danger);
   }
 
   :scope[data-disabled] {
-    background: var(--fui-bg-subtle);
-    opacity: var(--fui-disabled-opacity);
+    background: var(--loam-color-bg-subtle);
+    opacity: var(--loam-disabled-opacity);
   }
 
   textarea {
@@ -68,7 +71,7 @@
   }
 
   textarea::placeholder {
-    color: var(--fui-text-dim);
+    color: var(--loam-color-fg-dim);
   }
 
   /* background-color cannot be overridden on an autofilled field; an inset
@@ -76,12 +79,20 @@
      see the wrapper rules above. */
   textarea:autofill {
     box-shadow: inset 0 0 0 100px
-      color-mix(in oklab, var(--fui-primary) 8%, var(--fui-surface));
+      color-mix(
+        in oklab,
+        var(--loam-color-primary) 8%,
+        var(--loam-color-surface)
+      );
   }
 
   textarea:-webkit-autofill {
     box-shadow: inset 0 0 0 100px
-      color-mix(in oklab, var(--fui-primary) 8%, var(--fui-surface));
+      color-mix(
+        in oklab,
+        var(--loam-color-primary) 8%,
+        var(--loam-color-surface)
+      );
   }
 
   textarea:disabled {

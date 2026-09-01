@@ -16,7 +16,7 @@
 
 .asideInner {
   block-size: 100%;
-  border-inline-end: 1px solid var(--fui-border);
+  border-inline-end: 1px solid var(--loam-color-line);
   overflow-block: auto;
 }
 

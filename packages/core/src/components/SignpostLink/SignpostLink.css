@@ -1,12 +1,12 @@
-@scope (.fui-SignpostLink) to ([class*="fui-"]) {
+@scope (.loam-SignpostLink) to ([class*="loam-"]) {
   :scope {
     align-items: center;
-    border-radius: var(--fui-radius-sm);
-    color: var(--fui-text-strong);
+    border-radius: var(--loam-radius-sm);
+    color: var(--loam-color-fg-strong);
     display: inline flex;
-    font-size: var(--fui-text-md);
+    font-size: var(--loam-text-md);
     font-weight: 600;
-    gap: var(--fui-space-sm);
+    gap: var(--loam-space-sm);
     max-inline-size: fit-content;
     text-decoration: none;
   }
@@ -20,7 +20,7 @@
     text-underline-offset: 0.15em;
 
     :scope:active & {
-      text-decoration-color: var(--fui-primary-strong);
+      text-decoration-color: var(--loam-color-primary-strong);
       text-decoration-thickness: max(0.16em, 2px);
       text-underline-offset: 0.15em;
       transition: none;
@@ -28,9 +28,9 @@
 
     @media (prefers-reduced-motion: no-preference) {
       transition:
-        text-decoration-color var(--fui-duration-md) var(--fui-ease),
-        text-decoration-thickness var(--fui-duration-md) var(--fui-ease),
-        text-underline-offset var(--fui-duration-md) var(--fui-ease-elastic);
+        text-decoration-color var(--loam-duration-md) var(--loam-ease),
+        text-decoration-thickness var(--loam-duration-md) var(--loam-ease),
+        text-underline-offset var(--loam-duration-md) var(--loam-ease-elastic);
     }
   }
 
@@ -39,10 +39,10 @@
      with on-strong — the audited pairing — and a context region recolours
      it by re-answering the token. */
   span.icon {
-    background: var(--fui-primary-strong);
+    background: var(--loam-color-primary-strong);
     block-size: 1.5em;
-    border-radius: var(--fui-radius-full);
-    color: var(--fui-on-strong);
+    border-radius: var(--loam-radius-full);
+    color: var(--loam-color-on-strong);
     display: inline grid;
     flex-shrink: 0;
     inline-size: 1.5em;
@@ -54,13 +54,13 @@
     }
 
     @media (prefers-reduced-motion: no-preference) {
-      transition: translate var(--fui-duration-md) var(--fui-ease-elastic);
+      transition: translate var(--loam-duration-md) var(--loam-ease-elastic);
     }
   }
 
   @media (hover: hover) {
     :scope:hover span.label {
-      text-decoration-color: var(--fui-primary);
+      text-decoration-color: var(--loam-color-primary);
       text-decoration-thickness: max(0.16em, 2px);
       text-underline-offset: 0.3em;
     }

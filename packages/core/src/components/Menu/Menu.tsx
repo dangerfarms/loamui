@@ -116,7 +116,7 @@ function MenuRoot({
 
   const autoId = useId();
   const popupId = `${cssSafeId(autoId)}-menu`;
-  const anchorName = `--fui-anchor-${popupId}`;
+  const anchorName = `--loam-anchor-${popupId}`;
 
   const openRef = useRef(open);
   openRef.current = open;
@@ -157,7 +157,7 @@ function MenuRoot({
 
   return (
     <MenuContext value={value}>
-      <span className={cx("fui-Menu", className)} {...rest}>
+      <span className={cx("loam-Menu", className)} {...rest}>
         {children}
       </span>
     </MenuContext>
@@ -182,7 +182,7 @@ export interface MenuTriggerRenderProps {
 export interface MenuTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * Substitute your own element as the trigger, or pass a function receiving
-   * the wiring props. Without it, the Trigger renders a FarmUI Button, which
+   * the wiring props. Without it, the Trigger renders a LoamUI Button, which
    * adapts to its context like any Button.
    */
   render?: RenderProp<MenuTriggerRenderProps>;
@@ -282,7 +282,7 @@ function MenuPopup({
   useEffect(() => {
     if (enhanced || !open) return;
     const onPointer = (e: MouseEvent) => {
-      const root = ref.current?.closest(".fui-Menu");
+      const root = ref.current?.closest(".loam-Menu");
       if (root && !root.contains(e.target as Node)) setOpen(false);
     };
     const onKey = (e: KeyboardEvent) => {
@@ -358,7 +358,7 @@ function MenuPopup({
       tabIndex={-1}
       popover={enhanced ? "auto" : undefined}
       hidden={enhanced || open ? undefined : true}
-      className={cx("fui-Menu-popup", className)}
+      className={cx("loam-Menu-popup", className)}
       data-position={position}
       data-open={open || undefined}
       style={{ ...style, positionAnchor: ctx.anchorName } as CSSProperties}

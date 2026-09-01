@@ -5,9 +5,7 @@ import { Pagination } from "../../index";
 import type { PaginationProps } from "../../index";
 
 /**
- * Pagination is fully controlled (`total`/`value`/`onChange` are all required),
- * so every story drives it through a small `useState` wrapper to stay
- * interactive.
+ * Stories intercept the real links to keep navigation inside Storybook.
  */
 function PaginationDemo({
   total = 10,
@@ -15,7 +13,18 @@ function PaginationDemo({
   ...props
 }: Partial<PaginationProps> & { initialPage?: number }) {
   const [page, setPage] = useState(initialPage);
-  return <Pagination {...props} total={total} value={page} onChange={setPage} />;
+  return (
+    <Pagination
+      {...props}
+      total={total}
+      value={page}
+      getHref={(next) => `?page=${next}`}
+      onNavigate={(next, event) => {
+        event.preventDefault();
+        setPage(next);
+      }}
+    />
+  );
 }
 
 const meta = {
@@ -27,9 +36,7 @@ const meta = {
     value: 1,
     siblings: 1,
     withEdges: false,
-    // `value`/`onChange` are driven by the stateful wrapper below; this no-op
-    // just satisfies the required-prop type at the meta level.
-    onChange: () => {},
+    getHref: (page) => `?page=${page}`,
   },
   argTypes: {
     total: { control: { type: "number", min: 1 } },
@@ -37,7 +44,8 @@ const meta = {
     withEdges: { control: "boolean" },
     // Controlled by the wrapper's local state, not the Controls panel.
     value: { control: false },
-    onChange: { control: false },
+    getHref: { control: false },
+    onNavigate: { control: false },
   },
   render: ({ total, siblings, withEdges }) => (
     <PaginationDemo total={total} siblings={siblings} withEdges={withEdges} />
@@ -73,16 +81,16 @@ export const NavigatesPages: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const page1 = canvas.getByRole("button", { name: "Page 1" });
+    const page1 = canvas.getByRole("link", { name: "Page 1" });
     await expect(page1).toHaveAttribute("aria-current", "page");
 
-    await userEvent.click(canvas.getByRole("button", { name: "Next page" }));
-    const page2 = canvas.getByRole("button", { name: "Page 2" });
+    await userEvent.click(canvas.getByRole("link", { name: "Next page" }));
+    const page2 = canvas.getByRole("link", { name: "Page 2" });
     await expect(page2).toHaveAttribute("aria-current", "page");
     await expect(page1).not.toHaveAttribute("aria-current");
 
-    await userEvent.click(canvas.getByRole("button", { name: "Page 4" }));
-    const page4 = canvas.getByRole("button", { name: "Page 4" });
+    await userEvent.click(canvas.getByRole("link", { name: "Page 4" }));
+    const page4 = canvas.getByRole("link", { name: "Page 4" });
     await expect(page4).toHaveAttribute("aria-current", "page");
     await expect(page2).not.toHaveAttribute("aria-current");
   },

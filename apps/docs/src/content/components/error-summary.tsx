@@ -4,7 +4,7 @@ import { ErrorSummaryDemo } from "./error-summary.client";
 const doc: ComponentContent = {
   slug: "error-summary",
   lead: "A box at the top of a form listing every error as a link to its field.",
-  importLine: `import { ErrorSummary, Field, Input } from "@farmui/core";`,
+  importLine: `import { ErrorSummary, Field, Input } from "@loamui/core";`,
   demos: [
     {
       title: "After a failed submit",
@@ -98,7 +98,7 @@ const doc: ComponentContent = {
           name: "render",
           type: "RenderProp",
           description:
-            "Substitute the built-in <a> — e.g. a router link; the wiring (href, focus handling) merges onto it.",
+            "Substitute the built-in <a>, e.g. a router link; the wiring (href, focus handling) merges onto it.",
         },
         {
           name: "href",

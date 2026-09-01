@@ -1,7 +1,7 @@
 "use client";
 
-import { useId, useMemo } from "react";
-import type { ReactNode } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
+import type { FormEvent, ReactNode } from "react";
 import { cx } from "../../utils";
 import { Fieldset } from "../Fieldset/Fieldset";
 import { RadioGroupContext } from "./group-context";
@@ -40,8 +40,9 @@ export interface RadioGroupProps {
  * options, sharing a single `name` so native inputs enforce exclusivity.
  *
  * Options participate via context (not element cloning), so `<Radio>`s work
- * at any nesting depth inside the group. Holds no state: use uncontrolled
- * (`defaultValue`) or drive it with `value` + `onChange`.
+ * at any nesting depth inside the group. Holds no selection state: use
+ * uncontrolled (`defaultValue`) or drive it with `value` + `onChange`.
+ * Native submitted-invalid feedback is tracked separately for accessibility.
  */
 export function RadioGroup({
   label,
@@ -60,7 +61,23 @@ export function RadioGroup({
   const groupName = name ?? autoId;
   const descId = description ? `${autoId}-desc` : undefined;
   const errId = error ? `${autoId}-err` : undefined;
-  const invalid = Boolean(error);
+  const fieldsetRef = useRef<HTMLFieldSetElement>(null);
+  const [nativeInvalid, setNativeInvalid] = useState(false);
+  const invalid = Boolean(error) || nativeInvalid;
+
+  useEffect(() => {
+    const form = fieldsetRef.current?.form;
+    if (!form) return;
+    const clear = () => setNativeInvalid(false);
+    form.addEventListener("reset", clear);
+    return () => form.removeEventListener("reset", clear);
+  }, []);
+
+  const checkOnInput = (event: FormEvent<HTMLFieldSetElement>) => {
+    if (!nativeInvalid) return;
+    const radios = event.currentTarget.querySelectorAll<HTMLInputElement>('input[type="radio"]');
+    setNativeInvalid(Array.from(radios).some((radio) => !radio.validity.valid));
+  };
 
   const ctx = useMemo<RadioGroupContextValue>(
     () => ({
@@ -75,12 +92,15 @@ export function RadioGroup({
   return (
     <RadioGroupContext value={ctx}>
       <Fieldset.Root
+        ref={fieldsetRef}
         // radiogroup (not the fieldset's implicit group): the precise role,
         // and the one ARIA allows aria-invalid on.
         role="radiogroup"
-        className={cx("fui-Radio-group", className)}
+        className={cx("loam-Radio-group", className)}
         aria-describedby={cx(descId, errId) || undefined}
         aria-invalid={invalid || undefined}
+        onInvalid={() => setNativeInvalid(true)}
+        onInput={checkOnInput}
       >
         {label && <Fieldset.Legend optional={optional}>{label}</Fieldset.Legend>}
         {description && (
@@ -90,7 +110,7 @@ export function RadioGroup({
         )}
         {error && (
           <span className="error" id={errId} role="alert">
-            <span className="fui-Error-prefix">Error: </span>
+            <span className="loam-Error-prefix">Error: </span>
             {error}
           </span>
         )}

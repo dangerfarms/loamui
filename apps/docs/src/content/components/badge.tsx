@@ -1,38 +1,38 @@
-import { Badge } from "@farmui/core";
+import { Badge } from "@loamui/core";
 import type { CSSProperties } from "react";
 import type { ComponentContent } from "@/renderer/types";
 
 const doc: ComponentContent = {
   slug: "badge",
   lead: "A compact pill for statuses, counts, and labels.",
-  importLine: `import { Badge } from "@farmui/core";`,
+  importLine: `import { Badge } from "@loamui/core";`,
   demos: [
     {
       title: "Contexts",
       description:
-        "Badges are neutral by default. There are no variant or color props: declare --fui-context on a one-element wrapper region (a style query is answered by ancestors, never by the declaring element itself), or let it inherit from a larger region. See the Contextualism guide.",
+        "Badges are neutral by default. There are no variant or color props: declare --loam-context on a one-element wrapper region (a style query is answered by ancestors, never by the declaring element itself), or let it inherit from a larger region. See the Contextualism guide.",
       code: `<Badge>Neutral</Badge>
-<span style={{ "--fui-context": "primary" }}><Badge>Primary</Badge></span>
-<span style={{ "--fui-context": "success" }}><Badge>Success</Badge></span>
-<span style={{ "--fui-context": "warning" }}><Badge>Warning</Badge></span>
-<span style={{ "--fui-context": "danger" }}><Badge>Danger</Badge></span>
-<span style={{ "--fui-context": "info" }}><Badge>Info</Badge></span>`,
+<span style={{ "--loam-context": "primary" }}><Badge>Primary</Badge></span>
+<span style={{ "--loam-context": "success" }}><Badge>Success</Badge></span>
+<span style={{ "--loam-context": "warning" }}><Badge>Warning</Badge></span>
+<span style={{ "--loam-context": "danger" }}><Badge>Danger</Badge></span>
+<span style={{ "--loam-context": "info" }}><Badge>Info</Badge></span>`,
       render: () => (
         <>
           <Badge>Neutral</Badge>
-          <span style={{ "--fui-context": "primary" } as CSSProperties}>
+          <span style={{ "--loam-context": "primary" } as CSSProperties}>
             <Badge>Primary</Badge>
           </span>
-          <span style={{ "--fui-context": "success" } as CSSProperties}>
+          <span style={{ "--loam-context": "success" } as CSSProperties}>
             <Badge>Success</Badge>
           </span>
-          <span style={{ "--fui-context": "warning" } as CSSProperties}>
+          <span style={{ "--loam-context": "warning" } as CSSProperties}>
             <Badge>Warning</Badge>
           </span>
-          <span style={{ "--fui-context": "danger" } as CSSProperties}>
+          <span style={{ "--loam-context": "danger" } as CSSProperties}>
             <Badge>Danger</Badge>
           </span>
-          <span style={{ "--fui-context": "info" } as CSSProperties}>
+          <span style={{ "--loam-context": "info" } as CSSProperties}>
             <Badge>Info</Badge>
           </span>
         </>
@@ -55,19 +55,19 @@ const doc: ComponentContent = {
       title: "Status dot",
       description:
         "Add dot to show a status dot before the label. It takes the context's colour, so the badge reads at a glance even before the text.",
-      code: `<span style={{ "--fui-context": "success" }}><Badge dot>Live</Badge></span>
-<span style={{ "--fui-context": "warning" }}><Badge dot>Pending</Badge></span>
-<span style={{ "--fui-context": "danger" }}><Badge dot>Offline</Badge></span>
+      code: `<span style={{ "--loam-context": "success" }}><Badge dot>Live</Badge></span>
+<span style={{ "--loam-context": "warning" }}><Badge dot>Pending</Badge></span>
+<span style={{ "--loam-context": "danger" }}><Badge dot>Offline</Badge></span>
 <Badge dot>Draft</Badge>`,
       render: () => (
         <>
-          <span style={{ "--fui-context": "success" } as CSSProperties}>
+          <span style={{ "--loam-context": "success" } as CSSProperties}>
             <Badge dot>Live</Badge>
           </span>
-          <span style={{ "--fui-context": "warning" } as CSSProperties}>
+          <span style={{ "--loam-context": "warning" } as CSSProperties}>
             <Badge dot>Pending</Badge>
           </span>
-          <span style={{ "--fui-context": "danger" } as CSSProperties}>
+          <span style={{ "--loam-context": "danger" } as CSSProperties}>
             <Badge dot>Offline</Badge>
           </span>
           <Badge dot>Draft</Badge>
@@ -78,7 +78,7 @@ const doc: ComponentContent = {
       title: "Icons (composed as children)",
       description:
         "No leftSection / rightSection props: an svg child is detected via :has(svg) and gets a gap and 1em sizing, exactly like Button.",
-      code: `<span style={{ "--fui-context": "success" }}>
+      code: `<span style={{ "--loam-context": "success" }}>
   <Badge>
     <svg viewBox="0 -0.5 25 25" fill="none" aria-hidden>
       <path d="M5.5 12.5L10.167 17L19.5 8" stroke="currentColor"
@@ -88,7 +88,7 @@ const doc: ComponentContent = {
   </Badge>
 </span>`,
       render: () => (
-        <span style={{ "--fui-context": "success" } as CSSProperties}>
+        <span style={{ "--loam-context": "success" } as CSSProperties}>
           <Badge>
             <svg viewBox="0 -0.5 25 25" fill="none" aria-hidden>
               <path

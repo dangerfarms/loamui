@@ -165,7 +165,7 @@ export interface DrawerTriggerProps extends ButtonHTMLAttributes<HTMLButtonEleme
   /**
    * Substitute your own element as the trigger (`render={<MyIconButton />}`) — triggers act, so keep them buttons
    * or pass a function receiving the wiring props. Without it, the Trigger
-   * renders a FarmUI Button.
+   * renders a LoamUI Button.
    */
   render?: RenderProp<DrawerTriggerRenderProps>;
 }
@@ -288,7 +288,7 @@ function DrawerPanel({
       {...({ closedby: "any" } as object)}
       aria-labelledby={ctx.hasTitle ? ctx.titleId : undefined}
       aria-describedby={ctx.hasDescription ? ctx.descriptionId : undefined}
-      className={cx("fui-Drawer-panel", className)}
+      className={cx("loam-Drawer-panel", className)}
       data-side={side}
       data-size={size}
       data-open={open || undefined}
@@ -334,7 +334,7 @@ export interface DrawerCloseRenderProps {
 }
 
 export interface DrawerCloseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  /** Substitute your own element; defaults to a FarmUI Button. */
+  /** Substitute your own element; defaults to a LoamUI Button. */
   render?: RenderProp<DrawerCloseRenderProps>;
 }
 

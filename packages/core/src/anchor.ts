@@ -8,13 +8,13 @@ export function supportsAnchoredPopover(): boolean {
     typeof HTMLElement !== "undefined" &&
     "showPopover" in HTMLElement.prototype &&
     typeof CSS !== "undefined" &&
-    CSS.supports("anchor-name: --fui-probe")
+    CSS.supports("anchor-name: --loam-probe")
   );
 }
 
 /**
  * React ids contain ":", which is illegal in the CSS custom idents these
- * components derive (`--fui-anchor-…`); strip to a CSS-safe token or
+ * components derive (`--loam-anchor-…`); strip to a CSS-safe token or
  * anchor positioning silently fails.
  */
 export function cssSafeId(reactId: string): string {

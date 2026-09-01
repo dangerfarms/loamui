@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Field, Range } from "@farmui/core";
+import { Field, Range } from "@loamui/core";
 
 export function RangeFieldDemo() {
   return (

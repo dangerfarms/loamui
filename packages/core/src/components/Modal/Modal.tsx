@@ -161,7 +161,7 @@ export interface ModalTriggerProps extends ButtonHTMLAttributes<HTMLButtonElemen
   /**
    * Substitute your own element as the trigger (`render={<MyIconButton />}`) — triggers act, so keep them buttons
    * or pass a function receiving the wiring props. Without it, the Trigger
-   * renders a FarmUI Button.
+   * renders a LoamUI Button.
    */
   render?: RenderProp<ModalTriggerRenderProps>;
 }
@@ -290,7 +290,7 @@ function ModalPopup({
       role={alert ? "alertdialog" : undefined}
       aria-labelledby={ctx.hasTitle ? ctx.titleId : undefined}
       aria-describedby={ctx.hasDescription ? ctx.descriptionId : undefined}
-      className={cx("fui-Modal-popup", className)}
+      className={cx("loam-Modal-popup", className)}
       data-size={size}
       data-open={open || undefined}
     >
@@ -335,7 +335,7 @@ export interface ModalCloseRenderProps {
 }
 
 export interface ModalCloseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  /** Substitute your own element; defaults to a FarmUI Button. */
+  /** Substitute your own element; defaults to a LoamUI Button. */
   render?: RenderProp<ModalCloseRenderProps>;
 }
 

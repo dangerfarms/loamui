@@ -18,9 +18,10 @@ jobs:
         env:
           PAGES: "true"
       - run: pnpm -r lint
+      - run: pnpm lint:md
       - run: pnpm format:check
-      - run: pnpm --filter @farmui/core exec tsc --noEmit
+      - run: pnpm --filter @loamui/core exec tsc --noEmit
       - run: npx tsc --noEmit
         working-directory: apps/docs
-      - run: pnpm --filter @farmui/core audit:contrast
-      - run: pnpm --filter @farmui/core test
+      - run: pnpm --filter @loamui/core audit:contrast
+      - run: pnpm --filter @loamui/core test

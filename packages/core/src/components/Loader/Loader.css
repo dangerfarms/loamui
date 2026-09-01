@@ -1,16 +1,17 @@
-@scope (.fui-Loader) {
+@scope (.loam-Loader) {
   :scope {
     /* The hook is inherited, so a composing component can size a loader
        from its own context (Button answers it with the same 1em its
        icons get) without fighting this default's specificity. */
-    --_size: var(--fui-loader-size, 1.5rem);
+    --_size: var(--loam-loader-size, 1.5rem);
 
     align-items: center;
     block-size: var(--_size);
 
-    /* The brand token, so context remaps recolour the loader; parts draw
-       with currentColor from here. */
-    color: var(--fui-primary);
+    /* The accent — a loader is a pure indicator, and indicators carry the
+       chromatic flourish while everything else stays neutral. A context
+       region still recolours it (context remaps the accent too). */
+    color: var(--loam-color-accent);
     display: inline flex;
     inline-size: var(--_size);
     justify-content: center;
@@ -35,16 +36,16 @@
     border: max(2px, calc(var(--_size) * 0.12)) solid
       color-mix(in oklch, currentcolor 25%, transparent);
     border-block-start-color: currentcolor;
-    border-radius: var(--fui-radius-full);
+    border-radius: var(--loam-radius-full);
     inline-size: 100%;
 
     @media (prefers-reduced-motion: no-preference) {
-      animation: fui-loader-spin 0.65s linear infinite;
+      animation: loam-loader-spin 0.65s linear infinite;
     }
   }
 }
 
-@keyframes fui-loader-spin {
+@keyframes loam-loader-spin {
   to {
     transform: rotate(1turn);
   }

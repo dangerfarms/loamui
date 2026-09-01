@@ -9,7 +9,7 @@ import {
 const doc: ComponentContent = {
   slug: "date-input",
   lead: "Composable labelled fields for a date the user already knows.",
-  importLine: `import { DateInput } from "@farmui/core";`,
+  importLine: `import { DateInput } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",
@@ -183,7 +183,7 @@ const doc: ComponentContent = {
     {
       name: "DateInput.Description",
       description:
-        "Helper text linked to the group — give an example date. Native <p> props are forwarded.",
+        "Helper text linked to the group: give an example date. Native <p> props are forwarded.",
     },
     {
       name: "DateInput.Error",

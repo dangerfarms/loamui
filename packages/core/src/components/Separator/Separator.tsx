@@ -23,7 +23,7 @@ export function Separator({ orientation = "horizontal", className, ...rest }: Se
     <hr
       aria-orientation={orientation === "vertical" ? "vertical" : undefined}
       data-orientation={orientation}
-      className={cx("fui-Separator", className)}
+      className={cx("loam-Separator", className)}
       {...rest}
     />
   );

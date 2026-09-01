@@ -35,15 +35,14 @@ export function Range({
       ref={ref}
       id={id ?? field.id}
       type="range"
-      className={cx("fui-Range", className)}
+      className={cx("loam-Range", className)}
       data-disabled={disabled || undefined}
       min={min}
       max={max}
       step={step}
       disabled={disabled}
-      // No useUserInvalid here: a range input can never be :user-invalid —
-      // every thumb position is a valid value — so only a Field error can
-      // mark it invalid.
+      // No native-validation state is needed here: every range thumb position
+      // is valid, so only a composed Field error can mark it invalid.
       aria-invalid={ariaInvalid ?? field["aria-invalid"]}
       aria-describedby={ariaDescribedby ?? field["aria-describedby"]}
       {...rest}

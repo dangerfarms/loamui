@@ -15,7 +15,7 @@ const meta = {
       description: {
         component:
           "Neutral by default; the surrounding region sets the status " +
-          "(`--fui-context` on an ancestor region — a wrapper for a " +
+          "(`--loam-context` on an ancestor region — a wrapper for a " +
           "single alert), not by props.",
       },
     },
@@ -29,7 +29,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 
 /**
- * Declare `--fui-context` on a region — any ancestor; a one-element region
+ * Declare `--loam-context` on a region — any ancestor; a one-element region
  * is a wrapper — and the whole look (tint, border, accent, title) derives
  * from that status's colour.
  */
@@ -37,16 +37,16 @@ export const Contexts: Story = {
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
       <Alert title="Neutral">A plain, unopinionated notice.</Alert>
-      <div style={{ "--fui-context": "info" } as CSSProperties}>
+      <div style={{ "--loam-context": "info" } as CSSProperties}>
         <Alert title="Info">A neutral, informational message.</Alert>
       </div>
-      <div style={{ "--fui-context": "success" } as CSSProperties}>
+      <div style={{ "--loam-context": "success" } as CSSProperties}>
         <Alert title="Success">Your payment went through.</Alert>
       </div>
-      <div style={{ "--fui-context": "warning" } as CSSProperties}>
+      <div style={{ "--loam-context": "warning" } as CSSProperties}>
         <Alert title="Warning">Your trial ends in three days.</Alert>
       </div>
-      <div style={{ "--fui-context": "danger" } as CSSProperties}>
+      <div style={{ "--loam-context": "danger" } as CSSProperties}>
         <Alert title="Error">We couldn&apos;t reach the server.</Alert>
       </div>
     </div>
@@ -56,11 +56,11 @@ export const Contexts: Story = {
 export const WithIcon: Story = {
   args: {
     title: "Deployed",
-    children: "Your site is live at farmui.dev.",
+    children: "Your site is live at loamui.dev.",
     icon: <span aria-hidden>✅</span>,
   },
   render: (args) => (
-    <div style={{ "--fui-context": "success" } as CSSProperties}>
+    <div style={{ "--loam-context": "success" } as CSSProperties}>
       <Alert {...args} />
     </div>
   ),

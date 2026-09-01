@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Field, Input, Popover } from "@farmui/core";
+import { Button, Field, Input, Popover } from "@loamui/core";
 
 export function PopoverDemo() {
   return (
@@ -9,7 +9,7 @@ export function PopoverDemo() {
       <Popover.Popup>
         <Popover.Title>Anchored panel</Popover.Title>
         <Popover.Description>
-          Rendered in the browser&apos;s top layer — click outside or press Escape to close.
+          Rendered in the browser&apos;s top layer. Click outside or press Escape to close.
         </Popover.Description>
       </Popover.Popup>
     </Popover.Root>
@@ -28,7 +28,7 @@ export function PopoverLinkTriggerDemo() {
       />
       <Popover.Popup>
         <Popover.Description>
-          The Trigger&apos;s wiring merged onto your own button — it opens the popover and carries
+          The Trigger&apos;s wiring merged onto your own button. It opens the popover and carries
           the aria-expanded state.
         </Popover.Description>
       </Popover.Popup>

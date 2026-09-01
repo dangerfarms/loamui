@@ -1,0 +1,57 @@
+import { COMPONENTS } from "@/site/nav";
+import prose from "./prose.module.css";
+
+export const metadata = {
+  title: "Introduction",
+  description: "LoamUI is a React component library rebuilt on native modern CSS.",
+};
+
+# Introduction
+
+LoamUI is a React component library that trusts the platform: native elements carry the semantics, plain CSS carries the styling, and every component ships with axe and keyboard tests.
+
+## Why LoamUI?
+
+Most component libraries ship a styling engine to your users' browsers. LoamUI doesn't. Every
+component is styled with plain CSS (cascade layers, custom properties, `light-dark()`,
+`color-mix()`, container queries and logical properties), so there's nothing to run at runtime and
+nothing extra to download.
+
+- **Zero-runtime.** Styles are static CSS. No CSS-in-JS, no serialization cost, fully compatible
+  with React Server Components.
+- **Themeable with variables.** Rebrand the whole library by overriding `--loam-*` tokens. No
+  provider required.
+- **Native dark mode.** Powered by CSS `light-dark()`: one toggle flips `color-scheme`.
+- **Accessible by default.** Semantic HTML, focus management, and keyboard support baked in.
+- **{COMPONENTS.length} components** across inputs, data display, feedback, disclosures and
+  navigation, and expanding.
+
+## Installation
+
+Add the package and import the stylesheet once at your app root:
+
+```bash
+pnpm add @loamui/core
+```
+
+```tsx
+// app/layout.tsx
+import "@loamui/core/styles.css";
+import { Button } from "@loamui/core";
+
+export default function Page() {
+  return <Button>Get started</Button>;
+}
+```
+
+<div className={prose.callout}>
+  That's the whole setup. No provider, no config. See the{" "}
+  <a href="/docs/installation">installation guide</a> for framework specifics, or jump into{" "}
+  <a href="/docs/tokens">the tokens</a>.
+</div>
+
+## Next steps
+
+- [Installation](/docs/installation): framework guides for Next.js, Vite and more.
+- [Tokens](/docs/tokens): the token surface, and the theming that falls out of it.
+- [Browse components](/docs/components/button): live examples and props for every component.

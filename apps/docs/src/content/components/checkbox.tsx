@@ -1,10 +1,10 @@
-import { Checkbox } from "@farmui/core";
+import { Checkbox } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
 
 const doc: ComponentContent = {
   slug: "checkbox",
-  lead: "A styled checkbox with an adjacent label and description.",
-  importLine: `import { Checkbox, CheckboxControl } from "@farmui/core";`,
+  lead: "A native checkbox with an adjacent label and description.",
+  importLine: `import { Checkbox, CheckboxControl } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",
@@ -54,8 +54,8 @@ const doc: ComponentContent = {
   ],
   howItWorks: [
     {
-      title: "The native tier underneath",
-      body: 'A plain <input type="checkbox"> is already styled page-wide by the elements layer (accent-color, focus ring), so simple cases need no component at all. The component adds the anatomy on top: a 24px hit target, the label/description wiring, indeterminate, and context adaptation.',
+      title: "A native checkbox, styled by accent-color",
+      body: 'This is a plain <input type="checkbox">. No custom SVG box. The elements layer paints it with the platform\'s own accent-color (the neutral primary), so the checked and indeterminate marks, keyboard behaviour and forced-colours support all come from the browser. The component adds only the label/description wiring and the invalid affordance. A context region recolours it because accent-color follows the primary token.',
     },
     {
       title: "One box or a group",

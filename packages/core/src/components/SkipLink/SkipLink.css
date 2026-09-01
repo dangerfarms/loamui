@@ -1,19 +1,19 @@
-@scope (.fui-SkipLink) {
+@scope (.loam-SkipLink) {
   /* Fixed placement keeps the link out of flow in both states, so
      appearing on focus never shifts the page; z-index above every
      overlay. */
   :scope {
-    background: var(--fui-surface);
-    border: 1px solid var(--fui-border-strong);
-    border-radius: var(--fui-radius-md);
-    box-shadow: var(--fui-shadow-lg);
-    color: var(--fui-text);
-    font-size: var(--fui-text-sm);
+    background: var(--loam-color-surface);
+    border: 1px solid var(--loam-color-line-strong);
+    border-radius: var(--loam-radius-md);
+    box-shadow: var(--loam-shadow-lg);
+    color: var(--loam-color-fg);
+    font-size: var(--loam-text-sm);
     font-weight: 600;
-    inset-block-start: var(--fui-space-sm);
-    inset-inline-start: var(--fui-space-sm);
-    padding-block: var(--fui-space-sm);
-    padding-inline: var(--fui-space-lg);
+    inset-block-start: var(--loam-space-sm);
+    inset-inline-start: var(--loam-space-sm);
+    padding-block: var(--loam-space-sm);
+    padding-inline: var(--loam-space-lg);
     position: fixed;
     text-decoration: none;
     z-index: 110;

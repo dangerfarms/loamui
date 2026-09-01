@@ -12,7 +12,7 @@ const meta = {
       description: {
         component:
           "Neutral by default; the surrounding region decides the look " +
-          "(`--fui-context` on a region, container width, composed icons), " +
+          "(`--loam-context` on a region, container width, composed icons), " +
           "not by props.",
       },
     },
@@ -26,9 +26,9 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 
 /**
- * Declare `--fui-context` on any region and every button inside re-answers
+ * Declare `--loam-context` on any region and every button inside re-answers
  * its colour channel via container style queries. A single instance can be
- * recoloured through the registered `--fui-button-color` property.
+ * recoloured through the registered `--loam-button-color` property.
  */
 export const Contexts: Story = {
   render: () => (
@@ -39,7 +39,7 @@ export const Contexts: Story = {
       <div
         style={
           {
-            "--fui-context": "primary",
+            "--loam-context": "primary",
             display: "flex",
             gap: "0.75rem",
           } as CSSProperties
@@ -51,7 +51,7 @@ export const Contexts: Story = {
       <div
         style={
           {
-            "--fui-context": "danger",
+            "--loam-context": "danger",
             display: "flex",
             gap: "0.75rem",
           } as CSSProperties
@@ -63,11 +63,11 @@ export const Contexts: Story = {
         <Button
           style={
             {
-              "--fui-button-color": "light-dark(darkblue, lightblue)",
+              "--loam-button-color": "light-dark(darkblue, lightblue)",
             } as CSSProperties
           }
         >
-          Custom via --fui-button-color
+          Custom via --loam-button-color
         </Button>
       </div>
     </div>
@@ -87,7 +87,7 @@ export const NarrowContainer: Story = {
           containerType: "inline-size",
           inlineSize: "14rem",
           padding: "1rem",
-          border: "1px dashed var(--fui-border)",
+          border: "1px dashed var(--loam-color-line)",
         }}
       >
         <Button>Full width in a narrow container</Button>
@@ -97,7 +97,7 @@ export const NarrowContainer: Story = {
           containerType: "inline-size",
           inlineSize: "28rem",
           padding: "1rem",
-          border: "1px dashed var(--fui-border)",
+          border: "1px dashed var(--loam-color-line)",
         }}
       >
         <Button>Natural width in a wide one</Button>

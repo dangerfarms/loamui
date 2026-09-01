@@ -30,7 +30,7 @@ function BreadcrumbsRoot({ separator, className, style, children, ...rest }: Bre
   return (
     <nav
       aria-label="Breadcrumbs"
-      className={cx("fui-Breadcrumbs", className)}
+      className={cx("loam-Breadcrumbs", className)}
       style={
         separator !== undefined
           ? ({
@@ -90,7 +90,7 @@ function BreadcrumbsItem({
   );
 
   return (
-    <li className="fui-Breadcrumbs-item" data-current={current || undefined}>
+    <li className="loam-Breadcrumbs-item" data-current={current || undefined}>
       {content}
     </li>
   );

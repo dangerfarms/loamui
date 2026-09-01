@@ -1,10 +1,10 @@
-@scope (.fui-Progress) {
+@scope (.loam-Progress) {
   :scope {
     --_h: 0.625rem;
 
-    background: var(--fui-bg-subtle);
+    background: var(--loam-color-bg-subtle);
     block-size: var(--_h);
-    border-radius: var(--_radius, var(--fui-radius-full));
+    border-radius: var(--_radius, var(--loam-radius-full));
     display: block flow;
     inline-size: 100%;
     overflow: clip;
@@ -21,35 +21,35 @@
   div.bar {
     align-items: center;
 
-    /* The fill IS the primary token — a `--fui-context` region re-answers
+    /* The fill IS the primary token — a `--loam-context` region re-answers
        it (see the Contexts section of tokens.css), so status needs no
        component code here. */
-    background: var(--fui-primary-strong);
+    background: var(--loam-color-primary-strong);
     block-size: 100%;
     border-radius: inherit;
-    color: var(--fui-on-strong);
+    color: var(--loam-color-on-strong);
     display: block flex;
     inline-size: 0;
     justify-content: flex-end;
 
     @media (prefers-reduced-motion: no-preference) {
-      transition: inline-size var(--fui-duration-lg) var(--fui-ease);
+      transition: inline-size var(--loam-duration-lg) var(--loam-ease);
     }
   }
 
   span.label {
-    font-size: var(--fui-text-xs);
+    font-size: var(--loam-text-xs);
     font-weight: 600;
     line-height: 1;
-    padding-inline: var(--fui-space-sm);
+    padding-inline: var(--loam-space-sm);
     white-space: nowrap;
   }
 
   div.bar[data-striped] {
     background-image: repeating-linear-gradient(
       45deg,
-      color-mix(in oklch, var(--fui-on-strong) 22%, transparent) 0,
-      color-mix(in oklch, var(--fui-on-strong) 22%, transparent) 0.5rem,
+      color-mix(in oklch, var(--loam-color-on-strong) 22%, transparent) 0,
+      color-mix(in oklch, var(--loam-color-on-strong) 22%, transparent) 0.5rem,
       transparent 0.5rem,
       transparent 1rem
     );
@@ -58,7 +58,7 @@
 
   div.bar[data-animated] {
     @media (prefers-reduced-motion: no-preference) {
-      animation: fui-progress-stripes 1s linear infinite;
+      animation: loam-progress-stripes 1s linear infinite;
     }
   }
 
@@ -75,7 +75,7 @@
   }
 }
 
-@keyframes fui-progress-stripes {
+@keyframes loam-progress-stripes {
   from {
     background-position: 0 0;
   }

@@ -1,6 +1,6 @@
-# Contributing to FarmUI
+# Contributing to LoamUI
 
-Thanks for your interest in improving FarmUI! 🌱
+Thanks for your interest in improving LoamUI! 🌱
 
 ## Prerequisites
 
@@ -10,19 +10,19 @@ Thanks for your interest in improving FarmUI! 🌱
 ## Getting started
 
 ```bash
-git clone https://github.com/dangerfarms/farmui.git
-cd farmui
+git clone https://github.com/dangerfarms/loamui.git
+cd loamui
 pnpm install
-pnpm build      # builds @farmui/core (required before running the docs)
+pnpm build      # builds @loamui/core (required before running the docs)
 pnpm dev        # runs the docs site
 ```
 
 ## Project layout
 
-- `packages/core` — the `@farmui/core` component library. Each component lives in
+- `packages/core` — the `@loamui/core` component library. Each component lives in
   `src/components/<Name>/` as a `.tsx` file plus a plain `.css` file inside
-  `@layer farmui.components`. Each scope root keeps one prefixed class
-  (`.fui-<Name>`, or a semantic root name like `.fui-Input-field` where a
+  `@layer loamui.components`. Each scope root keeps one prefixed class
+  (`.loam-<Name>`, or a semantic root name like `.loam-Input-field` where a
   component has several roots); parts inside the scope are type selectors or
   short classes (`label`, `p.description`) — the encapsulation is `@scope`'s
   job, not the class name's.
@@ -33,7 +33,7 @@ pnpm dev        # runs the docs site
 The one-line identity, in priority order — use it in the homepage, when
 prioritising navigation, and when writing any docs:
 
-- **Primary:** FarmUI — modern UI primitives for agent-assisted
+- **Primary:** LoamUI — modern UI primitives for agent-assisted
   developers.
 - **Secondary:** Contextual tokens, element styles and React components
   based on Google's Modern Web Guidelines for quickly building bespoke
@@ -47,7 +47,7 @@ contextual/adaptable, bespoke, accessible, fast. Never lead with
 
 ## CSS authoring standard
 
-FarmUI's CSS follows two references, installed as agent skills in this repo
+LoamUI's CSS follows two references, installed as agent skills in this repo
 (`.agents/skills/`, with Claude Code symlinks in `.claude/skills/` — pinned by
 `skills-lock.json`):
 
@@ -71,15 +71,15 @@ properties; `oklch()` / `light-dark()` / `color-mix()`; container queries; and
 is the entry and only orchestrates — the cascade-layer order plus `layer()`
 imports; `src/tokens.css` holds every design token (four bands: inputs →
 neutrals → derived → scales, with Utopia calculator URLs committed
-above the fluid scales); `src/reset.css` and `src/elements.css` are their
+above the fluid scales); `src/elements.css` is its
 layers' contents. **Component CSS files contain no `@layer`** — the layer is
 assigned by the orchestrator's imports in dev and by `scripts/build-css.mjs`
 in the built artifact (the build errors if a component file declares one).
 
-**Motion**: use the duration tokens by intent — `--fui-duration-sm` for micro
+**Motion**: use the duration tokens by intent — `--loam-duration-sm` for micro
 feedback (hovers, colour shifts), `-md` for default transitions, `-lg` for
-overlay enter/exit and large movement — with `--fui-ease`
-(`--fui-ease-elastic` for sparing playful accents). Always inside
+overlay enter/exit and large movement — with `--loam-ease`
+(`--loam-ease-elastic` for sparing playful accents). Always inside
 `@media (prefers-reduced-motion: no-preference)`.
 
 Guardrails enforce this: `pnpm lint` runs oxlint + stylelint
@@ -117,7 +117,7 @@ Guardrails enforce this: `pnpm lint` runs oxlint + stylelint
 decisions, no migration notes for APIs that never shipped. Uncertainty is
 documentable only as platform fact ("Baseline Newly Available since …;
 older Firefox renders the neutral default"). Rationale belongs in docs —
-confidently ("FarmUI ships no spacer component: `gap` replaced spacers") —
+confidently ("LoamUI ships no spacer component: `gap` replaced spacers") —
 process belongs in DECISIONS.md.
 
 **Docs state facts about the system, never their own virtues.** No
@@ -137,17 +137,17 @@ keep it, in the same indicative voice.
 
 ## Component API conventions
 
-FarmUI follows Base UI's composition model with one shared contract, so a
+LoamUI follows Base UI's composition model with one shared contract, so a
 consumer (or agent) who learns it once knows every component.
 
 **`render` is never required** — with one deliberate exception. Every part
 renders a sensible built-in element for its role (`Popover.Trigger` → a
-FarmUI Button, `Breadcrumbs.Item` → a link via `href`, `Popover.Close` → a
+LoamUI Button, `Breadcrumbs.Item` → a link via `href`, `Popover.Close` → a
 Button). The `render` prop exists only to _substitute_ that element
 (`render={<a href="…" />}`, or a function of the wiring props). If a part's
 common case needs `render`, the part has the wrong default element. The
 exception is `Field.Control`, whose entire purpose is wiring an arbitrary
-element into the field — the FarmUI controls (`Input`, `Select`, `Textarea`,
+element into the field — the LoamUI controls (`Input`, `Select`, `Textarea`,
 `Range`) self-wire from Field context when rendered inside `Field.Root`, so
 they never go through it.
 
@@ -171,7 +171,7 @@ chain — the element's own handler runs first, wiring second, both always run;
   them. Inline controls whose anatomy is a row (Checkbox, Switch, Radio)
   keep the labelled convenience form plus a bare `XControl` part
 
-RSC note: `@farmui/core` ships as a single bundle with a `"use client"`
+RSC note: `@loamui/core` ships as a single bundle with a `"use client"`
 banner, so in React Server Components **every** compound export is a client
 reference — dot access like `Popover.Root` or `Breadcrumbs.Item` is
 `undefined` in a server module, regardless of what the source file declares.
@@ -195,17 +195,17 @@ Details styles `details[open]`). **Prefer detection over declaration**:
 when the DOM already expresses a state, style it with `:has()` / ARIA
 selectors instead of minting an attribute. Field error state is the model —
 a field is invalid exactly when it contains a rendered error message
-(`.fui-Field:has(> p.error)`), and controls key off their own
+(`.loam-Field:has(> p.error)`), and controls key off their own
 `[aria-invalid="true"]`; there are no `invalid` props and no `data-invalid`
 attributes.
 
 **Contextual channels** — orthogonal ways a region influences the
 components inside it; never blur them:
 
-- **Contexts** (`--fui-context: primary | danger | success | warning | info`)
+- **Contexts** (`--loam-context: primary | danger | success | warning | info`)
   — what the region _means_. A registered, inherited custom property declared
   on any element (style attribute or the region's own CSS) and read via
-  container style queries (`@container (style(--fui-context: danger))`) in
+  container style queries (`@container (style(--loam-context: danger))`) in
   the Contexts section of `tokens.css` and in component files. **Never a data
   attribute.** Contexts remap **only** colour tokens: never spacing, sizing,
   or layout. Components contain no context code; the nearest ancestor that
@@ -221,18 +221,18 @@ components inside it; never blur them:
   behaviour.
 
 **The control alignment contract**: buttons and form controls share one
-derived anatomy — `padding-block: var(--fui-space-sm)` +
-`font-size: var(--fui-text-sm)` × `line-height: 1.2` + 1px borders — so they
+derived anatomy — `padding-block: var(--loam-space-sm)` +
+`font-size: var(--loam-text-sm)` × `line-height: 1.2` + 1px borders — so they
 height-align by construction at every container width. There are no
 control-height tokens and no size props on form controls; a control that
 must match this height adopts the same stack (see Pagination, Newsletter).
 Glyph controls (Checkbox, Radio, Switch, Range) size their geometry in `em`
-on a `font-size: var(--fui-text-sm)` basis, so glyphs ride the same fluid
+on a `font-size: var(--loam-text-sm)` basis, so glyphs ride the same fluid
 scale as their labels.
 
 ## Adding or changing a component
 
-1. Style with the `--fui-*` design tokens only (see `packages/core/src/styles.css`).
+1. Style with the `--loam-*` design tokens only (see `packages/core/src/styles.css`).
 2. Use semantic HTML, logical properties, and modern CSS per the standard above.
    No CSS-in-JS.
 3. Keep everything accessible: correct roles, keyboard support, focus-visible rings.
@@ -244,19 +244,53 @@ scale as their labels.
 pnpm build
 pnpm check-types
 pnpm lint
+pnpm lint:md
 pnpm format
 ```
 
-All four should pass cleanly. Please use
+All five should pass cleanly. Please use
 [Conventional Commits](https://www.conventionalcommits.org/) for commit messages
 (`feat:`, `fix:`, `docs:`, `refactor:`, …).
 
-- `pnpm --filter @farmui/core test` — the a11y and interaction suites
+- `pnpm --filter @loamui/core test` runs the a11y and interaction suites.
+- `pnpm lint:md` runs the rumdl Markdown linter over the hand-authored docs.
+
+## References
+
+The reading behind the conventions in this guide, grouped by topic. Reach for
+these when a change touches an area you have not worked in before.
+
+**Primitives (the library's shape).** The framing of a small set of primitives
+that agents compose into bespoke UI:
+
+- [JavaScript frameworks heading into 2026](https://dev.to/playfulprogramming/javascript-frameworks-heading-into-2026-2hel)
+
+**Contextual design.** How a region declares meaning and components adapt,
+built on container queries and modern colour:
+
+- [Container queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries)
+- [`light-dark()`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark) and [`color-mix()`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix)
+- Brand-on-interaction: [moderncss.ai](https://moderncss.ai/) and [npmx.dev](https://npmx.dev/)
+
+**CSS layout modules.** Pick the module by the shape of the content, per the
+[Layout guide](./apps/docs/src/app/docs/layout/page.mdx):
+
+- [A guide to CSS layout](https://www.smashingmagazine.com/2018/05/guide-css-layout/)
+- [Flow](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Display/Flow_layout), [Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout), [Flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Flexible_box_layout), [Multi-column](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Multicol_layout/Basic_concepts)
+
+**Rhythmic and fluid type scales.** How the type scale is tuned per container:
+
+- [Designing with fluid type scales](https://utopia.fyi/blog/designing-with-fluid-type-scales/)
+- [Utopia](https://utopia.fyi/)
+
+**Design safety.** Small, checkable rules that keep visuals honest:
+
+- [Safe design rules](https://anthonyhobday.com/sideprojects/saferules/)
 
 ## Releasing
 
 Publishing is automated: pushing a `v*` tag runs the release workflow, which
-builds and publishes `@farmui/core` to npm. Maintainers only.
+builds and publishes `@loamui/core` to npm. Maintainers only.
 
 By contributing you agree that your contributions are licensed under the
 project's [MIT License](./LICENSE).

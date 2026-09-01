@@ -1,17 +1,17 @@
-import { Card, Button } from "@farmui/core";
+import { Card, Button } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
 
 const doc: ComponentContent = {
   slug: "card",
   lead: "A surface container that groups related content.",
-  importLine: `import { Card } from "@farmui/core";`,
+  importLine: `import { Card } from "@loamui/core";`,
   demos: [
     {
       title: "Basic card",
       description: "A padded surface holding a heading, text, and an action.",
       code: `<Card>
   <h3 style={{ margin: "0 0 0.5rem" }}>Weekly summary</h3>
-  <p style={{ margin: "0 0 1rem", color: "var(--fui-text-muted)" }}>
+  <p style={{ margin: "0 0 1rem", color: "var(--loam-color-fg-muted)" }}>
     Your team shipped 12 tasks this week. Review activity and plan the next sprint.
   </p>
   <Button>View report</Button>
@@ -20,7 +20,7 @@ const doc: ComponentContent = {
         <div style={{ maxInlineSize: "22rem", inlineSize: "100%" }}>
           <Card>
             <h3 style={{ margin: "0 0 0.5rem" }}>Weekly summary</h3>
-            <p style={{ margin: "0 0 1rem", color: "var(--fui-text-muted)" }}>
+            <p style={{ margin: "0 0 1rem", color: "var(--loam-color-fg-muted)" }}>
               Your team shipped 12 tasks this week. Review activity and plan the next sprint.
             </p>
             <Button>View report</Button>

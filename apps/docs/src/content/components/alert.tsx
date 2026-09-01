@@ -1,40 +1,40 @@
-import { Alert } from "@farmui/core";
+import { Alert } from "@loamui/core";
 import type { CSSProperties } from "react";
 import type { ComponentContent } from "@/renderer/types";
 
 const doc: ComponentContent = {
   slug: "alert",
   lead: "A prominent message box whose status comes from its context.",
-  importLine: `import { Alert } from "@farmui/core";`,
+  importLine: `import { Alert } from "@loamui/core";`,
   demos: [
     {
       title: "Contexts",
       description:
-        "Alert has no color or variant props. Declare --fui-context on a one-element wrapper region (a style query is answered by ancestors, never by the element that declares the property) and the status colours follow. See the Contextualism guide.",
-      code: `<div style={{ "--fui-context": "info" }}>
+        "Alert has no color or variant props. Declare --loam-context on a one-element wrapper region (a style query is answered by ancestors, never by the element that declares the property) and the status colours follow. See the Contextualism guide.",
+      code: `<div style={{ "--loam-context": "info" }}>
   <Alert title="Heads up">A new version is available.</Alert>
 </div>
-<div style={{ "--fui-context": "success" }}>
+<div style={{ "--loam-context": "success" }}>
   <Alert title="Saved">Your changes have been stored.</Alert>
 </div>
-<div style={{ "--fui-context": "warning" }}>
+<div style={{ "--loam-context": "warning" }}>
   <Alert title="Low storage">Only 5% of your quota remains.</Alert>
 </div>
-<div style={{ "--fui-context": "danger" }}>
+<div style={{ "--loam-context": "danger" }}>
   <Alert title="Deploy failed">Check the build logs.</Alert>
 </div>`,
       render: () => (
         <div style={{ display: "grid", gap: "0.75rem", inlineSize: "100%" }}>
-          <div style={{ "--fui-context": "info" } as CSSProperties}>
+          <div style={{ "--loam-context": "info" } as CSSProperties}>
             <Alert title="Heads up">A new version is available.</Alert>
           </div>
-          <div style={{ "--fui-context": "success" } as CSSProperties}>
+          <div style={{ "--loam-context": "success" } as CSSProperties}>
             <Alert title="Saved">Your changes have been stored.</Alert>
           </div>
-          <div style={{ "--fui-context": "warning" } as CSSProperties}>
+          <div style={{ "--loam-context": "warning" } as CSSProperties}>
             <Alert title="Low storage">Only 5% of your quota remains.</Alert>
           </div>
-          <div style={{ "--fui-context": "danger" } as CSSProperties}>
+          <div style={{ "--loam-context": "danger" } as CSSProperties}>
             <Alert title="Deploy failed">Check the build logs.</Alert>
           </div>
         </div>
@@ -43,15 +43,15 @@ const doc: ComponentContent = {
     {
       title: "Inherited from a region",
       description:
-        "--fui-context inherits, so an alert inside a region that already declares its meaning needs nothing of its own: the nearest ancestor that sets the property wins.",
-      code: `<div style={{ "--fui-context": "warning" }}>
+        "--loam-context inherits, so an alert inside a region that already declares its meaning needs nothing of its own: the nearest ancestor that sets the property wins.",
+      code: `<div style={{ "--loam-context": "warning" }}>
   <Alert title="Scheduled maintenance tonight." />
 </div>`,
       render: () => (
         <div
           style={
             {
-              "--fui-context": "warning",
+              "--loam-context": "warning",
               inlineSize: "100%",
             } as CSSProperties
           }
@@ -63,13 +63,13 @@ const doc: ComponentContent = {
     {
       title: "With icon",
       description: "Pass any node as the leading icon.",
-      code: `<div style={{ "--fui-context": "info" }}>
+      code: `<div style={{ "--loam-context": "info" }}>
   <Alert icon={<span aria-hidden>ℹ</span>} title="Did you know?">
     You can theme every alert with a single CSS variable.
   </Alert>
 </div>`,
       render: () => (
-        <div style={{ "--fui-context": "info", inlineSize: "100%" } as CSSProperties}>
+        <div style={{ "--loam-context": "info", inlineSize: "100%" } as CSSProperties}>
           <Alert icon={<span aria-hidden>ℹ</span>} title="Did you know?">
             You can theme every alert with a single CSS variable.
           </Alert>
@@ -79,11 +79,11 @@ const doc: ComponentContent = {
     {
       title: "Title only",
       description: "Body content is optional.",
-      code: `<div style={{ "--fui-context": "success" }}>
+      code: `<div style={{ "--loam-context": "success" }}>
   <Alert title="All systems operational." />
 </div>`,
       render: () => (
-        <div style={{ "--fui-context": "success", inlineSize: "100%" } as CSSProperties}>
+        <div style={{ "--loam-context": "success", inlineSize: "100%" } as CSSProperties}>
           <Alert title="All systems operational." />
         </div>
       ),
@@ -112,7 +112,7 @@ const doc: ComponentContent = {
     },
   ],
   accessibility: [
-    "A banner already present at page load announces nothing (role=alert only fires on insertion): for a post-redirect confirmation, either move keyboard focus to the alert on load, or treat it as a landmark instead — a wrapper with role=region and aria-labelledby pointing at the title.",
+    "A banner already present at page load announces nothing (role=alert only fires on insertion): for a post-redirect confirmation, either move keyboard focus to the alert on load, or treat it as a landmark instead: a wrapper with role=region and aria-labelledby pointing at the title.",
     'Renders role="alert" (an assertive live region), so an alert inserted in response to an event is announced immediately by screen readers, ahead of whatever else was queued.',
     'For dynamic messages that are not urgent, pass role="status": forwarded props are spread after the default, so your role wins and the announcement becomes polite instead of interrupting.',
     "The status colour is never announced: write the title so the meaning survives in words (“Deploy failed”, not “Error” on a red tint); the border and tint are visual-only.",

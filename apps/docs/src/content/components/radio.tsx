@@ -1,10 +1,10 @@
-import { Radio, RadioGroup } from "@farmui/core";
+import { Radio, RadioGroup } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
 
 const doc: ComponentContent = {
   slug: "radio",
   lead: "A single choice from a small set of visible, mutually exclusive options.",
-  importLine: `import { Radio, RadioGroup } from "@farmui/core";`,
+  importLine: `import { Radio, RadioGroup, RadioControl } from "@loamui/core";`,
   demos: [
     {
       title: "Basic group",
@@ -47,7 +47,7 @@ const doc: ComponentContent = {
     {
       title: "Horizontal",
       description:
-        "Lay the options out in a row only when there are two, short options — more than that, or longer labels, read better stacked.",
+        "Lay the options out in a row only when there are two, short options. More than that, or longer labels, read better stacked.",
       code: `<RadioGroup label="Contact preference" orientation="horizontal">
   <Radio value="email" label="Email" />
   <Radio value="phone" label="Phone" />
@@ -89,12 +89,12 @@ const doc: ComponentContent = {
   ],
   howItWorks: [
     {
-      title: "The native tier underneath",
-      body: 'A plain <input type="radio"> is already styled page-wide by the elements layer (accent-color, focus ring), so simple cases need no component at all. The component adds the label anatomy, group wiring and context adaptation on top.',
+      title: "A native radio, styled by accent-color",
+      body: 'This is a plain <input type="radio">: no custom dot. The elements layer paints it with the platform\'s own accent-color (the neutral primary); selection, keyboard arrow-cycling and forced-colours support come from the browser. The component adds the label anatomy, group wiring and context adaptation.',
     },
     {
       title: "Never pre-select",
-      body: "A group with a defaultValue lets users miss the question entirely and submit an answer they never gave, and once any radio is selected, the group can never be returned to unanswered — so when every option might be wrong, offer an explicit 'None of the above' option rather than leaving the user stuck. Omit defaultValue so the first selection is always a deliberate choice; reserve a default for the rare setting with one safe, overwhelmingly common value.",
+      body: "A group with a defaultValue lets users miss the question entirely and submit an answer they never gave, and once any radio is selected, the group can never be returned to unanswered. So when every option might be wrong, offer an explicit 'None of the above' option rather than leaving the user stuck. Omit defaultValue so the first selection is always a deliberate choice; reserve a default for the rare setting with one safe, overwhelmingly common value.",
     },
     {
       title: "Order the options",
@@ -118,7 +118,7 @@ const doc: ComponentContent = {
   accessibility: [
     "RadioGroup renders a native <fieldset> with a <legend>, the accessible way to name a group: screen readers announce the legend when a radio is focused.",
     "Radios share one name so the browser enforces single-selection and arrow-key navigation natively.",
-    'A group error sets aria-describedby and aria-invalid on the fieldset, which carries role="radiogroup" — the one place ARIA allows aria-invalid for radios. The individual radios never claim it; their danger borders are pure CSS answering the group state.',
+    'A group error sets aria-describedby and aria-invalid on the fieldset, which carries role="radiogroup", the one place ARIA allows aria-invalid for radios. Required native groups use the same state after a submit attempt and clear it after a selection. The individual radios never claim it; their danger borders are pure CSS answering the group state.',
   ],
   props: [
     {
@@ -193,14 +193,14 @@ const doc: ComponentContent = {
           name: "optional",
           type: "boolean",
           default: "false",
-          description: 'Appends "(optional)" to the group legend — optional is marked in words.',
+          description: 'Appends "(optional)" to the group legend; optional is marked in words.',
         },
       ],
     },
     {
       name: "RadioControl",
       description:
-        "The bare input + dot without a label row, for composing inside a Field where the label lives on Field.Label. Takes the same props as Radio minus label, description and wrapperClassName.",
+        "The bare input without a label row, for composing inside a Field where the label lives on Field.Label. Takes the same props as Radio minus label, description and wrapperClassName.",
     },
   ],
 };

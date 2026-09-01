@@ -1,13 +1,13 @@
 import Link from "next/link";
-import { Button, SignpostLink } from "@farmui/core";
+import { Button, SignpostLink } from "@loamui/core";
 import { CodeBlock } from "@/renderer/CodeBlock";
-import { COMPONENTS, componentsByCategory, FIRST_COMPONENT_HREF } from "@/site/nav";
+import { COMPONENTS, componentsByCategory } from "@/site/nav";
 import { BoltIcon, CheckIcon, GitHubIcon } from "@/site/Icons";
 import { HeroShowcase, InstallSnippet } from "./home.client";
 import c from "./home.module.css";
 
 const STATS = [
-  { num: `${COMPONENTS.length}`, label: "Components — and no more" },
+  { num: `${COMPONENTS.length}`, label: "Components, and no more" },
   { num: "3", label: "Primitives" },
   { num: "0", label: "Runtime dependencies" },
   { num: "0kb", label: "Runtime CSS-in-JS" },
@@ -19,7 +19,7 @@ const TENETS = [
     body: (
       <>
         Real <code>&lt;dialog&gt;</code>, <code>&lt;details&gt;</code>, the Popover API, anchor
-        positioning, container queries. The platform&rsquo;s own widgets, styled — not
+        positioning, container queries. The platform&rsquo;s own widgets, styled, not
         reimplementations of them.
       </>
     ),
@@ -37,8 +37,8 @@ const TENETS = [
     title: "Baseline browser support",
     body: (
       <>
-        Features are adopted from Baseline, and support claims come from compatibility data — not
-        from optimism.
+        Features are adopted from Baseline, and support claims come from compatibility data, not
+        optimism.
       </>
     ),
   },
@@ -48,24 +48,24 @@ const PRIMITIVES = [
   {
     title: "Tokens",
     href: "/docs/tokens",
-    body: "A handful of semantic decisions — four hues, eight neutrals, fluid scales — and everything else derived by recipe. Not thousands of values: a surface small enough to audit.",
+    body: "A handful of semantic decisions (a small palette of colours, a neutral ramp, fluid scales), and everything else derived by recipe. Not thousands of values, but a surface small enough to audit.",
   },
   {
     title: "Element styles",
     href: "/docs/element-styles",
-    body: "Enhanced default styles for native HTML, page-wide — responsive, accessible, and respecting the reader's light or dark preference. Plain markup is presentable before any component appears.",
+    body: "Enhanced default styles for native HTML, page-wide: responsive, accessible, and respecting the reader's light or dark preference. Plain markup is presentable before any component appears.",
   },
   {
     title: "Components",
-    href: FIRST_COMPONENT_HREF,
-    body: "A small set of carefully chosen, contextually styled components — not hundreds. Your agent builds exactly what you need on the two primitives beneath.",
+    href: "/docs/components",
+    body: "A small set of carefully chosen, contextually styled components, not hundreds. Your agent builds exactly what you need on the two primitives beneath.",
   },
 ];
 
 const UX_RULES = [
-  "Form fields read label, description, error, control — the fix is read before the answer is given",
+  "Form fields read label, description, error, control, so the fix is read before the answer is given",
   "Optional is marked in words, never with asterisks",
-  "Buttons act; links go — and the docs hold the line between them",
+  "Buttons act; links go, and the docs hold the line between them",
   "A switch acts now; a checkbox acts on submit",
   "Disclosure exists to shorten a long page, not to hide what everyone needs",
 ];
@@ -79,11 +79,11 @@ const GATES = [
   "Zero runtime",
 ];
 
-const FARMUI_CODE = `import { Button, SignpostLink } from "@farmui/core";
+const LOAMUI_CODE = `import { Button, SignpostLink } from "@loamui/core";
 
 <Button>Save changes</Button>;`;
 
-const TAILWIND_CODE = `// shadcn/ui + Tailwind — utilities inlined on every element
+const TAILWIND_CODE = `// shadcn/ui + Tailwind: utilities inlined on every element
 <button
   className="inline-flex items-center justify-center gap-2
     whitespace-nowrap rounded-md text-sm font-medium
@@ -124,7 +124,7 @@ const TECHNIQUES = [
   {
     name: "@layer",
     desc: "A predictable cascade: no specificity wars, no !important.",
-    code: "@layer farmui.components { … }",
+    code: "@layer loamui.components { … }",
   },
   {
     name: "clamp()",
@@ -134,7 +134,7 @@ const TECHNIQUES = [
   {
     name: "@scope",
     desc: "Encapsulation in the browser, so parts keep plain names.",
-    code: "@scope (.fui-Field) { label { … } }",
+    code: "@scope (.loam-Field) { label { … } }",
   },
 ];
 
@@ -163,7 +163,7 @@ export default function HomePage() {
             <div className={c.ctaRow}>
               <SignpostLink render={<Link href="/docs" />}>Get started</SignpostLink>
               <a
-                href="https://github.com/dangerfarms/farmui"
+                href="https://github.com/dangerfarms/loamui"
                 target="_blank"
                 rel="noreferrer"
                 className={c.plainLink}
@@ -199,9 +199,9 @@ export default function HomePage() {
           </span>
           <h2 className={c.sectionTitle}>Built on Google&rsquo;s Modern Web Guidance.</h2>
           <p className={c.sectionSub}>
-            Every primitive follows the Chrome team&rsquo;s guidance for the modern web — the reason
-            interfaces built with FarmUI are fast and accessible, and the combination no other
-            library offers. Three tenets run through everything:
+            Every primitive follows the Chrome team&rsquo;s guidance for the modern web. That is why
+            interfaces built with LoamUI are fast and accessible, a combination no other library
+            offers. Three tenets run through everything:
           </p>
         </div>
         <div className={c.features}>
@@ -245,15 +245,15 @@ export default function HomePage() {
             <h2 className={c.sectionTitle}>Context decides, props don&rsquo;t.</h2>
             <p className={c.sectionSub}>
               Components carry no size, variant or colour props. A region declares what it means (
-              <code>--fui-context</code>) and components inside adopt it; a container&rsquo;s width
-              decides how components size. Drop components on a page and they fit — the{" "}
+              <code>--loam-context</code>) and components inside adopt it; a container&rsquo;s width
+              decides how components size. Drop components on a page and they fit. The{" "}
               <Link href="/docs/contextualism">Contextualism guide</Link> alone is enough for an
               agent to use it.
             </p>
             <ul className={c.splitList}>
               {[
                 "One region declaration recolours buttons, checkboxes, focus rings, selection",
-                "Fluid tokens size controls to their container — no size props",
+                "Fluid tokens size controls to their container, with no size props",
                 "Width is the parent's layout: rows shrink-wrap, stacks stretch",
               ].map((item) => (
                 <li key={item} className={c.splitItem}>
@@ -269,12 +269,12 @@ export default function HomePage() {
             language="css"
             code={`/* a named region declares its meaning */
 .danger-zone {
-  --fui-context: danger;
+  --loam-context: danger;
 }
 
-/* every FarmUI component inside adopts it:
+/* every LoamUI component inside adopts it:
    buttons, checked states, carets, focus
-   rings — no props, no wrappers */`}
+   rings. No props, no wrappers */`}
           />
         </div>
       </section>
@@ -285,9 +285,8 @@ export default function HomePage() {
           <span className="eyebrow">Distilled UX practice</span>
           <h2 className={c.sectionTitle}>The hard-earned rules, already in the components.</h2>
           <p className={c.sectionSub}>
-            Steeped in UX best practices: decades of user research distilled into defaults and
-            guidance. Every component page says when to use it, when not to, and why — so the
-            judgment ships with the code.
+            Steeped in UX best practices. Every component page says when to use it, when not to, and
+            why, so the judgment ships with the code.
           </p>
         </div>
         <ul className={c.shouts}>
@@ -308,11 +307,10 @@ export default function HomePage() {
               Quality that doesn&rsquo;t depend on who wrote the code.
             </h2>
             <p className={c.sectionSub}>
-              Agent-assisted development needs gates, not vibes. FarmUI&rsquo;s quality bar is
-              enforced by deterministic tooling — a stylelint config with every rule on, a contrast
+              Agent-assisted development needs gates, not vibes. LoamUI&rsquo;s quality bar is
+              enforced by deterministic tooling: a stylelint config with every rule on, a contrast
               audit that reads the colour recipes out of the real stylesheets, and axe and
-              interaction tests on every component. The same gates run for human and agent alike —
-              the <Link href="/docs/gatekeeping">Gatekeeping guide</Link> documents all of them.
+              interaction tests on every component. The same gates run for human and agent alike.
             </p>
             <ul className={c.splitList}>
               {GATES.map((item) => (
@@ -329,12 +327,12 @@ export default function HomePage() {
             language="css"
             code={`/* the audit reads these weights from the
    stylesheet and asserts every derived
-   pairing holds its contrast — change a
+   pairing holds its contrast. Change a
    recipe and CI tells you what broke */
---fui-primary-strong: light-dark(
-  color-mix(in oklab, var(--fui-primary),
+--loam-color-primary-strong: light-dark(
+  color-mix(in oklab, var(--loam-color-primary),
     oklch(0% 0 0deg) 22%),
-  var(--fui-primary)
+  var(--loam-color-primary)
 );`}
           />
         </div>
@@ -349,7 +347,7 @@ export default function HomePage() {
             <p className={c.sectionSub}>
               Inspired by Base UI&rsquo;s composition architecture: compound components expose their
               parts, element substitution goes through <code>render</code>, and icons are detected
-              children, not slot props. Bespoke variants are compositions in your codebase — not
+              children, not slot props. Bespoke variants are compositions in your codebase, not
               configuration in the library.
             </p>
             <ul className={c.splitList}>
@@ -384,7 +382,7 @@ export default function HomePage() {
           <span className="eyebrow">See the difference</span>
           <h2 className={c.sectionTitle}>Same button. Cleaner everything.</h2>
           <p className={c.sectionSub}>
-            FarmUI keeps styling in one shared, cacheable stylesheet, so your markup stays readable.
+            LoamUI keeps styling in one shared, cacheable stylesheet, so your markup stays readable.
             Utility frameworks inline dozens of classes onto every element; runtime CSS-in-JS
             serializes styles on each render.
           </p>
@@ -392,10 +390,10 @@ export default function HomePage() {
         <div className={c.compare}>
           <div className={c.compareCol} data-good>
             <div className={c.compareHead}>
-              <span className={c.compareTag}>FarmUI</span>
+              <span className={c.compareTag}>LoamUI</span>
               <Button>Save changes</Button>
             </div>
-            <CodeBlock code={FARMUI_CODE} />
+            <CodeBlock code={LOAMUI_CODE} />
             <p className={c.compareNote}>
               One prop. Styles live in shared CSS: <strong>0&nbsp;kb</strong> runtime, works with
               any build tool.
@@ -423,7 +421,7 @@ export default function HomePage() {
           <span className="eyebrow">Under the hood</span>
           <h2 className={c.sectionTitle}>Modern CSS, put to work.</h2>
           <p className={c.sectionSub}>
-            No abstractions over the platform: FarmUI ships the same modern CSS features you&rsquo;d
+            No abstractions over the platform: LoamUI ships the same modern CSS features you&rsquo;d
             reach for by hand, so nothing runs at runtime.
           </p>
         </div>
@@ -444,8 +442,8 @@ export default function HomePage() {
           <span className="eyebrow">The library</span>
           <h2 className={c.sectionTitle}>{COMPONENTS.length} components, ready to ship.</h2>
           <p className={c.sectionSub}>
-            Inputs, data display, feedback, overlays and navigation, accessible and themeable out of
-            the box.
+            Inputs, data display, feedback, disclosures and navigation, accessible and themeable out
+            of the box.
           </p>
         </div>
         <div className={c.cats}>

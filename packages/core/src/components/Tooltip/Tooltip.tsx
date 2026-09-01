@@ -164,7 +164,7 @@ function TooltipRoot({
 
   const autoId = useId();
   const bubbleId = `${cssSafeId(autoId)}-tooltip`;
-  const anchorName = `--fui-anchor-${bubbleId}`;
+  const anchorName = `--loam-anchor-${bubbleId}`;
 
   const openRef = useRef(open);
   openRef.current = open;
@@ -301,7 +301,7 @@ function TooltipRoot({
 
   return (
     <TooltipContext value={value}>
-      <span className={cx("fui-Tooltip", className)} {...rest}>
+      <span className={cx("loam-Tooltip", className)} {...rest}>
         {children}
       </span>
     </TooltipContext>
@@ -324,7 +324,7 @@ export interface TooltipTriggerProps extends ButtonHTMLAttributes<HTMLButtonElem
   /**
    * Substitute your own interactive element as the trigger
    * (`render={<IconButton />}`) or pass a function receiving the wiring
-   * props. Without it, the Trigger renders a FarmUI Button.
+   * props. Without it, the Trigger renders a LoamUI Button.
    */
   render?: RenderProp<TooltipTriggerRenderProps>;
 }
@@ -403,7 +403,7 @@ function TooltipPopup({
       role="tooltip"
       popover={enhanced ? ctx.popoverKind : undefined}
       hidden={enhanced || open ? undefined : true}
-      className={cx("fui-Tooltip-popup", className)}
+      className={cx("loam-Tooltip-popup", className)}
       data-position={position}
       data-open={open || undefined}
       style={{ ...style, positionAnchor: ctx.anchorName } as CSSProperties}

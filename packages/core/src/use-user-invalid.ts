@@ -1,28 +1,39 @@
 "use client";
 
-import { useCallback, useState } from "react";
-import type { FocusEvent, FormEvent } from "react";
+import { useCallback, useEffect, useState } from "react";
+import type { FormEvent } from "react";
+
+type ValidatableControl = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
 /**
- * Mirrors the platform's `:user-invalid` judgement onto `aria-invalid` —
- * the pseudo-class is visual-only and assistive technology never hears it.
- * Re-reads the platform's verdict at the moments it can change (blur, and
- * the `invalid` event a submit attempt fires); no validation logic is
- * duplicated. An explicitly supplied `aria-invalid` always wins.
+ * Mirrors native constraint validation onto `aria-invalid` after a submit
+ * attempt. The `invalid` event opens the error state; subsequent input may
+ * clear it but never opens it, so fields do not complain on blur or while the
+ * user is typing for the first time. A form reset clears the submitted state.
+ * An explicitly supplied `aria-invalid` always wins at the call site.
  */
-export function useUserInvalid() {
+export function useUserInvalid<T extends ValidatableControl>() {
   const [nativeInvalid, setNativeInvalid] = useState(false);
+  const [control, setControl] = useState<T | null>(null);
+  const validationRef = useCallback((node: T | null) => setControl(node), []);
 
-  const check = useCallback((el: Element) => {
-    try {
-      setNativeInvalid(el.matches(":user-invalid"));
-    } catch {
-      // Selector unsupported (e.g. jsdom) — the declared path still works.
-    }
+  useEffect(() => {
+    const form = control?.form;
+    if (!form) return;
+    const clear = () => setNativeInvalid(false);
+    form.addEventListener("reset", clear);
+    return () => form.removeEventListener("reset", clear);
+  }, [control]);
+
+  const checkOnInvalid = useCallback((event: FormEvent<T>) => {
+    const invalid = !event.currentTarget.validity.valid;
+    setNativeInvalid(invalid);
   }, []);
 
-  const checkOnBlur = useCallback((e: FocusEvent<Element>) => check(e.currentTarget), [check]);
-  const checkOnInvalid = useCallback((e: FormEvent<Element>) => check(e.currentTarget), [check]);
+  const checkOnInput = useCallback((event: FormEvent<T>) => {
+    const invalid = !event.currentTarget.validity.valid;
+    setNativeInvalid((submittedInvalid) => (submittedInvalid ? invalid : false));
+  }, []);
 
-  return { nativeInvalid, checkOnBlur, checkOnInvalid };
+  return { nativeInvalid, validationRef, checkOnInput, checkOnInvalid };
 }

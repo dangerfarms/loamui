@@ -1,8 +1,10 @@
 "use client";
 
+import { useMemo } from "react";
 import type { Ref, SelectHTMLAttributes } from "react";
 import { useFieldControlProps } from "../Field/Field";
 import { useUserInvalid } from "../../use-user-invalid";
+import { composeRefs } from "../../render";
 import { cx } from "../../utils";
 
 export interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "size"> {
@@ -31,25 +33,27 @@ export function Select({
   id,
   "aria-invalid": ariaInvalid,
   "aria-describedby": ariaDescribedby,
-  onBlur,
+  onInput,
   onInvalid,
   ref,
   ...rest
 }: SelectProps) {
   const field = useFieldControlProps();
-  const { nativeInvalid, checkOnBlur, checkOnInvalid } = useUserInvalid();
+  const { nativeInvalid, validationRef, checkOnInput, checkOnInvalid } =
+    useUserInvalid<HTMLSelectElement>();
+  const selectRef = useMemo(() => composeRefs(ref, validationRef), [ref, validationRef]);
   const isControlled = value !== undefined;
   const resolvedDefault =
     !isControlled && defaultValue === undefined && placeholder ? "" : defaultValue;
 
   return (
     <div
-      className={cx("fui-Select-field", wrapperClassName)}
+      className={cx("loam-Select-field", wrapperClassName)}
       data-disabled={disabled || undefined}
       style={style}
     >
       <select
-        ref={ref}
+        ref={selectRef}
         className={className}
         disabled={disabled}
         value={value}
@@ -58,9 +62,9 @@ export function Select({
         {...rest}
         aria-invalid={ariaInvalid ?? field["aria-invalid"] ?? (nativeInvalid || undefined)}
         aria-describedby={ariaDescribedby ?? field["aria-describedby"]}
-        onBlur={(e) => {
-          onBlur?.(e);
-          checkOnBlur(e);
+        onInput={(e) => {
+          onInput?.(e);
+          checkOnInput(e);
         }}
         onInvalid={(e) => {
           onInvalid?.(e);

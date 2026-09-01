@@ -1,18 +1,18 @@
 /* The viewport lives in the top layer (popover="manual"), so it carries its
    own scope; toasts stack from the block-end corner. */
-@scope (.fui-Toast-viewport) to ([class*="fui-"]) {
+@scope (.loam-Toast-viewport) to ([class*="loam-"]) {
   :scope {
     background: none;
     border: 0;
     display: block flex;
     flex-direction: column;
-    gap: var(--fui-space-sm);
-    inline-size: min(22rem, calc(100vi - 2 * var(--fui-space-lg)));
+    gap: var(--loam-space-sm);
+    inline-size: min(22rem, calc(100vi - 2 * var(--loam-space-lg)));
 
     /* Clear the UA's [popover] inset/size defaults. */
     inset: auto;
-    inset-block-end: var(--fui-space-lg);
-    inset-inline-end: var(--fui-space-lg);
+    inset-block-end: var(--loam-space-lg);
+    inset-inline-end: var(--loam-space-lg);
     margin: 0;
     outline: none;
     overflow: visible;
@@ -27,18 +27,18 @@
 
   div.toast {
     align-items: flex-start;
-    background: var(--fui-surface);
-    border: 1px solid var(--fui-border);
-    border-radius: var(--fui-radius-md);
-    box-shadow: var(--fui-shadow-lg);
+    background: var(--loam-color-surface);
+    border: 1px solid var(--loam-color-line);
+    border-radius: var(--loam-radius-md);
+    box-shadow: var(--loam-shadow-lg);
     display: block flex;
-    gap: var(--fui-space-sm);
-    padding: var(--fui-space-md);
+    gap: var(--loam-space-sm);
+    padding: var(--loam-space-md);
 
     @media (prefers-reduced-motion: no-preference) {
       transition:
-        opacity var(--fui-duration-lg) var(--fui-ease),
-        translate var(--fui-duration-lg) var(--fui-ease);
+        opacity var(--loam-duration-lg) var(--loam-ease),
+        translate var(--loam-duration-lg) var(--loam-ease);
 
       @starting-style {
         opacity: 0;
@@ -59,17 +59,17 @@
   }
 
   div.title {
-    font-size: var(--fui-text-sm);
+    font-size: var(--loam-text-sm);
     font-weight: 600;
   }
 
   div.description {
-    color: var(--fui-text-muted);
-    font-size: var(--fui-text-sm);
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
     overflow-wrap: break-word;
 
     div.title + & {
-      margin-block-start: var(--fui-space-xs);
+      margin-block-start: var(--loam-space-xs);
     }
   }
 
@@ -77,9 +77,9 @@
     background: none;
     block-size: 1.5rem;
     border: 0;
-    border-radius: var(--fui-radius-sm);
+    border-radius: var(--loam-radius-sm);
     box-shadow: none;
-    color: var(--fui-text-muted);
+    color: var(--loam-color-fg-muted);
     cursor: pointer;
     display: inline grid;
     flex-shrink: 0;
@@ -95,8 +95,8 @@
 
     @media (hover: hover) {
       &:hover {
-        background: var(--fui-bg-subtle);
-        color: var(--fui-text);
+        background: var(--loam-color-bg-subtle);
+        color: var(--loam-color-fg);
       }
     }
   }

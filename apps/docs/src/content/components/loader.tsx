@@ -1,11 +1,11 @@
-import { Loader } from "@farmui/core";
+import { Loader } from "@loamui/core";
 import type { CSSProperties } from "react";
 import type { ComponentContent } from "@/renderer/types";
 
 const doc: ComponentContent = {
   slug: "loader",
   lead: "An animated indicator for pending, indeterminate work.",
-  importLine: `import { Loader } from "@farmui/core";`,
+  importLine: `import { Loader } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",
@@ -33,29 +33,29 @@ const doc: ComponentContent = {
     {
       title: "Contexts",
       description:
-        "There is no color prop. Declare --fui-context on a one-element wrapper region (a style query is answered by ancestors, never by the declaring element itself), or let it inherit from the region whose work it reports: a loader in a warning panel is already warning-coloured. See the Contextualism guide.",
+        "There is no color prop. Declare --loam-context on a one-element wrapper region (a style query is answered by ancestors, never by the declaring element itself), or let it inherit from the region whose work it reports: a loader in a warning panel is already warning-coloured. See the Contextualism guide.",
       code: `<Loader />
-<span style={{ "--fui-context": "primary" }}><Loader /></span>
-<span style={{ "--fui-context": "success" }}><Loader /></span>
-<span style={{ "--fui-context": "warning" }}><Loader /></span>
-<span style={{ "--fui-context": "danger" }}><Loader /></span>
-<span style={{ "--fui-context": "info" }}><Loader /></span>`,
+<span style={{ "--loam-context": "primary" }}><Loader /></span>
+<span style={{ "--loam-context": "success" }}><Loader /></span>
+<span style={{ "--loam-context": "warning" }}><Loader /></span>
+<span style={{ "--loam-context": "danger" }}><Loader /></span>
+<span style={{ "--loam-context": "info" }}><Loader /></span>`,
       render: () => (
         <>
           <Loader />
-          <span style={{ "--fui-context": "primary" } as CSSProperties}>
+          <span style={{ "--loam-context": "primary" } as CSSProperties}>
             <Loader />
           </span>
-          <span style={{ "--fui-context": "success" } as CSSProperties}>
+          <span style={{ "--loam-context": "success" } as CSSProperties}>
             <Loader />
           </span>
-          <span style={{ "--fui-context": "warning" } as CSSProperties}>
+          <span style={{ "--loam-context": "warning" } as CSSProperties}>
             <Loader />
           </span>
-          <span style={{ "--fui-context": "danger" } as CSSProperties}>
+          <span style={{ "--loam-context": "danger" } as CSSProperties}>
             <Loader />
           </span>
-          <span style={{ "--fui-context": "info" } as CSSProperties}>
+          <span style={{ "--loam-context": "info" } as CSSProperties}>
             <Loader />
           </span>
         </>
@@ -109,7 +109,7 @@ const doc: ComponentContent = {
   contextual: true,
   cssProps: [
     {
-      name: "--fui-loader-size",
+      name: "--loam-loader-size",
       syntax: "CSS length",
       default: "1.5rem",
       description:

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { FIRST_COMPONENT_HREF } from "@/site/nav";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
 import { CommandMenu } from "./CommandMenu";
@@ -7,7 +6,7 @@ import { MobileNav } from "./MobileNav";
 import { GitHubIcon } from "./Icons";
 import classes from "./Header.module.css";
 
-const GITHUB_URL = "https://github.com/dangerfarms/farmui";
+const GITHUB_URL = "https://github.com/dangerfarms/loamui";
 
 export function Header() {
   return (
@@ -19,7 +18,7 @@ export function Header() {
           <nav className={classes.nav} aria-label="Primary">
             <Link href="/docs/tokens">Tokens</Link>
             <Link href="/docs/element-styles">Element styles</Link>
-            <Link href={FIRST_COMPONENT_HREF}>Components</Link>
+            <Link href="/docs/components">Components</Link>
           </nav>
         </div>
 
@@ -32,7 +31,7 @@ export function Header() {
             href={GITHUB_URL}
             target="_blank"
             rel="noreferrer"
-            aria-label="FarmUI on GitHub"
+            aria-label="LoamUI on GitHub"
           >
             <GitHubIcon width={16} height={16} />
           </a>

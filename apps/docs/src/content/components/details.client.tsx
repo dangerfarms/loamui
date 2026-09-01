@@ -1,6 +1,6 @@
 "use client";
 
-import { Details } from "@farmui/core";
+import { Details } from "@loamui/core";
 
 export function DetailsBasicDemo() {
   return (

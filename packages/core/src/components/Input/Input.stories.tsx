@@ -35,7 +35,7 @@ export const FluidSizing: Story = {
           containerType: "inline-size",
           inlineSize: "16rem",
           padding: "1rem",
-          border: "1px dashed var(--fui-border)",
+          border: "1px dashed var(--loam-color-line)",
         }}
       >
         <Field.Root>
@@ -48,7 +48,7 @@ export const FluidSizing: Story = {
           containerType: "inline-size",
           inlineSize: "32rem",
           padding: "1rem",
-          border: "1px dashed var(--fui-border)",
+          border: "1px dashed var(--loam-color-line)",
         }}
       >
         <Field.Root>

@@ -15,8 +15,15 @@ const meta = {
         <Modal.Description>
           They&apos;ll receive an email invitation to join your workspace.
         </Modal.Description>
-        <div className="fui-cluster">
-          <span style={{ "--fui-context": "primary" } as CSSProperties}>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "var(--loam-space-sm)",
+            alignItems: "center",
+          }}
+        >
+          <span style={{ "--loam-context": "primary" } as CSSProperties}>
             <Modal.Close>Send invite</Modal.Close>
           </span>
           <Modal.Close>Cancel</Modal.Close>
@@ -43,15 +50,22 @@ export const Playground: Story = {};
 export const AlertDialog: Story = {
   render: () => (
     <Modal.Root>
-      <span style={{ "--fui-context": "danger" } as CSSProperties}>
+      <span style={{ "--loam-context": "danger" } as CSSProperties}>
         <Modal.Trigger>Delete file</Modal.Trigger>
       </span>
       <Modal.Popup alert size="sm">
         <Modal.Title>Delete this file?</Modal.Title>
         <Modal.Description>This cannot be undone.</Modal.Description>
-        <div className="fui-cluster">
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "var(--loam-space-sm)",
+            alignItems: "center",
+          }}
+        >
           <Modal.Close autoFocus>Cancel</Modal.Close>
-          <span style={{ "--fui-context": "danger" } as CSSProperties}>
+          <span style={{ "--loam-context": "danger" } as CSSProperties}>
             <Modal.Close>Delete</Modal.Close>
           </span>
         </div>
@@ -63,7 +77,14 @@ export const AlertDialog: Story = {
 /** Panel widths via the Popup's size prop. */
 export const Sizes: Story = {
   render: () => (
-    <div className="fui-cluster">
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "var(--loam-space-sm)",
+        alignItems: "center",
+      }}
+    >
       {(["sm", "md", "lg"] as const).map((size) => (
         <Modal.Root key={size}>
           <Modal.Trigger>Open {size}</Modal.Trigger>
@@ -89,7 +110,7 @@ export const WithHeaderClose: Story = {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBlockEnd: "var(--fui-space-sm)",
+            marginBlockEnd: "var(--loam-space-sm)",
           }}
         >
           <Modal.Title style={{ margin: 0 }}>Settings</Modal.Title>

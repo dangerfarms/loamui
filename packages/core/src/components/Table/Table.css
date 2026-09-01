@@ -1,15 +1,15 @@
-@scope (.fui-Table-scroll) {
+@scope (.loam-Table-scroll) {
   :scope {
-    border-radius: var(--fui-radius-md);
+    border-radius: var(--loam-radius-md);
     inline-size: 100%;
     overflow-inline: auto;
   }
 }
 
-@scope (.fui-Table) to ([class*="fui-"]) {
+@scope (.loam-Table) to ([class*="loam-"]) {
   :scope {
     border-collapse: collapse;
-    font-size: var(--fui-text-sm);
+    font-size: var(--loam-text-sm);
     inline-size: 100%;
 
     &[data-caption-side="top"] {
@@ -26,24 +26,24 @@
     }
 
     caption {
-      color: var(--fui-text-muted);
-      font-size: var(--fui-text-xs);
-      padding-block: var(--fui-space-sm);
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-xs);
+      padding-block: var(--loam-space-sm);
       text-align: start;
     }
 
     :where(th, td) {
-      border-block-end: 1px solid var(--fui-border);
-      padding-block: var(--fui-space-md);
-      padding-inline: var(--fui-space-lg);
+      border-block-end: 1px solid var(--loam-color-line);
+      padding-block: var(--loam-space-md);
+      padding-inline: var(--loam-space-lg);
       text-align: start;
       vertical-align: middle;
     }
 
     :where(thead th) {
-      border-block-end: 1px solid var(--fui-border-strong);
-      color: var(--fui-text-muted);
-      font-size: var(--fui-text-xs);
+      border-block-end: 1px solid var(--loam-color-line-strong);
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-xs);
       font-weight: 600;
       letter-spacing: 0.03em;
       text-transform: uppercase;
@@ -55,20 +55,22 @@
     }
 
     &[data-col-borders] :where(th, td):not(:last-child) {
-      border-inline-end: 1px solid var(--fui-border);
+      border-inline-end: 1px solid var(--loam-color-line);
     }
 
     &[data-striped] :where(tbody tr:nth-child(even)) {
-      background: var(--fui-bg-subtle);
+      background: var(--loam-color-bg-subtle);
     }
 
-    &[data-hover] :where(tbody tr) {
-      transition: background var(--fui-duration-md) var(--fui-ease);
+    @media (prefers-reduced-motion: no-preference) {
+      &[data-hover] :where(tbody tr) {
+        transition: background var(--loam-duration-md) var(--loam-ease);
+      }
     }
 
     @media (hover: hover) {
       &[data-hover] :where(tbody tr:hover) {
-        background: var(--fui-surface-hover);
+        background: var(--loam-color-surface-hover);
       }
     }
   }

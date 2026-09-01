@@ -3,9 +3,9 @@
  * the page background, with the text pushed toward black or white so the
  * label always reads on its own tint. The accent is the region's.
  */
-@scope (.fui-Badge) to ([class*="fui-"]) {
+@scope (.loam-Badge) to ([class*="loam-"]) {
   :scope {
-    --_color: var(--fui-text);
+    --_color: var(--loam-color-fg);
 
     align-items: center;
 
@@ -13,24 +13,21 @@
        the near-achromatic page background rotates the channel's hue (the
        declared hue of an achromatic colour still interpolates); cartesian
        mixing only desaturates, so the channel's hue survives. */
-    background: color-mix(in oklab, var(--_color), var(--fui-bg) 85%);
+    background: color-mix(in oklab, var(--_color), var(--loam-color-bg) 85%);
     block-size: var(--_h, 1.375rem);
-    border-radius: var(--_radius, var(--fui-radius-full));
+    border-radius: var(--_radius, var(--loam-radius-full));
     color: light-dark(
       color-mix(in oklab, var(--_color) 70%, oklch(0% 0 0deg)),
       color-mix(in oklab, var(--_color) 55%, oklch(100% 0 0deg))
     );
     display: inline flex;
-    font-size: var(--_fz, var(--fui-text-xs));
+    font-size: var(--_fz, var(--loam-text-xs));
     font-weight: 600;
-    gap: var(--_gap, var(--fui-space-xs));
+    gap: var(--_gap, var(--loam-space-xs));
     inline-size: fit-content;
     letter-spacing: 0.01em;
     line-height: 1;
     padding-inline: var(--_px, 0.625rem);
-    transition:
-      background var(--fui-duration-md) var(--fui-ease),
-      color var(--fui-duration-md) var(--fui-ease);
     user-select: none;
     white-space: nowrap;
 
@@ -43,8 +40,14 @@
     &[data-size="lg"] {
       --_h: 1.625rem;
       --_px: 0.8125rem;
-      --_fz: var(--fui-text-sm);
-      --_gap: var(--fui-space-sm);
+      --_fz: var(--loam-text-sm);
+      --_gap: var(--loam-space-sm);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition:
+        background var(--loam-duration-md) var(--loam-ease),
+        color var(--loam-duration-md) var(--loam-ease);
     }
   }
 
@@ -52,13 +55,13 @@
   span.dot {
     background: var(--_color);
     block-size: 0.5em;
-    border-radius: var(--fui-radius-full);
+    border-radius: var(--loam-radius-full);
     flex: none;
     inline-size: 0.5em;
   }
 
   :scope:has(svg) {
-    gap: var(--_gap, var(--fui-space-xs));
+    gap: var(--_gap, var(--loam-space-xs));
 
     svg {
       block-size: auto;
@@ -68,35 +71,35 @@
   }
 
   /* Context: within a status region — the channel takes the status colour.
-     (Even though the region also remaps --fui-primary, the badge keys its
+     (Even though the region also remaps --loam-color-primary, the badge keys its
      own channel because its rest state is neutral text, not primary.) */
-  @container (style(--fui-context: primary)) {
+  @container (style(--loam-context: primary)) {
     :scope {
-      --_color: var(--fui-primary);
+      --_color: var(--loam-color-primary);
     }
   }
 
-  @container (style(--fui-context: success)) {
+  @container (style(--loam-context: success)) {
     :scope {
-      --_color: var(--fui-success);
+      --_color: var(--loam-color-success);
     }
   }
 
-  @container (style(--fui-context: warning)) {
+  @container (style(--loam-context: warning)) {
     :scope {
-      --_color: var(--fui-warning);
+      --_color: var(--loam-color-warning);
     }
   }
 
-  @container (style(--fui-context: info)) {
+  @container (style(--loam-context: info)) {
     :scope {
-      --_color: var(--fui-info);
+      --_color: var(--loam-color-info);
     }
   }
 
-  @container (style(--fui-context: danger)) {
+  @container (style(--loam-context: danger)) {
     :scope {
-      --_color: var(--fui-danger);
+      --_color: var(--loam-color-danger);
     }
   }
 

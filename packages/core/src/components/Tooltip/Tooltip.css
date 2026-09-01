@@ -1,4 +1,4 @@
-@scope (.fui-Tooltip) {
+@scope (.loam-Tooltip) {
   :scope {
     display: inline flow-root;
     position: relative;
@@ -7,17 +7,17 @@
 
 /* The bubble escapes into the top layer when enhanced, so it carries its
    own scope. */
-@scope (.fui-Tooltip-popup) to ([class*="fui-"]) {
+@scope (.loam-Tooltip-popup) to ([class*="loam-"]) {
   :scope {
-    --_gap: var(--fui-space-xs);
+    --_gap: var(--loam-space-xs);
     --_arrow: 0.3125rem;
 
-    background: var(--fui-text);
+    background: var(--loam-color-fg);
     border: 0;
-    border-radius: var(--fui-radius-sm);
-    box-shadow: var(--fui-shadow-md);
-    color: var(--fui-bg);
-    font-size: var(--fui-text-xs);
+    border-radius: var(--loam-radius-sm);
+    box-shadow: var(--loam-shadow-md);
+    color: var(--loam-color-bg);
+    font-size: var(--loam-text-xs);
     inline-size: max-content;
     margin: 0;
     max-inline-size: 16rem;
@@ -25,15 +25,15 @@
     /* The UA gives [popover] `overflow: auto`, which would clip the arrow
        poking outside the bubble. Tooltips never scroll. */
     overflow: visible;
-    padding-block: var(--fui-space-xs);
-    padding-inline: var(--fui-space-sm);
+    padding-block: var(--loam-space-xs);
+    padding-inline: var(--loam-space-sm);
     text-align: center;
     white-space: normal;
 
     /* Enhanced: top layer + anchor positioning. position-anchor /
        anchor-name are set from inline styles with a per-instance name
        shared by Trigger and Popup. */
-    @supports (anchor-name: --fui-probe) {
+    @supports (anchor-name: --loam-probe) {
       /* stylelint-disable-next-line declaration-property-value-no-unknown --
          lets the arrow query which position-try fallback applied (Chrome
          143+; inert elsewhere); stylelint's CSS data doesn't know the
@@ -73,10 +73,10 @@
         opacity: 1;
         scale: 1;
         transition:
-          opacity var(--fui-duration-lg) var(--fui-ease),
-          scale var(--fui-duration-lg) var(--fui-ease),
-          display var(--fui-duration-lg) var(--fui-ease) allow-discrete,
-          overlay var(--fui-duration-lg) var(--fui-ease) allow-discrete;
+          opacity var(--loam-duration-lg) var(--loam-ease),
+          scale var(--loam-duration-lg) var(--loam-ease),
+          display var(--loam-duration-lg) var(--loam-ease) allow-discrete,
+          overlay var(--loam-duration-lg) var(--loam-ease) allow-discrete;
 
         /* Exit: transition back to the closed state (see Modal). */
         &:not(:popover-open) {
@@ -92,7 +92,7 @@
     }
 
     /* Fallback: anchored to the wrapper. */
-    @supports not (anchor-name: --fui-probe) {
+    @supports not (anchor-name: --loam-probe) {
       position: absolute;
       z-index: 40;
 
@@ -146,25 +146,25 @@
     position: absolute;
 
     :scope[data-position="top"] & {
-      border-block-start-color: var(--fui-text);
+      border-block-start-color: var(--loam-color-fg);
       inset-block-start: 100%;
       inset-inline-start: calc(50% - var(--_arrow));
     }
 
     :scope[data-position="bottom"] & {
-      border-block-end-color: var(--fui-text);
+      border-block-end-color: var(--loam-color-fg);
       inset-block-end: 100%;
       inset-inline-start: calc(50% - var(--_arrow));
     }
 
     :scope[data-position="left"] & {
-      border-inline-start-color: var(--fui-text);
+      border-inline-start-color: var(--loam-color-fg);
       inset-block-start: calc(50% - var(--_arrow));
       inset-inline-start: 100%;
     }
 
     :scope[data-position="right"] & {
-      border-inline-end-color: var(--fui-text);
+      border-inline-end-color: var(--loam-color-fg);
       inset-block-start: calc(50% - var(--_arrow));
       inset-inline-end: 100%;
     }
@@ -176,28 +176,28 @@
        them keep the requested-side arrow. */
     @container anchored(fallback: flip-block) {
       :scope[data-position="top"] & {
-        border-block-end-color: var(--fui-text);
+        border-block-end-color: var(--loam-color-fg);
         border-block-start-color: transparent;
         inset-block: auto 100%;
       }
 
       :scope[data-position="bottom"] & {
         border-block-end-color: transparent;
-        border-block-start-color: var(--fui-text);
+        border-block-start-color: var(--loam-color-fg);
         inset-block: 100% auto;
       }
     }
 
     @container anchored(fallback: flip-inline) {
       :scope[data-position="left"] & {
-        border-inline-end-color: var(--fui-text);
+        border-inline-end-color: var(--loam-color-fg);
         border-inline-start-color: transparent;
         inset-inline: auto 100%;
       }
 
       :scope[data-position="right"] & {
         border-inline-end-color: transparent;
-        border-inline-start-color: var(--fui-text);
+        border-inline-start-color: var(--loam-color-fg);
         inset-inline: 100% auto;
       }
     }

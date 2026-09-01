@@ -1,9 +1,9 @@
-@scope (.fui-Card) to ([class*="fui-"]) {
+@scope (.loam-Card) to ([class*="loam-"]) {
   :scope {
-    background: var(--fui-surface);
-    border: 1px solid var(--fui-border);
-    border-radius: var(--_radius, var(--fui-radius-lg));
+    background: var(--loam-color-surface);
+    border: 1px solid var(--loam-color-line);
+    border-radius: var(--_radius, var(--loam-radius-lg));
     display: block flow;
-    padding: var(--fui-space-lg);
+    padding: var(--loam-space-lg);
   }
 }

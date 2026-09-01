@@ -1,0 +1,26 @@
+# rumdl — Markdown linter for LoamUI's hand-authored docs.
+#
+# rumdl honours .gitignore, so the generated documentation twins under
+# apps/docs/public/docs/** and the private working notes in local/** are
+# skipped automatically (both are gitignored). The excludes below drop the
+# vendored agent-skill markdown and the MDX docs pages.
+#
+# MDX (apps/docs/src/**/*.mdx) is JSX-in-Markdown, not plain Markdown: its
+# elements trip MD033 (inline HTML) and its prose exceeds MD013 line lengths by
+# design. Those pages are already covered by oxlint and prettier, so rumdl
+# lints only true .md files.
+
+[global]
+exclude = [
+    ".git",
+    ".github",
+    "node_modules",
+    "dist",
+    "out",
+    ".next",
+    # Vendored agent skills (third-party Markdown, not ours to lint).
+    ".agents",
+    ".claude",
+    # MDX docs pages are handled by oxlint + prettier, not a Markdown linter.
+    "**/*.mdx",
+]

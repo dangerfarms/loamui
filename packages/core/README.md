@@ -1,34 +1,40 @@
-# @farmui/core
+# @loamui/core
 
-Beautiful React components, fast & accessible — zero-runtime, built on native
-modern CSS. Part of [FarmUI](https://github.com/dangerfarms/farmui).
+Modern UI primitives for agent-assisted developers. LoamUI combines contextual
+tokens, enhanced native element styles, and composable React components built
+with modern CSS.
 
 ```bash
-npm install @farmui/core
+npm install @loamui/core
 ```
 
 ```tsx
-import "@farmui/core/styles.css";
-import { Button, Input } from "@farmui/core";
+import "@loamui/core/styles.css";
+import { Button, Field, Input } from "@loamui/core";
 
 export function SignIn() {
   return (
     <form>
-      <Input label="Email" placeholder="you@example.com" />
+      <Field.Root>
+        <Field.Label>Email</Field.Label>
+        <Input type="email" autoComplete="email" required />
+      </Field.Root>
       <Button type="submit">Sign in</Button>
     </form>
   );
 }
 ```
 
-- **Zero runtime** — styles are plain, static CSS in cascade layers.
-- **Themeable** — override `--fui-*` CSS variables; no provider, no config.
-- **Native dark mode** — `light-dark()`; flip `color-scheme` (or set
+- **Contextual**: regions express intent and the components inside adapt.
+- **Static styles**: plain CSS organized with cascade layers and `@scope`.
+- **Themeable**: override `--loam-*` CSS variables; no provider, no config.
+- **Native dark mode**: `light-dark()` follows `color-scheme` (or set
   `data-theme="dark"` / `"light"` on `<html>`).
-- **Accessible & semantic** by default.
+- **Accessible and semantic**: native elements carry the platform behavior.
 
-Full documentation and live examples: **https://farmui.dev**
+Full documentation and live examples:
+**[LoamUI documentation](https://dangerfarms.github.io/loamui/)**
 
 ## License
 
-[MIT](../../LICENSE) © Danger Farms
+[MIT](./LICENSE) © Danger Farms

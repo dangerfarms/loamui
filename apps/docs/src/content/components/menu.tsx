@@ -4,7 +4,7 @@ import { MenuDemo, MenuDisabledDemo, MenuGroupsDemo, MenuLinksDemo } from "./men
 const doc: ComponentContent = {
   slug: "menu",
   lead: "A list of actions opened from a trigger: the APG menu-button pattern on top of the browser's top layer and anchor positioning.",
-  importLine: `import { Menu } from "@farmui/core";`,
+  importLine: `import { Menu } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",
@@ -23,14 +23,14 @@ const doc: ComponentContent = {
     {
       title: "Groups and separators",
       description:
-        "Group related items under a label; Menu.Separator is a real <hr>. Contextual meaning is a custom property: declare --fui-context: danger on the group and the items inside adopt the danger accent, no props involved.",
+        "Group related items under a label; Menu.Separator is a real <hr>. Contextual meaning is a custom property: declare --loam-context: danger on the group and the items inside adopt the danger accent, no props involved.",
       code: `<Menu.Root>
   <Menu.Trigger>Workspace</Menu.Trigger>
   <Menu.Popup>
     <Menu.Item onClick={() => {}}>Rename</Menu.Item>
     <Menu.Item>Duplicate</Menu.Item>
     <Menu.Separator />
-    <Menu.Group style={{ "--fui-context": "danger" }}>
+    <Menu.Group style={{ "--loam-context": "danger" }}>
       <Menu.GroupLabel>Danger zone</Menu.GroupLabel>
       <Menu.Item>Delete workspace</Menu.Item>
     </Menu.Group>
@@ -88,7 +88,7 @@ const doc: ComponentContent = {
     },
     {
       title: "Destructive commands live in a labelled danger group",
-      body: "Put Delete and its kin in a Menu.Group with a GroupLabel, inside a --fui-context: danger wrapper. The separation and the colour both signal the stakes before the click, and the group label is announced with each item.",
+      body: "Put Delete and its kin in a Menu.Group with a GroupLabel, inside a --loam-context: danger wrapper. The separation and the colour both signal the stakes before the click, and the group label is announced with each item.",
     },
     {
       title: "Icon-only triggers need a name",
@@ -125,7 +125,7 @@ const doc: ComponentContent = {
     {
       name: "Menu.Trigger",
       description:
-        "A FarmUI Button wired as the menu button (aria-haspopup, aria-expanded, anchor name, arrow-key opening); it adapts to context like any Button. All native <button> props are forwarded.",
+        "A LoamUI Button wired as the menu button (aria-haspopup, aria-expanded, anchor name, arrow-key opening); it adapts to context like any Button. All native <button> props are forwarded.",
       props: [
         {
           name: "render",

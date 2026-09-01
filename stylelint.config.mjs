@@ -16,11 +16,7 @@ export default {
   reportDescriptionlessDisables: true,
   reportInvalidScopeDisables: true,
   reportNeedlessDisables: true,
-  referenceFiles: [
-    "packages/core/src/tokens.css",
-    "packages/core/src/reset.css",
-    "packages/core/src/layout.css",
-  ],
+  referenceFiles: ["packages/core/src/tokens.css"],
   rules: {
     "csstools/use-nesting": "always",
     "no-unknown-custom-properties": true,
@@ -29,14 +25,14 @@ export default {
     "media-feature-range-notation": "context",
     "unit-disallowed-list": [["vw", "vh"]],
     "declaration-no-important": true,
-    // Scope roots are `fui-` + PascalCase (optionally a semantic root
+    // Scope roots are `loam-` + PascalCase (optionally a semantic root
     // suffix); everything else is a short kebab-case part class.
     "selector-class-pattern": [
-      "^(fui-[A-Z][a-zA-Z]*(-[a-z][a-zA-Z]*)*|[a-z][a-z0-9]*(-[a-z0-9]+)*)$",
+      "^(loam-[A-Z][a-zA-Z]*(-[a-z][a-zA-Z]*)*|[a-z][a-z0-9]*(-[a-z0-9]+)*)$",
       {
         resolveNestedSelectors: true,
         message: (selector) =>
-          `Expected class "${selector}" to be a fui- scope root or a short kebab-case part class`,
+          `Expected class "${selector}" to be a loam- scope root or a short kebab-case part class`,
       },
     ],
     // Public tokens are kebab-case; component-private properties carry
@@ -59,8 +55,7 @@ export default {
       },
       referenceFiles: [
         "packages/core/src/tokens.css",
-        "packages/core/src/reset.css",
-        "apps/docs/src/app/globals.css",
+            "apps/docs/src/app/globals.css",
       ],
     },
   ],

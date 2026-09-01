@@ -17,6 +17,7 @@ import { composeRefs } from "../../render";
 interface TabsContextValue {
   value: string | null;
   setValue: (value: string) => void;
+  isControlled: boolean;
   /** Stable id prefix so tab/panel aria wiring links up. */
   baseId: string;
 }
@@ -31,18 +32,29 @@ function useTabsContext(component: string): TabsContextValue {
   return ctx;
 }
 
-export interface TabsProps extends Omit<
+interface TabsCommonProps extends Omit<
   HTMLAttributes<HTMLDivElement>,
   "onChange" | "defaultValue"
 > {
-  /** Value of the tab active by default (uncontrolled). */
-  defaultValue?: string;
-  /** Controlled active tab value. */
-  value?: string;
   /** Called with the new value when the active tab changes. */
   onChange?: (value: string) => void;
   children?: ReactNode;
 }
+
+/** Tabs must start with one selected value, controlled or uncontrolled. */
+export type TabsProps = TabsCommonProps &
+  (
+    | {
+        /** Controlled active tab value. */
+        value: string;
+        defaultValue?: never;
+      }
+    | {
+        /** Value of the tab active by default (uncontrolled). */
+        defaultValue: string;
+        value?: never;
+      }
+  );
 
 export interface TabsListProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
@@ -89,13 +101,13 @@ function TabsBase({
   );
 
   const ctx = useMemo<TabsContextValue>(
-    () => ({ value, setValue, baseId }),
-    [value, setValue, baseId],
+    () => ({ value, setValue, isControlled, baseId }),
+    [value, setValue, isControlled, baseId],
   );
 
   return (
     <TabsContext value={ctx}>
-      <div className={cx("fui-Tabs", className)} {...rest}>
+      <div className={cx("loam-Tabs", className)} {...rest}>
         {children}
       </div>
     </TabsContext>
@@ -104,7 +116,20 @@ function TabsBase({
 
 /** The row of tab controls. */
 export function TabsList({ className, children, ...rest }: TabsListProps) {
+  const { value, setValue, isControlled } = useTabsContext("Tabs.List");
   const listRef = useRef<HTMLDivElement>(null);
+
+  // The type requires an initial selection. This runtime fallback also keeps
+  // plain JavaScript and stale values accessible by selecting the first
+  // enabled tab instead of leaving every panel hidden.
+  useEffect(() => {
+    if (isControlled) return;
+    const list = listRef.current;
+    if (!list || list.querySelector('[role="tab"][aria-selected="true"]:not(:disabled)')) return;
+    const first = list.querySelector<HTMLButtonElement>('[role="tab"]:not(:disabled)');
+    const fallback = first?.dataset.tabValue;
+    if (fallback) setValue(fallback);
+  }, [isControlled, setValue, value]);
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const keys = ["ArrowRight", "ArrowLeft", "Home", "End"];
@@ -115,15 +140,28 @@ export function TabsList({ className, children, ...rest }: TabsListProps) {
     );
     if (tabs.length === 0) return;
 
+    const list = listRef.current!;
     const current = tabs.indexOf(document.activeElement as HTMLButtonElement);
     let nextIndex = current;
+    const direction = getComputedStyle(list).direction || list.closest<HTMLElement>("[dir]")?.dir;
+    const rtl = direction === "rtl";
 
     switch (event.key) {
       case "ArrowRight":
-        nextIndex = current < 0 ? 0 : (current + 1) % tabs.length;
+        nextIndex =
+          current < 0
+            ? 0
+            : rtl
+              ? (current - 1 + tabs.length) % tabs.length
+              : (current + 1) % tabs.length;
         break;
       case "ArrowLeft":
-        nextIndex = current < 0 ? tabs.length - 1 : (current - 1 + tabs.length) % tabs.length;
+        nextIndex =
+          current < 0
+            ? tabs.length - 1
+            : rtl
+              ? (current + 1) % tabs.length
+              : (current - 1 + tabs.length) % tabs.length;
         break;
       case "Home":
         nextIndex = 0;
@@ -145,7 +183,7 @@ export function TabsList({ className, children, ...rest }: TabsListProps) {
       {...rest}
       ref={listRef}
       role="tablist"
-      className={cx("fui-Tabs-list", className)}
+      className={cx("loam-Tabs-list", className)}
       onKeyDown={onKeyDown}
     >
       {children}
@@ -166,9 +204,9 @@ export function TabsTab({ value, disabled, className, children, onClick, ...rest
       id={`${baseId}-tab-${value}`}
       aria-selected={selected}
       aria-controls={`${baseId}-panel-${value}`}
-      // With no selection there is no roving stop — every tab stays tabbable.
-      tabIndex={selected || active == null ? 0 : -1}
+      tabIndex={selected ? 0 : -1}
       disabled={disabled}
+      data-tab-value={value}
       className={cx("tab", className)}
       data-active={selected || undefined}
       onClick={(event) => {

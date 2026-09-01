@@ -1,6 +1,6 @@
 "use client";
 
-import { Field, SwitchControl } from "@farmui/core";
+import { Field, SwitchControl } from "@loamui/core";
 
 export function SwitchFieldDemo() {
   return (

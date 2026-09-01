@@ -1,4 +1,4 @@
-import type { FieldsetHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import type { FieldsetHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
 import { cx } from "../../utils";
 
 /**
@@ -17,11 +17,13 @@ import { cx } from "../../utils";
  * ```
  */
 
-export interface FieldsetRootProps extends FieldsetHTMLAttributes<HTMLFieldSetElement> {}
+export interface FieldsetRootProps extends FieldsetHTMLAttributes<HTMLFieldSetElement> {
+  ref?: Ref<HTMLFieldSetElement>;
+}
 
-function FieldsetRoot({ className, children, ...rest }: FieldsetRootProps) {
+function FieldsetRoot({ className, children, ref, ...rest }: FieldsetRootProps) {
   return (
-    <fieldset className={cx("fui-Fieldset", className)} {...rest}>
+    <fieldset ref={ref} className={cx("loam-Fieldset", className)} {...rest}>
       {children}
     </fieldset>
   );

@@ -10,12 +10,12 @@ import {
 const doc: ComponentContent = {
   slug: "field",
   lead: "A composable form-field primitive that wires label, description, error and accessibility for any control.",
-  importLine: `import { Field } from "@farmui/core";`,
+  importLine: `import { Field } from "@loamui/core";`,
   demos: [
     {
       title: "Composing a field",
       description:
-        "Assemble the parts in order: label, description, error, control — the message sits above the control so it is read before the answer is given. Field.Root links the label to the control and gathers the description and error into aria-describedby; the FarmUI controls (Input, Select, Textarea, Range) self-wire from the surrounding field, so no extra part is needed around them.",
+        "Assemble the parts in order (label, description, error, control): the message sits above the control so it is read before the answer is given. Field.Root links the label to the control and gathers the description and error into aria-describedby; the LoamUI controls (Input, Select, Textarea, Range) self-wire from the surrounding field, so no extra part is needed around them.",
       code: `<Field.Root>
   <Field.Label>Email</Field.Label>
   <Field.Description>We'll only use this to reply.</Field.Description>
@@ -72,7 +72,7 @@ const doc: ComponentContent = {
         "Field.Control wires the field's id, aria-describedby and aria-invalid onto any element: an element to clone, or a function receiving the typed props. The built-in controls never need it; reach for it when bringing your own.",
       code: `<Field.Root>
   <Field.Label>Amount</Field.Label>
-  <Field.Description>A bare native input, not a FarmUI control.</Field.Description>
+  <Field.Description>A bare native input, not a LoamUI control.</Field.Description>
   <Field.Control
     render={(props) => <input {...props} inputMode="decimal" />}
   />
@@ -81,7 +81,7 @@ const doc: ComponentContent = {
     },
   ],
   whenToUse: [
-    "For every labelled form control: wrap Input, Select, Textarea or Range in Field.Root and add Field.Label, Field.Description and Field.Error as needed — the control wires itself to the field.",
+    "For every labelled form control: wrap Input, Select, Textarea or Range in Field.Root and add Field.Label, Field.Description and Field.Error as needed. The control wires itself to the field.",
     "To give a custom or third-party control the same accessible label/description/error wiring, via Field.Control.",
   ],
   whenNotToUse: [
@@ -99,11 +99,11 @@ const doc: ComponentContent = {
     },
     {
       title: "When validation runs",
-      body: "Two paths, one timing rule. The native path needs no JS: constraint attributes (required, type, minlength) style the control via :user-invalid after the user has interacted, and the same verdict is mirrored to aria-invalid on blur and submit. The error path is render-time: the field is invalid exactly while a Field.Error with content is rendered, so async validation is just rendering the message when your check resolves. Neither path validates keystroke-by-keystroke; a field that complains mid-word teaches users to distrust the form.",
+      body: "Two paths, one timing rule. Native constraints (required, type, minlength) open the error state only after a submit attempt. Once open, the error remains while the value is invalid and clears as soon as the correction is valid. The render path is explicit: a field is invalid exactly while a Field.Error with content is rendered, so server or async validation is just rendering that message after submission. Neither path validates on blur or complains mid-word.",
     },
     {
       title: "Styling state from outside",
-      body: 'Everything the family knows about a field is expressed in selectors you can target: [aria-invalid="true"] and :user-invalid on the control, :has(> p.error) on the .fui-Field root, [data-disabled] on control boxes, and :focus-within on the field box. There are no state props to mirror; the DOM is the contract.',
+      body: 'Everything the family knows about a field is expressed in selectors you can target: [aria-invalid="true"] on the control, :has(> p.error) on the .loam-Field root, [data-disabled] on control boxes, and :focus-within on the field box. There are no visual state props to mirror; the DOM is the contract.',
     },
     {
       title: "One error, one place, one wording",
@@ -132,7 +132,7 @@ const doc: ComponentContent = {
     "Field.Root generates one id and hands it to Field.Label (via htmlFor) and to the control, so label and control are always associated.",
     "Description and error ids are added to the control's aria-describedby only when those parts are present.",
     'Any Field.Error with content sets aria-invalid on the control and is announced with role="alert"; a visually hidden "Error: " prefix makes the announcement unmistakable out of context.',
-    "The FarmUI controls read this wiring from context; Field.Control hands it to arbitrary elements, letting you keep semantic, native controls instead of re-implementing them.",
+    "The LoamUI controls read this wiring from context; Field.Control hands it to arbitrary elements, letting you keep semantic, native controls instead of re-implementing them.",
   ],
   parts: [
     {
@@ -155,7 +155,7 @@ const doc: ComponentContent = {
           name: "optional",
           type: "boolean",
           default: "false",
-          description: 'Appends "(optional)" — optional is marked in words, not with an asterisk.',
+          description: 'Appends "(optional)"; optional is marked in words, not with an asterisk.',
         },
       ],
     },
@@ -166,7 +166,7 @@ const doc: ComponentContent = {
     {
       name: "Field.Control",
       description:
-        "Wires id, aria-describedby and aria-invalid onto an arbitrary element. The FarmUI controls self-wire from the field and don't need it.",
+        "Wires id, aria-describedby and aria-invalid onto an arbitrary element. The LoamUI controls self-wire from the field and don't need it.",
       props: [
         {
           name: "render",

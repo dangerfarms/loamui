@@ -1,6 +1,6 @@
 "use client";
 
-import { Field, Input } from "@farmui/core";
+import { Button, Field, Input } from "@loamui/core";
 
 export function InputBasicDemo() {
   return (
@@ -22,8 +22,8 @@ export function InputContainersDemo() {
           inlineSize: "16rem",
           maxInlineSize: "100%",
           padding: "0.75rem",
-          border: "1px dashed var(--fui-border)",
-          borderRadius: "var(--fui-radius-md)",
+          border: "1px dashed var(--loam-color-line)",
+          borderRadius: "var(--loam-radius-md)",
         }}
       >
         <Field.Root>
@@ -37,8 +37,8 @@ export function InputContainersDemo() {
           inlineSize: "30rem",
           maxInlineSize: "100%",
           padding: "0.75rem",
-          border: "1px dashed var(--fui-border)",
-          borderRadius: "var(--fui-radius-md)",
+          border: "1px dashed var(--loam-color-line)",
+          borderRadius: "var(--loam-radius-md)",
         }}
       >
         <Field.Root>
@@ -78,12 +78,16 @@ export function InputErrorDemo() {
 
 export function InputNativeValidationDemo() {
   return (
-    <div style={{ maxInlineSize: "20rem", inlineSize: "100%" }}>
+    <form
+      style={{ display: "grid", gap: "0.75rem", maxInlineSize: "20rem", inlineSize: "100%" }}
+      onSubmit={(event) => event.preventDefault()}
+    >
       <Field.Root>
         <Field.Label>Work email</Field.Label>
         <Input type="email" required />
       </Field.Root>
-    </div>
+      <Button type="submit">Check email</Button>
+    </form>
   );
 }
 

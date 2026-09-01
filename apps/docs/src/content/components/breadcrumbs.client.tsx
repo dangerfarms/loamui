@@ -1,6 +1,6 @@
 "use client";
 
-import { Breadcrumbs } from "@farmui/core";
+import { Breadcrumbs } from "@loamui/core";
 
 export function BreadcrumbsBasicDemo() {
   return (

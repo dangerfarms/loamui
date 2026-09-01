@@ -1,137 +1,46 @@
-/* ---- Single radio ---- */
-@scope (.fui-Radio-wrapper) to ([class*="fui-"]) {
+/* The control is a native radio — the elements layer paints it with
+   accent-color (the neutral primary). The component adds size, the invalid
+   affordance, the label row and the group layout. */
+@scope (.loam-Radio) {
+  :scope {
+    accent-color: var(--loam-color-primary);
+    block-size: 1.15em;
+    flex-shrink: 0;
+    inline-size: 1.15em;
+    margin: 0.05em 0 0;
+  }
+}
+
+/* A group with a detected error marks every radio inside (ARIA carries the
+   invalid state on the group, not the radios, so there is no per-radio
+   aria-invalid rule). The danger ring is a box-shadow so it stacks with rather
+   than replaces the elements-layer :focus-visible ring; the focus ring itself
+   turns danger-coloured. Mirrors Switch. */
+@scope (.loam-Radio-group[aria-invalid="true"]) {
+  .loam-Radio {
+    --loam-color-ring: var(--loam-color-danger-ring);
+
+    box-shadow: 0 0 0 2px var(--loam-color-danger);
+  }
+}
+
+/* ---- Single radio (labelled row) ---- */
+@scope (.loam-Radio-wrapper) to ([class*="loam-"]) {
   :scope {
     align-items: flex-start;
     cursor: pointer;
     display: inline flex;
-    gap: var(--fui-space-sm);
+    gap: var(--loam-space-sm);
 
     &:has(input:disabled) {
       cursor: not-allowed;
     }
 
     &[data-disabled] {
-      opacity: var(--fui-disabled-opacity);
-    }
-  }
-}
-
-/* The bare form renders a fragment — input + control as siblings with no
-   wrapper element — so the input scopes to itself. */
-@scope (.fui-Radio-input) {
-  /* Visually hide the native input but keep it accessible & focusable.
-     Radio keeps the 1px clip recipe (rather than the centred hit-area
-     overlay Checkbox and Switch use): its bare form is a fragment — input +
-     control as siblings with no wrapper — so there is no guaranteed
-     positioning context for an overlay. */
-  :scope {
-    block-size: 1px;
-    border: 0;
-    clip-path: inset(50%);
-    inline-size: 1px;
-    margin: -1px;
-    overflow: clip;
-    padding: 0;
-    position: absolute;
-    white-space: nowrap;
-  }
-
-  /* The ring belongs on the visible control (see the control scope); the 1px
-     hidden input would otherwise paint the elements-layer outline as a
-     stray dot. */
-  :scope:focus-visible {
-    outline: none;
-  }
-}
-
-/* The control dot. State rules reference the sibling input (and the wrapper
-   or group ancestors) outside the scope root — allowed, since the subject
-   (the control) stays in scope. */
-@scope (.fui-Radio-control) {
-  /* Bare control fades itself; the labelled wrapper's fade covers the
-     composed form (the :not guard stops the two from compounding). */
-  .fui-Radio-input:disabled + :scope:where(:not(.fui-Radio-wrapper *)) {
-    opacity: var(--fui-disabled-opacity);
-  }
-
-  :scope {
-    --_size: 1.3889em;
-    --_dot: 0.5556em;
-
-    background: var(--fui-surface);
-    block-size: var(--_size);
-    border: 1px solid var(--fui-border-strong);
-    border-radius: var(--fui-radius-full);
-    flex-shrink: 0;
-    font-size: var(--fui-text-sm);
-    inline-size: var(--_size);
-    margin-block-start: 0.05em;
-    position: relative;
-    transition:
-      border-color var(--fui-duration-sm) var(--fui-ease),
-      background var(--fui-duration-sm) var(--fui-ease),
-      box-shadow var(--fui-duration-md) var(--fui-ease);
-  }
-
-  :scope::after {
-    background: var(--fui-on-strong);
-    block-size: var(--_dot);
-    border-radius: var(--fui-radius-full);
-    content: "";
-    inline-size: var(--_dot);
-    inset: 50%;
-    position: absolute;
-    scale: 0;
-    translate: -50% -50%;
-
-    @media (prefers-reduced-motion: no-preference) {
-      transition: scale var(--fui-duration-md) var(--fui-ease);
+      opacity: var(--loam-disabled-opacity);
     }
   }
 
-  .fui-Radio-input:checked + :scope {
-    background: var(--fui-primary);
-    border-color: var(--fui-primary);
-  }
-
-  .fui-Radio-input:checked + :scope::after {
-    scale: 1;
-  }
-
-  .fui-Radio-input:focus-visible + :scope {
-    outline: var(--fui-ring-width) solid var(--fui-ring-color);
-    outline-offset: 2px;
-  }
-
-  .fui-Radio-input:user-invalid + :scope {
-    --fui-ring-color: var(--fui-danger-ring);
-
-    border-color: var(--fui-danger);
-  }
-
-  .fui-Radio-group:has(span.error) :scope {
-    --fui-ring-color: var(--fui-danger-ring);
-
-    border-color: var(--fui-danger);
-  }
-
-  @media (hover: hover) {
-    .fui-Radio-wrapper:hover .fui-Radio-input:not(:disabled) + :scope {
-      border-color: var(--fui-primary);
-    }
-  }
-
-  /* Forced colors: the selected dot is background-painted and would vanish;
-     CanvasText guarantees contrast on the forced Canvas fill. */
-  @media (forced-colors: active) {
-    :scope::after {
-      background: CanvasText;
-      forced-color-adjust: none;
-    }
-  }
-}
-
-@scope (.fui-Radio-wrapper) to ([class*="fui-"]) {
   span.body {
     display: block flex;
     flex-direction: column;
@@ -140,53 +49,42 @@
   }
 
   span.label {
-    font-size: var(--fui-text-sm);
+    font-size: var(--loam-text-sm);
     font-weight: 500;
   }
 
   span.description {
-    color: var(--fui-text-muted);
-    font-size: var(--fui-text-xs);
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-xs);
   }
 }
 
 /* ---- Group ---- (a Fieldset — reset/legend come from the Fieldset layer) */
-
-/* The group carries aria-invalid (ARIA allows it there, not on the
-   radios); every dot inside answers it. */
-@scope (.fui-Radio-group[aria-invalid="true"]) {
-  .fui-Radio-control {
-    --fui-ring-color: var(--fui-danger-ring);
-
-    border-color: var(--fui-danger);
-  }
-}
-
-@scope (.fui-Radio-group) to ([class*="fui-"]) {
+@scope (.loam-Radio-group) to ([class*="loam-"]) {
   :scope {
-    gap: var(--fui-space-xs);
+    gap: var(--loam-space-xs);
   }
 
   span.description {
-    color: var(--fui-text-muted);
-    font-size: var(--fui-text-xs);
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-xs);
   }
 
   [data-orientation] {
     display: block flex;
     flex-direction: column;
-    gap: var(--fui-space-sm);
-    margin-block-start: var(--fui-space-xs);
+    gap: var(--loam-space-sm);
+    margin-block-start: var(--loam-space-xs);
   }
 
   [data-orientation="horizontal"] {
     flex-flow: row wrap;
-    gap: var(--fui-space-lg);
+    gap: var(--loam-space-lg);
   }
 
   span.error {
-    color: var(--fui-danger);
-    font-size: var(--fui-text-xs);
-    margin-block-start: var(--fui-space-xs);
+    color: var(--loam-color-danger);
+    font-size: var(--loam-text-xs);
+    margin-block-start: var(--loam-space-xs);
   }
 }

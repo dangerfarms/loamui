@@ -1,10 +1,10 @@
-import { Tabs, TabsList, TabsTab, TabsPanel } from "@farmui/core";
+import { Tabs, TabsList, TabsTab, TabsPanel } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
 
 const doc: ComponentContent = {
   slug: "tabs",
   lead: "One visible panel from a related set, chosen from a tab list in the same view.",
-  importLine: `import { Tabs, TabsList, TabsTab, TabsPanel } from "@farmui/core";`,
+  importLine: `import { Tabs, TabsList, TabsTab, TabsPanel } from "@loamui/core";`,
   demos: [
     {
       title: "Basic",
@@ -120,7 +120,7 @@ const doc: ComponentContent = {
     "To keep related panels in one place without a page navigation, when switching views must not lose the surrounding context.",
   ],
   whenNotToUse: [
-    "On narrow screens where the tab strip no longer fits: stack the content under plain headings instead — a horizontally scrolling tab strip hides panels behind an interaction most users never find.",
+    "On narrow screens where the tab strip no longer fits: stack the content under plain headings instead. A horizontally scrolling tab strip hides panels behind an interaction most users never find.",
     "For steps in a sequence: tabs imply no order and let users jump anywhere, so a flow with dependencies belongs on separate pages with visible progress.",
     "As primary navigation: switching a tab changes no URL and creates no history entry, so tabbed 'pages' can't be linked, bookmarked or reached with the back button.",
     "When users need to read or compare everything: content in an unselected tab may never be seen; stack it on the page under headings instead.",
@@ -141,7 +141,7 @@ const doc: ComponentContent = {
   ],
   accessibility: [
     "The tab list uses a roving tabindex: only the active tab sits in the Tab order (tabIndex 0, the rest -1), so keyboard users cross the whole list in one Tab press instead of stepping through every tab.",
-    "Arrow Left/Right move through the tabs and wrap at the ends, Home/End jump to the first and last, and disabled tabs are skipped; moving focus also selects: the newly focused tab is activated immediately, so no separate Enter press is needed.",
+    "Arrow Left/Right move through the horizontal tabs and wrap at the ends, following the page direction in right-to-left content. Home/End jump to the first and last, and disabled tabs are skipped. Moving focus also selects, so no separate Enter press is needed.",
     'Inactive panels are hidden with hidden="until-found" where the browser supports it, so find-in-page can match text inside a closed tab; a beforematch event then activates that tab. Browsers without support fall back to plain hidden.',
     'The wiring is generated from one id: role="tablist"/"tab"/"tabpanel" with aria-selected, aria-controls on each tab and aria-labelledby on each panel, so assistive technology announces which tab is active and what it controls.',
     "Each panel has tabIndex 0, so a panel whose content contains no focusable element can still be reached and scrolled by keyboard.",
@@ -150,12 +150,13 @@ const doc: ComponentContent = {
     {
       name: "defaultValue",
       type: "string",
-      description: "Value of the tab active by default (uncontrolled).",
+      description:
+        "Required initial tab value for uncontrolled usage. Omit only when value is supplied.",
     },
     {
       name: "value",
       type: "string",
-      description: "Controlled active tab value.",
+      description: "Controlled active tab value. Required when defaultValue is omitted.",
     },
     {
       name: "onChange",

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, ErrorSummary, Field, Input } from "@farmui/core";
+import { Button, ErrorSummary, Field, Input } from "@loamui/core";
 
 export function ErrorSummaryDemo() {
   const [submitted, setSubmitted] = useState(false);

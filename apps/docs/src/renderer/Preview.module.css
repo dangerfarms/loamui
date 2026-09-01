@@ -1,13 +1,13 @@
 .wrap {
-  background: var(--fui-surface);
-  border: 1px solid var(--fui-border);
-  border-radius: var(--fui-radius-lg);
+  background: var(--loam-color-surface);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-lg);
   overflow: hidden;
 }
 
 .tabs {
-  background: var(--fui-bg-subtle);
-  border-block-end: 1px solid var(--fui-border);
+  background: var(--loam-color-bg-subtle);
+  border-block-end: 1px solid var(--loam-color-line);
   display: block flex;
   gap: 0.25rem;
   padding: 0.4rem 0.5rem;
@@ -16,25 +16,25 @@
 .tab {
   background: transparent;
   border: none;
-  border-radius: var(--fui-radius-sm);
+  border-radius: var(--loam-radius-sm);
   box-shadow: none;
-  color: var(--fui-text-muted);
+  color: var(--loam-color-fg-muted);
   cursor: pointer;
-  font-size: var(--fui-text-sm);
+  font-size: var(--loam-text-sm);
   font-weight: 550;
   padding: 0.3rem 0.75rem;
   transition:
-    background var(--fui-duration-md) var(--fui-ease),
-    color var(--fui-duration-md) var(--fui-ease);
+    background var(--loam-duration-md) var(--loam-ease),
+    color var(--loam-duration-md) var(--loam-ease);
 
   &:hover {
-    color: var(--fui-text);
+    color: var(--loam-color-fg);
   }
 
   &[data-active] {
-    background: var(--fui-surface);
-    box-shadow: var(--fui-shadow-sm);
-    color: var(--fui-text);
+    background: var(--loam-color-surface);
+    box-shadow: var(--loam-shadow-sm);
+    color: var(--loam-color-fg);
   }
 }
 
@@ -42,7 +42,7 @@
   align-items: center;
   background: radial-gradient(
     circle at 1px 1px,
-    var(--fui-border) 1px,
+    var(--loam-color-line) 1px,
     transparent 0
   );
   background-size: 1.25rem 1.25rem;

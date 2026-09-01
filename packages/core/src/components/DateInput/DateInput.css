@@ -2,33 +2,33 @@
    Input, so borders, focus rings and the aria-invalid danger state
    are Input's own. Only the description/error text and the part layout
    live here. The donut stops this scope at the composed Inputs. */
-@scope (.fui-DateInput) to ([class*="fui-"]) {
+@scope (.loam-DateInput) to ([class*="loam-"]) {
   p.description {
-    color: var(--fui-text-muted);
-    font-size: var(--fui-text-sm);
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
     margin: 0;
   }
 
   p.error {
-    color: var(--fui-danger);
-    font-size: var(--fui-text-sm);
+    color: var(--loam-color-danger);
+    font-size: var(--loam-text-sm);
     margin: 0;
   }
 
   div.parts {
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--fui-space-md);
+    gap: var(--loam-space-md);
   }
 
   [data-part] {
     display: block flex;
     flex-direction: column;
-    gap: var(--fui-space-xs);
+    gap: var(--loam-space-xs);
   }
 
   label {
-    font-size: var(--fui-text-sm);
+    font-size: var(--loam-text-sm);
     font-weight: 500;
   }
 }
@@ -38,24 +38,24 @@
    information: the input is sized to its answer (two digits, four for the
    year, plus a character of editing slack) and the box shrink-wraps it —
    the control's padding and borders are never restated here. */
-@scope (.fui-DateInput) {
-  [data-part] > .fui-Input-field {
+@scope (.loam-DateInput) {
+  [data-part] > .loam-Input-field {
     inline-size: fit-content;
   }
 
-  [data-part="year"] .fui-Input-field input {
+  [data-part="year"] .loam-Input-field input {
     flex: none;
     inline-size: 5ch;
   }
 
-  [data-part="day"] .fui-Input-field input {
+  [data-part="day"] .loam-Input-field input {
     flex: none;
     inline-size: 3ch;
   }
 
   /* The month takes names ("Mar") as well as numbers — give the answer
      room to be typed. */
-  [data-part="month"] .fui-Input-field input {
+  [data-part="month"] .loam-Input-field input {
     flex: none;
     inline-size: 4ch;
   }

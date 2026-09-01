@@ -3,25 +3,45 @@ import { PaginationDemo, PaginationEdgesDemo, PaginationManyDemo } from "./pagin
 
 const doc: ComponentContent = {
   slug: "pagination",
-  lead: "Navigate through pages of content with a controlled page picker.",
-  importLine: `import { Pagination } from "@farmui/core";`,
+  lead: "Navigate through pages of content with real, addressable links.",
+  importLine: `import { Pagination } from "@loamui/core";`,
   demos: [
     {
       title: "Basic",
-      description: "Controlled: hold the current page in state.",
+      description:
+        "Every page has an href; intercept onNavigate only when a client router needs it.",
       code: `function Demo() {
   const [page, setPage] = useState(1);
-  return <Pagination total={10} value={page} onChange={setPage} />;
+  return (
+    <Pagination
+      total={10}
+      value={page}
+      getHref={(next) => "?page=" + next}
+      onNavigate={(next, event) => {
+        event.preventDefault();
+        setPage(next);
+      }}
+    />
+  );
 }`,
       render: () => <PaginationDemo />,
     },
     {
       title: "With edges",
-      description: "Add first/last buttons with withEdges.",
+      description: "Add first/last links with withEdges.",
       code: `function Demo() {
   const [page, setPage] = useState(5);
   return (
-    <Pagination total={10} value={page} onChange={setPage} withEdges />
+    <Pagination
+      total={10}
+      value={page}
+      getHref={(next) => "?page=" + next}
+      onNavigate={(next, event) => {
+        event.preventDefault();
+        setPage(next);
+      }}
+      withEdges
+    />
   );
 }`,
       render: () => <PaginationEdgesDemo />,
@@ -31,7 +51,18 @@ const doc: ComponentContent = {
       description: "Ellipsis gaps keep the control compact across 20 pages.",
       code: `function Demo() {
   const [page, setPage] = useState(10);
-  return <Pagination total={20} value={page} onChange={setPage} withEdges />;
+  return (
+    <Pagination
+      total={20}
+      value={page}
+      getHref={(next) => "?page=" + next}
+      onNavigate={(next, event) => {
+        event.preventDefault();
+        setPage(next);
+      }}
+      withEdges
+    />
+  );
 }`,
       render: () => <PaginationManyDemo />,
     },
@@ -51,23 +82,23 @@ const doc: ComponentContent = {
     },
     {
       title: "Previous and Next stay put",
-      body: "Sequential movement is what pagination is for, so Previous and Next always render — at the first and last page they are disabled, not removed. Removing them would shift every control sideways and make the pager's layout depend on which page you're on; a disabled edge control tells users they've reached the end without moving the target they were clicking.",
+      body: "Sequential movement is what pagination is for, so Previous and Next keep their visual space. At the first and last page the unavailable direction becomes an aria-hidden placeholder, not a fake disabled link. The layout stays stable without adding an inert stop to the keyboard or accessibility order.",
     },
     {
       title: "The ends are always visible",
       body: "The page list always includes page 1 and the last page, with aria-hidden ellipses standing in for the gaps and sibling pages shown around the active one. Users can therefore read the size of the whole set and reach either end in one click from anywhere.",
     },
     {
-      title: "Mirror the page in the URL",
-      body: "The component is controlled: you hold the page in state and pass value/onChange. Reflect that value in the query string so page 4 of your results is linkable, survives a reload, and works with the back button; a pager whose position lives only in memory strands users at page 1 every visit.",
+      title: "The URL is the source of truth",
+      body: "getHref gives every destination a real URL, so page 4 is linkable, survives reloads and supports the back button before JavaScript runs. With a client router, intercept onNavigate, prevent the browser navigation and update the route there. The href remains the fallback and the destination users can copy or open in a new tab.",
     },
   ],
   accessibility: [
     'The pager is a <nav aria-label="Pagination"> (the label is overridable) wrapping a list, so assistive technology exposes it as a navigation landmark with a known number of items.',
     'The active page carries aria-current="page", and it is also styled via data-active; the position is announced, and colour is not the only visual signal.',
-    'Every control is a real <button type="button"> with an explicit aria-label ("Previous page", "Page 7", "Last page"), so the icon-only controls and bare numbers all have unambiguous accessible names.',
+    'Every available destination is a real <a href> with an explicit aria-label ("Previous page", "Page 7", "Last page"), so users can copy, bookmark or open a page in a new tab.',
     "Ellipsis separators are aria-hidden: they are visual shorthand for the gap, not stops in the reading order.",
-    "Edge controls disable rather than disappear at the ends, and onChange fires only when the page actually changes; activating the current page or a disabled control announces nothing and reloads nothing.",
+    'Previous and Next carry rel="prev" and rel="next". Unavailable boundary directions are visual placeholders hidden from assistive technology, so they are not inert tab stops.',
   ],
   props: [
     {
@@ -81,9 +112,14 @@ const doc: ComponentContent = {
       description: "The active page (1-based).",
     },
     {
-      name: "onChange",
-      type: "(page: number) => void",
-      description: "Called with the new page when a control is activated.",
+      name: "getHref",
+      type: "(page: number) => string",
+      description: "Build the destination URL for each page (required).",
+    },
+    {
+      name: "onNavigate",
+      type: "(page: number, event: MouseEvent<HTMLAnchorElement>) => void",
+      description: "Optionally intercept link activation for a client router.",
     },
     {
       name: "siblings",
@@ -95,7 +131,7 @@ const doc: ComponentContent = {
       name: "withEdges",
       type: "boolean",
       default: "false",
-      description: "Show first/last page buttons at the edges.",
+      description: "Show first/last page links at the edges.",
     },
     {
       name: "aria-label",

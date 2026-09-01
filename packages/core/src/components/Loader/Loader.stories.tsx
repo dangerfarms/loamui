@@ -17,7 +17,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Coloured by the brand token — a `--fui-context` region " +
+          "Coloured by the brand token — a `--loam-context` region " +
           "recolours it with no prop; a plain `color:` overrides.",
       },
     },
@@ -48,25 +48,25 @@ export const Sizes: Story = {
 };
 
 /**
- * A `--fui-context` region recolours the loader through the brand token;
+ * A `--loam-context` region recolours the loader through the brand token;
  * a plain `color:` declaration overrides.
  */
 export const Contexts: Story = {
   render: (args) => {
-    const primary = { color: "var(--fui-primary)" } as CSSProperties;
+    const primary = { color: "var(--loam-color-primary)" } as CSSProperties;
     return (
       <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
         <Loader {...args} style={primary} label="Primary loader" />
-        <span style={{ "--fui-context": "success" } as CSSProperties}>
+        <span style={{ "--loam-context": "success" } as CSSProperties}>
           <Loader {...args} style={primary} label="Success loader" />
         </span>
-        <span style={{ "--fui-context": "warning" } as CSSProperties}>
+        <span style={{ "--loam-context": "warning" } as CSSProperties}>
           <Loader {...args} style={primary} label="Warning loader" />
         </span>
-        <span style={{ "--fui-context": "info" } as CSSProperties}>
+        <span style={{ "--loam-context": "info" } as CSSProperties}>
           <Loader {...args} style={primary} label="Info loader" />
         </span>
-        <span style={{ "--fui-context": "danger" } as CSSProperties}>
+        <span style={{ "--loam-context": "danger" } as CSSProperties}>
           <Loader {...args} style={primary} label="Danger loader" />
         </span>
       </div>

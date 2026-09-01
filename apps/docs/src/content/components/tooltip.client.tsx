@@ -1,6 +1,6 @@
 "use client";
 
-import { Tooltip } from "@farmui/core";
+import { Tooltip } from "@loamui/core";
 
 export function TooltipPositions() {
   return (

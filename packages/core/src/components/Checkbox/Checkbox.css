@@ -1,13 +1,37 @@
-/* The labelled form: wrapper, inline label row, description and error. The
-   bare control (box + input) has no wrapper, so it gets its own scope below. */
-@scope (.fui-Checkbox-wrapper) to ([class*="fui-"]) {
+/* The control is a native checkbox — the elements layer paints it with
+   accent-color (the neutral primary). The component adds only a comfortable
+   size, the invalid affordance, and the label row. */
+@scope (.loam-Checkbox) {
+  :scope {
+    accent-color: var(--loam-color-primary);
+    block-size: 1.15em;
+    flex-shrink: 0;
+    inline-size: 1.15em;
+
+    /* Optically align with the first line of label text. */
+    margin: 0.15em 0 0;
+
+    /* Invalid is a box-shadow, not an outline, so it stacks with rather than
+       replaces the elements-layer :focus-visible ring; the focus ring itself
+       turns danger-coloured. Mirrors Switch. */
+    &[aria-invalid="true"] {
+      --loam-color-ring: var(--loam-color-danger-ring);
+
+      box-shadow: 0 0 0 2px var(--loam-color-danger);
+    }
+  }
+}
+
+/* The labelled form: an inline row with the control beside its text.
+   Donut: the label body hosts consumer content. */
+@scope (.loam-Checkbox-wrapper) to ([class*="loam-"]) {
   :scope {
     display: block flex;
     flex-direction: column;
-    gap: var(--fui-space-xs);
+    gap: var(--loam-space-xs);
 
     &[data-disabled] {
-      opacity: var(--fui-disabled-opacity);
+      opacity: var(--loam-disabled-opacity);
     }
   }
 
@@ -15,118 +39,13 @@
     align-items: flex-start;
     cursor: pointer;
     display: block flex;
-    gap: var(--fui-space-sm);
+    gap: var(--loam-space-sm);
 
     &:has(input:disabled) {
       cursor: not-allowed;
     }
   }
-}
 
-/* The bare control — rendered with or without the labelled wrapper, so the
-   box is the scope root for everything inside it. */
-@scope (.fui-Checkbox-box) {
-  /* Bare control fades itself; inside the labelled wrapper the wrapper
-     does (the :not guard stops the two from compounding). */
-
-  :scope {
-    --_box: 1.3889em;
-
-    background: var(--fui-surface);
-    block-size: var(--_box);
-    border: 1px solid var(--fui-border-strong);
-    border-radius: var(--fui-radius-sm);
-    color: var(--fui-on-strong);
-    display: inline grid;
-    flex-shrink: 0;
-    font-size: var(--fui-text-sm);
-    inline-size: var(--_box);
-
-    /* Nudge to optically align with the first line of label text. */
-    margin-block-start: 0.1em;
-    place-items: center;
-    position: relative;
-    transition:
-      background var(--fui-duration-sm) var(--fui-ease),
-      border-color var(--fui-duration-sm) var(--fui-ease),
-      box-shadow var(--fui-duration-md) var(--fui-ease);
-
-    &[data-disabled]:where(:not(.fui-Checkbox-wrapper *)) {
-      opacity: var(--fui-disabled-opacity);
-    }
-  }
-
-  /* Visually hide the native control but keep it in the a11y tree &
-     focusable. The hit area is at least 24px (WCAG 2.5.8) even when the
-     visible box is smaller — centred, invisible, no layout impact. */
-  input {
-    block-size: max(100%, 24px);
-    cursor: inherit;
-    inline-size: max(100%, 24px);
-    inset-block-start: 50%;
-    inset-inline-start: 50%;
-    margin: 0;
-    opacity: 0;
-    position: absolute;
-    translate: -50% -50%;
-  }
-
-  /* No forced-colors block is needed for the checked state: the tick/dash
-     are currentColor strokes, which survive forcing. */
-  :scope:has(input:checked),
-  :scope:has(input:indeterminate) {
-    background: var(--fui-primary);
-    border-color: var(--fui-primary);
-  }
-
-  :scope:has(input:focus-visible) {
-    border-color: var(--fui-primary);
-    outline: var(--fui-ring-width) solid var(--fui-ring-color);
-    outline-offset: 2px;
-  }
-
-  :scope:has(input:is([aria-invalid="true"], :user-invalid)) {
-    --fui-ring-color: var(--fui-danger-ring);
-
-    border-color: var(--fui-danger);
-  }
-
-  :scope:has(input:disabled) {
-    background: var(--fui-bg-subtle);
-  }
-
-  :scope:has(input:checked:disabled),
-  :scope:has(input:indeterminate:disabled) {
-    background: color-mix(
-      in oklch,
-      var(--fui-primary) 55%,
-      var(--fui-bg-subtle)
-    );
-    border-color: transparent;
-  }
-
-  svg.check {
-    block-size: 80%;
-    inline-size: 80%;
-    pointer-events: none;
-  }
-
-  path.tick,
-  path.dash {
-    opacity: 0;
-    transition: opacity var(--fui-duration-md) var(--fui-ease);
-  }
-
-  :scope:has(input:checked:not(:indeterminate)) path.tick {
-    opacity: 1;
-  }
-
-  :scope:has(input:indeterminate) path.dash {
-    opacity: 1;
-  }
-}
-
-@scope (.fui-Checkbox-wrapper) to ([class*="fui-"]) {
   span.body {
     display: block flex;
     flex-direction: column;
@@ -134,13 +53,13 @@
   }
 
   span.label {
-    font-size: var(--fui-text-sm);
+    font-size: var(--loam-text-sm);
     font-weight: 500;
     line-height: 1.35;
   }
 
   span.description {
-    color: var(--fui-text-muted);
-    font-size: var(--fui-text-xs);
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-xs);
   }
 }

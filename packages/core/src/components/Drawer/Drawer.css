@@ -1,16 +1,16 @@
-@scope (.fui-Drawer-panel) to ([class*="fui-"]) {
+@scope (.loam-Drawer-panel) to ([class*="loam-"]) {
   :scope {
     --_size: 24rem;
     --_hidden: 0 0;
 
-    background: var(--fui-surface);
+    background: var(--loam-color-surface);
     border: 0;
-    box-shadow: var(--fui-shadow-lg);
-    font-size: var(--fui-text-sm);
+    box-shadow: var(--loam-shadow-lg);
+    font-size: var(--loam-text-sm);
     margin: 0;
     overflow: auto;
     overscroll-behavior: contain;
-    padding: var(--fui-space-lg);
+    padding: var(--loam-space-lg);
 
     &[data-size="sm"] {
       --_size: 18rem;
@@ -23,7 +23,7 @@
     &[data-side="start"],
     &[data-side="end"] {
       block-size: auto;
-      inline-size: min(var(--_size), 100dvi - var(--fui-space-xl));
+      inline-size: min(var(--_size), 100dvi - var(--loam-space-xl));
       inset-block: 0;
       max-block-size: 100dvb;
     }
@@ -31,22 +31,22 @@
     &[data-side="start"] {
       --_hidden: -100% 0;
 
-      border-end-end-radius: var(--fui-radius-lg);
-      border-start-end-radius: var(--fui-radius-lg);
+      border-end-end-radius: var(--loam-radius-lg);
+      border-start-end-radius: var(--loam-radius-lg);
       inset-inline: 0 auto;
     }
 
     &[data-side="end"] {
       --_hidden: 100% 0;
 
-      border-end-start-radius: var(--fui-radius-lg);
-      border-start-start-radius: var(--fui-radius-lg);
+      border-end-start-radius: var(--loam-radius-lg);
+      border-start-start-radius: var(--loam-radius-lg);
       inset-inline: auto 0;
     }
 
     &[data-side="top"],
     &[data-side="bottom"] {
-      block-size: min(var(--_size), 100dvb - var(--fui-space-xl));
+      block-size: min(var(--_size), 100dvb - var(--loam-space-xl));
       inline-size: auto;
       inset-inline: 0;
       max-inline-size: 100dvi;
@@ -55,21 +55,21 @@
     &[data-side="top"] {
       --_hidden: 0 -100%;
 
-      border-end-end-radius: var(--fui-radius-lg);
-      border-end-start-radius: var(--fui-radius-lg);
+      border-end-end-radius: var(--loam-radius-lg);
+      border-end-start-radius: var(--loam-radius-lg);
       inset-block: 0 auto;
     }
 
     &[data-side="bottom"] {
       --_hidden: 0 100%;
 
-      border-start-end-radius: var(--fui-radius-lg);
-      border-start-start-radius: var(--fui-radius-lg);
+      border-start-end-radius: var(--loam-radius-lg);
+      border-start-start-radius: var(--loam-radius-lg);
       inset-block: auto 0;
     }
 
     &::backdrop {
-      background: color-mix(in oklch, var(--fui-text) 45%, transparent);
+      background: color-mix(in oklch, var(--loam-color-fg) 45%, transparent);
     }
 
     @media (forced-colors: active) {
@@ -78,9 +78,9 @@
 
     @media (prefers-reduced-motion: no-preference) {
       transition:
-        translate var(--fui-duration-lg) var(--fui-ease),
-        display var(--fui-duration-lg) var(--fui-ease) allow-discrete,
-        overlay var(--fui-duration-lg) var(--fui-ease) allow-discrete;
+        translate var(--loam-duration-lg) var(--loam-ease),
+        display var(--loam-duration-lg) var(--loam-ease) allow-discrete,
+        overlay var(--loam-duration-lg) var(--loam-ease) allow-discrete;
       translate: 0 0;
 
       &:not([open]) {
@@ -90,9 +90,9 @@
       &::backdrop {
         opacity: 1;
         transition:
-          opacity var(--fui-duration-lg) var(--fui-ease),
-          display var(--fui-duration-lg) var(--fui-ease) allow-discrete,
-          overlay var(--fui-duration-lg) var(--fui-ease) allow-discrete;
+          opacity var(--loam-duration-lg) var(--loam-ease),
+          display var(--loam-duration-lg) var(--loam-ease) allow-discrete,
+          overlay var(--loam-duration-lg) var(--loam-ease) allow-discrete;
 
         @starting-style {
           opacity: 0;
@@ -110,13 +110,13 @@
   }
 
   h2.title {
-    font-size: var(--fui-text-lg);
+    font-size: var(--loam-text-lg);
     font-weight: 600;
-    margin-block: 0 var(--fui-space-sm);
+    margin-block: 0 var(--loam-space-sm);
   }
 
   p.description {
-    color: var(--fui-text-muted);
-    margin-block: 0 var(--fui-space-md);
+    color: var(--loam-color-fg-muted);
+    margin-block: 0 var(--loam-space-md);
   }
 }

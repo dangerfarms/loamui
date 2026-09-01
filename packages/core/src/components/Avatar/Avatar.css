@@ -1,16 +1,16 @@
-@scope (.fui-Avatar) to ([class*="fui-"]) {
+@scope (.loam-Avatar) to ([class*="loam-"]) {
   :scope {
-    --_bg: var(--fui-primary-strong);
-    --_fg: var(--fui-on-strong);
+    --_bg: var(--loam-color-primary-strong);
+    --_fg: var(--loam-color-on-strong);
 
     align-items: center;
     background: var(--_bg);
     block-size: var(--_size, 2.5rem);
-    border-radius: var(--_radius, var(--fui-radius-full));
+    border-radius: var(--_radius, var(--loam-radius-full));
     color: var(--_fg);
     display: inline flex;
     flex: none;
-    font-size: var(--fui-text-sm);
+    font-size: var(--loam-text-sm);
     font-weight: 600;
     inline-size: var(--_size, 2.5rem);
     justify-content: center;
@@ -39,39 +39,39 @@
 
   /* The initials background answers the surrounding context region, the
      same contract as every status-coloured component. */
-  @container (style(--fui-context: danger)) {
+  @container (style(--loam-context: danger)) {
     :scope {
-      --_bg: var(--fui-danger-strong);
+      --_bg: var(--loam-color-danger-strong);
     }
   }
 
-  @container (style(--fui-context: warning)) {
+  @container (style(--loam-context: warning)) {
     :scope {
-      --_bg: var(--fui-warning-strong);
+      --_bg: var(--loam-color-warning-strong);
     }
   }
 
-  @container (style(--fui-context: info)) {
+  @container (style(--loam-context: info)) {
     :scope {
-      --_bg: var(--fui-info-strong);
+      --_bg: var(--loam-color-info-strong);
     }
   }
 
-  @container (style(--fui-context: success)) {
+  @container (style(--loam-context: success)) {
     :scope {
-      --_bg: var(--fui-success-strong);
+      --_bg: var(--loam-color-success-strong);
     }
   }
 }
 
 /* Group — overlap children with a surface ring */
-@scope (.fui-Avatar-group) {
+@scope (.loam-Avatar-group) {
   :scope {
     align-items: center;
     display: inline flex;
 
     > * {
-      border: 2px solid var(--fui-surface);
+      border: 2px solid var(--loam-color-surface);
       box-sizing: content-box;
       margin-inline-start: calc(-1 * var(--_overlap, 0.5rem));
 
@@ -79,7 +79,7 @@
       translate: 0 0;
 
       @media (prefers-reduced-motion: no-preference) {
-        transition: translate var(--fui-duration-md) var(--fui-ease);
+        transition: translate var(--loam-duration-md) var(--loam-ease);
       }
     }
 

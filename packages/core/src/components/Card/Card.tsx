@@ -12,7 +12,7 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
  */
 export function Card({ className, children, ref, ...rest }: CardProps) {
   return (
-    <div ref={ref} className={cx("fui-Card", className)} {...rest}>
+    <div ref={ref} className={cx("loam-Card", className)} {...rest}>
       {children}
     </div>
   );

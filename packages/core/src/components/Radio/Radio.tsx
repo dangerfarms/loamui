@@ -16,12 +16,13 @@ export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   ref?: Ref<HTMLInputElement>;
 }
 
-/** The bare radio input + control dot, minus any label. */
+/** The bare radio input, minus any label. */
 export type RadioControlProps = Omit<RadioProps, "label" | "description" | "wrapperClassName">;
 
 /**
- * The bare `<input type="radio">` + control dot. When rendered
- * inside a `Field` it reads its id / describedby / aria-invalid from context.
+ * A plain `<input type="radio">` — the elements layer paints it with
+ * `accent-color`, so there is no custom dot. When rendered inside a `Field`
+ * it reads its id / describedby from context.
  */
 function RadioControl({
   id,
@@ -34,8 +35,7 @@ function RadioControl({
   const field = useFieldControlProps();
   const group = useContext(RadioGroupContext);
   // No aria-invalid here: ARIA allows it on the radiogroup, not the
-  // radio, so the group's fieldset carries it and :user-invalid covers
-  // the native path per input.
+  // individual radio, so the group's fieldset carries composed errors.
   const resolvedId = id ?? field.id;
   const describedBy = ariaDescribedby ?? field["aria-describedby"];
 
@@ -60,21 +60,18 @@ function RadioControl({
       : undefined;
 
   return (
-    <>
-      <input
-        ref={ref}
-        id={resolvedId}
-        type="radio"
-        className={cx("fui-Radio-input", className)}
-        disabled={disabled}
-        {...rest}
-        aria-describedby={describedBy}
-        name={name}
-        onChange={onChange}
-        {...selection}
-      />
-      <span className="fui-Radio-control" aria-hidden />
-    </>
+    <input
+      ref={ref}
+      id={resolvedId}
+      type="radio"
+      className={cx("loam-Radio", className)}
+      disabled={disabled}
+      {...rest}
+      aria-describedby={describedBy}
+      name={name}
+      onChange={onChange}
+      {...selection}
+    />
   );
 }
 
@@ -105,7 +102,7 @@ export function Radio({
 
   return (
     <label
-      className={cx("fui-Radio-wrapper", wrapperClassName)}
+      className={cx("loam-Radio-wrapper", wrapperClassName)}
       htmlFor={inputId}
       data-disabled={disabled || undefined}
     >

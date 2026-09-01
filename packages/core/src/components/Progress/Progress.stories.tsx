@@ -23,7 +23,7 @@ const meta = {
       description: {
         component:
           "Fills with the primary token, re-coloured by any context region " +
-          "(`--fui-context` on a region), not by props.",
+          "(`--loam-context` on a region), not by props.",
       },
     },
   },
@@ -35,7 +35,7 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = {};
 
 /**
- * The bar IS the primary token, so a `--fui-context` region — any
+ * The bar IS the primary token, so a `--loam-context` region — any
  * ancestor; a one-element region is a wrapper — recolours it through the
  * token remap alone.
  */
@@ -43,16 +43,16 @@ export const Contexts: Story = {
   render: (args) => (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
       <Progress {...args} aria-label="Primary progress" />
-      <div style={{ "--fui-context": "success" } as CSSProperties}>
+      <div style={{ "--loam-context": "success" } as CSSProperties}>
         <Progress {...args} aria-label="Success progress" />
       </div>
-      <div style={{ "--fui-context": "warning" } as CSSProperties}>
+      <div style={{ "--loam-context": "warning" } as CSSProperties}>
         <Progress {...args} aria-label="Warning progress" />
       </div>
-      <div style={{ "--fui-context": "info" } as CSSProperties}>
+      <div style={{ "--loam-context": "info" } as CSSProperties}>
         <Progress {...args} aria-label="Info progress" />
       </div>
-      <div style={{ "--fui-context": "danger" } as CSSProperties}>
+      <div style={{ "--loam-context": "danger" } as CSSProperties}>
         <Progress {...args} aria-label="Danger progress" />
       </div>
     </div>

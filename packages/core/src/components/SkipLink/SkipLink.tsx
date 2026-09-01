@@ -26,7 +26,7 @@ export interface SkipLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
  */
 export function SkipLink({ className, children, ref, ...rest }: SkipLinkProps) {
   return (
-    <a ref={ref} className={cx("fui-SkipLink", className)} {...rest}>
+    <a ref={ref} className={cx("loam-SkipLink", className)} {...rest}>
       {children ?? "Skip to main content"}
     </a>
   );

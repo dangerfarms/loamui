@@ -1,18 +1,25 @@
 "use client";
 
-import { Drawer } from "@farmui/core";
-import type { DrawerSide } from "@farmui/core";
+import { Drawer } from "@loamui/core";
+import type { DrawerSide } from "@loamui/core";
 
 const navLinks = ["Dashboard", "Orders", "Customers", "Settings"];
 
 function DrawerNav() {
   return (
-    <nav className="fui-stack" style={{ marginBlock: "var(--fui-space-sm)" }}>
+    <nav
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "var(--loam-space-md)",
+        marginBlock: "var(--loam-space-sm)",
+      }}
+    >
       {navLinks.map((label) => (
         <a
           key={label}
           href={`#${label.toLowerCase()}`}
-          style={{ color: "var(--fui-text)", textDecoration: "none" }}
+          style={{ color: "var(--loam-color-fg)", textDecoration: "none" }}
         >
           {label}
         </a>
@@ -37,7 +44,14 @@ export function DrawerDemo() {
 
 export function DrawerSidesDemo() {
   return (
-    <div className="fui-cluster">
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "var(--loam-space-sm)",
+        alignItems: "center",
+      }}
+    >
       {(["start", "end", "top", "bottom"] as DrawerSide[]).map((side) => (
         <Drawer.Root key={side}>
           <Drawer.Trigger>From {side}</Drawer.Trigger>
@@ -56,7 +70,14 @@ export function DrawerSidesDemo() {
 
 export function DrawerSizesDemo() {
   return (
-    <div className="fui-cluster">
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "var(--loam-space-sm)",
+        alignItems: "center",
+      }}
+    >
       {(["sm", "md", "lg"] as const).map((size) => (
         <Drawer.Root key={size}>
           <Drawer.Trigger>Open {size}</Drawer.Trigger>
@@ -81,7 +102,7 @@ export function DrawerHeaderCloseDemo() {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBlockEnd: "var(--fui-space-sm)",
+            marginBlockEnd: "var(--loam-space-sm)",
           }}
         >
           <Drawer.Title style={{ margin: 0 }}>Filters</Drawer.Title>

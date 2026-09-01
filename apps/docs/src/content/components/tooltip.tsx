@@ -4,7 +4,7 @@ import { TooltipArrow, TooltipGroup, TooltipPositions } from "./tooltip.client";
 const doc: ComponentContent = {
   slug: "tooltip",
   lead: "A small floating label revealed on hover and keyboard focus, composed from parts.",
-  importLine: `import { Tooltip } from "@farmui/core";`,
+  importLine: `import { Tooltip } from "@loamui/core";`,
   demos: [
     {
       title: "Positions",
@@ -115,7 +115,7 @@ const doc: ComponentContent = {
     {
       name: "Tooltip.Trigger",
       description:
-        "A FarmUI Button wired with hover/focus handlers and aria-describedby; all native <button> props are forwarded.",
+        "A LoamUI Button wired with hover/focus handlers and aria-describedby; all native <button> props are forwarded.",
       props: [
         {
           name: "render",

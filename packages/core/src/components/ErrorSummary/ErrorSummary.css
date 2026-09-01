@@ -1,18 +1,18 @@
-@scope (.fui-ErrorSummary) {
+@scope (.loam-ErrorSummary) {
   :scope {
-    background: var(--fui-danger-soft);
-    border: 2px solid var(--fui-danger);
-    border-radius: var(--fui-radius-md);
-    padding: var(--fui-space-lg);
+    background: var(--loam-color-danger-soft);
+    border: 2px solid var(--loam-color-danger);
+    border-radius: var(--loam-radius-md);
+    padding: var(--loam-space-lg);
 
     &:focus-visible {
-      outline: var(--fui-ring-width) solid var(--fui-danger-ring);
+      outline: var(--loam-ring-width) solid var(--loam-color-danger-ring);
       outline-offset: 2px;
     }
   }
 
   h2 {
-    font-size: var(--fui-text-md);
+    font-size: var(--loam-text-md);
     font-weight: 700;
     margin: 0;
     text-wrap: balance;
@@ -25,18 +25,18 @@
   ul {
     display: block flex;
     flex-direction: column;
-    gap: var(--fui-space-xs);
-    margin-block: var(--fui-space-sm) 0;
+    gap: var(--loam-space-xs);
+    margin-block: var(--loam-space-sm) 0;
     margin-inline: 0;
-    padding-inline-start: var(--fui-space-lg);
+    padding-inline-start: var(--loam-space-lg);
   }
 
   a {
     color: light-dark(
-      color-mix(in oklab, var(--fui-danger) 70%, oklch(0% 0 0deg)),
-      color-mix(in oklab, var(--fui-danger) 55%, oklch(100% 0 0deg))
+      color-mix(in oklab, var(--loam-color-danger) 70%, oklch(0% 0 0deg)),
+      color-mix(in oklab, var(--loam-color-danger) 55%, oklch(100% 0 0deg))
     );
-    font-size: var(--fui-text-sm);
+    font-size: var(--loam-text-sm);
     font-weight: 600;
     text-decoration: underline;
     text-decoration-skip-ink: auto;

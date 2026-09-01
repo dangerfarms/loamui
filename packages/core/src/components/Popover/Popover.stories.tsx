@@ -79,7 +79,7 @@ export const EscapesOverflowClipping: Story = {
       style={{
         overflow: "hidden",
         blockSize: "5rem",
-        border: "1px dashed var(--fui-border)",
+        border: "1px dashed var(--loam-color-line)",
         padding: "1rem",
         margin: "3rem",
       }}

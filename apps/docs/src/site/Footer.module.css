@@ -1,6 +1,6 @@
 .footer {
-  background: var(--fui-bg-subtle);
-  border-block-start: 1px solid var(--fui-border);
+  background: var(--loam-color-bg-subtle);
+  border-block-start: 1px solid var(--loam-color-line);
   margin-block-start: 6rem;
   padding-block: 3.5rem 2rem;
 }
@@ -17,22 +17,22 @@
 }
 
 .tagline {
-  color: var(--fui-text-muted);
-  font-size: var(--fui-text-sm);
+  color: var(--loam-color-fg-muted);
+  font-size: var(--loam-text-sm);
   margin-block: 0.9rem 1.1rem;
   max-inline-size: 22rem;
 }
 
 .gh {
   align-items: center;
-  color: var(--fui-text);
+  color: var(--loam-color-fg);
   display: inline flex;
-  font-size: var(--fui-text-sm);
+  font-size: var(--loam-text-sm);
   font-weight: 600;
   gap: 0.45rem;
 
   &:hover {
-    color: var(--fui-primary);
+    color: var(--loam-color-primary);
   }
 }
 
@@ -47,7 +47,7 @@
 }
 
 .colTitle {
-  font-size: var(--fui-text-sm);
+  font-size: var(--loam-text-sm);
   font-weight: 700;
   margin-block-end: 0.8rem;
 }
@@ -62,21 +62,21 @@
 }
 
 .col a {
-  color: var(--fui-text-muted);
-  font-size: var(--fui-text-sm);
-  transition: color var(--fui-duration-md) var(--fui-ease);
+  color: var(--loam-color-fg-muted);
+  font-size: var(--loam-text-sm);
+  transition: color var(--loam-duration-md) var(--loam-ease);
 
   &:hover {
-    color: var(--fui-primary);
+    color: var(--loam-color-primary);
   }
 }
 
 .bottom {
-  border-block-start: 1px solid var(--fui-border);
-  color: var(--fui-text-dim);
+  border-block-start: 1px solid var(--loam-color-line);
+  color: var(--loam-color-fg-dim);
   display: block flex;
   flex-wrap: wrap;
-  font-size: var(--fui-text-sm);
+  font-size: var(--loam-text-sm);
   gap: 1rem;
   justify-content: space-between;
   margin-block-start: 3rem;

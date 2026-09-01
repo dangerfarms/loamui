@@ -1,9 +1,9 @@
-@scope (.fui-Skeleton) {
+@scope (.loam-Skeleton) {
   :scope {
     block-size: var(--_h, 1lh);
 
     /* Public shape hook — consumers may set it per instance or region. */
-    border-radius: var(--fui-skeleton-radius, var(--fui-radius-md));
+    border-radius: var(--loam-skeleton-radius, var(--loam-radius-md));
 
     /* Bare text children have no box for the child rule below to hide. */
     color: transparent;
@@ -32,7 +32,7 @@
   :scope[data-circle] {
     aspect-ratio: 1;
     block-size: auto;
-    border-radius: var(--fui-radius-full);
+    border-radius: var(--loam-radius-full);
     inline-size: var(--_size, 2.5rem);
   }
 
@@ -42,11 +42,11 @@
      default; the moving shimmer is opt-in motion (below), so
      reduced-motion users need no override. */
   :scope::after {
-    background-color: color-mix(in oklab, var(--fui-text) 8%, transparent);
+    background-color: color-mix(in oklab, var(--loam-color-fg) 8%, transparent);
     background-image: linear-gradient(
       90deg,
       transparent 0%,
-      color-mix(in oklab, var(--fui-text) 7%, transparent) 50%,
+      color-mix(in oklab, var(--loam-color-fg) 7%, transparent) 50%,
       transparent 100%
     );
     content: "";
@@ -54,14 +54,14 @@
     position: absolute;
 
     @media (prefers-reduced-motion: no-preference) {
-      animation: fui-skeleton-shimmer 1.4s ease-in-out infinite;
+      animation: loam-skeleton-shimmer 1.4s ease-in-out infinite;
       background-size: 200% 100%;
     }
   }
 }
 
 /* Keyframes are not scope-able; they stay at the top level. */
-@keyframes fui-skeleton-shimmer {
+@keyframes loam-skeleton-shimmer {
   from {
     background-position: 200% 0;
   }

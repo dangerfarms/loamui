@@ -32,7 +32,7 @@ function readComponentCss(name: string, pkg: "core"): string | undefined {
       `${name}.css`,
     );
     const raw = readFileSync(file, "utf8").trim();
-    return `/* The complete stylesheet for <${name} /> — plain, static CSS.\n   Nothing runs in the browser: no CSS-in-JS, no runtime. */\n\n${raw}`;
+    return `/* The complete stylesheet for <${name} />: plain, static CSS.\n   Nothing runs in the browser: no CSS-in-JS, no runtime. */\n\n${raw}`;
   } catch {
     return undefined;
   }
@@ -61,8 +61,8 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
           Usage
         </h2>
         <p className={classes.usageNote}>
-          Every example has a <strong>CSS</strong> tab — that&rsquo;s the real, complete stylesheet
-          for the component. It&rsquo;s plain, static CSS: nothing runs in the browser.
+          Every example has a <strong>CSS</strong> tab. That&rsquo;s the real, complete stylesheet
+          for the component: plain, static CSS, with nothing running in the browser.
         </p>
         <div className={classes.demos}>
           {doc.demos.map((demo) => (
@@ -152,7 +152,7 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
             Error messages
           </h2>
           <p className={classes.usageNote}>
-            Say what happened and how to fix it, in the words of the question itself — see the
+            Say what happened and how to fix it, in the words of the question itself. See the
             writing guidance{" "}
             {doc.slug === "field" ? (
               <>above.</>
@@ -192,8 +192,8 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
           </h2>
           {doc.contextual && (
             <p className={classes.demoDesc}>
-              Status is not a prop: it comes from the surrounding <code>--fui-context</code> region.
-              See the <a href="/docs/contextualism">Contextualism guide</a>.
+              Status is not a prop: it comes from the surrounding <code>--loam-context</code>{" "}
+              region. See the <a href="/docs/contextualism">Contextualism guide</a>.
             </p>
           )}
           <PropsTable rows={doc.props} />

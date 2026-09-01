@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu } from "@farmui/core";
+import { Menu } from "@loamui/core";
 import type { CSSProperties } from "react";
 
 export function MenuDemo() {
@@ -24,7 +24,7 @@ export function MenuGroupsDemo() {
         <Menu.Item onClick={() => {}}>Rename</Menu.Item>
         <Menu.Item onClick={() => {}}>Duplicate</Menu.Item>
         <Menu.Separator />
-        <Menu.Group style={{ "--fui-context": "danger" } as CSSProperties}>
+        <Menu.Group style={{ "--loam-context": "danger" } as CSSProperties}>
           <Menu.GroupLabel>Danger zone</Menu.GroupLabel>
           <Menu.Item onClick={() => {}}>Delete workspace</Menu.Item>
         </Menu.Group>

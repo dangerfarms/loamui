@@ -85,7 +85,7 @@ function ErrorSummaryRoot({
         role="group"
         aria-labelledby={titleId}
         tabIndex={-1}
-        className={cx("fui-ErrorSummary", className)}
+        className={cx("loam-ErrorSummary", className)}
       >
         {/* role="alert" announces on render even without autoFocus; the
             outer group stays the focus target. */}

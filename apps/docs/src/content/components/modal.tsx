@@ -4,7 +4,7 @@ import { ModalAlertDemo, ModalDemo, ModalHeaderCloseDemo, ModalSizesDemo } from 
 const doc: ComponentContent = {
   slug: "modal",
   lead: "A blocking dialog for must-complete tasks, built on the native <dialog> element and the browser's top layer.",
-  importLine: `import { Modal } from "@farmui/core";`,
+  importLine: `import { Modal } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",
@@ -17,8 +17,8 @@ const doc: ComponentContent = {
     <Modal.Description>
       They'll receive an email invitation to join your workspace.
     </Modal.Description>
-    <div className="fui-cluster">
-      <span style={{ "--fui-context": "primary" }}>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--loam-space-sm)", alignItems: "center" }}>
+      <span style={{ "--loam-context": "primary" }}>
         <Modal.Close>Send invite</Modal.Close>
       </span>
       <Modal.Close>Cancel</Modal.Close>
@@ -32,7 +32,7 @@ const doc: ComponentContent = {
       description:
         'alert renders role="alertdialog": the backdrop doesn\'t light-dismiss (closedby="closerequest"; Escape still works), and autoFocus belongs on the least-destructive action so it is the default answer. Use for destructive or irreversible confirmations only.',
       code: `<Modal.Root>
-  <span style={{ "--fui-context": "danger" }}>
+  <span style={{ "--loam-context": "danger" }}>
     <Modal.Trigger>Delete file</Modal.Trigger>
   </span>
   <Modal.Popup alert size="sm">
@@ -40,9 +40,9 @@ const doc: ComponentContent = {
     <Modal.Description>
       "report-final-v2.pdf" will be permanently deleted. This cannot be undone.
     </Modal.Description>
-    <div className="fui-cluster">
+    <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--loam-space-sm)", alignItems: "center" }}>
       <Modal.Close autoFocus>Cancel</Modal.Close>
-      <span style={{ "--fui-context": "danger" }}>
+      <span style={{ "--loam-context": "danger" }}>
         <Modal.Close>Delete</Modal.Close>
       </span>
     </div>
@@ -103,7 +103,7 @@ const doc: ComponentContent = {
     },
   ],
   accessibility: [
-    "Built on the native <dialog> opened with showModal(): the browser provides the top layer, ::backdrop, real focus containment, Escape handling, and restores focus to the trigger on close — none of it re-implemented in JavaScript.",
+    "Built on the native <dialog> opened with showModal(): the browser provides the top layer, ::backdrop, real focus containment, Escape handling, and restores focus to the trigger on close. None of it re-implemented in JavaScript.",
     "Modal.Title and Modal.Description automatically label and describe the dialog via aria-labelledby / aria-describedby.",
     "Light dismiss (clicking the backdrop) uses the closedby attribute where supported, with a small feature-detected coordinate-check fallback elsewhere: no polyfills, per the browser support policy.",
     "Body scroll is locked while open.",
@@ -131,7 +131,7 @@ const doc: ComponentContent = {
     {
       name: "Modal.Trigger",
       description:
-        "A FarmUI Button that opens the dialog; all native <button> props are forwarded.",
+        "A LoamUI Button that opens the dialog; all native <button> props are forwarded.",
       props: [
         {
           name: "render",
@@ -174,7 +174,7 @@ const doc: ComponentContent = {
     {
       name: "Modal.Close",
       description:
-        "A FarmUI Button that closes the dialog; compose as many as you need (confirm, cancel, ×). Native <button> props are forwarded.",
+        "A LoamUI Button that closes the dialog; compose as many as you need (confirm, cancel, ×). Native <button> props are forwarded.",
       props: [
         {
           name: "render",

@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { cleanup, render, screen } from "@testing-library/react";
-import { Field } from "../index";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { Field, Input } from "../index";
 
 afterEach(cleanup);
 
@@ -68,5 +68,33 @@ describe("Field composition wiring", () => {
     const control = screen.getByLabelText("Bio");
     expect(control.tagName).toBe("TEXTAREA");
     expect(control).toHaveAttribute("data-custom", "yes");
+  });
+
+  it("opens native errors on submit, clears them on correction, and resets them with the form", () => {
+    const { container } = render(
+      <form>
+        <Field.Root>
+          <Field.Label>Email</Field.Label>
+          <Input type="email" required />
+        </Field.Root>
+      </form>,
+    );
+    const input = screen.getByLabelText("Email") as HTMLInputElement;
+    const form = container.querySelector("form")!;
+
+    fireEvent.blur(input);
+    expect(input).not.toHaveAttribute("aria-invalid");
+
+    fireEvent.invalid(input);
+    expect(input).toHaveAttribute("aria-invalid", "true");
+
+    fireEvent.input(input, { target: { value: "name@example.com" } });
+    expect(input).not.toHaveAttribute("aria-invalid");
+
+    fireEvent.input(input, { target: { value: "" } });
+    fireEvent.invalid(input);
+    expect(input).toHaveAttribute("aria-invalid", "true");
+    fireEvent.reset(form);
+    expect(input).not.toHaveAttribute("aria-invalid");
   });
 });
