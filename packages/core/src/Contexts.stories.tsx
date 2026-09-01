@@ -40,7 +40,7 @@ function Zone({ children, style, ...rest }: HTMLAttributes<HTMLDivElement>) {
 
 /**
  * One custom property on the container; buttons, checkboxes, switches,
- * sliders, carets, selection and focus rings inside all adopt the danger
+ * sliders, carets and focus rings inside all adopt the danger
  * accent. Below the zone: a single-element region — the "instance" form is
  * just a one-element context, and the nearest ancestor that sets the
  * property wins.

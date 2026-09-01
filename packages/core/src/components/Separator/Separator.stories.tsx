@@ -5,6 +5,16 @@ const meta = {
   title: "Layout/Separator",
   component: Separator,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A rule between groups of content. Renders a real `<hr>` — the " +
+          "platform's separator role — with an optional vertical " +
+          "orientation for dividing items in a row.",
+      },
+    },
+  },
 } satisfies Meta<typeof Separator>;
 
 export default meta;

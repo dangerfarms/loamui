@@ -1,10 +1,21 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Checkbox, Field } from "../../index";
+import { Checkbox, CheckboxControl, Field } from "../../index";
 
 const meta = {
   title: "Inputs/Checkbox",
   component: Checkbox,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'A native `<input type="checkbox">` painted with the platform\'s own ' +
+          "`accent-color`. The `label`/`description` props render an accessible " +
+          "inline row; without them you get the bare control, which self-wires " +
+          "when placed inside a `Field`.",
+      },
+    },
+  },
   args: {
     label: "I accept the terms and conditions",
     indeterminate: false,
@@ -48,4 +59,18 @@ export const WithError: Story = {
 
 export const Disabled: Story = {
   args: { label: "Unavailable option", disabled: true },
+};
+
+/**
+ * A label-less `CheckboxControl` self-wires from the surrounding Field: it reads
+ * its id from `Field.Root` (so `Field.Label` points at it) plus any
+ * `aria-describedby`/`aria-invalid`, with no label or error props of its own.
+ */
+export const SelfWiringInField: Story = {
+  render: () => (
+    <Field.Root>
+      <Field.Label>I accept the terms and conditions</Field.Label>
+      <CheckboxControl />
+    </Field.Root>
+  ),
 };

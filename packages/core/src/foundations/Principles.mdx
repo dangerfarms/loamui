@@ -1,0 +1,88 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Foundations/Principles" />
+
+# Principles
+
+The ideas that hold LoamUI together. Each one is enforced somewhere — by the
+cascade, by a lint rule, by a test — not just asserted here.
+
+## 1. Trust the platform
+
+Real elements carry semantics; native CSS carries styling. A button is a
+`<button>`, a dialog is a `<dialog>` opened with `showModal()`, an accordion is
+`<details>`/`<summary>`, a separator is an `<hr>`. Behaviour the browser already
+implements — focus containment, Escape handling, find-in-page reveal, single-open
+disclosure — is inherited, not re-written. ARIA is used only where the platform
+has no word for something.
+
+The payoff is a library with nothing running at runtime: no CSS-in-JS, no
+styling engine, no serialization cost. The styles are static CSS.
+
+## 2. Three primitives, in cascade order
+
+Everything is one of three layers, and they are applied by cascade order, not by
+specificity fights:
+
+```css
+@layer loamui.tokens, loamui.elements, loamui.components;
+```
+
+- **Tokens** — the design decisions, as semantic custom properties.
+- **Element styles** — enhanced defaults on native elements, so unstyled HTML
+  already looks right.
+- **Components** — composed on top, each owning only its own scope.
+
+Because the order is declared once, your own unlayered CSS always wins, and you
+can slot an `app` layer after the library's without `!important`.
+
+## 3. Context decides, props don't
+
+LoamUI components take no `variant`, `size`, or `color` props. Appearance is
+read from the surroundings:
+
+- **Meaning** comes from a `--loam-context` region — declare `--loam-context:
+  danger` on an area and every component inside adopts it.
+- **Size** comes from container queries and fluid `cqi` tokens — a control in a
+  narrow column sizes itself; at 16rem or below a button goes full-width.
+- **Contents** are detected with `:has()` — an icon child, a rendered error
+  message — never passed as a slot prop.
+
+This is the entire status API. A success alert is an `Alert` in a `success`
+region. See [Contextualism](?path=/docs/foundations-contextualism--docs) for the
+full mechanism, and the live
+[Contexts](?path=/story/foundations-contexts--danger-context) demo.
+
+## 4. Compose, don't configure
+
+Compound components expose parts — `Modal.Root` / `Trigger` / `Popup` / `Title`
+/ `Close` — rather than a wall of props. Swapping the underlying element (a
+router link for a built-in `<a>`) goes through a `render` prop. Icons and
+loaders are detected children. You assemble the shape you need from small,
+honest pieces instead of configuring a monolith.
+
+## 5. Additive CSS, encapsulated by scope
+
+Selectors are scoped with `@scope`, not BEM — the encapsulation is the at-rule's
+job, not the class name's. Each property is set once under mutually-exclusive
+conditions; the only override permitted inside the library is
+`elements → components`. Colour is `oklch()`; relationships between colours are
+`color-mix()` and relative-colour syntax, so the whole palette derives from a
+few inputs and a rebrand is a one-line token change.
+
+## 6. Preferences are the baseline
+
+The user's stated preferences are the default state, not an add-on. Colour
+scheme is followed natively through `light-dark()`. Motion is opt-in — animation
+lives only inside `@media (prefers-reduced-motion: no-preference)`, so the
+absence of motion needs no override. Forced-colour palettes are honoured with
+system colours. Accessibility specifics (target size, contrast ratios, focus
+visibility) are engineered and tested — see
+[Accessibility](?path=/docs/foundations-accessibility--docs).
+
+## 7. Deterministically gatekept
+
+None of the above survives on good intentions. The palette is contrast-audited
+in CI (4.5:1 text, 3:1 boundaries and focus rings, both schemes); CSS is linted
+for the rules above; every component ships axe and keyboard interaction tests
+that run here in a real browser. What a tool can verify, a tool verifies.

@@ -6,6 +6,18 @@ const meta = {
   title: "Overlays/Popover",
   component: Popover.Root,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A click-triggered floating panel, composed from parts (Root, " +
+          "Trigger, Popup, Title, Description, Close). The Popup uses the " +
+          "native `popover` attribute for the top layer, light dismiss and " +
+          "Escape, with CSS anchor positioning where supported and a " +
+          "wrapper-anchored fallback elsewhere.",
+      },
+    },
+  },
   render: () => (
     <div style={{ display: "flex", justifyContent: "center", padding: "4rem" }}>
       <Popover.Root>

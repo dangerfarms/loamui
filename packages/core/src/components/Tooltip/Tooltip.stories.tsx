@@ -6,6 +6,14 @@ const meta = {
   title: "Overlays/Tooltip",
   component: Tooltip.Root,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A small floating label revealed on hover and keyboard focus. Tooltips are visual-only — never put essential information in one, since hover is unavailable to touch users.",
+      },
+    },
+  },
   render: () => (
     <div style={{ display: "flex", justifyContent: "center", padding: "3rem" }}>
       <Tooltip.Root>
@@ -58,6 +66,23 @@ export const WithArrow: Story = {
         <Tooltip.Trigger>Hover me</Tooltip.Trigger>
         <Tooltip.Popup>
           Now with a pointer <Tooltip.Arrow />
+        </Tooltip.Popup>
+      </Tooltip.Root>
+    </div>
+  ),
+};
+
+/**
+ * The trigger element is swappable via `render`; the tooltip wiring
+ * (aria-describedby, hover/focus) is preserved.
+ */
+export const CustomTrigger: Story = {
+  render: () => (
+    <div style={{ display: "flex", justifyContent: "center", padding: "3rem" }}>
+      <Tooltip.Root>
+        <Tooltip.Trigger render={<button aria-label="Help">?</button>} />
+        <Tooltip.Popup>
+          Read the docs <Tooltip.Arrow />
         </Tooltip.Popup>
       </Tooltip.Root>
     </div>

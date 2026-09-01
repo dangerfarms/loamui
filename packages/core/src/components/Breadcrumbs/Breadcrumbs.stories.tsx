@@ -11,6 +11,14 @@ const meta = {
   argTypes: {
     separator: { control: "text" },
   },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Shows the path to the current page. Items are links via `href`, plain text when `current`, or any element via `render`; the consumer marks the current page explicitly and separators are drawn in CSS, not the DOM.",
+      },
+    },
+  },
   render: (args) => (
     <Breadcrumbs.Root {...args}>
       <Breadcrumbs.Item href="#root">Home</Breadcrumbs.Item>
@@ -61,6 +69,20 @@ export const Truncated: Story = {
       <Breadcrumbs.Item href="#root">Home</Breadcrumbs.Item>
       <Breadcrumbs.Item aria-hidden>…</Breadcrumbs.Item>
       <Breadcrumbs.Item current>Billing</Breadcrumbs.Item>
+    </Breadcrumbs.Root>
+  ),
+};
+
+/**
+ * Compose, don't configure: `render` swaps the built-in element for a
+ * framework's link while the breadcrumb structure and aria stay.
+ */
+export const CustomElement: Story = {
+  render: (args) => (
+    <Breadcrumbs.Root {...args}>
+      <Breadcrumbs.Item render={<a data-router-link href="#root" />}>Home</Breadcrumbs.Item>
+      <Breadcrumbs.Item render={<a data-router-link href="#fields" />}>Fields</Breadcrumbs.Item>
+      <Breadcrumbs.Item current>North paddock</Breadcrumbs.Item>
     </Breadcrumbs.Root>
   ),
 };

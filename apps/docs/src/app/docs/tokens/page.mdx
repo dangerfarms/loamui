@@ -35,7 +35,7 @@ sync:
 ```
 
 The brand colour appears wherever the design says primary: focus rings, checked states, carets,
-text selection, and `primary` context regions. (Buttons are neutral by default; the demo below is
+and `primary` context regions. (Buttons are neutral by default; the demo below is
 wrapped in a primary region so you can see the change.) Scope the token to a subtree to theme
 just part of a page: the nearest declaration up the tree wins, so both cards below run identical
 CSS and differ only in where the token is set:
@@ -152,7 +152,7 @@ with everything on this page:
 ```tsx
 <section className="danger-zone">
   {/* everything inside adopts the danger accent: buttons, checked
-      states, carets, text selection: even focus rings */}
+      states, carets: even focus rings */}
   <Checkbox label="I understand this is permanent" />
   <Button>Delete</Button>
 </section>

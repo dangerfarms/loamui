@@ -25,8 +25,8 @@
        (violet by default, for indicators and highlights), kept distinct in hue
        from the status colours so the two roles never read as the same. */
     --loam-color-primary: light-dark(
-      oklch(25% 0.006 160deg),
-      oklch(92% 0.004 160deg)
+      oklch(25% 0.006 60deg),
+      oklch(92% 0.004 60deg)
     );
     --loam-color-accent: light-dark(
       oklch(48% 0.25 305deg),
@@ -69,43 +69,43 @@
 
     /* ── 2. Neutrals ───────────────────────────────────────────────── */
 
-    --loam-color-bg: light-dark(oklch(100% 0 0deg), oklch(17% 0.008 160deg));
+    /* A whisper of warmth (hue 60, a loam/soil tone) keeps the greys from
+       reading cold, and — unlike a green-adjacent neutral — sits far from every
+       status hue, so a soft neutral surface never reads as success. */
+    --loam-color-bg: light-dark(oklch(100% 0 0deg), oklch(17% 0.008 60deg));
     --loam-color-bg-subtle: light-dark(
-      oklch(98% 0.004 160deg),
-      oklch(21% 0.008 160deg)
+      oklch(98% 0.004 60deg),
+      oklch(21% 0.008 60deg)
     );
     --loam-color-surface: light-dark(
       oklch(100% 0 0deg),
-      oklch(23% 0.008 160deg)
+      oklch(23% 0.008 60deg)
     );
 
     /* Foreground — text, but also icons, illustrations and chart fills;
        strong and dim/muted variants. Backgrounds are never dimmed. */
-    --loam-color-fg: light-dark(
-      oklch(24% 0.02 160deg),
-      oklch(96% 0.006 160deg)
-    );
+    --loam-color-fg: light-dark(oklch(24% 0.02 60deg), oklch(96% 0.006 60deg));
     --loam-color-fg-strong: light-dark(
-      oklch(15% 0.02 160deg),
+      oklch(15% 0.02 60deg),
       oklch(99% 0 0deg)
     );
     --loam-color-fg-muted: light-dark(
-      oklch(52% 0.02 160deg),
-      oklch(72% 0.015 160deg)
+      oklch(52% 0.02 60deg),
+      oklch(72% 0.015 60deg)
     );
     --loam-color-fg-dim: light-dark(
-      oklch(55% 0.015 160deg),
-      oklch(66% 0.012 160deg)
+      oklch(55% 0.015 60deg),
+      oklch(66% 0.012 60deg)
     );
 
     /* Line — borders, and separators too. */
     --loam-color-line: light-dark(
-      oklch(91% 0.006 160deg),
-      oklch(32% 0.01 160deg)
+      oklch(91% 0.006 60deg),
+      oklch(32% 0.01 60deg)
     );
     --loam-color-line-strong: light-dark(
-      oklch(62% 0.012 160deg),
-      oklch(60% 0.014 160deg)
+      oklch(62% 0.012 60deg),
+      oklch(60% 0.014 60deg)
     );
 
     /* The one foreground that reads on every solid status fill: near-white
@@ -113,7 +113,7 @@
        fills stay raw) — the only pairing all statuses hold AA with. */
     --loam-color-on-strong: light-dark(
       oklch(99% 0 0deg),
-      oklch(17% 0.01 160deg)
+      oklch(17% 0.01 60deg)
     );
 
     /* ── 3. Derived — recipes, never hand-tuned per status ─────────── */
@@ -208,6 +208,11 @@
     --loam-space-lg: clamp(1rem, 0.9565rem + 0.2174cqi, 1.125rem);
     --loam-space-xl: clamp(1.5rem, 1.4348rem + 0.3261cqi, 1.6875rem);
 
+    /* Reading measure — the comfortable line length for body copy (~66
+       characters). Cap a prose column with `max-inline-size:
+       var(--loam-measure)` so long text stays readable. */
+    --loam-measure: 66ch;
+
     /* Radius — deliberately fixed: corner rounding shouldn't breathe with
        the viewport. */
     --loam-radius-sm: 0.375rem;
@@ -222,21 +227,21 @@
        canvas). */
     --loam-shadow-sm:
       inset 0 1px 0 0 light-dark(transparent, oklch(100% 0 0deg / 6%)),
-      0 1px 2px light-dark(oklch(20% 0.02 160deg / 8%), transparent);
+      0 1px 2px light-dark(oklch(20% 0.02 60deg / 8%), transparent);
     --loam-shadow-raised:
       inset 0 1px 0 0
         light-dark(oklch(100% 0 0deg / 60%), oklch(100% 0 0deg / 10%)),
-      0 1px 2px light-dark(oklch(20% 0.02 160deg / 10%), transparent),
-      0 2px 4px light-dark(oklch(20% 0.02 160deg / 7%), transparent),
-      0 4px 8px light-dark(oklch(20% 0.02 160deg / 4%), transparent);
+      0 1px 2px light-dark(oklch(20% 0.02 60deg / 10%), transparent),
+      0 2px 4px light-dark(oklch(20% 0.02 60deg / 7%), transparent),
+      0 4px 8px light-dark(oklch(20% 0.02 60deg / 4%), transparent);
     --loam-shadow-md:
       inset 0 1px 0 0 light-dark(transparent, oklch(100% 0 0deg / 6%)),
-      0 4px 6px -1px light-dark(oklch(20% 0.02 160deg / 10%), transparent),
-      0 2px 4px -2px light-dark(oklch(20% 0.02 160deg / 8%), transparent);
+      0 4px 6px -1px light-dark(oklch(20% 0.02 60deg / 10%), transparent),
+      0 2px 4px -2px light-dark(oklch(20% 0.02 60deg / 8%), transparent);
     --loam-shadow-lg:
       inset 0 1px 0 0 light-dark(transparent, oklch(100% 0 0deg / 8%)),
-      0 12px 20px -6px light-dark(oklch(20% 0.02 160deg / 14%), transparent),
-      0 4px 8px -4px light-dark(oklch(20% 0.02 160deg / 10%), transparent);
+      0 12px 20px -6px light-dark(oklch(20% 0.02 60deg / 14%), transparent),
+      0 4px 8px -4px light-dark(oklch(20% 0.02 60deg / 10%), transparent);
 
     /* Motion — sm: micro feedback; md: default transitions; lg: overlay
        enter/exit and large movement; elastic: sparingly. */

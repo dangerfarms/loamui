@@ -11,6 +11,17 @@ const meta = {
       <Details.Content>A React component library built on the native web platform.</Details.Content>
     </Details.Root>
   ),
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The native `<details>`/`<summary>` disclosure, composed from " +
+          "parts, with zero-JS toggling, find-in-page reveal, and " +
+          "pre-hydration correctness. Share a `name` across several and the " +
+          "browser enforces single-open natively.",
+      },
+    },
+  },
 } satisfies Meta<typeof Details.Root>;
 
 export default meta;

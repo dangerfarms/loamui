@@ -9,6 +9,16 @@ const meta = {
   args: {
     name: "Ada Lovelace",
   },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "An image, initials, or fallback glyph representing a user. The " +
+          "initials background answers the surrounding `--loam-context` " +
+          "region, not a color prop.",
+      },
+    },
+  },
 } satisfies Meta<typeof Avatar>;
 
 export default meta;
@@ -16,9 +26,21 @@ type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {};
 
+// An inline SVG portrait — self-contained, so the story needs no network
+// and passes a strict content-security policy.
+const portrait =
+  "data:image/svg+xml," +
+  encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">` +
+      `<rect width="96" height="96" fill="#ede9fe"/>` +
+      `<circle cx="48" cy="38" r="18" fill="#6d28d9"/>` +
+      `<path d="M16 84c0-17 14-28 32-28s32 11 32 28z" fill="#6d28d9"/>` +
+      `</svg>`,
+  );
+
 export const Image: Story = {
   args: {
-    src: "https://i.pravatar.cc/96?img=5",
+    src: portrait,
     alt: "Grace Hopper",
     name: "Grace Hopper",
   },

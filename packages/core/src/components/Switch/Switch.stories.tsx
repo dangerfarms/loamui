@@ -1,10 +1,21 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Field, Switch } from "../../index";
+import { Field, Switch, SwitchControl } from "../../index";
 
 const meta = {
   title: "Inputs/Switch",
   component: Switch,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'An on/off toggle built on a native checkbox with `role="switch"`. ' +
+          "Renders an accessible inline row when given `label`/`description`, or " +
+          "the bare track alone, which self-wires inside a `Field`. Errors " +
+          "compose via `Field.Error`.",
+      },
+    },
+  },
   args: {
     label: "Enable irrigation",
     labelPosition: "end",
@@ -50,6 +61,21 @@ export const WithError: Story = {
 
 export const Required: Story = {
   args: { label: "Accept audit logging", required: true },
+};
+
+/**
+ * The bare `SwitchControl` self-wires from the surrounding Field, reading its id
+ * and aria wiring from context; the inline-label form is the other shape, shown
+ * elsewhere.
+ */
+export const SelfWiringInField: Story = {
+  render: () => (
+    <Field.Root>
+      <Field.Label>
+        <SwitchControl /> Enable irrigation
+      </Field.Label>
+    </Field.Root>
+  ),
 };
 
 export const States: Story = {

@@ -13,8 +13,8 @@ const withTheme: Decorator = (Story, ctx) => {
   return (
     <div
       style={{
-        background: "var(--loam-bg)",
-        color: "var(--loam-text)",
+        background: "var(--loam-color-bg)",
+        color: "var(--loam-color-fg)",
         fontFamily: "var(--loam-font)",
         padding: "2rem",
         minHeight: "100vh",
@@ -47,6 +47,33 @@ const preview: Preview = {
     controls: { expanded: true },
     // Fail stories (and the test run) on axe violations.
     a11y: { test: "error" },
+    options: {
+      // Foundations reads as a learning path (identity → primitives →
+      // contextualism → layout → a11y); the rest stay grouped by role.
+      storySort: {
+        order: [
+          "Foundations",
+          [
+            "Introduction",
+            "Principles",
+            "Tokens",
+            "Element styles",
+            "Typography",
+            "Contextualism",
+            "Contexts",
+            "Layout",
+            "Accessibility",
+          ],
+          "Inputs",
+          "Data display",
+          "Feedback",
+          "Navigation",
+          "Overlays",
+          "Layout",
+          "*",
+        ],
+      },
+    },
   },
 };
 

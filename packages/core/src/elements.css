@@ -216,6 +216,12 @@
     text-align: start;
   }
 
+  /* Data reads as data: tabular figures so numbers line up in columns. Only
+     digits are affected, so text cells are untouched. */
+  td {
+    font-variant-numeric: tabular-nums;
+  }
+
   /* ── Links ──────────────────────────────────────────────────────── */
 
   /* Links default to the accessible blue, with the classic visited (toward

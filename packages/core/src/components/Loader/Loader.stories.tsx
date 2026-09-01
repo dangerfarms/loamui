@@ -29,14 +29,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {};
 
-export const Variants: Story = {
-  render: (args) => (
-    <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
-      <Loader {...args} label="Loading" />
-    </div>
-  ),
-};
-
 export const Sizes: Story = {
   render: (args) => (
     <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
@@ -48,28 +40,41 @@ export const Sizes: Story = {
 };
 
 /**
- * A `--loam-context` region recolours the loader through the brand token;
- * a plain `color:` declaration overrides.
+ * A loader carries the accent by default. Each region here sets only
+ * `--loam-context` — the bare loader inside re-answers the accent and
+ * recolours with no prop of its own.
  */
 export const Contexts: Story = {
-  render: (args) => {
-    const primary = { color: "var(--loam-color-primary)" } as CSSProperties;
-    return (
-      <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
-        <Loader {...args} style={primary} label="Primary loader" />
-        <span style={{ "--loam-context": "success" } as CSSProperties}>
-          <Loader {...args} style={primary} label="Success loader" />
-        </span>
-        <span style={{ "--loam-context": "warning" } as CSSProperties}>
-          <Loader {...args} style={primary} label="Warning loader" />
-        </span>
-        <span style={{ "--loam-context": "info" } as CSSProperties}>
-          <Loader {...args} style={primary} label="Info loader" />
-        </span>
-        <span style={{ "--loam-context": "danger" } as CSSProperties}>
-          <Loader {...args} style={primary} label="Danger loader" />
-        </span>
-      </div>
-    );
-  },
+  render: (args) => (
+    <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
+      <Loader {...args} label="Default loader" />
+      <span style={{ "--loam-context": "success" } as CSSProperties}>
+        <Loader {...args} label="Success loader" />
+      </span>
+      <span style={{ "--loam-context": "warning" } as CSSProperties}>
+        <Loader {...args} label="Warning loader" />
+      </span>
+      <span style={{ "--loam-context": "info" } as CSSProperties}>
+        <Loader {...args} label="Info loader" />
+      </span>
+      <span style={{ "--loam-context": "danger" } as CSSProperties}>
+        <Loader {...args} label="Danger loader" />
+      </span>
+    </div>
+  ),
+};
+
+/**
+ * The escape hatch: a plain `color:` on the loader overrides the accent
+ * without touching context — for the rare indicator that must match a
+ * specific surface rather than the brand.
+ */
+export const ColorOverride: Story = {
+  render: (args) => (
+    <Loader
+      {...args}
+      style={{ color: "var(--loam-color-fg-muted)" } as CSSProperties}
+      label="Muted loader"
+    />
+  ),
 };
