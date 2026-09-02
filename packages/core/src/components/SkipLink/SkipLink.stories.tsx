@@ -5,6 +5,16 @@ const meta = {
   title: "Navigation/SkipLink",
   component: SkipLink,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The first focusable element on the page: a link straight to the " +
+          "main content, visible only while focused. Render it before " +
+          "everything else, pointing at the main landmark's matching `id`.",
+      },
+    },
+  },
   args: {
     href: "#content",
   },

@@ -5,6 +5,17 @@ const meta = {
   title: "Inputs/DateInput",
   component: DateInput.Root,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Composable parts for asking for a memorable date — one already " +
+          "known, like a date of birth — which is typed, not picked. Each " +
+          "part is a separate labelled field inside a `<fieldset>`, so " +
+          "render only the parts you need and the wiring adapts.",
+      },
+    },
+  },
 } satisfies Meta<typeof DateInput.Root>;
 
 export default meta;

@@ -200,8 +200,8 @@ export default function HomePage() {
           <h2 className={c.sectionTitle}>Built on Google&rsquo;s Modern Web Guidance.</h2>
           <p className={c.sectionSub}>
             Every primitive follows the Chrome team&rsquo;s guidance for the modern web. That is why
-            interfaces built with LoamUI are fast and accessible, a combination no other library
-            offers. Three tenets run through everything:
+            interfaces built with LoamUI are fast and accessible by default. Three tenets run
+            through everything:
           </p>
         </div>
         <div className={c.features}>

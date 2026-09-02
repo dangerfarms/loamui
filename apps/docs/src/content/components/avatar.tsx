@@ -1,6 +1,7 @@
 import { Avatar, AvatarGroup } from "@loamui/core";
 import type { CSSProperties } from "react";
 import type { ComponentContent } from "@/renderer/types";
+import { Example } from "@/renderer/Example";
 
 const IMG =
   "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=128&h=128&fit=crop&crop=faces";
@@ -22,20 +23,31 @@ const doc: ComponentContent = {
         "With no image, initials are derived from name. There is no color prop: the initials background answers the surrounding --loam-context region (a style query is answered by ancestors, never by the declaring element itself), exactly like Badge. Wrap a single avatar in a one-element span, or let it inherit from a larger region. See the Contextualism guide.",
       code: `<Avatar name="Jane Doe" />
 <span style={{ "--loam-context": "info" }}><Avatar name="Amara Okafor" /></span>
-<span style={{ "--loam-context": "success" }}><Avatar name="Sam Reed" /></span>
-<Avatar />`,
+<span style={{ "--loam-context": "success" }}><Avatar name="Sam Reed" /></span>`,
       render: () => (
-        <>
-          <Avatar name="Jane Doe" />
-          <span style={{ "--loam-context": "info" } as CSSProperties}>
-            <Avatar name="Amara Okafor" />
-          </span>
-          <span style={{ "--loam-context": "success" } as CSSProperties}>
-            <Avatar name="Sam Reed" />
-          </span>
-          <Avatar />
-        </>
+        <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap", alignItems: "start" }}>
+          <Example label="Initials from the name">
+            <Avatar name="Jane Doe" />
+          </Example>
+          <Example label="Background from an info region">
+            <span style={{ "--loam-context": "info" } as CSSProperties}>
+              <Avatar name="Amara Okafor" />
+            </span>
+          </Example>
+          <Example label="Background from a success region">
+            <span style={{ "--loam-context": "success" } as CSSProperties}>
+              <Avatar name="Sam Reed" />
+            </span>
+          </Example>
+        </div>
       ),
+    },
+    {
+      title: "Fallback glyph",
+      description:
+        "A bare Avatar with no name from any source renders a decorative person glyph. It carries no identity: the glyph is marked aria-hidden, so give an avatar a name whenever it stands in for a specific person.",
+      code: `<Avatar />`,
+      render: () => <Avatar />,
     },
     {
       title: "Group",

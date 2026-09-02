@@ -7,6 +7,14 @@ const meta = {
   title: "Overlays/Drawer",
   component: Drawer.Root,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "An edge-anchored panel that slides in over the page, composed from parts. The Panel is a native `<dialog>` opened with `showModal()`, so top layer, backdrop, focus containment, Escape and focus restore all come from the browser — a Drawer is a Modal pinned to an edge.",
+      },
+    },
+  },
   render: () => (
     <Drawer.Root>
       <Drawer.Trigger>Open menu</Drawer.Trigger>
@@ -105,6 +113,22 @@ export const WithHeaderClose: Story = {
           <Drawer.Close aria-label="Close">×</Drawer.Close>
         </div>
         <Drawer.Description>Refine the results shown in the list.</Drawer.Description>
+      </Drawer.Panel>
+    </Drawer.Root>
+  ),
+};
+
+/**
+ * `render` swaps the trigger/close element; the dialog wiring is preserved.
+ */
+export const CustomTrigger: Story = {
+  render: () => (
+    <Drawer.Root>
+      <Drawer.Trigger render={<button aria-label="Open menu">☰</button>} />
+      <Drawer.Panel side="start">
+        <Drawer.Title>Navigation</Drawer.Title>
+        <Drawer.Description>Jump to a section of the app.</Drawer.Description>
+        <Drawer.Close render={<button aria-label="Close">×</button>} />
       </Drawer.Panel>
     </Drawer.Root>
   ),

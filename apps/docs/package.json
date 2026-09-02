@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "predev": "node scripts/sync-css.mjs && tsx --tsconfig scripts/tsconfig.export.json scripts/export-markdown.mts",
-    "dev": "next dev --port 3007",
+    "dev": "node scripts/sync-css.mjs --watch & next dev --port 3007",
     "prebuild": "node scripts/sync-css.mjs && tsx --tsconfig scripts/tsconfig.export.json scripts/export-markdown.mts",
     "build": "next build",
     "start": "next start --port 3007",

@@ -5,8 +5,9 @@
     --_track-h: 0.4167em;
     --_thumb: 1.25em;
 
-    /* accent-color paints the filled portion + thumb robustly cross-browser. */
-    accent-color: var(--loam-color-primary);
+    /* accent-color paints the filled portion + thumb robustly cross-browser.
+       -strong (not raw primary) so a --loam-context region's fill stays 3:1. */
+    accent-color: var(--loam-color-primary-strong);
     appearance: none;
     background: transparent;
     cursor: pointer;

@@ -5,6 +5,16 @@ const meta = {
   title: "Inputs/Textarea",
   component: Textarea,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The bordered multi-line field: a native `<textarea>` in the shared " +
+          "control box. Label it by composing Field — the control reads its " +
+          "wiring from the surrounding `Field.Root`.",
+      },
+    },
+  },
   args: {
     placeholder: "Write your message…",
     rows: 3,

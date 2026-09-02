@@ -125,8 +125,12 @@ export function TabsList({ className, children, ...rest }: TabsListProps) {
   useEffect(() => {
     if (isControlled) return;
     const list = listRef.current;
-    if (!list || list.querySelector('[role="tab"][aria-selected="true"]:not(:disabled)')) return;
-    const first = list.querySelector<HTMLButtonElement>('[role="tab"]:not(:disabled)');
+    if (
+      !list ||
+      list.querySelector('[role="tab"][aria-selected="true"]:not([aria-disabled="true"])')
+    )
+      return;
+    const first = list.querySelector<HTMLButtonElement>('[role="tab"]:not([aria-disabled="true"])');
     const fallback = first?.dataset.tabValue;
     if (fallback) setValue(fallback);
   }, [isControlled, setValue, value]);
@@ -136,7 +140,9 @@ export function TabsList({ className, children, ...rest }: TabsListProps) {
     if (!keys.includes(event.key)) return;
 
     const tabs = Array.from(
-      listRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]:not(:disabled)') ?? [],
+      listRef.current?.querySelectorAll<HTMLButtonElement>(
+        '[role="tab"]:not([aria-disabled="true"])',
+      ) ?? [],
     );
     if (tabs.length === 0) return;
 
@@ -205,11 +211,18 @@ export function TabsTab({ value, disabled, className, children, onClick, ...rest
       aria-selected={selected}
       aria-controls={`${baseId}-panel-${value}`}
       tabIndex={selected ? 0 : -1}
-      disabled={disabled}
+      // aria-disabled, not native disabled: the tab stays in the a11y tree
+      // (announced as disabled) but is skipped by roving focus and can't be
+      // activated — the same pattern as Menu items.
+      aria-disabled={disabled || undefined}
       data-tab-value={value}
       className={cx("tab", className)}
       data-active={selected || undefined}
       onClick={(event) => {
+        if (disabled) {
+          event.preventDefault();
+          return;
+        }
         onClick?.(event);
         setValue(value);
       }}

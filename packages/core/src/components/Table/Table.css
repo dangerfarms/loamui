@@ -32,7 +32,8 @@
       text-align: start;
     }
 
-    :where(th, td) {
+    th,
+    td {
       border-block-end: 1px solid var(--loam-color-line);
       padding-block: var(--loam-space-md);
       padding-inline: var(--loam-space-lg);
@@ -40,7 +41,7 @@
       vertical-align: middle;
     }
 
-    :where(thead th) {
+    thead th {
       border-block-end: 1px solid var(--loam-color-line-strong);
       color: var(--loam-color-fg-muted);
       font-size: var(--loam-text-xs);
@@ -50,26 +51,27 @@
       white-space: nowrap;
     }
 
-    :where(tbody tr:last-child) :where(td) {
+    tbody tr:last-child td {
       border-block-end: none;
     }
 
-    &[data-col-borders] :where(th, td):not(:last-child) {
+    &[data-col-borders] th:not(:last-child),
+    &[data-col-borders] td:not(:last-child) {
       border-inline-end: 1px solid var(--loam-color-line);
     }
 
-    &[data-striped] :where(tbody tr:nth-child(even)) {
+    &[data-striped] tbody tr:nth-child(even) {
       background: var(--loam-color-bg-subtle);
     }
 
     @media (prefers-reduced-motion: no-preference) {
-      &[data-hover] :where(tbody tr) {
+      &[data-hover] tbody tr {
         transition: background var(--loam-duration-md) var(--loam-ease);
       }
     }
 
     @media (hover: hover) {
-      &[data-hover] :where(tbody tr:hover) {
+      &[data-hover] tbody tr:hover {
         background: var(--loam-color-surface-hover);
       }
     }

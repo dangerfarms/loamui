@@ -1,0 +1,58 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Foundations/Typography" />
+
+# Typography
+
+How the type scale, rhythm and figures work — and how to build your own
+domain-specific typography on the two primitives. Tokens supply a fluid scale;
+element styles apply it to native headings and text.
+
+## A fluid scale, tuned per container
+
+Every size is a `clamp()` that grows with the container, and the scale's *shape*
+changes with the space it has. In a narrow container the steps follow a **1.125
+ratio** (a major second); in a wide one the same steps open up to a **1.25
+ratio** (a major third). Because it responds to container width rather than the
+viewport, a heading in a sidebar and the same heading in the main column each
+pick their own rhythm.
+
+Leading is derived from each element's own size — `calc(0.5rem + 2ex)` — so
+larger type gets a proportionally tighter line-height with no lookup table.
+Vertical spacing is additive: every block carries a block-end margin, and extra
+room before a heading comes from an adjacent-sibling rule.
+
+## Two families, and considered figures
+
+Body copy uses `--loam-font`; headings use `--loam-font-display`. Pin two
+typefaces and the whole system follows — no component touched. Figures are
+chosen per context: old-style proportional figures in prose, lining figures in
+headings, common ligatures and hanging punctuation throughout, and tabular
+figures available where a column of numbers needs to align.
+
+## Typography components are yours to name
+
+There is no `Heading` or `Text` component. Meaningful typography is
+domain-specific — headline, byline, lede for an article; page-title, callout for
+an app — and those names belong to your product, not the library. Build one from
+the two primitives: a semantic element plus a scoped rule.
+
+```css
+@scope (h1.headline) {
+  :scope {
+    font-family: var(--loam-font-display);
+    font-variant-caps: small-caps;
+  }
+}
+
+@scope (p.byline) {
+  :scope {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+  }
+}
+```
+
+A scoped class on a semantic element, styled with tokens, is a typography
+component that themes through the cascade and works outside React. The primitives
+do the reading research; you supply the vocabulary.

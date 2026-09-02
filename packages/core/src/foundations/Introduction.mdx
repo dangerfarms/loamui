@@ -1,0 +1,62 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Foundations/Introduction" />
+
+# LoamUI
+
+**Modern UI primitives for agent-assisted developers.** Contextual tokens,
+element styles and React components for quickly building bespoke UIs that are
+accessible, adaptable and fast.
+
+Most component libraries ship a styling engine to the browser. LoamUI doesn't.
+Everything here is styled with plain, modern CSS — cascade layers, custom
+properties, `light-dark()`, `color-mix()`, container queries, logical
+properties. Nothing runs at runtime, and there is nothing extra to download.
+
+## What that buys you
+
+- **Zero-runtime.** Static CSS, no CSS-in-JS, no per-render serialization
+  cost — and it composes with React Server Components.
+- **Themeable with variables.** Rebrand by overriding `--loam-*` tokens at any
+  scope; there is no provider to mount.
+- **Native dark mode.** Tokens are defined with `light-dark()`; one toggle
+  flips `color-scheme` and every token re-resolves.
+- **Accessible by default.** Semantic HTML, managed focus, keyboard support,
+  and a contrast-audited palette — verified by axe and interaction tests in a
+  real browser.
+
+## Three primitives
+
+LoamUI is three layers, shipped in one stylesheet and applied by cascade order:
+
+1. **[Tokens](?path=/docs/foundations-tokens--docs)** — a small set of semantic
+   custom properties every component reads.
+2. **[Element styles](?path=/docs/foundations-element-styles--docs)** — enhanced
+   defaults for native elements, so plain HTML is styled before any component
+   appears.
+3. **Components** — the React parts, composed on top of the two primitives.
+
+Read the [Principles](?path=/docs/foundations-principles--docs) for the ideas
+that hold them together, and browse the component groups in the sidebar for
+live, tested examples.
+
+## Install
+
+```bash
+pnpm add @loamui/core
+```
+
+Import the stylesheet once at the app root — it defines the `--loam-*` tokens
+and the base layer every component builds on:
+
+```tsx
+// app/layout.tsx
+import "@loamui/core/styles.css";
+import { Button } from "@loamui/core";
+
+export default function Page() {
+  return <Button>Get started</Button>;
+}
+```
+
+Works in any React 19 setup — no provider, no build plugin.

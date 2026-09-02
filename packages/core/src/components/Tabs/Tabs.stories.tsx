@@ -6,6 +6,16 @@ const meta = {
   title: "Navigation/Tabs",
   component: Tabs,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Switch between related panels of content, composed with " +
+          "`Tabs.List`, `Tabs.Tab` and `Tabs.Panel`. Supports uncontrolled " +
+          "(`defaultValue`) and controlled (`value`/`onChange`) usage.",
+      },
+    },
+  },
   args: {
     defaultValue: "overview",
   },

@@ -1,5 +1,6 @@
 import { Checkbox } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
+import { CheckboxErrorDemo, CheckboxFieldDemo } from "./checkbox.client";
 
 const doc: ComponentContent = {
   slug: "checkbox",
@@ -41,6 +42,28 @@ const doc: ComponentContent = {
           <Checkbox label="Locked in" defaultChecked disabled />
         </div>
       ),
+    },
+    {
+      title: "Error state",
+      description:
+        "A Field.Error before the checkbox marks it invalid and is announced: no error prop, the message's presence is the state.",
+      code: `<Field.Root>
+  <Field.Error>Accept the terms of service to continue</Field.Error>
+  <Checkbox label="Accept the terms of service" />
+</Field.Root>`,
+      render: () => <CheckboxErrorDemo />,
+    },
+    {
+      title: "Composed inside a Field",
+      description:
+        "The bare CheckboxControl carries no label prop — it reads its id, aria-describedby and aria-invalid from the surrounding Field, so the label lives on Field.Label and nothing wires them by hand. This is the composable form; <Checkbox label=… /> is the shorthand for it.",
+      code: `<Field.Root>
+  <Field.Label>
+    <CheckboxControl /> Subscribe to the newsletter
+  </Field.Label>
+  <Field.Description>A short summary, once a week.</Field.Description>
+</Field.Root>`,
+      render: () => <CheckboxFieldDemo />,
     },
   ],
   whenToUse: [

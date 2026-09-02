@@ -14,6 +14,17 @@ const meta = {
   title: "Inputs/Select",
   component: Select,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A native `<select>` in the shared control box, with a fluid " +
+          "chevron; options are children (`<option>` / `<optgroup>`), exactly " +
+          "as the platform defines them. Label it by composing Field — the " +
+          "control reads its wiring from the surrounding `Field.Root`.",
+      },
+    },
+  },
   args: {
     placeholder: "Pick one",
     children: frameworkOptions,

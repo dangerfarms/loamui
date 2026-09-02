@@ -1,5 +1,6 @@
 import { Switch } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
+import { Example } from "@/renderer/Example";
 import { SwitchFieldDemo } from "./switch.client";
 
 const doc: ComponentContent = {
@@ -19,13 +20,18 @@ const doc: ComponentContent = {
       render: () => <Switch defaultChecked aria-label="Autosave" />,
     },
     {
-      title: "With label",
-      code: `<Switch label="Enable notifications" defaultChecked />
+      title: "Label position",
+      description: "labelPosition places the label after the toggle (default) or before it.",
+      code: `<Switch label="Enable notifications" />
 <Switch label="Label on the left" labelPosition="start" />`,
       render: () => (
         <div style={{ display: "grid", gap: "0.75rem" }}>
-          <Switch label="Enable notifications" defaultChecked />
-          <Switch label="Label on the left" labelPosition="start" />
+          <Example label="Label at the end (default)">
+            <Switch label="Enable notifications" />
+          </Example>
+          <Example label="Label at the start">
+            <Switch label="Label on the left" labelPosition="start" />
+          </Example>
         </div>
       ),
     },

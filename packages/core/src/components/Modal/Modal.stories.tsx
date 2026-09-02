@@ -7,6 +7,18 @@ const meta = {
   title: "Overlays/Modal",
   component: Modal.Root,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A blocking dialog for must-complete tasks, composed from parts " +
+          "(Root, Trigger, Popup, Title, Description, Close). The Popup is a " +
+          "native `<dialog>` opened with `showModal()`, so the top layer, " +
+          "`::backdrop`, focus containment, Escape handling and " +
+          "focus-restore-to-opener all come from the browser.",
+      },
+    },
+  },
   render: () => (
     <Modal.Root>
       <Modal.Trigger>Invite a teammate</Modal.Trigger>

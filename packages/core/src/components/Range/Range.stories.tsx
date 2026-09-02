@@ -5,6 +5,16 @@ const meta = {
   title: "Inputs/Range",
   component: Range,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'A styled `<input type="range">` for choosing a value from a range. ' +
+          "Label it by composing Field — the control reads its id, description " +
+          "and error wiring from the surrounding `Field.Root`.",
+      },
+    },
+  },
   args: {
     min: 0,
     max: 100,
@@ -43,4 +53,19 @@ export const Steps: Story = {
 
 export const Disabled: Story = {
   args: { disabled: true, defaultValue: 70 },
+};
+
+/**
+ * The bare control takes no error prop — the invalid state and description come
+ * from Field. A present `Field.Error` marks the surrounding field invalid, and
+ * the control self-wires `aria-invalid`/`aria-describedby` from Field context.
+ */
+export const WithError: Story = {
+  render: (args) => (
+    <Field.Root>
+      <Field.Label>Irrigation level</Field.Label>
+      <Field.Error>Choose a level of at least 20</Field.Error>
+      <Range {...args} />
+    </Field.Root>
+  ),
 };

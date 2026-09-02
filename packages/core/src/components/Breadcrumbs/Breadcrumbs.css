@@ -38,7 +38,7 @@
       user-select: none;
     }
 
-    :where(a) {
+    a {
       border-radius: var(--loam-radius-sm);
       color: var(--loam-color-fg-muted);
       padding-inline: 2px;

@@ -19,7 +19,7 @@
       justify-content: space-between;
       line-height: 1.4;
       list-style: none;
-      padding-block: var(--loam-space-md);
+      padding-block: var(--loam-space-lg);
       padding-inline: var(--loam-space-lg);
       user-select: none;
 
@@ -60,7 +60,7 @@
     color: var(--loam-color-fg-muted);
     font-size: var(--loam-text-sm);
     line-height: 1.55;
-    padding-block: 0 var(--loam-space-lg);
+    padding-block: var(--loam-space-lg);
     padding-inline: var(--loam-space-lg);
   }
 

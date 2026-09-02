@@ -13,6 +13,15 @@ const meta = {
       </p>
     </Card>
   ),
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A surface container that groups related content. One fixed look — " +
+          "a quiet bordered surface; there are no styling props.",
+      },
+    },
+  },
 } satisfies Meta<typeof Card>;
 
 export default meta;

@@ -14,6 +14,17 @@ const meta = {
     circle: { control: "boolean" },
     visible: { control: "boolean" },
   },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "An animated placeholder shown while content loads. Wrapped " +
+          "children size the box so it mirrors the coming layout; " +
+          "`width`/`height` are for bare placeholders, and all sizing " +
+          "policy lives in the stylesheet.",
+      },
+    },
+  },
 } satisfies Meta<typeof Skeleton>;
 
 export default meta;

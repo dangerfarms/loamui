@@ -1,0 +1,80 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Foundations/Layout" />
+
+# Layout
+
+LoamUI ships **no layout components**. Layout is native CSS: pick the module that
+fits the shape of the content, and space every gap with a space token. Match the
+module to the content, not to a breakpoint.
+
+## Pick the module by the shape of the content
+
+| Content | Module | How |
+| --- | --- | --- |
+| A documentation page | **Flow** | nothing; block layout is the default |
+| An information-dense dashboard | **Grid** | `display: grid` with `subgrid` for alignment |
+| A one-dimensional control row | **Flex** | `display: flex` |
+| A long article | **Multi-column** | `columns` |
+
+**Flow** stacks blocks in source order; the element styles already give each
+block its block-end margin, so tune the rhythm with a space-token `gap` on the
+container rather than per-element margins.
+
+**Grid** is two-dimensional. Prefer intrinsic fluid tracks over media queries —
+`repeat(auto-fit, minmax(min(16rem, 100%), 1fr))` lays out as many equal columns
+as fit and reflows with no breakpoints — and use `grid-template-rows: subgrid` to
+align sibling cards' internal rows.
+
+```css
+@scope (.dashboard) {
+  :scope {
+    display: grid;
+    gap: var(--loam-space-lg);
+    grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+  }
+}
+```
+
+**Flex** is one-dimensional — a button group, a toolbar, a label beside a
+control. Let it wrap, and align `safe` so a focused item is never clipped.
+
+```css
+@scope (.actions) {
+  :scope {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm);
+    align-items: safe center;
+  }
+}
+```
+
+**Multi-column** flows one text stream across balanced columns — set a width and
+let the browser decide the count.
+
+```css
+@scope (.article) {
+  :scope {
+    columns: 18rem;
+    gap: var(--loam-space-xl);
+  }
+}
+```
+
+## Space with tokens, not numbers
+
+The space scale is fluid — each step grows on wide containers and tightens on
+narrow, with no media query:
+
+| Token | Min → Max |
+| --- | --- |
+| `--loam-space-xs` | 4px → 4.5px |
+| `--loam-space-sm` | 8px → 9px |
+| `--loam-space-md` | 12px → 13.5px |
+| `--loam-space-lg` | 16px → 18px |
+| `--loam-space-xl` | 24px → 27px |
+
+The discipline is the same one the components use: a native module for
+structure, a space token for every gap, and a container query wherever a piece
+must respond to its own width.

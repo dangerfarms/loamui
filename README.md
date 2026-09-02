@@ -64,7 +64,13 @@ pnpm install
 pnpm build        # build the library, then the docs site
 pnpm dev          # run the docs site against the library
 pnpm check-types  # type-check everything
+
+pnpm --filter @loamui/core storybook   # component explorer at :6006
 ```
+
+Storybook is the component workbench: a **Foundations** section documenting the
+tokens, element styles, contextualism, layout and accessibility model, plus live
+stories for every component with axe and keyboard interaction tests.
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
 

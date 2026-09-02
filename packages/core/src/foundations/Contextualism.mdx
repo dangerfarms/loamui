@@ -1,0 +1,108 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Foundations/Contextualism" />
+
+# Contextualism
+
+Why LoamUI components have no `variant`, `size`, or `color` props. The usual
+model asks each call site to re-declare `variant="outline"`, `size="lg"`,
+`color="danger"`. LoamUI inverts it: components **read their context and adapt**,
+and identity props are the last resort, not the first.
+
+See the live [Contexts](?path=/story/foundations-contexts--danger-context) demo
+alongside this page.
+
+## The handful of contexts
+
+- **What the region means** — `--loam-context`: `primary` (the area's action),
+  `danger` (destructive), and the statuses `success`, `warning`, `info`.
+- **The size of the space** — container queries and fluid `cqi` tokens.
+- **What the component contains** — `:has()` detection (an icon child, a rendered
+  error message).
+- **The colour scheme** — `color-scheme` and `light-dark()` tokens.
+- **User preferences** — motion opted in via `prefers-reduced-motion:
+  no-preference`.
+
+## Declaring meaning: `--loam-context`
+
+`--loam-context` is a registered custom property (not a data attribute). It
+inherits, the nearest ancestor wins, and the library reads it with a container
+*style* query:
+
+```css
+@container (style(--loam-context: danger)) {
+  .loam-Button {
+    --_color: var(--loam-color-danger);
+  }
+}
+```
+
+Because a style query is answered by an *ancestor*, the declaration must sit
+above what it styles. A recurring, named region declares it in its own
+stylesheet; a one-off sets it inline on a wrapper — which is not an inline style
+in the pejorative sense, but a single semantic property set at a subtree root,
+with every visual consequence still living in stylesheets.
+
+```css
+/* danger-zone.css: the region declares what it means */
+.danger-zone {
+  --loam-context: danger;
+}
+```
+
+```tsx
+<section style={{ "--loam-context": "danger" }}>
+  <Checkbox label="I understand this is permanent" />
+  <Button>Delete workspace</Button>
+</section>
+```
+
+A context remaps the semantic colour tokens for *every* component inside —
+checked states, focus rings, carets. No component contains
+context code; the cascade does it. **This is the entire status API:** a success
+alert is an `Alert` in a `success` region.
+
+## One colour channel, derived looks
+
+Button has no filled / outline / subtle variants. It has one colour channel and
+derives every look from it: the background and border mix toward the page
+background with `color-mix()`, hover and active shift lightness with
+relative-colour syntax, and the default channel is the neutral text colour (a
+quiet button — no "subtle" variant needed). Where a variant model needs four
+variants × three sizes × two colours of hand-picked values, this needs one
+input. For genuine identity — a brand CTA that looks the same everywhere — the
+single instance-level escape hatch is the registered `--loam-button-color`
+property.
+
+## The size of the space
+
+There is no `size` prop. Padding and font are fluid container-relative tokens,
+and in a container of **16rem or less** a button takes the full width. Stacked
+full-width actions are declared as layout — a grid or stacked flex region — on
+the container, not as a prop on each button. The arrangement is the declaration.
+
+## Detection, not declaration
+
+An icon inside a button is detected with `:has()` — there is no `leftSection`
+prop. A field is invalid exactly when it contains a rendered error message, so
+there is **no `invalid` prop anywhere in the library**; `aria-invalid` still
+flows through React for screen readers, derived from the same fact, so there is
+one source of truth. An icon-only button is detected from the `aria-label` it
+must carry anyway — correct markup and the compact look are the same thing.
+
+## When identity is legitimate
+
+Contextualism is the default, not a ban. When a piece has genuine identity —
+a call-to-action that must look identical everywhere — specialize it with a
+wrapper component or the `--loam-button-color` channel, and give it a name.
+What you avoid is reaching for a variant prop that re-encodes a decision the
+surrounding design has already made.
+
+## Browser support
+
+Everything contextualism relies on is Baseline. Container *style* queries — the
+mechanism behind `--loam-context` — became Baseline Newly Available in May 2026.
+Container *size* queries, `:has()` and `color-mix()` are Widely Available, and
+relative-colour syntax has been Newly Available since 2024. In an older engine,
+contexts degrade to the neutral defaults: still functional, still accessible.
+There are no polyfills.

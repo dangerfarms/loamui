@@ -64,7 +64,7 @@
       opacity: 0.45;
     }
 
-    :where(svg) {
+    svg {
       block-size: 1.125em;
       inline-size: 1.125em;
     }

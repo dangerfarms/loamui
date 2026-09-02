@@ -26,6 +26,18 @@ const meta = {
       options: ["vertical", "horizontal"],
     },
   },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Labels and lays out a set of mutually exclusive options that " +
+          "share one `name`, so native inputs enforce exclusivity. Options " +
+          "are `<Radio>` children participating via context at any depth; " +
+          "the group holds no state — go uncontrolled (`defaultValue`) or " +
+          "controlled (`value` + `onChange`).",
+      },
+    },
+  },
 } satisfies Meta<typeof RadioGroup>;
 
 export default meta;

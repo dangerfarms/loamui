@@ -48,6 +48,20 @@ const meta = {
   title: "Overlays/Menu",
   component: Menu.Root,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A list of actions opened from a trigger, composed from parts " +
+          "(Root, Trigger, Popup, Item, Separator, Group). The Popup uses the " +
+          "native `popover` attribute with CSS anchor positioning (and a " +
+          "wrapper-anchored fallback), layered with the APG menu-button " +
+          "pattern: arrow keys open and rove focus, typing jumps to a match, " +
+          "and activating an item closes the menu and restores focus to the " +
+          "trigger.",
+      },
+    },
+  },
   render: () => (
     <div style={{ display: "flex", justifyContent: "center", padding: "4rem" }}>
       <Menu.Root>

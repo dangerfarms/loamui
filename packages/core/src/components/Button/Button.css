@@ -4,7 +4,7 @@
  * props. The one instance-level escape hatch is the public
  * --loam-button-color property (registered in elements.css).
  */
-@scope (.loam-Button) {
+@scope (.loam-Button) to ([class*="loam-"]) {
   :scope {
     --_color: var(--loam-button-color, var(--loam-color-fg));
 
