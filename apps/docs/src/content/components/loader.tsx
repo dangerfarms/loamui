@@ -1,6 +1,7 @@
 import { Loader } from "@loamui/core";
 import type { CSSProperties } from "react";
 import type { ComponentContent } from "@/renderer/types";
+import { Example } from "@/renderer/Example";
 
 const doc: ComponentContent = {
   slug: "loader",
@@ -22,12 +23,20 @@ const doc: ComponentContent = {
 <Loader size="lg" />
 <Loader size={48} />`,
       render: () => (
-        <>
-          <Loader size="sm" />
-          <Loader size="md" />
-          <Loader size="lg" />
-          <Loader size={48} />
-        </>
+        <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap", alignItems: "end" }}>
+          <Example label="Small">
+            <Loader size="sm" />
+          </Example>
+          <Example label="Medium">
+            <Loader size="md" />
+          </Example>
+          <Example label="Large">
+            <Loader size="lg" />
+          </Example>
+          <Example label="Custom — size={48}">
+            <Loader size={48} />
+          </Example>
+        </div>
       ),
     },
     {

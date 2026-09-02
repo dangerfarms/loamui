@@ -54,7 +54,7 @@ const doc: ComponentContent = {
     {
       title: "Status dot",
       description:
-        "Add dot to show a status dot before the label. It takes the context's colour, so the badge reads at a glance even before the text.",
+        "Add dot to show a status dot before the label. It takes the context's colour, so the badge reads at a glance even before the text. Draft has no context, so its dot stays neutral — the dot still shows without one.",
       code: `<span style={{ "--loam-context": "success" }}><Badge dot>Live</Badge></span>
 <span style={{ "--loam-context": "warning" }}><Badge dot>Pending</Badge></span>
 <span style={{ "--loam-context": "danger" }}><Badge dot>Offline</Badge></span>

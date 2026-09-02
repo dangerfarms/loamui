@@ -56,13 +56,43 @@ const doc: ComponentContent = {
     },
     {
       title: "Striped",
-      description: "Shade alternating body rows and add column borders.",
-      code: `<Table striped withColumnBorders>
-  {/* thead / tbody */}
+      description: "Shade alternating body rows.",
+      code: `<Table striped>
+  {/* caption / thead / tbody */}
 </Table>`,
       render: () => (
         <div style={{ inlineSize: "100%", maxInlineSize: "32rem" }}>
-          <Table striped withColumnBorders>
+          <Table striped>
+            <caption>Invoices</caption>
+            <thead>
+              <tr>
+                <th scope="col">Invoice</th>
+                <th scope="col">Status</th>
+                <th scope="col">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r) => (
+                <tr key={r.invoice}>
+                  <td>{r.invoice}</td>
+                  <td>{r.status}</td>
+                  <td>{r.amount}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
+      ),
+    },
+    {
+      title: "Column borders",
+      description: "Draw vertical borders between columns.",
+      code: `<Table withColumnBorders>
+  {/* caption / thead / tbody */}
+</Table>`,
+      render: () => (
+        <div style={{ inlineSize: "100%", maxInlineSize: "32rem" }}>
+          <Table withColumnBorders>
             <caption>Invoices</caption>
             <thead>
               <tr>
@@ -86,14 +116,45 @@ const doc: ComponentContent = {
     },
     {
       title: "Highlight on hover",
-      description: "Rows highlight under the pointer; a caption labels the table.",
-      code: `<Table highlightOnHover captionSide="bottom">
+      description:
+        "Shade the row under the pointer; the highlight appears on pointer hover, so it is not visible in a static screenshot.",
+      code: `<Table highlightOnHover>
+  {/* caption / thead / tbody */}
+</Table>`,
+      render: () => (
+        <div style={{ inlineSize: "100%", maxInlineSize: "32rem" }}>
+          <Table highlightOnHover>
+            <caption>Invoices</caption>
+            <thead>
+              <tr>
+                <th scope="col">Invoice</th>
+                <th scope="col">Status</th>
+                <th scope="col">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r) => (
+                <tr key={r.invoice}>
+                  <td>{r.invoice}</td>
+                  <td>{r.status}</td>
+                  <td>{r.amount}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
+      ),
+    },
+    {
+      title: "Caption below the table",
+      description: "captionSide places the <caption> under the table instead of above it.",
+      code: `<Table captionSide="bottom">
   <caption>Recent invoices by status</caption>
   {/* thead / tbody */}
 </Table>`,
       render: () => (
         <div style={{ inlineSize: "100%", maxInlineSize: "32rem" }}>
-          <Table highlightOnHover captionSide="bottom">
+          <Table captionSide="bottom">
             <caption>Recent invoices by status</caption>
             <thead>
               <tr>

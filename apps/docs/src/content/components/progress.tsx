@@ -1,6 +1,7 @@
 import { Progress } from "@loamui/core";
 import type { CSSProperties } from "react";
 import type { ComponentContent } from "@/renderer/types";
+import { Example } from "@/renderer/Example";
 
 const doc: ComponentContent = {
   slug: "progress",
@@ -9,26 +10,37 @@ const doc: ComponentContent = {
   demos: [
     {
       title: "Basic",
-      description: "Set value 0–100. Add label to show the percentage.",
-      code: `<Progress value={45} />
+      description: "Set value 0–100. Add label to show the percentage inside the bar.",
+      code: `<Progress value={72} />
 <Progress value={72} label />`,
       render: () => (
-        <div style={{ display: "grid", gap: "0.75rem", inlineSize: "100%" }}>
-          <Progress value={45} />
-          <Progress value={72} label />
+        <div style={{ display: "grid", gap: "1rem", inlineSize: "100%" }}>
+          <Example label="Value only" style={{ justifyItems: "stretch" }}>
+            <Progress value={72} />
+          </Example>
+          <Example label="With a value label" style={{ justifyItems: "stretch" }}>
+            <Progress value={72} label />
+          </Example>
         </div>
       ),
     },
     {
       title: "Sizes",
+      description: "size sets the track thickness: sm, md or lg.",
       code: `<Progress value={60} size="sm" />
 <Progress value={60} size="md" />
-<Progress value={60} size="lg" label />`,
+<Progress value={60} size="lg" />`,
       render: () => (
-        <div style={{ display: "grid", gap: "0.75rem", inlineSize: "100%" }}>
-          <Progress value={60} size="sm" />
-          <Progress value={60} size="md" />
-          <Progress value={60} size="lg" label />
+        <div style={{ display: "grid", gap: "1rem", inlineSize: "100%" }}>
+          <Example label="Small" style={{ justifyItems: "stretch" }}>
+            <Progress value={60} size="sm" />
+          </Example>
+          <Example label="Medium" style={{ justifyItems: "stretch" }}>
+            <Progress value={60} size="md" />
+          </Example>
+          <Example label="Large" style={{ justifyItems: "stretch" }}>
+            <Progress value={60} size="lg" />
+          </Example>
         </div>
       ),
     },
@@ -63,13 +75,18 @@ const doc: ComponentContent = {
     },
     {
       title: "Striped & animated",
-      description: "Stripes convey ongoing, indeterminate-feeling work.",
+      description:
+        "Stripes convey ongoing, indeterminate-feeling work; with animated the stripes slide, which is the only difference between the two rows and is not visible in a static screenshot.",
       code: `<Progress value={65} striped />
 <Progress value={65} animated />`,
       render: () => (
-        <div style={{ display: "grid", gap: "0.75rem", inlineSize: "100%" }}>
-          <Progress value={65} striped />
-          <Progress value={65} animated />
+        <div style={{ display: "grid", gap: "1rem", inlineSize: "100%" }}>
+          <Example label="Striped" style={{ justifyItems: "stretch" }}>
+            <Progress value={65} striped />
+          </Example>
+          <Example label="Striped + animated" style={{ justifyItems: "stretch" }}>
+            <Progress value={65} animated />
+          </Example>
         </div>
       ),
     },

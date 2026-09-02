@@ -8,9 +8,7 @@
     block-size: 1.15em;
     flex-shrink: 0;
     inline-size: 1.15em;
-
-    /* Optically align with the first line of label text. */
-    margin: 0.15em 0 0;
+    margin: 0;
 
     /* Invalid is a box-shadow, not an outline, so it stacks with rather than
        replaces the elements-layer :focus-visible ring; the focus ring itself

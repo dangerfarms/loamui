@@ -11,7 +11,9 @@
     box-sizing: border-box;
   }
 
-  * {
+  /* Exclude dialog: a modal <dialog> centres itself with auto margins, which a
+     blanket margin reset would clobber (pinning it to a corner). */
+  *:not(dialog) {
     margin: 0;
   }
 

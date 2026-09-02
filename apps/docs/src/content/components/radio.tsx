@@ -60,20 +60,36 @@ const doc: ComponentContent = {
       ),
     },
     {
-      title: "Disabled option & error",
-      code: `<RadioGroup
-  label="Plan"
-  error="Select a plan"
->
+      title: "Disabled option",
+      description:
+        "Disable a single Radio to keep an unavailable option visible in the set. The rest of the group stays selectable.",
+      code: `<RadioGroup label="Plan">
   <Radio value="basic" label="Basic" />
   <Radio value="pro" label="Pro" />
   <Radio value="legacy" label="Legacy" disabled />
 </RadioGroup>`,
       render: () => (
-        <RadioGroup label="Plan" error="Select a plan">
+        <RadioGroup label="Plan">
           <Radio value="basic" label="Basic" />
           <Radio value="pro" label="Pro" />
           <Radio value="legacy" label="Legacy" disabled />
+        </RadioGroup>
+      ),
+    },
+    {
+      title: "Group error",
+      description:
+        "The error prop marks the whole group invalid and describes it: the message and danger border sit on the fieldset, not on any one option, so every choice stays selectable.",
+      code: `<RadioGroup label="Plan" error="Select a plan to continue">
+  <Radio value="basic" label="Basic" />
+  <Radio value="pro" label="Pro" />
+  <Radio value="legacy" label="Legacy" />
+</RadioGroup>`,
+      render: () => (
+        <RadioGroup label="Plan" error="Select a plan to continue">
+          <Radio value="basic" label="Basic" />
+          <Radio value="pro" label="Pro" />
+          <Radio value="legacy" label="Legacy" />
         </RadioGroup>
       ),
     },

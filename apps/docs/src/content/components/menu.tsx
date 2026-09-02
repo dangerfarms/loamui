@@ -1,5 +1,11 @@
 import type { ComponentContent } from "@/renderer/types";
-import { MenuDemo, MenuDisabledDemo, MenuGroupsDemo, MenuLinksDemo } from "./menu.client";
+import {
+  MenuDemo,
+  MenuDestructiveDemo,
+  MenuDisabledDemo,
+  MenuGroupsDemo,
+  MenuLinksDemo,
+} from "./menu.client";
 
 const doc: ComponentContent = {
   slug: "menu",
@@ -23,20 +29,37 @@ const doc: ComponentContent = {
     {
       title: "Groups and separators",
       description:
-        "Group related items under a label; Menu.Separator is a real <hr>. Contextual meaning is a custom property: declare --loam-context: danger on the group and the items inside adopt the danger accent, no props involved.",
+        "Group related items under a label with Menu.Group and Menu.GroupLabel; Menu.Separator is a real <hr> between them.",
+      code: `<Menu.Root>
+  <Menu.Trigger>Workspace</Menu.Trigger>
+  <Menu.Popup>
+    <Menu.Group>
+      <Menu.GroupLabel>Manage</Menu.GroupLabel>
+      <Menu.Item onClick={() => {}}>Rename</Menu.Item>
+      <Menu.Item onClick={() => {}}>Duplicate</Menu.Item>
+    </Menu.Group>
+    <Menu.Separator />
+    <Menu.Item onClick={() => {}}>Archive</Menu.Item>
+  </Menu.Popup>
+</Menu.Root>`,
+      render: () => <MenuGroupsDemo />,
+    },
+    {
+      title: "Destructive group",
+      description:
+        "Contextual meaning is a custom property: declare --loam-context: danger on a Menu.Group and the items inside adopt the danger accent, no props involved. Put Delete and its kin in their own labelled group so the separation and the colour both signal the stakes before the click.",
       code: `<Menu.Root>
   <Menu.Trigger>Workspace</Menu.Trigger>
   <Menu.Popup>
     <Menu.Item onClick={() => {}}>Rename</Menu.Item>
-    <Menu.Item>Duplicate</Menu.Item>
     <Menu.Separator />
     <Menu.Group style={{ "--loam-context": "danger" }}>
       <Menu.GroupLabel>Danger zone</Menu.GroupLabel>
-      <Menu.Item>Delete workspace</Menu.Item>
+      <Menu.Item onClick={() => {}}>Delete workspace</Menu.Item>
     </Menu.Group>
   </Menu.Popup>
 </Menu.Root>`,
-      render: () => <MenuGroupsDemo />,
+      render: () => <MenuDestructiveDemo />,
     },
     {
       title: "Links as items",

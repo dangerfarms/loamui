@@ -55,7 +55,7 @@
   },
   "scripts": {
     "build": "tsup && node scripts/build-css.mjs",
-    "dev": "tsup --watch",
+    "dev": "node scripts/build-css.mjs --watch & tsup --watch",
     "check-types": "tsc --noEmit",
     "lint": "oxlint --config ../../.oxlintrc.json src && stylelint \"src/**/*.css\"",
     "lint:css": "stylelint \"src/**/*.css\"",

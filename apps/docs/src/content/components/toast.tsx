@@ -56,7 +56,8 @@ const doc: ComponentContent = {
     },
     {
       title: "High priority",
-      description: "See the guidance below on when the interruption is earned.",
+      description:
+        'A high-priority toast looks the same but is announced assertively (role="alert") and interrupts what a screen reader is saying, rather than waiting politely. See the guidance below on when the interruption is earned.',
       code: `toast.add({
   title: "Connection lost",
   description: "Trying to reconnect…",

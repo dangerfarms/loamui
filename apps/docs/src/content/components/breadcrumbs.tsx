@@ -34,7 +34,7 @@ const doc: ComponentContent = {
     {
       title: "With a router link",
       description:
-        "Substitute the built-in <a> with your framework's link via render; the item's wiring (aria-current) merges onto it.",
+        "Substitute the built-in <a> with your framework's link via render; the item's wiring (aria-current) merges onto it. This renders identically to Basic; the only difference is the element (a router link), which the Code tab shows.",
       code: `import Link from "next/link";
 
 <Breadcrumbs.Root>

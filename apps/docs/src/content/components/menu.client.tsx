@@ -21,8 +21,24 @@ export function MenuGroupsDemo() {
     <Menu.Root>
       <Menu.Trigger>Workspace</Menu.Trigger>
       <Menu.Popup>
+        <Menu.Group>
+          <Menu.GroupLabel>Manage</Menu.GroupLabel>
+          <Menu.Item onClick={() => {}}>Rename</Menu.Item>
+          <Menu.Item onClick={() => {}}>Duplicate</Menu.Item>
+        </Menu.Group>
+        <Menu.Separator />
+        <Menu.Item onClick={() => {}}>Archive</Menu.Item>
+      </Menu.Popup>
+    </Menu.Root>
+  );
+}
+
+export function MenuDestructiveDemo() {
+  return (
+    <Menu.Root>
+      <Menu.Trigger>Workspace</Menu.Trigger>
+      <Menu.Popup>
         <Menu.Item onClick={() => {}}>Rename</Menu.Item>
-        <Menu.Item onClick={() => {}}>Duplicate</Menu.Item>
         <Menu.Separator />
         <Menu.Group style={{ "--loam-context": "danger" } as CSSProperties}>
           <Menu.GroupLabel>Danger zone</Menu.GroupLabel>
