@@ -2,8 +2,8 @@ import type { ComponentContent } from "@/renderer/types";
 import {
   DrawerDemo,
   DrawerHeaderCloseDemo,
+  DrawerPanelSizeDemo,
   DrawerSidesDemo,
-  DrawerSizesDemo,
 } from "./drawer.client";
 
 const doc: ComponentContent = {
@@ -42,13 +42,13 @@ const doc: ComponentContent = {
       render: () => <DrawerSidesDemo />,
     },
     {
-      title: "Sizes",
+      title: "Panel size",
       description:
-        "size sets the panel's short axis: the width for start / end, the height for top / bottom. The long axis always fills the viewport.",
-      code: `<Drawer.Panel side="end" size="sm">…</Drawer.Panel>
-<Drawer.Panel side="end" size="md">…</Drawer.Panel>
-<Drawer.Panel side="end" size="lg">…</Drawer.Panel>`,
-      render: () => <DrawerSizesDemo />,
+        "The panel is 24rem on its short axis by default: the width for start / end, the height for top / bottom. The long axis always fills the viewport. Set --loam-drawer-size where the drawer is used for a narrower or wider panel.",
+      code: `<Drawer.Panel side="end" style={{ "--loam-drawer-size": "18rem" }}>…</Drawer.Panel>
+<Drawer.Panel side="end">…</Drawer.Panel>
+<Drawer.Panel side="end" style={{ "--loam-drawer-size": "30rem" }}>…</Drawer.Panel>`,
+      render: () => <DrawerPanelSizeDemo />,
     },
     {
       title: "Header with a close button",
@@ -138,19 +138,13 @@ const doc: ComponentContent = {
     {
       name: "Drawer.Panel",
       description:
-        "The native <dialog>. side anchors it to an edge and sets the slide direction; size sets the short-axis extent (width for start/end, height for top/bottom).",
+        "The native <dialog>. side anchors it to an edge and sets the slide direction; the short-axis extent comes from --loam-drawer-size.",
       props: [
         {
           name: "side",
           type: '"start" | "end" | "top" | "bottom"',
           default: '"start"',
           description: "Edge to anchor to.",
-        },
-        {
-          name: "size",
-          type: '"sm" | "md" | "lg"',
-          default: '"md"',
-          description: "Short-axis extent.",
         },
       ],
     },
@@ -162,6 +156,15 @@ const doc: ComponentContent = {
       name: "Drawer.Close",
       description:
         "A LoamUI Button that closes the drawer; compose as many as you need (a footer action, a header ×). Supports render like the Trigger.",
+    },
+  ],
+  cssProps: [
+    {
+      name: "--loam-drawer-size",
+      syntax: "CSS length",
+      default: "24rem",
+      description:
+        "The panel's short-axis extent: width for start/end, height for top/bottom. The panel never exceeds the viewport either way.",
     },
   ],
 };

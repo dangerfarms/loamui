@@ -48,7 +48,7 @@ export function MobileNav() {
           </button>
         }
       />
-      <Drawer.Panel side="start" size="sm">
+      <Drawer.Panel side="start" className={classes.panel}>
         <Drawer.Title className={classes.srOnly}>Navigation</Drawer.Title>
         <div className={classes.nav}>
           <NavLinks onNavigate={() => setOpen(false)} />

@@ -271,7 +271,7 @@ describe("Drawer", () => {
     return (
       <Drawer.Root>
         <Drawer.Trigger>Open</Drawer.Trigger>
-        <Drawer.Panel side="end" size="sm">
+        <Drawer.Panel side="end">
           <Drawer.Title>Filters</Drawer.Title>
           <Drawer.Description>Drawer body</Drawer.Description>
           <Drawer.Close>Done</Drawer.Close>
@@ -280,7 +280,7 @@ describe("Drawer", () => {
     );
   }
 
-  it("opens from its trigger, reflecting side and size, and closes via Close", async () => {
+  it("opens from its trigger, reflecting its side, and closes via Close", async () => {
     const user = userEvent.setup();
     render(<DrawerDemo />);
     const trigger = screen.getByRole("button", { name: "Open" });
@@ -291,7 +291,6 @@ describe("Drawer", () => {
     expect(dialog.open).toBe(true);
     expect(trigger).toHaveAttribute("data-popup-open", "true");
     expect(dialog).toHaveAttribute("data-side", "end");
-    expect(dialog).toHaveAttribute("data-size", "sm");
     expect(dialog).toHaveAccessibleName("Filters");
     expect(dialog).toHaveAccessibleDescription("Drawer body");
 

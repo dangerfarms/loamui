@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { CSSProperties } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Drawer } from "../../index";
 import type { DrawerSide } from "../../index";
@@ -70,8 +71,12 @@ export const Sides: Story = {
   ),
 };
 
-/** Panel extent via the size prop (width for start/end, height for top/bottom). */
-export const Sizes: Story = {
+/**
+ * The panel is 24rem on its short axis by default (width for start/end,
+ * height for top/bottom). Set `--loam-drawer-size` where the drawer is used
+ * for a narrower or wider panel.
+ */
+export const PanelSize: Story = {
   render: () => (
     <div
       style={{
@@ -81,12 +86,12 @@ export const Sizes: Story = {
         alignItems: "center",
       }}
     >
-      {(["sm", "md", "lg"] as const).map((size) => (
+      {(["18rem", "24rem", "30rem"] as const).map((size) => (
         <Drawer.Root key={size}>
           <Drawer.Trigger>Open {size}</Drawer.Trigger>
-          <Drawer.Panel side="end" size={size}>
+          <Drawer.Panel side="end" style={{ "--loam-drawer-size": size } as CSSProperties}>
             <Drawer.Title>A {size} drawer</Drawer.Title>
-            <Drawer.Description>The width comes from the size prop.</Drawer.Description>
+            <Drawer.Description>The width comes from one custom property.</Drawer.Description>
             <Drawer.Close>Close</Drawer.Close>
           </Drawer.Panel>
         </Drawer.Root>

@@ -192,8 +192,6 @@ function ModalTrigger({ render, children, ...rest }: ModalTriggerProps) {
 
 export interface ModalPopupProps extends Omit<DialogHTMLAttributes<HTMLDialogElement>, "open"> {
   ref?: Ref<HTMLDialogElement>;
-  /** Panel width. @default "md" */
-  size?: "sm" | "md" | "lg";
   /**
    * Renders an alert dialog (`role="alertdialog"`): a confirmation that
    * interrupts the user and cannot be light-dismissed — clicking the
@@ -205,7 +203,6 @@ export interface ModalPopupProps extends Omit<DialogHTMLAttributes<HTMLDialogEle
 }
 
 function ModalPopup({
-  size = "md",
   alert = false,
   className,
   children,
@@ -291,7 +288,6 @@ function ModalPopup({
       aria-labelledby={ctx.hasTitle ? ctx.titleId : undefined}
       aria-describedby={ctx.hasDescription ? ctx.descriptionId : undefined}
       className={cx("loam-Modal-popup", className)}
-      data-size={size}
       data-open={open || undefined}
     >
       {children}

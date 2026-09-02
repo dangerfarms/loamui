@@ -1,5 +1,5 @@
 import type { ComponentContent } from "@/renderer/types";
-import { ModalAlertDemo, ModalDemo, ModalHeaderCloseDemo, ModalSizesDemo } from "./modal.client";
+import { ModalAlertDemo, ModalDemo, ModalHeaderCloseDemo, ModalWidthDemo } from "./modal.client";
 
 const doc: ComponentContent = {
   slug: "modal",
@@ -35,7 +35,7 @@ const doc: ComponentContent = {
   <span style={{ "--loam-context": "danger" }}>
     <Modal.Trigger>Delete file</Modal.Trigger>
   </span>
-  <Modal.Popup alert size="sm">
+  <Modal.Popup alert>
     <Modal.Title>Delete this file?</Modal.Title>
     <Modal.Description>
       "report-final-v2.pdf" will be permanently deleted. This cannot be undone.
@@ -51,12 +51,12 @@ const doc: ComponentContent = {
       render: () => <ModalAlertDemo />,
     },
     {
-      title: "Sizes",
-      description: "Panel widths via the Popup's size prop.",
-      code: `<Modal.Popup size="sm">…</Modal.Popup>
-<Modal.Popup size="md">…</Modal.Popup>
-<Modal.Popup size="lg">…</Modal.Popup>`,
-      render: () => <ModalSizesDemo />,
+      title: "Width",
+      description:
+        "The panel sizes to its content between a floor and a readable cap: a confirmation shrink-wraps, a form grows. When a design needs an explicit width, set --loam-modal-size where the modal is used.",
+      code: `<Modal.Popup>…sizes to its content…</Modal.Popup>
+<Modal.Popup style={{ "--loam-modal-size": "44rem" }}>…</Modal.Popup>`,
+      render: () => <ModalWidthDemo />,
     },
     {
       title: "Header with a close button",
@@ -147,12 +147,6 @@ const doc: ComponentContent = {
         "The native <dialog>, opened with showModal(); all native <dialog> props are forwarded.",
       props: [
         {
-          name: "size",
-          type: `"sm" | "md" | "lg"`,
-          default: `"md"`,
-          description: "Panel width (24/32/44rem).",
-        },
-        {
           name: "alert",
           type: "boolean",
           default: "false",
@@ -182,6 +176,15 @@ const doc: ComponentContent = {
           description: "Substitute your own element; it receives the close wiring.",
         },
       ],
+    },
+  ],
+  cssProps: [
+    {
+      name: "--loam-modal-size",
+      syntax: "CSS length",
+      default: "fit-content, between 24rem and 32rem",
+      description:
+        "Explicit panel width, replacing the content-sized default and its bounds. The panel never exceeds the viewport either way.",
     },
   ],
 };

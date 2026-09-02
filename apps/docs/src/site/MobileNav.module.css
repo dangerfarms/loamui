@@ -26,6 +26,10 @@
   }
 }
 
+.panel {
+  --loam-drawer-size: 18rem;
+}
+
 .nav {
   display: block flex;
   flex-direction: column;

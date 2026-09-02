@@ -1,6 +1,9 @@
 @scope (.loam-Drawer-panel) to ([class*="loam-"]) {
   :scope {
-    --_size: 24rem;
+    /* Panel extent on the short axis (width for start/end, height for
+       top/bottom). Block children stretch, so content can't decide this one —
+       the consumer's layout does, through the public property. */
+    --_size: var(--loam-drawer-size, 24rem);
     --_hidden: 0 0;
 
     background: var(--loam-color-surface);
@@ -11,14 +14,6 @@
     overflow: auto;
     overscroll-behavior: contain;
     padding: var(--loam-space-lg);
-
-    &[data-size="sm"] {
-      --_size: 18rem;
-    }
-
-    &[data-size="lg"] {
-      --_size: 30rem;
-    }
 
     &[data-side="start"],
     &[data-side="end"] {

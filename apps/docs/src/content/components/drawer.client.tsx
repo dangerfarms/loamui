@@ -2,6 +2,7 @@
 
 import { Drawer } from "@loamui/core";
 import type { DrawerSide } from "@loamui/core";
+import type { CSSProperties } from "react";
 
 const navLinks = ["Dashboard", "Orders", "Customers", "Settings"];
 
@@ -68,7 +69,7 @@ export function DrawerSidesDemo() {
   );
 }
 
-export function DrawerSizesDemo() {
+export function DrawerPanelSizeDemo() {
   return (
     <div
       style={{
@@ -78,12 +79,12 @@ export function DrawerSizesDemo() {
         alignItems: "center",
       }}
     >
-      {(["sm", "md", "lg"] as const).map((size) => (
+      {(["18rem", "24rem", "30rem"] as const).map((size) => (
         <Drawer.Root key={size}>
           <Drawer.Trigger>Open {size}</Drawer.Trigger>
-          <Drawer.Panel side="end" size={size}>
+          <Drawer.Panel side="end" style={{ "--loam-drawer-size": size } as CSSProperties}>
             <Drawer.Title>A {size} drawer</Drawer.Title>
-            <Drawer.Description>The panel width comes from the size prop.</Drawer.Description>
+            <Drawer.Description>The width comes from one custom property.</Drawer.Description>
             <Drawer.Close>Close</Drawer.Close>
           </Drawer.Panel>
         </Drawer.Root>

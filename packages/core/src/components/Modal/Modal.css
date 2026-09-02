@@ -1,28 +1,28 @@
 @scope (.loam-Modal-popup) to ([class*="loam-"]) {
   :scope {
-    --_max: 32rem;
+    /* Content decides the width: fit-content between a floor and a readable
+       cap, never wider than the viewport. A confirmation shrink-wraps, a form
+       grows. `--loam-modal-size` overrides all three bounds at once when a
+       design needs an explicit width. */
+    --_size: var(--loam-modal-size, fit-content);
+    --_cap: var(--loam-modal-size, 32rem);
+    --_floor: var(--loam-modal-size, 24rem);
 
     background: var(--loam-color-surface);
     border: 0;
     border-radius: var(--loam-radius-lg);
     box-shadow: var(--loam-shadow-lg);
     font-size: var(--loam-text-sm);
-    inline-size: min(100% - 2 * var(--loam-space-lg), var(--_max));
+    inline-size: var(--_size);
 
     /* Set explicitly, not left to the UA default, so a host `* { margin: 0 }`
        reset can't stop the auto margins centring the dialog. */
     margin: auto;
     max-block-size: calc(100dvb - 2 * var(--loam-space-xl));
+    max-inline-size: min(100% - 2 * var(--loam-space-lg), var(--_cap));
+    min-inline-size: min(24rem, var(--_floor), 100% - 2 * var(--loam-space-lg));
     overflow-block: auto;
     padding: var(--loam-space-lg);
-
-    &[data-size="sm"] {
-      --_max: 24rem;
-    }
-
-    &[data-size="lg"] {
-      --_max: 44rem;
-    }
 
     &::backdrop {
       background: color-mix(in oklch, var(--loam-color-fg) 45%, transparent);

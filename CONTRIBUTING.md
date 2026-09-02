@@ -38,8 +38,8 @@ prioritising navigation, and when writing any docs:
 - **Secondary:** Contextual tokens, element styles and React components
   based on Google's Modern Web Guidelines for quickly building bespoke
   UIs that are accessible, adaptable and fast.
-- **Tertiary:** Steeped in UX best practices and inspired by Base UI's
-  component composition architecture.
+- **Tertiary:** Steeped in UX best practices, with a composition-first
+  component architecture.
 
 Keyword priority: modern, UI primitives, agent-assisted,
 contextual/adaptable, bespoke, accessible, fast. Never lead with
@@ -137,7 +137,7 @@ keep it, in the same indicative voice.
 
 ## Component API conventions
 
-LoamUI follows Base UI's composition model with one shared contract, so a
+LoamUI follows one composition model with a shared contract, so a
 consumer (or agent) who learns it once knows every component.
 
 **`render` is never required** — with one deliberate exception. Every part
@@ -182,13 +182,13 @@ Any JSX that uses compound parts (docs demos included) must live in a
 **State attributes** — the shared styling vocabulary, identical on every
 component (never invent synonyms):
 
-| Attribute                     | Where                                            | Meaning                                                                                                 |
-| ----------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
-| `data-popup-open`             | trigger                                          | its popup/bubble is open                                                                                |
-| `data-open`                   | popup/panel                                      | open — uniform across enhanced & fallback                                                               |
-| `data-disabled`               | wrapper/control                                  | disabled styling hook                                                                                   |
-| `data-current`                | nav item                                         | current page/location                                                                                   |
-| `data-size` / `data-position` | some display components (Badge, Progress, Modal) | instance styling hooks read by the stylesheet — form controls have no size hooks: their sizing is fluid |
+| Attribute                     | Where                                     | Meaning                                                                                                 |
+| ----------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `data-popup-open`             | trigger                                   | its popup/bubble is open                                                                                |
+| `data-open`                   | popup/panel                               | open — uniform across enhanced & fallback                                                               |
+| `data-disabled`               | wrapper/control                           | disabled styling hook                                                                                   |
+| `data-current`                | nav item                                  | current page/location                                                                                   |
+| `data-size` / `data-position` | some display components (Badge, Progress) | instance styling hooks read by the stylesheet — form controls have no size hooks: their sizing is fluid |
 
 Components built on native state use the platform's hook instead (e.g.
 Details styles `details[open]`). **Prefer detection over declaration**:
@@ -232,6 +232,19 @@ scale as their labels.
 
 ## Adding or changing a component
 
+Two more agent skills carry the procedure (same `.agents/skills/` install as the
+CSS references above — these two are project-authored, so they are not in
+`skills-lock.json`):
+
+- [`add-component`](.agents/skills/add-component/SKILL.md) — the ladder for
+  deciding whether a component should exist at all, which exemplar to model it
+  on, the API and CSS doctrine to hold, and the wiring that additions miss.
+- [`component-review`](.agents/skills/component-review/SKILL.md) — how to review
+  a change, graded by which primitive it touches (a token or element style
+  reaches the whole library; a component reaches only itself).
+
+The essentials either way:
+
 1. Style with the `--loam-*` design tokens only (see `packages/core/src/styles.css`).
 2. Use semantic HTML, logical properties, and modern CSS per the standard above.
    No CSS-in-JS.
@@ -268,6 +281,7 @@ that agents compose into bespoke UI:
 **Contextual design.** How a region declares meaning and components adapt,
 built on container queries and modern colour:
 
+- [CSS Day: Contextualism](https://css-day-2026.netlify.app/00.02-contextualism/) — the paradigm itself; start here
 - [Container queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries)
 - [`light-dark()`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark) and [`color-mix()`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix)
 - Brand-on-interaction: [moderncss.ai](https://moderncss.ai/) and [npmx.dev](https://npmx.dev/)

@@ -201,13 +201,10 @@ export interface DrawerPanelProps extends Omit<DialogHTMLAttributes<HTMLDialogEl
   ref?: Ref<HTMLDialogElement>;
   /** Edge the panel slides in from. @default "start" */
   side?: DrawerSide;
-  /** Panel extent on its short axis (width for start/end, height for top/bottom). @default "md" */
-  size?: "sm" | "md" | "lg";
 }
 
 function DrawerPanel({
   side = "start",
-  size = "md",
   className,
   children,
   ref: refProp,
@@ -290,7 +287,6 @@ function DrawerPanel({
       aria-describedby={ctx.hasDescription ? ctx.descriptionId : undefined}
       className={cx("loam-Drawer-panel", className)}
       data-side={side}
-      data-size={size}
       data-open={open || undefined}
     >
       {children}
