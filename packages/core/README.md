@@ -33,7 +33,7 @@ export function SignIn() {
 - **Accessible and semantic**: native elements carry the platform behavior.
 
 Full documentation and live examples:
-**[LoamUI documentation](https://dangerfarms.github.io/loamui/)**
+**[LoamUI documentation](https://loamui.com/)**
 
 ## License
 

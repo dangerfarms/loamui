@@ -36,7 +36,7 @@ export function ModalAlertDemo() {
       <span style={{ "--loam-context": "danger" } as CSSProperties}>
         <Modal.Trigger>Delete file</Modal.Trigger>
       </span>
-      <Modal.Popup alert size="sm">
+      <Modal.Popup alert>
         <Modal.Title>Delete this file?</Modal.Title>
         <Modal.Description>
           &ldquo;report-final-v2.pdf&rdquo; will be permanently deleted. This cannot be undone.
@@ -59,7 +59,7 @@ export function ModalAlertDemo() {
   );
 }
 
-export function ModalSizesDemo() {
+export function ModalWidthDemo() {
   return (
     <div
       style={{
@@ -69,16 +69,25 @@ export function ModalSizesDemo() {
         alignItems: "center",
       }}
     >
-      {(["sm", "md", "lg"] as const).map((size) => (
-        <Modal.Root key={size}>
-          <Modal.Trigger>Open {size}</Modal.Trigger>
-          <Modal.Popup size={size}>
-            <Modal.Title>A {size} modal</Modal.Title>
-            <Modal.Description>The panel width comes from the size prop.</Modal.Description>
-            <Modal.Close>Close</Modal.Close>
-          </Modal.Popup>
-        </Modal.Root>
-      ))}
+      <Modal.Root>
+        <Modal.Trigger>Content-sized</Modal.Trigger>
+        <Modal.Popup>
+          <Modal.Title>Signed out</Modal.Title>
+          <Modal.Description>Sign in again to continue.</Modal.Description>
+          <Modal.Close>Close</Modal.Close>
+        </Modal.Popup>
+      </Modal.Root>
+      <Modal.Root>
+        <Modal.Trigger>Wide (44rem)</Modal.Trigger>
+        <Modal.Popup style={{ "--loam-modal-size": "44rem" } as CSSProperties}>
+          <Modal.Title>Release notes</Modal.Title>
+          <Modal.Description>
+            A wide panel for content that needs the room, set with one custom property where the
+            modal is used.
+          </Modal.Description>
+          <Modal.Close>Close</Modal.Close>
+        </Modal.Popup>
+      </Modal.Root>
     </div>
   );
 }

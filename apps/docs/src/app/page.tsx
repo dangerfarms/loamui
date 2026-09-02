@@ -345,10 +345,9 @@ export default function HomePage() {
             <span className="eyebrow">Composition</span>
             <h2 className={c.sectionTitle}>Compose, don&rsquo;t configure.</h2>
             <p className={c.sectionSub}>
-              Inspired by Base UI&rsquo;s composition architecture: compound components expose their
-              parts, element substitution goes through <code>render</code>, and icons are detected
-              children, not slot props. Bespoke variants are compositions in your codebase, not
-              configuration in the library.
+              Compound components expose their parts, element substitution goes through{" "}
+              <code>render</code>, and icons are detected children, not slot props. Bespoke variants
+              are compositions in your codebase, not configuration in the library.
             </p>
             <ul className={c.splitList}>
               {[

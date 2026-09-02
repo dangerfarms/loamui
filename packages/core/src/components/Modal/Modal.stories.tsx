@@ -65,7 +65,7 @@ export const AlertDialog: Story = {
       <span style={{ "--loam-context": "danger" } as CSSProperties}>
         <Modal.Trigger>Delete file</Modal.Trigger>
       </span>
-      <Modal.Popup alert size="sm">
+      <Modal.Popup alert>
         <Modal.Title>Delete this file?</Modal.Title>
         <Modal.Description>This cannot be undone.</Modal.Description>
         <div
@@ -86,8 +86,12 @@ export const AlertDialog: Story = {
   ),
 };
 
-/** Panel widths via the Popup's size prop. */
-export const Sizes: Story = {
+/**
+ * The panel sizes to its content between a floor and a readable cap — a
+ * confirmation shrink-wraps, a form grows. When a design needs an explicit
+ * width, set `--loam-modal-size` where the modal is used.
+ */
+export const Width: Story = {
   render: () => (
     <div
       style={{
@@ -97,16 +101,25 @@ export const Sizes: Story = {
         alignItems: "center",
       }}
     >
-      {(["sm", "md", "lg"] as const).map((size) => (
-        <Modal.Root key={size}>
-          <Modal.Trigger>Open {size}</Modal.Trigger>
-          <Modal.Popup size={size}>
-            <Modal.Title>A {size} modal</Modal.Title>
-            <Modal.Description>The panel width comes from the size prop.</Modal.Description>
-            <Modal.Close>Close</Modal.Close>
-          </Modal.Popup>
-        </Modal.Root>
-      ))}
+      <Modal.Root>
+        <Modal.Trigger>Content-sized</Modal.Trigger>
+        <Modal.Popup>
+          <Modal.Title>Signed out</Modal.Title>
+          <Modal.Description>Sign in again to continue.</Modal.Description>
+          <Modal.Close>Close</Modal.Close>
+        </Modal.Popup>
+      </Modal.Root>
+      <Modal.Root>
+        <Modal.Trigger>Wide (44rem)</Modal.Trigger>
+        <Modal.Popup style={{ "--loam-modal-size": "44rem" } as CSSProperties}>
+          <Modal.Title>Release notes</Modal.Title>
+          <Modal.Description>
+            A wide panel for content that needs the room, set with one custom property where the
+            modal is used.
+          </Modal.Description>
+          <Modal.Close>Close</Modal.Close>
+        </Modal.Popup>
+      </Modal.Root>
     </div>
   ),
 };
