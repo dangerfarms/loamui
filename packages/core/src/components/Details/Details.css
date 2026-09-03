@@ -86,8 +86,7 @@
         overflow-block: clip;
         transition:
           block-size var(--loam-duration-md) var(--loam-ease),
-          content-visibility var(--loam-duration-md) var(--loam-ease)
-            allow-discrete;
+          content-visibility var(--loam-duration-md) var(--loam-ease) allow-discrete;
       }
 
       :scope[open]::details-content {

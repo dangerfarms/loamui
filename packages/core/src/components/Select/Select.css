@@ -31,19 +31,11 @@
      list. Declared before the error state so danger wins at equal
      specificity. */
   :scope:has(select:autofill) {
-    border-color: color-mix(
-      in oklab,
-      var(--loam-color-primary) 50%,
-      var(--loam-color-line-strong)
-    );
+    border-color: color-mix(in oklab, var(--loam-color-primary) 50%, var(--loam-color-line-strong));
   }
 
   :scope:has(select:-webkit-autofill) {
-    border-color: color-mix(
-      in oklab,
-      var(--loam-color-primary) 50%,
-      var(--loam-color-line-strong)
-    );
+    border-color: color-mix(in oklab, var(--loam-color-primary) 50%, var(--loam-color-line-strong));
   }
 
   :scope:has(select[aria-invalid="true"]) {
@@ -84,20 +76,12 @@
      see the wrapper rules above. */
   select:autofill {
     box-shadow: inset 0 0 0 100px
-      color-mix(
-        in oklab,
-        var(--loam-color-primary) 8%,
-        var(--loam-color-surface)
-      );
+      color-mix(in oklab, var(--loam-color-primary) 8%, var(--loam-color-surface));
   }
 
   select:-webkit-autofill {
     box-shadow: inset 0 0 0 100px
-      color-mix(
-        in oklab,
-        var(--loam-color-primary) 8%,
-        var(--loam-color-surface)
-      );
+      color-mix(in oklab, var(--loam-color-primary) 8%, var(--loam-color-surface));
   }
 
   /* The unanswered prompt stays muted but AA-readable: it is the

@@ -2,9 +2,7 @@
   :scope {
     /* Derived control height (the Button anatomy, incl. 1px borders) —
        keeps square min-width and the dots cell in step with the pages. */
-    --_control-h: calc(
-      1.2 * var(--loam-text-sm) + 2 * var(--loam-space-sm) + 2px
-    );
+    --_control-h: calc(1.2 * var(--loam-text-sm) + 2 * var(--loam-space-sm) + 2px);
   }
 
   li {
@@ -29,8 +27,7 @@
       color-mix(in oklab, var(--loam-color-fg), var(--loam-color-bg) 90%),
       color-mix(in oklab, var(--loam-color-fg), var(--loam-color-bg) 75%)
     );
-    border: 1px solid
-      color-mix(in oklab, var(--loam-color-fg), var(--loam-color-bg) 80%);
+    border: 1px solid color-mix(in oklab, var(--loam-color-fg), var(--loam-color-bg) 80%);
     border-radius: var(--loam-radius-md);
     box-shadow: var(--loam-shadow-raised);
     color: light-dark(
