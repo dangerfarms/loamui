@@ -1,4 +1,16 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": []
+  "ignorePatterns": [
+    "node_modules",
+    "dist",
+    "out",
+    ".next",
+    ".turbo",
+    "storybook-static",
+    ".agents",
+    ".claude",
+    "apps/docs/public",
+    "skills/loamui/references",
+    "local"
+  ]
 }

@@ -40,11 +40,7 @@
 
 .stage {
   align-items: center;
-  background: radial-gradient(
-    circle at 1px 1px,
-    var(--loam-color-line) 1px,
-    transparent 0
-  );
+  background: radial-gradient(circle at 1px 1px, var(--loam-color-line) 1px, transparent 0);
   background-size: 1.25rem 1.25rem;
   display: block flex;
   flex-wrap: wrap;

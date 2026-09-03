@@ -16,8 +16,7 @@
     /* Tints mix in oklab (cartesian), not oklch: hue interpolation against
        the near-achromatic page background rotates the channel's hue;
        cartesian mixing only desaturates, so the hue survives. */
-    border: 1px solid
-      color-mix(in oklab, var(--_color), var(--loam-color-bg) 80%);
+    border: 1px solid color-mix(in oklab, var(--_color), var(--loam-color-bg) 80%);
     border-radius: var(--loam-button-radius, var(--loam-radius-md));
     box-shadow: var(--loam-shadow-raised);
 

@@ -81,7 +81,7 @@ reading behind every convention is collected in
 ## Standards
 
 Conventions the linters can't check, stated with their reasons. The
-deterministic layer (stylelint, oxlint, Prettier, the contrast audit, CI) is
+deterministic layer (stylelint, oxlint, oxfmt, the contrast audit, CI) is
 the authority for everything it covers — run it and believe it.
 
 - **API.** No `size`, `variant`, `color`, or `fullWidth` props: size comes from
@@ -153,6 +153,19 @@ export default function App() {
 That's the whole setup — no provider, no config. See the
 [documentation](https://loamui.com/) for every component, live examples and the
 theming guide.
+
+## Use it with an AI agent
+
+LoamUI ships a skill that teaches agents the library — the primitives, the
+pillars, every component's reference, and the mistakes people make by default:
+
+```bash
+npx skills add dangerfarms/loamui
+```
+
+Or point an agent at [`https://loamui.com/llms.txt`](https://loamui.com/llms.txt):
+every docs page has a markdown twin at the same URL with `.md` appended, and
+[`llms-full.txt`](https://loamui.com/llms-full.txt) has them all in one file.
 
 ## Repository layout
 

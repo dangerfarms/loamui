@@ -23,4 +23,6 @@ exclude = [
     ".claude",
     # MDX docs pages are handled by oxlint + prettier, not a Markdown linter.
     "**/*.mdx",
+    # Generated agent-skill references (docs twins; regenerated, not authored).
+    "skills/loamui/references",
 ]

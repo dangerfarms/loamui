@@ -132,8 +132,7 @@
 
   /* Breathing room before a heading that follows content — additive, so
      a heading that opens its container needs no reset. */
-  :is(p, ul, ol, dl, pre, blockquote, figure, table)
-    + :is(h1, h2, h3, h4, h5, h6) {
+  :is(p, ul, ol, dl, pre, blockquote, figure, table) + :is(h1, h2, h3, h4, h5, h6) {
     margin-block-start: var(--loam-space-xl);
   }
 
@@ -240,8 +239,7 @@
       text-underline-offset: 0.15em;
 
       @media (prefers-reduced-motion: no-preference) {
-        transition: text-decoration-color var(--loam-duration-md)
-          var(--loam-ease);
+        transition: text-decoration-color var(--loam-duration-md) var(--loam-ease);
       }
     }
 
@@ -340,8 +338,7 @@
       color-mix(in oklab, var(--loam-color-fg), var(--loam-color-bg) 90%),
       color-mix(in oklab, var(--loam-color-fg), var(--loam-color-bg) 75%)
     );
-    border: 1px solid
-      color-mix(in oklab, var(--loam-color-fg), var(--loam-color-bg) 80%);
+    border: 1px solid color-mix(in oklab, var(--loam-color-fg), var(--loam-color-bg) 80%);
     border-radius: var(--loam-radius-md);
     box-shadow: var(--loam-shadow-raised);
     color: light-dark(

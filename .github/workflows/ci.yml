@@ -17,6 +17,7 @@ jobs:
       - run: pnpm -r build
         env:
           PAGES: "true"
+      - run: pnpm check:skill
       - run: pnpm -r lint
       - run: pnpm lint:md
       - run: pnpm format:check

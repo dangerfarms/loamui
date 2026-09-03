@@ -118,11 +118,7 @@
      track) stays in scope. */
   @media (hover: hover) {
     :is(.loam-Switch-wrapper, :scope):hover input:not(:disabled) + span.track {
-      background: color-mix(
-        in oklch,
-        var(--loam-color-line-strong) 80%,
-        var(--loam-color-primary)
-      );
+      background: color-mix(in oklch, var(--loam-color-line-strong) 80%, var(--loam-color-primary));
     }
   }
 

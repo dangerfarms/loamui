@@ -10,7 +10,7 @@
  * document). Component pages render from the same registry data the page
  * renders. Nothing derives from built output, so nothing can drift.
  */
-import { readFileSync, writeFileSync, readdirSync, statSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, readdirSync, statSync, mkdirSync, rmSync } from "node:fs";
 import { join, relative, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { COMPONENTS, CATEGORY_ORDER } from "../src/site/nav.js";
@@ -19,8 +19,21 @@ import type { ComponentContent } from "../src/renderer/types.js";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const APP = join(ROOT, "src", "app");
 const PUBLIC = join(ROOT, "public");
-const BASE = process.env.BASE_PATH ?? "";
-const ORIGIN = BASE ? `https://dangerfarms.github.io${BASE}` : "";
+// Links in llms.txt must be absolute: agents fetch it from anywhere and
+// resolve the linked twins without a base URL.
+const ORIGIN = process.env.SITE_ORIGIN ?? "https://loamui.com";
+// The published `loamui` agent skill carries the same twins as offline
+// references (skills/loamui/references/), regenerated here so they can't
+// drift from the site. `check:skill` fails CI if the committed copy is stale.
+const SKILL_REFS = join(ROOT, "..", "..", "skills", "loamui", "references");
+
+/** Write the same markdown to public/ (served) and the skill references (committed). */
+function writeBoth(publicFile: string, refFile: string, md: string) {
+  mkdirSync(dirname(publicFile), { recursive: true });
+  writeFileSync(publicFile, md);
+  mkdirSync(dirname(refFile), { recursive: true });
+  writeFileSync(refFile, md);
+}
 
 const PREAMBLE = [
   "> LoamUI documentation, generated from the same source as the live page —",
@@ -44,11 +57,20 @@ function propsTable(rows: { name: string; type?: string; default?: string; descr
   );
 }
 
-function writeTwin(route: string, md: string) {
+/** Guide twin: /docs/tokens → public/docs/tokens.md + references/guides/tokens.md. */
+function writeGuideTwin(route: string, md: string) {
   const file = route === "/" ? join(PUBLIC, "index.md") : join(PUBLIC, route.slice(1) + ".md");
-  mkdirSync(dirname(file), { recursive: true });
-  writeFileSync(file, md);
+  const slug = route === "/" ? "index" : route === "/docs" ? "introduction" : route.split("/").at(-1)!;
+  writeBoth(file, join(SKILL_REFS, "guides", `${slug}.md`), md);
 }
+
+/** Component twin: public/docs/components/<slug>.md + references/components/<slug>.md. */
+function writeComponentTwin(slug: string, md: string) {
+  writeBoth(join(PUBLIC, "docs", "components", `${slug}.md`), join(SKILL_REFS, "components", `${slug}.md`), md);
+}
+
+// Start the skill references from empty so removed pages don't linger.
+rmSync(SKILL_REFS, { recursive: true, force: true });
 
 // ---- guides: page.mdx source → markdown --------------------------------
 
@@ -72,8 +94,11 @@ function mdxToMarkdown(src: string): { md: string; title: string; description: s
   const title = meta?.[1] ?? "";
   const description = meta?.[2] ?? "";
 
-  // Drop imports and the metadata export (balanced-brace scan for the export).
-  let s = src.replace(/^import [\s\S]*?from "[^"]+";\n/gm, "");
+  // Drop the metadata export (balanced-brace scan). MDX-level imports are
+  // dropped line by line in the walk below, where code fences are known —
+  // a multi-line regex here once swallowed everything between an `import`
+  // inside one fence and the next `from "…"` in another.
+  let s = src;
   const mi = s.indexOf("export const metadata");
   if (mi > -1) {
     let depth = 0, j = s.indexOf("{", mi), k = j;
@@ -89,9 +114,27 @@ function mdxToMarkdown(src: string): { md: string; title: string; description: s
 
   const out: string[] = [];
   let i = 0;
+  let inFence = false;
   const lines = s.split("\n");
   while (i < lines.length) {
     const line = lines[i]!;
+    // Code fences are verbatim: their JSX is documentation, not an island,
+    // and their imports are the example's own.
+    if (/^\s*```/.test(line)) {
+      inFence = !inFence;
+      out.push(line);
+      i++;
+      continue;
+    }
+    if (inFence) {
+      out.push(line);
+      i++;
+      continue;
+    }
+    if (/^import .* from "[^"]+";\s*$/.test(line)) {
+      i++;
+      continue;
+    }
     if (/^\s*<\w/.test(line)) {
       // A JSX island: consume until tags balance.
       let block = "";
@@ -133,7 +176,7 @@ for (const file of mdxFiles(APP)) {
   const route0 = "/" + relative(APP, dirname(file)).split("\\").join("/");
   const route = route0 === "/." ? "/" : route0;
   const { md, title, description } = mdxToMarkdown(readFileSync(file, "utf8"));
-  writeTwin(route, md);
+  writeGuideTwin(route, md);
   guides.push({ route, title, description });
 }
 
@@ -212,7 +255,7 @@ let componentTwins = 0;
 try {
   for (const meta of COMPONENTS) {
     const mod = await import(join(contentDir, `${meta.slug}.tsx`));
-    writeTwin(`/docs/components/${meta.slug}`, componentMarkdown(mod.default as ComponentContent, meta.name, meta.description));
+    writeComponentTwin(meta.slug, componentMarkdown(mod.default as ComponentContent, meta.name, meta.description));
     componentTwins++;
   }
 } catch (err) {
@@ -252,4 +295,44 @@ for (const category of CATEGORY_ORDER) {
   for (const c of items) lines.push(`- [${c.name}](${ORIGIN}/docs/components/${c.slug}.md): ${c.description}`);
 }
 writeFileSync(join(PUBLIC, "llms.txt"), lines.join("\n") + "\n");
-console.log(`markdown export: ${guides.length} guide twins (mdx-derived), ${COMPONENTS.length} component twins (data-derived), llms.txt → public/`);
+
+// ---- llms-full.txt: every twin in one file, for tools that ingest one -----
+const guideSlug = (route: string) => (route === "/" ? "index" : route === "/docs" ? "introduction" : route.split("/").at(-1)!);
+const full: string[] = [lines.join("\n"), ""];
+for (const g of sorted) full.push("---", "", readFileSync(join(SKILL_REFS, "guides", `${guideSlug(g.route)}.md`), "utf8"));
+for (const category of CATEGORY_ORDER) {
+  for (const c of COMPONENTS.filter((x) => x.category === category)) {
+    const f = join(SKILL_REFS, "components", `${c.slug}.md`);
+    try {
+      full.push("---", "", readFileSync(f, "utf8"));
+    } catch {
+      // component twins may be skipped during parallel dev startup (see above)
+    }
+  }
+}
+writeFileSync(join(PUBLIC, "llms-full.txt"), full.join("\n"));
+
+// ---- skill references index: llms.txt with local paths for offline use ----
+const idx: string[] = [
+  "# LoamUI reference index",
+  "",
+  "> Generated from the docs source; the same content as the live `.md`",
+  "> pages. Read a file here, or fetch its live twin, before using a",
+  `> component you have not already read. Live index: ${ORIGIN}/llms.txt`,
+  "",
+  "## Guides",
+  "",
+  ...sorted.map((g) => `- [${g.title}](guides/${guideSlug(g.route)}.md) — ${g.description} · [live](${ORIGIN}${g.route}.md)`),
+];
+for (const category of CATEGORY_ORDER) {
+  const items = COMPONENTS.filter((c) => c.category === category);
+  if (!items.length) continue;
+  idx.push("", `## Components: ${category}`, "");
+  for (const c of items)
+    idx.push(`- [${c.name}](components/${c.slug}.md) — ${c.description} · [live](${ORIGIN}/docs/components/${c.slug}.md)`);
+}
+writeFileSync(join(SKILL_REFS, "index.md"), idx.join("\n") + "\n");
+
+console.log(
+  `markdown export: ${guides.length} guide twins (mdx-derived), ${COMPONENTS.length} component twins (data-derived), llms.txt + llms-full.txt → public/, references → skills/loamui/references/`,
+);
