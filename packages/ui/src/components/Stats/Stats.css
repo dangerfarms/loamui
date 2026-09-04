@@ -39,34 +39,15 @@
     margin: 0;
   }
 
-  /* Context: a status region on the item tints its value. */
-  @container (style(--loam-context: primary)) {
+  /* Context: a status region on the item tints its value. The token layer
+     re-answers primary-strong to the region's status, and -strong (not the
+     raw hue) holds 4.5:1 as text in both schemes; raw warning sits at 2.5:1
+     on the light surface. */
+  @container (style(--loam-context: primary)) or (style(--loam-context: success)) or
+    (style(--loam-context: warning)) or (style(--loam-context: info)) or
+    (style(--loam-context: danger)) {
     dd.value {
-      color: var(--loam-color-primary);
-    }
-  }
-
-  @container (style(--loam-context: success)) {
-    dd.value {
-      color: var(--loam-color-success);
-    }
-  }
-
-  @container (style(--loam-context: warning)) {
-    dd.value {
-      color: var(--loam-color-warning);
-    }
-  }
-
-  @container (style(--loam-context: info)) {
-    dd.value {
-      color: var(--loam-color-info);
-    }
-  }
-
-  @container (style(--loam-context: danger)) {
-    dd.value {
-      color: var(--loam-color-danger);
+      color: var(--loam-color-primary-strong);
     }
   }
 }
