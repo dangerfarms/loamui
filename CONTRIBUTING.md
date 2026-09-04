@@ -26,6 +26,11 @@ pnpm dev        # runs the docs site
   component has several roots); parts inside the scope are type selectors or
   short classes (`label`, `p.description`). The encapsulation is `@scope`'s
   job, not the class name's.
+- `packages/ui`: the `@loamui/ui` compositions (Hero, Pricing, Carousel, ...),
+  built from core the way any consumer would and held to the same pillars and
+  gates. Same file anatomy as core, in `@layer loamui.ui`; a composition never
+  changes a primitive, and never overrides a core part's own declarations.
+- `apps/ui`: the compositions gallery, deployed under `/ui` of the docs site.
 - `apps/docs`: the Next.js marketing + documentation site. Every page of the
   docs site has a markdown twin at the same URL with `.md` appended, and
   `/llms.txt` indexes them; the export is generated from source by
@@ -64,7 +69,8 @@ LoamUI's CSS follows two references, installed as agent skills in this repo
 
 Concretely this means: cascade layers (`@layer`) with `@scope`d element selectors
 instead of BEM; additive CSS (each property set once under mutually-exclusive
-conditions; the only permitted override is `elements` → `components`); logical
+conditions; the only permitted override is `elements` → `components`, and the
+`loamui.ui` layer above adds without overriding anything in `components`); logical
 properties; `oklch()` / `light-dark()` / `color-mix()`; container queries; and
 **progressive enhancement, not degradation** (opt into motion via
 `@media (prefers-reduced-motion: no-preference)`, never a global

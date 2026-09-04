@@ -18,6 +18,8 @@ Agent-assisted developers want solid primitives their agents can build bespoke c
 - **[Element styles](/docs/element-styles).** Enhanced default styles for native HTML, page-wide: responsive, accessible, and respecting the reader's light or dark preference. Plain markup is presentable before any component appears.
 - **[Components](/docs/components).** 33 carefully chosen, contextually styled components, and no more. No size, variant or colour props (display components that size an intrinsic glyph, Badge, Loader and Progress, keep `size`): a region declares what it means and everything inside adapts.
 
+Above the primitives sits [`@loamui/ui`](https://loamui.com/ui/): compositions (a hero, pricing, a carousel) built from them the way any consumer would, and held to the same pillars. The [Composing guide](/docs/composing) is the recipe for your own.
+
 ## Five pillars
 
 The ideas that hold the primitives together. Each is grounded in a reference and enforced somewhere, by the cascade, a lint rule, a CI gate, or review.

@@ -28,6 +28,10 @@ metadata:
   accessibility contract live there, not here.
 - The references match the library at the same commit; check the installed
   version in `node_modules/@loamui/core/package.json` if behaviour differs.
+- **Compositions:** `@loamui/ui` (Hero, Pricing, Carousel, ...) is built on
+  core the way any consumer would; its gallery, code and guidance are at
+  <https://loamui.com/ui/> and it ships its own `AGENTS.md`. This skill
+  covers core; read a composition's page there before using it.
 
 ## The three primitives
 

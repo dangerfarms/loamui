@@ -99,7 +99,9 @@ the authority for everything it covers: run it and believe it.
   per-project structural overrides to be reused is a downstream recipe, not a
   core primitive. Token overrides are the sanctioned theming surface; overriding
   spacing, layout or structure is the smell that says a component is too
-  specific to live here.
+  specific to live here. Compositions that earn a shared home live in
+  `@loamui/ui`: built on core the way any consumer would, held to the same
+  pillars and gates, and never a reason to change a primitive.
 - **Composition.** Compound components expose parts; element swap goes through
   `render`; icons and loaders are detected children, never slot props. Bare form
   controls (Input, Select, Textarea, Range) self-wire from `Field`;
@@ -170,9 +172,9 @@ every docs page has a markdown twin at the same URL with `.md` appended, and
 [`llms-full.txt`](https://loamui.com/llms-full.txt) has them all in one file.
 The [Composing components](https://loamui.com/docs/composing/) guide shows how
 to build your own components (a hero, a pricing table, a carousel) from the
-three primitives without adding anything to the library, and the package
-ships `AGENTS.md`, a one-page summary of the conventions an agent needs when
-writing against `@loamui/core`.
+three primitives, the same way the [`@loamui/ui`](https://loamui.com/ui/)
+compositions are built, and each package ships an `AGENTS.md`, a one-page
+summary of the conventions an agent needs when writing against it.
 
 ## Repository layout
 

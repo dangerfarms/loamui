@@ -12,7 +12,7 @@
 - [Element styles](guides/element-styles.md) — The element-styles primitive: enhanced default styles for native HTML, page-wide. Plain markup is already styled before any component appears. · [live](https://loamui.com/docs/element-styles.md)
 - [Components](guides/components.md) — The third primitive: a small, curated set of accessible components composed from tokens and element styles. · [live](https://loamui.com/docs/components.md)
 - [Contextualism](guides/contextualism.md) — Why LoamUI components have no variant or size props: context decides appearance, identity is the last resort. · [live](https://loamui.com/docs/contextualism.md)
-- [Composing components](guides/composing.md) — How to build your own components (a hero, a pricing card, a carousel) from the three primitives, without adding anything to the library. · [live](https://loamui.com/docs/composing.md)
+- [Composing components](guides/composing.md) — How to build your own components (a hero, a pricing card, a carousel) from the three primitives, the way the @loamui/ui compositions are built. · [live](https://loamui.com/docs/composing.md)
 - [Layout](guides/layout.md) — Layout is native CSS. Pick the module that fits the shape of the content, and space it with the space tokens. · [live](https://loamui.com/docs/layout.md)
 - [Typography](guides/typography.md) — How the type scale, rhythm and figures work, and how to build your own domain-specific typography on top of them. · [live](https://loamui.com/docs/typography.md)
 - [Accessibility](guides/accessibility.md) — What LoamUI guarantees: platform semantics, APG keyboard patterns, engineered WCAG specifics, and user preferences as the baseline. · [live](https://loamui.com/docs/accessibility.md)

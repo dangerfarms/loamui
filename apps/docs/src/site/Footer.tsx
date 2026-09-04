@@ -21,6 +21,7 @@ const COLUMNS = [
       { label: "Input", href: "/docs/components/input" },
       { label: "Modal", href: "/docs/components/modal" },
       { label: "Tabs", href: "/docs/components/tabs" },
+      { label: "Compositions", href: "https://loamui.com/ui/" },
     ],
   },
   {

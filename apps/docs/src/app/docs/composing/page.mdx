@@ -4,18 +4,18 @@ import { HeroDemo, PlanDemo } from "./demos.client";
 export const metadata = {
   title: "Composing components",
   description:
-    "How to build your own components (a hero, a pricing card, a carousel) from the three primitives, without adding anything to the library.",
+    "How to build your own components (a hero, a pricing card, a carousel) from the three primitives, the way the @loamui/ui compositions are built.",
 };
 
 # Composing components
 
-LoamUI ships 33 low-level components and no more. A hero, a pricing table, a carousel or a testimonial wall is yours to build, from the three primitives, in your own codebase. This page is the recipe, for you and for your agent.
+LoamUI's core ships 33 low-level components and no more. A hero, a pricing table, a carousel or a testimonial wall is a composition: built from the three primitives the way any consumer would, in your own codebase or, for the ones worth sharing, in [`@loamui/ui`](https://loamui.com/ui/). This page is the recipe, for you and for your agent; the compositions gallery is the same recipe applied seventeen times.
 
 ## The recipe
 
 1. **Write the markup as native HTML.** A `section` with an `h2` and a `p` is already styled by the [element styles](/docs/element-styles): type scale, leading, margins, links. Reach for a LoamUI component only where the element needs structure it does not have (a button, a field, a badge, a disclosure).
 2. **Give the root a class and a scoped rule.** `@scope (.hero)` keeps the rule inside the component, so parts can be plain type selectors (`h2`, `p.lede`) with no naming scheme. Use only `--loam-*` tokens for colour, space, type and radius; never a raw value.
-3. **Compose LoamUI parts inside it.** `Button`, `Badge`, `SignpostLink`, `Card`. Do not restyle their internals. If a part needs structural overrides to fit, the thing you are building belongs downstream, not in the library.
+3. **Compose LoamUI parts inside it.** `Button`, `Badge`, `SignpostLink`, `Card`. Do not restyle their internals. If a part needs structural overrides to fit, the thing you are building is a composition (yours, or one in `@loamui/ui`), never a change to core.
 4. **Declare context and size on the region.** `--loam-context: primary` on the root recolours everything inside; `container-type: inline-size` lets the fluid tokens respond to the component's own width instead of the viewport.
 
 ## A hero
