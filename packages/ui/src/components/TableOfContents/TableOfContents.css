@@ -59,6 +59,15 @@
           color var(--loam-duration-sm) var(--loam-ease),
           border-color var(--loam-duration-sm) var(--loam-ease);
       }
+
+      /* Forced colors flatten the marker to the list's own line colour, so
+         the current entry keeps only its weight; name the marker in the
+         system highlight, as Pagination and Tabs do. */
+      @media (forced-colors: active) {
+        &[aria-current] {
+          border-color: Highlight;
+        }
+      }
     }
 
     /* A nested list keeps its links on the outer line: it drops its own
