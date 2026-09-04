@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-export type Category = "Page sections" | "Navigation" | "Data display";
+export type Category = "Page sections" | "Forms" | "Navigation" | "Data display" | "Blog";
 
 export type Demo = {
   title: string;

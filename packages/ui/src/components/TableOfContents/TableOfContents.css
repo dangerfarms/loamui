@@ -1,0 +1,72 @@
+/* A table of contents is a region: it declares its container so the fluid
+   tokens answer its own width, and it hosts consumer links, hence the
+   donut. */
+@scope (.loam-TableOfContents) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-sm);
+  }
+
+  p.title {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  ol.list {
+    --_indent: var(--loam-space-md);
+
+    border-inline-start: 1px solid var(--loam-color-line);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      margin: 0;
+    }
+
+    /* Every link carries the marker's border, transparent at rest, and
+       pulls back one pixel so the current one paints over the list's
+       line rather than beside it. */
+    a {
+      border-inline-start: 1px solid transparent;
+      color: var(--loam-color-fg-muted);
+      display: block flow;
+      font-size: var(--loam-text-sm);
+      margin-inline-start: -1px;
+      padding-block: var(--loam-space-xs);
+      padding-inline-start: var(--_indent);
+      text-decoration: none;
+
+      &[aria-current] {
+        border-color: var(--loam-color-primary-strong);
+        color: var(--loam-color-fg-strong);
+        font-weight: 600;
+      }
+
+      @media (hover: hover) {
+        &:hover {
+          color: var(--loam-color-fg-strong);
+        }
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        transition:
+          color var(--loam-duration-sm) var(--loam-ease),
+          border-color var(--loam-duration-sm) var(--loam-ease);
+      }
+    }
+
+    /* A nested list keeps its links on the outer line: it drops its own
+       border and indents through the links' padding instead. */
+    ol.list {
+      --_indent: calc(var(--loam-space-md) + var(--loam-space-lg));
+
+      border-inline-start: 0;
+    }
+  }
+}

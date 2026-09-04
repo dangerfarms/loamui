@@ -8,6 +8,16 @@ import { Preview } from "@/renderer/Preview";
 import gallery from "@/app/gallery.module.css";
 import page from "@/app/[slug]/page.module.css";
 import hero from "./hero";
+import table_of_contents from "./table-of-contents";
+import article_cards from "./article-cards";
+import team from "./team";
+import error_page from "./error-page";
+import sign_in from "./sign-in";
+import contact_form from "./contact-form";
+import faq from "./faq";
+import banner from "./banner";
+import call_to_action from "./call-to-action";
+import carousel from "./carousel";
 import features from "./features";
 import testimonials from "./testimonials";
 import pricing from "./pricing";
@@ -16,7 +26,25 @@ import footer from "./footer";
 import header from "./header";
 
 /** Every composition, in gallery order. Add a file under src/content and list it here and in manifest.ts. */
-const COMPOSITIONS: Composition[] = [hero, pricing, features, testimonials, header, footer, stats];
+const COMPOSITIONS: Composition[] = [
+  hero,
+  pricing,
+  features,
+  testimonials,
+  carousel,
+  call_to_action,
+  banner,
+  faq,
+  team,
+  error_page,
+  contact_form,
+  sign_in,
+  header,
+  footer,
+  stats,
+  article_cards,
+  table_of_contents,
+];
 
 function bySlug(slug: string): Composition | undefined {
   return COMPOSITIONS.find((c) => c.slug === slug);

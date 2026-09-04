@@ -12,7 +12,6 @@ const COLUMNS = [
       { label: "Tokens", href: "/docs/tokens" },
       { label: "Element styles", href: "/docs/element-styles" },
       { label: "Components", href: "/docs/components" },
-      { label: "Compositions (@loamui/ui)", href: "/ui/" },
     ],
   },
   {

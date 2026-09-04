@@ -14,3 +14,13 @@
 @import url("./components/Pricing/Pricing.css") layer(loamui.ui);
 @import url("./components/Testimonials/Testimonials.css") layer(loamui.ui);
 @import url("./components/Features/Features.css") layer(loamui.ui);
+@import url("./components/Carousel/Carousel.css") layer(loamui.ui);
+@import url("./components/CallToAction/CallToAction.css") layer(loamui.ui);
+@import url("./components/Banner/Banner.css") layer(loamui.ui);
+@import url("./components/Faq/Faq.css") layer(loamui.ui);
+@import url("./components/ContactForm/ContactForm.css") layer(loamui.ui);
+@import url("./components/SignIn/SignIn.css") layer(loamui.ui);
+@import url("./components/ErrorPage/ErrorPage.css") layer(loamui.ui);
+@import url("./components/Team/Team.css") layer(loamui.ui);
+@import url("./components/ArticleCards/ArticleCards.css") layer(loamui.ui);
+@import url("./components/TableOfContents/TableOfContents.css") layer(loamui.ui);

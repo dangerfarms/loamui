@@ -1,0 +1,48 @@
+/* A carousel is a region: it declares its container so the fluid tokens
+   answer the carousel's width, and every item hosts consumer content (a
+   Card, an image, a quote), hence the donut. */
+@scope (.loam-Carousel) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  /* A column grid inside a scrollport. Every item snaps to the start, and
+     a page is one clientWidth, which is what Controls scrolls by. */
+  ul.track {
+    display: block grid;
+    gap: var(--loam-space-lg);
+    grid-auto-columns: min(100%, 20rem);
+    grid-auto-flow: column;
+    list-style: none;
+    margin: 0;
+
+    /* overflow (shorthand), not overflow-inline: the logical property is
+       not yet Baseline, and the track would not scroll in some browsers. */
+    overflow: auto;
+    overscroll-behavior-inline: contain;
+
+    /* Room for an item's border and the focus ring inside the scrollport. */
+    padding: var(--loam-space-xs);
+    scroll-padding-inline: var(--loam-space-xs);
+    scroll-snap-type: inline mandatory;
+
+    /* A grid, so a Card or an image stretches to the row's height. */
+    > li {
+      display: block grid;
+      margin: 0;
+      scroll-snap-align: start;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      scroll-behavior: smooth;
+    }
+  }
+
+  div.controls {
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm);
+  }
+}
