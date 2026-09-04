@@ -1,5 +1,5 @@
 import type { FormHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
-import { cx } from "../../utils";
+import { cx } from "@loamui/core";
 
 export interface ContactFormRootProps extends FormHTMLAttributes<HTMLFormElement> {
   children?: ReactNode;

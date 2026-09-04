@@ -1,8 +1,7 @@
 import type { FormHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
-import { Card, renderWithProps } from "@loamui/core";
+import { Card, renderWithProps, cx } from "@loamui/core";
 import type { RenderProp } from "@loamui/core";
 import type { CardProps } from "@loamui/core";
-import { cx } from "../../utils";
 
 export interface SignInRootProps extends CardProps {
   children?: ReactNode;
@@ -64,7 +63,9 @@ export interface SignInTitleProps extends HTMLAttributes<HTMLHeadingElement> {
 /** The card's heading. An `h1` by default; pass `render={<h2 />}` inside a page. */
 function SignInTitle({ render, className, children, ref, ...rest }: SignInTitleProps) {
   if (render) {
-    return <>{renderWithProps(render, { ref, className: cx("title", className), children, ...rest })}</>;
+    return (
+      <>{renderWithProps(render, { ref, className: cx("title", className), children, ...rest })}</>
+    );
   }
   return (
     <h1 ref={ref} className={cx("title", className)} {...rest}>

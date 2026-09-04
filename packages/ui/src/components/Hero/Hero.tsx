@@ -1,7 +1,6 @@
 import type { HTMLAttributes, ReactNode, Ref } from "react";
-import { renderWithProps } from "@loamui/core";
+import { renderWithProps, cx } from "@loamui/core";
 import type { RenderProp } from "@loamui/core";
-import { cx } from "../../utils";
 
 export interface HeroRootProps extends HTMLAttributes<HTMLElement> {
   children?: ReactNode;
@@ -61,7 +60,9 @@ export interface HeroTitleProps extends HTMLAttributes<HTMLHeadingElement> {
 /** The headline. Renders an `h1` by default; pass `render={<h2 />}` inside a page. */
 function HeroTitle({ render, className, children, ref, ...rest }: HeroTitleProps) {
   if (render) {
-    return <>{renderWithProps(render, { ref, className: cx("title", className), children, ...rest })}</>;
+    return (
+      <>{renderWithProps(render, { ref, className: cx("title", className), children, ...rest })}</>
+    );
   }
   return (
     <h1 ref={ref} className={cx("title", className)} {...rest}>

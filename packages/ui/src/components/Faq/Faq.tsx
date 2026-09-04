@@ -1,7 +1,6 @@
 import type { HTMLAttributes, ReactNode, Ref } from "react";
-import { Details } from "@loamui/core";
+import { Details, cx } from "@loamui/core";
 import type { DetailsRootProps } from "@loamui/core";
-import { cx } from "../../utils";
 
 export interface FaqRootProps extends HTMLAttributes<HTMLElement> {
   children?: ReactNode;

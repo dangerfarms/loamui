@@ -1,8 +1,7 @@
 "use client";
 
 import type { HTMLAttributes, MouseEvent, Ref } from "react";
-import { Button } from "@loamui/core";
-import { cx } from "../../utils";
+import { Button, cx } from "@loamui/core";
 
 export interface TrackControlsProps extends HTMLAttributes<HTMLDivElement> {
   /** Label of the button that pages backwards. @default "Previous" */

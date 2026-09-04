@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactNode, Ref } from "react";
-import { cx } from "../../utils";
+import { cx } from "@loamui/core";
 import { CarouselControls } from "./CarouselControls";
 
 export interface CarouselRootProps extends HTMLAttributes<HTMLElement> {

@@ -1,6 +1,5 @@
 import type { HTMLAttributes, ReactNode, Ref } from "react";
-import { Card } from "@loamui/core";
-import { cx } from "../../utils";
+import { Card, cx } from "@loamui/core";
 
 export interface ArticleCardsRootProps extends HTMLAttributes<HTMLElement> {
   children?: ReactNode;

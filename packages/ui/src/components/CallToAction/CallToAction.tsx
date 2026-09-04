@@ -1,7 +1,6 @@
 import type { HTMLAttributes, ReactNode, Ref } from "react";
-import { renderWithProps } from "@loamui/core";
+import { renderWithProps, cx } from "@loamui/core";
 import type { RenderProp } from "@loamui/core";
-import { cx } from "../../utils";
 
 export interface CallToActionRootProps extends HTMLAttributes<HTMLElement> {
   children?: ReactNode;
@@ -52,7 +51,9 @@ export interface CallToActionTitleProps extends HTMLAttributes<HTMLHeadingElemen
 /** The headline. Renders an `h2` by default; pass `render={<h3 />}` under a page's own headings. */
 function CallToActionTitle({ render, className, children, ref, ...rest }: CallToActionTitleProps) {
   if (render) {
-    return <>{renderWithProps(render, { ref, className: cx("title", className), children, ...rest })}</>;
+    return (
+      <>{renderWithProps(render, { ref, className: cx("title", className), children, ...rest })}</>
+    );
   }
   return (
     <h2 ref={ref} className={cx("title", className)} {...rest}>

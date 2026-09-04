@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactNode, Ref } from "react";
-import { cx } from "../../utils";
+import { cx } from "@loamui/core";
 
 export interface TableOfContentsRootProps extends HTMLAttributes<HTMLElement> {
   /** Names the landmark for assistive technology; every nav on a page needs a distinct one. */
