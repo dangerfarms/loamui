@@ -1,4 +1,6 @@
 import type { HTMLAttributes, ReactNode, Ref } from "react";
+import { renderWithProps } from "@loamui/core";
+import type { RenderProp } from "@loamui/core";
 import { cx } from "../../utils";
 
 export interface ErrorPageRootProps extends HTMLAttributes<HTMLElement> {
@@ -52,24 +54,25 @@ function ErrorPageCode({ className, children, ref, ...rest }: ErrorPageParagraph
 }
 
 export interface ErrorPageTitleProps extends HTMLAttributes<HTMLHeadingElement> {
-  /** Heading level; `h1` when the error is the page, `h2` inside a page. @default "h1" */
-  render?: "h1" | "h2";
+  /**
+   * Render as a different heading: `render={<h2 />}` inside a page. The
+   * part's classes and attributes merge onto the element it renders, the
+   * same contract as every core part.
+   */
+  render?: RenderProp<Record<string, unknown>>;
   children?: ReactNode;
   ref?: Ref<HTMLHeadingElement>;
 }
 
-/** What happened, in a few words. An `h1` by default; pass `render="h2"` inside a page. */
-function ErrorPageTitle({
-  render: Tag = "h1",
-  className,
-  children,
-  ref,
-  ...rest
-}: ErrorPageTitleProps) {
+/** What happened, in a few words. An `h1` by default; pass `render={<h2 />}` inside a page. */
+function ErrorPageTitle({ render, className, children, ref, ...rest }: ErrorPageTitleProps) {
+  if (render) {
+    return <>{renderWithProps(render, { ref, className: cx("title", className), children, ...rest })}</>;
+  }
   return (
-    <Tag ref={ref} className={cx("title", className)} {...rest}>
+    <h1 ref={ref} className={cx("title", className)} {...rest}>
       {children}
-    </Tag>
+    </h1>
   );
 }
 

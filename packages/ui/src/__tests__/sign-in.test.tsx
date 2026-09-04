@@ -48,7 +48,7 @@ describe("SignIn", () => {
   it("renders the title as an h2 when asked", () => {
     render(
       <SignIn.Root>
-        <SignIn.Title render="h2">Sign in</SignIn.Title>
+        <SignIn.Title render={<h2 />}>Sign in</SignIn.Title>
       </SignIn.Root>,
     );
     expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("Sign in");

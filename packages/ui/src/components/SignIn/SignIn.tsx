@@ -1,5 +1,6 @@
 import type { FormHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
-import { Card } from "@loamui/core";
+import { Card, renderWithProps } from "@loamui/core";
+import type { RenderProp } from "@loamui/core";
 import type { CardProps } from "@loamui/core";
 import { cx } from "../../utils";
 
@@ -50,18 +51,25 @@ function SignInRoot({ className, children, ref, ...rest }: SignInRootProps) {
 }
 
 export interface SignInTitleProps extends HTMLAttributes<HTMLHeadingElement> {
-  /** Heading level; `h1` on a page of its own, `h2` inside a page. @default "h1" */
-  render?: "h1" | "h2";
+  /**
+   * Render as a different heading: `render={<h2 />}` inside a page. The
+   * part's classes and attributes merge onto the element it renders, the
+   * same contract as every core part.
+   */
+  render?: RenderProp<Record<string, unknown>>;
   children?: ReactNode;
   ref?: Ref<HTMLHeadingElement>;
 }
 
-/** The card's heading. An `h1` by default; pass `render="h2"` inside a page. */
-function SignInTitle({ render: Tag = "h1", className, children, ref, ...rest }: SignInTitleProps) {
+/** The card's heading. An `h1` by default; pass `render={<h2 />}` inside a page. */
+function SignInTitle({ render, className, children, ref, ...rest }: SignInTitleProps) {
+  if (render) {
+    return <>{renderWithProps(render, { ref, className: cx("title", className), children, ...rest })}</>;
+  }
   return (
-    <Tag ref={ref} className={cx("title", className)} {...rest}>
+    <h1 ref={ref} className={cx("title", className)} {...rest}>
       {children}
-    </Tag>
+    </h1>
   );
 }
 

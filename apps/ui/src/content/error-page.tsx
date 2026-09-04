@@ -26,7 +26,7 @@ const errorPage: Composition = {
     {
       name: "ErrorPage.Title",
       description:
-        'What happened, in a few words. An h1 when the error is the page; pass render="h2" inside a page.',
+        "What happened, in a few words. An h1 when the error is the page; pass render={<h2 />} inside a page.",
     },
     {
       name: "ErrorPage.Body",

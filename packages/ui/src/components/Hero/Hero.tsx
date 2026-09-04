@@ -1,4 +1,6 @@
 import type { HTMLAttributes, ReactNode, Ref } from "react";
+import { renderWithProps } from "@loamui/core";
+import type { RenderProp } from "@loamui/core";
 import { cx } from "../../utils";
 
 export interface HeroRootProps extends HTMLAttributes<HTMLElement> {
@@ -46,17 +48,25 @@ function HeroEyebrow({ className, children, ...rest }: HeroPartProps) {
 }
 
 export interface HeroTitleProps extends HTMLAttributes<HTMLHeadingElement> {
-  /** Heading level; `h1` on a landing page, `h2` inside a page. @default "h1" */
-  render?: "h1" | "h2";
+  /**
+   * Render as a different heading: `render={<h2 />}` inside a page. The
+   * part's classes and attributes merge onto the element it renders, the
+   * same contract as every core part.
+   */
+  render?: RenderProp<Record<string, unknown>>;
   children?: ReactNode;
+  ref?: Ref<HTMLHeadingElement>;
 }
 
-/** The headline. Renders an `h1` by default; pass `render="h2"` inside a page. */
-function HeroTitle({ render: Tag = "h1", className, children, ...rest }: HeroTitleProps) {
+/** The headline. Renders an `h1` by default; pass `render={<h2 />}` inside a page. */
+function HeroTitle({ render, className, children, ref, ...rest }: HeroTitleProps) {
+  if (render) {
+    return <>{renderWithProps(render, { ref, className: cx("title", className), children, ...rest })}</>;
+  }
   return (
-    <Tag className={cx("title", className)} {...rest}>
+    <h1 ref={ref} className={cx("title", className)} {...rest}>
       {children}
-    </Tag>
+    </h1>
   );
 }
 

@@ -31,7 +31,7 @@ describe("Hero", () => {
   it("renders the title as an h2 when asked", () => {
     render(
       <Hero.Root>
-        <Hero.Title render="h2">Inside a page</Hero.Title>
+        <Hero.Title render={<h2 />}>Inside a page</Hero.Title>
       </Hero.Root>,
     );
     expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("Inside a page");

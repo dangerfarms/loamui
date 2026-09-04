@@ -23,7 +23,7 @@ const hero: Composition = {
     },
     {
       name: "Hero.Title",
-      description: 'The headline. An h1 by default; pass render="h2" inside a page.',
+      description: "The headline. An h1 by default; pass render={<h2 />} inside a page.",
     },
     {
       name: "Hero.Lede",

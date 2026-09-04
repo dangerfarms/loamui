@@ -3,6 +3,11 @@
 export { cx } from "./utils";
 export type { LoamUISize } from "./utils";
 
+// Composition plumbing: the `render` contract every compound part honours,
+// exported so a composition built on core can offer the same prop.
+export { renderWithProps } from "./render";
+export type { RenderProp } from "./render";
+
 // Inputs
 export * from "./components/Field/index";
 export * from "./components/Fieldset/index";

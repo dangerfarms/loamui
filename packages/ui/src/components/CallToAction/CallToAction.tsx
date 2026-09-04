@@ -1,4 +1,6 @@
 import type { HTMLAttributes, ReactNode, Ref } from "react";
+import { renderWithProps } from "@loamui/core";
+import type { RenderProp } from "@loamui/core";
 import { cx } from "../../utils";
 
 export interface CallToActionRootProps extends HTMLAttributes<HTMLElement> {
@@ -37,24 +39,25 @@ function CallToActionRoot({ className, children, ref, ...rest }: CallToActionRoo
 }
 
 export interface CallToActionTitleProps extends HTMLAttributes<HTMLHeadingElement> {
-  /** Heading level; `h2` as a page section, `h3` under a page's own headings. @default "h2" */
-  render?: "h2" | "h3";
+  /**
+   * Render as a different heading: `render={<h3 />}` under a page's own headings. The
+   * part's classes and attributes merge onto the element it renders, the
+   * same contract as every core part.
+   */
+  render?: RenderProp<Record<string, unknown>>;
   children?: ReactNode;
   ref?: Ref<HTMLHeadingElement>;
 }
 
-/** The headline. Renders an `h2` by default; pass `render="h3"` under a page's own headings. */
-function CallToActionTitle({
-  render: Tag = "h2",
-  className,
-  children,
-  ref,
-  ...rest
-}: CallToActionTitleProps) {
+/** The headline. Renders an `h2` by default; pass `render={<h3 />}` under a page's own headings. */
+function CallToActionTitle({ render, className, children, ref, ...rest }: CallToActionTitleProps) {
+  if (render) {
+    return <>{renderWithProps(render, { ref, className: cx("title", className), children, ...rest })}</>;
+  }
   return (
-    <Tag ref={ref} className={cx("title", className)} {...rest}>
+    <h2 ref={ref} className={cx("title", className)} {...rest}>
       {children}
-    </Tag>
+    </h2>
   );
 }
 

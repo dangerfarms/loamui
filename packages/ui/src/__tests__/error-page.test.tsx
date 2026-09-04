@@ -36,7 +36,7 @@ describe("ErrorPage", () => {
   it("renders the title as an h2 when asked", () => {
     render(
       <ErrorPage.Root>
-        <ErrorPage.Title render="h2">Inside a page</ErrorPage.Title>
+        <ErrorPage.Title render={<h2 />}>Inside a page</ErrorPage.Title>
       </ErrorPage.Root>,
     );
     expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("Inside a page");

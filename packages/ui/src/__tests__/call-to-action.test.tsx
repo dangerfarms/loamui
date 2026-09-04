@@ -33,7 +33,7 @@ describe("CallToAction", () => {
   it("renders the title as an h3 when asked", () => {
     render(
       <CallToAction.Root>
-        <CallToAction.Title render="h3">Under a page's own headings</CallToAction.Title>
+        <CallToAction.Title render={<h3 />}>Under a page's own headings</CallToAction.Title>
       </CallToAction.Root>,
     );
     expect(screen.getByRole("heading", { level: 3 })).toHaveTextContent(

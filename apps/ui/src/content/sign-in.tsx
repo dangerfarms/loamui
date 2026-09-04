@@ -25,7 +25,7 @@ const signIn: Composition = {
     },
     {
       name: "SignIn.Title",
-      description: 'The heading. An h1 on a page of its own; pass render="h2" inside a page.',
+      description: "The heading. An h1 on a page of its own; pass render={<h2 />} inside a page.",
     },
     {
       name: "SignIn.Form",

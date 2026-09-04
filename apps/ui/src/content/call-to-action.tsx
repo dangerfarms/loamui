@@ -20,7 +20,8 @@ const callToAction: Composition = {
     },
     {
       name: "CallToAction.Title",
-      description: 'The headline. An h2 by default; pass render="h3" under a page\'s own headings.',
+      description:
+        "The headline. An h2 by default; pass render={<h3 />} under a page's own headings.",
     },
     {
       name: "CallToAction.Body",
