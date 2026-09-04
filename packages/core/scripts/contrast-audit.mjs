@@ -225,6 +225,13 @@ for (const scheme of ["light", "dark"]) {
   check("text-muted on bg", scheme, t("--loam-color-fg-muted"), t("--loam-color-bg"), 4.5);
   check("text-dim (placeholder) on surface", scheme, t("--loam-color-fg-dim"), t("--loam-color-surface"), 4.5);
   check("danger text (Field.Error) on bg", scheme, t("--loam-color-danger"), t("--loam-color-bg"), 4.5);
+  // The -strong family is also TEXT: Tabs' selected tab, Details' open
+  // summary and any contexted label lean on it holding 4.5:1 on both
+  // surfaces, where the raw hue does not (light warning is 2.5:1).
+  for (const status of ["primary", "success", "danger", "warning", "info"]) {
+    check(`${status}-strong text on bg`, scheme, t(`--loam-color-${status}-strong`), t("--loam-color-bg"), 4.5);
+    check(`${status}-strong text on surface`, scheme, t(`--loam-color-${status}-strong`), t("--loam-color-surface"), 4.5);
+  }
   check("fill text on primary-strong", scheme, t("--loam-color-on-strong"), t("--loam-color-primary-strong"), 4.5);
   check("fill text on success-strong", scheme, t("--loam-color-on-strong"), t("--loam-color-success-strong"), 4.5);
   check("fill text on danger-strong", scheme, t("--loam-color-on-strong"), t("--loam-color-danger-strong"), 4.5);
