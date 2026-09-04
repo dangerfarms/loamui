@@ -175,15 +175,17 @@
   font-size: var(--loam-text-sm);
   gap: 1rem;
   justify-content: space-between;
-  padding-block: 0.5rem;
+  padding-block: 0.85rem 0.35rem;
 }
 
 .showcaseLabel {
   color: var(--loam-color-fg-muted);
 }
 
+/* The switch's label is a field label like "Work email" above it, so it
+   takes the same weight and colour rather than the muted secondary tone. */
 .showcaseSwitch {
-  color: var(--loam-color-fg-muted);
+  color: var(--loam-color-fg);
   flex: 1;
   justify-content: space-between;
 }
@@ -476,9 +478,37 @@
   white-space: pre-wrap;
 }
 
+/* ---------- Pillars ---------- */
+.pillars {
+  display: block grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pillar {
+  border-block-start: 2px solid var(--loam-color-line-strong);
+  margin: 0;
+  padding-block-start: 0.9rem;
+}
+
+.pillarName {
+  font-size: var(--loam-text-md);
+  font-weight: 600;
+  margin: 0 0 0.35rem;
+}
+
+.pillarBody {
+  color: var(--loam-color-fg-muted);
+  font-size: var(--loam-text-sm);
+  margin: 0;
+}
+
 /* ---------- Split: code + preview ---------- */
 .split {
-  align-items: center;
+  align-items: start;
   display: block grid;
   gap: 2rem;
   grid-template-columns: 1fr 1fr;

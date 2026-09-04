@@ -40,6 +40,17 @@
     text-decoration: none;
   }
 
+  /* Headings and the site's short marketing measures never hyphenate: the
+     element styles hyphenate body copy, which is right for prose and wrong
+     for "accessi-ble" in a centred lead. */
+  h1,
+  h2,
+  h3,
+  h4,
+  [data-no-hyphens] {
+    hyphens: manual;
+  }
+
   h1,
   h2,
   h3,

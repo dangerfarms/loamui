@@ -6,6 +6,7 @@ import type { CSSProperties, ReactElement } from "react";
 import {
   Button,
   Field,
+  Fieldset,
   Input,
   Textarea,
   Select,
@@ -116,6 +117,14 @@ const cases: Array<[string, ReactElement]> = [
   ["Badge", <Badge>New</Badge>],
   ["Card", <Card>Card content</Card>],
   ["Avatar", <Avatar name="Ada Lovelace" />],
+  [
+    "Fieldset",
+    <Fieldset.Root>
+      <Fieldset.Legend>Contact preferences</Fieldset.Legend>
+      <Checkbox label="Email" />
+      <Checkbox label="SMS" />
+    </Fieldset.Root>,
+  ],
   [
     "Table",
     <Table>

@@ -33,6 +33,17 @@ const COLUMNS = [
       },
     ],
   },
+  {
+    title: "For agents",
+    links: [
+      { label: "llms.txt", href: "/llms.txt" },
+      { label: "Composing components", href: "/docs/composing" },
+      {
+        label: "Contributor skills",
+        href: "https://github.com/dangerfarms/loamui/tree/main/.agents/skills",
+      },
+    ],
+  },
 ];
 
 export function Footer() {

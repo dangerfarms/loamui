@@ -28,6 +28,7 @@ const doc: ComponentContent = {
     <tr><td>INV-1024</td><td>Paid</td><td>$1,240.00</td></tr>
     <tr><td>INV-1025</td><td>Pending</td><td>$820.00</td></tr>
     <tr><td>INV-1026</td><td>Paid</td><td>$2,010.00</td></tr>
+    <tr><td>INV-1027</td><td>Overdue</td><td>$640.00</td></tr>
   </tbody>
 </Table>`,
       render: () => (
@@ -193,7 +194,7 @@ const doc: ComponentContent = {
     },
     {
       title: "Wide tables scroll in place",
-      body: "The table ships inside a scroll wrapper with overflow-inline: auto, so an overflowing table scrolls horizontally within its own container instead of stretching the page. Whether a table should instead reflow into cards or lists on small screens is your layout call. The component keeps the table a table and makes overflow survivable.",
+      body: "The table ships inside a scroll wrapper with overflow-inline: auto, so an overflowing table scrolls horizontally within its own container instead of stretching the page; only when it actually overflows does the wrapper become a focusable, labelled region, so a page of narrow tables adds no tab stops. Whether a table should instead reflow into cards or lists on small screens is your layout call. The component keeps the table a table and makes overflow survivable.",
     },
     {
       title: "Caption every table",
@@ -205,6 +206,7 @@ const doc: ComponentContent = {
     "Give every table a <caption>: it is the table's accessible name, announced when screen-reader users list or enter the table.",
     'Mark header cells with scope (<th scope="col"> in thead, <th scope="row"> for row headers) so data cells are read with their headers as context.',
     "The scroll wrapper keeps horizontal overflow inside the component, so zoomed-in and small-viewport users scroll the table, not the whole page.",
+    'When the table overflows its container, the wrapper becomes a focusable role="region" so keyboard users can reach it and scroll; it is named by the table\'s own <caption> when there is one, and by "Scrollable table" otherwise. A table that fits adds no tab stop.',
     "striped and highlightOnHover are visual aids only: never encode meaning in row shading, because assistive tech does not announce it.",
   ],
   props: [

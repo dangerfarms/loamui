@@ -9,13 +9,19 @@ const doc: ComponentContent = {
     {
       title: "Basic",
       description:
-        "Click into the preview and press Tab: the link appears fixed at the top corner of the viewport. This site's own skip link is this component.",
-      code: `<SkipLink href="#content" />
-<main id="content" tabIndex={-1}>…</main>`,
+        "Click into the preview and press Tab: the link appears fixed at the top corner of the viewport, and following it moves focus to the target. This site's own skip link is this component, pointing at its <main>; the demo points at a section of its own so the two do not collide.",
+      code: `<SkipLink href="#demo-content" />
+<p>Press Tab here to reveal the skip link.</p>
+<section id="demo-content" tabIndex={-1}>
+  Focus lands here after following the link.
+</section>`,
       render: () => (
-        <div>
-          <SkipLink href="#content" />
-          <p style={{ margin: 0 }}>Press Tab here to reveal the skip link.</p>
+        <div style={{ display: "grid", gap: "0.75rem", inlineSize: "100%" }}>
+          <SkipLink href="#demo-content" />
+          <p>Press Tab here to reveal the skip link.</p>
+          <section id="demo-content" tabIndex={-1}>
+            Focus lands here after following the link.
+          </section>
         </div>
       ),
     },

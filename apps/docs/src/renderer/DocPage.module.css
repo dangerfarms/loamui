@@ -24,6 +24,7 @@
 .lead {
   color: var(--loam-color-fg-muted);
   font-size: var(--loam-text-lg);
+  hyphens: manual;
   text-wrap: pretty;
 }
 

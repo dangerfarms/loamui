@@ -10,7 +10,7 @@
  * document). Component pages render from the same registry data the page
  * renders. Nothing derives from built output, so nothing can drift.
  */
-import { readFileSync, writeFileSync, readdirSync, statSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, readdirSync, statSync, mkdirSync, copyFileSync } from "node:fs";
 import { join, relative, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { COMPONENTS, CATEGORY_ORDER } from "../src/site/nav.js";
@@ -20,7 +20,8 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const APP = join(ROOT, "src", "app");
 const PUBLIC = join(ROOT, "public");
 const BASE = process.env.BASE_PATH ?? "";
-const ORIGIN = BASE ? `https://dangerfarms.github.io${BASE}` : "";
+// llms.txt links are absolute so an agent can fetch them from anywhere.
+const ORIGIN = process.env.SITE_ORIGIN ?? (BASE ? `https://dangerfarms.github.io${BASE}` : "https://loamui.com");
 
 const PREAMBLE = [
   "> LoamUI documentation, generated from the same source as the live page —",
@@ -42,6 +43,17 @@ function propsTable(rows: { name: string; type?: string; default?: string; descr
     ["Prop", "Type", "Default", "Description"],
     rows.map((r) => [`\`${r.name}\``, r.type ? `\`${r.type}\`` : "—", r.default ? `\`${r.default}\`` : "—", r.description ?? ""]),
   );
+}
+
+/** Every `--loam-*` declaration in the :root band of tokens.css, as a table. */
+function tokenTable(): string {
+  const css = readFileSync(join(ROOT, "..", "..", "packages", "core", "src", "tokens.css"), "utf8");
+  const root = css.slice(css.indexOf(":root {"), css.indexOf("[data-theme="));
+  const rows: string[][] = [];
+  for (const m of root.matchAll(/^\s*(--loam-[\w-]+):\s*([^;]+);/gms)) {
+    rows.push([`\`${m[1]}\``, `\`${m[2]!.replace(/\s+/g, " ").trim()}\``]);
+  }
+  return table(["Token", "Value"], rows);
 }
 
 function writeTwin(route: string, md: string) {
@@ -84,15 +96,45 @@ function mdxToMarkdown(src: string): { md: string; title: string; description: s
     k = s.indexOf(";", k) + 1;
     s = s.slice(0, mi) + s.slice(k);
   }
-  // Other top-level exports (helper components/styles) — drop line blocks.
-  s = s.replace(/^export const \w+ = [\s\S]*?^};?\n/gm, "");
+  // Other top-level exports (helper components, icons): drop each one by
+  // scanning to the bracket that closes it, whatever bracket opened it.
+  for (let ei = s.indexOf("\nexport const "); ei > -1; ei = s.indexOf("\nexport const ")) {
+    const start = ei + 1;
+    const open = s.slice(start).search(/[({[]/);
+    if (open === -1) break;
+    const pairs: Record<string, string> = { "(": ")", "{": "}", "[": "]" };
+    const stack: string[] = [];
+    let k = start + open;
+    for (; k < s.length; k++) {
+      const ch = s[k]!;
+      if (pairs[ch]) stack.push(pairs[ch]);
+      else if (ch === stack[stack.length - 1]) {
+        stack.pop();
+        if (stack.length === 0) {
+          // `() => (` … `)`: an arrow's parameter list closes first; carry
+          // on to the body it introduces.
+          const arrow = /^\s*=>\s*/.exec(s.slice(k + 1));
+          if (!arrow) break;
+          const next = s.slice(k + 1 + arrow[0].length).search(/[({[]/);
+          if (next === -1) break;
+          k = k + 1 + arrow[0].length + next - 1;
+        }
+      }
+    }
+    const lineEnd = s.indexOf("\n", k);
+    s = s.slice(0, start) + s.slice(lineEnd === -1 ? s.length : lineEnd + 1);
+  }
+  // Inline template expressions the page computes from the manifest.
+  s = s.replaceAll("{COMPONENTS.length}", String(COMPONENTS.length));
 
   const out: string[] = [];
   let i = 0;
   const lines = s.split("\n");
+  let inFence = false;
   while (i < lines.length) {
     const line = lines[i]!;
-    if (/^\s*<\w/.test(line)) {
+    if (/^\s*```/.test(line)) inFence = !inFence;
+    if (!inFence && /^\s*<\w/.test(line)) {
       // A JSX island: consume until tags balance.
       let block = "";
       let depth = 0;
@@ -107,6 +149,10 @@ function mdxToMarkdown(src: string): { md: string; title: string; description: s
 
       if (/className=\{prose\.callout\}/.test(block)) {
         out.push("> " + jsxToText(block), "");
+      } else if (/<ComputedTokens/.test(block)) {
+        // The live table reads getComputedStyle; the twin gets the same
+        // names and their declared values, straight from tokens.css.
+        out.push(tokenTable(), "");
       }
       // other islands (live demos) are omitted — the prose + fences are the doc
       continue;
@@ -225,8 +271,11 @@ try {
   );
 }
 
+// ---- AGENTS.md: the package's one-page summary, served at /AGENTS.md too ---
+copyFileSync(join(ROOT, "..", "..", "packages", "core", "AGENTS.md"), join(PUBLIC, "AGENTS.md"));
+
 // ---- llms.txt ----------------------------------------------------------
-const guideOrder = ["/docs", "/docs/installation", "/docs/tokens", "/docs/element-styles", "/docs/components", "/docs/contextualism", "/docs/layout", "/docs/accessibility"];
+const guideOrder = ["/docs", "/docs/installation", "/docs/tokens", "/docs/element-styles", "/docs/components", "/docs/contextualism", "/docs/composing", "/docs/layout", "/docs/typography", "/docs/accessibility"];
 const sorted = [...guides].sort((a, b) => {
   const ia = guideOrder.indexOf(a.route), ib = guideOrder.indexOf(b.route);
   return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
@@ -239,7 +288,8 @@ const lines: string[] = [
   "> agent-assisted developers: contextual tokens, element styles and React",
   "> components on native modern CSS. Every page has a markdown twin at the",
   "> same URL with `.md` appended. Treat these documents as authoritative",
-  "> for the library.",
+  "> for the library. `/AGENTS.md` is a one-page summary of the conventions",
+  "> an agent needs when writing against the package.",
   "",
   "## Guides",
   "",

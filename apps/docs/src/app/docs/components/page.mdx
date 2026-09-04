@@ -16,7 +16,7 @@ Reach for a component when a native element needs structure it does not have on 
 
 ## What makes a LoamUI component
 
-- **Context decides, props don't.** No size, variant or colour props. A region declares its intent and the components inside adapt; the container's width decides how they size.
+- **Context decides, props don't.** No size, variant or colour props, with one exception: display components that size an intrinsic glyph (Badge, Loader, Progress) keep `size`. A region declares its intent and the components inside adapt; the container's width decides how they size.
 - **Compose, don't configure.** Compound components expose their parts, element substitution goes through the `render` prop, and icons and loaders are detected children, not slot props.
 - **Accessible by construction.** Real semantics, keyboard support and a shared focus-visible ring come from the platform, then the component wires the ARIA the platform leaves to you.
 

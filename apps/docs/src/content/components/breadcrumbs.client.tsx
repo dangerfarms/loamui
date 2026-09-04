@@ -1,6 +1,7 @@
 "use client";
 
 import { Breadcrumbs } from "@loamui/core";
+import Link from "next/link";
 
 export function BreadcrumbsBasicDemo() {
   return (
@@ -25,9 +26,9 @@ export function BreadcrumbsSeparatorDemo() {
 export function BreadcrumbsRenderDemo() {
   return (
     <Breadcrumbs.Root>
-      <Breadcrumbs.Item render={<a href="/">Home</a>} />
-      <Breadcrumbs.Item render={<a href="/settings">Settings</a>} />
-      <Breadcrumbs.Item current>Billing</Breadcrumbs.Item>
+      <Breadcrumbs.Item render={<Link href="/" />}>Home</Breadcrumbs.Item>
+      <Breadcrumbs.Item render={<Link href="/docs/components" />}>Components</Breadcrumbs.Item>
+      <Breadcrumbs.Item current>Breadcrumbs</Breadcrumbs.Item>
     </Breadcrumbs.Root>
   );
 }

@@ -217,7 +217,6 @@ export function TabsTab({ value, disabled, className, children, onClick, ...rest
       aria-disabled={disabled || undefined}
       data-tab-value={value}
       className={cx("tab", className)}
-      data-active={selected || undefined}
       onClick={(event) => {
         if (disabled) {
           event.preventDefault();
@@ -241,21 +240,22 @@ export function TabsPanel({ value, className, children, ref: refProp, ...rest }:
 
   // hidden="until-found" lets find-in-page reach inactive panels;
   // `beforematch` activates the matched tab. React normalises `hidden` to a
-  // boolean, so the attribute value must be set imperatively.
-  const untilFound = typeof HTMLElement !== "undefined" && "onbeforematch" in HTMLElement.prototype;
+  // boolean, so the attribute value must be set imperatively. The boolean
+  // form renders on server and client alike (a hydration-safe baseline); the
+  // effect upgrades it where the browser supports until-found.
   useEffect(() => {
     const el = ref.current;
-    if (!el || !untilFound) return;
+    if (!el || !("onbeforematch" in HTMLElement.prototype)) return;
     if (selected) el.removeAttribute("hidden");
     else el.setAttribute("hidden", "until-found");
-  }, [selected, untilFound]);
+  }, [selected]);
   useEffect(() => {
     const el = ref.current;
-    if (!el || !untilFound) return;
+    if (!el || !("onbeforematch" in HTMLElement.prototype)) return;
     const onBeforeMatch = () => setValue(value);
     el.addEventListener("beforematch", onBeforeMatch);
     return () => el.removeEventListener("beforematch", onBeforeMatch);
-  }, [untilFound, setValue, value]);
+  }, [setValue, value]);
 
   return (
     <div
@@ -264,7 +264,7 @@ export function TabsPanel({ value, className, children, ref: refProp, ...rest }:
       role="tabpanel"
       id={`${baseId}-panel-${value}`}
       aria-labelledby={`${baseId}-tab-${value}`}
-      hidden={untilFound ? undefined : !selected}
+      hidden={!selected}
       tabIndex={0}
       className={cx("panel", className)}
     >

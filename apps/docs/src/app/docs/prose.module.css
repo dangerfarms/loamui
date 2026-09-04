@@ -36,6 +36,7 @@
   h1 + p {
     color: var(--loam-color-fg-muted);
     font-size: var(--loam-text-lg);
+    hyphens: manual;
     margin-block-end: 2rem;
   }
 

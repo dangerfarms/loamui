@@ -1,26 +1,13 @@
-@scope (.loam-Tabs) {
+/* Tab and Panel can only render inside <Tabs> (their context throws outside).
+   Donut: panels host consumer content. */
+@scope (.loam-Tabs) to ([class*="loam-"]) {
   :scope {
     display: block flex;
     flex-direction: column;
     gap: var(--loam-space-lg);
     inline-size: 100%;
   }
-}
 
-/*
- * The list is scoped to its own root: Tabs.List renders without the
- * .loam-Tabs class on it (and, unlike Tab/Panel, is not context-guarded).
- */
-@scope (.loam-Tabs-list) {
-  :scope {
-    border-block-end: 1px solid var(--loam-color-line);
-    display: block flex;
-    gap: var(--loam-space-xs);
-  }
-}
-
-/* Tab and Panel can only render inside <Tabs> (their context throws outside). */
-@scope (.loam-Tabs) to ([class*="loam-"]) {
   button.tab {
     align-items: center;
     background: transparent;
@@ -49,9 +36,12 @@
       opacity: 0.5;
     }
 
-    &[data-active] {
-      border-block-end-color: var(--loam-color-primary);
-      color: var(--loam-color-primary);
+    /* The selected state is the ARIA state — detected, never duplicated as a
+       data attribute. Text uses the audited -strong so it holds 4.5:1 in a
+       --loam-context region (raw warning would not). */
+    &[aria-selected="true"] {
+      border-block-end-color: var(--loam-color-primary-strong);
+      color: var(--loam-color-primary-strong);
     }
 
     @media (prefers-reduced-motion: no-preference) {
@@ -104,12 +94,24 @@
      Must come after the base rule — same specificity, order decides.
      aria-disabled (unlike :disabled) gets no automatic GrayText, so name it. */
   @media (forced-colors: active) {
-    button.tab[data-active] {
+    button.tab[aria-selected="true"] {
       border-block-end-color: Highlight;
     }
 
     button.tab[aria-disabled="true"] {
       color: GrayText;
     }
+  }
+}
+
+/*
+ * The list is scoped to its own root: Tabs.List renders without the
+ * .loam-Tabs class on it (and, unlike Tab/Panel, is not context-guarded).
+ */
+@scope (.loam-Tabs-list) {
+  :scope {
+    border-block-end: 1px solid var(--loam-color-line);
+    display: block flex;
+    gap: var(--loam-space-xs);
   }
 }

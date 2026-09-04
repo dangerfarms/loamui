@@ -146,7 +146,6 @@ export function Pagination({
         className="control"
         href={getHref(clamped)}
         rel={options.rel}
-        data-active={options.active || undefined}
         aria-current={options.active ? "page" : undefined}
         aria-label={label}
         onClick={(event) => onNavigate?.(clamped, event)}

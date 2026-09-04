@@ -42,6 +42,13 @@
     @media (prefers-reduced-motion: no-preference) {
       animation: loam-loader-spin 0.65s linear infinite;
     }
+
+    /* Forced colors flatten the 25% ring and the solid edge to one colour,
+       so the rotation reads as a static circle; keep the open ring explicit. */
+    @media (forced-colors: active) {
+      border-color: CanvasText transparent transparent;
+      forced-color-adjust: none;
+    }
   }
 }
 
