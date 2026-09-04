@@ -1,0 +1,16 @@
+/**
+ * LoamUI — @loamui/ui stylesheet entry. Compositions layer on top of the
+ * core layers; import this after `@loamui/core/styles.css`. Composition
+ * files contain no `@layer` — the layer is assigned here (and by
+ * scripts/build-css.mjs for the built artifact).
+ */
+
+@layer loamui.tokens, loamui.elements, loamui.components, loamui.ui;
+
+@import url("./components/Hero/Hero.css") layer(loamui.ui);
+@import url("./components/Header/Header.css") layer(loamui.ui);
+@import url("./components/Footer/Footer.css") layer(loamui.ui);
+@import url("./components/Stats/Stats.css") layer(loamui.ui);
+@import url("./components/Pricing/Pricing.css") layer(loamui.ui);
+@import url("./components/Testimonials/Testimonials.css") layer(loamui.ui);
+@import url("./components/Features/Features.css") layer(loamui.ui);

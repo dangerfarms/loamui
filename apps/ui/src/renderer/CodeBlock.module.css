@@ -1,0 +1,44 @@
+.wrap {
+  background: var(--loam-color-bg-subtle);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-md);
+  overflow: hidden;
+  position: relative;
+}
+
+.pre {
+  background: transparent;
+  font-size: var(--loam-text-sm);
+  line-height: 1.6;
+  margin: 0;
+  overflow-inline: auto;
+  padding: 1rem 1.125rem;
+}
+
+.line {
+  display: block flow;
+}
+
+.copy {
+  background: var(--loam-color-surface);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-sm);
+  box-shadow: none;
+  color: var(--loam-color-fg-muted);
+  cursor: pointer;
+  font-size: var(--loam-text-xs);
+  font-weight: 600;
+  inset-block-start: 0.5rem;
+  inset-inline-end: 0.5rem;
+  padding: 0.25rem 0.6rem;
+  position: absolute;
+  transition:
+    color var(--loam-duration-md) var(--loam-ease),
+    border-color var(--loam-duration-md) var(--loam-ease);
+  z-index: 1;
+
+  &:hover {
+    border-color: var(--loam-color-line-strong);
+    color: var(--loam-color-fg);
+  }
+}

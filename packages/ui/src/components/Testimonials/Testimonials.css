@@ -1,0 +1,88 @@
+/* A testimonials section is a region: it declares its container so the fluid
+   tokens answer the section's width, and it hosts consumer content (an
+   Avatar, the Buttons), hence the donut. */
+@scope (.loam-Testimonials) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  /* A column grid inside a scrollport. Every item snaps to the start, and
+     a page is one clientWidth, which is what Controls scrolls by. */
+  ul.track {
+    display: block grid;
+    gap: var(--loam-space-lg);
+    grid-auto-columns: min(100%, 22rem);
+    grid-auto-flow: column;
+    list-style: none;
+    margin: 0;
+
+    /* overflow (shorthand), not overflow-inline: the logical property is
+       not yet Baseline, and the track would not scroll in some browsers. */
+    overflow: auto;
+    overscroll-behavior-inline: contain;
+
+    /* Room for the Card's border and the focus ring inside the scrollport. */
+    padding: var(--loam-space-xs);
+    scroll-padding-inline: var(--loam-space-xs);
+    scroll-snap-type: inline mandatory;
+
+    > li {
+      display: block grid;
+      scroll-snap-align: start;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      scroll-behavior: smooth;
+    }
+  }
+
+  div.controls {
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm);
+  }
+}
+
+/* Each item is a core Card, which the donut above fences off, so the Card
+   carries this second root. The Card's own look is untouched; this scope
+   arranges the quote and its author inside it. */
+@scope (.loam-Testimonials-item) to ([class*="loam-"]) {
+  :scope {
+    display: block flex;
+    flex-direction: column;
+    gap: var(--loam-space-md);
+  }
+
+  /* Inside a Card the quote is the main text, not an aside: it drops the
+     element style's rule and muted colour. */
+  blockquote.quote {
+    border-inline-start: 0;
+    color: var(--loam-color-fg);
+    font-size: var(--loam-text-lg);
+    margin: 0;
+    padding-inline-start: 0;
+
+    > p {
+      margin: 0;
+    }
+  }
+
+  footer.author {
+    align-items: center;
+    display: block flex;
+    gap: var(--loam-space-sm);
+    margin-block-start: auto;
+
+    p {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-sm);
+      margin: 0;
+    }
+
+    strong {
+      color: var(--loam-color-fg-strong);
+    }
+  }
+}

@@ -4,6 +4,7 @@
 // generated.ts so the code tabs show exactly what runs, and cannot drift.
 // Runs before dev and build.
 import { readFileSync, writeFileSync, readdirSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -27,4 +28,7 @@ for (const name of demos) {
   out.push(`export const ${key} = {`, `  tsx: ${JSON.stringify(tsx)},`, `  css: ${JSON.stringify(css)},`, "};", "");
 }
 writeFileSync(join(dir, "generated.ts"), out.join("\n"));
+// The repo's format gate covers generated files too; format the output the
+// same way a hand-written file would be.
+execFileSync("npx", ["oxfmt", join(dir, "generated.ts")], { stdio: "ignore" });
 console.log(`sync-agent-demo: ${demos.length} demo(s) → src/app/agent-demo/generated.ts`);

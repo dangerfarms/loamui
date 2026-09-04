@@ -179,7 +179,10 @@ writing against `@loamui/core`.
 This is a pnpm + Turborepo monorepo:
 
 - [`packages/core`](./packages/core): `@loamui/core`, the component library.
+- [`packages/ui`](./packages/ui): `@loamui/ui`, compositions (hero, header,
+  footer, pricing, testimonials) built from core.
 - [`apps/docs`](./apps/docs): the marketing site and documentation (Next.js).
+- [`apps/ui`](./apps/ui): the compositions gallery, deployed under `/ui`.
 
 ## Development
 

@@ -1,0 +1,56 @@
+.wrap {
+  background: var(--loam-color-surface);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-lg);
+  overflow: hidden;
+}
+
+.tabs {
+  background: var(--loam-color-bg-subtle);
+  border-block-end: 1px solid var(--loam-color-line);
+  display: block flex;
+  gap: 0.25rem;
+  padding: 0.4rem 0.5rem;
+}
+
+.tab {
+  background: transparent;
+  border: none;
+  border-radius: var(--loam-radius-sm);
+  box-shadow: none;
+  color: var(--loam-color-fg-muted);
+  cursor: pointer;
+  font-size: var(--loam-text-sm);
+  font-weight: 550;
+  padding: 0.3rem 0.75rem;
+  transition:
+    background var(--loam-duration-md) var(--loam-ease),
+    color var(--loam-duration-md) var(--loam-ease);
+
+  &:hover {
+    color: var(--loam-color-fg);
+  }
+
+  &[data-active] {
+    background: var(--loam-color-surface);
+    box-shadow: var(--loam-shadow-sm);
+    color: var(--loam-color-fg);
+  }
+}
+
+/* Compositions are sections: the stage is a grid whose single track
+   stretches them to the full width, and a container so their fluid tokens
+   and layout answer the stage, not the viewport. */
+.stage {
+  background: radial-gradient(circle at 1px 1px, var(--loam-color-line) 1px, transparent 0);
+  background-size: 1.25rem 1.25rem;
+  container-type: inline-size;
+  display: block grid;
+  gap: 1rem;
+  padding: clamp(1.5rem, 1.071rem + 2.143vi, 3rem);
+}
+
+.code {
+  border: none;
+  border-radius: 0;
+}

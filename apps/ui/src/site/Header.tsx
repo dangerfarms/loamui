@@ -1,11 +1,9 @@
-import Link from "next/link";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
-import { CommandMenu } from "./CommandMenu";
-import { MobileNav } from "./MobileNav";
 import { GitHubIcon } from "./Icons";
 import classes from "./Header.module.css";
 
+const CORE_URL = "https://loamui.com/";
 const GITHUB_URL = "https://github.com/dangerfarms/loamui";
 
 export function Header() {
@@ -13,20 +11,14 @@ export function Header() {
     <header className={classes.header}>
       <div className={classes.inner}>
         <div className={classes.left}>
-          <MobileNav />
           <Logo />
+          <span className={classes.tag}>UI</span>
           <nav className={classes.nav} aria-label="Primary">
-            <Link href="/docs/tokens">Tokens</Link>
-            <Link href="/docs/element-styles">Element styles</Link>
-            <Link href="/docs/components">Components</Link>
-            <a href="/ui/">Compositions</a>
+            <a href={CORE_URL}>Core docs</a>
+            <a href={`${CORE_URL}docs/composing/`}>Composing guide</a>
           </nav>
         </div>
-
         <div className={classes.right}>
-          <div className={classes.search}>
-            <CommandMenu />
-          </div>
           <a
             className={classes.stars}
             href={GITHUB_URL}

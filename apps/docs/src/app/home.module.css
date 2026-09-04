@@ -1,8 +1,7 @@
 /* ---------- Hero ---------- */
 .hero {
   overflow: hidden;
-  padding-block: clamp(3.5rem, 2.5rem + 5vi, 7rem)
-    clamp(3rem, 2.429rem + 2.857vi, 5rem);
+  padding-block: clamp(3.5rem, 2.5rem + 5vi, 7rem) clamp(3rem, 2.429rem + 2.857vi, 5rem);
   position: relative;
 }
 
@@ -24,11 +23,7 @@
   background-size: 3rem 3rem;
   content: "";
   inset: 0;
-  mask-image: radial-gradient(
-    ellipse 70% 60% at 50% 0%,
-    oklch(0% 0 0deg),
-    transparent 75%
-  );
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, oklch(0% 0 0deg), transparent 75%);
   opacity: 0.4;
   position: absolute;
 }
@@ -175,7 +170,7 @@
   font-size: var(--loam-text-sm);
   gap: 1rem;
   justify-content: space-between;
-  padding-top: 1rem;
+  padding-block-start: 1rem;
 }
 
 .showcaseLabel {
@@ -355,16 +350,8 @@
   padding: 1.25rem;
 
   &[data-good] {
-    background: color-mix(
-      in oklch,
-      var(--loam-color-primary-soft) 40%,
-      var(--loam-color-surface)
-    );
-    border-color: color-mix(
-      in oklch,
-      var(--loam-color-primary) 40%,
-      var(--loam-color-line)
-    );
+    background: color-mix(in oklch, var(--loam-color-primary-soft) 40%, var(--loam-color-surface));
+    border-color: color-mix(in oklch, var(--loam-color-primary) 40%, var(--loam-color-line));
   }
 }
 

@@ -1,0 +1,84 @@
+/* A header is a region: it declares its container so the nav can wrap
+   beneath the brand row by width, and it hosts consumer content, hence
+   the donut. */
+@scope (.loam-Header) to ([class*="loam-"]) {
+  :scope {
+    align-items: center;
+    border-block-end: 1px solid var(--loam-color-line);
+    container-type: inline-size;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-lg);
+    padding-block: var(--loam-space-md);
+  }
+
+  a.brand {
+    align-items: center;
+    color: var(--loam-color-fg-strong);
+    display: inline flex;
+    font-family: var(--loam-font-display);
+    font-size: var(--loam-text-lg);
+    font-weight: 700;
+    gap: var(--loam-space-sm);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+
+  nav.nav {
+    ul {
+      display: block flex;
+      flex-wrap: wrap;
+      gap: var(--loam-space-xs) var(--loam-space-lg);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      margin: 0;
+    }
+
+    a {
+      color: var(--loam-color-fg-muted);
+      display: inline flow-root;
+      padding-block: var(--loam-space-xs);
+      text-decoration: none;
+
+      /* The current page is the one link that does not navigate away; it
+         reads as a marker, not a link. */
+      &[aria-current="page"] {
+        color: var(--loam-color-fg-strong);
+        font-weight: 600;
+        text-decoration: underline;
+        text-decoration-color: var(--loam-color-primary);
+        text-decoration-thickness: 0.125em;
+        text-underline-offset: 0.4em;
+      }
+
+      @media (hover: hover) {
+        &:hover {
+          color: var(--loam-color-fg-strong);
+        }
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        transition: color var(--loam-duration-sm) var(--loam-ease);
+      }
+    }
+  }
+
+  div.actions {
+    align-items: center;
+    display: block flex;
+    gap: var(--loam-space-sm);
+    margin-inline-start: auto;
+  }
+
+  /* Narrow: the nav takes a full row beneath brand and actions. */
+  @container (width <= 40rem) {
+    nav.nav {
+      flex-basis: 100%;
+      order: 1;
+    }
+  }
+}
