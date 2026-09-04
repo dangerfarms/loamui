@@ -13,9 +13,9 @@ export interface PricingRootProps extends HTMLAttributes<HTMLElement> {
  *
  * The recommended plan is not a prop. Declare `--loam-context: primary`
  * on that `Pricing.Plan` (a class in your CSS, or the style attribute) and
- * the Badge and Button inside answer it. In the neutral theme primary is
- * near-black, so the plan's Card also takes the strong line colour in a
- * primary region and stays visible where the context alone would not show.
+ * the Badge and Button inside answer it; the Badge's text is the signal
+ * that survives every theme, including the neutral one where primary is
+ * near-black. The Card is left exactly as core styles it.
  *
  * ```tsx
  * <Pricing.Root>
@@ -67,12 +67,16 @@ export interface PricingPlanProps extends HTMLAttributes<HTMLLIElement> {
 
 /**
  * One plan: a list item wrapping a Card. The list item is the region, so
- * `--loam-context` declared here reaches everything inside the Card.
+ * `--loam-context` declared here reaches everything inside the Card. The
+ * parts sit in their own column inside the Card, so the Card's surface is
+ * core's and the layout is this package's.
  */
 function PricingPlan({ className, children, ref, ...rest }: PricingPlanProps) {
   return (
     <li ref={ref} className={className} {...rest}>
-      <Card className="loam-Pricing-plan">{children}</Card>
+      <Card>
+        <div className="loam-Pricing-plan">{children}</div>
+      </Card>
     </li>
   );
 }

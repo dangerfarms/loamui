@@ -25,11 +25,15 @@
   }
 }
 
-/* The plan surface is a core Card, which the donut above fences off, so the
-   Card carries this second root. The Card's own look (surface, line, radius,
-   padding) is untouched; this scope arranges the parts inside it. */
+/* The parts live in their own column inside a core Card: the Card keeps
+   every property core gives it (a components-layer rule is never overridden
+   from this layer), and this root, fenced off by the Card's donut, arranges
+   what is inside. block-size (not min-block-size: a percentage min-height
+   does not resolve against the stretched Card) fills the Card so the action
+   can sit at the foot; where nothing stretches the Card it is just auto. */
 @scope (.loam-Pricing-plan) to ([class*="loam-"]) {
   :scope {
+    block-size: 100%;
     display: block flex;
     flex-direction: column;
     gap: var(--loam-space-md);
@@ -77,15 +81,5 @@
   div.action {
     display: block grid;
     margin-block-start: auto;
-  }
-
-  /* The consumer marks the recommended plan by declaring --loam-context:
-     primary on Pricing.Plan; the Badge and Button inside answer it. Primary
-     is near-black in the neutral theme, where that answer barely shows, so
-     the surface takes the strong line as well. */
-  @container (style(--loam-context: primary)) {
-    :scope {
-      border-color: var(--loam-color-line-strong);
-    }
   }
 }

@@ -9,7 +9,7 @@ const pricing: Composition = {
   name: "Pricing",
   category: "Page sections",
   description: "A grid of plans, each a Card with a name, a price, a feature list and one action.",
-  lead: "Eight parts on a native section and list. The plans are an auto-fit grid, so the count and the viewport decide the columns; the recommended plan is a --loam-context region declared by you, not a prop, and the Badge, the Button and the Card's line all answer it.",
+  lead: "Eight parts on a native section and list. The plans are an auto-fit grid, so the count and the viewport decide the columns; the recommended plan is a --loam-context region declared by you, not a prop, and the Badge and the Button inside answer it.",
   importLine: `import { Pricing } from "@loamui/ui";`,
   parts: [
     {
@@ -52,7 +52,7 @@ const pricing: Composition = {
     {
       title: "Three plans",
       description:
-        "The Team plan declares --loam-context: primary, and the Badge, the Button and the Card's line answer it.",
+        "The Team plan declares --loam-context: primary, and the Badge and the Button inside answer it.",
       code: `<Pricing.Root>
   <h2>Plans</h2>
   <Pricing.Plans>
