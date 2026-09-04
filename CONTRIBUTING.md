@@ -185,17 +185,17 @@ Any JSX that uses compound parts (docs demos included) must live in a
 **State attributes**: the shared styling vocabulary, identical on every
 component (never invent synonyms):
 
-| Attribute                                          | Where                                     | Meaning                                                                                                |
-| -------------------------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `data-popup-open`                                  | trigger                                   | its popup/bubble is open                                                                               |
-| `data-open`                                        | popup/panel                               | open; uniform across enhanced & fallback                                                               |
-| `data-disabled`                                    | wrapper/control                           | disabled styling hook                                                                                  |
-| `data-current`                                     | nav item                                  | current page/location                                                                                  |
-| `data-size` / `data-position`                      | some display components (Badge, Progress) | instance styling hooks read by the stylesheet; form controls have no size hooks: their sizing is fluid |
-| `data-orientation`                                 | RadioGroup                                | display hook (see Sanctioned exceptions)                                                               |
-| `data-label-position`                              | Switch                                    | display hook (see Sanctioned exceptions)                                                               |
-| `data-striped` / `data-hover` / `data-col-borders` | Table                                     | display hooks (see Sanctioned exceptions)                                                              |
-| `data-striped` / `data-animated`                   | Progress                                  | display hooks (see Sanctioned exceptions)                                                              |
+| Attribute                                          | Where                                    | Meaning                                                                                                |
+| -------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `data-popup-open`                                  | trigger                                  | its popup/bubble is open                                                                               |
+| `data-open`                                        | popup/panel                              | open; uniform across enhanced & fallback                                                               |
+| `data-disabled`                                    | wrapper/control                          | disabled styling hook                                                                                  |
+| `data-current`                                     | nav item                                 | current page/location                                                                                  |
+| `data-size` / `data-position`                      | Badge, Progress; Drawer's panel (`side`) | instance styling hooks read by the stylesheet; form controls have no size hooks: their sizing is fluid |
+| `data-orientation`                                 | RadioGroup                               | display hook (see Sanctioned exceptions)                                                               |
+| `data-label-position`                              | Switch                                   | display hook (see Sanctioned exceptions)                                                               |
+| `data-striped` / `data-hover` / `data-col-borders` | Table                                    | display hooks (see Sanctioned exceptions)                                                              |
+| `data-striped` / `data-animated`                   | Progress                                 | display hooks (see Sanctioned exceptions)                                                              |
 
 Components built on native state use the platform's hook instead (e.g.
 Details styles `details[open]`). **Prefer detection over declaration**:
