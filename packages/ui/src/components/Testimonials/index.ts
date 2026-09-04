@@ -6,4 +6,4 @@ export type {
   TestimonialsQuoteProps,
   TestimonialsAuthorProps,
 } from "./Testimonials";
-export type { TestimonialsControlsProps } from "./TestimonialsControls";
+export type { TestimonialsControlsProps } from "../Carousel/CarouselControls";

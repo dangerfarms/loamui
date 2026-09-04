@@ -1,7 +1,7 @@
 import type { BlockquoteHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
 import { Card } from "@loamui/core";
 import { cx } from "../../utils";
-import { TestimonialsControls } from "./TestimonialsControls";
+import { TestimonialsControls } from "../Carousel/CarouselControls";
 
 export interface TestimonialsRootProps extends HTMLAttributes<HTMLElement> {
   children?: ReactNode;
