@@ -50,6 +50,20 @@ export function SignIn() {
 LoamUI components are React Server Component friendly. Interactive components mark themselves
 `"use client"` as needed, so you can drop them anywhere.
 
+Next's CSS pipeline (lightningcss) does not yet parse two features the stylesheet uses,
+`@container anchored()` and `position-try`, so importing `@loamui/core/styles.css` fails the
+build. Serve it as a static file instead: copy it to `public/` in a `prebuild` script and add
+`<link rel="stylesheet" href="/loamui-core.css" />` to the root layout's `<head>`.
+
+```js
+// scripts/sync-loamui-css.mjs — run from "prebuild" and "predev"
+import { copyFileSync } from "node:fs";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+copyFileSync(require.resolve("@loamui/core/styles.css"), "public/loamui-core.css");
+```
+
 ### Vite
 
 Import `@loamui/core/styles.css` in your `main.tsx` entry. No plugin required; the styles are

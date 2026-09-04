@@ -10,8 +10,7 @@
 @import url("./tokens.css");
 @import url("./elements.css");
 @import url("./components/Details/Details.css") layer(loamui.components);
-@import url("./components/SignpostLink/SignpostLink.css")
-layer(loamui.components);
+@import url("./components/SignpostLink/SignpostLink.css") layer(loamui.components);
 @import url("./components/SkipLink/SkipLink.css") layer(loamui.components);
 @import url("./components/Alert/Alert.css") layer(loamui.components);
 @import url("./components/Avatar/Avatar.css") layer(loamui.components);
@@ -22,8 +21,7 @@ layer(loamui.components);
 @import url("./components/Checkbox/Checkbox.css") layer(loamui.components);
 @import url("./components/DateInput/DateInput.css") layer(loamui.components);
 @import url("./components/Drawer/Drawer.css") layer(loamui.components);
-@import url("./components/ErrorSummary/ErrorSummary.css")
-layer(loamui.components);
+@import url("./components/ErrorSummary/ErrorSummary.css") layer(loamui.components);
 @import url("./components/Field/Field.css") layer(loamui.components);
 @import url("./components/Fieldset/Fieldset.css") layer(loamui.components);
 @import url("./components/Input/Input.css") layer(loamui.components);

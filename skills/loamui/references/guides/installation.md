@@ -1,0 +1,73 @@
+---
+title: Installation
+description: Install LoamUI in any React framework.
+---
+
+> LoamUI documentation, generated from the same source as the live page —
+> treat it as authoritative for `@loamui/core`.
+
+# Installation
+
+LoamUI works in any React 19 setup. There's no provider and no build plugin: just a package and a stylesheet.
+
+## 1. Install the package
+
+```bash
+pnpm add @loamui/core
+```
+
+## 2. Import the styles
+
+Import the stylesheet **once** at the root of your app. It carries all three primitives: the
+`--loam-*` tokens, the element styles, and the component styles.
+
+```tsx
+// Next.js App Router: app/layout.tsx
+import "@loamui/core/styles.css";
+```
+
+## 3. Use a component
+
+```tsx
+import { Button, Field, Input } from "@loamui/core";
+
+export function SignIn() {
+  return (
+    <form>
+      <Field.Root>
+        <Field.Label>Email</Field.Label>
+        <Input type="email" autoComplete="email" />
+      </Field.Root>
+      <Button type="submit">Sign in</Button>
+    </form>
+  );
+}
+```
+
+## Framework notes
+
+### Next.js
+
+LoamUI components are React Server Component friendly. Interactive components mark themselves
+`"use client"` as needed, so you can drop them anywhere.
+
+Next's CSS pipeline (lightningcss) does not yet parse two features the stylesheet uses,
+`@container anchored()` and `position-try`, so importing `@loamui/core/styles.css` fails the
+build. Serve it as a static file instead: copy it to `public/` in a `prebuild` script and add
+`<link rel="stylesheet" href="/loamui-core.css" />` to the root layout's `<head>`.
+
+```js
+// scripts/sync-loamui-css.mjs — run from "prebuild" and "predev"
+import { copyFileSync } from "node:fs";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+copyFileSync(require.resolve("@loamui/core/styles.css"), "public/loamui-core.css");
+```
+
+### Vite
+
+Import `@loamui/core/styles.css` in your `main.tsx` entry. No plugin required; the styles are
+plain CSS.
+
+> LoamUI ships static CSS with cascade layers. If you use your own ` @layer` order, the LoamUI layers are named `loamui.tokens`, `loamui.elements` and `loamui.components`.

@@ -13,3 +13,4 @@ storybook-static/
 coverage/
 
 local/
+apps/docs/public/llms-full.txt

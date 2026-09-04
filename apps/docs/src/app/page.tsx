@@ -266,7 +266,6 @@ export default function HomePage() {
         </div>
         <AgentShowcase
           skillCommand="npx skills add dangerfarms/loamui"
-          skillNote="soon"
           prompt={AGENT_PROMPT}
           tsx={pricing.tsx}
           css={pricing.css}

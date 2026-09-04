@@ -2,6 +2,7 @@
 name: add-component
 description: The procedure for adding or scaffolding a new LoamUI component so it matches the library's philosophy and passes the gates. Use this skill whenever the user asks to add, create, scaffold, or build a new component in @loamui/core — or to turn a pattern into a reusable part. It covers deciding whether the component should exist at all, which existing component to model, the API and CSS doctrine to hold, the wiring that low-risk additions usually miss, and how "done" is proven.
 metadata:
+  internal: true
   tags: loamui, component, scaffolding, primitives, composition, contextualism, accessibility, gates
 ---
 

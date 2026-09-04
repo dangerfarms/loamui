@@ -1,0 +1,100 @@
+{
+  "$comment": "Behavioural evals for the loamui skill. Run each prompt with and without the skill loaded; grade against `expect` and `forbid`. The delta is the skill's value — iterate the SKILL.md wording on whatever fails. See README.md.",
+  "evals": [
+    {
+      "id": "danger-button",
+      "prompt": "Using LoamUI, add a 'Delete account' button to this settings page. It should look like a destructive action.",
+      "expect": [
+        "Wraps the Button in a region declaring --loam-context: danger (inline style or a scoped class)",
+        "Uses <Button> from @loamui/core, not a styled <a> or a div",
+        "Does not invent a variant, color, or intent prop"
+      ],
+      "forbid": [
+        "variant=",
+        "color=\"danger\"",
+        "className=\"loam-Button",
+        "!important"
+      ]
+    },
+    {
+      "id": "signup-form",
+      "prompt": "Build a sign-up form with LoamUI: name, email, password, and an optional company field, with validation errors.",
+      "expect": [
+        "Each text control sits inside Field.Root with Field.Label and Field.Error",
+        "The optional field uses <Field.Label optional> rather than marking required fields",
+        "No manual id / aria-describedby / aria-invalid on the controls",
+        "Error messages say what to do in the question's words (e.g. 'Enter your email address')"
+      ],
+      "forbid": [
+        " *",
+        "This field is required",
+        "aria-describedby=",
+        "Please enter"
+      ]
+    },
+    {
+      "id": "wide-modal",
+      "prompt": "Our LoamUI Modal is too narrow for the release-notes content. Make it wider.",
+      "expect": [
+        "Sets --loam-modal-size (style prop or scoped CSS) where the modal is used",
+        "Does not look for or add a size prop"
+      ],
+      "forbid": ["size=\"lg\"", "size={", "width: 900px"]
+    },
+    {
+      "id": "cta-link",
+      "prompt": "Add a prominent 'Book a demo' call-to-action that links to /demo, styled like the LoamUI buttons.",
+      "expect": [
+        "Uses SignpostLink (navigation), optionally with render={<Link/>} for a router link",
+        "Explains that Button is for actions and a link should not be dressed as a button"
+      ],
+      "forbid": ["<Button", "className=\"loam-Button", "role=\"button\""]
+    },
+    {
+      "id": "faq-accordion",
+      "prompt": "Implement an FAQ accordion with LoamUI.",
+      "expect": [
+        "Uses Details.Root / Details.Summary / Details.Content per question",
+        "Does not hand-roll a details element with loam-Details classes or a custom chevron"
+      ],
+      "forbid": ["Accordion", "className=\"loam-Details", "<summary>"]
+    },
+    {
+      "id": "theme-brand",
+      "prompt": "Rebrand this LoamUI app to a deep green primary colour with a serif display font.",
+      "expect": [
+        "Overrides --loam-color-primary and --loam-font-display at :root (or a scope), in oklch()",
+        "Does not edit component CSS, private --_ properties, or add !important"
+      ],
+      "forbid": ["#0", "!important", "--_"]
+    },
+    {
+      "id": "nextjs-install",
+      "prompt": "Set up LoamUI in this Next.js app.",
+      "expect": [
+        "Installs @loamui/core and serves styles.css as a static file (copy to public/ + <link>) rather than importing it, citing the CSS-pipeline limitation",
+        "No provider or plugin is added"
+      ],
+      "forbid": ["ThemeProvider", "LoamProvider"]
+    },
+    {
+      "id": "page-layout",
+      "prompt": "Lay out a dashboard page with LoamUI: a sidebar and a grid of stat cards.",
+      "expect": [
+        "Uses native CSS grid/flex with var(--loam-space-*) for gaps, not a layout component",
+        "Uses Card for the stat surfaces",
+        "Does not look for Grid, Stack, or Container components"
+      ],
+      "forbid": ["<Grid", "<Stack", "<Container", "<Flex"]
+    },
+    {
+      "id": "unknown-component",
+      "prompt": "Use the LoamUI DateInput to collect a date of birth.",
+      "expect": [
+        "Reads references/components/date-input.md (or the live .md) before writing code",
+        "Uses the documented parts and wiring from that reference rather than guessing props"
+      ],
+      "forbid": ["type=\"date\""]
+    }
+  ]
+}

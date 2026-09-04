@@ -48,8 +48,7 @@
 
 .usageNote {
   background: var(--loam-color-primary-soft);
-  border: 1px solid
-    color-mix(in oklab, var(--loam-color-primary), var(--loam-color-line) 55%);
+  border: 1px solid color-mix(in oklab, var(--loam-color-primary), var(--loam-color-line) 55%);
   border-radius: var(--loam-radius-md);
   color: var(--loam-color-fg-muted);
   font-size: var(--loam-text-sm);

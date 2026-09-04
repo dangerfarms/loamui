@@ -23,7 +23,6 @@ export default function LabPage() {
         <h1>Pricing section</h1>
         <AgentShowcase
           skillCommand="npx skills add dangerfarms/loamui"
-          skillNote="soon"
           prompt={PRICING_PROMPT}
           tsx={pricing.tsx}
           css={pricing.css}
@@ -37,7 +36,6 @@ export default function LabPage() {
         <h1>Testimonial carousel</h1>
         <AgentShowcase
           skillCommand="npx skills add dangerfarms/loamui"
-          skillNote="soon"
           prompt={CAROUSEL_PROMPT}
           tsx={carousel.tsx}
           css={carousel.css}

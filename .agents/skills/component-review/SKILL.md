@@ -2,6 +2,7 @@
 name: component-review
 description: The procedure for reviewing a change to @loamui/core, graded by which primitive it touches. Use this skill when the user asks to review a component, a diff, a PR, or a proposed change to the library — or to audit the codebase against its conventions. It grades risk by blast radius (tokens/elements are HIGH, a component's public contract MEDIUM, pure composition LOW), says what to check at each grade, and how to verify findings before reporting them.
 metadata:
+  internal: true
   tags: loamui, review, code-review, primitives, risk, scope, accessibility, contrast, verification
 ---
 

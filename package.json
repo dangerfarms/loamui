@@ -8,13 +8,13 @@
     "test": "turbo run test",
     "lint": "turbo run lint",
     "lint:md": "rumdl check .",
-    "format": "oxfmt \"**/*.{ts,tsx}\" && prettier --write \"**/*.{css,md}\"",
-    "format:check": "oxfmt --check \"**/*.{ts,tsx}\" && prettier --check \"**/*.{css,md}\""
+    "format": "oxfmt \"**/*.{ts,tsx,css,md}\"",
+    "format:check": "oxfmt --check \"**/*.{ts,tsx,css,md}\"",
+    "check:skill": "node scripts/check-skill.mjs"
   },
   "devDependencies": {
     "oxfmt": "0.63.0",
     "oxlint": "^1.73.0",
-    "prettier": "^3.7.4",
     "rumdl": "^0.2.60",
     "stylelint": "^17.14.0",
     "stylelint-config-alphabetical-order": "^2.0.0",

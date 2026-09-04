@@ -53,11 +53,7 @@
 
     @media (hover: hover) {
       &:hover:not([aria-disabled="true"]) {
-        background: color-mix(
-          in oklch,
-          var(--loam-color-primary-soft) 50%,
-          transparent
-        );
+        background: color-mix(in oklch, var(--loam-color-primary-soft) 50%, transparent);
         color: var(--loam-color-fg);
       }
     }

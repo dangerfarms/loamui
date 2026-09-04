@@ -16,56 +16,31 @@
        a body and a display face). */
     --loam-font: system-ui, sans-serif;
     --loam-font-display: var(--loam-font);
-    --loam-font-mono:
-      ui-monospace, "SF Mono", "JetBrains Mono", menlo, consolas, monospace;
+    --loam-font-mono: ui-monospace, "SF Mono", "JetBrains Mono", menlo, consolas, monospace;
 
     /* Primary is the neutral action colour — near-black in light, near-white
        in dark. That is the white-label default: a theme remaps this one line
        to brand. Success owns green; accent is the small chromatic flourish
        (violet by default, for indicators and highlights), kept distinct in hue
        from the status colours so the two roles never read as the same. */
-    --loam-color-primary: light-dark(
-      oklch(25% 0.006 60deg),
-      oklch(92% 0.004 60deg)
-    );
-    --loam-color-accent: light-dark(
-      oklch(48% 0.25 305deg),
-      oklch(70% 0.17 305deg)
-    );
+    --loam-color-primary: light-dark(oklch(25% 0.006 60deg), oklch(92% 0.004 60deg));
+    --loam-color-accent: light-dark(oklch(48% 0.25 305deg), oklch(70% 0.17 305deg));
 
     /* Status hues. Each derives the same family as primary (soft, strong,
        ring), so a context region can remap the family wholesale. */
-    --loam-color-success: light-dark(
-      oklch(56% 0.13 150deg),
-      oklch(68% 0.13 150deg)
-    );
-    --loam-color-danger: light-dark(
-      oklch(58% 0.2 25deg),
-      oklch(66% 0.19 25deg)
-    );
-    --loam-color-warning: light-dark(
-      oklch(72% 0.16 75deg),
-      oklch(79% 0.15 80deg)
-    );
-    --loam-color-info: light-dark(
-      oklch(58% 0.16 245deg),
-      oklch(68% 0.15 245deg)
-    );
+    --loam-color-success: light-dark(oklch(56% 0.13 150deg), oklch(68% 0.13 150deg));
+    --loam-color-danger: light-dark(oklch(58% 0.2 25deg), oklch(66% 0.19 25deg));
+    --loam-color-warning: light-dark(oklch(72% 0.16 75deg), oklch(79% 0.15 80deg));
+    --loam-color-info: light-dark(oklch(58% 0.16 245deg), oklch(68% 0.15 245deg));
 
     /* Link: accessible blue — the most legible default for `a` tags. A
        project can override with the primary colour where the brand calls
        for it. */
-    --loam-color-link: light-dark(
-      oklch(50% 0.12 250deg),
-      oklch(70% 0.12 250deg)
-    );
+    --loam-color-link: light-dark(oklch(50% 0.12 250deg), oklch(70% 0.12 250deg));
 
     /* Highlight: bright yellow for `<mark>` and `::selection`, matching the
        web platform's own default. */
-    --loam-color-highlight: light-dark(
-      oklch(92% 0.15 100deg),
-      oklch(86% 0.16 100deg)
-    );
+    --loam-color-highlight: light-dark(oklch(92% 0.15 100deg), oklch(86% 0.16 100deg));
 
     /* ── 2. Neutrals ───────────────────────────────────────────────── */
 
@@ -73,48 +48,24 @@
        reading cold, and — unlike a green-adjacent neutral — sits far from every
        status hue, so a soft neutral surface never reads as success. */
     --loam-color-bg: light-dark(oklch(100% 0 0deg), oklch(17% 0.008 60deg));
-    --loam-color-bg-subtle: light-dark(
-      oklch(98% 0.004 60deg),
-      oklch(21% 0.008 60deg)
-    );
-    --loam-color-surface: light-dark(
-      oklch(100% 0 0deg),
-      oklch(23% 0.008 60deg)
-    );
+    --loam-color-bg-subtle: light-dark(oklch(98% 0.004 60deg), oklch(21% 0.008 60deg));
+    --loam-color-surface: light-dark(oklch(100% 0 0deg), oklch(23% 0.008 60deg));
 
     /* Foreground — text, but also icons, illustrations and chart fills;
        strong and dim/muted variants. Backgrounds are never dimmed. */
     --loam-color-fg: light-dark(oklch(24% 0.02 60deg), oklch(96% 0.006 60deg));
-    --loam-color-fg-strong: light-dark(
-      oklch(15% 0.02 60deg),
-      oklch(99% 0 0deg)
-    );
-    --loam-color-fg-muted: light-dark(
-      oklch(52% 0.02 60deg),
-      oklch(72% 0.015 60deg)
-    );
-    --loam-color-fg-dim: light-dark(
-      oklch(55% 0.015 60deg),
-      oklch(66% 0.012 60deg)
-    );
+    --loam-color-fg-strong: light-dark(oklch(15% 0.02 60deg), oklch(99% 0 0deg));
+    --loam-color-fg-muted: light-dark(oklch(52% 0.02 60deg), oklch(72% 0.015 60deg));
+    --loam-color-fg-dim: light-dark(oklch(55% 0.015 60deg), oklch(66% 0.012 60deg));
 
     /* Line — borders, and separators too. */
-    --loam-color-line: light-dark(
-      oklch(91% 0.006 60deg),
-      oklch(32% 0.01 60deg)
-    );
-    --loam-color-line-strong: light-dark(
-      oklch(62% 0.012 60deg),
-      oklch(60% 0.014 60deg)
-    );
+    --loam-color-line: light-dark(oklch(91% 0.006 60deg), oklch(32% 0.01 60deg));
+    --loam-color-line-strong: light-dark(oklch(62% 0.012 60deg), oklch(60% 0.014 60deg));
 
     /* The one foreground that reads on every solid status fill: near-white
        in light (where the fills darken), near-black in dark (where the
        fills stay raw) — the only pairing all statuses hold AA with. */
-    --loam-color-on-strong: light-dark(
-      oklch(99% 0 0deg),
-      oklch(17% 0.01 60deg)
-    );
+    --loam-color-on-strong: light-dark(oklch(99% 0 0deg), oklch(17% 0.01 60deg));
 
     /* ── 3. Derived — recipes, never hand-tuned per status ─────────── */
 
@@ -229,8 +180,7 @@
       inset 0 1px 0 0 light-dark(transparent, oklch(100% 0 0deg / 6%)),
       0 1px 2px light-dark(oklch(20% 0.02 60deg / 8%), transparent);
     --loam-shadow-raised:
-      inset 0 1px 0 0
-        light-dark(oklch(100% 0 0deg / 60%), oklch(100% 0 0deg / 10%)),
+      inset 0 1px 0 0 light-dark(oklch(100% 0 0deg / 60%), oklch(100% 0 0deg / 10%)),
       0 1px 2px light-dark(oklch(20% 0.02 60deg / 10%), transparent),
       0 2px 4px light-dark(oklch(20% 0.02 60deg / 7%), transparent),
       0 4px 8px light-dark(oklch(20% 0.02 60deg / 4%), transparent);

@@ -23,8 +23,7 @@
        the near-achromatic page background rotates the channel's hue (the
        declared hue of an achromatic colour still interpolates); cartesian
        mixing only desaturates, so the channel's hue survives. */
-    border: 1px solid
-      color-mix(in oklab, var(--_accent), var(--loam-color-bg) 55%);
+    border: 1px solid color-mix(in oklab, var(--_accent), var(--loam-color-bg) 55%);
     border-radius: var(--loam-radius-md);
     display: block flex;
     font-size: var(--loam-text-sm);

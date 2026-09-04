@@ -64,7 +64,7 @@ Each pillar has somewhere to learn it from and a mechanism that keeps it honest:
 
 | Pillar                | Learn more                                                                                                                                      | Enforced by                                                     |
 | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| Native CSS            | [Modern Web Guidance](https://github.com/GoogleChrome/modern-web-guidance) · `modern-web-guidance` skill                                        | A static-CSS build — no styling runtime ships                   |
+| Native CSS            | [Modern Web Guidance](https://github.com/GoogleChrome/modern-web-guidance) · `modern-web-guidance` skill                                        | A static-CSS build: no styling runtime ships                    |
 | Modern CSS            | [ModernCSS](https://moderncss.ai/) · `modern-css` skill                                                                                         | stylelint (nesting, `loam-` class patterns, token validation)   |
 | Composition           | [API conventions](./CONTRIBUTING.md#component-api-conventions)                                                                                  | The no-config-props doctrine, checked in review                 |
 | Contextualism         | [CSS Day: Contextualism](https://css-day-2026.netlify.app/00.02-contextualism/) · [Contextualism guide](https://loamui.com/docs/contextualism/) | Contrast audit in CI + the no-`size`/`variant`/`color` doctrine |
@@ -82,7 +82,7 @@ reading behind every convention is collected in
 ## Standards
 
 Conventions the linters can't check, stated with their reasons. The
-deterministic layer (stylelint, oxlint, Prettier, the contrast audit, CI) is
+deterministic layer (stylelint, oxlint, oxfmt, the contrast audit, CI) is
 the authority for everything it covers: run it and believe it.
 
 - **API.** No `size`, `variant`, `color`, or `fullWidth` props: size comes from
@@ -156,6 +156,24 @@ That's the whole setup: no provider, no config. See the
 [documentation](https://loamui.com/) for every component, live examples and the
 theming guide.
 
+## Use it with an AI agent
+
+LoamUI ships a skill that teaches agents the library: the primitives, the
+pillars, every component's reference, and the mistakes people make by default:
+
+```bash
+npx skills add dangerfarms/loamui
+```
+
+Or point an agent at [`https://loamui.com/llms.txt`](https://loamui.com/llms.txt):
+every docs page has a markdown twin at the same URL with `.md` appended, and
+[`llms-full.txt`](https://loamui.com/llms-full.txt) has them all in one file.
+The [Composing components](https://loamui.com/docs/composing/) guide shows how
+to build your own components (a hero, a pricing table, a carousel) from the
+three primitives without adding anything to the library, and the package
+ships `AGENTS.md`, a one-page summary of the conventions an agent needs when
+writing against `@loamui/core`.
+
 ## Repository layout
 
 This is a pnpm + Turborepo monorepo:
@@ -184,19 +202,6 @@ Philosophy and Standards above into procedures: **`add-component`** and
 **`modern-css`** and **`modern-web-guidance`** references. Claude Code loads
 them through the `.claude/skills/` symlinks. These are contributor skills for
 this repository; they are not installable in a consumer project.
-
-## Using LoamUI with an agent
-
-The documentation is written to be read by agents as well as people:
-
-- [`https://loamui.com/llms.txt`](https://loamui.com/llms.txt) indexes every
-  page, and every page has a markdown twin at the same URL with `.md` appended
-  (`/docs/contextualism` → `/docs/contextualism.md`).
-- The [Composing components](https://loamui.com/docs/composing/) guide shows
-  how to build your own components (a hero, a pricing table, a carousel) from
-  the three primitives without adding anything to the library.
-- The package ships `AGENTS.md`, a one-page summary of the conventions an
-  agent needs when writing against `@loamui/core`.
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
 
