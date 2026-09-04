@@ -33,8 +33,10 @@
     display: none;
   }
 
+  /* -strong, not raw primary: summary text must hold 4.5:1 inside a
+     --loam-context region, where raw warning could not. */
   :scope[open] > summary {
-    color: var(--loam-color-primary);
+    color: var(--loam-color-primary-strong);
   }
 
   span.label {
@@ -47,7 +49,7 @@
     rotate: 0deg;
 
     :scope[open] > summary & {
-      color: var(--loam-color-primary);
+      color: var(--loam-color-primary-strong);
       rotate: 180deg;
     }
 

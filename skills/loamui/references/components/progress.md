@@ -20,7 +20,7 @@ import { Progress } from "@loamui/core";
 
 ### Basic
 
-Set value 0–100. Add label to show the percentage inside the bar.
+Set value 0 to 100. Add label to show the percentage inside the bar.
 
 ```tsx
 <Progress value={72} />
@@ -39,7 +39,7 @@ size sets the track thickness: sm, md or lg.
 
 ### Contexts
 
-There is no color prop. Declare --loam-context on a one-element wrapper region (a style query is answered by ancestors, never by the declaring element itself), or let it inherit from a region that already means something. See the Contextualism guide.
+There is no colour prop. Declare --loam-context on a one-element wrapper region (see the Contextualism guide) and the status colours follow, or let it inherit from a region that already means something.
 
 ```tsx
 <Progress value={50} />
@@ -65,7 +65,7 @@ Stripes convey ongoing, indeterminate-feeling work; with animated the stripes sl
 
 ## When to use it
 
-- When completion is genuinely measurable (bytes uploaded, records processed, steps finished) and you can supply a truthful 0–100 value.
+- When completion is genuinely measurable (bytes uploaded, records processed, steps finished) and you can supply a truthful 0 to 100 value.
 - To show position in a multi-step flow, deriving value from the step count so the bar moves exactly when the user does.
 
 ## When not to
@@ -85,14 +85,14 @@ The bar exposes its value but not its subject. Pass aria-label (“Uploading pho
 
 ### Stripes are decoration
 
-striped and animated add texture, not information, and the stripe animation is removed entirely under prefers-reduced-motion: reduce. Anything the stripes were saying must therefore also be said by the value and the surrounding text.
+striped and animated add texture, not information, and the stripe animation exists only inside prefers-reduced-motion: no-preference. Anything the stripes were saying must therefore also be said by the value and the surrounding text.
 
 ## Accessibility
 
 - Renders role="progressbar" with aria-valuenow (rounded), aria-valuemin={0} and aria-valuemax={100}; the value is clamped, so an out-of-range number can never produce an invalid ARIA state.
 - No accessible name is wired for you: pass aria-label or aria-labelledby naming the task; both are forwarded to the root element.
-- The stripe animation and the fill transition are collapsed under prefers-reduced-motion: reduce by the library-wide reset, so motion never carries information.
-- Under forced colors (Windows High Contrast) the fill paints with Highlight via forced-color-adjust: none and the track gains a CanvasText border, so the bar stays visible where background paint is normally stripped.
+- The stripe animation and the fill transition exist only inside prefers-reduced-motion: no-preference; with reduced motion the bar is static and the value is still exposed through aria-valuenow, so motion never carries information.
+- Under forced colours (Windows High Contrast) the fill paints with Highlight via forced-color-adjust: none and the track gains a CanvasText border, so the bar stays visible where background paint is normally stripped.
 - The inline label only renders once the value reaches 8%, so the text never overflows a nearly-empty bar; if the number must always be readable, render it as text outside the bar as well.
 
 ## Props
@@ -101,7 +101,7 @@ Status is not a prop: it comes from the surrounding `--loam-context` region (see
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `value` | `number` | `0` | Fill amount, 0–100 (clamped). |
+| `value` | `number` | `0` | Fill amount, 0 to 100 (clamped). |
 | `size` | `"sm" \| "md" \| "lg"` | `"md"` | Track thickness. |
 | `striped` | `boolean` | — | Overlay diagonal stripes on the filled bar. |
 | `animated` | `boolean` | — | Animate the stripes (implies striped). |

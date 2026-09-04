@@ -9,36 +9,39 @@ element styles and React components for quickly building bespoke UIs that are
 accessible, adaptable and fast.
 
 Most component libraries ship a styling engine to the browser. LoamUI doesn't.
-Everything here is styled with plain, modern CSS — cascade layers, custom
+Everything here is styled with plain, modern CSS: cascade layers, custom
 properties, `light-dark()`, `color-mix()`, container queries, logical
 properties. Nothing runs at runtime, and there is nothing extra to download.
-
-## What that buys you
-
-- **Zero-runtime.** Static CSS, no CSS-in-JS, no per-render serialization
-  cost — and it composes with React Server Components.
-- **Themeable with variables.** Rebrand by overriding `--loam-*` tokens at any
-  scope; there is no provider to mount.
-- **Native dark mode.** Tokens are defined with `light-dark()`; one toggle
-  flips `color-scheme` and every token re-resolves.
-- **Accessible by default.** Semantic HTML, managed focus, keyboard support,
-  and a contrast-audited palette — verified by axe and interaction tests in a
-  real browser.
 
 ## Three primitives
 
 LoamUI is three layers, shipped in one stylesheet and applied by cascade order:
 
-1. **[Tokens](?path=/docs/foundations-tokens--docs)** — a small set of semantic
+1. **[Tokens](?path=/docs/foundations-tokens--docs)**: a small set of semantic
    custom properties every component reads.
-2. **[Element styles](?path=/docs/foundations-element-styles--docs)** — enhanced
+2. **[Element styles](?path=/docs/foundations-element-styles--docs)**: enhanced
    defaults for native elements, so plain HTML is styled before any component
    appears.
-3. **Components** — the React parts, composed on top of the two primitives.
+3. **Components**: the React parts, composed on top of the two primitives.
 
-Read the [Principles](?path=/docs/foundations-principles--docs) for the ideas
-that hold them together, and browse the component groups in the sidebar for
-live, tested examples.
+## Five pillars
+
+The ideas that hold the primitives together, each explained on the
+[Principles](?path=/docs/foundations-principles--docs) page:
+
+- **[Native CSS](?path=/docs/foundations-principles--docs#1-native-css)**: real
+  elements carry the semantics; plain, static CSS carries the styling.
+- **[Modern CSS](?path=/docs/foundations-principles--docs#2-modern-css)**:
+  `@layer`, `@scope`, `light-dark()` and container queries; additive styles that
+  lean on the cascade.
+- **[Composition](?path=/docs/foundations-principles--docs#3-composition)**:
+  parts you arrange in your markup, not a wall of props.
+- **[Contextualism](?path=/docs/foundations-principles--docs#4-contextualism)**:
+  a region declares what it means and every control inside adapts.
+- **[Accessible & gatekept](?path=/docs/foundations-principles--docs#5-accessible--gatekept)**:
+  semantic HTML, preferences as the baseline, contrast and keyboard tests in CI.
+
+Browse the component groups in the sidebar for live, tested examples.
 
 ## Install
 
@@ -46,7 +49,7 @@ live, tested examples.
 pnpm add @loamui/core
 ```
 
-Import the stylesheet once at the app root — it defines the `--loam-*` tokens
+Import the stylesheet once at the app root; it defines the `--loam-*` tokens
 and the base layer every component builds on:
 
 ```tsx
@@ -59,4 +62,4 @@ export default function Page() {
 }
 ```
 
-Works in any React 19 setup — no provider, no build plugin.
+Works in any React 19 setup: no provider, no build plugin.

@@ -1,0 +1,28 @@
+{
+  "name": "@loamui/ui-site",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "predev": "node scripts/sync-css.mjs && node scripts/export-llms.mjs",
+    "dev": "node scripts/sync-css.mjs --watch & next dev --port 3008",
+    "prebuild": "node scripts/sync-css.mjs && node scripts/export-llms.mjs",
+    "build": "next build",
+    "start": "next start --port 3008",
+    "check-types": "tsc --noEmit",
+    "lint": "oxlint --config ../../.oxlintrc.json src && stylelint \"src/**/*.css\""
+  },
+  "dependencies": {
+    "@loamui/core": "workspace:*",
+    "@loamui/ui": "workspace:*",
+    "next": "^16.2.2",
+    "prism-react-renderer": "^2.3.1",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.12.0",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "typescript": "5.9.2"
+  }
+}

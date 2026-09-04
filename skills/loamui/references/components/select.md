@@ -20,7 +20,7 @@ import { Field, Select } from "@loamui/core";
 
 ### Basic usage
 
-Wrap the control in Field.Root and add a Field.Label: the select reads its id from the field, so the label is wired without any props.
+Inside Field.Root the select reads its id from the field, so Field.Label is wired without any props.
 
 ```tsx
 <Field.Root>
@@ -85,7 +85,7 @@ Field.Description links to the select via aria-describedby, the same wiring ever
 
 ### Error state
 
-A Field.Error after the control marks the field invalid and is announced: the message's presence is the state.
+A Field.Error before the control marks the field invalid and is announced: the message's presence is the state.
 
 ```tsx
 <Field.Root>

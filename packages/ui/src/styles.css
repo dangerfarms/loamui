@@ -1,0 +1,26 @@
+/**
+ * LoamUI — @loamui/ui stylesheet entry. Compositions layer on top of the
+ * core layers; import this after `@loamui/core/styles.css`. Composition
+ * files contain no `@layer` — the layer is assigned here (and by
+ * scripts/build-css.mjs for the built artifact).
+ */
+
+@layer loamui.tokens, loamui.elements, loamui.components, loamui.ui;
+
+@import url("./components/Hero/Hero.css") layer(loamui.ui);
+@import url("./components/Header/Header.css") layer(loamui.ui);
+@import url("./components/Footer/Footer.css") layer(loamui.ui);
+@import url("./components/Stats/Stats.css") layer(loamui.ui);
+@import url("./components/Pricing/Pricing.css") layer(loamui.ui);
+@import url("./components/Testimonials/Testimonials.css") layer(loamui.ui);
+@import url("./components/Features/Features.css") layer(loamui.ui);
+@import url("./components/Carousel/Carousel.css") layer(loamui.ui);
+@import url("./components/CallToAction/CallToAction.css") layer(loamui.ui);
+@import url("./components/Banner/Banner.css") layer(loamui.ui);
+@import url("./components/Faq/Faq.css") layer(loamui.ui);
+@import url("./components/ContactForm/ContactForm.css") layer(loamui.ui);
+@import url("./components/SignIn/SignIn.css") layer(loamui.ui);
+@import url("./components/ErrorPage/ErrorPage.css") layer(loamui.ui);
+@import url("./components/Team/Team.css") layer(loamui.ui);
+@import url("./components/ArticleCards/ArticleCards.css") layer(loamui.ui);
+@import url("./components/TableOfContents/TableOfContents.css") layer(loamui.ui);

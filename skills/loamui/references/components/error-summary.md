@@ -13,7 +13,7 @@ A box at the top of a form listing every error as a link to its field.
 ## Import
 
 ```tsx
-import { ErrorSummary, Field, Input } from "@loamui/core";
+import { Button, ErrorSummary, Field, Input } from "@loamui/core";
 ```
 
 ## Usage
@@ -28,13 +28,13 @@ Submit the empty form: the summary appears, takes keyboard focus so the problem 
     <ErrorSummary.Root>
       <ErrorSummary.Title />
       <ErrorSummary.List>
-        <ErrorSummary.Item href="#email">
+        <ErrorSummary.Item href="#demo-email">
           Enter your email address
         </ErrorSummary.Item>
       </ErrorSummary.List>
     </ErrorSummary.Root>
   )}
-  <Field.Root id="email">
+  <Field.Root id="demo-email">
     <Field.Label>Email address</Field.Label>
     <Field.Error>{emailError}</Field.Error>
     <Input />

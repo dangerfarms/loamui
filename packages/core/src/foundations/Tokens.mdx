@@ -6,18 +6,18 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 The first primitive: a small set of semantic custom properties every component
 reads. A handful of decisions and some fluid scales; everything else is derived
-by recipe. Theming is overriding `--loam-*` at any scope — no `ThemeProvider`,
+by recipe. Theming is overriding `--loam-*` at any scope: no `ThemeProvider`,
 no JavaScript.
 
 ## The surface
 
-Tokens are grouped into four bands — **inputs → neutrals → derived → scales**.
+Tokens are grouped into four bands: **inputs → neutrals → derived → scales**.
 The inputs are the decisions a theme makes; the neutrals are surfaces, text and
 borders; the derived band holds recipes (soft tints, solid fills, focus rings)
 computed from the inputs; the scales are the fluid type and space steps.
 
-The brand is carried by **one** input token. Its default is neutral — near-black
-in light, near-white in dark — which is the white-label starting point; a theme
+The brand is carried by **one** input token. Its default is neutral (near-black
+in light, near-white in dark), which is the white-label starting point; a theme
 rebrands by overriding that one line, for example to a violet:
 
 ```css
@@ -29,7 +29,7 @@ rebrands by overriding that one line, for example to a violet:
 
 Soft tint, hover, active, solid fills and focus rings all derive from it, so a
 rebrand is a single declaration. Because tokens are just custom properties, the
-nearest declaration up the tree wins — the same mechanism is a brand at `:root`,
+nearest declaration up the tree wins; the same mechanism is a brand at `:root`,
 a meaning on a region, and an override on one instance.
 
 ## Dark mode
@@ -42,7 +42,7 @@ so the canvas paints the correct scheme before CSS loads:
 <meta name="color-scheme" content="light dark" />
 ```
 
-To override the OS preference, set `data-theme` on the root or any subtree — the
+To override the OS preference, set `data-theme` on the root or any subtree; the
 attribute just sets `color-scheme`, so the `light-dark()` tokens re-resolve for
 that region. Remove it to follow the OS again.
 
@@ -55,26 +55,26 @@ value and won't re-resolve, so an inverted region must re-declare `color: var(--
 
 ## The token groups
 
-- **Brand & status** — `--loam-color-primary` (neutral black/white by default,
+- **Brand & status**: `--loam-color-primary` (neutral black/white by default,
   the white-label starting point), `--loam-color-accent` (the chromatic
   flourish), and `--loam-color-success` / `-danger` / `-warning` / `-info`, plus
   `--loam-color-link` and `--loam-color-highlight` (platform defaults).
-- **Neutrals** — `--loam-color-bg`, `-bg-subtle`, `-surface`, `-fg`, `-fg-strong`,
+- **Neutrals**: `--loam-color-bg`, `-bg-subtle`, `-surface`, `-fg`, `-fg-strong`,
   `-fg-muted`, `-fg-dim`, `-line`, `-line-strong`, `-on-strong`.
-- **Derived** (recipes, not decisions — rebrand primary and these follow) —
+- **Derived** (recipes, not decisions; rebrand primary and these follow):
   `--loam-color-primary-soft`, `-primary-strong`, the per-status soft/strong
   pairs, `--loam-color-surface-hover`, `--loam-color-ring`.
-- **Fonts** — `--loam-font` and `--loam-font-display` (both `system-ui` by
+- **Fonts**: `--loam-font` and `--loam-font-display` (both `system-ui` by
   default), plus `--loam-font-mono` (a monospace stack).
-- **Type scale** — `--loam-text-xs` … `-3xl`, fluid `clamp()` in container units.
-- **Spacing** — `--loam-space-xs` … `-xl`, fluid; the minimum is the fixed value.
-- **Radius & motion** (deliberately fixed) — `--loam-radius-sm` … `-full`,
+- **Type scale**: `--loam-text-xs` … `-3xl`, fluid `clamp()` in container units.
+- **Spacing**: `--loam-space-xs` … `-xl`, fluid; the minimum is the fixed value.
+- **Radius & motion** (deliberately fixed): `--loam-radius-sm` … `-full`,
   `--loam-duration-sm/md/lg`, `--loam-ease`, `--loam-ease-elastic`.
-- **Elevation** — layered `light-dark()` shadows; in dark the drop goes
+- **Elevation**: layered `light-dark()` shadows; in dark the drop goes
   transparent and an inset top highlight carries the bevel.
 
 The live token table on the docs site reads these values with
-`getComputedStyle` — measured from the loaded stylesheet, not transcribed, so
+`getComputedStyle`: measured from the loaded stylesheet, not transcribed, so
 the documentation can't drift from the CSS.
 
 ## Fluid type and spacing
@@ -83,13 +83,13 @@ Type and space are `clamp()` scales expressed in container units (`cqi`), so a
 piece responds to the width of its own container once you declare
 `container-type: inline-size` on it (without a container they respond to the
 viewport). The calculator parameters are committed as comments above the scales
-in `tokens.css` — regenerate, don't hand-edit.
+in `tokens.css`: regenerate, don't hand-edit.
 
 Corner radii are deliberately **not** fluid, and control heights aren't tokens
 at all: buttons and form controls share one derived anatomy (padding +
 line-height + border) that aligns by construction at every container width.
 
-## Extending & overriding — three escape hatches, none need `!important`
+## Extending & overriding: three escape hatches, none need `!important`
 
 1. **Target the class names.** Roots carry stable prefixed classes
    (`.loam-Button`, `.loam-Card`, `.loam-Input-field`). LoamUI's styles live in a

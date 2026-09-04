@@ -1,0 +1,67 @@
+@scope (.menu) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  div.courses {
+    display: block grid;
+    gap: var(--loam-space-lg);
+    grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+  }
+}
+
+@scope (.course) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-md);
+
+    /* Status is a fact about the card: declared once on its root, the
+       Badge and the Button inside re-answer their colour. */
+    &.vegetarian {
+      --loam-context: success;
+    }
+
+    &.contains-nuts {
+      --loam-context: warning;
+    }
+
+    &.sold-out {
+      --loam-context: danger;
+    }
+  }
+
+  h3 {
+    align-items: safe center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm);
+    margin: 0;
+  }
+
+  dl {
+    display: block grid;
+    gap: var(--loam-space-sm);
+    margin: 0;
+  }
+
+  dt {
+    display: block flex;
+    font-weight: 600;
+    gap: var(--loam-space-sm);
+    justify-content: space-between;
+  }
+
+  dd {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    margin: 0;
+  }
+
+  /* Prices line up in a column: lining, tabular figures. */
+  data {
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+}

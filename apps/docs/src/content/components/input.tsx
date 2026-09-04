@@ -19,7 +19,7 @@ const doc: ComponentContent = {
     {
       title: "Basic usage",
       description:
-        "Wrap the control in Field.Root and add a Field.Label: the input reads its id from the field, so the label is wired without any props.",
+        "Inside Field.Root the input reads its id from the field, so Field.Label is wired without any props.",
       code: `<Field.Root>
   <Field.Label>Email</Field.Label>
   <Input />

@@ -36,7 +36,7 @@ Only a handful of contexts cover almost everything:
 
 - **What the region means.** `--loam-context`: `primary` (the action of the area), `danger`
   (destructive territory), and the statuses `success`, `warning` and `info`.
-- **The size of the space.** Container queries and fluid `cqi` tokens; no size props.
+- **The size of the space.** Container queries and fluid tokens in `cqi` (container query inline units, 1% of the container's width); no size props.
 - **What the component contains.** Detection with `:has()`: an icon child, a rendered error
   message.
 - **Colour scheme.** `color-scheme` + `light-dark()` tokens; an on-dark region needs no prop.
@@ -98,8 +98,8 @@ consequence still lives in the stylesheets:
     style={{
       "--loam-context": "danger",
       display: "grid",
-      gap: "0.75rem",
-      padding: "1.25rem",
+      gap: "var(--loam-space-md)",
+      padding: "var(--loam-space-lg)",
       border: "1px solid var(--loam-color-line)",
       borderRadius: "var(--loam-radius-lg)",
       maxInlineSize: "26rem",
@@ -107,7 +107,7 @@ consequence still lives in the stylesheets:
   >
     <strong>Delete workspace</strong>
     <Checkbox label="I understand this is permanent" />
-    <div style={{ display: "flex", gap: "0.75rem" }}>
+    <div style={{ display: "flex", gap: "var(--loam-space-md)" }}>
       <Button>Delete</Button>
       <Button>Cancel</Button>
     </div>
@@ -201,12 +201,12 @@ container of 16rem or less a button takes the full width. The layout decides, pe
 of the layout, not per instance of the button:
 
 <div className={prose.block}>
-  <div style={{ display: "grid", gap: "0.75rem" }}>
+  <div style={{ display: "grid", gap: "var(--loam-space-md)" }}>
     <div
       style={{
         containerType: "inline-size",
         inlineSize: "14rem",
-        padding: "0.75rem",
+        padding: "var(--loam-space-md)",
         border: "1px dashed var(--loam-color-line)",
         borderRadius: "var(--loam-radius-md)",
       }}
@@ -218,7 +218,7 @@ of the layout, not per instance of the button:
         containerType: "inline-size",
         inlineSize: "24rem",
         maxInlineSize: "100%",
-        padding: "0.75rem",
+        padding: "var(--loam-space-md)",
         border: "1px dashed var(--loam-color-line)",
         borderRadius: "var(--loam-radius-md)",
       }}
@@ -261,14 +261,8 @@ Form errors work the same way. A field is invalid exactly when it contains a ren
 message; there is no `invalid` prop anywhere in the library:
 
 ```css
-/* the label tints when an error is present */
-@scope (.loam-Field:has(> p.error)) to ([class*="loam-"]) {
-  label {
-    color: var(--loam-color-danger);
-  }
-}
-
-/* the box keys off the control's own accessibility state */
+/* the box keys off the control's own accessibility state, which Field
+   derives from the presence of a rendered error message */
 .loam-Input-field:has(input[aria-invalid="true"]) {
   border-color: var(--loam-color-danger);
 }
@@ -294,7 +288,7 @@ thing.
 
 Contextualism is the default, not a ban. Some differences really are identity: a
 brand-coloured call to action that must look the same in every context. For those,
-specialize with a wrapper component (or the `--loam-button-color` channel), and
+specialise with a wrapper component (or the `--loam-button-color` channel), and
 give the thing a name. What you should not reach for is a variant prop that encodes, on each
 instance, a decision the surrounding design already made.
 

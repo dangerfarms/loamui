@@ -11,17 +11,24 @@ const doc: ComponentContent = {
     {
       title: "Contexts",
       description:
-        "Buttons are neutral by default. Declare --loam-context on a region and the buttons inside re-answer their colour; there are no variant props. See the Contextualism guide.",
+        "Buttons are neutral by default. Declare --loam-context on a region and the buttons inside re-answer their colour; there are no variant props. Primary is the neutral near-black in the white-label default, so a primary region reads as the same quiet button until a theme sets --loam-color-primary; danger shows the remap. See the Contextualism guide.",
       code: `<Button>Neutral</Button>
 
 <div style={{ "--loam-context": "primary" }}>
   <Button>Save changes</Button>
+</div>
+
+<div style={{ "--loam-context": "danger" }}>
+  <Button>Delete</Button>
 </div>`,
       render: () => (
-        <div style={{ display: "grid", gap: "0.75rem", justifyItems: "start" }}>
+        <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
           <Button>Neutral</Button>
           <div style={{ "--loam-context": "primary" } as CSSProperties}>
             <Button>Save changes</Button>
+          </div>
+          <div style={{ "--loam-context": "danger" } as CSSProperties}>
+            <Button>Delete</Button>
           </div>
         </div>
       ),
@@ -65,13 +72,13 @@ const doc: ComponentContent = {
   <Button>Save changes</Button>
 </div>
 
-<div style={{ display: "grid", gap: "0.75rem", inlineSize: "18rem" }}>
+<div style={{ display: "grid", gap: "0.75rem", inlineSize: "min(100%, 18rem)" }}>
   <Button>Save changes</Button>
   <Button>Cancel</Button>
 </div>`,
       render: () => (
         <div style={{ display: "grid", gap: "1.25rem" }}>
-          <Example label="Container ≤ 16rem — the button spans it">
+          <Example label="Container of 16rem or less: the button spans it">
             <div
               style={{
                 containerType: "inline-size",
@@ -84,7 +91,7 @@ const doc: ComponentContent = {
               <Button>Save changes</Button>
             </div>
           </Example>
-          <Example label="Room to spare — natural width">
+          <Example label="Room to spare: natural width">
             <div
               style={{
                 containerType: "inline-size",
@@ -141,7 +148,7 @@ const doc: ComponentContent = {
               Approve
             </Button>
           </Example>
-          <Example label="Icon-only — squares from its aria-label">
+          <Example label="Icon-only: squares from its aria-label">
             <Button aria-label="Approve">
               <svg viewBox="0 -0.5 25 25" fill="none" aria-hidden>
                 <path
@@ -160,7 +167,7 @@ const doc: ComponentContent = {
     {
       title: "Loading state",
       description:
-        "There is no loading prop. For a genuine busy state, add disabled and compose a Loader (marked aria-hidden so it isn't announced) into the children — it is detected and sized like an icon. This is the one sanctioned use of a disabled button; see “Avoid disabled buttons” below.",
+        "There is no loading prop. For a genuine busy state, add disabled and compose a Loader (marked aria-hidden so it isn't announced) into the children; it is detected and sized like an icon. This is the one sanctioned use of a disabled button; see “Avoid disabled buttons” below.",
       code: `<Button disabled>
   <Loader aria-hidden /> Saving
 </Button>`,

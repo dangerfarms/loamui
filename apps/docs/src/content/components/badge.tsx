@@ -10,7 +10,7 @@ const doc: ComponentContent = {
     {
       title: "Contexts",
       description:
-        "Badges are neutral by default. There are no variant or color props: declare --loam-context on a one-element wrapper region (a style query is answered by ancestors, never by the declaring element itself), or let it inherit from a larger region. See the Contextualism guide.",
+        "Badges are neutral by default. There are no variant or colour props: declare --loam-context on a one-element wrapper region (see the Contextualism guide) and the status colours follow, or let it inherit from a larger region. Badge keeps a size prop because it sizes an intrinsic glyph, the one exception the library makes for display components (Badge, Loader, Progress).",
       code: `<Badge>Neutral</Badge>
 <span style={{ "--loam-context": "primary" }}><Badge>Primary</Badge></span>
 <span style={{ "--loam-context": "success" }}><Badge>Success</Badge></span>
@@ -54,7 +54,7 @@ const doc: ComponentContent = {
     {
       title: "Status dot",
       description:
-        "Add dot to show a status dot before the label. It takes the context's colour, so the badge reads at a glance even before the text. Draft has no context, so its dot stays neutral — the dot still shows without one.",
+        "Add dot to show a status dot before the label. It takes the context's colour, so the badge reads at a glance even before the text. Draft has no context, so its dot stays neutral: the dot still shows without one.",
       code: `<span style={{ "--loam-context": "success" }}><Badge dot>Live</Badge></span>
 <span style={{ "--loam-context": "warning" }}><Badge dot>Pending</Badge></span>
 <span style={{ "--loam-context": "danger" }}><Badge dot>Offline</Badge></span>

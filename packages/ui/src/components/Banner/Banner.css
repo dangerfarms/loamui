@@ -1,0 +1,64 @@
+/* A banner is a region: it declares its container so the fluid tokens
+   answer the bar's width, and it hosts consumer content (a Button, a
+   link), hence the donut. */
+@scope (.loam-Banner) to ([class*="loam-"]) {
+  :scope {
+    align-items: center;
+    background: var(--loam-color-bg-subtle);
+    border-block-end: 1px solid var(--loam-color-line);
+    container-type: inline-size;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm) var(--loam-space-lg);
+    padding-block: var(--loam-space-sm);
+    padding-inline: var(--loam-space-lg);
+  }
+
+  /* The message takes the slack; the actions keep their width and wrap
+     under it when the bar is narrow. */
+  p.message {
+    flex: 1;
+    font-size: var(--loam-text-sm);
+    margin: 0;
+  }
+
+  div.actions {
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm);
+  }
+
+  /* Context: the consumer's region recolours the parts inside through the
+     tokens; the bar's own surface takes the status's soft tint as well, so
+     the whole strip reads as the status, not only the Button in it. */
+  @container (style(--loam-context: primary)) {
+    :scope {
+      background: var(--loam-color-primary-soft);
+    }
+  }
+
+  @container (style(--loam-context: success)) {
+    :scope {
+      background: var(--loam-color-success-soft);
+    }
+  }
+
+  @container (style(--loam-context: warning)) {
+    :scope {
+      background: var(--loam-color-warning-soft);
+    }
+  }
+
+  @container (style(--loam-context: info)) {
+    :scope {
+      background: var(--loam-color-info-soft);
+    }
+  }
+
+  @container (style(--loam-context: danger)) {
+    :scope {
+      background: var(--loam-color-danger-soft);
+    }
+  }
+}

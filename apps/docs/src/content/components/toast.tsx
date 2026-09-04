@@ -58,22 +58,44 @@ const doc: ComponentContent = {
       title: "High priority",
       description:
         'A high-priority toast looks the same but is announced assertively (role="alert") and interrupts what a screen reader is saying, rather than waiting politely. See the guidance below on when the interruption is earned.',
-      code: `toast.add({
-  title: "Connection lost",
-  description: "Trying to reconnect…",
-  priority: "high",
-});`,
+      code: `function DisconnectButton() {
+  const toast = useToast();
+  return (
+    <Button
+      onClick={() =>
+        toast.add({
+          title: "Connection lost",
+          description: "Trying to reconnect…",
+          priority: "high",
+        })
+      }
+    >
+      Drop connection
+    </Button>
+  );
+}`,
       render: () => <ToastPriorityDemo />,
     },
     {
       title: "Persistent",
       description:
         "timeout: 0 keeps a toast on screen until the user dismisses it, for messages that must not slip by, like a finished export waiting to be downloaded.",
-      code: `toast.add({
-  title: "Export ready",
-  description: "Stays until you dismiss it.",
-  timeout: 0,
-});`,
+      code: `function ExportButton() {
+  const toast = useToast();
+  return (
+    <Button
+      onClick={() =>
+        toast.add({
+          title: "Export ready",
+          description: "Stays until you dismiss it.",
+          timeout: 0,
+        })
+      }
+    >
+      Export data
+    </Button>
+  );
+}`,
       render: () => <ToastPersistentDemo />,
     },
   ],

@@ -44,10 +44,18 @@ Compose the drawer from parts. The Panel is a native <dialog> opened with showMo
 side anchors the panel to an edge and picks the slide direction. It is logical (start / end / top / bottom), so start and end follow the writing mode: inline-start is the left in LTR, the right in RTL.
 
 ```tsx
-<Drawer.Panel side="start">…</Drawer.Panel>
-<Drawer.Panel side="end">…</Drawer.Panel>
-<Drawer.Panel side="top">…</Drawer.Panel>
-<Drawer.Panel side="bottom">…</Drawer.Panel>
+{(["start", "end", "top", "bottom"] as const).map((side) => (
+  <Drawer.Root key={side}>
+    <Drawer.Trigger>From {side}</Drawer.Trigger>
+    <Drawer.Panel side={side}>
+      <Drawer.Title>Side: {side}</Drawer.Title>
+      <Drawer.Description>
+        start/end set the panel width; top/bottom set its height. Both follow writing mode.
+      </Drawer.Description>
+      <Drawer.Close>Close</Drawer.Close>
+    </Drawer.Panel>
+  </Drawer.Root>
+))}
 ```
 
 ### Panel size
@@ -55,9 +63,16 @@ side anchors the panel to an edge and picks the slide direction. It is logical (
 The panel is 24rem on its short axis by default: the width for start / end, the height for top / bottom. The long axis always fills the viewport. Set --loam-drawer-size where the drawer is used for a narrower or wider panel.
 
 ```tsx
-<Drawer.Panel side="end" style={{ "--loam-drawer-size": "18rem" }}>…</Drawer.Panel>
-<Drawer.Panel side="end">…</Drawer.Panel>
-<Drawer.Panel side="end" style={{ "--loam-drawer-size": "30rem" }}>…</Drawer.Panel>
+{(["18rem", "24rem", "30rem"] as const).map((size) => (
+  <Drawer.Root key={size}>
+    <Drawer.Trigger>Open {size}</Drawer.Trigger>
+    <Drawer.Panel side="end" style={{ "--loam-drawer-size": size }}>
+      <Drawer.Title>A {size} drawer</Drawer.Title>
+      <Drawer.Description>The width comes from one custom property.</Drawer.Description>
+      <Drawer.Close>Close</Drawer.Close>
+    </Drawer.Panel>
+  </Drawer.Root>
+))}
 ```
 
 ### Header with a close button
@@ -65,13 +80,16 @@ The panel is 24rem on its short axis by default: the width for start / end, the 
 A header row with an × is a composition pattern, not configuration: compose Drawer.Title and Drawer.Close however your design needs.
 
 ```tsx
-<Drawer.Panel side="end">
-  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-    <Drawer.Title>Filters</Drawer.Title>
-    <Drawer.Close aria-label="Close">×</Drawer.Close>
-  </div>
-  <Drawer.Description>Refine the results shown in the list.</Drawer.Description>
-</Drawer.Panel>
+<Drawer.Root>
+  <Drawer.Trigger>Filters</Drawer.Trigger>
+  <Drawer.Panel side="end">
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBlockEnd: "var(--loam-space-sm)" }}>
+      <Drawer.Title style={{ margin: 0 }}>Filters</Drawer.Title>
+      <Drawer.Close aria-label="Close">×</Drawer.Close>
+    </div>
+    <Drawer.Description>Refine the results shown in the list.</Drawer.Description>
+  </Drawer.Panel>
+</Drawer.Root>
 ```
 
 ## When to use it

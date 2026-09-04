@@ -6,6 +6,47 @@ description: Why LoamUI components have no variant or size props: context decide
 > LoamUI documentation, generated from the same source as the live page —
 > treat it as authoritative for `@loamui/core`.
 
+# Contextualism
+
+In most component libraries you tell each component what to look like: `variant="outline"`, `size="lg"`, `color="danger"`. LoamUI inverts that. Components read their _context_ (what the surrounding region means, how much space it has, what the component contains) and adapt themselves. Identity props are the last resort, not the default.
+
+## The paradigm
+
+A button doesn't know it's dangerous; the _delete-account panel_ is
+dangerous, and every control inside it should say so. A button doesn't know it should
+be small; it's sitting in a narrow sidebar, and the space decides. Encoding this on
+every instance repeats a decision the page has already made, and lets instances drift out of
+agreement. Declaring it once on the region can't.
+
+Only a handful of contexts cover almost everything:
+
+- **What the region means.** `--loam-context`: `primary` (the action of the area), `danger`
+  (destructive territory), and the statuses `success`, `warning` and `info`.
+- **The size of the space.** Container queries and fluid tokens in `cqi` (container query inline units, 1% of the container's width); no size props.
+- **What the component contains.** Detection with `:has()`: an icon child, a rendered error
+  message.
+- **Colour scheme.** `color-scheme` + `light-dark()` tokens; an on-dark region needs no prop.
+- **User preferences.** Motion is opt-in via `prefers-reduced-motion: no-preference`.
+
+## Declaring meaning: `--loam-context`
+
+Context is a registered custom property, **not** a data attribute. It
+inherits, so the nearest ancestor that sets it wins, and component CSS reads it with a
+container style query:
+
+One consequence: a container style query is answered by _ancestors_, never by the
+element that declares the property. So the declaration must sit **on an ancestor** of
+whatever it styles: for a single component that means a one-element wrapper around it, not a
+style on the instance itself. A component's own children are fine: a Button inside a warning
+Alert is a descendant of the Alert root, so the root's declaration reaches it.
+
+```css
+/* the library reads context like this */
+@container (style(--loam-context: danger)) {
+  .loam-Button {
+    --_color: var(--loam-color-danger);
+  }
+}
 ```
 
 A named, recurring region declares its context where the region is defined: in its own
@@ -20,6 +61,10 @@ the declaration is a semantic fact about it, so it lives with the rest of its st
 ```
 
 ```tsx
+<section className="danger-zone">
+  <Checkbox label="I understand this is permanent" />
+  <Button>Delete workspace</Button>
+</section>
 ```
 
 For a one-off region (or a single element) the style attribute declares the same property
@@ -28,27 +73,12 @@ styled, a semantic custom property is being set at a subtree root, and every vis
 consequence still lives in the stylesheets:
 
 ```tsx
+<section style={{ "--loam-context": "danger" }}>
+  <Checkbox label="I understand this is permanent" />
+  <Button>Delete workspace</Button>
+</section>
 ```
 
-<div className={prose.block}>
-  <div
-    style={{
-      "--loam-context": "danger",
-      display: "grid",
-      gap: "0.75rem",
-      padding: "1.25rem",
-      border: "1px solid var(--loam-color-line)",
-      borderRadius: "var(--loam-radius-lg)",
-      maxInlineSize: "26rem",
-    }}
-  >
-    <strong>Delete workspace</strong>
-    <Checkbox label="I understand this is permanent" />
-    <div style={{ display: "flex", gap: "0.75rem" }}>
-      <Button>Delete</Button>
-      <Button>Cancel</Button>
-    </div>
-  </div>
 </div>
 
 Notice the checkbox: `--loam-context` is not a button feature. The region remaps
@@ -58,6 +88,9 @@ work. And since the declaration must sit on an ancestor (see above), a single da
 button is just a one-element region, a wrapper around the button:
 
 ```tsx
+<span style={{ "--loam-context": "danger" }}>
+  <Button>Delete</Button>
+</span>
 ```
 
 This is the entire status API. No LoamUI component has a variant or colour prop; the status
@@ -66,6 +99,9 @@ success alert is an Alert in a `success` region (usually a one-element wrapper
 region, or inherited from an ancestor that already means something):
 
 ```tsx
+<div style={{ "--loam-context": "success" }}>
+  <Alert title="Saved">Your changes have been stored.</Alert>
+</div>
 ```
 
 ## One colour channel, derived looks
@@ -107,6 +143,7 @@ component:
 // Specialization is a wrapper, not a prop
 export function BrandButton(props: ButtonProps) {
   return (
+    <Button
       {...props}
       style={{ "--loam-button-color": "light-dark(darkblue, lightblue)" }}
     />
@@ -114,14 +151,6 @@ export function BrandButton(props: ButtonProps) {
 }
 ```
 
-<div className={prose.block}>
-  <Button
-    style={{
-      "--loam-button-color": "light-dark(darkblue, lightblue)",
-    }}
-  >
-    Custom channel
-  </Button>
 </div>
 
 ## The size of the space
@@ -130,31 +159,6 @@ There is no size prop. Padding and font are fluid container-relative tokens, and
 container of 16rem or less a button takes the full width. The layout decides, per instance
 of the layout, not per instance of the button:
 
-<div className={prose.block}>
-  <div style={{ display: "grid", gap: "0.75rem" }}>
-    <div
-      style={{
-        containerType: "inline-size",
-        inlineSize: "14rem",
-        padding: "0.75rem",
-        border: "1px dashed var(--loam-color-line)",
-        borderRadius: "var(--loam-radius-md)",
-      }}
-    >
-      <Button>Narrow: full width</Button>
-    </div>
-    <div
-      style={{
-        containerType: "inline-size",
-        inlineSize: "24rem",
-        maxInlineSize: "100%",
-        padding: "0.75rem",
-        border: "1px dashed var(--loam-color-line)",
-        borderRadius: "var(--loam-radius-md)",
-      }}
-    >
-      <Button>Wide: natural width</Button>
-    </div>
   </div>
 </div>
 
@@ -168,13 +172,6 @@ remember. The arrangement is the declaration.
 When the DOM already expresses a state, LoamUI styles it with `:has()` instead of
 asking you to repeat it as a prop. An icon inside a button is detected (no
 `leftSection` prop):
-
-<div className={prose.block}>
-  <Button>
-    <CheckIcon />
-    Approve
-  </Button>
-</div>
 
 ```css
 .loam-Button:has(svg) {
@@ -191,22 +188,12 @@ Form errors work the same way. A field is invalid exactly when it contains a ren
 message; there is no `invalid` prop anywhere in the library:
 
 ```css
-/* the label tints when an error is present */
-@scope (.loam-Field:has(> p.error)) to ([class*="loam-"]) {
-  label {
-    color: var(--loam-color-danger);
-  }
-}
-
-/* the box keys off the control's own accessibility state */
+/* the box keys off the control's own accessibility state, which Field
+   derives from the presence of a rendered error message */
 .loam-Input-field:has(input[aria-invalid="true"]) {
   border-color: var(--loam-color-danger);
 }
 ```
-
-<div className={prose.block}>
-  <DetectedErrorDemo />
-</div>
 
 Accessibility state still flows through React (`aria-invalid` is wired onto the
 control because screen readers can't run `:has()`), but it is _derived from the same
@@ -224,7 +211,7 @@ thing.
 
 Contextualism is the default, not a ban. Some differences really are identity: a
 brand-coloured call to action that must look the same in every context. For those,
-specialize with a wrapper component (or the `--loam-button-color` channel), and
+specialise with a wrapper component (or the `--loam-button-color` channel), and
 give the thing a name. What you should not reach for is a variant prop that encodes, on each
 instance, a decision the surrounding design already made.
 

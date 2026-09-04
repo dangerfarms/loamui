@@ -1,0 +1,67 @@
+@scope (.environments) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  /* Three cards in a row while they fit, one column when they do not (Layout guide). */
+  ul {
+    display: block grid;
+    gap: var(--loam-space-lg);
+    grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@scope (.environment) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-md);
+    grid-template-rows: auto 1fr auto;
+
+    /* Each card declares what it means; Badge and Button inside take the status colour. */
+    &.healthy {
+      --loam-context: success;
+    }
+
+    &.deploying {
+      --loam-context: warning;
+    }
+
+    &.failed {
+      --loam-context: danger;
+    }
+  }
+
+  h3 {
+    align-items: safe center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm);
+    justify-content: space-between;
+    margin: 0;
+  }
+
+  dl {
+    display: block grid;
+    gap: var(--loam-space-xs) var(--loam-space-md);
+    grid-template-columns: max-content 1fr;
+    margin: 0;
+  }
+
+  dt {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+  }
+
+  dd {
+    font-size: var(--loam-text-sm);
+    font-variant-numeric: lining-nums tabular-nums;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+}

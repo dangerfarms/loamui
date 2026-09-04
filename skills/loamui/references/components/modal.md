@@ -8,7 +8,7 @@ description: A focused dialog over the page.
 
 # Modal
 
-A blocking dialog for must-complete tasks, built on the native <dialog> element and the browser's top layer.
+A blocking dialog for must-complete tasks, built on the native <dialog> element and the browser's top layer, which paints above everything else.
 
 ## Import
 
@@ -42,7 +42,7 @@ Compose the dialog from parts. The Popup is a native <dialog> opened with showMo
 
 ### Alert dialog (confirmation)
 
-alert renders role="alertdialog": the backdrop doesn't light-dismiss (closedby="closerequest"; Escape still works), and autoFocus belongs on the least-destructive action so it is the default answer. Use for destructive or irreversible confirmations only.
+alert renders role="alertdialog": the backdrop doesn't light-dismiss (closing on an outside click or Escape) because closedby="closerequest" answers only Escape, and autoFocus belongs on the least-destructive action so it is the default answer. Use for destructive or irreversible confirmations only.
 
 ```tsx
 <Modal.Root>
@@ -69,8 +69,26 @@ alert renders role="alertdialog": the backdrop doesn't light-dismiss (closedby="
 The panel sizes to its content between a floor and a readable cap: a confirmation shrink-wraps, a form grows. When a design needs an explicit width, set --loam-modal-size where the modal is used.
 
 ```tsx
-<Modal.Popup>…sizes to its content…</Modal.Popup>
-<Modal.Popup style={{ "--loam-modal-size": "44rem" }}>…</Modal.Popup>
+<Modal.Root>
+  <Modal.Trigger>Content-sized</Modal.Trigger>
+  <Modal.Popup>
+    <Modal.Title>Signed out</Modal.Title>
+    <Modal.Description>Sign in again to continue.</Modal.Description>
+    <Modal.Close>Close</Modal.Close>
+  </Modal.Popup>
+</Modal.Root>
+
+<Modal.Root>
+  <Modal.Trigger>Wide (44rem)</Modal.Trigger>
+  <Modal.Popup style={{ "--loam-modal-size": "44rem" }}>
+    <Modal.Title>Release notes</Modal.Title>
+    <Modal.Description>
+      A wide panel for content that needs the room, set with one custom property where the
+      modal is used.
+    </Modal.Description>
+    <Modal.Close>Close</Modal.Close>
+  </Modal.Popup>
+</Modal.Root>
 ```
 
 ### Header with a close button
@@ -81,7 +99,7 @@ A header row with an × is a composition pattern, not configuration: compose Mod
 <Modal.Root>
   <Modal.Trigger>Open settings</Modal.Trigger>
   <Modal.Popup>
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBlockEnd: "var(--loam-space-sm)" }}>
       <Modal.Title style={{ margin: 0 }}>Settings</Modal.Title>
       <Modal.Close aria-label="Close">×</Modal.Close>
     </div>

@@ -16,6 +16,76 @@ Small enough to read in full. A component library that mints thousands of tokens
 a decision nobody can audit; here the decisions are the hues and neutrals, and the rest is
 arithmetic:
 
+| Token | Value |
+| --- | --- |
+| `--loam-font` | `system-ui, sans-serif` |
+| `--loam-font-display` | `var(--loam-font)` |
+| `--loam-font-mono` | `ui-monospace, "SF Mono", "JetBrains Mono", menlo, consolas, monospace` |
+| `--loam-color-primary` | `light-dark(oklch(25% 0.006 60deg), oklch(92% 0.004 60deg))` |
+| `--loam-color-accent` | `light-dark(oklch(48% 0.25 305deg), oklch(70% 0.17 305deg))` |
+| `--loam-color-success` | `light-dark(oklch(56% 0.13 150deg), oklch(68% 0.13 150deg))` |
+| `--loam-color-danger` | `light-dark(oklch(58% 0.2 25deg), oklch(66% 0.19 25deg))` |
+| `--loam-color-warning` | `light-dark(oklch(72% 0.16 75deg), oklch(79% 0.15 80deg))` |
+| `--loam-color-info` | `light-dark(oklch(58% 0.16 245deg), oklch(68% 0.15 245deg))` |
+| `--loam-color-link` | `light-dark(oklch(50% 0.12 250deg), oklch(70% 0.12 250deg))` |
+| `--loam-color-highlight` | `light-dark(oklch(92% 0.15 100deg), oklch(86% 0.16 100deg))` |
+| `--loam-color-bg` | `light-dark(oklch(100% 0 0deg), oklch(17% 0.008 60deg))` |
+| `--loam-color-bg-subtle` | `light-dark(oklch(98% 0.004 60deg), oklch(21% 0.008 60deg))` |
+| `--loam-color-surface` | `light-dark(oklch(100% 0 0deg), oklch(23% 0.008 60deg))` |
+| `--loam-color-fg` | `light-dark(oklch(24% 0.02 60deg), oklch(96% 0.006 60deg))` |
+| `--loam-color-fg-strong` | `light-dark(oklch(15% 0.02 60deg), oklch(99% 0 0deg))` |
+| `--loam-color-fg-muted` | `light-dark(oklch(52% 0.02 60deg), oklch(72% 0.015 60deg))` |
+| `--loam-color-fg-dim` | `light-dark(oklch(55% 0.015 60deg), oklch(66% 0.012 60deg))` |
+| `--loam-color-line` | `light-dark(oklch(91% 0.006 60deg), oklch(32% 0.01 60deg))` |
+| `--loam-color-line-strong` | `light-dark(oklch(62% 0.012 60deg), oklch(60% 0.014 60deg))` |
+| `--loam-color-on-strong` | `light-dark(oklch(99% 0 0deg), oklch(17% 0.01 60deg))` |
+| `--loam-color-primary-soft` | `light-dark( oklch(from var(--loam-color-primary) 96% 0.02 h), oklch(from var(--loam-color-primary) 28% 0.03 h) )` |
+| `--loam-color-success-soft` | `light-dark( oklch(from var(--loam-color-success) 96% 0.035 h), oklch(from var(--loam-color-success) 31% 0.075 h) )` |
+| `--loam-color-danger-soft` | `light-dark( oklch(from var(--loam-color-danger) 96% 0.035 h), oklch(from var(--loam-color-danger) 31% 0.075 h) )` |
+| `--loam-color-warning-soft` | `light-dark( oklch(from var(--loam-color-warning) 96% 0.035 h), oklch(from var(--loam-color-warning) 31% 0.075 h) )` |
+| `--loam-color-info-soft` | `light-dark( oklch(from var(--loam-color-info) 96% 0.035 h), oklch(from var(--loam-color-info) 31% 0.075 h) )` |
+| `--loam-color-primary-strong` | `light-dark( color-mix(in oklab, var(--loam-color-primary), oklch(0% 0 0deg) 22%), var(--loam-color-primary) )` |
+| `--loam-color-success-strong` | `light-dark( color-mix(in oklab, var(--loam-color-success), oklch(0% 0 0deg) 22%), var(--loam-color-success) )` |
+| `--loam-color-danger-strong` | `light-dark( color-mix(in oklab, var(--loam-color-danger), oklch(0% 0 0deg) 22%), var(--loam-color-danger) )` |
+| `--loam-color-warning-strong` | `light-dark( color-mix(in oklab, var(--loam-color-warning), oklch(0% 0 0deg) 22%), var(--loam-color-warning) )` |
+| `--loam-color-info-strong` | `light-dark( color-mix(in oklab, var(--loam-color-info), oklch(0% 0 0deg) 22%), var(--loam-color-info) )` |
+| `--loam-color-primary-ring` | `var(--loam-color-primary-strong)` |
+| `--loam-color-success-ring` | `var(--loam-color-success-strong)` |
+| `--loam-color-danger-ring` | `var(--loam-color-danger-strong)` |
+| `--loam-color-warning-ring` | `var(--loam-color-warning-strong)` |
+| `--loam-color-info-ring` | `var(--loam-color-info-strong)` |
+| `--loam-color-surface-hover` | `light-dark( oklch(from var(--loam-color-surface) 97% c h), oklch(from var(--loam-color-surface) 27% c h) )` |
+| `--loam-color-ring` | `var(--loam-color-primary-ring)` |
+| `--loam-text-xs` | `clamp(0.72rem, 0.8145rem - 0.122cqi, 0.7901rem)` |
+| `--loam-text-sm` | `clamp(0.8889rem, 0.885rem + 0.0193cqi, 0.9rem)` |
+| `--loam-text-md` | `clamp(1rem, 0.9565rem + 0.2174cqi, 1.125rem)` |
+| `--loam-text-lg` | `clamp(1.125rem, 1.0272rem + 0.4891cqi, 1.4063rem)` |
+| `--loam-text-xl` | `clamp(1.2656rem, 1.0944rem + 0.856cqi, 1.7578rem)` |
+| `--loam-text-2xl` | `clamp(1.4238rem, 1.1548rem + 1.3451cqi, 2.1973rem)` |
+| `--loam-text-3xl` | `clamp(1.6018rem, 1.2036rem + 1.9909cqi, 2.7466rem)` |
+| `--loam-space-xs` | `clamp(0.25rem, 0.2391rem + 0.0543cqi, 0.2813rem)` |
+| `--loam-space-sm` | `clamp(0.5rem, 0.4783rem + 0.1087cqi, 0.5625rem)` |
+| `--loam-space-md` | `clamp(0.75rem, 0.7174rem + 0.163cqi, 0.8438rem)` |
+| `--loam-space-lg` | `clamp(1rem, 0.9565rem + 0.2174cqi, 1.125rem)` |
+| `--loam-space-xl` | `clamp(1.5rem, 1.4348rem + 0.3261cqi, 1.6875rem)` |
+| `--loam-measure` | `66ch` |
+| `--loam-radius-sm` | `0.375rem` |
+| `--loam-radius-md` | `0.5rem` |
+| `--loam-radius-lg` | `0.75rem` |
+| `--loam-radius-xl` | `1rem` |
+| `--loam-radius-full` | `9999px` |
+| `--loam-shadow-sm` | `inset 0 1px 0 0 light-dark(transparent, oklch(100% 0 0deg / 6%)), 0 1px 2px light-dark(oklch(20% 0.02 60deg / 8%), transparent)` |
+| `--loam-shadow-raised` | `inset 0 1px 0 0 light-dark(oklch(100% 0 0deg / 60%), oklch(100% 0 0deg / 10%)), 0 1px 2px light-dark(oklch(20% 0.02 60deg / 10%), transparent), 0 2px 4px light-dark(oklch(20% 0.02 60deg / 7%), transparent), 0 4px 8px light-dark(oklch(20% 0.02 60deg / 4%), transparent)` |
+| `--loam-shadow-md` | `inset 0 1px 0 0 light-dark(transparent, oklch(100% 0 0deg / 6%)), 0 4px 6px -1px light-dark(oklch(20% 0.02 60deg / 10%), transparent), 0 2px 4px -2px light-dark(oklch(20% 0.02 60deg / 8%), transparent)` |
+| `--loam-shadow-lg` | `inset 0 1px 0 0 light-dark(transparent, oklch(100% 0 0deg / 8%)), 0 12px 20px -6px light-dark(oklch(20% 0.02 60deg / 14%), transparent), 0 4px 8px -4px light-dark(oklch(20% 0.02 60deg / 10%), transparent)` |
+| `--loam-duration-sm` | `100ms` |
+| `--loam-duration-md` | `175ms` |
+| `--loam-duration-lg` | `300ms` |
+| `--loam-ease` | `cubic-bezier(0.4, 0, 0.2, 1)` |
+| `--loam-ease-elastic` | `cubic-bezier(0.34, 1.56, 0.64, 1)` |
+| `--loam-ring-width` | `3px` |
+| `--loam-disabled-opacity` | `0.55` |
+
 ## Rebrand in one line
 
 One token carries the brand: `--loam-color-primary`. Everything else (the soft tint, hover, active,

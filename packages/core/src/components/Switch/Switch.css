@@ -19,6 +19,12 @@
   :scope[data-disabled] {
     opacity: var(--loam-disabled-opacity);
   }
+
+  span.label {
+    font-size: var(--loam-text-sm);
+    font-weight: 500;
+    line-height: 1.35;
+  }
 }
 
 /* Size variables live on the control so the bare SwitchControl (composed
@@ -144,14 +150,18 @@
         background: HighlightText;
       }
     }
-  }
-}
 
-@scope (.loam-Switch-wrapper) to ([class*="loam-"]) {
-  span.label {
-    font-size: var(--loam-text-sm);
-    font-weight: 500;
-    line-height: 1.35;
+    /* The invalid inset shadow is dropped in forced colors; carry it as an
+       outline in a system colour instead. */
+    input[aria-invalid="true"] + span.track {
+      outline: 2px solid LinkText;
+      outline-offset: 1px;
+    }
+
+    input[aria-invalid="true"]:focus-visible + span.track {
+      outline: var(--loam-ring-width) solid Highlight;
+      outline-offset: 2px;
+    }
   }
 }
 

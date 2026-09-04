@@ -9,7 +9,7 @@ const doc: ComponentContent = {
     {
       title: "Basic usage",
       description:
-        "Compose the panel from parts. In browsers with the popover attribute and anchor positioning, the top layer, light dismiss and Escape come from the browser: no z-index, no portal, no document listeners; elsewhere a lean wrapper-anchored fallback re-implements the same behavior.",
+        "Compose the panel from parts. In browsers with the popover attribute and anchor positioning, the top layer, light dismiss and Escape come from the browser: no z-index, no portal, no document listeners; elsewhere a lean wrapper-anchored fallback re-implements the same behaviour.",
       code: `<Popover.Root>
   <Popover.Trigger>Toggle</Popover.Trigger>
   <Popover.Popup>
@@ -51,7 +51,12 @@ const doc: ComponentContent = {
   <Popover.Trigger
     render={<button type="button" aria-label="Filters">⚙</button>}
   />
-  <Popover.Popup>…</Popover.Popup>
+  <Popover.Popup>
+    <Popover.Description>
+      The Trigger's wiring merged onto your own button. It opens the popover and carries
+      the aria-expanded state.
+    </Popover.Description>
+  </Popover.Popup>
 </Popover.Root>`,
       render: () => <PopoverLinkTriggerDemo />,
     },
@@ -80,7 +85,7 @@ const doc: ComponentContent = {
     },
   ],
   accessibility: [
-    "Where the popover attribute and anchor positioning are both supported, the browser provides top-layer rendering, light dismiss and Escape; other browsers get a wrapper-anchored fallback with the same behavior re-implemented in a few lines of JS, a deliberate no-polyfill, progressive-enhancement trade-off (see the browser support policy in CONTRIBUTING).",
+    "Where the popover attribute and anchor positioning are both supported, the browser provides top-layer rendering, light dismiss and Escape; other browsers get a wrapper-anchored fallback with the same behaviour re-implemented in a few lines of JS, a deliberate no-polyfill, progressive-enhancement trade-off (see the browser support policy at https://github.com/dangerfarms/loamui/blob/main/CONTRIBUTING.md#browser-support-policy).",
     'Dialog semantics match what aria-haspopup="dialog" promises screen-reader users: opening moves focus into the panel and closing returns it to the trigger.',
     "Trigger is a real <button> with aria-expanded; Popover.Title and Popover.Description automatically label the dialog via aria-labelledby / aria-describedby.",
     "Collision handling uses position-try flipping at viewport edges in supporting browsers; the fallback keeps the requested side.",

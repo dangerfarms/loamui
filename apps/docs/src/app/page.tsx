@@ -4,6 +4,9 @@ import { CodeBlock } from "@/renderer/CodeBlock";
 import { COMPONENTS, componentsByCategory } from "@/site/nav";
 import { BoltIcon, CheckIcon, GitHubIcon } from "@/site/Icons";
 import { HeroShowcase, InstallSnippet } from "./home.client";
+import { AgentShowcase } from "./AgentShowcase.client";
+import { RestaurantMenu } from "./agent-demo/menu";
+import { menu } from "./agent-demo/generated";
 import c from "./home.module.css";
 
 const STATS = [
@@ -28,8 +31,10 @@ const TENETS = [
     title: "Progressive enhancement",
     body: (
       <>
-        Everything works before and without JavaScript; animation and enhancement are layered on
-        top, inside <code>prefers-reduced-motion: no-preference</code> and <code>@supports</code>.
+        The native element is the baseline: forms, disclosures and links work before JavaScript, and
+        overlays open from server-rendered markup once it hydrates. Motion and newer platform
+        features are layered on top, inside <code>prefers-reduced-motion: no-preference</code> and{" "}
+        <code>@supports</code>.
       </>
     ),
   },
@@ -37,10 +42,40 @@ const TENETS = [
     title: "Baseline browser support",
     body: (
       <>
-        Features are adopted from Baseline, and support claims come from compatibility data, not
-        optimism.
+        Features are adopted once they are{" "}
+        <a href="https://web.dev/baseline" target="_blank" rel="noreferrer">
+          Baseline
+        </a>{" "}
+        (supported in every major engine); anything newer ships as an enhancement behind{" "}
+        <code>@supports</code>. Support claims come from compatibility data, not optimism.
       </>
     ),
+  },
+];
+
+const AGENT_PROMPT =
+  "Build a restaurant menu using @loamui/core: three cards for Starter, Main course and Dessert. Each card lists three dishes with a one-line description and a price, has one status badge (Vegetarian, Contains nuts, Sold out) and one action button. Use native elements and the element styles for the type, a scoped rule with --loam-* tokens for the card anatomy, Card, Badge and Button for the parts, and declare each card's status with --loam-context on its root (success, warning, danger) so the badge and the button take the status colour; the sold-out card's button is disabled. Do not add size, variant or colour props, and do not restyle LoamUI internals. Fetch https://loamui.com/llms.txt and use its rules for LoamUI in this project.";
+
+const PILLARS = [
+  {
+    name: "Native CSS",
+    body: "Real HTML elements carry the semantics and plain, static CSS carries the styling. Grounded in Google Chrome's Modern Web Guidance.",
+  },
+  {
+    name: "Modern CSS",
+    body: "Cascade layers for order, @scope for encapsulation, light-dark() and container queries for adaptation. No BEM, no specificity battles.",
+  },
+  {
+    name: "Composition",
+    body: "Parts, not prop soup. Compound components expose their parts, the render prop swaps the element, icons are detected children.",
+  },
+  {
+    name: "Contextualism",
+    body: "A region declares what it means and every control inside adapts. This is the whole status-and-size API.",
+  },
+  {
+    name: "Accessible & gatekept",
+    body: "Semantic HTML, managed focus and the reader's preferences as the baseline, with contrast, axe and keyboard tests run in CI.",
   },
 ];
 
@@ -71,15 +106,15 @@ const UX_RULES = [
 ];
 
 const GATES = [
-  "Stylelint, every rule on",
-  "Contrast audit reads the real stylesheets",
-  "axe on every component",
+  "Stylelint: standard, modern and alphabetical configs, nothing switched off",
+  "Contrast audit reads the recipes out of the real stylesheets",
+  "axe, the automated accessibility checker, runs on every component",
   "Interaction tests on real markup",
   "TypeScript-first",
-  "Zero runtime",
+  "Zero styling runtime",
 ];
 
-const LOAMUI_CODE = `import { Button, SignpostLink } from "@loamui/core";
+const LOAMUI_CODE = `import { Button } from "@loamui/core";
 
 <Button>Save changes</Button>;`;
 
@@ -99,7 +134,7 @@ const TECHNIQUES = [
   {
     name: "light-dark()",
     desc: "One value, both themes: no duplicated theme objects.",
-    code: "color: light-dark(#1a1a1a, #fafafa);",
+    code: "color: light-dark(\n  oklch(24% 0.02 60deg), oklch(96% 0.006 60deg)\n);",
   },
   {
     name: "color-mix()",
@@ -114,7 +149,7 @@ const TECHNIQUES = [
   {
     name: ":has()",
     desc: "Style a parent from the state of its children.",
-    code: ".field:has(:invalid) { border-color: red }",
+    code: ".loam-Field:has(> p.error) { … }",
   },
   {
     name: "logical properties",
@@ -144,7 +179,7 @@ export default function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className={c.hero}>
+      <section className={c.hero} data-no-hyphens>
         <div className={c.heroBg} />
         <div className={`container ${c.heroGrid}`}>
           <div>
@@ -180,7 +215,7 @@ export default function HomePage() {
       </section>
 
       {/* Stats */}
-      <section className="container">
+      <section className="container" data-no-hyphens>
         <div className={c.stats}>
           {STATS.map((s) => (
             <div key={s.label} className={c.stat}>
@@ -192,10 +227,10 @@ export default function HomePage() {
       </section>
 
       {/* Modern Web Guidance */}
-      <section className={`container ${c.section}`}>
+      <section className={`container ${c.section}`} data-no-hyphens>
         <div className={`${c.sectionHead} ${c.center}`}>
           <span className="eyebrow">
-            <BoltIcon width={14} height={14} /> The foundation
+            <BoltIcon width={14} height={14} /> Pillar 1: Native CSS
           </span>
           <h2 className={c.sectionTitle}>Built on Google&rsquo;s Modern Web Guidance.</h2>
           <p className={c.sectionSub}>
@@ -217,8 +252,52 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Ask an agent: prompt, result, code */}
+      <section className={`container ${c.section}`} data-no-hyphens>
+        <div className={`${c.sectionHead} ${c.center}`}>
+          <span className="eyebrow">Built with an agent</span>
+          <h2 className={c.sectionTitle}>Ask for a component. Get one built on the primitives.</h2>
+          <p className={c.sectionSub}>
+            LoamUI ships 33 low-level parts and no more. Everything else, a menu, a hero, a
+            carousel, your agent builds from the three primitives, reading the same documentation
+            you do. Here is one, exactly as an agent produced it from{" "}
+            <a href="/llms.txt">llms.txt</a>: each card declares what it means, and the badge and
+            button inside answer it.
+          </p>
+        </div>
+        <AgentShowcase
+          skillCommand="npx skills add dangerfarms/loamui"
+          prompt={AGENT_PROMPT}
+          tsx={menu.tsx}
+          css={menu.css}
+          caption="Generated by Claude Fable 5.1 from llms.txt and AGENTS.md alone, then run through the repo's own stylelint with --fix (nesting, logical properties, declaration order); otherwise unedited. Tokens only, no raw colours, each card declares its status on its root and the badge and button inside answer it."
+        >
+          <RestaurantMenu />
+        </AgentShowcase>
+      </section>
+
+      {/* The five pillars */}
+      <section className={`container ${c.section}`} data-no-hyphens>
+        <div className={`${c.sectionHead} ${c.center}`}>
+          <span className="eyebrow">Five pillars</span>
+          <h2 className={c.sectionTitle}>The ideas that hold the primitives together.</h2>
+          <p className={c.sectionSub}>
+            Each one is grounded in a reference and enforced somewhere: by the cascade, a lint rule,
+            a CI gate, or review. The sections below take them one at a time.
+          </p>
+        </div>
+        <ul className={c.pillars}>
+          {PILLARS.map((p) => (
+            <li key={p.name} className={c.pillar}>
+              <h3 className={c.pillarName}>{p.name}</h3>
+              <p className={c.pillarBody}>{p.body}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       {/* The three primitives */}
-      <section className={`container ${c.section}`}>
+      <section className={`container ${c.section}`} data-no-hyphens>
         <div className={`${c.sectionHead} ${c.center}`}>
           <span className="eyebrow">Three primitives</span>
           <h2 className={c.sectionTitle}>Tokens. Element styles. Components.</h2>
@@ -238,10 +317,10 @@ export default function HomePage() {
       </section>
 
       {/* Contextualism */}
-      <section className={`container ${c.section}`}>
+      <section className={`container ${c.section}`} data-no-hyphens>
         <div className={c.split}>
           <div>
-            <span className="eyebrow">The paradigm shift</span>
+            <span className="eyebrow">Pillar 4: Contextualism</span>
             <h2 className={c.sectionTitle}>Context decides, props don&rsquo;t.</h2>
             <p className={c.sectionSub}>
               Components carry no size, variant or colour props. A region declares what it means (
@@ -280,7 +359,7 @@ export default function HomePage() {
       </section>
 
       {/* UX best practice */}
-      <section className={`container ${c.section}`}>
+      <section className={`container ${c.section}`} data-no-hyphens>
         <div className={`${c.sectionHead} ${c.center}`}>
           <span className="eyebrow">Distilled UX practice</span>
           <h2 className={c.sectionTitle}>The hard-earned rules, already in the components.</h2>
@@ -299,18 +378,19 @@ export default function HomePage() {
       </section>
 
       {/* Gatekeeping */}
-      <section className={`container ${c.section}`}>
+      <section className={`container ${c.section}`} data-no-hyphens>
         <div className={c.split}>
           <div>
-            <span className="eyebrow">Deterministic gatekeeping</span>
+            <span className="eyebrow">Pillar 5: Accessible &amp; gatekept</span>
             <h2 className={c.sectionTitle}>
               Quality that doesn&rsquo;t depend on who wrote the code.
             </h2>
             <p className={c.sectionSub}>
-              Agent-assisted development needs gates, not vibes. LoamUI&rsquo;s quality bar is
-              enforced by deterministic tooling: a stylelint config with every rule on, a contrast
-              audit that reads the colour recipes out of the real stylesheets, and axe and
-              interaction tests on every component. The same gates run for human and agent alike.
+              Agent-assisted development needs gates. LoamUI&rsquo;s quality bar is enforced by
+              deterministic tooling: stylelint with nothing switched off, a contrast audit that
+              reads the colour recipes out of the real stylesheets, and axe (the automated
+              accessibility checker) and interaction tests in CI. The same gates run for human and
+              agent alike.
             </p>
             <ul className={c.splitList}>
               {GATES.map((item) => (
@@ -339,10 +419,10 @@ export default function HomePage() {
       </section>
 
       {/* Composition */}
-      <section className={`container ${c.section}`}>
+      <section className={`container ${c.section}`} data-no-hyphens>
         <div className={c.split}>
           <div>
-            <span className="eyebrow">Composition</span>
+            <span className="eyebrow">Pillar 3: Composition</span>
             <h2 className={c.sectionTitle}>Compose, don&rsquo;t configure.</h2>
             <p className={c.sectionSub}>
               Compound components expose their parts, element substitution goes through{" "}
@@ -351,15 +431,37 @@ export default function HomePage() {
             </p>
             <ul className={c.splitList}>
               {[
-                "Parts, not prop soup: Modal.Root, Modal.Trigger, Modal.Popup",
-                "render swaps the element, keeps the wiring",
-                "Form controls self-wire from the surrounding Field",
-              ].map((item) => (
-                <li key={item} className={c.splitItem}>
+                {
+                  key: "parts",
+                  item: (
+                    <>
+                      Parts, not prop soup: <code>Modal.Root</code>, <code>Modal.Trigger</code>,{" "}
+                      <code>Modal.Popup</code>
+                    </>
+                  ),
+                },
+                {
+                  key: "render",
+                  item: (
+                    <>
+                      <code>render</code> swaps the element, keeps the wiring
+                    </>
+                  ),
+                },
+                {
+                  key: "field",
+                  item: (
+                    <>
+                      Form controls self-wire from the surrounding <code>Field</code>
+                    </>
+                  ),
+                },
+              ].map(({ key, item }) => (
+                <li key={key} className={c.splitItem}>
                   <span className={c.splitCheck} aria-hidden>
                     <CheckIcon width={13} height={13} />
                   </span>
-                  {item}
+                  <span>{item}</span>
                 </li>
               ))}
             </ul>
@@ -376,14 +478,14 @@ export default function HomePage() {
       </section>
 
       {/* Comparison */}
-      <section className={`container ${c.section}`}>
+      <section className={`container ${c.section}`} data-no-hyphens>
         <div className={`${c.sectionHead} ${c.center}`}>
           <span className="eyebrow">See the difference</span>
           <h2 className={c.sectionTitle}>Same button. Cleaner everything.</h2>
           <p className={c.sectionSub}>
             LoamUI keeps styling in one shared, cacheable stylesheet, so your markup stays readable.
             Utility frameworks inline dozens of classes onto every element; runtime CSS-in-JS
-            serializes styles on each render.
+            serialises styles on each render.
           </p>
         </div>
         <div className={c.compare}>
@@ -394,8 +496,8 @@ export default function HomePage() {
             </div>
             <CodeBlock code={LOAMUI_CODE} />
             <p className={c.compareNote}>
-              One prop. Styles live in shared CSS: <strong>0&nbsp;kb</strong> runtime, works with
-              any build tool.
+              No props. Styles live in shared CSS: <strong>0&nbsp;kb</strong> of styling runtime,
+              and it works with any build tool.
             </p>
           </div>
           <div className={c.compareCol}>
@@ -415,9 +517,9 @@ export default function HomePage() {
       </section>
 
       {/* Modern CSS techniques */}
-      <section className={`container ${c.section}`}>
+      <section className={`container ${c.section}`} data-no-hyphens>
         <div className={`${c.sectionHead} ${c.center}`}>
-          <span className="eyebrow">Under the hood</span>
+          <span className="eyebrow">Pillar 2: Modern CSS</span>
           <h2 className={c.sectionTitle}>Modern CSS, put to work.</h2>
           <p className={c.sectionSub}>
             No abstractions over the platform: LoamUI ships the same modern CSS features you&rsquo;d
@@ -436,7 +538,7 @@ export default function HomePage() {
       </section>
 
       {/* Component categories */}
-      <section className={`container ${c.section}`}>
+      <section className={`container ${c.section}`} data-no-hyphens>
         <div className={`${c.sectionHead} ${c.center}`}>
           <span className="eyebrow">The library</span>
           <h2 className={c.sectionTitle}>{COMPONENTS.length} components, ready to ship.</h2>
@@ -460,11 +562,14 @@ export default function HomePage() {
       </section>
 
       {/* Final CTA */}
-      <section className="container">
+      <section className="container" data-no-hyphens>
         <div className={c.cta}>
           <h2 className={c.ctaTitle}>Start building</h2>
           <p className={c.ctaSub}>
-            Install the package, import one stylesheet, and start with any component.
+            Install the package, import one stylesheet, and start with any component. Working with
+            an agent? Point it at <a href="/llms.txt">/llms.txt</a>: every page has a markdown twin,
+            and the <Link href="/docs/composing">Composing components</Link> guide shows how to
+            build your own from the primitives.
           </p>
           <div className={c.ctaRowCenter}>
             <SignpostLink render={<Link href="/docs" />}>Read the docs</SignpostLink>

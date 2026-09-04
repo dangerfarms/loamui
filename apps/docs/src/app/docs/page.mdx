@@ -3,28 +3,31 @@ import prose from "./prose.module.css";
 
 export const metadata = {
   title: "Introduction",
-  description: "LoamUI is a React component library rebuilt on native modern CSS.",
+  description:
+    "Modern UI primitives for agent-assisted developers: contextual tokens, element styles and React components built on Google's Modern Web Guidance.",
 };
 
 # Introduction
 
-LoamUI is a React component library that trusts the platform: native elements carry the semantics, plain CSS carries the styling, and every component ships with axe and keyboard tests.
+LoamUI is modern UI primitives for agent-assisted developers: contextual tokens, element styles and React components, built on Google's Modern Web Guidance, for quickly building bespoke UIs that are accessible, adaptable and fast.
 
-## Why LoamUI?
+## Three primitives
 
-Most component libraries ship a styling engine to your users' browsers. LoamUI doesn't. Every
-component is styled with plain CSS (cascade layers, custom properties, `light-dark()`,
-`color-mix()`, container queries and logical properties), so there's nothing to run at runtime and
-nothing extra to download.
+Agent-assisted developers want solid primitives their agents can build bespoke components and interfaces from, not hundreds of pre-made components locked into last decade's paradigms. LoamUI offers three, shipped in one stylesheet and applied by cascade order:
 
-- **Zero-runtime.** Styles are static CSS. No CSS-in-JS, no serialization cost, fully compatible
-  with React Server Components.
-- **Themeable with variables.** Rebrand the whole library by overriding `--loam-*` tokens. No
-  provider required.
-- **Native dark mode.** Powered by CSS `light-dark()`: one toggle flips `color-scheme`.
-- **Accessible by default.** Semantic HTML, focus management, and keyboard support baked in.
-- **{COMPONENTS.length} components** across inputs, data display, feedback, disclosures and
-  navigation, and expanding.
+- **[Tokens](/docs/tokens).** A handful of semantic decisions (four hues, eight neutrals, fluid scales); everything else is derived by recipe and audited in CI.
+- **[Element styles](/docs/element-styles).** Enhanced default styles for native HTML, page-wide: responsive, accessible, and respecting the reader's light or dark preference. Plain markup is presentable before any component appears.
+- **[Components](/docs/components).** {COMPONENTS.length} carefully chosen, contextually styled components, and no more. No size, variant or colour props (display components that size an intrinsic glyph, Badge, Loader and Progress, keep `size`): a region declares what it means and everything inside adapts.
+
+## Five pillars
+
+The ideas that hold the primitives together. Each is grounded in a reference and enforced somewhere, by the cascade, a lint rule, a CI gate, or review.
+
+1. **Native CSS.** Real elements carry the semantics, plain static CSS carries the styling. No CSS-in-JS, no styling engine.
+2. **Modern CSS.** `@layer` for order, `@scope` for encapsulation, `light-dark()` and container queries for adaptation.
+3. **Composition.** Parts, not prop soup: `Modal.Root`, `Modal.Trigger`, `Modal.Popup`. Element swap goes through `render`.
+4. **[Contextualism](/docs/contextualism).** A region declares what it means (`--loam-context`) and every control inside adapts. This is the whole status-and-size API, and the paradigm shift.
+5. **[Accessible & gatekept](/docs/accessibility).** Semantic HTML, managed focus, keyboard support and the reader's preferences as the baseline; contrast, axe and interaction tests run in CI.
 
 ## Installation
 
@@ -46,12 +49,16 @@ export default function Page() {
 
 <div className={prose.callout}>
   That's the whole setup. No provider, no config. See the{" "}
-  <a href="/docs/installation">installation guide</a> for framework specifics, or jump into{" "}
-  <a href="/docs/tokens">the tokens</a>.
+  <a href="/docs/installation">installation guide</a> for framework specifics.
 </div>
+
+## Working with an agent
+
+Every page of this site has a markdown twin at the same URL with `.md` appended, and [/llms.txt](/llms.txt) indexes them all. Point your agent there. The [Composing components](/docs/composing) guide shows how to build your own components from the primitives; the [Contextualism](/docs/contextualism) guide alone is enough to explain how status and size work.
 
 ## Next steps
 
-- [Installation](/docs/installation): framework guides for Next.js, Vite and more.
+- [Installation](/docs/installation): framework guides for Next.js and Vite.
 - [Tokens](/docs/tokens): the token surface, and the theming that falls out of it.
-- [Browse components](/docs/components/button): live examples and props for every component.
+- [Contextualism](/docs/contextualism): why components have no variant or size props.
+- [Composing components](/docs/composing): build a hero from the primitives.

@@ -1,0 +1,91 @@
+/* A pricing section is a region: it declares its container so the fluid
+   tokens answer the section's width, and it hosts consumer content (a Badge,
+   a Button), hence the donut. */
+@scope (.loam-Pricing) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  /* As many plans across as fit, one column when none do: the section's
+     grid decides, not a prop on the plan. Each item is a grid so its Card
+     stretches to the row's height. */
+  ul.plans {
+    display: block grid;
+    gap: var(--loam-space-lg);
+    grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    > li {
+      display: block grid;
+    }
+  }
+}
+
+/* The plan surface is a core Card, which the donut above fences off, so the
+   Card carries this second root. The Card's own look (surface, line, radius,
+   padding) is untouched; this scope arranges the parts inside it. */
+@scope (.loam-Pricing-plan) to ([class*="loam-"]) {
+  :scope {
+    display: block flex;
+    flex-direction: column;
+    gap: var(--loam-space-md);
+  }
+
+  /* The name is a row, so a Badge written beside the text sits at the far end. */
+  h3.name {
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm);
+    justify-content: space-between;
+    margin: 0;
+  }
+
+  p.price {
+    font-size: var(--loam-text-2xl);
+    font-variant-numeric: lining-nums tabular-nums;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+
+    small {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-sm);
+      font-variant-numeric: normal;
+      font-weight: 400;
+    }
+  }
+
+  p.description {
+    color: var(--loam-color-fg-muted);
+    margin: 0;
+  }
+
+  ul.features {
+    display: block grid;
+    gap: var(--loam-space-xs);
+    margin: 0;
+    padding-inline-start: var(--loam-space-lg);
+  }
+
+  /* The action sits at the foot of every plan, whatever the feature count;
+     the grid wrapper stretches the Button inside it. */
+  div.action {
+    display: block grid;
+    margin-block-start: auto;
+  }
+
+  /* The consumer marks the recommended plan by declaring --loam-context:
+     primary on Pricing.Plan; the Badge and Button inside answer it. Primary
+     is near-black in the neutral theme, where that answer barely shows, so
+     the surface takes the strong line as well. */
+  @container (style(--loam-context: primary)) {
+    :scope {
+      border-color: var(--loam-color-line-strong);
+    }
+  }
+}

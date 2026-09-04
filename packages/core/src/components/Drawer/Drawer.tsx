@@ -176,8 +176,9 @@ function DrawerTrigger({ render, children, ...rest }: DrawerTriggerProps) {
   const triggerProps: DrawerTriggerRenderProps = {
     ref: ctx.triggerRef,
     type: "button",
-    // Enhanced: the browser owns open — a server-rendered trigger works
-    // before (and without) hydration. The dialog's toggle event syncs state.
+    // Enhanced: once hydration has probed for invoker support, the browser
+    // owns open via commandfor (no click handler needed). The dialog's toggle
+    // event syncs state either way.
     commandfor: ctx.invokers ? ctx.dialogId : undefined,
     command: ctx.invokers ? "show-modal" : undefined,
     "aria-haspopup": "dialog",
@@ -286,7 +287,7 @@ function DrawerPanel({
       aria-labelledby={ctx.hasTitle ? ctx.titleId : undefined}
       aria-describedby={ctx.hasDescription ? ctx.descriptionId : undefined}
       className={cx("loam-Drawer-panel", className)}
-      data-side={side}
+      data-position={side}
       data-open={open || undefined}
     >
       {children}

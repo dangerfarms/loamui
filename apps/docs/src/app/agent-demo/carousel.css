@@ -1,0 +1,67 @@
+@scope (.testimonials) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  h2 {
+    margin: 0;
+  }
+
+  ul {
+    display: block grid;
+    gap: var(--loam-space-lg);
+    grid-auto-columns: min(100%, 22rem);
+    grid-auto-flow: column;
+    list-style: none;
+    margin: 0;
+    overflow-inline: auto;
+    overscroll-behavior-inline: contain;
+
+    /* room for the focus ring and card border inside the scrollport */
+    padding: var(--loam-space-xs);
+    scroll-padding-inline: var(--loam-space-xs);
+    scroll-snap-type: inline mandatory;
+
+    @media (prefers-reduced-motion: no-preference) {
+      scroll-behavior: smooth;
+    }
+  }
+
+  li {
+    display: block grid;
+    scroll-snap-align: start;
+  }
+
+  blockquote {
+    font-size: var(--loam-text-lg);
+    margin: 0 0 var(--loam-space-md);
+
+    p {
+      margin: 0;
+    }
+  }
+
+  footer {
+    align-items: safe center;
+    display: block flex;
+    gap: var(--loam-space-sm);
+
+    p {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-sm);
+      margin: 0;
+    }
+
+    strong {
+      color: var(--loam-color-fg-strong);
+    }
+  }
+
+  div.controls {
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm);
+  }
+}

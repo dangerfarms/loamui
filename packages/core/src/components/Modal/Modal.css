@@ -28,6 +28,11 @@
       background: color-mix(in oklch, var(--loam-color-fg) 45%, transparent);
     }
 
+    /* Shadows vanish in forced colors; a border keeps the dialog's edge. */
+    @media (forced-colors: active) {
+      border: 1px solid;
+    }
+
     @media (prefers-reduced-motion: no-preference) {
       opacity: 1;
       scale: 1;

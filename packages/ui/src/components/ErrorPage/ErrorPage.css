@@ -1,0 +1,48 @@
+/* An error page is a region: it declares its container so the fluid tokens
+   answer its own width, and it hosts consumer content (a SignpostLink, a
+   link), hence the donut. */
+@scope (.loam-ErrorPage) to ([class*="loam-"]) {
+  :scope {
+    align-items: center;
+    container-type: inline-size;
+    display: block flex;
+    flex-direction: column;
+    gap: var(--loam-space-md);
+    justify-content: center;
+    min-block-size: 24rem;
+    padding-block: var(--loam-space-xl);
+    text-align: center;
+  }
+
+  /* The code is set dim on purpose: it identifies the error for anyone who
+     needs it and stays behind the title, which is what the reader needs. */
+  p.code {
+    color: var(--loam-color-fg-dim);
+    font-family: var(--loam-font-display);
+    font-size: var(--loam-text-3xl);
+    font-variant-numeric: lining-nums tabular-nums;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin: 0;
+  }
+
+  .title {
+    margin: 0;
+  }
+
+  p.body {
+    color: var(--loam-color-fg-muted);
+    margin: 0;
+    max-inline-size: var(--loam-measure);
+  }
+
+  div.actions {
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-lg);
+    justify-content: center;
+    margin-block-start: var(--loam-space-sm);
+  }
+}

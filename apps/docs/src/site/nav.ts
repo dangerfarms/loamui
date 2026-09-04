@@ -16,6 +16,7 @@ export const GETTING_STARTED: { name: string; href: string }[] = [
   { name: "Introduction", href: "/docs" },
   { name: "Installation", href: "/docs/installation" },
   { name: "Contextualism", href: "/docs/contextualism" },
+  { name: "Composing components", href: "/docs/composing" },
   { name: "Layout", href: "/docs/layout" },
   { name: "Typography", href: "/docs/typography" },
   { name: "Accessibility", href: "/docs/accessibility" },

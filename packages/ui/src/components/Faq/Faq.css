@@ -1,0 +1,15 @@
+/* A FAQ is a region: it declares its container so the fluid tokens answer
+   the section's width, and it hosts core Details, hence the donut. The
+   Details keep their own look; this scope only stacks them. */
+@scope (.loam-Faq) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  div.list {
+    display: block grid;
+    gap: var(--loam-space-sm);
+  }
+}

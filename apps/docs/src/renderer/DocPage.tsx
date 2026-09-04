@@ -61,8 +61,8 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
           Usage
         </h2>
         <p className={classes.usageNote}>
-          Every example has a <strong>CSS</strong> tab. That&rsquo;s the real, complete stylesheet
-          for the component: plain, static CSS, with nothing running in the browser.
+          Every example has a <strong>CSS</strong>&#32;tab. That&rsquo;s the real, complete
+          stylesheet for the component: plain, static CSS, with nothing running in the browser.
         </p>
         <div className={classes.demos}>
           {doc.demos.map((demo) => (

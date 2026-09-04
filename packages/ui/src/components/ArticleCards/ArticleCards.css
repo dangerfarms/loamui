@@ -1,0 +1,102 @@
+/* An article list is a region: it declares its container so the fluid
+   tokens answer the section's width, and it hosts consumer content (a
+   Badge, an Avatar, a link), hence the donut. */
+@scope (.loam-ArticleCards) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  /* As many cards across as fit, one column when none do. Each item is a
+     grid so its Card stretches to the row's height. */
+  ul.grid {
+    display: block grid;
+    gap: var(--loam-space-lg);
+    grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    > li {
+      display: block grid;
+      margin: 0;
+    }
+  }
+}
+
+/* The article surface is a core Card, which the donut above fences off, so
+   the Card carries this second root. The Card's own look (surface, line,
+   radius, padding) is untouched; this scope arranges the parts inside it. */
+@scope (.loam-ArticleCards-card) to ([class*="loam-"]) {
+  :scope {
+    display: block flex;
+    flex-direction: column;
+    gap: var(--loam-space-sm);
+  }
+
+  /* The consumer's optional image, placed first. */
+  > img {
+    block-size: auto;
+    border-radius: var(--loam-radius-md);
+    inline-size: 100%;
+    margin-block-end: var(--loam-space-sm);
+  }
+
+  p.meta {
+    align-items: center;
+    color: var(--loam-color-fg-muted);
+    display: block flex;
+    flex-wrap: wrap;
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-sm);
+    margin: 0;
+  }
+
+  /* The title is the link. It keeps the heading's colour and drops the
+     underline at rest; the underline returns on hover and focus, so the
+     affordance is still there when it is looked for. */
+  h3.title {
+    font-size: var(--loam-text-lg);
+    margin: 0;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+
+      &:focus-visible {
+        text-decoration: underline;
+      }
+
+      @media (hover: hover) {
+        &:hover {
+          text-decoration: underline;
+          text-decoration-color: var(--loam-color-primary);
+        }
+      }
+    }
+  }
+
+  /* Clamped only where the standalone property exists; elsewhere the
+     excerpt runs its full length rather than half-applying a clamp. */
+  p.excerpt {
+    color: var(--loam-color-fg-muted);
+    margin: 0;
+
+    @supports (line-clamp: 3) {
+      line-clamp: 3;
+    }
+  }
+
+  /* The author sits at the foot of every card, whatever the excerpt's length. */
+  p.author {
+    align-items: center;
+    color: var(--loam-color-fg-strong);
+    display: block flex;
+    font-size: var(--loam-text-sm);
+    font-weight: 600;
+    gap: var(--loam-space-sm);
+    margin-block: auto 0;
+    padding-block-start: var(--loam-space-sm);
+  }
+}

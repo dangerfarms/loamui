@@ -26,6 +26,13 @@ jobs:
       - run: pnpm -r build
         env:
           PAGES: "true"
+      # The compositions site ships under /ui of the same Pages origin until it
+      # has its own domain: rebuild it with the base path and nest its export.
+      - run: pnpm --filter @loamui/ui-site build
+        env:
+          PAGES: "true"
+          BASE_PATH: /ui
+      - run: mkdir -p apps/docs/out/ui && cp -R apps/ui/out/. apps/docs/out/ui/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: apps/docs/out

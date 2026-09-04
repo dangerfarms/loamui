@@ -95,7 +95,7 @@ const doc: ComponentContent = {
   ],
   accessibility: [
     'The pager is a <nav aria-label="Pagination"> (the label is overridable) wrapping a list, so assistive technology exposes it as a navigation landmark with a known number of items.',
-    'The active page carries aria-current="page", and it is also styled via data-active; the position is announced, and colour is not the only visual signal.',
+    'The active page carries aria-current="page", and the stylesheet keys off that same attribute, so the state is declared once; the position is announced, and colour is not the only visual signal.',
     'Every available destination is a real <a href> with an explicit aria-label ("Previous page", "Page 7", "Last page"), so users can copy, bookmark or open a page in a new tab.',
     "Ellipsis separators are aria-hidden: they are visual shorthand for the gap, not stops in the reading order.",
     'Previous and Next carry rel="prev" and rel="next". Unavailable boundary directions are visual placeholders hidden from assistive technology, so they are not inert tab stops.',

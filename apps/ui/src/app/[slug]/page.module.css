@@ -1,0 +1,95 @@
+.page {
+  display: block grid;
+  gap: 2.5rem;
+  max-inline-size: 64rem;
+  padding-block: 2rem 5rem;
+}
+
+.head {
+  display: block grid;
+  gap: 0.75rem;
+
+  h1 {
+    font-size: var(--loam-text-3xl);
+    margin: 0;
+  }
+}
+
+.back {
+  color: var(--loam-color-fg-muted);
+  font-size: var(--loam-text-sm);
+  justify-self: start;
+  text-decoration: underline;
+}
+
+.lead {
+  color: var(--loam-color-fg-muted);
+  font-size: var(--loam-text-lg);
+  margin: 0;
+  max-inline-size: var(--loam-measure);
+}
+
+.section {
+  display: block grid;
+  gap: 1rem;
+
+  h2 {
+    font-size: var(--loam-text-xl);
+    margin: 0;
+  }
+
+  h3 {
+    font-size: var(--loam-text-md);
+    margin: 0;
+  }
+}
+
+.twoCol {
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+
+  ul {
+    margin: 0.5rem 0 0;
+  }
+}
+
+.demo {
+  display: block grid;
+  gap: 0.5rem;
+}
+
+.demoDesc {
+  color: var(--loam-color-fg-muted);
+  font-size: var(--loam-text-sm);
+  margin: 0;
+}
+
+.parts {
+  display: block grid;
+  gap: 0.75rem;
+  margin: 0;
+
+  > div {
+    border-block-start: 1px solid var(--loam-color-line);
+    display: block grid;
+    gap: 0.25rem 1.5rem;
+    grid-template-columns: minmax(10rem, 14rem) 1fr;
+    padding-block-start: 0.75rem;
+
+    @media (width <= 40rem) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  dd {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    margin: 0;
+  }
+}
+
+.note {
+  color: var(--loam-color-fg-muted);
+  font-size: var(--loam-text-sm);
+  margin: 0;
+}

@@ -1,0 +1,36 @@
+/* A hero is a region: it declares its container so the fluid tokens answer
+   the hero's own width, and it hosts consumer content, hence the donut. */
+@scope (.loam-Hero) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-lg);
+    padding-block: var(--loam-space-xl);
+  }
+
+  div.eyebrow {
+    align-items: center;
+    display: block flex;
+    gap: var(--loam-space-sm);
+  }
+
+  .title {
+    font-size: var(--loam-text-3xl);
+    margin: 0;
+    max-inline-size: 22ch;
+  }
+
+  p.lede {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-lg);
+    margin: 0;
+    max-inline-size: var(--loam-measure);
+  }
+
+  div.actions {
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-lg);
+  }
+}

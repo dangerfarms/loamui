@@ -33,7 +33,7 @@ const doc: ComponentContent = {
           <Example label="Large">
             <Loader size="lg" />
           </Example>
-          <Example label="Custom — size={48}">
+          <Example label="Custom: size={48}">
             <Loader size={48} />
           </Example>
         </div>
@@ -42,7 +42,7 @@ const doc: ComponentContent = {
     {
       title: "Contexts",
       description:
-        "There is no color prop. Declare --loam-context on a one-element wrapper region (a style query is answered by ancestors, never by the declaring element itself), or let it inherit from the region whose work it reports: a loader in a warning panel is already warning-coloured. See the Contextualism guide.",
+        "There is no colour prop. Declare --loam-context on a one-element wrapper region (see the Contextualism guide) and the status colours follow, or let it inherit from the region whose work it reports: a loader in a warning panel is already warning-coloured.",
       code: `<Loader />
 <span style={{ "--loam-context": "primary" }}><Loader /></span>
 <span style={{ "--loam-context": "success" }}><Loader /></span>
@@ -93,7 +93,7 @@ const doc: ComponentContent = {
     'Renders role="status" (a polite live region), so a loader appearing in the DOM announces its label without interrupting what is currently being read.',
     "The label is exposed twice on purpose: as aria-label and as a visually hidden text node, so it reaches assistive tech regardless of how the role is mapped.",
     "The animated spinner is aria-hidden: assistive tech gets the label, never the animation structure.",
-    "Under prefers-reduced-motion: reduce the library-wide reset stops the animation; the glyph remains visible as a static indicator, so meaning never depends on motion.",
+    "The spin exists only inside prefers-reduced-motion: no-preference; with reduced motion the glyph is a static indicator and the sr-only text still announces it, so meaning never depends on motion.",
     "When composed inside a Button as a busy state, add aria-hidden to the Loader and disable the button: the button's own text (“Saving”) should be the announcement, not a nested status region.",
   ],
   props: [

@@ -44,15 +44,15 @@ Set any glyph once on the Root; CSS draws it between items.
 
 ### With a router link
 
-Substitute the built-in <a> with your framework's link via render; the item's wiring (aria-current) merges onto it. This renders identically to Basic; the only difference is the element (a router link), which the Code tab shows.
+Substitute the built-in <a> with your framework's link via render; the item's wiring (aria-current and the children) merges onto it. This demo uses next/link, so the two ancestors are client-side navigations within this site.
 
 ```tsx
 import Link from "next/link";
 
 <Breadcrumbs.Root>
   <Breadcrumbs.Item render={<Link href="/" />}>Home</Breadcrumbs.Item>
-  <Breadcrumbs.Item render={<Link href="/settings" />}>Settings</Breadcrumbs.Item>
-  <Breadcrumbs.Item current>Billing</Breadcrumbs.Item>
+  <Breadcrumbs.Item render={<Link href="/docs/components" />}>Components</Breadcrumbs.Item>
+  <Breadcrumbs.Item current>Breadcrumbs</Breadcrumbs.Item>
 </Breadcrumbs.Root>
 ```
 

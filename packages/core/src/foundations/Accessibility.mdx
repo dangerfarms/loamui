@@ -5,7 +5,7 @@ import { Meta } from "@storybook/addon-docs/blocks";
 # Accessibility
 
 What LoamUI guarantees: platform semantics, established keyboard patterns,
-engineered WCAG specifics, and user preferences as the baseline — plus how each
+engineered WCAG specifics, and user preferences as the baseline, plus how each
 is tested and where the limits are. Treat this page as the contract, not a
 substitute for testing your composed product.
 
@@ -17,8 +17,8 @@ re-implementations, ARIA only where the platform has no word. Buttons are
 containment, Escape and focus-restore are the browser's; accordions are
 `<details>`/`<summary>` with native exclusivity via a shared `name`; separators
 are `<hr>`; grouped controls use `<fieldset>`/`<legend>`. Every styled form
-control wraps a real native input — a switch is a checkbox with `role="switch"`,
-a slider is `<input type="range">`.
+control wraps a real native input: a switch is a checkbox with `role="switch"`,
+a range is `<input type="range">`.
 
 Every page's first Tab stop should be a SkipLink to the main content, pointed at
 a focusable landmark: `<main id="content" tabIndex={-1}>`.
@@ -27,7 +27,7 @@ a focusable landmark: `<main id="content" tabIndex={-1}>`.
 
 Menu implements the established menu-button pattern: arrow keys open and rove
 real focus (looping), Home/End jump, typeahead matches, and Escape or activation
-returns focus to the trigger — focus moves, it is never trapped. Tabs expose
+returns focus to the trigger. Focus moves; it is never trapped. Tabs expose
 `aria-selected`, and inactive panels stay reachable by find-in-page. Tooltips
 open on keyboard focus as well as hover. Disabled menu items use `aria-disabled`
 (visible to assistive tech, skipped by roving focus) rather than being removed
@@ -35,48 +35,48 @@ from the accessibility tree.
 
 ## Engineered WCAG specifics
 
-- **1.4.13 Content on Hover or Focus** — tooltips are dismissible with Escape
+- **1.4.13 Content on Hover or Focus**: tooltips are dismissible with Escape
   without moving focus, hoverable across the gap, and persist while hovered or
   focused; hover and focus are tracked independently.
-- **2.2.1 Timing Adjustable** — toast auto-dismiss timers pause while pointer or
+- **2.2.1 Timing Adjustable**: toast auto-dismiss timers pause while pointer or
   keyboard focus is inside the viewport and resume with the remaining time.
-- **2.5.8 Target Size** — a switch's invisible input is floored at 24px even
+- **2.5.8 Target Size**: a switch's invisible input is floored at 24px even
   where the visible track is smaller; buttons and text controls share a derived
   anatomy that stays above the minimum at every container width.
-- **1.4.3 / 1.4.11 Contrast** — the token palette is audited in CI: every text
+- **1.4.3 / 1.4.11 Contrast**: the token palette is audited in CI: every text
   pair at 4.5:1 or better, boundaries and focus rings at 3:1 or better, in both
   schemes.
-- **Focus visibility** — every interactive element shows a `:focus-visible`
+- **Focus visibility**: every interactive element shows a `:focus-visible`
   outline offset from the control; focus styling is never removed without a
   replacement.
-- **Not colour alone** — state always carries a second signal: tick/dash glyphs
+- **Not colour alone**: state always carries a second signal: tick/dash glyphs
   on checkboxes, thumb position on switches, error text beside a danger border,
   the word "(optional)" beside a label.
 
 ## User preferences are the baseline
 
-Motion is opt-in — animation lives only inside `@media (prefers-reduced-motion:
+Motion is opt-in: animation lives only inside `@media (prefers-reduced-motion:
 no-preference)`, so the absence of motion is the baseline and there is nothing to
 switch off. Colour scheme is followed natively through `color-scheme` and
 `light-dark()` tokens, with `data-theme` as the explicit override. Forced colours
 are honoured, not fought: every component is verified under `forced-colors:
-active`, and any state carried only by background paint — switch tracks,
-progress and range fills, menu selection — is re-expressed in the system
+active`, and any state carried only by background paint (switch tracks,
+progress and range fills, menu selection) is re-expressed in the system
 colours `Highlight`, `CanvasText` and `GrayText`.
 
 ## ARIA is derived, not declared
 
 A field is invalid exactly when it contains a rendered error message; CSS detects
-that with `:has()`, and `aria-invalid` is wired from the same fact — one source
-of truth. Native constraint validation (`required`, `type="email"`) opens the
-invalid state only after an attempted submission, then clears once the input is
-valid. An icon-only button's compact style appears only when it carries the
-`aria-label` it needs anyway.
+that with `:has()`, and `aria-invalid` is wired from the same fact, so there is
+one source of truth. Native constraint validation (`required`, `type="email"`)
+opens the invalid state only after an attempted submission, then clears once the
+input is valid. An icon-only button's compact style appears only when it carries
+the `aria-label` it needs anyway.
 
 ## Forms guidance
 
 Labels are real `<label>` elements tied to their controls; a placeholder is never
-a label. Optional fields are marked with the word "(optional)" — there is no
+a label. Optional fields are marked with the word "(optional)"; there is no
 asterisk convention, and requirement is conveyed by native `required`. Buttons
 act and links navigate: a button that navigates breaks right-click,
 middle-click, and open-in-new-tab.
@@ -85,8 +85,8 @@ middle-click, and open-in-new-tab.
 
 An axe audit runs over a representative render of every component in the unit
 suite, and keyboard behaviour is asserted by interaction tests. Here in
-Storybook, the a11y addon and interaction tests run in a real browser — native
-dialog focus, popovers, computed styles — the things a simulated DOM can't cover.
+Storybook, the a11y addon and interaction tests run in a real browser and cover
+what a simulated DOM can't: native dialog focus, popovers, computed styles.
 Contrast is verified two ways: a CI audit computes the WCAG ratio of every token
 pair the components use, in both schemes, and fails the build on a regression;
 and the a11y addon checks rendered output. Forced colours are verified with

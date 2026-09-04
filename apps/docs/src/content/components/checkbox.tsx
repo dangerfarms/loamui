@@ -56,7 +56,7 @@ const doc: ComponentContent = {
     {
       title: "Composed inside a Field",
       description:
-        "The bare CheckboxControl carries no label prop — it reads its id, aria-describedby and aria-invalid from the surrounding Field, so the label lives on Field.Label and nothing wires them by hand. This is the composable form; <Checkbox label=… /> is the shorthand for it.",
+        "The bare CheckboxControl carries no label prop: it reads its id, aria-describedby and aria-invalid from the surrounding Field, so the label lives on Field.Label and nothing wires them by hand. This is the composable form; <Checkbox label=… /> is the shorthand for it.",
       code: `<Field.Root>
   <Field.Label>
     <CheckboxControl /> Subscribe to the newsletter
@@ -111,7 +111,7 @@ const doc: ComponentContent = {
     'Renders a real <input type="checkbox"> wrapped by its label, so clicking the text toggles it and the state is announced natively.',
     "Supports an indeterminate (mixed) visual for a 'select all' parent, set on the DOM node. It is a display state, not a third value.",
     "When placed inside a Field it reads its id, aria-describedby and aria-invalid from context; standalone it wires its own label and description.",
-    "Errors come from Field composition: wrap the checkbox in a Field.Root and add a Field.Error after the control, which marks it invalid and announces the message.",
+    "Errors come from Field composition: wrap the checkbox in a Field.Root and add a Field.Error before the control, which marks it invalid and announces the message.",
     "Group multiple checkboxes under a Fieldset so the legend names the set in the accessibility tree.",
   ],
   props: [
