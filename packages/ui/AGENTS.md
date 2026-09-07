@@ -8,10 +8,10 @@ here:
   `@loamui/ui/styles.css`. The ui layer (`loamui.ui`) sits above the core
   layers; your own unlayered CSS still wins.
 - **Every composition is a compound component.** `Hero.Root`, `Hero.Title`,
-  `Pricing.Plan`, `Testimonials.Track`. Arrange the parts in your markup; put
+  `Stats.Item`, `Testimonials.Track`. Arrange the parts in your markup; put
   core components (`Button`, `Badge`, `SignpostLink`, `Avatar`) inside them.
-- **No size, variant or colour props.** Mark a recommended plan or a
-  highlighted tile by declaring `--loam-context: primary` (or a status) on
+- **No size, variant or colour props.** Mark a highlighted tile or a
+  featured item by declaring `--loam-context: primary` (or a status) on
   that part's root, in your stylesheet or a style attribute; the parts inside
   answer it.
 - **Width comes from the container.** Each root declares

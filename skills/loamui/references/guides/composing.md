@@ -8,7 +8,7 @@ description: How to build your own components (a hero, a pricing card, a carouse
 
 # Composing components
 
-LoamUI's core ships 33 low-level components and no more. A hero, a pricing table, a carousel or a testimonial wall is a composition: built from the three primitives the way any consumer would, in your own codebase or, for the ones worth sharing, in [`@loamui/ui`](https://loamui.com/ui/). This page is the recipe, for you and for your agent; the compositions gallery is the same recipe applied seventeen times.
+LoamUI's core ships 34 low-level components and no more. A hero, a pricing table, a carousel or a testimonial wall is a composition: built from the three primitives the way any consumer would, in your own codebase or, for the ones worth sharing, in [`@loamui/ui`](https://loamui.com/ui/). This page is the recipe, for you and for your agent; the compositions gallery is the same recipe applied sixteen times.
 
 ## The recipe
 
@@ -76,7 +76,7 @@ Nothing in the library changed. The heading and the lede come from the element s
 
 ## A pricing card
 
-`Card` is the surface. A scoped rule adds the anatomy a plan needs, and `--loam-context: primary` on the card marks the recommended plan: the badge and the button recolour, and nothing else has to know.
+`Card` is the surface and `Price` writes the amount. A scoped rule adds the anatomy a plan needs, and `--loam-context: primary` on the card marks the recommended plan: the badge and the button recolour, and nothing else has to know.
 
 ```tsx
 <Card className="plan" style={{ "--loam-context": "primary" }}>
@@ -84,7 +84,7 @@ Nothing in the library changed. The heading and the lede come from the element s
     Team <Badge>Most popular</Badge>
   </h3>
   <p className="price">
-    £24 <small>per seat, per month</small>
+    <Price value={24} currency="GBP">per seat, per month</Price>
   </p>
   <ul>
     <li>Unlimited projects</li>
@@ -106,7 +106,6 @@ Nothing in the library changed. The heading and the lede come from the element s
 
   p.price {
     font-size: var(--loam-text-2xl);
-    font-variant-numeric: lining-nums tabular-nums;
     font-weight: 700;
     margin: 0;
   }

@@ -1,7 +1,7 @@
 {
   "name": "@loamui/ui",
   "version": "0.1.0",
-  "description": "Ready-made compositions built from @loamui/core primitives: hero, header, footer, pricing, testimonials and more.",
+  "description": "Ready-made compositions built from @loamui/core primitives: hero, header, footer, testimonials, stats and more.",
   "keywords": [
     "loamui",
     "components",

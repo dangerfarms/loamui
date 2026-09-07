@@ -18,6 +18,7 @@ import range from "@/content/components/range";
 
 // Data display
 import badge from "@/content/components/badge";
+import price from "@/content/components/price";
 import card from "@/content/components/card";
 import avatar from "@/content/components/avatar";
 import table from "@/content/components/table";
@@ -62,6 +63,7 @@ const content: ComponentContent[] = [
   switchDoc,
   range,
   badge,
+  price,
   card,
   avatar,
   table,

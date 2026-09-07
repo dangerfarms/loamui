@@ -25,7 +25,7 @@ that uses parts lives in a `"use client"` file; callable forms (`<Button>`,
 - **Element styles**: native HTML is already styled page-wide (headings,
   links, code, forms, tables). Write semantic markup first; reach for a
   component only when the element needs structure it does not have.
-- **Components**: 33 low-level parts. Their look comes from context, not
+- **Components**: 34 low-level parts. Their look comes from context, not
   props.
 
 ## The rules that matter

@@ -2,8 +2,8 @@ import { describe, it, expect, afterEach, vi } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "vitest-axe";
-import { Avatar, Badge, Button } from "@loamui/core";
-import { Header, Footer, Stats, Pricing, Testimonials, Features } from "../index";
+import { Avatar, Button } from "@loamui/core";
+import { Header, Footer, Stats, Testimonials, Features } from "../index";
 
 afterEach(cleanup);
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };
@@ -91,37 +91,6 @@ describe("Stats", () => {
     const dl = container.querySelector("dl.loam-Stats-item");
     expect(dl).not.toBeNull();
     expect(container.querySelector(".loam-Stats")).toBeNull();
-    expect(await axe(container, axeOptions)).toHaveNoViolations();
-  });
-});
-
-describe("Pricing", () => {
-  it("renders plans as a list of cards with a heading, price and action", async () => {
-    const { container } = render(
-      <Pricing.Root aria-labelledby="plans">
-        <h2 id="plans">Plans</h2>
-        <Pricing.Plans>
-          <Pricing.Plan>
-            <Pricing.Name>
-              Team <Badge>Recommended</Badge>
-            </Pricing.Name>
-            <Pricing.Price>
-              £24 <small>per seat per month</small>
-            </Pricing.Price>
-            <Pricing.Description>For small teams.</Pricing.Description>
-            <Pricing.Features>
-              <li>Unlimited projects</li>
-            </Pricing.Features>
-            <Pricing.Action>
-              <Button>Choose Team</Button>
-            </Pricing.Action>
-          </Pricing.Plan>
-        </Pricing.Plans>
-      </Pricing.Root>,
-    );
-    expect(screen.getByRole("region", { name: "Plans" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { level: 3 })).toHaveTextContent("Team");
-    expect(screen.getByRole("button", { name: "Choose Team" })).toBeInTheDocument();
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 });

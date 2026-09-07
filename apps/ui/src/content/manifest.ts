@@ -46,13 +46,6 @@ export const MANIFEST: CompositionMeta[] = [
     description: "Headline figures: each tile a large value over a short label, alone or in a row.",
   },
   {
-    slug: "pricing",
-    name: "Pricing",
-    category: "Page sections",
-    description:
-      "A grid of plans, each a Card with a name, a price, a feature list and one action.",
-  },
-  {
     slug: "testimonials",
     name: "Testimonials",
     category: "Page sections",

@@ -20,7 +20,6 @@ import call_to_action from "./call-to-action";
 import carousel from "./carousel";
 import features from "./features";
 import testimonials from "./testimonials";
-import pricing from "./pricing";
 import stats from "./stats";
 import footer from "./footer";
 import header from "./header";
@@ -28,7 +27,6 @@ import header from "./header";
 /** Every composition, in gallery order. Add a file under src/content and list it here and in manifest.ts. */
 const COMPOSITIONS: Composition[] = [
   hero,
-  pricing,
   features,
   testimonials,
   carousel,

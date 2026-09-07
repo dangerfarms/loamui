@@ -18,6 +18,7 @@ import {
   Switch,
   Range,
   Badge,
+  Price,
   Card,
   Avatar,
   Table,
@@ -117,6 +118,14 @@ const cases: Array<[string, ReactElement]> = [
   ["Badge", <Badge>New</Badge>],
   ["Card", <Card>Card content</Card>],
   ["Avatar", <Avatar name="Ada Lovelace" />],
+  [
+    "Price",
+    <p>
+      <Price value={24} currency="GBP">
+        per seat, per month
+      </Price>
+    </p>,
+  ],
   [
     "Fieldset",
     <Fieldset.Root>

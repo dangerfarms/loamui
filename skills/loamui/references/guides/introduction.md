@@ -16,7 +16,7 @@ Agent-assisted developers want solid primitives their agents can build bespoke c
 
 - **[Tokens](/docs/tokens).** A handful of semantic decisions (four hues, eight neutrals, fluid scales); everything else is derived by recipe and audited in CI.
 - **[Element styles](/docs/element-styles).** Enhanced default styles for native HTML, page-wide: responsive, accessible, and respecting the reader's light or dark preference. Plain markup is presentable before any component appears.
-- **[Components](/docs/components).** 33 carefully chosen, contextually styled components, and no more. No size, variant or colour props (display components that size an intrinsic glyph, Badge, Loader and Progress, keep `size`): a region declares what it means and everything inside adapts.
+- **[Components](/docs/components).** 34 carefully chosen, contextually styled components, and no more. No size, variant or colour props (display components that size an intrinsic glyph, Badge, Loader and Progress, keep `size`): a region declares what it means and everything inside adapts.
 
 Above the primitives sits [`@loamui/ui`](https://loamui.com/ui/): compositions (a hero, pricing, a carousel) built from them the way any consumer would, and held to the same pillars. The [Composing guide](/docs/composing) is the recipe for your own.
 

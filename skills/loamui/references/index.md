@@ -35,6 +35,7 @@
 ## Components: Data display
 
 - [Badge](components/badge.md) — Compact status or label pill. · [live](https://loamui.com/docs/components/badge.md)
+- [Price](components/price.md) — A monetary amount, written for people. · [live](https://loamui.com/docs/components/price.md)
 - [Card](components/card.md) — A flexible surface container. · [live](https://loamui.com/docs/components/card.md)
 - [Avatar](components/avatar.md) — Represent a user with an image or initials. · [live](https://loamui.com/docs/components/avatar.md)
 - [Table](components/table.md) — Display rows and columns of data. · [live](https://loamui.com/docs/components/table.md)

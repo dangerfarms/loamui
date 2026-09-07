@@ -5,6 +5,7 @@ import { render, screen, cleanup, fireEvent, waitFor } from "@testing-library/re
 import userEvent from "@testing-library/user-event";
 
 import {
+  Price,
   Switch,
   Checkbox,
   Tabs,
@@ -1104,5 +1105,42 @@ describe("Textarea", () => {
     expect(area).toHaveAccessibleDescription("Keep it short.");
     await user.type(area, "Hello");
     expect(area.value).toBe("Hello");
+  });
+});
+
+describe("Price", () => {
+  it("writes the amount for people and keeps the number for machines", () => {
+    const { container } = render(
+      <Price value={24} currency="GBP">
+        per seat, per month
+      </Price>,
+    );
+    const data = container.querySelector("data")!;
+    expect(data).toHaveClass("loam-Price");
+    expect(data).toHaveAttribute("value", "24");
+    expect(data.firstChild).toHaveTextContent("£24");
+    expect(data.querySelector("small.per")).toHaveTextContent("per seat, per month");
+  });
+
+  it("drops the zeros of a whole amount and keeps a fraction's", () => {
+    const { container } = render(
+      <>
+        <Price value={24} currency="GBP" />
+        <Price value={9.5} currency="GBP" />
+      </>,
+    );
+    const [whole, fraction] = Array.from(container.querySelectorAll("data"));
+    expect(whole).toHaveTextContent(/^£24$/);
+    expect(fraction).toHaveTextContent(/^£9\.50$/);
+  });
+
+  it("follows the locale it is given", () => {
+    const { container } = render(<Price value={1250.5} currency="EUR" locale="de-DE" />);
+    expect(container.querySelector("data")).toHaveTextContent("1.250,50 €");
+  });
+
+  it("renders no qualifier element when none is written", () => {
+    const { container } = render(<Price value={24} currency="GBP" />);
+    expect(container.querySelector("small")).toBeNull();
   });
 });

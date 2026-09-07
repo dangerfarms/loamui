@@ -1,7 +1,7 @@
 "use client";
 
 import type { CSSProperties } from "react";
-import { Badge, Button, Card, SignpostLink } from "@loamui/core";
+import { Badge, Button, Card, Price, SignpostLink } from "@loamui/core";
 import "./composing.css";
 
 /** A hero: element styles for the type, a scoped rule for the box, two LoamUI parts. */
@@ -32,7 +32,9 @@ export function PlanDemo() {
         Team <Badge>Most popular</Badge>
       </h3>
       <p className="price">
-        £24 <small>per seat, per month</small>
+        <Price value={24} currency="GBP">
+          per seat, per month
+        </Price>
       </p>
       <ul>
         <li>Unlimited projects</li>

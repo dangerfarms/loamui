@@ -27,6 +27,7 @@ export * from "./components/Badge/index";
 export * from "./components/Separator/index";
 export * from "./components/Card/index";
 export * from "./components/Avatar/index";
+export * from "./components/Price/index";
 export * from "./components/Table/index";
 
 // Feedback

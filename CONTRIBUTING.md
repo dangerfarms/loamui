@@ -26,7 +26,7 @@ pnpm dev        # runs the docs site
   component has several roots); parts inside the scope are type selectors or
   short classes (`label`, `p.description`). The encapsulation is `@scope`'s
   job, not the class name's.
-- `packages/ui`: the `@loamui/ui` compositions (Hero, Pricing, Carousel, ...),
+- `packages/ui`: the `@loamui/ui` compositions (Hero, Carousel, Stats, ...),
   built from core the way any consumer would and held to the same pillars and
   gates. Same file anatomy as core, in `@layer loamui.ui`; a composition never
   changes a primitive, and never overrides a core part's own declarations.

@@ -258,7 +258,7 @@ export default function HomePage() {
           <span className="eyebrow">Built with an agent</span>
           <h2 className={c.sectionTitle}>Ask for a component. Get one built on the primitives.</h2>
           <p className={c.sectionSub}>
-            LoamUI&rsquo;s core ships 33 low-level parts and no more. Everything else, a menu, a
+            LoamUI&rsquo;s core ships 34 low-level parts and no more. Everything else, a menu, a
             hero, a carousel, is a composition: your agent builds it from the three primitives,
             reading the same documentation you do, or takes one ready-made from{" "}
             <a href="https://loamui.com/ui/">@loamui/ui</a>. Here is one, exactly as an agent

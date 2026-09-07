@@ -28,7 +28,7 @@ metadata:
   accessibility contract live there, not here.
 - The references match the library at the same commit; check the installed
   version in `node_modules/@loamui/core/package.json` if behaviour differs.
-- **Compositions:** `@loamui/ui` (Hero, Pricing, Carousel, ...) is built on
+- **Compositions:** `@loamui/ui` (Hero, Carousel, Stats, ...) is built on
   core the way any consumer would; its gallery, code and guidance are at
   <https://loamui.com/ui/> and it ships its own `AGENTS.md`. This skill
   covers core; read a composition's page there before using it.
@@ -77,7 +77,7 @@ metadata:
 | Category     | Components                                                                                                |
 | ------------ | --------------------------------------------------------------------------------------------------------- |
 | Inputs       | Field, Fieldset, ErrorSummary, Button, Input, Textarea, Select, DateInput, Checkbox, Radio, Switch, Range |
-| Data display | Badge, Card, Avatar, Table, Separator                                                                     |
+| Data display | Badge, Price, Card, Avatar, Table, Separator                                                              |
 | Feedback     | Alert, Progress, Skeleton, Loader, Toast                                                                  |
 | Disclosures  | Details, Tooltip, Modal, Drawer, Popover, Menu                                                            |
 | Navigation   | Tabs, SignpostLink, SkipLink, Breadcrumbs, Pagination                                                     |

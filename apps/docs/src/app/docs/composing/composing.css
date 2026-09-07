@@ -52,14 +52,8 @@
 
   p.price {
     font-size: var(--loam-text-2xl);
-    font-variant-numeric: lining-nums tabular-nums;
     font-weight: 700;
     margin: 0;
-
-    small {
-      color: var(--loam-color-fg-muted);
-      font-weight: 400;
-    }
   }
 
   ul {

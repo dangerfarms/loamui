@@ -30,6 +30,7 @@
 @import url("./components/Modal/Modal.css") layer(loamui.components);
 @import url("./components/Pagination/Pagination.css") layer(loamui.components);
 @import url("./components/Popover/Popover.css") layer(loamui.components);
+@import url("./components/Price/Price.css") layer(loamui.components);
 @import url("./components/Progress/Progress.css") layer(loamui.components);
 @import url("./components/Radio/Radio.css") layer(loamui.components);
 @import url("./components/Select/Select.css") layer(loamui.components);

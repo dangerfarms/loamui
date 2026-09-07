@@ -123,6 +123,12 @@ export const COMPONENTS: NavItem[] = [
     description: "Compact status or label pill.",
   },
   {
+    name: "Price",
+    slug: "price",
+    category: "Data display",
+    description: "A monetary amount, written for people.",
+  },
+  {
     name: "Card",
     slug: "card",
     category: "Data display",
