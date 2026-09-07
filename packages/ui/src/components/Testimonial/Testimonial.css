@@ -1,0 +1,49 @@
+/* One testimonial: a figure holding a quote and its caption. It is the
+   unit; a Card around it and a Carousel or grid of them are the
+   consumer's. It declares its own container so the fluid tokens answer its
+   width, and it hosts a core Avatar, hence the donut. */
+@scope (.loam-Testimonial) to ([class*="loam-"]) {
+  :scope {
+    /* Percentage, not min-block-size: it resolves against a Card that a
+       track or grid has stretched, so the author row sits at the foot. */
+    block-size: 100%;
+    container-type: inline-size;
+    display: block flex;
+    flex-direction: column;
+    gap: var(--loam-space-md);
+    margin: 0;
+  }
+
+  /* The quote is the main text, not an aside: it drops the element
+     style's rule and muted colour. */
+  blockquote.quote {
+    border-inline-start: 0;
+    color: var(--loam-color-fg);
+    font-size: var(--loam-text-lg);
+    margin: 0;
+    padding-inline-start: 0;
+
+    > p {
+      margin: 0;
+    }
+  }
+
+  /* The caption is the attribution row; the figure's gap spaces it, so the
+     element style's top margin goes. */
+  figcaption.author {
+    align-items: center;
+    display: block flex;
+    gap: var(--loam-space-sm);
+    margin: auto 0 0;
+
+    p {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-sm);
+      margin: 0;
+    }
+
+    strong {
+      color: var(--loam-color-fg-strong);
+    }
+  }
+}

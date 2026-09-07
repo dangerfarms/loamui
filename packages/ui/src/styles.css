@@ -11,7 +11,7 @@
 @import url("./components/Header/Header.css") layer(loamui.ui);
 @import url("./components/Footer/Footer.css") layer(loamui.ui);
 @import url("./components/Stats/Stats.css") layer(loamui.ui);
-@import url("./components/Testimonials/Testimonials.css") layer(loamui.ui);
+@import url("./components/Testimonial/Testimonial.css") layer(loamui.ui);
 @import url("./components/Feature/Feature.css") layer(loamui.ui);
 @import url("./components/Carousel/Carousel.css") layer(loamui.ui);
 @import url("./components/CallToAction/CallToAction.css") layer(loamui.ui);

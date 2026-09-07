@@ -1,7 +1,7 @@
 # @loamui/ui
 
 Ready-made compositions built from [`@loamui/core`](https://www.npmjs.com/package/@loamui/core)
-primitives: hero, header, footer, testimonials, features, stats. Each
+primitives: hero, header, footer, testimonial, feature, stat. Each
 one is a compound component whose parts you arrange in your own markup; none
 of them adds a component to core.
 

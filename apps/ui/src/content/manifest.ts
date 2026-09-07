@@ -46,11 +46,11 @@ export const MANIFEST: CompositionMeta[] = [
     description: "Headline figures: each tile a large value over a short label, alone or in a row.",
   },
   {
-    slug: "testimonials",
-    name: "Testimonials",
+    slug: "testimonial",
+    name: "Testimonial",
     category: "Page sections",
     description:
-      "A scroll-snap carousel of quotes, each in a Card, with a pair of Buttons that page through it.",
+      "One testimonial: a quotation and who said it, alone, in a Card or in a Carousel.",
   },
   {
     slug: "feature",

@@ -18,7 +18,7 @@ import banner from "./banner";
 import call_to_action from "./call-to-action";
 import carousel from "./carousel";
 import feature from "./feature";
-import testimonials from "./testimonials";
+import testimonial from "./testimonial";
 import stats from "./stats";
 import footer from "./footer";
 import header from "./header";
@@ -27,7 +27,7 @@ import header from "./header";
 const COMPOSITIONS: Composition[] = [
   hero,
   feature,
-  testimonials,
+  testimonial,
   carousel,
   call_to_action,
   banner,

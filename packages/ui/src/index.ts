@@ -5,7 +5,7 @@ export * from "./components/Hero/index";
 export * from "./components/Header/index";
 export * from "./components/Footer/index";
 export * from "./components/Stats/index";
-export * from "./components/Testimonials/index";
+export * from "./components/Testimonial/index";
 export * from "./components/Feature/index";
 export * from "./components/Carousel/index";
 export * from "./components/CallToAction/index";

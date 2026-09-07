@@ -1,9 +1,8 @@
-import { describe, it, expect, afterEach, vi } from "vitest";
+import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { axe } from "vitest-axe";
-import { Avatar, Button } from "@loamui/core";
-import { Header, Footer, Stats, Testimonials, Feature } from "../index";
+import { Avatar, Button, Card } from "@loamui/core";
+import { Header, Footer, Stats, Testimonial, Carousel, Feature } from "../index";
 
 afterEach(cleanup);
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };
@@ -95,30 +94,45 @@ describe("Stats", () => {
   });
 });
 
-describe("Testimonials", () => {
-  it("pages the track with the controls", async () => {
-    const user = userEvent.setup();
+describe("Testimonial", () => {
+  it("is a figure whose quote is a blockquote and whose author is the caption", async () => {
     const { container } = render(
-      <Testimonials.Root aria-labelledby="quotes">
-        <h2 id="quotes">What teams say</h2>
-        <Testimonials.Track>
-          <Testimonials.Item>
-            <Testimonials.Quote>It just worked.</Testimonials.Quote>
-            <Testimonials.Author>
-              <Avatar name="Priya Natarajan" aria-hidden />
-              <p>Priya Natarajan</p>
-            </Testimonials.Author>
-          </Testimonials.Item>
-        </Testimonials.Track>
-        <Testimonials.Controls />
-      </Testimonials.Root>,
+      <Testimonial.Root>
+        <Testimonial.Quote cite="https://example.com/review">It just worked.</Testimonial.Quote>
+        <Testimonial.Author>
+          <Avatar name="Priya Natarajan" aria-hidden />
+          <p>Priya Natarajan</p>
+        </Testimonial.Author>
+      </Testimonial.Root>,
     );
-    const track = container.querySelector("ul.track") as HTMLUListElement;
-    const scrollBy = vi.fn();
-    Object.defineProperty(track, "scrollBy", { configurable: true, value: scrollBy });
-    Object.defineProperty(track, "clientWidth", { configurable: true, value: 400 });
-    await user.click(screen.getByRole("button", { name: "Next" }));
-    expect(scrollBy).toHaveBeenCalledTimes(1);
+    const figure = container.querySelector("figure.loam-Testimonial")!;
+    expect(figure.querySelector("blockquote.quote")).toHaveAttribute(
+      "cite",
+      "https://example.com/review",
+    );
+    expect(figure.querySelector("figcaption.author")).toHaveTextContent("Priya Natarajan");
+    expect(await axe(container, axeOptions)).toHaveNoViolations();
+  });
+
+  it("rides in a Carousel inside a Card without owning either", async () => {
+    const { container } = render(
+      <Carousel.Root aria-label="Quotes">
+        <Carousel.Track>
+          <Carousel.Item>
+            <Card>
+              <Testimonial.Root>
+                <Testimonial.Quote>It just worked.</Testimonial.Quote>
+              </Testimonial.Root>
+            </Card>
+          </Carousel.Item>
+        </Carousel.Track>
+        <Carousel.Controls />
+      </Carousel.Root>,
+    );
+    expect(
+      container.querySelector(".loam-Carousel ul.track li .loam-Card figure.loam-Testimonial"),
+    ).not.toBeNull();
+    expect(screen.getByRole("button", { name: "Next" })).toBeInTheDocument();
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 });
