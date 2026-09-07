@@ -1,0 +1,71 @@
+/* Contact details: an address element holding a description list. It
+   hosts consumer content (links, a list of links), hence the donut. The
+   address element is italic by default in every browser; that convention
+   predates contact blocks set in a UI and reads as emphasis here, so the
+   root sets upright type. */
+@scope (.loam-ContactDetails) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    font-style: normal;
+  }
+
+  /* Two columns: the labels take their widest width, the values the rest.
+     A consumer wanting more columns overrides grid-template-columns here. */
+  dl {
+    display: block grid;
+    gap: var(--loam-space-sm) var(--loam-space-lg);
+    grid-template-columns: max-content 1fr;
+    margin: 0;
+  }
+
+  /* Each pair is a div so the two cells stay together in the DOM; the
+     grid sees through it to place the label and value as siblings. */
+  div.item {
+    display: contents;
+  }
+
+  dt.label {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+  }
+
+  /* A long email or URL breaks rather than widening the column. */
+  dd.value {
+    margin: 0;
+    overflow-wrap: anywhere;
+
+    /* A labelled list of links: no markers, no indent, the page's link
+       styling. */
+    ul {
+      display: block grid;
+      gap: var(--loam-space-xs);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      margin: 0;
+    }
+  }
+
+  /* Narrow: one column, each label above its value. The pair becomes a
+     real box again so the label sits close to its value and the pairs
+     keep a larger gap between them. The query lives on the children
+     because a container query is answered by an ancestor, never by the
+     root that declares it. */
+  @container (inline-size < 22rem) {
+    dl {
+      gap: var(--loam-space-md);
+      grid-template-columns: 1fr;
+    }
+
+    div.item {
+      display: block grid;
+      gap: var(--loam-space-xs);
+    }
+  }
+
+  /* Forced colours: nothing here is background-painted, so there is
+     nothing to restore; the links keep the system link colour. */
+}

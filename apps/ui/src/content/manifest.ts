@@ -162,6 +162,13 @@ export const MANIFEST: CompositionMeta[] = [
     description:
       "A row of icon-only links to profiles, each named by hidden text.",
   },
+  {
+    slug: "contact-details",
+    name: "Contact details",
+    category: "Data display",
+    description:
+      "How to reach an organisation or person: phone, email, postal address, hours, or a labelled list of links.",
+  },
 ];
 
 export function metaBySlug(slug: string): CompositionMeta | undefined {
