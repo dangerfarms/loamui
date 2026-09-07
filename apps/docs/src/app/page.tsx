@@ -54,7 +54,7 @@ const TENETS = [
 ];
 
 const AGENT_PROMPT =
-  "Build a restaurant menu using @loamui/core: three cards for Starter, Main course and Dessert. Each card lists three dishes with a one-line description and a price, has one status badge (Vegetarian, Contains nuts, Sold out) and one action button. Use native elements and the element styles for the type, a scoped rule with --loam-* tokens for the card anatomy, Card, Badge and Button for the parts, and declare each card's status with --loam-context on its root (success, warning, danger) so the badge and the button take the status colour; the sold-out card's button is disabled. Do not add size, variant or colour props, and do not restyle LoamUI internals. Fetch https://loamui.com/llms.txt and use its rules for LoamUI in this project.";
+  "Build a restaurant menu using @loamui/core: two cards, Starter and Dessert. Each card lists three dishes with a one-line description and a price, has one status badge (Vegetarian, Sold out) and one action button. Use native elements and the element styles for the type, a scoped rule with --loam-* tokens for the card anatomy, Card, Badge and Button for the parts, and declare each card's status with --loam-context on its root (success, danger) so the badge and the button take the status colour; the sold-out card's button is disabled. Do not add size, variant or colour props, and do not restyle LoamUI internals. Fetch https://loamui.com/llms.txt and use its rules for LoamUI in this project.";
 
 const PILLARS = [
   {

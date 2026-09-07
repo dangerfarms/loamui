@@ -1,22 +1,18 @@
 .grid {
   display: block grid;
   gap: 1.25rem;
-  grid-template-areas:
-    "ask code"
-    "result result";
+  grid-template-areas: "ask code";
   grid-template-columns: minmax(18rem, 2fr) 3fr;
 
   @media (width <= 56rem) {
     grid-template-areas:
       "ask"
-      "result"
       "code";
     grid-template-columns: 1fr;
   }
 }
 
 .ask,
-.result,
 .code {
   background: var(--loam-color-surface);
   border: 1px solid var(--loam-color-line);
@@ -28,12 +24,6 @@
 .ask {
   align-self: start;
   grid-area: ask;
-}
-
-.result {
-  display: block grid;
-  gap: 1rem;
-  grid-area: result;
 }
 
 .code {
@@ -125,6 +115,7 @@
    and layout answer this box, not the viewport. */
 .stage {
   container-type: inline-size;
+  padding-block: 0.5rem;
 }
 
 .codeHead {

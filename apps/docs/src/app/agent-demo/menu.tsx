@@ -1,58 +1,15 @@
 import { Badge, Button, Card } from "@loamui/core";
 import "./menu.css";
 
-type Dish = { name: string; description: string; price: string };
-
-type Course = {
-  title: string;
-  status: "vegetarian" | "contains-nuts" | "sold-out";
-  label: string;
-  dishes: Dish[];
-};
-
-const courses: Course[] = [
+const courses = [
   {
     title: "Starter",
     status: "vegetarian",
     label: "Vegetarian",
     dishes: [
-      {
-        name: "Burrata",
-        description: "Heritage tomatoes, basil oil and sourdough crumb.",
-        price: "£8.50",
-      },
-      {
-        name: "Roast beetroot",
-        description: "Whipped goat's curd, hazelnut and dill.",
-        price: "£7.00",
-      },
-      {
-        name: "Soup of the day",
-        description: "Served with warm brown bread and salted butter.",
-        price: "£6.50",
-      },
-    ],
-  },
-  {
-    title: "Main course",
-    status: "contains-nuts",
-    label: "Contains nuts",
-    dishes: [
-      {
-        name: "Chicken satay",
-        description: "Peanut sauce, jasmine rice and pickled cucumber.",
-        price: "£16.00",
-      },
-      {
-        name: "Pesto linguine",
-        description: "Pine nuts, basil and aged parmesan.",
-        price: "£14.50",
-      },
-      {
-        name: "Trout amandine",
-        description: "Brown butter, toasted almonds and green beans.",
-        price: "£19.00",
-      },
+      ["Burrata", "Heritage tomatoes, basil oil, sourdough crumb", "£9.50"],
+      ["Roast beetroot", "Whipped goat's curd, hazelnuts, dill", "£8.00"],
+      ["Wild mushroom toast", "Garlic butter, parsley, poached egg", "£8.50"],
     ],
   },
   {
@@ -60,45 +17,35 @@ const courses: Course[] = [
     status: "sold-out",
     label: "Sold out",
     dishes: [
-      {
-        name: "Sticky toffee pudding",
-        description: "Butterscotch sauce and clotted cream.",
-        price: "£7.50",
-      },
-      { name: "Lemon tart", description: "Italian meringue and raspberry sorbet.", price: "£7.00" },
-      {
-        name: "Cheese board",
-        description: "Three British cheeses, chutney and oatcakes.",
-        price: "£9.50",
-      },
+      ["Sticky toffee pudding", "Date sponge, butterscotch, clotted cream", "£7.50"],
+      ["Lemon posset", "Shortbread, raspberries", "£6.50"],
+      ["Chocolate tart", "Salted caramel, crème fraîche", "£7.00"],
     ],
   },
-];
+] as const;
 
 export function RestaurantMenu() {
   return (
     <section className="menu">
       <h2>Menu</h2>
-      <div className="courses">
-        {courses.map((course) => (
-          <Card className={`course ${course.status}`} key={course.title}>
-            <h3>
-              {course.title} <Badge>{course.label}</Badge>
-            </h3>
-            <dl>
-              {course.dishes.map((dish) => (
-                <div key={dish.name}>
-                  <dt>
-                    {dish.name} <data value={dish.price.slice(1)}>{dish.price}</data>
-                  </dt>
-                  <dd>{dish.description}</dd>
-                </div>
-              ))}
-            </dl>
-            <Button disabled={course.status === "sold-out"}>Add to order</Button>
-          </Card>
-        ))}
-      </div>
+      {courses.map(({ title, status, label, dishes }) => (
+        <Card key={title} className={`menu-card ${status}`}>
+          <h3>
+            {title} <Badge>{label}</Badge>
+          </h3>
+          <dl>
+            {dishes.map(([name, description, price]) => (
+              <div key={name}>
+                <dt>
+                  {name} <data value={price.slice(1)}>{price}</data>
+                </dt>
+                <dd>{description}</dd>
+              </div>
+            ))}
+          </dl>
+          <Button disabled={status === "sold-out"}>Order {title.toLowerCase()}</Button>
+        </Card>
+      ))}
     </section>
   );
 }

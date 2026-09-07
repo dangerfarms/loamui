@@ -4,7 +4,7 @@ import { useId, useState, type ReactNode } from "react";
 import { CodeBlock } from "@/renderer/CodeBlock";
 import classes from "./AgentShowcase.module.css";
 
-type Tab = "tsx" | "css";
+type Tab = "result" | "tsx" | "css";
 
 /**
  * The homepage's "ask, get, look under the hood" panel: the prompt a
@@ -31,7 +31,7 @@ export function AgentShowcase({
   caption: string;
   children: ReactNode;
 }) {
-  const [tab, setTab] = useState<Tab>("tsx");
+  const [tab, setTab] = useState<Tab>("result");
   const [copied, setCopied] = useState<"skill" | "prompt" | null>(null);
   const baseId = useId();
 
@@ -80,16 +80,11 @@ export function AgentShowcase({
         </div>
       </div>
 
-      <div className={classes.result}>
-        <span className={classes.step}>Result</span>
-        <div className={classes.stage}>{children}</div>
-      </div>
-
       <div className={classes.code}>
         <div className={classes.codeHead}>
           <span className={classes.step}>Under the hood</span>
           <div role="tablist" aria-label="Generated code" className={classes.tabs}>
-            {(["tsx", "css"] as const).map((t) => (
+            {(["result", "tsx", "css"] as const).map((t) => (
               <button
                 key={t}
                 type="button"
@@ -101,7 +96,7 @@ export function AgentShowcase({
                 className={classes.tab}
                 onClick={() => setTab(t)}
               >
-                {t === "tsx" ? "Component" : "Stylesheet"}
+                {t === "result" ? "Result" : t === "tsx" ? "Component" : "Stylesheet"}
               </button>
             ))}
           </div>
@@ -112,11 +107,9 @@ export function AgentShowcase({
           aria-labelledby={`${baseId}-tab-${tab}`}
           className={classes.panel}
         >
-          {tab === "tsx" ? (
-            <CodeBlock code={tsx} language="tsx" />
-          ) : (
-            <CodeBlock code={css} language="css" />
-          )}
+          {tab === "result" && <div className={classes.stage}>{children}</div>}
+          {tab === "tsx" && <CodeBlock code={tsx} language="tsx" />}
+          {tab === "css" && <CodeBlock code={css} language="css" />}
         </div>
         <p className={classes.caption}>{caption}</p>
       </div>
