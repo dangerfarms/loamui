@@ -127,6 +127,23 @@ The CSS and TSX are the easy part; these are the steps low-risk additions miss:
 - [ ] If it introduces a new colour pairing, add a check to
       `scripts/contrast-audit.mjs`.
 
+## Adding a composition (`@loamui/ui`) instead
+
+If the ladder in Step 1 ends at "composition of existing parts", the thing may
+still belong in the library, as a composition in `packages/ui`, but only if it
+carries judgment a consumer would otherwise get wrong. Test it against the
+seven rules in [CONTRIBUTING → Compositions](../../../CONTRIBUTING.md): it
+encodes a judgment, not a layout; the unit stands alone (a `Root` is optional,
+never required, and never assumes a count); arrangement belongs to the
+consumer; it is built the way any consumer would (core parts never restyled,
+nothing in core changed); no configuration props; it passes the override test;
+it ships its reasoning and passes the gates. A composition that fails one of
+them is a recipe for the Composing guide, not a component. Model a new one on
+`Stats` (a standalone unit with an optional row) or `Testimonials` (a
+composition built on another composition); wire it exactly as Step 5 does,
+with `packages/ui/src/styles.css`, the ui tests, the gallery's `manifest.ts`
+and `registry.client.tsx`.
+
 ## Step 6 — Done means gates + eyes
 
 Run the full suite and believe it, then verify what no tool can:

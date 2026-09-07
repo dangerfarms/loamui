@@ -14,6 +14,9 @@ here:
   featured item by declaring `--loam-context: primary` (or a status) on
   that part's root, in your stylesheet or a style attribute; the parts inside
   answer it.
+- **The unit stands alone.** A `Stats.Item` works on its own, in a Card or a
+  grid you wrote yourself; `Stats.Root` arranges several for the common case
+  and is optional. To repeat an item across a page, write the grid yourself.
 - **Width comes from the container.** Each root declares
   `container-type: inline-size`; put a composition in a narrow column and its
   type and layout follow.

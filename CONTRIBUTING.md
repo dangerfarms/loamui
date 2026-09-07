@@ -283,6 +283,42 @@ The essentials either way:
 3. Keep everything accessible: correct roles, keyboard support, focus-visible rings.
 4. Add or update the component's docs entry in `apps/docs/src/content/components/`.
 
+## Compositions (`@loamui/ui`)
+
+Core holds primitives; `@loamui/ui` holds compositions built from them the
+way any consumer would. A composition is the library's judgment applied to a
+recurring piece of a page, and it earns its place only by carrying judgment
+a consumer would otherwise get wrong. Before adding one, test it against
+every line below; a composition that fails one is a recipe for the
+[Composing guide](https://loamui.com/docs/composing/), not a component.
+
+1. **It encodes a judgment, not a layout.** Semantics, ARIA, reading order,
+   keyboard behaviour, copy conventions: a header's landmark and current
+   page, a carousel that scrolls without JavaScript, a form's autocomplete
+   purposes and error placement. If what it adds is a grid and some type
+   sizes, it is a recipe.
+2. **The unit stands alone.** Every composition works as a single instance:
+   one stat tile, one article card, one testimonial. A `Root` that arranges
+   several may exist for the common case, but it is optional, never
+   required, and never assumes a count.
+3. **Arrangement belongs to the consumer.** No layout components (they were
+   built and removed twice; see the Layout guide). Repeating an item across a
+   page is one line of the consumer's own grid CSS.
+4. **Built the way any consumer would.** Core parts inside, never restyled:
+   a composition's own rules live on elements it renders, never on a core
+   part's root, and nothing in core changes for a composition. Same file
+   anatomy as core, in `@layer loamui.ui`, `@scope`d with the donut, tokens
+   only.
+5. **No configuration props.** Status from `--loam-context`, size from the
+   container, element substitution through core's `render`; the same
+   doctrine as core, without exception.
+6. **It passes the override test.** If a real project would need structural
+   overrides (spacing, DOM shape, layout) to use it, it does not ship.
+7. **It ships its reasoning and passes the gates.** When to use it, when not
+   to, and why its defaults are what they are, on the gallery page; the same
+   lint, type, contrast and test gates as core, with an axe check per
+   composition.
+
 ## Before opening a PR
 
 Run what CI runs (`.github/workflows/ci.yml`):
