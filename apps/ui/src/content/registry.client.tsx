@@ -9,7 +9,7 @@ import gallery from "@/app/gallery.module.css";
 import page from "@/app/[slug]/page.module.css";
 import hero from "./hero";
 import table_of_contents from "./table-of-contents";
-import article_cards from "./article-cards";
+import article_card from "./article-card";
 import person from "./person";
 import error_page from "./error-page";
 import sign_in from "./sign-in";
@@ -38,7 +38,7 @@ const COMPOSITIONS: Composition[] = [
   header,
   footer,
   stats,
-  article_cards,
+  article_card,
   table_of_contents,
 ];
 

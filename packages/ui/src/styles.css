@@ -20,5 +20,5 @@
 @import url("./components/SignIn/SignIn.css") layer(loamui.ui);
 @import url("./components/ErrorPage/ErrorPage.css") layer(loamui.ui);
 @import url("./components/Person/Person.css") layer(loamui.ui);
-@import url("./components/ArticleCards/ArticleCards.css") layer(loamui.ui);
+@import url("./components/ArticleCard/ArticleCard.css") layer(loamui.ui);
 @import url("./components/TableOfContents/TableOfContents.css") layer(loamui.ui);

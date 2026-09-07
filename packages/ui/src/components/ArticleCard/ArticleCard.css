@@ -1,35 +1,13 @@
-/* An article list is a region: it declares its container so the fluid
-   tokens answer the section's width, and it hosts consumer content (a
-   Badge, an Avatar, a link), hence the donut. */
-@scope (.loam-ArticleCards) to ([class*="loam-"]) {
+/* One article card: the parts in their own column inside a core Card. The
+   Card's surface, line, radius and padding are core's; this scope arranges
+   what sits inside it. It is the unit; an index of them is the consumer's
+   grid. It hosts a Badge, an Avatar and a link, hence the donut. */
+@scope (.loam-ArticleCard) to ([class*="loam-"]) {
   :scope {
+    /* Percentage, not min-block-size: it resolves against a Card that a
+       grid has stretched, so the author sits at the foot of every card. */
+    block-size: 100%;
     container-type: inline-size;
-    display: block grid;
-    gap: var(--loam-space-lg);
-  }
-
-  /* As many cards across as fit, one column when none do. Each item is a
-     grid so its Card stretches to the row's height. */
-  ul.grid {
-    display: block grid;
-    gap: var(--loam-space-lg);
-    grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
-    list-style: none;
-    margin: 0;
-    padding: 0;
-
-    > li {
-      display: block grid;
-      margin: 0;
-    }
-  }
-}
-
-/* The article surface is a core Card, which the donut above fences off, so
-   the Card carries this second root. The Card's own look (surface, line,
-   radius, padding) is untouched; this scope arranges the parts inside it. */
-@scope (.loam-ArticleCards-card) to ([class*="loam-"]) {
-  :scope {
     display: block flex;
     flex-direction: column;
     gap: var(--loam-space-sm);
@@ -56,7 +34,7 @@
   /* The title is the link. It keeps the heading's colour and drops the
      underline at rest; the underline returns on hover and focus, so the
      affordance is still there when it is looked for. */
-  h3.title {
+  .title {
     font-size: var(--loam-text-lg);
     margin: 0;
 

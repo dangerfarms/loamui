@@ -107,11 +107,11 @@ export const MANIFEST: CompositionMeta[] = [
     description: "One person: an avatar over a name and a role, alone or in a grid you write.",
   },
   {
-    slug: "article-cards",
-    name: "Article cards",
+    slug: "article-card",
+    name: "Article card",
     category: "Blog",
     description:
-      "A grid of article Cards, each a category and date, a linked title, an excerpt and an author.",
+      "One article in a Card: a category and date, a linked title, an excerpt and an author, alone or in a grid you write.",
   },
   {
     slug: "table-of-contents",
