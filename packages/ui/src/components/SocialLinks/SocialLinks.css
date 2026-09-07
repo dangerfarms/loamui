@@ -1,0 +1,75 @@
+/* A row of icon-only profile links. The nav is a region: it declares its
+   container so the spacing tokens answer its width, and it hosts the
+   consumer's svgs, hence the donut. */
+@scope (.loam-SocialLinks) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+  }
+
+  /* The markers go (the markup restores the list role Safari drops with
+     them) and the gap keeps neighbouring targets apart. */
+  ul {
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li.item {
+    margin: 0;
+  }
+
+  /* Each target is floored at 24px (WCAG 2.5.8) whatever size the font
+     makes the icon, and the radius lets the global focus ring follow the
+     shape. Nothing here paints a background, so forced colours need no
+     rule of their own: the link takes LinkText like any other. */
+  a.link {
+    align-items: center;
+    border-radius: var(--loam-radius-md);
+    color: var(--loam-color-fg-muted);
+    display: inline flex;
+    justify-content: center;
+    min-block-size: 1.5rem;
+    min-inline-size: 1.5rem;
+    padding: var(--loam-space-xs);
+    text-decoration: none;
+
+    @media (hover: hover) {
+      &:hover {
+        color: var(--loam-color-fg-strong);
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition: color var(--loam-duration-sm) var(--loam-ease);
+    }
+  }
+
+  /* The icon follows the surrounding font: small in a footer's small
+     print, larger under a heading. There is no size prop. */
+  span.icon {
+    display: block flex;
+
+    svg {
+      block-size: 1.25em;
+      inline-size: 1.25em;
+    }
+  }
+
+  /* The name is real text, visually hidden: the same recipe as core's
+     error prefix. It is the link's accessible name, it translates, and it
+     shows in reader mode; an aria-label does none of those. */
+  span.label {
+    block-size: 1px;
+    border: 0;
+    clip-path: inset(50%);
+    inline-size: 1px;
+    margin: -1px;
+    overflow: clip;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+  }
+}

@@ -22,6 +22,8 @@ import testimonial from "./testimonial";
 import stats from "./stats";
 import footer from "./footer";
 import header from "./header";
+import contact_details from "./contact-details";
+import social_links from "./social-links";
 import embed from "./embed";
 import image_comparison from "./image-comparison";
 import gallery from "./gallery";

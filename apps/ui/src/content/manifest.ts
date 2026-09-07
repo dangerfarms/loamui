@@ -155,6 +155,13 @@ export const MANIFEST: CompositionMeta[] = [
     description:
       "A third-party frame in the page: a video, a map, sized before it loads and named for assistive technology.",
   },
+  {
+    slug: "social-links",
+    name: "Social links",
+    category: "Navigation",
+    description:
+      "A row of icon-only links to profiles, each named by hidden text.",
+  },
 ];
 
 export function metaBySlug(slug: string): CompositionMeta | undefined {

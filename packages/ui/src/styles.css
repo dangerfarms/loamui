@@ -27,3 +27,4 @@
 @import url("./components/Gallery/Gallery.css") layer(loamui.ui);
 @import url("./components/ImageComparison/ImageComparison.css") layer(loamui.ui);
 @import url("./components/Embed/Embed.css") layer(loamui.ui);
+@import url("./components/SocialLinks/SocialLinks.css") layer(loamui.ui);
