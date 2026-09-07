@@ -14,7 +14,6 @@ import team from "./team";
 import error_page from "./error-page";
 import sign_in from "./sign-in";
 import contact_form from "./contact-form";
-import faq from "./faq";
 import banner from "./banner";
 import call_to_action from "./call-to-action";
 import carousel from "./carousel";
@@ -32,7 +31,6 @@ const COMPOSITIONS: Composition[] = [
   carousel,
   call_to_action,
   banner,
-  faq,
   team,
   error_page,
   contact_form,

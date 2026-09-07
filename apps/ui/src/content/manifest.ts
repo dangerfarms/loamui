@@ -81,13 +81,6 @@ export const MANIFEST: CompositionMeta[] = [
       "A one-line announcement bar for the top of a page: a message and, beside it, a Button or a link.",
   },
   {
-    slug: "faq",
-    name: "FAQ",
-    category: "Page sections",
-    description:
-      "A list of questions, each a native disclosure the browser opens, closes and searches.",
-  },
-  {
     slug: "contact-form",
     name: "Contact form",
     category: "Forms",

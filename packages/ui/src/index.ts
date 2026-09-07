@@ -10,7 +10,6 @@ export * from "./components/Features/index";
 export * from "./components/Carousel/index";
 export * from "./components/CallToAction/index";
 export * from "./components/Banner/index";
-export * from "./components/Faq/index";
 export * from "./components/ContactForm/index";
 export * from "./components/SignIn/index";
 export * from "./components/ErrorPage/index";
