@@ -11,7 +11,7 @@ export * from "./components/Carousel/index";
 export * from "./components/CallToAction/index";
 export * from "./components/Banner/index";
 export * from "./components/ContactForm/index";
-export * from "./components/SignIn/index";
+export * from "./components/SignInForm/index";
 export * from "./components/ErrorPage/index";
 export * from "./components/Person/index";
 export * from "./components/ArticleCard/index";

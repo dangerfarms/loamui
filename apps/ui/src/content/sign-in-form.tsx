@@ -2,7 +2,7 @@
 
 import type { FormEvent } from "react";
 import { Button, Checkbox, Field, Input } from "@loamui/core";
-import { SignIn } from "@loamui/ui";
+import { SignInForm } from "@loamui/ui";
 import type { Composition } from "./types";
 
 function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -10,34 +10,34 @@ function onSubmit(event: FormEvent<HTMLFormElement>) {
 }
 
 const signIn: Composition = {
-  slug: "sign-in",
-  name: "Sign in",
+  slug: "sign-in-form",
+  name: "Sign-in form",
   category: "Forms",
   description:
-    "A sign-in card: a title, one column of fields, a stretched action and a footer link.",
-  lead: "Five parts on a core Card, capped at 24rem and centred. One column: email, password, a checkbox, a Button stretched to the card's width and a footer line for the other path. The fields carry their autofill purpose, so browsers and password managers fill the form without guessing.",
-  importLine: `import { SignIn } from "@loamui/ui";`,
+    "A sign-in form in a Card: a title, one column of fields, a stretched action and a footer link.",
+  lead: "Five parts inside a core Card, capped at 24rem and centred. One column: email, password, a checkbox, a Button stretched to the card's width and a footer line for the other path. The fields carry their autofill purpose, so browsers and password managers fill the form without guessing.",
+  importLine: `import { SignInForm } from "@loamui/ui";`,
   parts: [
     {
-      name: "SignIn.Root",
+      name: "SignInForm.Root",
       description:
-        "The surface: a core Card, capped at 24rem and centred in whatever holds it. Declares its own container so the fluid tokens answer the card's width.",
+        "The surface: a core Card, left as core styles it, capped at 24rem and centred in whatever holds it. Declares its own container so the fluid tokens answer the card's width.",
     },
     {
-      name: "SignIn.Title",
+      name: "SignInForm.Title",
       description: "The heading. An h1 on a page of its own; pass render={<h2 />} inside a page.",
     },
     {
-      name: "SignIn.Form",
+      name: "SignInForm.Form",
       description:
         "The native form, one column of fields with a large gap. action and onSubmit are its own, forwarded untouched.",
     },
     {
-      name: "SignIn.Actions",
+      name: "SignInForm.Actions",
       description: "A grid wrapper for the submit Button, so it stretches to the card's width.",
     },
     {
-      name: "SignIn.Footer",
+      name: "SignInForm.Footer",
       description: "One muted, centred line under the form, with a link to the other path.",
     },
   ],
@@ -46,9 +46,9 @@ const signIn: Composition = {
       title: "Email and password",
       description:
         'The email field takes autoComplete="email" and the password field autoComplete="current-password": the two values that let a browser or password manager fill a sign-in form correctly, and the second is what tells it this is an existing password, not a new one. The Checkbox is unticked, so staying signed in is a choice the visitor makes. One column because the form is filled top to bottom: side-by-side fields make the eye and the tab order disagree, and every answer here follows the one before.',
-      code: `<SignIn.Root>
-  <SignIn.Title>Sign in</SignIn.Title>
-  <SignIn.Form action="/sign-in" onSubmit={onSubmit}>
+      code: `<SignInForm.Root>
+  <SignInForm.Title>Sign in</SignInForm.Title>
+  <SignInForm.Form action="/sign-in" onSubmit={onSubmit}>
     <Field.Root>
       <Field.Label>Email address</Field.Label>
       <Input name="email" type="email" autoComplete="email" required />
@@ -58,18 +58,18 @@ const signIn: Composition = {
       <Input name="password" type="password" autoComplete="current-password" required />
     </Field.Root>
     <Checkbox name="remember" label="Keep me signed in" />
-    <SignIn.Actions>
+    <SignInForm.Actions>
       <Button type="submit">Sign in</Button>
-    </SignIn.Actions>
-  </SignIn.Form>
-  <SignIn.Footer>
+    </SignInForm.Actions>
+  </SignInForm.Form>
+  <SignInForm.Footer>
     No account? <a href="/sign-up">Create one</a>
-  </SignIn.Footer>
-</SignIn.Root>`,
+  </SignInForm.Footer>
+</SignInForm.Root>`,
       render: () => (
-        <SignIn.Root>
-          <SignIn.Title>Sign in</SignIn.Title>
-          <SignIn.Form action="/sign-in" onSubmit={onSubmit}>
+        <SignInForm.Root>
+          <SignInForm.Title>Sign in</SignInForm.Title>
+          <SignInForm.Form action="/sign-in" onSubmit={onSubmit}>
             <Field.Root>
               <Field.Label>Email address</Field.Label>
               <Input name="email" type="email" autoComplete="email" required />
@@ -79,14 +79,14 @@ const signIn: Composition = {
               <Input name="password" type="password" autoComplete="current-password" required />
             </Field.Root>
             <Checkbox name="remember" label="Keep me signed in" />
-            <SignIn.Actions>
+            <SignInForm.Actions>
               <Button type="submit">Sign in</Button>
-            </SignIn.Actions>
-          </SignIn.Form>
-          <SignIn.Footer>
+            </SignInForm.Actions>
+          </SignInForm.Form>
+          <SignInForm.Footer>
             No account? <a href="/sign-up">Create one</a>
-          </SignIn.Footer>
-        </SignIn.Root>
+          </SignInForm.Footer>
+        </SignInForm.Root>
       ),
     },
   ],

@@ -12,7 +12,7 @@ import table_of_contents from "./table-of-contents";
 import article_card from "./article-card";
 import person from "./person";
 import error_page from "./error-page";
-import sign_in from "./sign-in";
+import sign_in_form from "./sign-in-form";
 import contact_form from "./contact-form";
 import banner from "./banner";
 import call_to_action from "./call-to-action";
@@ -34,7 +34,7 @@ const COMPOSITIONS: Composition[] = [
   person,
   error_page,
   contact_form,
-  sign_in,
+  sign_in_form,
   header,
   footer,
   stats,

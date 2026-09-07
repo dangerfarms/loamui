@@ -3,15 +3,16 @@ import { Card, renderWithProps, cx } from "@loamui/core";
 import type { RenderProp } from "@loamui/core";
 import type { CardProps } from "@loamui/core";
 
-export interface SignInRootProps extends CardProps {
+export interface SignInFormRootProps extends CardProps {
   children?: ReactNode;
   ref?: Ref<HTMLDivElement>;
 }
 
 /**
- * A sign-in card: a title, one column of fields, a full-width action and
- * a footer line for the other path. The surface is a core `Card`, capped
- * at a readable width and centred in whatever holds it.
+ * A sign-in form: a title, one column of fields, a full-width action and
+ * a footer line for the other path. The surface is a core `Card`, left as
+ * core styles it; this composition only caps it at a readable width and
+ * centres it in whatever holds it, then lays its parts out inside.
  *
  * The fields are yours, composed from core `Field`, `Input` and `Checkbox`.
  * Give the email field `autoComplete="email"` and the password field
@@ -19,9 +20,9 @@ export interface SignInRootProps extends CardProps {
  * both without guessing.
  *
  * ```tsx
- * <SignIn.Root>
- *   <SignIn.Title>Sign in</SignIn.Title>
- *   <SignIn.Form action="/sign-in">
+ * <SignInForm.Root>
+ *   <SignInForm.Title>Sign in</SignInForm.Title>
+ *   <SignInForm.Form action="/sign-in">
  *     <Field.Root>
  *       <Field.Label>Email address</Field.Label>
  *       <Input name="email" type="email" autoComplete="email" required />
@@ -31,25 +32,25 @@ export interface SignInRootProps extends CardProps {
  *       <Input name="password" type="password" autoComplete="current-password" required />
  *     </Field.Root>
  *     <Checkbox name="remember" label="Keep me signed in" />
- *     <SignIn.Actions>
+ *     <SignInForm.Actions>
  *       <Button type="submit">Sign in</Button>
- *     </SignIn.Actions>
- *   </SignIn.Form>
- *   <SignIn.Footer>
+ *     </SignInForm.Actions>
+ *   </SignInForm.Form>
+ *   <SignInForm.Footer>
  *     No account? <a href="/sign-up">Create one</a>
- *   </SignIn.Footer>
- * </SignIn.Root>
+ *   </SignInForm.Footer>
+ * </SignInForm.Root>
  * ```
  */
-function SignInRoot({ className, children, ref, ...rest }: SignInRootProps) {
+function SignInFormRoot({ className, children, ref, ...rest }: SignInFormRootProps) {
   return (
-    <Card ref={ref} className={cx("loam-SignIn", className)} {...rest}>
+    <Card ref={ref} className={cx("loam-SignInForm", className)} {...rest}>
       {children}
     </Card>
   );
 }
 
-export interface SignInTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+export interface SignInFormTitleProps extends HTMLAttributes<HTMLHeadingElement> {
   /**
    * Render as a different heading: `render={<h2 />}` inside a page. The
    * part's classes and attributes merge onto the element it renders, the
@@ -61,7 +62,7 @@ export interface SignInTitleProps extends HTMLAttributes<HTMLHeadingElement> {
 }
 
 /** The card's heading. An `h1` by default; pass `render={<h2 />}` inside a page. */
-function SignInTitle({ render, className, children, ref, ...rest }: SignInTitleProps) {
+function SignInFormTitle({ render, className, children, ref, ...rest }: SignInFormTitleProps) {
   if (render) {
     return (
       <>{renderWithProps(render, { ref, className: cx("title", className), children, ...rest })}</>
@@ -74,13 +75,13 @@ function SignInTitle({ render, className, children, ref, ...rest }: SignInTitleP
   );
 }
 
-export interface SignInFormProps extends FormHTMLAttributes<HTMLFormElement> {
+export interface SignInFormFormProps extends FormHTMLAttributes<HTMLFormElement> {
   children?: ReactNode;
   ref?: Ref<HTMLFormElement>;
 }
 
 /** The native `form`, one column of fields. `action` and `onSubmit` are its own. */
-function SignInForm({ className, children, ref, ...rest }: SignInFormProps) {
+function SignInFormForm({ className, children, ref, ...rest }: SignInFormFormProps) {
   return (
     <form ref={ref} className={cx("form", className)} {...rest}>
       {children}
@@ -88,13 +89,13 @@ function SignInForm({ className, children, ref, ...rest }: SignInFormProps) {
   );
 }
 
-export interface SignInActionsProps extends HTMLAttributes<HTMLDivElement> {
+export interface SignInFormActionsProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
   ref?: Ref<HTMLDivElement>;
 }
 
 /** A grid wrapper for the submit Button, so it stretches to the card's width. */
-function SignInActions({ className, children, ref, ...rest }: SignInActionsProps) {
+function SignInFormActions({ className, children, ref, ...rest }: SignInFormActionsProps) {
   return (
     <div ref={ref} className={cx("actions", className)} {...rest}>
       {children}
@@ -102,13 +103,13 @@ function SignInActions({ className, children, ref, ...rest }: SignInActionsProps
   );
 }
 
-export interface SignInFooterProps extends HTMLAttributes<HTMLParagraphElement> {
+export interface SignInFormFooterProps extends HTMLAttributes<HTMLParagraphElement> {
   children?: ReactNode;
   ref?: Ref<HTMLParagraphElement>;
 }
 
 /** One muted, centred line under the form, with a link to the other path. */
-function SignInFooter({ className, children, ref, ...rest }: SignInFooterProps) {
+function SignInFormFooter({ className, children, ref, ...rest }: SignInFormFooterProps) {
   return (
     <p ref={ref} className={cx("footer", className)} {...rest}>
       {children}
@@ -116,10 +117,10 @@ function SignInFooter({ className, children, ref, ...rest }: SignInFooterProps) 
   );
 }
 
-export const SignIn = {
-  Root: SignInRoot,
-  Title: SignInTitle,
-  Form: SignInForm,
-  Actions: SignInActions,
-  Footer: SignInFooter,
+export const SignInForm = {
+  Root: SignInFormRoot,
+  Title: SignInFormTitle,
+  Form: SignInFormForm,
+  Actions: SignInFormActions,
+  Footer: SignInFormFooter,
 };

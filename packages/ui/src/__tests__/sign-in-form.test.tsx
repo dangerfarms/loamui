@@ -2,18 +2,18 @@ import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { axe } from "vitest-axe";
 import { Button, Checkbox, Field, Input } from "@loamui/core";
-import { SignIn } from "../components/SignIn/index";
+import { SignInForm } from "../components/SignInForm/index";
 
 afterEach(cleanup);
 
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };
 
-describe("SignIn", () => {
+describe("SignInForm", () => {
   it("renders a card with a heading, labelled controls and no axe violations", async () => {
     const { container } = render(
-      <SignIn.Root>
-        <SignIn.Title>Sign in</SignIn.Title>
-        <SignIn.Form action="/sign-in" aria-label="Sign in">
+      <SignInForm.Root>
+        <SignInForm.Title>Sign in</SignInForm.Title>
+        <SignInForm.Form action="/sign-in" aria-label="Sign in">
           <Field.Root>
             <Field.Label>Email address</Field.Label>
             <Input name="email" type="email" autoComplete="email" required />
@@ -23,17 +23,17 @@ describe("SignIn", () => {
             <Input name="password" type="password" autoComplete="current-password" required />
           </Field.Root>
           <Checkbox name="remember" label="Keep me signed in" />
-          <SignIn.Actions>
+          <SignInForm.Actions>
             <Button type="submit">Sign in</Button>
-          </SignIn.Actions>
-        </SignIn.Form>
-        <SignIn.Footer>
+          </SignInForm.Actions>
+        </SignInForm.Form>
+        <SignInForm.Footer>
           No account? <a href="/sign-up">Create one</a>
-        </SignIn.Footer>
-      </SignIn.Root>,
+        </SignInForm.Footer>
+      </SignInForm.Root>,
     );
     const root = container.firstElementChild;
-    expect(root).toHaveClass("loam-SignIn");
+    expect(root).toHaveClass("loam-SignInForm");
     expect(root).toHaveClass("loam-Card");
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Sign in");
     expect(screen.getByRole("form", { name: "Sign in" })).toHaveAttribute("action", "/sign-in");
@@ -47,9 +47,9 @@ describe("SignIn", () => {
 
   it("renders the title as an h2 when asked", () => {
     render(
-      <SignIn.Root>
-        <SignIn.Title render={<h2 />}>Sign in</SignIn.Title>
-      </SignIn.Root>,
+      <SignInForm.Root>
+        <SignInForm.Title render={<h2 />}>Sign in</SignInForm.Title>
+      </SignInForm.Root>,
     );
     expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("Sign in");
   });

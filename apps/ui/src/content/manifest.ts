@@ -87,11 +87,11 @@ export const MANIFEST: CompositionMeta[] = [
     description: "A stack of fields and a row of actions on a native form.",
   },
   {
-    slug: "sign-in",
-    name: "Sign in",
+    slug: "sign-in-form",
+    name: "Sign-in form",
     category: "Forms",
     description:
-      "A sign-in card: a title, one column of fields, a stretched action and a footer link.",
+      "A sign-in form in a Card: a title, one column of fields, a stretched action and a footer link.",
   },
   {
     slug: "error-page",
