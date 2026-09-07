@@ -1,9 +1,10 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
-import type { ChangeEvent, HTMLAttributes, ReactNode, Ref } from "react";
-import { Button, Field, Input, Meter, cx } from "@loamui/core";
-import type { InputProps } from "@loamui/core";
+import type { ChangeEvent, ReactNode, Ref } from "react";
+import { Field, Meter, PasswordInput, cx, useFieldControlProps } from "@loamui/core";
+import type { PartProps, PasswordInputProps } from "@loamui/core";
+import { useOptionalSlot } from "../../naming";
 
 /**
  * Every word the composition says on its own, each with an English
@@ -11,20 +12,26 @@ import type { InputProps } from "@loamui/core";
  */
 export interface PasswordFieldLabels {
   /**
-   * The toggle's name. Constant: the Button reports whether the password
-   * is shown with `aria-pressed`, and a name that swapped as well would
-   * say it twice.
+   * The toggle's name, passed to core `PasswordInput`. Constant: the
+   * Button reports whether the password is shown with `aria-pressed`, and
+   * a name that swapped as well would say it twice.
    * @default "Show password"
    */
   show?: string;
   /** The Meter's accessible name. @default "Password strength" */
   meter?: string;
   /**
-   * The word for a strength level, 0 (nothing) to 4 (strong), written
-   * beside the Meter and read as its `aria-valuetext`.
-   * @default 0–1 "Weak", 2 "Fair", 3–4 "Strong"
+   * The word for a strength level, 0 (nothing typed) to 4 (strong),
+   * written beside the Meter and read as its `aria-valuetext`. An empty
+   * string writes nothing beside the Meter; the default says nothing at 0.
+   * @default 0 "", 1 "Weak", 2 "Fair", 3–4 "Strong"
    */
   strength?: (level: number) => string;
+  /**
+   * The Meter's `aria-valuetext` while `strength` gives no word, at 0
+   * with the default. @default "Nothing typed yet"
+   */
+  empty?: string;
   /** The hidden word after a rule the typing meets. @default "met" */
   met?: string;
   /** The hidden words after a rule the typing does not meet yet. @default "not met" */
@@ -37,6 +44,7 @@ const LOW = 1.5;
 const HIGH = 2.5;
 
 function defaultStrength(level: number): string {
+  if (level < 0.5) return "";
   if (level < LOW) return "Weak";
   if (level < HIGH) return "Fair";
   return "Strong";
@@ -46,6 +54,7 @@ const DEFAULT_LABELS: Required<PasswordFieldLabels> = {
   show: "Show password",
   meter: "Password strength",
   strength: defaultStrength,
+  empty: "Nothing typed yet",
   met: "met",
   notMet: "not met",
 };
@@ -55,6 +64,8 @@ interface PasswordFieldState {
   value: string;
   setValue: (value: string) => void;
   labels: Required<PasswordFieldLabels>;
+  /** The Rules list's id, referenced by the input while the list is rendered. */
+  rules: ReturnType<typeof useOptionalSlot>;
 }
 
 const PasswordFieldContext = createContext<PasswordFieldState | null>(null);
@@ -67,25 +78,27 @@ function usePasswordField(part: string): PasswordFieldState {
   return state;
 }
 
-export interface PasswordFieldRootProps extends HTMLAttributes<HTMLDivElement> {
+export interface PasswordFieldRootProps extends PartProps<"div"> {
   /** Base id for the control; auto-generated when omitted. */
   id?: string;
   /** The composition's own words, each with an English default. */
   labels?: PasswordFieldLabels;
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /**
- * A field for making up a password: the input, a strength Meter and a
- * list of rules in plain words, each ticked as the typing meets it.
+ * A field for making up a password: core `PasswordInput`, a strength
+ * Meter and a list of rules in plain words, each ticked as the typing
+ * meets it.
  *
  * The wiring is core `Field`'s: the Label is the input's real `<label>`,
  * the Description and Error are joined to it with `aria-describedby`, and
- * an Error sets `aria-invalid`. Nothing here blocks a submit. The rules
- * are guidance while typing and the strength is a reading, not a verdict;
- * the server decides what it accepts, and the consumer says so in a
- * `Field.Error` in the words of the rule that was broken.
+ * an Error sets `aria-invalid`. The Rules list is joined the same way, so
+ * a screen reader hears the rules when it lands on the box. Nothing here
+ * blocks a submit. The rules are guidance while typing and the strength
+ * is a reading, not a verdict; the server decides what it accepts, and
+ * the consumer says so in a `Field.Error` in the words of the rule that
+ * was broken.
  *
  * ```tsx
  * <PasswordField.Root>
@@ -111,9 +124,10 @@ function PasswordFieldRoot({
   ...rest
 }: PasswordFieldRootProps) {
   const [value, setValue] = useState("");
+  const rules = useOptionalSlot();
   const state = useMemo<PasswordFieldState>(
-    () => ({ value, setValue, labels: { ...DEFAULT_LABELS, ...labels } }),
-    [value, labels],
+    () => ({ value, setValue, labels: { ...DEFAULT_LABELS, ...labels }, rules }),
+    [value, labels, rules],
   );
   // Field.Root provides the context the label, description and error wire
   // through; the composition's own element sits inside it so those parts
@@ -130,7 +144,7 @@ function PasswordFieldRoot({
   );
 }
 
-export interface PasswordFieldInputProps extends Omit<InputProps, "type"> {
+export interface PasswordFieldInputProps extends Omit<PasswordInputProps, "labels"> {
   /**
    * The autofill purpose. "new-password" tells a browser or password
    * manager this is a password to make up and save, not one to look up.
@@ -140,51 +154,60 @@ export interface PasswordFieldInputProps extends Omit<InputProps, "type"> {
 }
 
 /**
- * The input and its "Show password" toggle in a row. The toggle is a core
- * Button with visible words, not an eye icon alone; its name is constant
- * and it reports its state with `aria-pressed`, the one signal a toggle
- * button gives. Shown, the input is a plain text box, so a long password
- * can be checked by reading it rather than retyped.
+ * Core `PasswordInput`, untouched: the box and its "Show password" toggle,
+ * with the toggle's words read from the Root's `labels.show`. The Field
+ * wires its label, description and error; this part adds the Rules list
+ * to `aria-describedby` while one is rendered, and reads what is typed so
+ * the Strength and Rules can answer it. `className`, `style`, `ref` and
+ * every other prop land on the `<input>`; `wrapperProps` reach the row.
  */
 function PasswordFieldInput({
   autoComplete = "new-password",
   onChange,
+  ref,
+  "aria-describedby": ariaDescribedby,
   ...rest
 }: PasswordFieldInputProps) {
-  const { setValue, labels } = usePasswordField("PasswordField.Input");
-  const [shown, setShown] = useState(false);
-  const row = useRef<HTMLDivElement>(null);
+  const { setValue, labels, rules } = usePasswordField("PasswordField.Input");
+  const field = useFieldControlProps();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // The browser can fill the box without an input event: a defaultValue,
   // a form restored on back navigation. Read what it holds once mounted so
   // the meter and rules describe the value the visitor can see.
   useEffect(() => {
-    const input = row.current?.querySelector("input");
+    const input = inputRef.current;
     if (input?.value) setValue(input.value);
   }, [setValue]);
 
+  // The Field's own wiring, then the Rules: the input reads the Field's
+  // description only when nothing is passed, so the two are joined here.
+  const describedBy = cx(ariaDescribedby ?? field["aria-describedby"], rules.ref) || undefined;
+
   return (
-    <div ref={row} className="input">
-      <div className="control">
-        <Input
-          type={shown ? "text" : "password"}
-          autoComplete={autoComplete}
-          // Shown as text, the box must not be corrected or capitalised
-          // behind the visitor's back.
-          autoCapitalize="none"
-          spellCheck={false}
-          {...rest}
-          onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            onChange?.(event);
-            setValue(event.currentTarget.value);
-          }}
-        />
-      </div>
-      <Button type="button" aria-pressed={shown} onClick={() => setShown((s) => !s)}>
-        {labels.show}
-      </Button>
-    </div>
+    <PasswordInput
+      autoComplete={autoComplete}
+      labels={{ show: labels.show }}
+      aria-describedby={describedBy}
+      {...rest}
+      ref={composeRefs(ref, inputRef)}
+      onChange={(event: ChangeEvent<HTMLInputElement>) => {
+        onChange?.(event);
+        setValue(event.currentTarget.value);
+      }}
+    />
   );
+}
+
+/** Both refs receive the input: the consumer's and the one that reads a filled value. */
+function composeRefs<T>(a: Ref<T> | undefined, b: Ref<T>): Ref<T> {
+  if (!a) return b;
+  return (node: T | null) => {
+    for (const ref of [a, b]) {
+      if (typeof ref === "function") ref(node);
+      else if (ref) ref.current = node;
+    }
+  };
 }
 
 /**
@@ -202,22 +225,23 @@ export function lengthStrength(value: string): number {
   return 4;
 }
 
-export interface PasswordFieldStrengthProps extends HTMLAttributes<HTMLDivElement> {
+export interface PasswordFieldStrengthProps extends PartProps<"div"> {
   /**
    * Scores the value from 0 (nothing) to 4 (strong). The default counts
    * length only; see {@link lengthStrength}.
    * @default lengthStrength
    */
   strength?: (value: string) => number;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /**
  * A core Meter of the score with its level written beside it in a word:
- * Weak, Fair or Strong. The word is the meter's `aria-valuetext`, so a
- * screen reader hears "Password strength, Fair" rather than a percentage,
- * and it is a polite live region, so the change is announced once the
- * typing pauses, at most three times, never per keystroke.
+ * Weak, Fair or Strong, and nothing while nothing is typed, because an
+ * empty box is not a weak password. The word is the meter's
+ * `aria-valuetext`, so a screen reader hears "Password strength, Fair"
+ * rather than a percentage, and it is a polite live region, so the change
+ * is announced once the typing pauses, at most three times, never per
+ * keystroke.
  */
 function PasswordFieldStrength({
   strength = lengthStrength,
@@ -238,7 +262,7 @@ function PasswordFieldStrength({
         high={HIGH}
         optimum={4}
         label={labels.meter}
-        aria-valuetext={word}
+        aria-valuetext={word || labels.empty}
       />
       <span className="word" aria-live="polite">
         {word}
@@ -247,31 +271,34 @@ function PasswordFieldStrength({
   );
 }
 
-export interface PasswordFieldRulesProps extends HTMLAttributes<HTMLUListElement> {
+export interface PasswordFieldRulesProps extends PartProps<"ul"> {
   children?: ReactNode;
-  ref?: Ref<HTMLUListElement>;
 }
 
 /**
- * The list of rules: a plain `ul`, no roles. Not a live region: a list
- * that re-announced on every keystroke would drown the typing. Each item
+ * The list of rules: a plain `ul`, no roles, joined to the input with
+ * `aria-describedby` while it is rendered, so a screen reader hears the
+ * rules on landing in the box. Not a live region: a list that
+ * re-announced on every keystroke would drown the typing. Each item
  * carries its state in hidden words a screen reader meets when it reads
  * the list.
  */
-function PasswordFieldRules({ className, children, ref, ...rest }: PasswordFieldRulesProps) {
+function PasswordFieldRules({ id, className, children, ref, ...rest }: PasswordFieldRulesProps) {
+  const { rules } = usePasswordField("PasswordField.Rules");
+  const { register } = rules;
+  useEffect(() => register(), [register]);
   return (
-    <ul ref={ref} className={cx("rules", className)} {...rest}>
+    <ul ref={ref} id={id ?? rules.id} className={cx("rules", className)} {...rest}>
       {children}
     </ul>
   );
 }
 
-export interface PasswordFieldRuleProps extends HTMLAttributes<HTMLLIElement> {
+export interface PasswordFieldRuleProps extends PartProps<"li"> {
   /** Whether the value meets this rule. */
   test: (value: string) => boolean;
   /** The rule as a sentence: "At least 12 characters". */
   children?: ReactNode;
-  ref?: Ref<HTMLLIElement>;
 }
 
 /**

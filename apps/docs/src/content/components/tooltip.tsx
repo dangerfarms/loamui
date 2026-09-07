@@ -1,5 +1,5 @@
 import type { ComponentContent } from "@/renderer/types";
-import { TooltipArrow, TooltipGroup, TooltipPositions } from "./tooltip.client";
+import { TooltipArrow, TooltipGroup, TooltipSides } from "./tooltip.client";
 
 const doc: ComponentContent = {
   slug: "tooltip",
@@ -7,26 +7,26 @@ const doc: ComponentContent = {
   importLine: `import { Tooltip } from "@loamui/core";`,
   demos: [
     {
-      title: "Positions",
+      title: "Sides",
       description:
-        "Place the bubble on any side of its target with the Popup's position prop. It opens after a short delay on hover, immediately on keyboard focus.",
+        "Place the bubble on any side of its target with the Popup's side prop. It opens after a short delay on hover, immediately on keyboard focus.",
       code: `<Tooltip.Root>
   <Tooltip.Trigger>Top</Tooltip.Trigger>
-  <Tooltip.Popup position="top">On the top</Tooltip.Popup>
+  <Tooltip.Popup side="top">On the top</Tooltip.Popup>
 </Tooltip.Root>
 <Tooltip.Root>
   <Tooltip.Trigger>Bottom</Tooltip.Trigger>
-  <Tooltip.Popup position="bottom">On the bottom</Tooltip.Popup>
+  <Tooltip.Popup side="bottom">On the bottom</Tooltip.Popup>
 </Tooltip.Root>
 <Tooltip.Root>
   <Tooltip.Trigger>Left</Tooltip.Trigger>
-  <Tooltip.Popup position="left">On the left</Tooltip.Popup>
+  <Tooltip.Popup side="left">On the left</Tooltip.Popup>
 </Tooltip.Root>
 <Tooltip.Root>
   <Tooltip.Trigger>Right</Tooltip.Trigger>
-  <Tooltip.Popup position="right">On the right</Tooltip.Popup>
+  <Tooltip.Popup side="right">On the right</Tooltip.Popup>
 </Tooltip.Root>`,
-      render: () => <TooltipPositions />,
+      render: () => <TooltipSides />,
     },
     {
       title: "With arrow",
@@ -152,7 +152,7 @@ const doc: ComponentContent = {
       description: 'The bubble (role="tooltip"); native <span> props are forwarded.',
       props: [
         {
-          name: "position",
+          name: "side",
           type: `"top" | "bottom" | "left" | "right"`,
           default: `"top"`,
           description: "Which side of the trigger the bubble appears on.",
@@ -162,6 +162,14 @@ const doc: ComponentContent = {
     {
       name: "Tooltip.Arrow",
       description: "Optional pointer arrow toward the trigger; native <span> props are forwarded.",
+    },
+  ],
+  cssProps: [
+    {
+      name: "--loam-tooltip-size",
+      syntax: "CSS length",
+      default: "16rem",
+      description: "The bubble's widest extent; shorter text shrink-wraps.",
     },
   ],
 };

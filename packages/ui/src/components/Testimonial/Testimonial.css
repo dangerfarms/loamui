@@ -28,19 +28,32 @@
     }
   }
 
-  /* The caption is the attribution row: the Avatar, then the column of
-     text the Author gathers the Name and Role into. The figure's gap
-     spaces it, so the element style's top margin goes. */
+  /* The caption is the attribution: a grid whose last column holds the
+     Name over the Role, and whose first column, when the caption has
+     anything that is neither (an Avatar), holds that. The first column is
+     added only then, so a caption of words alone has no empty column and
+     no gap before them. The figure's gap spaces it, so the element style's
+     top margin goes. */
   figcaption.author {
     align-items: center;
-    display: block flex;
-    gap: var(--loam-space-sm);
+    display: block grid;
+    font-size: var(--loam-text-sm);
+    gap: 0 var(--loam-space-sm);
+    grid-template-columns: minmax(0, 1fr);
     margin: auto 0 0;
 
-    > div.text {
-      display: block grid;
-      font-size: var(--loam-text-sm);
+    &:has(> :not(.name, .role)) {
+      grid-template-columns: auto minmax(0, 1fr);
     }
+  }
+
+  /* The last column, whichever it is: the second beside an Avatar, the
+     only one without. Each takes the next free row there, so the Name
+     sits over the Role whatever order they were written in, and a Name
+     that wraps pushes the Role down. */
+  .name,
+  .role {
+    grid-column: -2 / -1;
   }
 
   .name {
@@ -50,5 +63,21 @@
 
   .role {
     color: var(--loam-color-fg-muted);
+  }
+}
+
+/* The caption's other children are the consumer's, an Avatar first among
+   them, and the Avatar's root is a limit of the donut above, out of its
+   reach. Their place in the caption's grid, and only that, lives here: the
+   first of them spans the two rows of the text column, and any after it
+   runs the caption's full width. Nothing is drawn; what the child looks
+   like stays the child's. */
+@scope (.loam-Testimonial figcaption.author) {
+  > :nth-child(1 of :not(.name, .role)) {
+    grid-row: 1 / span 2;
+  }
+
+  > :nth-child(n + 2 of :not(.name, .role)) {
+    grid-column: 1 / -1;
   }
 }

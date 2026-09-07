@@ -1,44 +1,50 @@
-import { useEffect, useId, useRef, useState } from "react";
-import type { TableHTMLAttributes, ReactNode, Ref } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
+import { composeRefs } from "../../render";
 
-export interface TableProps extends TableHTMLAttributes<HTMLTableElement> {
+export interface TableProps extends PartProps<"div"> {
   /** Shade alternating body rows. */
   striped?: boolean;
   /** Highlight the row under the pointer. */
   highlightOnHover?: boolean;
   /** Draw vertical borders between columns. */
   withColumnBorders?: boolean;
-  /** Which side to place a <caption>. @default "top" */
-  captionSide?: "top" | "bottom";
-  /** Standard thead/tbody/tr/th/td markup. */
-  children?: ReactNode;
-  ref?: Ref<HTMLTableElement>;
+  /** Attributes for the `<table>` itself (`ref` included). */
+  tableProps?: PartProps<"table">;
+  /**
+   * The words the scroll region speaks: `scrollable` names it when the
+   * table overflows and has no `<caption>` to take the name from.
+   */
+  labels?: { scrollable?: string };
 }
 
 /**
- * A styled data table. Compose with native
- * thead/tbody/tr/th/td. Scrolls horizontally on overflow.
+ * A styled data table. Compose with native thead/tbody/tr/th/td inside it.
  *
- * The scroll wrapper becomes a focusable, labelled region only when the
- * table actually overflows, so a page of narrow tables adds no tab stops.
- * The region takes its name from the table's own `<caption>` when there is
- * one, and falls back to "Scrollable table".
+ * The component's own element is the scroll wrapper: `className`, `ref` and
+ * the rest land on it, and it becomes a focusable, labelled region only when
+ * the table actually overflows, so a page of narrow tables adds no tab
+ * stops. The region takes its name from the table's own `<caption>` when
+ * there is one. The `<table>` inside takes `tableProps`.
  */
 export function Table({
   striped,
   highlightOnHover,
   withColumnBorders,
-  captionSide = "top",
+  tableProps,
+  labels,
   className,
   children,
-  ref,
+  ref: refProp,
   ...rest
 }: TableProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const composedRef = useMemo(() => composeRefs(refProp, scrollRef), [refProp]);
   const captionId = useId();
   const [labelledBy, setLabelledBy] = useState<string>();
   const [scrollable, setScrollable] = useState(false);
+  const scrollableLabel = labels?.scrollable ?? "Scrollable table";
 
   // Overflow and the caption are facts of the rendered DOM, so they are
   // measured after render, not declared as props.
@@ -60,24 +66,18 @@ export function Table({
 
   return (
     <div
-      ref={scrollRef}
-      className="loam-Table-scroll"
+      {...rest}
+      ref={composedRef}
+      className={cx("loam-Table", className)}
       role={scrollable ? "region" : undefined}
-      aria-label={scrollable && !labelledBy ? "Scrollable table" : undefined}
+      aria-label={scrollable && !labelledBy ? scrollableLabel : undefined}
       aria-labelledby={scrollable ? labelledBy : undefined}
       tabIndex={scrollable ? 0 : undefined}
+      data-striped={striped || undefined}
+      data-hover={highlightOnHover || undefined}
+      data-col-borders={withColumnBorders || undefined}
     >
-      <table
-        ref={ref}
-        className={cx("loam-Table", className)}
-        data-striped={striped || undefined}
-        data-hover={highlightOnHover || undefined}
-        data-col-borders={withColumnBorders || undefined}
-        data-caption-side={captionSide}
-        {...rest}
-      >
-        {children}
-      </table>
+      <table {...tableProps}>{children}</table>
     </div>
   );
 }

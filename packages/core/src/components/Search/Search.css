@@ -14,8 +14,8 @@
 
   /* One row: the first cell grows, the button keeps its width, and both sit
      on the same baseline when a Field's label and hint sit above the box.
-     A grid, not flex, because the first cell may be a core Field (past the
-     donut): the track sizes it without styling it. */
+     A grid, not flex, because the first cell is a core Input or a core
+     Field (past the donut): the track sizes it without styling it. */
   form {
     align-items: end;
     display: block grid;

@@ -1,13 +1,14 @@
-@scope (.loam-Progress) {
+/* The root lays out the label and the bar; the bar is the native
+   <progress>. `appearance: none` opts out of the UA painting, so the
+   element is the track and the vendor pseudo-elements carry the fill —
+   each browser names them differently, so each gets its own rule. */
+@scope (.loam-Progress) to ([class*="loam-"]) {
   :scope {
     --_h: 0.625rem;
 
-    background: var(--loam-color-bg-subtle);
-    block-size: var(--_h);
-    border-radius: var(--_radius, var(--loam-radius-full));
-    display: block flow;
+    display: block grid;
+    gap: var(--loam-space-xs);
     inline-size: 100%;
-    overflow: clip;
 
     &[data-size="sm"] {
       --_h: 0.375rem;
@@ -18,34 +19,81 @@
     }
   }
 
-  div.bar {
-    align-items: center;
+  span.label {
+    font-size: var(--loam-text-sm);
+  }
 
-    /* The fill IS the primary token — a `--loam-context` region re-answers
-       it (see the Contexts section of tokens.css), so status needs no
-       component code here. */
-    background: var(--loam-color-primary-strong);
-    block-size: 100%;
+  progress {
+    appearance: none;
+    background: var(--loam-color-bg-subtle);
+    block-size: var(--_h);
+    border: none;
+    border-radius: var(--_radius, var(--loam-radius-full));
+    display: block flow;
+    inline-size: 100%;
+    overflow: clip;
+  }
+
+  /* ---- Track ---- */
+
+  /* Chromium and WebKit paint their own track box once appearance is none;
+     make it the same surface as the element. */
+  progress::-webkit-progress-bar {
+    background: var(--loam-color-bg-subtle);
     border-radius: inherit;
-    color: var(--loam-color-on-strong);
-    display: block flex;
-    inline-size: 0;
-    justify-content: flex-end;
+  }
+
+  /* ---- Fill ---- */
+
+  /* The fill IS the primary token — a `--loam-context` region re-answers
+     it (see the Contexts section of tokens.css), so status needs no
+     component code here. */
+  progress::-webkit-progress-value {
+    background: var(--loam-color-primary-strong);
+    border-radius: inherit;
 
     @media (prefers-reduced-motion: no-preference) {
       transition: inline-size var(--loam-duration-lg) var(--loam-ease);
     }
   }
 
-  span.label {
-    font-size: var(--loam-text-xs);
-    font-weight: 600;
-    line-height: 1;
-    padding-inline: var(--loam-space-sm);
-    white-space: nowrap;
+  progress::-moz-progress-bar {
+    background: var(--loam-color-primary-strong);
+    border-radius: inherit;
   }
 
-  div.bar[data-striped] {
+  /* ---- Indeterminate ---- */
+
+  /* No value: a band of the fill colour on the track. It sweeps where
+     motion is welcome; otherwise it stands still, and the label says the
+     wait is under way. Firefox paints its own indeterminate bar, which is
+     hidden so only the track's band shows. */
+  progress:indeterminate {
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--loam-color-primary-strong) 50%,
+      transparent 100%
+    );
+    background-repeat: no-repeat;
+    background-size: 40% 100%;
+
+    @media (prefers-reduced-motion: no-preference) {
+      animation: loam-progress-sweep calc(var(--loam-duration-lg) * 5) var(--loam-ease) infinite;
+    }
+  }
+
+  progress:indeterminate::-webkit-progress-bar {
+    background: transparent;
+  }
+
+  progress:indeterminate::-moz-progress-bar {
+    background: transparent;
+  }
+
+  /* Stripes: on-strong at low alpha over the fill, so they read in every
+     context. */
+  :scope[data-striped] progress::-webkit-progress-value {
     background-image: repeating-linear-gradient(
       45deg,
       color-mix(in oklch, var(--loam-color-on-strong) 22%, transparent) 0,
@@ -56,20 +104,46 @@
     background-size: 1.414rem 1.414rem;
   }
 
-  div.bar[data-animated] {
-    @media (prefers-reduced-motion: no-preference) {
-      animation: loam-progress-stripes 1s linear infinite;
+  :scope[data-striped] progress::-moz-progress-bar {
+    background-image: repeating-linear-gradient(
+      45deg,
+      color-mix(in oklch, var(--loam-color-on-strong) 22%, transparent) 0,
+      color-mix(in oklch, var(--loam-color-on-strong) 22%, transparent) 0.5rem,
+      transparent 0.5rem,
+      transparent 1rem
+    );
+    background-size: 1.414rem 1.414rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :scope[data-animated] progress::-webkit-progress-value {
+      animation: loam-progress-stripes calc(var(--loam-duration-lg) * 3) linear infinite;
+    }
+
+    :scope[data-animated] progress::-moz-progress-bar {
+      animation: loam-progress-stripes calc(var(--loam-duration-lg) * 3) linear infinite;
     }
   }
 
-  /* Forced colors: track and fill are background-painted and would vanish. */
+  /* Forced colors: track and fill are background-painted and would vanish.
+     Every fill rule above is one pseudo-element deep, so these win by order. */
   @media (forced-colors: active) {
-    :scope {
+    progress {
       border: 1px solid CanvasText;
     }
 
-    div.bar {
+    progress::-webkit-progress-value {
       background: Highlight;
+      forced-color-adjust: none;
+    }
+
+    progress::-moz-progress-bar {
+      background: Highlight;
+      forced-color-adjust: none;
+    }
+
+    progress:indeterminate {
+      background-image: linear-gradient(90deg, transparent 0%, Highlight 50%, transparent 100%);
       forced-color-adjust: none;
     }
   }
@@ -82,5 +156,15 @@
 
   to {
     background-position: 1.414rem 0;
+  }
+}
+
+@keyframes loam-progress-sweep {
+  from {
+    background-position: -40% 0;
+  }
+
+  to {
+    background-position: 140% 0;
   }
 }

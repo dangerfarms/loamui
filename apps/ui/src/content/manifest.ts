@@ -40,10 +40,18 @@ export const MANIFEST: CompositionMeta[] = [
       "A site footer: brand and tagline, columns of links and a bottom row for small print.",
   },
   {
-    slug: "stats",
-    name: "Stats",
+    slug: "stat",
+    name: "Stat",
     category: "Data display",
-    description: "Headline figures: each tile a large value over a short label, alone or in a row.",
+    description:
+      "One headline figure: a large value over a short label in a core Card, alone or in a Group that fits several across.",
+  },
+  {
+    slug: "section-header",
+    name: "Section header",
+    category: "Page sections",
+    description:
+      "The intro a section opens with: an eyebrow, a title, a line of description and, beside them when there is room, a row of actions.",
   },
   {
     slug: "testimonial",
@@ -110,7 +118,7 @@ export const MANIFEST: CompositionMeta[] = [
     name: "Article card",
     category: "Blog",
     description:
-      "One article in a Card: a category and date, a linked title, an excerpt and an author, alone or in a grid you write.",
+      "One article in a Card: a picture, a category and date, a linked title, a description and an author, alone or in a grid you write.",
   },
   {
     slug: "table-of-contents",
@@ -229,6 +237,27 @@ export const MANIFEST: CompositionMeta[] = [
       "The signed-in person's menu: an avatar button that opens their name, email and account actions, ending with sign out.",
   },
   {
+    slug: "mobile-nav",
+    name: "Mobile navigation",
+    category: "Navigation",
+    description:
+      "Navigation for a narrow viewport: a Menu button that opens a panel of links from the start edge, with the current page marked.",
+  },
+  {
+    slug: "page-header",
+    name: "Page header",
+    category: "Navigation",
+    description:
+      "The top of a page inside an application: breadcrumbs, the title, a line on it, a row of facts and the actions that act on the whole page.",
+  },
+  {
+    slug: "scheme-toggle",
+    name: "Scheme toggle",
+    category: "Navigation",
+    description:
+      "A three-way choice of colour scheme, System, Light or Dark, that sets the root data-theme attribute and remembers the answer.",
+  },
+  {
     slug: "password-field",
     name: "Password field",
     category: "Forms",
@@ -236,8 +265,8 @@ export const MANIFEST: CompositionMeta[] = [
       "A field for making up a password: the input, a strength meter and the rules in plain words, ticked as they are met.",
   },
   {
-    slug: "selectable-card",
-    name: "Selectable card",
+    slug: "choice-card",
+    name: "Choice card",
     category: "Forms",
     description:
       "A choice presented as a card: a plan, a delivery option, a template. The whole card is the label of a real checkbox or radio.",
@@ -261,7 +290,7 @@ export const MANIFEST: CompositionMeta[] = [
     name: "Cart line",
     category: "Data display",
     description:
-      "One item in a basket: image, linked title, the options chosen, a slot for your QuantityInput, the line total with the unit price under it, and a remove action.",
+      "One item in a basket: image, linked title, the options chosen, a slot for your QuantityInput with its label written for you, the line total with the unit price under it, and a remove action named for the product.",
   },
   {
     slug: "product-card",
@@ -269,6 +298,20 @@ export const MANIFEST: CompositionMeta[] = [
     category: "Data display",
     description:
       "One product in a listing: an image, a linked title, a rating, a price and one action, in an article inside a core Card.",
+  },
+  {
+    slug: "plan",
+    name: "Plan",
+    category: "Data display",
+    description:
+      "One pricing tier: a name, a price with its period, what it includes and leaves out, and the action that chooses it, alone or in a grid you write.",
+  },
+  {
+    slug: "article-header",
+    name: "Article header",
+    category: "Blog",
+    description:
+      "The top of an article: its category, its title as the page's h1, a standfirst, the byline, its tags and the lead image, each in its slot.",
   },
 ];
 

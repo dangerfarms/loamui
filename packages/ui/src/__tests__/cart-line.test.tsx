@@ -2,8 +2,9 @@ import { describe, it, expect, afterEach, vi } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "vitest-axe";
-import { Button, Field, Price, QuantityInput } from "@loamui/core";
+import { Field, Price, QuantityInput } from "@loamui/core";
 import { CartLine } from "../components/CartLine/index";
+import { ProductCard } from "../components/ProductCard/index";
 
 afterEach(cleanup);
 
@@ -21,7 +22,7 @@ function Line({ onRemove }: { onRemove?: () => void }) {
       <CartLine.Description>Size M, Blue</CartLine.Description>
       <CartLine.Control>
         <Field.Root>
-          <Field.Label className="loam-VisuallyHidden">Quantity for Linen shirt</Field.Label>
+          <CartLine.QuantityLabel />
           <QuantityInput name="quantity" defaultValue={2} min={1} />
         </Field.Root>
       </CartLine.Control>
@@ -34,21 +35,24 @@ function Line({ onRemove }: { onRemove?: () => void }) {
         </Price>
       </CartLine.Note>
       <CartLine.Actions>
-        <Button onClick={onRemove}>
-          Remove<span className="loam-VisuallyHidden"> Linen shirt</span>
-        </Button>
+        <CartLine.Remove onClick={onRemove} />
       </CartLine.Actions>
     </CartLine.Root>
   );
 }
 
 describe("CartLine", () => {
-  it("is an article named by its title, with the consumer's control and action, and no axe violations", async () => {
+  it("is an article named by its title, with the control and the action named by it, and no axe violations", async () => {
     const onRemove = vi.fn();
     const { container } = render(<Line onRemove={onRemove} />);
     const line = container.firstElementChild!;
     expect(line.tagName).toBe("ARTICLE");
     expect(line).toHaveClass("loam-CartLine");
+    // The article is the container; the grid is the inner element it
+    // renders, so the narrow layout can be answered by an ancestor.
+    const inner = line.firstElementChild!;
+    expect(inner).toHaveClass("inner");
+    expect(line.children).toHaveLength(1);
 
     // The line is named by its Title: aria-labelledby points at the
     // heading's id, so the article reads as "Linen shirt".
@@ -60,23 +64,26 @@ describe("CartLine", () => {
       "href",
       "/products/linen-shirt",
     );
-    expect(container.querySelector("p.description")).toHaveTextContent("Size M, Blue");
+    expect(inner.querySelector("p.description")).toHaveTextContent("Size M, Blue");
 
-    // The QuantityInput is the consumer's core control inside a Field,
-    // labelled by the product in core's visually hidden class, so
-    // "Quantity for Linen shirt" is what a screen reader hears; the
-    // composition only gives it its slot and leaves it as core styles it.
+    // The QuantityInput is the consumer's core control inside a Field; the
+    // label is the composition's, a hidden Field.Label written from the
+    // Title's text, so "Quantity for Linen shirt" is what a screen reader
+    // hears and "Quantity" is never heard three times in a row.
     const quantity = screen.getByRole("spinbutton", { name: "Quantity for Linen shirt" });
     expect(quantity).toHaveAttribute("name", "quantity");
     expect(quantity).toHaveValue(2);
     expect(quantity.closest(".loam-Field")!.parentElement).toHaveClass("control");
-    expect(screen.getByText("Quantity for Linen shirt")).toHaveClass("loam-VisuallyHidden");
+    const label = screen.getByText("Quantity for Linen shirt");
+    expect(label.tagName).toBe("LABEL");
+    expect(label).toHaveClass("loam-Field-label", "loam-VisuallyHidden");
 
-    // The remove button is the consumer's core Button in Actions, saying
-    // "Remove" and named "Remove Linen shirt".
+    // The remove action is a core Button, "Remove" on screen and "Remove
+    // Linen shirt" to assistive technology.
     const remove = screen.getByRole("button", { name: "Remove Linen shirt" });
     expect(remove).toHaveClass("loam-Button");
     expect(remove.parentElement).toHaveClass("actions");
+    expect(remove.querySelector(".loam-VisuallyHidden")).toHaveTextContent("Linen shirt");
     await userEvent.click(remove);
     expect(onRemove).toHaveBeenCalledTimes(1);
 
@@ -93,6 +100,28 @@ describe("CartLine", () => {
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 
+  it("writes the label and the button in the words you give it", () => {
+    render(
+      <CartLine.Root labels={{ quantity: (title) => `Antall av ${title}`, remove: "Fjern" }}>
+        <CartLine.Title>
+          <a href="/products/ullsokker">Ullsokker</a>
+        </CartLine.Title>
+        <CartLine.Control>
+          <Field.Root>
+            <CartLine.QuantityLabel />
+            <QuantityInput defaultValue={1} min={1} />
+          </Field.Root>
+        </CartLine.Control>
+        <CartLine.Actions>
+          <CartLine.Remove />
+        </CartLine.Actions>
+      </CartLine.Root>,
+    );
+    expect(screen.getByRole("spinbutton", { name: "Antall av Ullsokker" })).toBeInTheDocument();
+    const remove = screen.getByRole("button", { name: "Fjern Ullsokker" });
+    expect(remove.firstChild).toHaveTextContent("Fjern");
+  });
+
   it("renders as list items inside a basket the consumer wrote", async () => {
     const { container } = render(
       <ul aria-label="Your basket">
@@ -102,7 +131,7 @@ describe("CartLine", () => {
           </CartLine.Title>
           <CartLine.Control>
             <Field.Root>
-              <Field.Label className="loam-VisuallyHidden">Quantity for Linen shirt</Field.Label>
+              <CartLine.QuantityLabel />
               <QuantityInput defaultValue={1} min={1} />
             </Field.Root>
           </CartLine.Control>
@@ -113,7 +142,7 @@ describe("CartLine", () => {
           </CartLine.Title>
           <CartLine.Control>
             <Field.Root>
-              <Field.Label className="loam-VisuallyHidden">Quantity for Wool socks</Field.Label>
+              <CartLine.QuantityLabel />
               <QuantityInput defaultValue={3} min={1} />
             </Field.Root>
           </CartLine.Control>
@@ -123,6 +152,7 @@ describe("CartLine", () => {
     const items = screen.getAllByRole("listitem");
     expect(items).toHaveLength(2);
     expect(items[0]).toHaveClass("loam-CartLine");
+    expect(items[0]!.querySelector(":scope > div.inner")).not.toBeNull();
     expect(screen.getByRole("listitem", { name: "Linen shirt" })).toBe(items[0]);
     expect(screen.getByRole("spinbutton", { name: "Quantity for Wool socks" })).toHaveValue(3);
     const socks = screen.getByRole("link", { name: "Wool socks" }).closest(".title")!;
@@ -149,5 +179,26 @@ describe("CartLine", () => {
     expect(named).not.toHaveAttribute("aria-labelledby");
     expect(screen.getByRole("heading", { level: 3 })).toHaveAttribute("id", "shirt");
     expect(unnamed).not.toHaveAttribute("aria-labelledby");
+  });
+
+  it("announces a reduced line with a ProductCard.Was in its Value", async () => {
+    const { container } = render(
+      <CartLine.Root>
+        <CartLine.Title>
+          <a href="/products/linen-shirt">Linen shirt</a>
+        </CartLine.Title>
+        <CartLine.Value>
+          <ProductCard.Was>
+            <Price value={90} currency="GBP" />
+          </ProductCard.Was>
+          <Price value={72} currency="GBP" />
+        </CartLine.Value>
+      </CartLine.Root>,
+    );
+    const value = container.querySelector("div.value")!;
+    expect(value).toHaveTextContent("Was £90 Now £72");
+    expect(value.querySelector("s.was > data")).toHaveAttribute("value", "90");
+    expect(screen.getByText("Was")).toHaveClass("loam-VisuallyHidden");
+    expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 });

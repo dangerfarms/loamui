@@ -103,7 +103,7 @@ const doc: ComponentContent = {
     },
     {
       title: "Styling state from outside",
-      body: 'Everything the family knows about a field is expressed in selectors you can target: [aria-invalid="true"] on the control, :has(> p.error) on the .loam-Field root, [data-disabled] on control boxes, and :focus-within on the field box. There are no visual state props to mirror; the DOM is the contract.',
+      body: 'Everything the family knows about a field is expressed in selectors you can target: [aria-invalid="true"] on the control, :has(> p.error) on the .loam-Field root, :has(input:disabled) on a control box (disabled is detected on the native control, never declared on a wrapper), and :focus-within on the field box. There are no visual state props to mirror; the DOM is the contract.',
     },
     {
       title: "One error, one place, one wording",
@@ -131,7 +131,7 @@ const doc: ComponentContent = {
   accessibility: [
     "Field.Root generates one id and hands it to Field.Label (via htmlFor) and to the control, so label and control are always associated.",
     "Description and error ids are added to the control's aria-describedby only when those parts are present.",
-    'Any Field.Error with content sets aria-invalid on the control and is announced with role="alert"; a visually hidden "Error: " prefix makes the announcement unmistakable out of context.',
+    'Any Field.Error with content sets aria-invalid on the control and is announced with role="alert"; a visually hidden "Error: " prefix (labels.errorPrefix on the Root) makes the announcement unmistakable out of context.',
     "The LoamUI controls read this wiring from context; Field.Control hands it to arbitrary elements, letting you keep semantic, native controls instead of re-implementing them.",
   ],
   parts: [
@@ -145,17 +145,25 @@ const doc: ComponentContent = {
           type: "string",
           description: "Base id for the control; auto-generated when omitted.",
         },
+        {
+          name: "labels",
+          type: "{ optional?: ReactNode; errorPrefix?: ReactNode }",
+          default: '{ optional: "(optional)", errorPrefix: "Error: " }',
+          description:
+            "The Field's own words, read by Field.Label and Field.Error: the text after an optional label, and the hidden words before an error. Pass them in the page's language.",
+        },
       ],
     },
     {
       name: "Field.Label",
-      description: "Label tied to the control; native <label> props are forwarded.",
+      description: "Label tied to the control; native <label> props and ref are forwarded.",
       props: [
         {
           name: "optional",
           type: "boolean",
           default: "false",
-          description: 'Appends "(optional)"; optional is marked in words, not with an asterisk.',
+          description:
+            'Appends labels.optional ("(optional)"); optional is marked in words, not with an asterisk.',
         },
       ],
     },

@@ -50,7 +50,7 @@ const doc: ComponentContent = {
   howItWorks: [
     {
       title: "Auto-grow is built in",
-      body: "Where the platform supports field-sizing: content, the field grows with the answer up to ten lines and then scrolls (no JS, no measuring). A minimum height keeps the empty field recognisably multi-line, and the rows prop remains the semantic fallback height where auto-grow is unsupported. Set it to match the expected answer: three rows asks for a note, ten invites an essay.",
+      body: "Where the platform supports field-sizing: content, the field grows with the answer and then scrolls (no JS, no measuring). rows is real either way: it is the field's height where auto-grow is unsupported, and where it is supported the field starts at that many lines and grows to ten, or to its rows when asked for more. Set it to match the expected answer: three rows asks for a note, ten invites an essay.",
     },
     {
       title: "Keep resize on",
@@ -93,17 +93,19 @@ const doc: ComponentContent = {
       name: "rows",
       type: "number",
       default: "3",
-      description: "Number of visible text rows.",
+      description:
+        "Visible text rows: the field's height, and where the platform grows the field with its content, the height it starts at.",
     },
     {
-      name: "wrapperClassName",
-      type: "string",
-      description: "Class for the bordered field wrapper; className goes to the control itself.",
+      name: "wrapperProps",
+      type: 'PartProps<"div">',
+      description:
+        "Props for the bordered box around the textarea. className, style, ref and every other prop land on the <textarea> itself; this is the one way to reach the box.",
     },
     {
       name: "...others",
       type: "TextareaHTMLAttributes",
-      description: "All native <textarea> props are forwarded, except size (sizing is contextual).",
+      description: "All native <textarea> props, and ref, are forwarded to the <textarea>.",
     },
   ],
 };

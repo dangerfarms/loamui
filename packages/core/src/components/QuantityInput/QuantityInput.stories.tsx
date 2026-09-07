@@ -38,7 +38,8 @@ type Story = StoryObj<typeof meta>;
 
 /**
  * Inside a Field the input takes the label's name and the buttons carry
- * their own ("Fewer", "More"). Two presses of More take the default 1 to 3.
+ * their own ("Fewer", "More", replaced through `labels`). Two presses of
+ * More take the default 1 to 3.
  */
 export const Default: Story = {
   play: async ({ canvasElement }) => {

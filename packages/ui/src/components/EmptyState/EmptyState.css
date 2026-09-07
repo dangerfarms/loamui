@@ -1,4 +1,4 @@
-/* An empty state is a region: it declares its container so the fluid
+/* An empty state declares its container so the fluid
    tokens answer the width of whatever holds it, a page or a Card, and it
    hosts consumer content (an svg, a Button, a link), hence the donut. */
 @scope (.loam-EmptyState) to ([class*="loam-"]) {

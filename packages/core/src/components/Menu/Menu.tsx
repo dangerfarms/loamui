@@ -11,20 +11,16 @@ import {
   useState,
 } from "react";
 import type {
-  RefObject,
-  AnchorHTMLAttributes,
-  ButtonHTMLAttributes,
-  CSSProperties,
-  HTMLAttributes,
   KeyboardEvent as ReactKeyboardEvent,
   MouseEvent as ReactMouseEvent,
   ReactNode,
-  Ref,
 } from "react";
 import { cx } from "../../utils";
-import { cssSafeId, supportsAnchoredPopover } from "../../anchor";
+import type { PartProps } from "../../utils";
 import { composeRefs, mergeProps, renderWithProps } from "../../render";
 import type { RenderProp } from "../../render";
+import { popupProps, popupTriggerProps, usePopup, usePopupRoot } from "../../use-popup";
+import type { PopupState, PopupTriggerRenderProps } from "../../use-popup";
 
 import { Button } from "../Button/Button";
 
@@ -33,14 +29,16 @@ import { Button } from "../Button/Button";
  *
  * The Popup renders with the native `popover` attribute (top layer, light
  * dismiss, Escape) and CSS anchor positioning where supported, falling back
- * to a wrapper-anchored panel elsewhere — the same engine as Popover. On top
+ * to a wrapper-anchored panel elsewhere: the same engine as Popover. On top
  * of it sits the APG menu-button pattern: ArrowDown/ArrowUp from the trigger
  * open and focus the first/last item, arrow keys rove focus through the
  * items (looping), Home/End jump, typing jumps to the next matching item,
  * and activating an item closes the menu and returns focus to the trigger.
  *
  * Menus are for *actions* (rename, duplicate, delete…). For choosing a value
- * that persists, use Select; for navigation, prefer visible links.
+ * that persists, use Select; for navigation, prefer visible links. A setting
+ * that lives in the menu is a `CheckboxItem` (on/off) or a `RadioGroup` of
+ * `RadioItem`s (one of a set).
  *
  * ```tsx
  * <Menu.Root>
@@ -58,14 +56,7 @@ import { Button } from "../Button/Button";
  * ```
  */
 
-interface MenuContextValue {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  triggerRef: RefObject<HTMLButtonElement | null>;
-  popupRef: RefObject<HTMLDivElement | null>;
-  popupId: string;
-  anchorName: string;
-  enhanced: boolean;
+interface MenuContextValue extends PopupState {
   /** Where focus should land when the menu opens. */
   focusOnOpen: { current: "first" | "last" };
   /** Close and return focus to the trigger (item activation, Escape). */
@@ -82,17 +73,15 @@ function useMenuContext(part: string): MenuContextValue {
   return ctx;
 }
 
-/* Popover's coupling, for the same reason: the top layer without anchor
-   positioning would leave the menu centred in the viewport. */
-/** The focusable items, in DOM order — disabled items are skipped. */
+/** The focusable items of every kind, in DOM order; disabled items are skipped. */
 function menuItems(popup: HTMLElement | null): HTMLElement[] {
   if (!popup) return [];
   return Array.from(
-    popup.querySelectorAll<HTMLElement>('[role="menuitem"]:not([aria-disabled="true"])'),
+    popup.querySelectorAll<HTMLElement>('[role^="menuitem"]:not([aria-disabled="true"])'),
   );
 }
 
-export interface MenuRootProps extends HTMLAttributes<HTMLSpanElement> {
+export interface MenuRootProps extends PartProps<"span"> {
   /** Controlled open state. */
   open?: boolean;
   /** Initial open state when uncontrolled. */
@@ -102,57 +91,25 @@ export interface MenuRootProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 function MenuRoot({
-  open: openProp,
-  defaultOpen = false,
+  open,
+  defaultOpen,
   onOpenChange,
   className,
   children,
   ...rest
 }: MenuRootProps) {
-  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
-  const open = openProp ?? uncontrolledOpen;
-  const [enhanced, setEnhanced] = useState(false);
-  useEffect(() => setEnhanced(supportsAnchoredPopover()), []);
-
-  const autoId = useId();
-  const popupId = `${cssSafeId(autoId)}-menu`;
-  const anchorName = `--loam-anchor-${popupId}`;
-
-  const openRef = useRef(open);
-  openRef.current = open;
-  const controlledRef = useRef(false);
-  controlledRef.current = openProp !== undefined;
-  const triggerRef = useRef<HTMLButtonElement | null>(null);
-  const popupRef = useRef<HTMLDivElement | null>(null);
+  const popup = usePopupRoot("menu", { open, defaultOpen, onOpenChange });
   const focusOnOpen = useRef<"first" | "last">("first");
-
-  const setOpen = useCallback(
-    (next: boolean) => {
-      if (next === openRef.current) return;
-      if (!controlledRef.current) setUncontrolledOpen(next);
-      onOpenChange?.(next);
-    },
-    [onOpenChange],
-  );
+  const { setOpen, triggerRef } = popup;
 
   const closeAndRefocus = useCallback(() => {
     setOpen(false);
     triggerRef.current?.focus({ preventScroll: true });
-  }, [setOpen]);
+  }, [setOpen, triggerRef]);
 
   const value = useMemo<MenuContextValue>(
-    () => ({
-      open,
-      setOpen,
-      triggerRef,
-      popupRef,
-      popupId,
-      anchorName,
-      enhanced,
-      focusOnOpen,
-      closeAndRefocus,
-    }),
-    [open, setOpen, popupId, anchorName, enhanced, closeAndRefocus],
+    () => ({ ...popup, focusOnOpen, closeAndRefocus }),
+    [popup, closeAndRefocus],
   );
 
   return (
@@ -165,21 +122,12 @@ function MenuRoot({
 }
 
 /** Wiring the Trigger attaches to whatever it renders. */
-export interface MenuTriggerRenderProps {
-  type: "button";
-  popoverTarget: string | undefined;
+export interface MenuTriggerRenderProps extends PopupTriggerRenderProps {
   "aria-haspopup": "menu";
-  "aria-expanded": boolean;
-  "aria-controls": string | undefined;
-  /** Styling hook — present while the menu is open. */
-  "data-popup-open": "true" | undefined;
-  style: CSSProperties;
-  onClick: (e: ReactMouseEvent<Element>) => void;
   onKeyDown: (e: ReactKeyboardEvent<Element>) => void;
-  ref: Ref<HTMLButtonElement>;
 }
 
-export interface MenuTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface MenuTriggerProps extends PartProps<"button"> {
   /**
    * Substitute your own element as the trigger, or pass a function receiving
    * the wiring props. Without it, the Trigger renders a LoamUI Button, which
@@ -190,19 +138,14 @@ export interface MenuTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement
 
 function MenuTrigger({ render, children, ...rest }: MenuTriggerProps) {
   const ctx = useMenuContext("Menu.Trigger");
+  const base = popupTriggerProps(ctx);
 
   const triggerProps: MenuTriggerRenderProps = {
-    ref: ctx.triggerRef,
-    type: "button",
-    popoverTarget: ctx.enhanced ? ctx.popupId : undefined,
+    ...base,
     "aria-haspopup": "menu",
-    "aria-expanded": ctx.open,
-    "aria-controls": ctx.open ? ctx.popupId : undefined,
-    "data-popup-open": ctx.open ? "true" : undefined,
-    style: { anchorName: ctx.anchorName } as CSSProperties,
-    onClick: () => {
+    onClick: (e) => {
       ctx.focusOnOpen.current = "first";
-      if (!ctx.enhanced) ctx.setOpen(!ctx.open);
+      base.onClick(e);
     },
     // APG menu button: ArrowDown opens focusing the first item, ArrowUp the
     // last. (Enter/Space are native button activation → onClick.)
@@ -221,14 +164,13 @@ function MenuTrigger({ render, children, ...rest }: MenuTriggerProps) {
   );
 }
 
-export interface MenuPopupProps extends HTMLAttributes<HTMLDivElement> {
-  ref?: Ref<HTMLDivElement>;
+export interface MenuPopupProps extends PartProps<"div"> {
   /** Which side of the trigger the menu opens toward. @default "bottom" */
-  position?: "bottom" | "top";
+  side?: "bottom" | "top";
 }
 
 function MenuPopup({
-  position = "bottom",
+  side = "bottom",
   className,
   children,
   style,
@@ -237,64 +179,21 @@ function MenuPopup({
   ...rest
 }: MenuPopupProps) {
   const ctx = useMenuContext("Menu.Popup");
-  const { open, setOpen, enhanced } = ctx;
   const ref = ctx.popupRef;
   const composedRef = useMemo(() => composeRefs(refProp, ref), [refProp, ref]);
   const typeahead = useRef({ query: "", at: 0 });
 
-  // Enhanced path: reconcile React state with the native popover state (see
-  // Popover for why there is deliberately no dependency array).
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || !enhanced) return;
-    const nativeOpen = el.matches(":popover-open");
-    if (open && !nativeOpen) el.showPopover();
-    else if (!open && nativeOpen) el.hidePopover();
-  });
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || !enhanced) return;
-    const onToggle = (e: Event) => {
-      setOpen((e as ToggleEvent).newState === "open");
-    };
-    el.addEventListener("toggle", onToggle);
-    return () => el.removeEventListener("toggle", onToggle);
-  }, [enhanced, setOpen, ref]);
-
   // Focus the first/last item on open; return focus to the trigger on close
-  // when it would otherwise be lost. Menus move focus — they never trap it.
-  const prevOpenRef = useRef(open);
-  useEffect(() => {
-    const el = ref.current;
-    const was = prevOpenRef.current;
-    prevOpenRef.current = open;
-    if (!el || was === open) return;
-    if (open) {
+  // when it would otherwise be lost. Menus move focus; they never trap it.
+  usePopup(ctx, {
+    rootClass: "loam-Menu",
+    focusOnOpen: (el) => {
       const items = menuItems(el);
       const target = ctx.focusOnOpen.current === "last" ? items[items.length - 1] : items[0];
       (target ?? el).focus({ preventScroll: true });
-    } else if (el.contains(document.activeElement) || document.activeElement === document.body) {
-      ctx.triggerRef.current?.focus({ preventScroll: true });
-    }
-  }, [open, ctx.focusOnOpen, ctx.triggerRef, ref]);
-
-  useEffect(() => {
-    if (enhanced || !open) return;
-    const onPointer = (e: MouseEvent) => {
-      const root = ref.current?.closest(".loam-Menu");
-      if (root && !root.contains(e.target as Node)) setOpen(false);
-    };
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") ctx.closeAndRefocus();
-    };
-    document.addEventListener("mousedown", onPointer);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onPointer);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [enhanced, open, setOpen, ctx, ref]);
+    },
+    onEscape: ctx.closeAndRefocus,
+  });
 
   // The APG keyboard pattern, on real focus (items rove with tabIndex -1).
   const handleKeyDown = (e: ReactKeyboardEvent<HTMLDivElement>) => {
@@ -324,7 +223,7 @@ function MenuPopup({
         break;
       case "Tab":
         // Tab leaves the menu: close it and let focus move on naturally.
-        setOpen(false);
+        ctx.setOpen(false);
         break;
       default: {
         // Typeahead: printable characters accumulate for half a second and
@@ -352,16 +251,11 @@ function MenuPopup({
     // the typeahead handlers are the menu pattern itself.
     <div
       {...rest}
+      {...popupProps(ctx, side, style)}
       ref={composedRef}
-      id={ctx.popupId}
       role="menu"
       tabIndex={-1}
-      popover={enhanced ? "auto" : undefined}
-      hidden={enhanced || open ? undefined : true}
       className={cx("loam-Menu-popup", className)}
-      data-position={position}
-      data-open={open || undefined}
-      style={{ ...style, positionAnchor: ctx.anchorName } as CSSProperties}
       onKeyDown={handleKeyDown}
     >
       {children}
@@ -371,20 +265,19 @@ function MenuPopup({
 
 /** Wiring an Item attaches to whatever it renders. */
 export interface MenuItemRenderProps {
-  role: "menuitem";
+  role: "menuitem" | "menuitemcheckbox" | "menuitemradio";
   tabIndex: -1;
   "aria-disabled": true | undefined;
+  "aria-checked": boolean | undefined;
   onClick: (e: ReactMouseEvent<Element>) => void;
   children?: ReactNode;
   className?: string;
 }
 
-export interface MenuItemProps extends Omit<HTMLAttributes<HTMLElement>, "onClick"> {
-  /** Renders the item as a link instead of a button. */
-  href?: string;
+interface ItemBaseProps extends Omit<PartProps<"button">, "onClick" | "role"> {
   /** The action. Runs before the menu closes. */
   onClick?: (e: ReactMouseEvent<Element>) => void;
-  /** Close the menu when the item is activated. @default true */
+  /** Close the menu when the item is activated. */
   closeOnClick?: boolean;
   /** Disable without removing from the accessibility tree. */
   disabled?: boolean;
@@ -393,22 +286,42 @@ export interface MenuItemProps extends Omit<HTMLAttributes<HTMLElement>, "onClic
   children?: ReactNode;
 }
 
-function MenuItem({
+export interface MenuItemProps extends ItemBaseProps {
+  /** Renders the item as a link instead of a button. */
+  href?: string;
+  /** Close the menu when the item is activated. @default true */
+  closeOnClick?: boolean;
+}
+
+/**
+ * The item anatomy every kind shares: a `<button>` (or `<a>` via `href`)
+ * carrying the role, the roving tabIndex, and the activate-then-close flow.
+ */
+function ItemBase({
+  kind: role,
+  checked,
   href,
   onClick,
-  closeOnClick = true,
+  closeOnClick,
   disabled,
   render,
   className,
   children,
   ...rest
-}: MenuItemProps) {
-  const ctx = useMenuContext("Menu.Item");
+}: ItemBaseProps & {
+  kind: MenuItemRenderProps["role"];
+  checked?: boolean;
+  href?: string;
+}) {
+  const ctx = useMenuContext(
+    `Menu.${role === "menuitem" ? "Item" : role === "menuitemcheckbox" ? "CheckboxItem" : "RadioItem"}`,
+  );
 
   const itemProps: MenuItemRenderProps = {
-    role: "menuitem",
+    role,
     tabIndex: -1,
     "aria-disabled": disabled || undefined,
+    "aria-checked": checked,
     onClick: (e) => {
       if (disabled) {
         e.preventDefault();
@@ -419,52 +332,96 @@ function MenuItem({
     },
   };
 
+  // The render path must honor the same merge contract as the built-ins:
+  // consumer children/className/rest ride along with the wiring.
+  if (render) {
+    return (
+      <>
+        {renderWithProps(render, {
+          ...rest,
+          ...itemProps,
+          children,
+          className: cx("item", className),
+        })}
+      </>
+    );
+  }
   const target =
-    render ??
-    (href !== undefined ? (
-      <a
-        href={href}
-        className={cx("item", className)}
-        {...(rest as AnchorHTMLAttributes<HTMLAnchorElement>)}
-      >
+    href !== undefined ? (
+      <a href={href} className={cx("item", className)} {...(rest as PartProps<"a">)}>
         {children}
       </a>
     ) : (
-      <button
-        type="button"
-        className={cx("item", className)}
-        {...(rest as ButtonHTMLAttributes<HTMLButtonElement>)}
-      >
+      <button type="button" className={cx("item", className)} {...rest}>
         {children}
       </button>
-    ));
-  // The render path must honor the same merge contract as the built-ins:
-  // consumer children/className/rest ride along with the wiring.
+    );
+  return <>{renderWithProps(target, itemProps)}</>;
+}
+
+function MenuItem({ closeOnClick = true, ...props }: MenuItemProps) {
+  return <ItemBase kind="menuitem" closeOnClick={closeOnClick} {...props} />;
+}
+
+export interface MenuCheckboxItemProps extends ItemBaseProps {
+  /** Controlled checked state. */
+  checked?: boolean;
+  /** Initial checked state when uncontrolled. */
+  defaultChecked?: boolean;
+  /** Fires with the next checked state on activation. */
+  onCheckedChange?: (checked: boolean) => void;
+  /**
+   * Close the menu when the item is activated. Off by default: a setting is
+   * usually one of several the user adjusts in one visit. @default false
+   */
+  closeOnClick?: boolean;
+}
+
+/**
+ * An on/off setting inside the menu (`role="menuitemcheckbox"`). The check
+ * glyph is drawn by the stylesheet from `aria-checked`.
+ */
+function MenuCheckboxItem({
+  checked: checkedProp,
+  defaultChecked = false,
+  onCheckedChange,
+  onClick,
+  closeOnClick = false,
+  ...props
+}: MenuCheckboxItemProps) {
+  const [uncontrolled, setUncontrolled] = useState(defaultChecked);
+  const checked = checkedProp ?? uncontrolled;
   return (
-    <>
-      {render
-        ? renderWithProps(render, {
-            ...rest,
-            ...itemProps,
-            children,
-            className: cx("item", className),
-          })
-        : renderWithProps(target, itemProps)}
-    </>
+    <ItemBase
+      kind="menuitemcheckbox"
+      checked={checked}
+      closeOnClick={closeOnClick}
+      onClick={(e) => {
+        onClick?.(e);
+        if (checkedProp === undefined) setUncontrolled(!checked);
+        onCheckedChange?.(!checked);
+      }}
+      {...props}
+    />
   );
 }
+
+interface MenuRadioGroupContextValue {
+  value: string | undefined;
+  select: (value: string) => void;
+}
+
+const MenuRadioGroupContext = createContext<MenuRadioGroupContextValue | null>(null);
 
 interface MenuGroupContextValue {
   labelId: string;
   registerLabel: () => () => void;
-  hasLabel: boolean;
 }
 
 const MenuGroupContext = createContext<MenuGroupContextValue | null>(null);
 
-export interface MenuGroupProps extends HTMLAttributes<HTMLDivElement> {}
-
-function MenuGroup({ className, children, ...rest }: MenuGroupProps) {
+/** A group's label registration: `aria-labelledby` only once a GroupLabel exists. */
+function useGroupLabel() {
   const autoId = useId();
   const labelId = `${autoId}-menugroup`;
   const [labelCount, setLabelCount] = useState(0);
@@ -472,30 +429,103 @@ function MenuGroup({ className, children, ...rest }: MenuGroupProps) {
     setLabelCount((n) => n + 1);
     return () => setLabelCount((n) => n - 1);
   }, []);
-  const value = useMemo(
-    () => ({ labelId, registerLabel, hasLabel: labelCount > 0 }),
-    [labelId, registerLabel, labelCount],
-  );
+  const value = useMemo(() => ({ labelId, registerLabel }), [labelId, registerLabel]);
+  return { value, labelledBy: labelCount > 0 ? labelId : undefined };
+}
+
+export interface MenuGroupProps extends PartProps<"div"> {}
+
+function MenuGroup({ className, children, ...rest }: MenuGroupProps) {
+  const { value, labelledBy } = useGroupLabel();
   return (
     <MenuGroupContext value={value}>
-      <div
-        role="group"
-        aria-labelledby={labelCount > 0 ? labelId : undefined}
-        className={className}
-        {...rest}
-      >
+      <div role="group" aria-labelledby={labelledBy} className={className} {...rest}>
         {children}
       </div>
     </MenuGroupContext>
   );
 }
 
-export interface MenuGroupLabelProps extends HTMLAttributes<HTMLDivElement> {}
+export interface MenuRadioGroupProps extends PartProps<"div"> {
+  /** Controlled selected value. */
+  value?: string;
+  /** Initial selected value when uncontrolled. */
+  defaultValue?: string;
+  /** Fires with the value of the item activated. */
+  onValueChange?: (value: string) => void;
+}
+
+/**
+ * One-of-a-set settings inside the menu (`role="group"` of
+ * `role="menuitemradio"` items). A `Menu.GroupLabel` inside labels it.
+ */
+function MenuRadioGroup({
+  value: valueProp,
+  defaultValue,
+  onValueChange,
+  className,
+  children,
+  ...rest
+}: MenuRadioGroupProps) {
+  const [uncontrolled, setUncontrolled] = useState(defaultValue);
+  const value = valueProp ?? uncontrolled;
+  const controlled = valueProp !== undefined;
+  const select = useCallback(
+    (next: string) => {
+      if (!controlled) setUncontrolled(next);
+      onValueChange?.(next);
+    },
+    [controlled, onValueChange],
+  );
+  const radio = useMemo(() => ({ value, select }), [value, select]);
+  const { value: group, labelledBy } = useGroupLabel();
+  return (
+    <MenuGroupContext value={group}>
+      <MenuRadioGroupContext value={radio}>
+        <div role="group" aria-labelledby={labelledBy} className={className} {...rest}>
+          {children}
+        </div>
+      </MenuRadioGroupContext>
+    </MenuGroupContext>
+  );
+}
+
+export interface MenuRadioItemProps extends ItemBaseProps {
+  /** The value this item selects. */
+  value: string;
+  /**
+   * Close the menu when the item is activated. Off by default, as for
+   * CheckboxItem. @default false
+   */
+  closeOnClick?: boolean;
+}
+
+/** One choice of a `Menu.RadioGroup` (`role="menuitemradio"`). */
+function MenuRadioItem({ value, onClick, closeOnClick = false, ...props }: MenuRadioItemProps) {
+  const group = useContext(MenuRadioGroupContext);
+  if (!group) {
+    throw new Error("Menu.RadioItem must be rendered inside <Menu.RadioGroup>.");
+  }
+  return (
+    <ItemBase
+      kind="menuitemradio"
+      checked={group.value === value}
+      closeOnClick={closeOnClick}
+      onClick={(e) => {
+        onClick?.(e);
+        group.select(value);
+      }}
+      {...props}
+    />
+  );
+}
+
+export interface MenuGroupLabelProps extends PartProps<"div"> {}
 
 function MenuGroupLabel({ className, children, ...rest }: MenuGroupLabelProps) {
   const group = useContext(MenuGroupContext);
   if (!group) {
-    throw new Error("Menu.GroupLabel must be rendered inside <Menu.Group>.");
+    throw new Error("Menu.GroupLabel must be rendered inside <Menu.Group> or <Menu.RadioGroup>.");
   }
   const { registerLabel } = group;
   useEffect(() => registerLabel(), [registerLabel]);
@@ -506,10 +536,10 @@ function MenuGroupLabel({ className, children, ...rest }: MenuGroupLabelProps) {
   );
 }
 
-export interface MenuSeparatorProps extends HTMLAttributes<HTMLHRElement> {}
+export interface MenuSeparatorProps extends PartProps<"hr"> {}
 
 function MenuSeparator({ className, ...rest }: MenuSeparatorProps) {
-  // A real <hr> — the platform's separator role, no ARIA needed.
+  // A real <hr>: the platform's separator role, no ARIA needed.
   return <hr className={className} {...rest} />;
 }
 
@@ -518,6 +548,9 @@ export const Menu = {
   Trigger: MenuTrigger,
   Popup: MenuPopup,
   Item: MenuItem,
+  CheckboxItem: MenuCheckboxItem,
+  RadioGroup: MenuRadioGroup,
+  RadioItem: MenuRadioItem,
   Group: MenuGroup,
   GroupLabel: MenuGroupLabel,
   Separator: MenuSeparator,

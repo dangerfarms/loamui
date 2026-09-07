@@ -86,6 +86,26 @@ An Item with href renders as a real <a>, so right-click and open-in-new-tab work
 </Menu.Root>
 ```
 
+### Checkable items
+
+A setting that lives in the menu is a CheckboxItem (on/off, role menuitemcheckbox) or a RadioGroup of RadioItems (one of a set, role menuitemradio). Both keep the menu open on activation, since a setting is usually one of several adjusted in one visit; the glyph is drawn by CSS from aria-checked.
+
+```tsx
+<Menu.Root>
+  <Menu.Trigger>View</Menu.Trigger>
+  <Menu.Popup>
+    <Menu.CheckboxItem defaultChecked>Show hidden files</Menu.CheckboxItem>
+    <Menu.CheckboxItem>Show file extensions</Menu.CheckboxItem>
+    <Menu.Separator />
+    <Menu.RadioGroup defaultValue="name">
+      <Menu.GroupLabel>Sort by</Menu.GroupLabel>
+      <Menu.RadioItem value="name">Name</Menu.RadioItem>
+      <Menu.RadioItem value="date">Date modified</Menu.RadioItem>
+    </Menu.RadioGroup>
+  </Menu.Popup>
+</Menu.Root>
+```
+
 ### Disabled items
 
 Disabled items use aria-disabled, so they stay visible to assistive technology but are skipped by roving focus (one tab stop, arrow keys move between items) and cannot be activated.
@@ -164,7 +184,7 @@ The floating list (role="menu", popover attribute); it flips at viewport edges i
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `position` | `"bottom" \| "top"` | `"bottom"` | Which side of the trigger the menu opens toward. |
+| `side` | `"bottom" \| "top"` | `"bottom"` | Which side of the trigger the menu opens toward. |
 
 ### Menu.Item
 
@@ -178,15 +198,51 @@ One action (role="menuitem"). Renders a <button>, or a real <a> when href is set
 | `disabled` | `boolean` | — | aria-disabled; skipped by keyboard navigation. |
 | `render` | `element \| (props) => node` | — | Substitute your own element (e.g. a router Link). |
 
+### Menu.CheckboxItem
+
+An on/off setting (role="menuitemcheckbox"); the check glyph is CSS. Takes the same href-less props as Menu.Item.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `checked` | `boolean` | — | Controlled checked state. |
+| `defaultChecked` | `boolean` | `false` | Initial checked state when uncontrolled. |
+| `onCheckedChange` | `(checked: boolean) => void` | — | Fires with the next checked state on activation. |
+| `closeOnClick` | `boolean` | `false` | Close the menu after activation. |
+
+### Menu.RadioGroup
+
+One-of-a-set settings (role="group" of menuitemradio items); a GroupLabel inside labels it. Native <div> props are forwarded.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | — | Controlled selected value. |
+| `defaultValue` | `string` | — | Initial selected value when uncontrolled. |
+| `onValueChange` | `(value: string) => void` | — | Fires with the value of the item activated. |
+
+### Menu.RadioItem
+
+One choice of a RadioGroup (role="menuitemradio"); checked when its value is the group's. Takes the same href-less props as Menu.Item.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | — | The value this item selects (required). |
+| `closeOnClick` | `boolean` | `false` | Close the menu after activation. |
+
 ### Menu.Group
 
 Groups related items (role="group"); a GroupLabel inside labels the group via aria-labelledby. Native <div> props are forwarded.
 
 ### Menu.GroupLabel
 
-The group's label; native <div> props are forwarded.
+The label of the Group or RadioGroup it sits in; native <div> props are forwarded.
 
 ### Menu.Separator
 
 A real <hr> between items, the platform's separator role; native <hr> props are forwarded.
+
+## Custom properties
+
+| Property | Syntax | Default | Description |
+| --- | --- | --- | --- |
+| `--loam-menu-size` | `CSS length` | `18rem` | The list's widest extent; content sizes it between a floor derived from this and the cap. Never wider than the viewport. |
 

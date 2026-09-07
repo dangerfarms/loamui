@@ -8,6 +8,10 @@ afterEach(cleanup);
 
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };
 
+function rulesId(container: HTMLElement): string {
+  return container.querySelector("ul.rules")!.id;
+}
+
 function createPassword() {
   return (
     <PasswordField.Root>
@@ -31,10 +35,18 @@ describe("PasswordField", () => {
     const input = screen.getByLabelText("Password");
     expect(input).toHaveAttribute("type", "password");
     expect(input).toHaveAttribute("autocomplete", "new-password");
-    expect(input).toHaveAccessibleDescription("At least 12 characters.");
-    expect(
-      container.querySelector(".loam-PasswordField > div.input > div.control"),
-    ).toContainElement(input);
+    // The Field's description first, then the rules, joined to the box so
+    // they are heard on landing in it.
+    expect(input).toHaveAccessibleDescription(
+      /^At least 12 characters\. At least 12 characters ?, not met A number ?, not met$/,
+    );
+    expect(input).toHaveAttribute("aria-describedby", expect.stringContaining(rulesId(container)));
+    // Core's PasswordInput, untouched, as a direct child of the column: no
+    // row or slot of the composition's own around it.
+    const row = container.querySelector(".loam-PasswordField > div.loam-PasswordInput")!;
+    expect(row.className).toBe("loam-PasswordInput");
+    expect(row).toContainElement(input);
+    expect(row).toContainElement(screen.getByRole("button", { name: "Show password" }));
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 
@@ -44,13 +56,23 @@ describe("PasswordField", () => {
     const input = screen.getByLabelText("Password");
     const meter = screen.getByRole("meter", { name: "Password strength" });
     expect(meter).toHaveAttribute("value", "0");
-    expect(meter).toHaveAttribute("aria-valuetext", "Weak");
+    // Nothing typed is not a weak password: no word beside the Meter, and
+    // the Meter says so in its own words.
+    expect(meter).toHaveAttribute("aria-valuetext", "Nothing typed yet");
+    expect(screen.queryByText("Weak")).not.toBeInTheDocument();
     // Core's Meter, untouched, in the composition's own slot.
     expect(meter.className).toBe("loam-Meter");
     expect(meter.parentElement).toHaveClass("strength");
-    expect(screen.getByText("Weak")).toHaveAttribute("aria-live", "polite");
+    const word = meter.parentElement!.querySelector("span.word")!;
+    expect(word).toHaveAttribute("aria-live", "polite");
+    expect(word).toBeEmptyDOMElement();
 
-    await user.type(input, "correcthor");
+    await user.type(input, "corr");
+    expect(meter).toHaveAttribute("value", "1");
+    expect(meter).toHaveAttribute("aria-valuetext", "Weak");
+    expect(word).toHaveTextContent("Weak");
+
+    await user.type(input, "ecthor");
     expect(meter).toHaveAttribute("value", "2");
     expect(meter).toHaveAttribute("aria-valuetext", "Fair");
     expect(screen.getByText("Fair")).toBeInTheDocument();
@@ -172,6 +194,22 @@ describe("PasswordField", () => {
       </PasswordField.Root>,
     );
     expect(screen.getByRole("meter", { name: "Password strength" })).toHaveAttribute("value", "4");
+  });
+
+  it("describes the input by nothing but the Field's parts when there is no Rules list", () => {
+    const { container } = render(
+      <PasswordField.Root>
+        <PasswordField.Label>Password</PasswordField.Label>
+        <PasswordField.Description>At least 12 characters.</PasswordField.Description>
+        <PasswordField.Input name="password" />
+      </PasswordField.Root>,
+    );
+    const input = screen.getByLabelText("Password");
+    expect(input).toHaveAccessibleDescription("At least 12 characters.");
+    // No dangling reference: every id in aria-describedby is in the document.
+    for (const id of input.getAttribute("aria-describedby")!.split(" ")) {
+      expect(container.querySelector(`#${CSS.escape(id)}`)).not.toBeNull();
+    }
   });
 
   it("marks the input invalid from an Error and describes it with the message", async () => {

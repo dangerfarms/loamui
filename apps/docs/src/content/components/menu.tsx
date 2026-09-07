@@ -2,6 +2,7 @@ import type { ComponentContent } from "@/renderer/types";
 import {
   MenuDemo,
   MenuDestructiveDemo,
+  MenuCheckableDemo,
   MenuDisabledDemo,
   MenuGroupsDemo,
   MenuLinksDemo,
@@ -75,6 +76,25 @@ const doc: ComponentContent = {
   </Menu.Popup>
 </Menu.Root>`,
       render: () => <MenuLinksDemo />,
+    },
+    {
+      title: "Checkable items",
+      description:
+        "A setting that lives in the menu is a CheckboxItem (on/off, role menuitemcheckbox) or a RadioGroup of RadioItems (one of a set, role menuitemradio). Both keep the menu open on activation, since a setting is usually one of several adjusted in one visit; the glyph is drawn by CSS from aria-checked.",
+      code: `<Menu.Root>
+  <Menu.Trigger>View</Menu.Trigger>
+  <Menu.Popup>
+    <Menu.CheckboxItem defaultChecked>Show hidden files</Menu.CheckboxItem>
+    <Menu.CheckboxItem>Show file extensions</Menu.CheckboxItem>
+    <Menu.Separator />
+    <Menu.RadioGroup defaultValue="name">
+      <Menu.GroupLabel>Sort by</Menu.GroupLabel>
+      <Menu.RadioItem value="name">Name</Menu.RadioItem>
+      <Menu.RadioItem value="date">Date modified</Menu.RadioItem>
+    </Menu.RadioGroup>
+  </Menu.Popup>
+</Menu.Root>`,
+      render: () => <MenuCheckableDemo />,
     },
     {
       title: "Disabled items",
@@ -163,7 +183,7 @@ const doc: ComponentContent = {
         'The floating list (role="menu", popover attribute); it flips at viewport edges in supporting browsers. Native <div> props are forwarded.',
       props: [
         {
-          name: "position",
+          name: "side",
           type: `"bottom" | "top"`,
           default: `"bottom"`,
           description: "Which side of the trigger the menu opens toward.",
@@ -196,18 +216,85 @@ const doc: ComponentContent = {
       ],
     },
     {
+      name: "Menu.CheckboxItem",
+      description:
+        'An on/off setting (role="menuitemcheckbox"); the check glyph is CSS. Takes the same href-less props as Menu.Item.',
+      props: [
+        { name: "checked", type: "boolean", description: "Controlled checked state." },
+        {
+          name: "defaultChecked",
+          type: "boolean",
+          default: "false",
+          description: "Initial checked state when uncontrolled.",
+        },
+        {
+          name: "onCheckedChange",
+          type: "(checked: boolean) => void",
+          description: "Fires with the next checked state on activation.",
+        },
+        {
+          name: "closeOnClick",
+          type: "boolean",
+          default: "false",
+          description: "Close the menu after activation.",
+        },
+      ],
+    },
+    {
+      name: "Menu.RadioGroup",
+      description:
+        'One-of-a-set settings (role="group" of menuitemradio items); a GroupLabel inside labels it. Native <div> props are forwarded.',
+      props: [
+        { name: "value", type: "string", description: "Controlled selected value." },
+        {
+          name: "defaultValue",
+          type: "string",
+          description: "Initial selected value when uncontrolled.",
+        },
+        {
+          name: "onValueChange",
+          type: "(value: string) => void",
+          description: "Fires with the value of the item activated.",
+        },
+      ],
+    },
+    {
+      name: "Menu.RadioItem",
+      description:
+        'One choice of a RadioGroup (role="menuitemradio"); checked when its value is the group\'s. Takes the same href-less props as Menu.Item.',
+      props: [
+        { name: "value", type: "string", description: "The value this item selects (required)." },
+        {
+          name: "closeOnClick",
+          type: "boolean",
+          default: "false",
+          description: "Close the menu after activation.",
+        },
+      ],
+    },
+    {
       name: "Menu.Group",
       description:
         'Groups related items (role="group"); a GroupLabel inside labels the group via aria-labelledby. Native <div> props are forwarded.',
     },
     {
       name: "Menu.GroupLabel",
-      description: "The group's label; native <div> props are forwarded.",
+      description:
+        "The label of the Group or RadioGroup it sits in; native <div> props are forwarded.",
     },
     {
       name: "Menu.Separator",
       description:
         "A real <hr> between items, the platform's separator role; native <hr> props are forwarded.",
+    },
+  ],
+  cssProps: [
+    {
+      name: "--loam-menu-size",
+      syntax: "CSS length",
+      default: "18rem",
+      description:
+        "The list's widest extent; content sizes it between a floor derived from this and the cap. Never wider than the viewport.",
     },
   ],
 };

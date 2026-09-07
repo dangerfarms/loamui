@@ -4,7 +4,7 @@
    Field that wires it, and the label, description and error inside keep
    the look Field gives them: the rules here place the composition's own
    slots and never touch a Field part. The control slot hosts a core
-   SwitchControl, Select or Fieldset, hence the donut. */
+   Switch.Control, Select or Fieldset, hence the donut. */
 @scope (.loam-SettingRow) to ([class*="loam-"]) {
   :scope {
     align-items: center;
@@ -27,7 +27,8 @@
   }
 
   /* The words when the Label is rendered as a span, for a control that is
-     a fieldset: the composition's own element, set as a label reads. */
+     a fieldset: the composition's own element, set as core's Field.Label
+     reads, because that part is a label and renders as nothing else. */
   span.label {
     font-size: var(--loam-text-sm);
     font-weight: 500;

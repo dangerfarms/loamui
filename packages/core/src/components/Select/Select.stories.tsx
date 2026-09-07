@@ -3,6 +3,9 @@ import { Field, Select } from "../../index";
 
 const frameworkOptions = (
   <>
+    <option value="" disabled>
+      Pick one
+    </option>
     <option value="react">React</option>
     <option value="vue">Vue</option>
     <option value="svelte">Svelte</option>
@@ -18,15 +21,15 @@ const meta = {
     docs: {
       description: {
         component:
-          "A native `<select>` in the shared control box, with a fluid " +
-          "chevron; options are children (`<option>` / `<optgroup>`), exactly " +
-          "as the platform defines them. Label it by composing Field — the " +
-          "control reads its wiring from the surrounding `Field.Root`.",
+          "A native `<select>` with a fluid chevron; options are children " +
+          "(`<option>` / `<optgroup>`), exactly as the platform defines them, " +
+          "and so is an unanswered start: a leading disabled empty option is " +
+          "where the select begins. Label it by composing Field — the control " +
+          "reads its wiring from the surrounding `Field.Root`.",
       },
     },
   },
   args: {
-    placeholder: "Pick one",
     children: frameworkOptions,
     disabled: false,
   },

@@ -1,8 +1,8 @@
-import type { HTMLAttributes, ReactNode, Ref } from "react";
+import type { ReactNode } from "react";
 import { renderWithProps, cx } from "@loamui/core";
-import type { RenderProp } from "@loamui/core";
+import type { PartProps, RenderProp } from "@loamui/core";
 
-export interface FeatureRootProps extends HTMLAttributes<HTMLElement> {
+export interface FeatureRootProps extends PartProps<"div"> {
   /**
    * Render as a different element: `render={<li />}` inside a list. The
    * part's classes and attributes merge onto the element it renders, the
@@ -10,7 +10,6 @@ export interface FeatureRootProps extends HTMLAttributes<HTMLElement> {
    */
   render?: RenderProp<Record<string, unknown>>;
   children?: ReactNode;
-  ref?: Ref<HTMLElement>;
 }
 
 /**
@@ -35,12 +34,11 @@ export interface FeatureRootProps extends HTMLAttributes<HTMLElement> {
 function FeatureRoot({ render, className, children, ref, ...rest }: FeatureRootProps) {
   const props = { ref, className: cx("loam-Feature", className), children, ...rest };
   if (render) return <>{renderWithProps(render, props)}</>;
-  return <div {...(props as HTMLAttributes<HTMLDivElement> & { ref?: Ref<HTMLDivElement> })} />;
+  return <div {...props} />;
 }
 
-export interface FeatureIconProps extends HTMLAttributes<HTMLDivElement> {
+export interface FeatureIconProps extends PartProps<"div"> {
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /** A small square around the consumer's svg. Decorative: the title names the feature. */
@@ -52,11 +50,10 @@ function FeatureIcon({ className, children, ref, ...rest }: FeatureIconProps) {
   );
 }
 
-export interface FeatureTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+export interface FeatureTitleProps extends PartProps<"h3"> {
   /** Render as a different heading: `render={<h4 />}` under a page's own h3s. */
   render?: RenderProp<Record<string, unknown>>;
   children?: ReactNode;
-  ref?: Ref<HTMLHeadingElement>;
 }
 
 /** The feature's name. An `h3` by default; pass `render={<h4 />}` under a page's own h3s. */
@@ -73,9 +70,8 @@ function FeatureTitle({ render, className, children, ref, ...rest }: FeatureTitl
   );
 }
 
-export interface FeatureDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {
+export interface FeatureDescriptionProps extends PartProps<"p"> {
   children?: ReactNode;
-  ref?: Ref<HTMLParagraphElement>;
 }
 
 /** One or two muted sentences on what the feature does for the reader. */

@@ -1,18 +1,19 @@
-import { cloneElement, isValidElement } from "react";
-import type { AnchorHTMLAttributes, ReactNode, Ref } from "react";
+import type { ReactNode } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 import { renderWithProps } from "../../render";
 import type { RenderProp } from "../../render";
 
-export interface SignpostLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+export interface SignpostLinkProps extends PartProps<"a"> {
+  /** The label. It is wrapped in the arrow anatomy whatever element renders. */
   children?: ReactNode;
   /**
    * Substitute the built-in `<a>` — e.g. a router link:
-   * `render={<Link href="/apply">Start your application</Link>}`. The
-   * label may live on either element; the arrow anatomy wraps it.
+   * `render={<Link href="/apply" />}`. The label stays on SignpostLink (the
+   * arrow anatomy becomes the element's children); an element with children
+   * of its own keeps them, per the merge contract, and so bypasses the arrow.
    */
   render?: RenderProp<Record<string, unknown>>;
-  ref?: Ref<HTMLAnchorElement>;
 }
 
 function anatomy(label: ReactNode) {
@@ -48,19 +49,9 @@ function anatomy(label: ReactNode) {
  * link role.
  */
 export function SignpostLink({ render, className, children, ref, ...rest }: SignpostLinkProps) {
+  const wiring = { ref, className: cx("loam-SignpostLink", className), ...rest };
   if (render) {
-    const wiring = { ref, className: cx("loam-SignpostLink", className), ...rest };
-    if (isValidElement<Record<string, unknown>>(render)) {
-      // The label may arrive on either element; re-cloning wraps it in the
-      // arrow anatomy so element children can't bypass the markup.
-      const label = children ?? (render.props.children as ReactNode);
-      return <>{renderWithProps(cloneElement(render, {}, anatomy(label)), wiring)}</>;
-    }
     return <>{renderWithProps(render, { ...wiring, children: anatomy(children) })}</>;
   }
-  return (
-    <a ref={ref} className={cx("loam-SignpostLink", className)} {...rest}>
-      {anatomy(children)}
-    </a>
-  );
+  return <a {...wiring}>{anatomy(children)}</a>;
 }

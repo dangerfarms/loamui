@@ -10,14 +10,17 @@ export interface CopyButtonProps extends Omit<ButtonProps, "onCopy"> {
   value: string;
   /** The label at rest; an svg child is detected by Button as an icon. @default "Copy" */
   children?: ReactNode;
-  /** The label shown, and announced, after a successful copy. @default "Copied" */
-  copiedLabel?: string;
   /**
-   * What is announced when the clipboard refuses: no API (an insecure
-   * context), permission denied, or a document without focus.
-   * @default "Copy failed: select the text and copy it yourself"
+   * The words the button says: `copied` is shown, and announced, after a
+   * successful copy (default "Copied"); `failed` is announced when the
+   * clipboard refuses (no API in an insecure context, permission denied, a
+   * document without focus; default "Copy failed: select the text and copy
+   * it yourself").
    */
-  failedMessage?: string;
+  labels?: {
+    copied?: ReactNode;
+    failed?: ReactNode;
+  };
   /** How long the copied label and announcement stand, in ms. @default 1500 */
   timeout?: number;
   /**
@@ -35,11 +38,11 @@ type Status = "idle" | "copied" | "failed";
  * A Button that copies a string to the clipboard and says so.
  *
  * On click the value goes to the clipboard through the async Clipboard
- * API. On success the label reads `copiedLabel` for `timeout` ms and a
+ * API. On success the label reads `labels.copied` for `timeout` ms and a
  * visually hidden `role="status"` region announces the same words, so
  * the confirmation reaches a screen reader without moving focus. On
  * failure the label stays as it was and the region announces
- * `failedMessage`: the failure is said, never swallowed. The label always
+ * `labels.failed`: the failure is said, never swallowed. The label always
  * reverts, so the button never claims a copy it made a while ago.
  *
  * This is not a toggle, so there is no `aria-pressed`: "Copied" is a
@@ -66,14 +69,15 @@ type Status = "idle" | "copied" | "failed";
 export function CopyButton({
   value,
   children = "Copy",
-  copiedLabel = "Copied",
-  failedMessage = "Copy failed: select the text and copy it yourself",
+  labels,
   timeout = 1500,
   onCopy,
   onClick,
   ...rest
 }: CopyButtonProps) {
   const [status, setStatus] = useState<Status>("idle");
+  const copiedLabel = labels?.copied ?? "Copied";
+  const failedMessage = labels?.failed ?? "Copy failed: select the text and copy it yourself";
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   // The revert timer is the one external system here: clear it on unmount

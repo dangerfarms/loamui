@@ -42,13 +42,15 @@ An svg child is detected by Button as an icon, and the aria-label names the butt
 
 ### Your own words
 
-The rest label is the children, the confirmation is copiedLabel and the failure is failedMessage, so every word can be translated or made specific. The timeout decides how long the confirmation stands.
+The rest label is the children; the confirmation and the failure are labels.copied and labels.failed, so every word can be translated or made specific. The timeout decides how long the confirmation stands.
 
 ```tsx
 <CopyButton
   value="https://loamui.dev/docs/components/copy-button"
-  copiedLabel="Link copied"
-  failedMessage="The link could not be copied: select it and copy it yourself"
+  labels={{
+    copied: "Link copied",
+    failed: "The link could not be copied: select it and copy it yourself",
+  }}
   timeout={3000}
 >
   Copy link
@@ -106,8 +108,7 @@ Status is not a prop: it comes from the surrounding `--loam-context` region (see
 | --- | --- | --- | --- |
 | `value` | `string` | — | The text written to the clipboard. |
 | `children` | `ReactNode` | `"Copy"` | The label at rest. An svg child is detected by Button as an icon. |
-| `copiedLabel` | `string` | `"Copied"` | The label shown, and announced, after a successful copy. |
-| `failedMessage` | `string` | `"Copy failed: select the text and copy it yourself"` | What is announced when the clipboard refuses. The label is left as it was. |
+| `labels` | `{ copied?: ReactNode; failed?: ReactNode }` | `{ copied: "Copied", failed: "Copy failed: select the text and copy it yourself" }` | The words the button says: copied is shown, and announced, after a successful copy; failed is announced when the clipboard refuses, and the label is left as it was. |
 | `timeout` | `number` | `1500` | How long the copied label and the announcement stand, in ms. |
 | `onCopy` | `(value: string) => void` | — | Called with the value once it is on the clipboard. Replaces the native onCopy event, which fires on copying a selection a button never holds. |
 | `...others` | `ButtonProps` | — | Every Button prop is forwarded, including className, style, ref and aria-label. |

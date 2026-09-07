@@ -1,0 +1,103 @@
+/* A choice card is a core Card rendered as the label, with the
+   composition's class on that one root, so the rules here reach it: the
+   checked edge is an outline on the root, drawn outside the Card's own
+   border, so nothing of the Card's padding, line or radius is repeated
+   here, and the focus ring and the pointer sit on the same root. The
+   parts are laid out in their own element inside, the control in the
+   first column beside the title, the description under the title, an
+   optional media spanning both. It hosts a core Checkbox.Control or
+   Radio.Control, hence the donut. */
+@scope (.loam-ChoiceCard) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+
+    /* The whole surface is the label, so the cursor says so everywhere on
+       it, padding included. */
+    cursor: pointer;
+
+    /* Checked is the control's own tick plus this edge: never colour
+       alone. Inset by the Card's 1px line, so it takes the line's place
+       rather than sitting outside it. */
+    &:has(input:checked) {
+      outline: 2px solid var(--loam-color-primary-strong);
+      outline-offset: -1px;
+    }
+
+    /* The ring the elements layer gives the control, repeated around the
+       card so a keyboard user sees which card holds focus: a shadow, since
+       the outline is the checked edge and a checked card can hold focus. */
+    &:has(input:focus-visible) {
+      box-shadow: 0 0 0 var(--loam-ring-width) var(--loam-color-ring);
+    }
+
+    &:has(input:disabled) {
+      cursor: not-allowed;
+    }
+  }
+
+  span.body {
+    /* Packed to the start: the rows keep their size when the Card is
+       taller than the parts, rather than stretching to fill it. */
+    align-content: start;
+    align-items: start;
+    display: block grid;
+    gap: var(--loam-space-xs) var(--loam-space-md);
+    grid-template-columns: auto 1fr;
+  }
+
+  /* Only the parts fade; the Card keeps its line so the option still
+     reads as a card. */
+  :scope:has(input:disabled) span.body {
+    opacity: var(--loam-disabled-opacity);
+  }
+
+  span.control {
+    display: block flex;
+    grid-column: 1;
+
+    /* Centre the control on the title's first line. */
+    padding-block-start: 0.2lh;
+  }
+
+  span.title {
+    color: var(--loam-color-fg-strong);
+    font-weight: 600;
+    grid-column: 2;
+  }
+
+  span.description {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    grid-column: 2;
+  }
+
+  span.media {
+    display: block flow;
+    grid-column: 1 / -1;
+
+    img {
+      block-size: auto;
+      border-radius: var(--loam-radius-md);
+      display: block flow;
+      inline-size: 100%;
+    }
+
+    svg {
+      display: block flow;
+    }
+  }
+
+  /* Forced colours: the edge keeps its state in the system highlight; the
+     shadow is dropped there, so the ring becomes an outline too, offset
+     so both read when the checked card has focus. */
+  @media (forced-colors: active) {
+    :scope:has(input:checked) {
+      outline-color: Highlight;
+    }
+
+    :scope:has(input:focus-visible) {
+      outline: var(--loam-ring-width) solid Highlight;
+      outline-offset: 2px;
+    }
+  }
+}

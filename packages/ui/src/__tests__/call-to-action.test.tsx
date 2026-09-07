@@ -70,6 +70,27 @@ describe("CallToAction", () => {
     expect(inner!.querySelector(":scope > div.media > img")).not.toBeNull();
   });
 
+  it("names the section in the first render, so the server's HTML carries the name", () => {
+    render(
+      <CallToAction.Root>
+        <CallToAction.Title>Named on the server</CallToAction.Title>
+      </CallToAction.Root>,
+    );
+    const region = screen.getByRole("region", { name: "Named on the server" });
+    expect(region).toHaveAttribute("aria-labelledby", screen.getByRole("heading").id);
+  });
+
+  it("renders the root as an aside when asked", () => {
+    render(
+      <CallToAction.Root render={<aside />}>
+        <CallToAction.Title>Beside the article</CallToAction.Title>
+      </CallToAction.Root>,
+    );
+    expect(screen.getByRole("complementary", { name: "Beside the article" })).toHaveClass(
+      "loam-CallToAction",
+    );
+  });
+
   it("lets a name of the consumer's own win over the title's", () => {
     render(
       <>

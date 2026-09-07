@@ -1,32 +1,34 @@
 "use client";
 
 import { useMemo } from "react";
-import type { Ref, SelectHTMLAttributes } from "react";
 import { useFieldControlProps } from "../Field/Field";
 import { useUserInvalid } from "../../use-user-invalid";
 import { composeRefs } from "../../render";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 
-export interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "size"> {
-  /** Class for the bordered field wrapper (className goes to the control itself). */
-  wrapperClassName?: string;
-  /** Non-selectable prompt shown as the first, empty-valued option. */
-  placeholder?: string;
-  ref?: Ref<HTMLSelectElement>;
+export interface SelectProps extends Omit<PartProps<"select">, "size"> {
+  /**
+   * Props for the box around the select (`div.loam-Select-field`), which
+   * positions the chevron. `className`, `style`, `ref` and every other prop
+   * of the component land on the `<select>` itself; this is the one way to
+   * reach the box.
+   */
+  wrapperProps?: Omit<PartProps<"div">, "children">;
 }
 
 /**
- * A native `<select>` in the shared control box, with a fluid chevron.
- * Options are children (`<option>` / `<optgroup>`), exactly as the
- * platform defines them. Label it by composing {@link Field}; the control
- * reads its wiring from the surrounding `Field.Root`.
+ * A native `<select>` with a fluid chevron. Options are children
+ * (`<option>` / `<optgroup>`), exactly as the platform defines them, and
+ * so is an unanswered start: make the first child
+ * `<option value="" disabled>Pick a country</option>` and the select
+ * starts on it, so `required` catches a field the user skipped. Label it
+ * by composing {@link Field}; the control reads its wiring from the
+ * surrounding `Field.Root`.
  */
 export function Select({
-  placeholder,
-  disabled,
+  wrapperProps,
   className,
-  wrapperClassName,
-  style,
   children,
   defaultValue,
   value,
@@ -42,20 +44,17 @@ export function Select({
   const { nativeInvalid, validationRef, checkOnInput, checkOnInvalid } =
     useUserInvalid<HTMLSelectElement>();
   const selectRef = useMemo(() => composeRefs(ref, validationRef), [ref, validationRef]);
-  const isControlled = value !== undefined;
-  const resolvedDefault =
-    !isControlled && defaultValue === undefined && placeholder ? "" : defaultValue;
+  const { className: wrapperClassName, ...wrapper } = wrapperProps ?? {};
+  // An uncontrolled select with nothing chosen starts on its empty-valued
+  // option when it has one (the prompt), else on the first enabled option,
+  // which is what the platform does with no value at all.
+  const resolvedDefault = value === undefined && defaultValue === undefined ? "" : defaultValue;
 
   return (
-    <div
-      className={cx("loam-Select-field", wrapperClassName)}
-      data-disabled={disabled || undefined}
-      style={style}
-    >
+    <div className={cx("loam-Select-field", wrapperClassName)} {...wrapper}>
       <select
         ref={selectRef}
         className={className}
-        disabled={disabled}
         value={value}
         defaultValue={resolvedDefault}
         id={id ?? field.id}
@@ -71,11 +70,6 @@ export function Select({
           checkOnInvalid(e);
         }}
       >
-        {placeholder && (
-          <option value="" disabled>
-            {placeholder}
-          </option>
-        )}
         {children}
       </select>
       <svg className="chevron" viewBox="0 0 16 16" width="16" height="16" fill="none" aria-hidden>

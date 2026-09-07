@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { axe } from "vitest-axe";
-import { ContactDetails } from "../index";
+import { ContactDetails } from "../components/ContactDetails/index";
 
 afterEach(cleanup);
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };

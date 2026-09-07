@@ -1,6 +1,7 @@
 import { Alert, Button } from "@loamui/core";
 import type { CSSProperties } from "react";
 import type { ComponentContent } from "@/renderer/types";
+import { AlertComposedDemo, AlertDismissibleDemo } from "./alert.client";
 
 const doc: ComponentContent = {
   slug: "alert",
@@ -97,6 +98,33 @@ const doc: ComponentContent = {
         </div>
       ),
     },
+    {
+      title: "Dismissible",
+      description:
+        "onClose renders an Alert.Close, a LoamUI Button named Dismiss (or labels.close), at the inline end. The alert does not remove itself: the handler stops rendering it, because only you know whether acknowledging the message ends the condition it reports.",
+      code: `const [open, setOpen] = useState(true);
+
+{open && (
+  <Alert title="Draft restored" onClose={() => setOpen(false)}>
+    We recovered the draft you were editing.
+  </Alert>
+)}`,
+      render: () => <AlertDismissibleDemo />,
+    },
+    {
+      title: "Composed from parts",
+      description:
+        "The parts in the anatomy the convenience form renders. Alert.Title takes render where the title belongs in the page outline; Alert.Close takes labels for its name.",
+      code: `<Alert.Root>
+  <Alert.Icon><span aria-hidden>⚠</span></Alert.Icon>
+  <Alert.Body>
+    <Alert.Title render={<h2 />}>Storage almost full</Alert.Title>
+    <Alert.Description>Free up space to keep syncing.</Alert.Description>
+  </Alert.Body>
+  <Alert.Close onClose={dismiss} labels={{ close: "Hide this warning" }} />
+</Alert.Root>`,
+      render: () => <AlertComposedDemo />,
+    },
   ],
   whenToUse: [
     "For in-page status the user needs to act on or know about now (a failed deploy, a quota about to run out), placed next to the content it describes.",
@@ -113,7 +141,7 @@ const doc: ComponentContent = {
     },
     {
       title: "Persistent by design",
-      body: "There is no auto-dismiss and no built-in close button: an alert exists exactly as long as the condition it reports. Remove it by no longer rendering it when the state changes: a warning that disappears on its own while the problem remains would be lying.",
+      body: "There is no auto-dismiss: an alert exists exactly as long as the condition it reports. Remove it by no longer rendering it when the state changes: a warning that disappears on its own while the problem remains would be lying. Alert.Close is for the message the reader may acknowledge (a restored draft, a notice already read); it reports through onClose and leaves the removal to you, so a dismissed alert is a decision, not a timeout.",
     },
     {
       title: "Announcement happens at insertion",
@@ -145,6 +173,17 @@ const doc: ComponentContent = {
       description: "Alert body content.",
     },
     {
+      name: "onClose",
+      type: "() => void",
+      description: "Renders an Alert.Close that calls this when activated.",
+    },
+    {
+      name: "labels",
+      type: "{ close?: string }",
+      default: `{ close: "Dismiss" }`,
+      description: "The close button's name, when onClose renders one.",
+    },
+    {
       name: "role",
       type: "string",
       default: `"status"`,
@@ -155,6 +194,58 @@ const doc: ComponentContent = {
       name: "...others",
       type: "HTMLAttributes<HTMLDivElement>",
       description: "All native <div> props are forwarded.",
+    },
+  ],
+  parts: [
+    {
+      name: "Alert.Root",
+      description:
+        'The live region: a <div role="status"> carrying the class and the context; all native <div> props are forwarded, so role="alert" overrides the default.',
+    },
+    {
+      name: "Alert.Icon",
+      description:
+        "The leading icon slot, rendered aria-hidden. Native <span> props are forwarded.",
+    },
+    {
+      name: "Alert.Body",
+      description:
+        "The column holding the title and description. Native <div> props are forwarded.",
+    },
+    {
+      name: "Alert.Title",
+      description: "The bold heading, in the channel's hue mixed for contrast. A <div> by default.",
+      props: [
+        {
+          name: "render",
+          type: "RenderProp",
+          description:
+            "Substitute the element (render={<h2 />}) where the title belongs in the page outline; the class merges onto it.",
+        },
+      ],
+    },
+    {
+      name: "Alert.Description",
+      description:
+        "The message: full-strength text, muted beside a title so the heading leads. Native <div> props are forwarded.",
+    },
+    {
+      name: "Alert.Close",
+      description:
+        "A LoamUI Button at the inline end. Icon-only and named by labels.close unless given children; every Button prop is forwarded.",
+      props: [
+        {
+          name: "onClose",
+          type: "() => void",
+          description: "Called when the button is activated; stop rendering the alert in it.",
+        },
+        {
+          name: "labels",
+          type: "{ close?: string }",
+          default: `{ close: "Dismiss" }`,
+          description: "The button's accessible name when it has no children.",
+        },
+      ],
     },
   ],
   contextual: true,

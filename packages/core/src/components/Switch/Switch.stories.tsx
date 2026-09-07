@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Field, Switch, SwitchControl } from "../../index";
+import { Field, Switch } from "../../index";
 
 const meta = {
   title: "Inputs/Switch",
@@ -64,7 +64,7 @@ export const Required: Story = {
 };
 
 /**
- * The bare `SwitchControl` self-wires from the surrounding Field, reading its id
+ * The bare `Switch.Control` self-wires from the surrounding Field, reading its id
  * and aria wiring from context; the inline-label form is the other shape, shown
  * elsewhere.
  */
@@ -72,7 +72,7 @@ export const SelfWiringInField: Story = {
   render: () => (
     <Field.Root>
       <Field.Label>
-        <SwitchControl /> Enable irrigation
+        <Switch.Control /> Enable irrigation
       </Field.Label>
     </Field.Root>
   ),

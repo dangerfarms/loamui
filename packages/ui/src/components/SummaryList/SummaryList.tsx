@@ -1,17 +1,16 @@
-import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+import type { ReactNode } from "react";
 import { cx, renderWithProps } from "@loamui/core";
-import type { RenderProp } from "@loamui/core";
+import type { PartProps, RenderProp } from "@loamui/core";
 
-export interface SummaryListRootProps extends HTMLAttributes<HTMLDListElement> {
+export interface SummaryListRootProps extends PartProps<"dl"> {
   /**
    * The list's accessible name, for a page that holds more than one: "Your
    * answers", "Order details". Set as `aria-label`; prefer `aria-labelledby`
    * pointing at the heading above the list when there is one.
    */
   label?: string;
-  /** `SummaryList.Item`s, one per label/value pair. */
+  /** `SummaryList.Item`s, one per label/value pair, and a `SummaryList.Total` where the list sums. */
   children?: ReactNode;
-  ref?: Ref<HTMLDListElement>;
 }
 
 /**
@@ -28,8 +27,8 @@ export interface SummaryListRootProps extends HTMLAttributes<HTMLDListElement> {
  * text is its children and the rest is its `label`, visually hidden. A row
  * with no action keeps the column empty so values align down the list. A
  * `Note` under a value explains it on the page ("Free over £50", "Included")
- * rather than in a tooltip only a pointer finds. An item that sums the ones
- * above it takes `className="total"` and is set apart by a heavier rule and
+ * rather than in a tooltip only a pointer finds. The item that sums the
+ * ones above it is a `SummaryList.Total`, set apart by a heavier rule and
  * weight; its Label says "Total", so nothing is hidden that the page does
  * not show. Write a missing value ("Not provided") rather than leaving the
  * cell blank, so the reader knows the answer is absent and not the page
@@ -51,46 +50,55 @@ export interface SummaryListRootProps extends HTMLAttributes<HTMLDListElement> {
  * </SummaryList.Root>
  * ```
  */
-function SummaryListRoot({ label, className, children, ref, ...rest }: SummaryListRootProps) {
+function SummaryListRoot({ label, className, children, ...rest }: SummaryListRootProps) {
   return (
-    <dl ref={ref} className={cx("loam-SummaryList", className)} aria-label={label} {...rest}>
+    <dl className={cx("loam-SummaryList", className)} aria-label={label} {...rest}>
       {children}
     </dl>
   );
 }
 
-export interface SummaryListItemProps extends HTMLAttributes<HTMLDivElement> {
+export interface SummaryListItemProps extends PartProps<"div"> {
   /** A `SummaryList.Label`, a `SummaryList.Value`, then optionally a `SummaryList.Note` and a `SummaryList.Actions`, in that order. */
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /**
  * One pair: a `div` grouping a label, its value, a note and its actions
  * inside the Root's list. It belongs inside a Root, which is the unit that
- * stands alone. Give the item that sums the others `className="total"`.
+ * stands alone.
  */
-function SummaryListItem({ className, children, ref, ...rest }: SummaryListItemProps) {
+function SummaryListItem({ className, children, ...rest }: SummaryListItemProps) {
   return (
-    <div ref={ref} className={cx("item", className)} {...rest}>
+    <div className={cx("item", className)} {...rest}>
       {children}
     </div>
   );
 }
 
-export interface SummaryListPartProps extends HTMLAttributes<HTMLElement> {
-  children?: ReactNode;
-  ref?: Ref<HTMLElement>;
+/**
+ * The item that sums the ones above it: an Item set apart by a heavier
+ * rule, a little air and a heavier weight on its label and value. Its
+ * Label still says "Total" (or "Amount due", "Balance"), so nothing is
+ * hidden that the page does not show; the weight only confirms it. Place
+ * it last.
+ */
+function SummaryListTotal({ className, ...rest }: SummaryListItemProps) {
+  return <SummaryListItem className={cx("total", className)} {...rest} />;
 }
 
+export interface SummaryListLabelProps extends PartProps<"dt"> {}
+
 /** What the value is (Name, Date of birth, Total), a `dt`. Comes first in the item. */
-function SummaryListLabel({ className, children, ref, ...rest }: SummaryListPartProps) {
+function SummaryListLabel({ className, children, ...rest }: SummaryListLabelProps) {
   return (
-    <dt ref={ref} className={cx("label", className)} {...rest}>
+    <dt className={cx("label", className)} {...rest}>
       {children}
     </dt>
   );
 }
+
+export interface SummaryListPartProps extends PartProps<"dd"> {}
 
 export interface SummaryListValueProps extends SummaryListPartProps {
   /**
@@ -108,8 +116,8 @@ export interface SummaryListValueProps extends SummaryListPartProps {
  * a core `Price`, lines separated by `br`. Write "Not provided" when there
  * is no value, never leave it empty.
  */
-function SummaryListValue({ render, className, children, ref, ...rest }: SummaryListValueProps) {
-  const props = { ref, className: cx("value", className), children, ...rest };
+function SummaryListValue({ render, className, children, ...rest }: SummaryListValueProps) {
+  const props = { className: cx("value", className), children, ...rest };
   if (render) return <>{renderWithProps(render, props)}</>;
   return <dd {...props} />;
 }
@@ -120,9 +128,9 @@ function SummaryListValue({ render, className, children, ref, ...rest }: Summary
  * value, on the page rather than in a tooltip, so it reads in order after
  * the figure it explains and is there for every reader.
  */
-function SummaryListNote({ className, children, ref, ...rest }: SummaryListPartProps) {
+function SummaryListNote({ className, children, ...rest }: SummaryListPartProps) {
   return (
-    <dd ref={ref} className={cx("note", className)} {...rest}>
+    <dd className={cx("note", className)} {...rest}>
       {children}
     </dd>
   );
@@ -133,15 +141,15 @@ function SummaryListNote({ className, children, ref, ...rest }: SummaryListPartP
  * Leave it out of an item that cannot be changed; the column stays so the
  * values still align.
  */
-function SummaryListActions({ className, children, ref, ...rest }: SummaryListPartProps) {
+function SummaryListActions({ className, children, ...rest }: SummaryListPartProps) {
   return (
-    <dd ref={ref} className={cx("actions", className)} {...rest}>
+    <dd className={cx("actions", className)} {...rest}>
       {children}
     </dd>
   );
 }
 
-export interface SummaryListActionProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+export interface SummaryListActionProps extends PartProps<"a"> {
   /**
    * What the action changes, completing the visible text into the
    * accessible name: children "Change" and label "name" read as
@@ -158,7 +166,6 @@ export interface SummaryListActionProps extends AnchorHTMLAttributes<HTMLAnchorE
   render?: RenderProp<Record<string, unknown>>;
   /** The visible text: a verb, "Change", "Add", "Remove". */
   children?: ReactNode;
-  ref?: Ref<HTMLAnchorElement>;
 }
 
 /**
@@ -170,7 +177,6 @@ function SummaryListAction({
   render,
   className,
   children,
-  ref,
   ...rest
 }: SummaryListActionProps) {
   const content = (
@@ -183,7 +189,6 @@ function SummaryListAction({
     return (
       <>
         {renderWithProps(render, {
-          ref,
           className: cx("action", className),
           children: content,
           ...rest,
@@ -192,7 +197,7 @@ function SummaryListAction({
     );
   }
   return (
-    <a ref={ref} className={cx("action", className)} {...rest}>
+    <a className={cx("action", className)} {...rest}>
       {content}
     </a>
   );
@@ -201,6 +206,7 @@ function SummaryListAction({
 export const SummaryList = {
   Root: SummaryListRoot,
   Item: SummaryListItem,
+  Total: SummaryListTotal,
   Label: SummaryListLabel,
   Value: SummaryListValue,
   Note: SummaryListNote,

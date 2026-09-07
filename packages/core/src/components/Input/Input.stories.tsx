@@ -92,3 +92,36 @@ export const Required: Story = {
 export const Disabled: Story = {
   args: { disabled: true },
 };
+
+/**
+ * Sections sit inside the box but outside the accessible name; the Field
+ * label still names the field.
+ */
+export const WithSections: Story = {
+  render: () => (
+    <div style={{ display: "grid", gap: "1rem" }}>
+      <Field.Root>
+        <Field.Label>Handle</Field.Label>
+        <Input startSection="@" />
+      </Field.Root>
+      <Field.Root>
+        <Field.Label>Site name</Field.Label>
+        <Input endSection=".dev" />
+      </Field.Root>
+    </div>
+  ),
+};
+
+/**
+ * The native `size` attribute is honoured: the input is as wide as that
+ * many characters and the box shrink-wraps it, so a short answer gets a
+ * short field. DateInput is built on this.
+ */
+export const Sized: Story = {
+  render: () => (
+    <Field.Root>
+      <Field.Label>Year</Field.Label>
+      <Input inputMode="numeric" size={4} />
+    </Field.Root>
+  ),
+};

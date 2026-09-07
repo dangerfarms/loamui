@@ -1,16 +1,16 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState } from "react";
-import type { FormHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+import { createContext, useContext, useMemo } from "react";
+import type { ReactNode } from "react";
 import { Card, renderWithProps, cx } from "@loamui/core";
-import type { RenderProp } from "@loamui/core";
+import type { PartProps, RenderProp } from "@loamui/core";
+import { useNamePart, useNamedRoot } from "../../naming";
 
 interface AccountFormContextValue {
-  /** The id the Title takes unless given one of its own. */
-  defaultTitleId: string;
-  /** The rendered Title's id, or null while there is none. */
-  titleId: string | null;
-  registerTitle: (id: string) => () => void;
+  nameId: string;
+  register: (id: string) => () => void;
+  /** The name the Form carries unless it has one of its own. */
+  labelling: { "aria-label"?: string; "aria-labelledby"?: string };
 }
 
 const AccountFormContext = createContext<AccountFormContextValue | null>(null);
@@ -23,25 +23,28 @@ function useAccountForm(part: string): AccountFormContextValue {
   return ctx;
 }
 
-export interface AccountFormRootProps extends HTMLAttributes<HTMLDivElement> {
+export interface AccountFormRootProps extends PartProps<"div"> {
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /**
- * The card an account form lives in: a title, an optional line saying
+ * The shell an account form lives in: a title, an optional line saying
  * what will happen, one column of fields, a full-width action and a
  * footer line for the other path. One shell holds every form at the door
  * of an account: signing in, creating one, asking for a reset link. The
  * questions differ; the shape does not.
  *
- * The surface is a core `Card`, left as core styles it, inside a wrapper
- * that caps it at a readable width and centres it in whatever holds it.
- * The `Form` names itself after the `Title` (`aria-labelledby`), so a
- * screen reader lands on "Sign in, form" and not an anonymous one.
+ * The Root is a wrapper that caps the form at a readable width and
+ * centres it in whatever holds it. The surface is `AccountForm.Card`, core
+ * `Card` as core styles it, put inside the Root on a page of its own and
+ * left out where the form already has a surface, a `Modal.Popup` say. The
+ * `Form` names itself after the `Title` (`aria-labelledby`), in the first
+ * render, so a screen reader lands on "Sign in, form" and not an anonymous
+ * one.
  *
- * The fields are yours, composed from core `Field`, `Input` and
- * `Checkbox`, and the judgment is in their attributes and copy:
+ * The fields are yours, composed from core `Field`, `Input`,
+ * `PasswordInput` and `Checkbox`, and the judgment is in their attributes
+ * and copy:
  *
  * - Signing in: email with `autoComplete="email"`, password with
  *   `autoComplete="current-password"`, so browsers and password managers
@@ -69,49 +72,48 @@ export interface AccountFormRootProps extends HTMLAttributes<HTMLDivElement> {
  *
  * ```tsx
  * <AccountForm.Root>
- *   <AccountForm.Title>Sign in</AccountForm.Title>
- *   <AccountForm.Form action="/sign-in">
- *     <Field.Root>
- *       <Field.Label>Email address</Field.Label>
- *       <Input name="email" type="email" autoComplete="email" required />
- *     </Field.Root>
- *     <Field.Root>
- *       <Field.Label>Password</Field.Label>
- *       <Input name="password" type="password" autoComplete="current-password" required />
- *     </Field.Root>
- *     <Checkbox name="remember" label="Keep me signed in" />
- *     <AccountForm.Actions>
- *       <Button type="submit">Sign in</Button>
- *     </AccountForm.Actions>
- *   </AccountForm.Form>
- *   <AccountForm.Footer>
- *     No account? <a href="/sign-up">Create one</a>
- *   </AccountForm.Footer>
+ *   <AccountForm.Card>
+ *     <AccountForm.Title>Sign in</AccountForm.Title>
+ *     <AccountForm.Form action="/sign-in">
+ *       <Field.Root>
+ *         <Field.Label>Email address</Field.Label>
+ *         <Input name="email" type="email" autoComplete="email" required />
+ *       </Field.Root>
+ *       <Field.Root>
+ *         <Field.Label>Password</Field.Label>
+ *         <PasswordInput name="password" autoComplete="current-password" required />
+ *       </Field.Root>
+ *       <Checkbox name="remember" label="Keep me signed in" />
+ *       <AccountForm.Actions>
+ *         <Button type="submit">Sign in</Button>
+ *       </AccountForm.Actions>
+ *     </AccountForm.Form>
+ *     <AccountForm.Footer>
+ *       No account? <a href="/sign-up">Create one</a>
+ *     </AccountForm.Footer>
+ *   </AccountForm.Card>
  * </AccountForm.Root>
  * ```
  */
 function AccountFormRoot({ className, children, ref, ...rest }: AccountFormRootProps) {
-  const defaultTitleId = `${useId()}-title`;
-  const [titleId, setTitleId] = useState<string | null>(null);
-  const registerTitle = useCallback((id: string) => {
-    setTitleId(id);
-    return () => setTitleId((current) => (current === id ? null : current));
-  }, []);
+  // The Root mints the name; the Form wears it and the Title renders it.
+  // The Form's own aria-label or aria-labelledby wins there, so the Root
+  // passes no naming props of its own here.
+  const { nameId, register, labelling } = useNamedRoot({});
   const value = useMemo<AccountFormContextValue>(
-    () => ({ defaultTitleId, titleId, registerTitle }),
-    [defaultTitleId, titleId, registerTitle],
+    () => ({ nameId, register, labelling }),
+    [nameId, register, labelling],
   );
-  // The wrapper caps and centres; the Card inside is core's, untouched.
   return (
     <AccountFormContext value={value}>
       <div ref={ref} className={cx("loam-AccountForm", className)} {...rest}>
-        <Card>{children}</Card>
+        {children}
       </div>
     </AccountFormContext>
   );
 }
 
-export interface AccountFormTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+export interface AccountFormTitleProps extends PartProps<"h1"> {
   /**
    * Render as a different heading: `render={<h2 />}` inside a page. The
    * part's classes and attributes merge onto the element it renders, the
@@ -119,13 +121,12 @@ export interface AccountFormTitleProps extends HTMLAttributes<HTMLHeadingElement
    */
   render?: RenderProp<Record<string, unknown>>;
   children?: ReactNode;
-  ref?: Ref<HTMLHeadingElement>;
 }
 
 /**
- * The card's heading, and the Form's accessible name. An `h1` by default;
- * pass `render={<h2 />}` inside a page. Its id is generated unless you
- * give it one.
+ * The heading, and the Form's accessible name. An `h1` by default; pass
+ * `render={<h2 />}` inside a page. Its id is generated unless you give it
+ * one.
  */
 function AccountFormTitle({
   render,
@@ -135,19 +136,23 @@ function AccountFormTitle({
   ref,
   ...rest
 }: AccountFormTitleProps) {
-  const { defaultTitleId, registerTitle } = useAccountForm("AccountForm.Title");
-  const titleId = id ?? defaultTitleId;
-  useEffect(() => registerTitle(titleId), [registerTitle, titleId]);
-  const props = { ref, id: titleId, className: cx("title", className), children, ...rest };
+  const ctx = useAccountForm("AccountForm.Title");
+  const titleId = useNamePart(ctx, id);
+  const props = {
+    ref,
+    id: titleId,
+    className: cx("loam-AccountForm-title", className),
+    children,
+    ...rest,
+  };
   if (render) {
     return <>{renderWithProps(render, props)}</>;
   }
   return <h1 {...props}>{children}</h1>;
 }
 
-export interface AccountFormDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {
+export interface AccountFormDescriptionProps extends PartProps<"p"> {
   children?: ReactNode;
-  ref?: Ref<HTMLParagraphElement>;
 }
 
 /**
@@ -161,21 +166,20 @@ function AccountFormDescription({
   ...rest
 }: AccountFormDescriptionProps) {
   return (
-    <p ref={ref} className={cx("description", className)} {...rest}>
+    <p ref={ref} className={cx("loam-AccountForm-description", className)} {...rest}>
       {children}
     </p>
   );
 }
 
-export interface AccountFormFormProps extends FormHTMLAttributes<HTMLFormElement> {
+export interface AccountFormFormProps extends PartProps<"form"> {
   children?: ReactNode;
-  ref?: Ref<HTMLFormElement>;
 }
 
 /**
  * The native `form`, one column of fields. `action` and `onSubmit` are its
- * own. It is named by the Title through `aria-labelledby` while one is
- * rendered; your own `aria-label` or `aria-labelledby` takes over.
+ * own. It is named by the Title through `aria-labelledby`, from the first
+ * render; your own `aria-label` or `aria-labelledby` takes over.
  */
 function AccountFormForm({
   className,
@@ -185,14 +189,15 @@ function AccountFormForm({
   "aria-labelledby": ariaLabelledby,
   ...rest
 }: AccountFormFormProps) {
-  const { titleId } = useAccountForm("AccountForm.Form");
-  const labelledBy = ariaLabelledby ?? (ariaLabel ? undefined : (titleId ?? undefined));
+  const { labelling } = useAccountForm("AccountForm.Form");
+  const named = ariaLabel != null || ariaLabelledby != null;
   return (
     <form
       ref={ref}
-      className={cx("form", className)}
+      className={cx("loam-AccountForm-form", className)}
       aria-label={ariaLabel}
-      aria-labelledby={labelledBy}
+      aria-labelledby={ariaLabelledby}
+      {...(named ? {} : labelling)}
       {...rest}
     >
       {children}
@@ -200,29 +205,27 @@ function AccountFormForm({
   );
 }
 
-export interface AccountFormActionsProps extends HTMLAttributes<HTMLDivElement> {
+export interface AccountFormActionsProps extends PartProps<"div"> {
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
-/** A single-cell grid for the submit Button, so it stretches to the card's width. */
+/** A single-cell grid for the submit Button, so it stretches to the form's width. */
 function AccountFormActions({ className, children, ref, ...rest }: AccountFormActionsProps) {
   return (
-    <div ref={ref} className={cx("actions", className)} {...rest}>
+    <div ref={ref} className={cx("loam-AccountForm-actions", className)} {...rest}>
       {children}
     </div>
   );
 }
 
-export interface AccountFormFooterProps extends HTMLAttributes<HTMLParagraphElement> {
+export interface AccountFormFooterProps extends PartProps<"p"> {
   children?: ReactNode;
-  ref?: Ref<HTMLParagraphElement>;
 }
 
 /** One muted, centred line under the form, with a link to the other path. */
 function AccountFormFooter({ className, children, ref, ...rest }: AccountFormFooterProps) {
   return (
-    <p ref={ref} className={cx("footer", className)} {...rest}>
+    <p ref={ref} className={cx("loam-AccountForm-footer", className)} {...rest}>
       {children}
     </p>
   );
@@ -230,6 +233,12 @@ function AccountFormFooter({ className, children, ref, ...rest }: AccountFormFoo
 
 export const AccountForm = {
   Root: AccountFormRoot,
+  /**
+   * The surface: core `Card`, as core styles it. Put the parts inside it on
+   * a page of its own; leave it out where the form already has a surface,
+   * inside a `Modal.Popup` say, and put the parts straight in the Root.
+   */
+  Card,
   Title: AccountFormTitle,
   Description: AccountFormDescription,
   Form: AccountFormForm,

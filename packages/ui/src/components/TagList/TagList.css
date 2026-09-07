@@ -1,7 +1,10 @@
-/* A wrapping row of pills. The list declares its container so the fluid
+/* A wrapping row of Badges. The list declares its container so the fluid
    tokens answer its width; the markers go (the markup restores the list
    role) and the gap keeps neighbouring targets apart. There is no
-   truncation: a long list wraps to as many lines as it needs. */
+   truncation: a long list wraps to as many lines as it needs. The pill is
+   core's Badge, a scope limit, drawn as core draws it and tinted by a
+   context region the way every Badge is; this scope owns only the list
+   and the item around each pill. */
 @scope (.loam-TagList) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -13,100 +16,27 @@
     padding: 0;
   }
 
+  /* The item hugs its pill, so a mark drawn on the item reads as drawn
+     on the pill. */
   li.item {
+    border-radius: var(--loam-radius-full);
     margin: 0;
   }
 
-  /* The pill is Badge's recipe on a link: one --_color channel, a soft
-     tint toward the page background, the text pushed toward black or
-     white so it reads on its own tint. Mixed in oklab, not oklch, so the
-     channel's hue survives against the near-achromatic background. The
-     link is a link, so the pill is floored at 24px (WCAG 2.5.8) where a
-     Badge is not, and the link colour from the element styles gives way
-     to the tint's own text. The class is on the link, the span and a
-     rendered router link alike, so all three draw the same. */
-  .tag {
-    --_color: var(--loam-color-fg);
-
-    align-items: center;
-    background: color-mix(in oklab, var(--_color), var(--loam-color-bg) 85%);
-    border-radius: var(--loam-radius-full);
-    color: light-dark(
-      color-mix(in oklab, var(--_color) 70%, oklch(0% 0 0deg)),
-      color-mix(in oklab, var(--_color) 55%, oklch(100% 0 0deg))
-    );
-    display: inline flex;
-    font-size: var(--loam-text-xs);
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    line-height: 1;
-    min-block-size: 1.5rem;
-    padding-inline: 0.625rem;
-    text-decoration: none;
+  /* The current tag, on its own page, is ringed in the running colour:
+     told apart by shape, never by colour alone, and a ring survives forced
+     colours as CanvasText. */
+  li.item:has(> [aria-current="page"]) {
+    outline: 2px solid currentcolor;
+    outline-offset: 2px;
   }
 
-  /* Hover deepens the tint; the current tag is set heavier and
-     underlined, so it is never told apart by colour alone. */
-  a.tag {
-    &[aria-current="page"] {
-      font-weight: 700;
-      text-decoration: underline;
-    }
-
-    @media (hover: hover) {
-      &:hover {
-        background: color-mix(in oklab, var(--_color), var(--loam-color-bg) 75%);
-      }
-    }
-
-    @media (prefers-reduced-motion: no-preference) {
-      transition: background var(--loam-duration-md) var(--loam-ease);
-    }
-  }
-
-  /* Context: within a status region the channel takes the status colour,
-     the same keying as Badge, so a TagList reads as Badges that happen to
-     be links. */
-  @container (style(--loam-context: primary)) {
-    .tag {
-      --_color: var(--loam-color-primary);
-    }
-  }
-
-  @container (style(--loam-context: success)) {
-    .tag {
-      --_color: var(--loam-color-success);
-    }
-  }
-
-  @container (style(--loam-context: warning)) {
-    .tag {
-      --_color: var(--loam-color-warning);
-    }
-  }
-
-  @container (style(--loam-context: info)) {
-    .tag {
-      --_color: var(--loam-color-info);
-    }
-  }
-
-  @container (style(--loam-context: danger)) {
-    .tag {
-      --_color: var(--loam-color-danger);
-    }
-  }
-
-  /* Forced colours drop the tint, so a border draws the pill's edge on
-     link and plain tag alike; the link keeps LinkText, which is what
-     marks it as a link. */
+  /* Forced colours drop the pill's tint, so the item draws an edge round
+     it; the link inside keeps LinkText from the system palette, which is
+     what marks it as a link. */
   @media (forced-colors: active) {
-    .tag {
+    li.item {
       border: 1px solid CanvasText;
-    }
-
-    a.tag {
-      color: LinkText;
     }
   }
 }

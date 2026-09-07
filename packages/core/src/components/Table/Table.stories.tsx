@@ -62,7 +62,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "A styled data table composed from native thead/tbody/tr/th/td. Its boolean props tune how the data reads, not how it looks: `striped` and `highlightOnHover` aid row tracking, `withColumnBorders` separates columns, and `captionSide` places the caption — data-presentation semantics, not size or variant knobs. When the table outgrows its container it becomes a keyboard-focusable horizontal scroll region.",
+          "A styled data table composed from native thead/tbody/tr/th/td. Its boolean props tune how the data reads, not how it looks: `striped` and `highlightOnHover` aid row tracking, `withColumnBorders` separates columns — data-presentation semantics, not size or variant knobs. The component's own element is the scroll wrapper; when the table outgrows its container it becomes a keyboard-focusable horizontal scroll region.",
       },
     },
   },
@@ -70,13 +70,11 @@ const meta = {
     striped: false,
     highlightOnHover: false,
     withColumnBorders: false,
-    captionSide: "top",
   },
   argTypes: {
     striped: { control: "boolean" },
     highlightOnHover: { control: "boolean" },
     withColumnBorders: { control: "boolean" },
-    captionSide: { control: "inline-radio", options: ["top", "bottom"] },
   },
   render: (args) => <FieldTable {...args} />,
 } satisfies Meta<typeof Table>;
@@ -94,7 +92,13 @@ export const WithColumnBorders: Story = {
   args: { withColumnBorders: true, striped: true },
 };
 
-export const CaptionBottom: Story = { args: { captionSide: "bottom" } };
+/**
+ * Caption placement is the platform's own `caption-side`, set on the
+ * `<table>` through `tableProps` (or a consumer class).
+ */
+export const CaptionBottom: Story = {
+  args: { tableProps: { style: { captionSide: "bottom" } } },
+};
 
 /**
  * When the table is wider than its container it becomes a keyboard-focusable

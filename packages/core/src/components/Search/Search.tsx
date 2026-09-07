@@ -1,8 +1,8 @@
 "use client";
 
 import { createContext, useContext, useId, useMemo } from "react";
-import type { FormHTMLAttributes, LabelHTMLAttributes, Ref } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 import { useFieldControlProps } from "../Field/Field";
 import { Button } from "../Button/Button";
 import type { ButtonProps } from "../Button/Button";
@@ -49,14 +49,12 @@ function useSearchContext(part: string): SearchContextValue {
   return ctx;
 }
 
-export interface SearchRootProps extends FormHTMLAttributes<HTMLFormElement> {
+export interface SearchRootProps extends PartProps<"form"> {
   /**
    * The landmark's accessible name. Two searches on one page must differ
    * ("Site search", "Search this table"). @default "Search"
    */
   "aria-label"?: string;
-  /** The form element (the landmark wraps it). */
-  ref?: Ref<HTMLFormElement>;
 }
 
 function SearchRoot({
@@ -84,16 +82,21 @@ function SearchRoot({
   );
 }
 
-export interface SearchLabelProps extends LabelHTMLAttributes<HTMLLabelElement> {}
+export interface SearchLabelProps extends PartProps<"label"> {}
 
 /**
  * The box's name, read but not seen. Not needed when a Field around the
  * Input names it visibly.
  */
-function SearchLabel({ className, children, ...rest }: SearchLabelProps) {
+function SearchLabel({ className, children, ref, ...rest }: SearchLabelProps) {
   const ctx = useSearchContext("Search.Label");
   return (
-    <label className={cx("loam-VisuallyHidden", className)} htmlFor={ctx.inputId} {...rest}>
+    <label
+      ref={ref}
+      className={cx("loam-VisuallyHidden", className)}
+      htmlFor={ctx.inputId}
+      {...rest}
+    >
       {children}
     </label>
   );
@@ -109,18 +112,16 @@ function SearchInput({ name = "q", id, ...rest }: SearchInputProps) {
   const ctx = useSearchContext("Search.Input");
   const field = useFieldControlProps();
   return (
-    <div className="control">
-      <Input
-        type="search"
-        name={name}
-        // A Field around the box names it and owns its id; otherwise the
-        // Root's id is what Search.Label points at.
-        id={id ?? field.id ?? ctx.inputId}
-        inputMode="search"
-        enterKeyHint="search"
-        {...rest}
-      />
-    </div>
+    <Input
+      type="search"
+      name={name}
+      // A Field around the box names it and owns its id; otherwise the
+      // Root's id is what Search.Label points at.
+      id={id ?? field.id ?? ctx.inputId}
+      inputMode="search"
+      enterKeyHint="search"
+      {...rest}
+    />
   );
 }
 

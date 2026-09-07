@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { CSSProperties, HTMLAttributes } from "react";
-import { Button, CheckboxControl, Input, Range, SwitchControl } from "./index";
+import { Button, Checkbox, Field, Input, Range, Switch } from "./index";
 
 /**
  * Contextual meaning as a custom property.
@@ -50,12 +50,16 @@ export const DangerContext: Story = {
     <div style={{ display: "grid", gap: "1.5rem" }}>
       <Zone style={{ "--loam-context": "danger" } as CSSProperties}>
         <strong>Delete workspace</strong>
-        <label style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-          <CheckboxControl defaultChecked /> I understand this is permanent
-        </label>
-        <label style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-          <SwitchControl defaultChecked /> Also delete backups
-        </label>
+        <Field.Root>
+          <Field.Label>
+            <Checkbox.Control defaultChecked /> I understand this is permanent
+          </Field.Label>
+        </Field.Root>
+        <Field.Root>
+          <Field.Label>
+            <Switch.Control defaultChecked /> Also delete backups
+          </Field.Label>
+        </Field.Root>
         <Range defaultValue={70} aria-label="Retention days" />
         <Input aria-label="Workspace name" />
         <div style={{ display: "flex", gap: "0.75rem" }}>
@@ -83,16 +87,11 @@ export const InvertedRegion: Story = {
   render: () => (
     <Zone style={{ colorScheme: "dark" } as CSSProperties}>
       <strong style={{ color: "var(--loam-color-fg)" }}>An on-dark section</strong>
-      <label
-        style={{
-          display: "flex",
-          gap: "0.5rem",
-          alignItems: "center",
-          color: "var(--loam-color-fg)",
-        }}
-      >
-        <CheckboxControl defaultChecked /> Dark-scheme tokens throughout
-      </label>
+      <Field.Root style={{ color: "var(--loam-color-fg)" }}>
+        <Field.Label>
+          <Checkbox.Control defaultChecked /> Dark-scheme tokens throughout
+        </Field.Label>
+      </Field.Root>
       <div style={{ display: "flex", gap: "0.75rem" }}>
         <Button>Confirm</Button>
         <Button>Cancel</Button>

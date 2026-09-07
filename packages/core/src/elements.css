@@ -239,6 +239,15 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /* An amount or a date sizes nothing (it takes the type around it) and
+     fixes only its figures: lining, so it sits with display type, and
+     tabular, so a column stays straight. Price and Time render these
+     elements and add nothing to this rule. */
+  data,
+  time {
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
   /* ── Links ──────────────────────────────────────────────────────── */
 
   /* Links default to the accessible blue, with the classic visited (toward
@@ -343,10 +352,12 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* Native buttons wear the Button component's own base look (the same
-     derivation recipe, on the neutral text channel — the contrast audit
-     reads these weights and asserts they match Button.css). Real actions
-     should still use <Button/>, which adds context adaptation. */
+  /* Native buttons wear the Button component's own base look: the same
+     derivation recipe on the neutral text channel, restated rather than
+     derived (a component file cannot be imported here). The pair is policed
+     by scripts/contrast-audit.mjs, whose tintWeights/labelWeights read both
+     files and fail when the weights drift. Real actions should still use
+     <Button/>, which adds context adaptation. */
   button,
   input:is([type="button"], [type="reset"], [type="submit"]),
   ::file-selector-button {

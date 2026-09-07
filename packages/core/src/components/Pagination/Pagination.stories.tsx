@@ -2,74 +2,104 @@ import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
 import { Pagination } from "../../index";
-import type { PaginationProps } from "../../index";
 
 /**
  * Stories intercept the real links to keep navigation inside Storybook.
  */
-function PaginationDemo({
-  total = 10,
+function PagerDemo({
+  count = 10,
   initialPage = 1,
-  ...props
-}: Partial<PaginationProps> & { initialPage?: number }) {
+  siblings = 1,
+  edges = false,
+}: {
+  count?: number;
+  initialPage?: number;
+  siblings?: number;
+  edges?: boolean;
+}) {
   const [page, setPage] = useState(initialPage);
+  const href = (next: number) => `?page=${next}`;
   return (
-    <Pagination
-      {...props}
-      total={total}
-      value={page}
-      getHref={(next) => `?page=${next}`}
-      onNavigate={(next, event) => {
-        event.preventDefault();
-        setPage(next);
-      }}
-    />
+    <Pagination.Root>
+      <Pagination.List>
+        {edges && (
+          <Pagination.Item>
+            <Pagination.Link
+              href={href(1)}
+              aria-label="First page"
+              disabled={page === 1}
+              onClick={(event) => {
+                event.preventDefault();
+                setPage(1);
+              }}
+            >
+              «
+            </Pagination.Link>
+          </Pagination.Item>
+        )}
+        <Pagination.Pages
+          page={page}
+          count={count}
+          siblings={siblings}
+          getHref={href}
+          onNavigate={(next, event) => {
+            event.preventDefault();
+            setPage(next);
+          }}
+        />
+        {edges && (
+          <Pagination.Item>
+            <Pagination.Link
+              href={href(count)}
+              aria-label="Last page"
+              disabled={page === count}
+              onClick={(event) => {
+                event.preventDefault();
+                setPage(count);
+              }}
+            >
+              »
+            </Pagination.Link>
+          </Pagination.Item>
+        )}
+      </Pagination.List>
+    </Pagination.Root>
   );
 }
 
 const meta = {
   title: "Navigation/Pagination",
-  component: Pagination,
+  component: Pagination.Root,
   tags: ["autodocs"],
-  args: {
-    total: 10,
-    value: 1,
-    siblings: 1,
-    withEdges: false,
-    getHref: (page) => `?page=${page}`,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Link-first page navigation composed from parts (Root, List, Item, Link, Ellipsis) on top of Button. `Pagination.Pages` renders Previous, the numbered window and Next from `page`/`count`; edge links are your own Items around it.",
+      },
+    },
   },
-  argTypes: {
-    total: { control: { type: "number", min: 1 } },
-    siblings: { control: { type: "number", min: 0, max: 3 } },
-    withEdges: { control: "boolean" },
-    // Controlled by the wrapper's local state, not the Controls panel.
-    value: { control: false },
-    getHref: { control: false },
-    onNavigate: { control: false },
-  },
-  render: ({ total, siblings, withEdges }) => (
-    <PaginationDemo total={total} siblings={siblings} withEdges={withEdges} />
-  ),
-} satisfies Meta<typeof Pagination>;
+  render: () => <PagerDemo />,
+} satisfies Meta<typeof Pagination.Root>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {};
 
-/** First/last edge buttons enabled via `withEdges`. */
+/** First/last links are the consumer's own Items around `Pagination.Pages`. */
 export const WithEdges: Story = {
-  args: { withEdges: true },
+  render: () => <PagerDemo initialPage={5} edges />,
 };
 
 /** A large page count collapses the middle into ellipsis gaps. */
 export const ManyPages: Story = {
-  render: () => <PaginationDemo total={25} initialPage={12} withEdges />,
+  render: () => <PagerDemo count={25} initialPage={12} edges />,
 };
 
 /** More sibling pages shown either side of the active page. */
 export const MoreSiblings: Story = {
-  render: () => <PaginationDemo total={25} initialPage={12} siblings={2} />,
+  render: () => <PagerDemo count={25} initialPage={12} siblings={2} />,
 };
 
 /**
@@ -77,7 +107,7 @@ export const MoreSiblings: Story = {
  * The active control carries `aria-current="page"`.
  */
 export const NavigatesPages: Story = {
-  render: () => <PaginationDemo total={10} initialPage={1} />,
+  render: () => <PagerDemo count={10} initialPage={1} />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 

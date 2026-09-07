@@ -14,22 +14,21 @@
     }
   }
 
-  /* Inside the labelled wrapper the wrapper does the disabled fade (the bare
-     control's :not guard, in the control scope, stops the two compounding). */
-  :scope[data-disabled] {
-    opacity: var(--loam-disabled-opacity);
-  }
-
   span.label {
     font-size: var(--loam-text-sm);
     font-weight: 500;
-    line-height: 1.35;
+  }
+
+  /* The words fade with the control; the control (past the donut) fades
+     its own track, so nothing is faded twice. */
+  :scope:has(input:disabled) span.label {
+    opacity: var(--loam-disabled-opacity);
   }
 }
 
-/* Size variables live on the control so the bare SwitchControl (composed
+/* Size variables live on the control so the bare Switch.Control (composed
    inside a Field) sizes itself without the labelled wrapper. */
-@scope (.loam-Switch-control) {
+@scope (.loam-Switch-control) to ([class*="loam-"]) {
   :scope {
     --_track-w: 2.7778em;
     --_track-h: 1.5278em;
@@ -40,12 +39,6 @@
     display: inline flex;
     font-size: var(--loam-text-sm);
     position: relative;
-  }
-
-  /* Bare control fades itself; inside the labelled wrapper the wrapper does
-     (the :not guard stops the two from compounding). */
-  :scope[data-disabled]:where(:not(.loam-Switch-wrapper *)) {
-    opacity: var(--loam-disabled-opacity);
   }
 
   /* Visually hide the native control but keep it in the a11y tree &
@@ -101,6 +94,11 @@
     span.thumb {
       translate: calc(var(--_track-w) - var(--_track-h)) 0;
     }
+  }
+
+  /* Disabled is detected on the input; the track is what fades. */
+  input:disabled + span.track {
+    opacity: var(--loam-disabled-opacity);
   }
 
   /* The ring belongs on the track, not on the invisible hit-area input. */

@@ -74,6 +74,12 @@ export const COMPONENTS: NavItem[] = [
     description: "A labelled text field.",
   },
   {
+    name: "PasswordInput",
+    slug: "password-input",
+    category: "Inputs",
+    description: "A password box with a show toggle.",
+  },
+  {
     name: "Textarea",
     slug: "textarea",
     category: "Inputs",
@@ -84,6 +90,12 @@ export const COMPONENTS: NavItem[] = [
     slug: "select",
     category: "Inputs",
     description: "Choose one option from a list.",
+  },
+  {
+    name: "Combobox",
+    slug: "combobox",
+    category: "Inputs",
+    description: "A text box with a list of suggestions under it.",
   },
   {
     name: "DateInput",
@@ -144,12 +156,6 @@ export const COMPONENTS: NavItem[] = [
     slug: "copy-button",
     category: "Inputs",
     description: "Copy a value and say so.",
-  },
-  {
-    name: "SchemeToggle",
-    slug: "scheme-toggle",
-    category: "Inputs",
-    description: "Choose system, light or dark.",
   },
   // Data display
   {

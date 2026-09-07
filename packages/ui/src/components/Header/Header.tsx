@@ -1,9 +1,9 @@
-import type { HTMLAttributes, ReactNode, Ref } from "react";
+import type { ReactNode } from "react";
 import { cx } from "@loamui/core";
+import type { PartProps } from "@loamui/core";
 
-export interface HeaderRootProps extends HTMLAttributes<HTMLElement> {
+export interface HeaderRootProps extends PartProps<"header"> {
   children?: ReactNode;
-  ref?: Ref<HTMLElement>;
 }
 
 /**
@@ -38,10 +38,9 @@ function HeaderRoot({ className, children, ref, ...rest }: HeaderRootProps) {
   );
 }
 
-export interface HeaderBrandProps extends HTMLAttributes<HTMLDivElement> {
+export interface HeaderBrandProps extends PartProps<"div"> {
   /** Your link home: an `<a href="/">`, or a router link, holding the logo or the name. */
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /**
@@ -57,10 +56,9 @@ function HeaderBrand({ className, children, ref, ...rest }: HeaderBrandProps) {
   );
 }
 
-interface HeaderNavBaseProps extends HTMLAttributes<HTMLElement> {
+interface HeaderNavBaseProps extends PartProps<"nav"> {
   /** The items: `<li><a href>` pairs. Mark the current page with `aria-current="page"`. */
   children?: ReactNode;
-  ref?: Ref<HTMLElement>;
 }
 
 /**
@@ -83,9 +81,8 @@ function HeaderNav({ className, children, ref, ...rest }: HeaderNavProps) {
   );
 }
 
-export interface HeaderPartProps extends HTMLAttributes<HTMLDivElement> {
+export interface HeaderPartProps extends PartProps<"div"> {
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /** A flex row at the end of the header: a Button, a theme toggle, an avatar. */

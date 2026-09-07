@@ -24,8 +24,10 @@
 - [ErrorSummary](components/error-summary.md) — List form errors as links to their fields. · [live](https://loamui.com/docs/components/error-summary.md)
 - [Button](components/button.md) — Trigger an action or event. · [live](https://loamui.com/docs/components/button.md)
 - [Input](components/input.md) — A labelled text field. · [live](https://loamui.com/docs/components/input.md)
+- [PasswordInput](components/password-input.md) — A password box with a show toggle. · [live](https://loamui.com/docs/components/password-input.md)
 - [Textarea](components/textarea.md) — Multi-line text input. · [live](https://loamui.com/docs/components/textarea.md)
 - [Select](components/select.md) — Choose one option from a list. · [live](https://loamui.com/docs/components/select.md)
+- [Combobox](components/combobox.md) — A text box with a list of suggestions under it. · [live](https://loamui.com/docs/components/combobox.md)
 - [DateInput](components/date-input.md) — Labelled fields for a memorable date. · [live](https://loamui.com/docs/components/date-input.md)
 - [Checkbox](components/checkbox.md) — Toggle a single option on or off. · [live](https://loamui.com/docs/components/checkbox.md)
 - [Radio](components/radio.md) — Choose one option from a set. · [live](https://loamui.com/docs/components/radio.md)
@@ -36,7 +38,6 @@
 - [Rating](components/rating.md) — Stars as real inputs, or as a picture of a score. · [live](https://loamui.com/docs/components/rating.md)
 - [FileInput](components/file-input.md) — Choose a file, or drop it. · [live](https://loamui.com/docs/components/file-input.md)
 - [CopyButton](components/copy-button.md) — Copy a value and say so. · [live](https://loamui.com/docs/components/copy-button.md)
-- [SchemeToggle](components/scheme-toggle.md) — Choose system, light or dark. · [live](https://loamui.com/docs/components/scheme-toggle.md)
 
 ## Components: Data display
 

@@ -43,7 +43,7 @@ Fewer disables at min and More at max, so the ends are visible before they are r
 
 ### Step and button names
 
-step is how much one press changes the count, and the arrow keys follow it. Fewer and More are the buttons' accessible names; fewerLabel and moreLabel replace them when the page's own words say more, or when the page is not in English.
+step is how much one press changes the count, and the arrow keys follow it. Fewer and More are the buttons' accessible names; labels replaces them when the page's own words say more, or when the page is not in English.
 
 ```tsx
 <Field.Root>
@@ -53,8 +53,7 @@ step is how much one press changes the count, and the arrow keys follow it. Fewe
     defaultValue={10}
     min={10}
     step={10}
-    fewerLabel="One pack fewer"
-    moreLabel="One pack more"
+    labels={{ decrement: "One pack fewer", increment: "One pack more" }}
   />
 </Field.Root>
 ```
@@ -115,7 +114,7 @@ At min, Fewer disables; at max, More disables. A disabled button is announced as
 
 ## Accessibility
 
-- Inside a Field.Root the input reads its id from the field, so Field.Label is a real <label> tied to it; outside one, pass aria-label. The buttons carry their own names, Fewer and More, which fewerLabel and moreLabel replace when the words of the page differ.
+- Inside a Field.Root the input reads its id from the field, so Field.Label is a real <label> tied to it; outside one, pass aria-label or aria-labelledby. In development a count with no name at all is reported to the console. The buttons carry their own names, Fewer and More, which labels replaces when the words of the page differ.
 - Renders a native <input type="number"> with inputMode="numeric": arrow keys step the focused value, touch devices raise a number pad, and constraint validation reports a value outside min and max through the Field, announced with aria-invalid after a submit attempt.
 - The buttons are native <button>s with disabled at the bounds and aria-hidden glyphs, so their state and names come from the platform. Focus stays on the button after a press, so repeated presses need no re-navigation.
 
@@ -137,8 +136,7 @@ Status is not a prop: it comes from the surrounding `--loam-context` region (see
 | `step` | `number` | `1` | How much one press changes the count. |
 | `defaultValue` | `number` | — | Initial count for uncontrolled usage. |
 | `value` | `number` | — | The count, when controlled; pair it with onChange. |
-| `fewerLabel` | `string` | `"Fewer"` | Accessible name of the decrement button. |
-| `moreLabel` | `string` | `"More"` | Accessible name of the increment button. |
-| `wrapperClassName` | `string` | — | Class for the row that holds the buttons; className goes to the input itself. |
-| `...others` | `InputHTMLAttributes` | — | All native <input type="number"> props are forwarded, including name, disabled, required and onChange. |
+| `labels` | `{ decrement?: string; increment?: string }` | `{ decrement: "Fewer", increment: "More" }` | The buttons' accessible names, for another language or the page's own words. |
+| `wrapperProps` | `PartProps<"div">` | — | Props for the row that holds the buttons. className, style, ref and every other prop land on the <input> itself. |
+| `...others` | `InputHTMLAttributes` | — | All native <input type="number"> props, and ref, are forwarded to the <input>, including name, disabled, required and onChange. |
 

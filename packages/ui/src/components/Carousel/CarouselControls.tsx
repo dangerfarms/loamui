@@ -1,21 +1,19 @@
 "use client";
 
-import type { HTMLAttributes, MouseEvent, Ref } from "react";
+import { useContext } from "react";
 import { Button, cx } from "@loamui/core";
+import type { PartProps } from "@loamui/core";
+import { CarouselContext } from "./Carousel";
 
-export interface CarouselControlsProps extends HTMLAttributes<HTMLDivElement> {
+export interface CarouselControlsProps extends PartProps<"div"> {
   /** Label of the button that pages backwards. @default "Previous" */
   previousLabel?: string;
   /** Label of the button that pages forwards. @default "Next" */
   nextLabel?: string;
-  ref?: Ref<HTMLDivElement>;
 }
 
-/** Scroll the nearest Track by one of its widths; the snap points settle it on an item. */
-function page(event: MouseEvent<HTMLButtonElement>, direction: -1 | 1) {
-  const track = event.currentTarget
-    .closest(".loam-Carousel")
-    ?.querySelector<HTMLUListElement>("ul.track");
+/** Scroll the Track by one of its widths; the snap points settle it on an item. */
+function page(track: HTMLUListElement | null, direction: -1 | 1) {
   if (!track) return;
   const sign = getComputedStyle(track).direction === "rtl" ? -direction : direction;
   track.scrollBy({ left: sign * track.clientWidth });
@@ -23,8 +21,9 @@ function page(event: MouseEvent<HTMLButtonElement>, direction: -1 | 1) {
 
 /**
  * Two Buttons, "Previous" and "Next", that page the Track they share a
- * `Carousel.Root` with. Place them anywhere inside the Root. Compositions
- * built on Carousel (Testimonials) reuse this as their own Controls.
+ * `Carousel.Root` with; the Root hands them the Track, so they work
+ * wherever inside it you place them. Compositions built on Carousel
+ * (Testimonials) reuse this as their own Controls.
  */
 export function CarouselControls({
   previousLabel = "Previous",
@@ -33,10 +32,15 @@ export function CarouselControls({
   ref,
   ...rest
 }: CarouselControlsProps) {
+  const ctx = useContext(CarouselContext);
+  if (!ctx) {
+    throw new Error("Carousel.Controls must be rendered inside <Carousel.Root>.");
+  }
+  const { trackRef } = ctx;
   return (
     <div ref={ref} className={cx("controls", className)} {...rest}>
-      <Button onClick={(event) => page(event, -1)}>{previousLabel}</Button>
-      <Button onClick={(event) => page(event, 1)}>{nextLabel}</Button>
+      <Button onClick={() => page(trackRef.current, -1)}>{previousLabel}</Button>
+      <Button onClick={() => page(trackRef.current, 1)}>{nextLabel}</Button>
     </div>
   );
 }

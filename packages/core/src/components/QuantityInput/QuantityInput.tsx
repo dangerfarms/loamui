@@ -1,30 +1,45 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { FormEvent, InputHTMLAttributes, Ref } from "react";
+import type { FormEvent, ReactNode } from "react";
 import { Button } from "../Button/Button";
 import { useFieldControlProps } from "../Field/Field";
 import { useUserInvalid } from "../../use-user-invalid";
 import { composeRefs } from "../../render";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
+
+/** The words the buttons say, each with an English default. */
+export interface QuantityInputLabels {
+  /** Accessible name of the decrement button. @default "Fewer" */
+  decrement?: string;
+  /** Accessible name of the increment button. @default "More" */
+  increment?: string;
+}
+
+const DEFAULT_LABELS: Required<QuantityInputLabels> = {
+  decrement: "Fewer",
+  increment: "More",
+};
 
 export interface QuantityInputProps extends Omit<
-  InputHTMLAttributes<HTMLInputElement>,
+  PartProps<"input">,
   "size" | "type" | "children" | "min" | "max" | "step"
 > {
-  /** The smallest count allowed; "Fewer" disables here. @default 0 */
+  /** The smallest count allowed; the decrement button disables here. @default 0 */
   min?: number;
-  /** The largest count allowed; "More" disables here. */
+  /** The largest count allowed; the increment button disables here. */
   max?: number;
   /** How much one press changes the count. @default 1 */
   step?: number;
-  /** Accessible name of the decrement button. @default "Fewer" */
-  fewerLabel?: string;
-  /** Accessible name of the increment button. @default "More" */
-  moreLabel?: string;
-  /** Class for the row that holds the buttons (className goes to the input itself). */
-  wrapperClassName?: string;
-  ref?: Ref<HTMLInputElement>;
+  /** The buttons' names, for another language or the page's own words. */
+  labels?: QuantityInputLabels;
+  /**
+   * Props for the row that holds the buttons (`div.loam-QuantityInput`).
+   * `className`, `style`, `ref` and every other prop land on the `<input>`
+   * itself.
+   */
+  wrapperProps?: Omit<PartProps<"div">, "children">;
 }
 
 /** Which bounds a value sits on. An empty or unparsable value sits on neither. */
@@ -33,7 +48,7 @@ function edges(value: unknown, min: number, max: number | undefined) {
   return { atMin: n <= min, atMax: max !== undefined && n >= max };
 }
 
-function Glyph({ plus }: { plus?: boolean }) {
+function Glyph({ plus }: { plus?: boolean }): ReactNode {
   return (
     <svg viewBox="0 0 16 16" fill="none" aria-hidden>
       <path d="M3 8h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -55,7 +70,8 @@ function Glyph({ plus }: { plus?: boolean }) {
  *
  * Label it by composing {@link Field} — the control reads its id,
  * description and error wiring from the surrounding `Field.Root`. Outside
- * a Field give it an `aria-label`.
+ * a Field give it an `aria-label` or `aria-labelledby`; in development a
+ * count with no name is reported to the console.
  *
  * ```tsx
  * <Field.Root>
@@ -68,14 +84,12 @@ export function QuantityInput({
   min = 0,
   max,
   step = 1,
-  fewerLabel = "Fewer",
-  moreLabel = "More",
+  labels,
+  wrapperProps,
   value,
   defaultValue,
   disabled,
   className,
-  wrapperClassName,
-  style,
   id,
   "aria-invalid": ariaInvalid,
   "aria-describedby": ariaDescribedby,
@@ -92,6 +106,9 @@ export function QuantityInput({
     () => composeRefs(composeRefs(ref, validationRef), ownRef),
     [ref, validationRef],
   );
+  const decrementLabel = labels?.decrement ?? DEFAULT_LABELS.decrement;
+  const incrementLabel = labels?.increment ?? DEFAULT_LABELS.increment;
+  const { className: wrapperClassName, ...wrapper } = wrapperProps ?? {};
 
   // The value lives only in the input. The one thing a render needs to know
   // is whether it sits on a bound, so the buttons can disable — read from
@@ -113,6 +130,24 @@ export function QuantityInput({
     return () => form.removeEventListener("reset", onReset);
   }, [controlled, min, max]);
 
+  // A count with no name is a count a screen reader cannot ask about. The
+  // input's own `labels` sees a Field.Label and any other <label for>.
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") return;
+    const input = ownRef.current;
+    if (!input) return;
+    if (
+      input.labels?.length ||
+      input.hasAttribute("aria-label") ||
+      input.hasAttribute("aria-labelledby")
+    ) {
+      return;
+    }
+    console.error(
+      "LoamUI: QuantityInput has no accessible name. Render it inside a Field with a Field.Label, or give it aria-label or aria-labelledby.",
+    );
+  }, []);
+
   const handleInput = (e: FormEvent<HTMLInputElement>) => {
     onInput?.(e);
     checkOnInput(e);
@@ -132,10 +167,10 @@ export function QuantityInput({
   };
 
   return (
-    <div className={cx("loam-QuantityInput", wrapperClassName)} style={style}>
+    <div className={cx("loam-QuantityInput", wrapperClassName)} {...wrapper}>
       <Button
         type="button"
-        aria-label={fewerLabel}
+        aria-label={decrementLabel}
         disabled={disabled || atMin}
         onClick={() => stepBy(-1)}
       >
@@ -164,7 +199,7 @@ export function QuantityInput({
       />
       <Button
         type="button"
-        aria-label={moreLabel}
+        aria-label={incrementLabel}
         disabled={disabled || atMax}
         onClick={() => stepBy(1)}
       >

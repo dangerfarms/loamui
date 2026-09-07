@@ -31,9 +31,8 @@ describe("CookieBanner", () => {
     expect(region.tagName).toBe("SECTION");
     expect(region).toHaveClass("loam-CookieBanner");
     expect(region).not.toHaveAttribute("aria-label");
-    expect(
-      screen.getByRole("heading", { level: 2, name: "Cookies on this site" }),
-    ).toBeInTheDocument();
+    const heading = screen.getByRole("heading", { level: 2, name: "Cookies on this site" });
+    expect(region).toHaveAttribute("aria-labelledby", heading.id);
 
     const form = container.querySelector("form.actions");
     expect(form).toHaveAttribute("method", "post");
@@ -66,7 +65,7 @@ describe("CookieBanner", () => {
         </CookieBanner.Actions>
       </CookieBanner.Root>,
     );
-    expect(screen.getByRole("region", { name: "Cookies" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Cookies" })).not.toHaveAttribute("aria-labelledby");
 
     rerender(banner({ "aria-label": "Consent" }));
     expect(screen.getByRole("region", { name: "Consent" })).toBeInTheDocument();
@@ -81,7 +80,7 @@ describe("CookieBanner", () => {
     expect(region).not.toHaveAttribute("aria-label");
   });
 
-  it("calls onAccept, keeps the page and fills the status, then Hide removes the banner", async () => {
+  it("calls onAccept, keeps the page, fills the status and moves focus to Hide, then Hide removes the banner", async () => {
     const onAccept = vi.fn();
     const onReject = vi.fn();
     const { container } = render(banner({ onAccept, onReject }));
@@ -96,11 +95,48 @@ describe("CookieBanner", () => {
     expect(screen.getByRole("region", { name: "Cookies" })).toContainElement(status);
     expect(screen.queryByRole("button", { name: "Accept additional cookies" })).toBeNull();
     expect(screen.queryByRole("link", { name: "View cookie settings" })).toBeNull();
+    // The button the reader pressed has gone; focus is on the one that is left.
+    const hide = screen.getByRole("button", { name: "Hide this message" });
+    expect(hide).toHaveFocus();
     expect(await axe(container, axeOptions)).toHaveNoViolations();
 
-    fireEvent.click(screen.getByRole("button", { name: "Hide this message" }));
+    fireEvent.click(hide);
     expect(screen.queryByRole("region")).toBeNull();
     expect(container).toBeEmptyDOMElement();
+  });
+
+  it("on Hide, moves focus to the next thing the reader could have tabbed to", () => {
+    render(
+      <>
+        {banner()}
+        <header>
+          <a href="/">Home</a>
+        </header>
+        <main>
+          <h1>Page</h1>
+        </main>
+      </>,
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Reject additional cookies" }));
+    fireEvent.click(screen.getByRole("button", { name: "Hide this message" }));
+    expect(screen.getByRole("link", { name: "Home" })).toHaveFocus();
+    expect(screen.getByRole("main")).not.toHaveAttribute("tabindex");
+  });
+
+  it("on Hide, moves focus to main when nothing focusable follows", () => {
+    render(
+      <>
+        {banner()}
+        <main>
+          <h1>Page</h1>
+        </main>
+      </>,
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Reject additional cookies" }));
+    fireEvent.click(screen.getByRole("button", { name: "Hide this message" }));
+    const main = screen.getByRole("main");
+    expect(main).toHaveAttribute("tabindex", "-1");
+    expect(main).toHaveFocus();
   });
 
   it("calls onReject and says so in the confirmation", () => {
@@ -137,25 +173,48 @@ describe("CookieBanner", () => {
     expect(container.querySelector("form")).toBeNull();
   });
 
-  it("uses a consumer's Confirmation in place of the default, mounted empty until the choice", () => {
+  it("uses a consumer's Confirmation passed through the slot, mounted empty until the choice, and focuses its Hide", () => {
     render(
-      <CookieBanner.Root>
+      <CookieBanner.Root
+        confirmation={
+          <CookieBanner.Confirmation>
+            <p>Thanks. Your choice is saved.</p>
+            <CookieBanner.Hide>Close</CookieBanner.Hide>
+          </CookieBanner.Confirmation>
+        }
+      >
         <CookieBanner.Title>Cookies</CookieBanner.Title>
         <CookieBanner.Actions>
           <CookieBanner.Accept />
           <CookieBanner.Reject />
         </CookieBanner.Actions>
-        <CookieBanner.Confirmation>
-          <p>Thanks. Your choice is saved.</p>
-          <CookieBanner.Hide>Close</CookieBanner.Hide>
-        </CookieBanner.Confirmation>
       </CookieBanner.Root>,
     );
     expect(screen.getByRole("status")).toBeEmptyDOMElement();
     fireEvent.click(screen.getByRole("button", { name: "Reject additional cookies" }));
     expect(screen.getByRole("status")).toHaveTextContent("Thanks. Your choice is saved.");
-    fireEvent.click(screen.getByRole("button", { name: "Close" }));
+    const close = screen.getByRole("button", { name: "Close" });
+    expect(close).toHaveFocus();
+    fireEvent.click(close);
     expect(screen.queryByRole("status")).toBeNull();
+  });
+
+  it("focuses the confirmation itself when it has no button", () => {
+    render(
+      <CookieBanner.Root
+        confirmation={
+          <CookieBanner.Confirmation>
+            <p>Saved.</p>
+          </CookieBanner.Confirmation>
+        }
+      >
+        <CookieBanner.Actions>
+          <CookieBanner.Accept />
+        </CookieBanner.Actions>
+      </CookieBanner.Root>,
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Accept additional cookies" }));
+    expect(screen.getByRole("status")).toHaveFocus();
   });
 
   it("is controlled by open and reports through onOpenChange", () => {

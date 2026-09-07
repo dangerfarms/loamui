@@ -1,20 +1,20 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState } from "react";
-import type { HTMLAttributes, ReactNode, Ref } from "react";
+import { createContext, useContext, useMemo } from "react";
+import type { ReactNode } from "react";
 import { renderWithProps, cx } from "@loamui/core";
-import type { RenderProp } from "@loamui/core";
+import type { PartProps, RenderProp } from "@loamui/core";
+import { useNamePart, useNamedRoot } from "../../naming";
 
 interface FooterColumnContextValue {
-  /** The ColumnTitle tells the column its id; the column is named by it while it is present. */
-  registerTitle: (id: string) => () => void;
+  nameId: string;
+  register: (id: string) => () => void;
 }
 
 const FooterColumnContext = createContext<FooterColumnContextValue | null>(null);
 
-export interface FooterRootProps extends HTMLAttributes<HTMLElement> {
+export interface FooterRootProps extends PartProps<"footer"> {
   children?: ReactNode;
-  ref?: Ref<HTMLElement>;
 }
 
 /**
@@ -57,9 +57,8 @@ function FooterRoot({ className, children, ref, ...rest }: FooterRootProps) {
   );
 }
 
-export interface FooterPartProps extends HTMLAttributes<HTMLDivElement> {
+export interface FooterPartProps extends PartProps<"div"> {
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /** The logo or name and a one-line tagline: your link and a paragraph. */
@@ -80,46 +79,35 @@ function FooterColumns({ className, children, ref, ...rest }: FooterPartProps) {
   );
 }
 
-export interface FooterColumnProps extends HTMLAttributes<HTMLElement> {
+export interface FooterColumnProps extends PartProps<"nav"> {
   /** A `Footer.ColumnTitle` followed by a `ul` of `li > a` items. */
   children?: ReactNode;
-  ref?: Ref<HTMLElement>;
 }
 
 /**
- * One column: a `nav` landmark named by its ColumnTitle, then the
- * consumer's `ul` of links. The markers are stripped by the stylesheet;
- * inside a nav a list keeps its semantics in every browser, so the `ul`
- * needs no role. A column with no title should be given an `aria-label`.
+ * One column: a `nav` landmark named by its ColumnTitle, from the first
+ * render, then the consumer's `ul` of links. The markers are stripped by
+ * the stylesheet; inside a nav a list keeps its semantics in every
+ * browser, so the `ul` needs no role. A column with no title carries no
+ * name, a plain nav, so give it an `aria-label`; a name you give wins
+ * over the title's.
  */
 function FooterColumn({ className, children, ref, ...rest }: FooterColumnProps) {
-  const [titleId, setTitleId] = useState<string | null>(null);
-  const registerTitle = useCallback((id: string) => {
-    setTitleId(id);
-    return () => setTitleId((current) => (current === id ? null : current));
-  }, []);
-  const value = useMemo<FooterColumnContextValue>(() => ({ registerTitle }), [registerTitle]);
-  // A name the consumer gives wins over the title's.
-  const named = rest["aria-label"] != null || rest["aria-labelledby"] != null;
+  const { nameId, register, labelling } = useNamedRoot(rest);
+  const value = useMemo<FooterColumnContextValue>(() => ({ nameId, register }), [nameId, register]);
   return (
     <FooterColumnContext value={value}>
-      <nav
-        ref={ref}
-        className={cx("column", className)}
-        aria-labelledby={!named && titleId ? titleId : undefined}
-        {...rest}
-      >
+      <nav ref={ref} className={cx("column", className)} {...labelling} {...rest}>
         {children}
       </nav>
     </FooterColumnContext>
   );
 }
 
-export interface FooterColumnTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+export interface FooterColumnTitleProps extends PartProps<"h3"> {
   /** Render as a different heading: `render={<h2 />}` where the footer's columns sit under no h2. */
   render?: RenderProp<Record<string, unknown>>;
   children?: ReactNode;
-  ref?: Ref<HTMLHeadingElement>;
 }
 
 /** The column's heading, an `h3` by default. It names the column's nav. */
@@ -135,10 +123,7 @@ function FooterColumnTitle({
   if (!ctx) {
     throw new Error("Footer.ColumnTitle must be rendered inside <Footer.Column>.");
   }
-  const autoId = useId();
-  const titleId = id ?? autoId;
-  const { registerTitle } = ctx;
-  useEffect(() => registerTitle(titleId), [registerTitle, titleId]);
+  const titleId = useNamePart(ctx, id);
   const props = { ref, id: titleId, className: cx("title", className), ...rest };
   if (render) return <>{renderWithProps(render, { ...props, children })}</>;
   return <h3 {...props}>{children}</h3>;

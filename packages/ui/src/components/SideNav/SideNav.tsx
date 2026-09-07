@@ -1,8 +1,9 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState } from "react";
-import type { DetailsHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+import type { ReactNode } from "react";
 import { cx } from "@loamui/core";
+import type { PartProps } from "@loamui/core";
 
 interface SideNavContextValue {
   /** A Title tells the nav its id; the nav is named by its Titles while any is present. */
@@ -11,7 +12,7 @@ interface SideNavContextValue {
 
 const SideNavContext = createContext<SideNavContextValue | null>(null);
 
-export interface SideNavRootProps extends HTMLAttributes<HTMLElement> {
+export interface SideNavRootProps extends PartProps<"nav"> {
   /**
    * Names the landmark for assistive technology. A page may have several
    * navs (a header, a table of contents), so each needs a distinct name.
@@ -22,7 +23,6 @@ export interface SideNavRootProps extends HTMLAttributes<HTMLElement> {
   "aria-label"?: string;
   /** Lists, optionally headed by a Title, and Groups. */
   children?: ReactNode;
-  ref?: Ref<HTMLElement>;
 }
 
 /**
@@ -91,9 +91,8 @@ function SideNavRoot({
   );
 }
 
-export interface SideNavTitleProps extends HTMLAttributes<HTMLParagraphElement> {
+export interface SideNavTitleProps extends PartProps<"p"> {
   children?: ReactNode;
-  ref?: Ref<HTMLParagraphElement>;
 }
 
 /**
@@ -118,10 +117,9 @@ function SideNavTitle({ className, children, ref, id, ...rest }: SideNavTitlePro
   );
 }
 
-export interface SideNavListProps extends HTMLAttributes<HTMLUListElement> {
+export interface SideNavListProps extends PartProps<"ul"> {
   /** Items. */
   children?: ReactNode;
-  ref?: Ref<HTMLUListElement>;
 }
 
 /** An unordered list with no markers. Nest one inside an Item to indent a level, or inside a Group to fold it. */
@@ -133,10 +131,9 @@ function SideNavList({ className, children, ref, ...rest }: SideNavListProps) {
   );
 }
 
-export interface SideNavItemProps extends HTMLAttributes<HTMLLIElement> {
+export interface SideNavItemProps extends PartProps<"li"> {
   /** Your link (`a`, or a router's), or a Group; then an optional nested List. */
   children?: ReactNode;
-  ref?: Ref<HTMLLIElement>;
 }
 
 /**
@@ -152,10 +149,9 @@ function SideNavItem({ className, children, ref, ...rest }: SideNavItemProps) {
   );
 }
 
-export interface SideNavGroupProps extends DetailsHTMLAttributes<HTMLDetailsElement> {
+export interface SideNavGroupProps extends PartProps<"details"> {
   /** A `SideNav.GroupTitle`, then a nested List. */
   children?: ReactNode;
-  ref?: Ref<HTMLDetailsElement>;
 }
 
 /**
@@ -174,10 +170,9 @@ function SideNavGroup({ className, children, ref, ...rest }: SideNavGroupProps) 
   );
 }
 
-export interface SideNavGroupTitleProps extends HTMLAttributes<HTMLElement> {
+export interface SideNavGroupTitleProps extends PartProps<"summary"> {
   /** The group's name. */
   children?: ReactNode;
-  ref?: Ref<HTMLElement>;
 }
 
 /** The group's always-visible line, a `summary`, set like the links around it with a chevron at its end. */

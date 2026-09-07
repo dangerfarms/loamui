@@ -63,6 +63,24 @@ export function MenuLinksDemo() {
   );
 }
 
+export function MenuCheckableDemo() {
+  return (
+    <Menu.Root>
+      <Menu.Trigger>View</Menu.Trigger>
+      <Menu.Popup>
+        <Menu.CheckboxItem defaultChecked>Show hidden files</Menu.CheckboxItem>
+        <Menu.CheckboxItem>Show file extensions</Menu.CheckboxItem>
+        <Menu.Separator />
+        <Menu.RadioGroup defaultValue="name">
+          <Menu.GroupLabel>Sort by</Menu.GroupLabel>
+          <Menu.RadioItem value="name">Name</Menu.RadioItem>
+          <Menu.RadioItem value="date">Date modified</Menu.RadioItem>
+        </Menu.RadioGroup>
+      </Menu.Popup>
+    </Menu.Root>
+  );
+}
+
 export function MenuDisabledDemo() {
   return (
     <Menu.Root>

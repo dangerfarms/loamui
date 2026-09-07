@@ -1,20 +1,29 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState } from "react";
-import type { HTMLAttributes, ReactNode, Ref } from "react";
+import { createContext, useContext, useMemo } from "react";
+import type { ReactNode } from "react";
 import { renderWithProps, cx } from "@loamui/core";
-import type { RenderProp } from "@loamui/core";
+import type { PartProps, RenderProp } from "@loamui/core";
+import { useNamedRoot, useNamePart } from "../../naming";
 
 interface HeroContextValue {
-  /** The Title tells the section its id; the section is named by it while it is present. */
-  registerTitle: (id: string) => () => void;
+  /** The id the Title takes unless the consumer gives it one; the section points at it. */
+  nameId: string;
+  /** The Title registers on mount so the section's reference stays honest. */
+  register: (id: string) => () => void;
 }
 
 const HeroContext = createContext<HeroContextValue | null>(null);
 
-export interface HeroRootProps extends HTMLAttributes<HTMLElement> {
+export interface HeroRootProps extends PartProps<"section"> {
+  /**
+   * Render as a different element: `render={<header />}` when the hero is
+   * the page's banner, `render={<div />}` where a section would be one
+   * landmark too many. The part's classes and attributes merge onto the
+   * element it renders, the same contract as every core part.
+   */
+  render?: RenderProp<Record<string, unknown>>;
   children?: ReactNode;
-  ref?: Ref<HTMLElement>;
 }
 
 /**
@@ -24,7 +33,9 @@ export interface HeroRootProps extends HTMLAttributes<HTMLElement> {
  * Compose it from parts; the section's look comes from the element styles
  * and tokens, and a `--loam-context` region recolours the parts inside.
  * The section is named by its Title, so it is a region in a screen
- * reader's list of landmarks; an `aria-label` or `aria-labelledby` of
+ * reader's list of landmarks, and it is named in the server's HTML: the
+ * Root mints the id and points `aria-labelledby` at it in the first
+ * render, the Title renders it. An `aria-label` or `aria-labelledby` of
  * your own wins. `Hero.Media` hosts whatever the page opens with: an
  * image, a video, a Carousel. With it the hero becomes two columns where
  * there is room and stacks where there is not; without it the text runs
@@ -44,32 +55,25 @@ export interface HeroRootProps extends HTMLAttributes<HTMLElement> {
  * </Hero.Root>
  * ```
  */
-function HeroRoot({ className, children, ref, ...rest }: HeroRootProps) {
-  const [titleId, setTitleId] = useState<string | null>(null);
-  const registerTitle = useCallback((id: string) => {
-    setTitleId(id);
-    return () => setTitleId((current) => (current === id ? null : current));
-  }, []);
-  const value = useMemo<HeroContextValue>(() => ({ registerTitle }), [registerTitle]);
-  // A name the consumer gives wins over the title's.
-  const named = rest["aria-label"] != null || rest["aria-labelledby"] != null;
+function HeroRoot({ render, className, children, ref, ...rest }: HeroRootProps) {
+  const { nameId, register, labelling } = useNamedRoot(rest);
+  const value = useMemo<HeroContextValue>(() => ({ nameId, register }), [nameId, register]);
+  const props = {
+    ref,
+    className: cx("loam-Hero", className),
+    ...labelling,
+    ...rest,
+    children: <div className="inner">{children}</div>,
+  };
   return (
     <HeroContext value={value}>
-      <section
-        ref={ref}
-        className={cx("loam-Hero", className)}
-        aria-labelledby={!named && titleId ? titleId : undefined}
-        {...rest}
-      >
-        <div className="inner">{children}</div>
-      </section>
+      {render ? renderWithProps(render, props) : <section {...props} />}
     </HeroContext>
   );
 }
 
-export interface HeroEyebrowProps extends HTMLAttributes<HTMLDivElement> {
+export interface HeroEyebrowProps extends PartProps<"div"> {
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /** A short line above the title: a Badge, a category, a date. */
@@ -81,7 +85,7 @@ function HeroEyebrow({ className, children, ref, ...rest }: HeroEyebrowProps) {
   );
 }
 
-export interface HeroTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+export interface HeroTitleProps extends PartProps<"h1"> {
   /**
    * Render as a different heading: `render={<h2 />}` inside a page. The
    * part's classes and attributes merge onto the element it renders, the
@@ -89,30 +93,26 @@ export interface HeroTitleProps extends HTMLAttributes<HTMLHeadingElement> {
    */
   render?: RenderProp<Record<string, unknown>>;
   children?: ReactNode;
-  ref?: Ref<HTMLHeadingElement>;
 }
 
 /**
  * The headline. Renders an `h1` by default; pass `render={<h2 />}` inside
- * a page. It names the Root while it is present.
+ * a page. Its id (yours if you pass one, the composition's otherwise) is
+ * what the section's `aria-labelledby` points at.
  */
 function HeroTitle({ render, className, children, ref, id, ...rest }: HeroTitleProps) {
   const ctx = useContext(HeroContext);
   if (!ctx) {
     throw new Error("Hero.Title must be rendered inside <Hero.Root>.");
   }
-  const autoId = useId();
-  const titleId = id ?? autoId;
-  const { registerTitle } = ctx;
-  useEffect(() => registerTitle(titleId), [registerTitle, titleId]);
+  const titleId = useNamePart(ctx, id);
   const props = { ref, id: titleId, className: cx("title", className), ...rest };
   if (render) return <>{renderWithProps(render, { ...props, children })}</>;
   return <h1 {...props}>{children}</h1>;
 }
 
-export interface HeroLedeProps extends HTMLAttributes<HTMLParagraphElement> {
+export interface HeroLedeProps extends PartProps<"p"> {
   children?: ReactNode;
-  ref?: Ref<HTMLParagraphElement>;
 }
 
 /** One paragraph that says what the page is for. */
@@ -124,9 +124,8 @@ function HeroLede({ className, children, ref, ...rest }: HeroLedeProps) {
   );
 }
 
-export interface HeroActionsProps extends HTMLAttributes<HTMLDivElement> {
+export interface HeroActionsProps extends PartProps<"div"> {
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /** A flex row of actions: a SignpostLink for the primary path, plain links beside it. */
@@ -138,9 +137,8 @@ function HeroActions({ className, children, ref, ...rest }: HeroActionsProps) {
   );
 }
 
-export interface HeroMediaProps extends HTMLAttributes<HTMLDivElement> {
+export interface HeroMediaProps extends PartProps<"div"> {
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /**

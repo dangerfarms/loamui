@@ -72,10 +72,10 @@
     grid-column: 2 / -1;
   }
 
-  /* The item that sums the ones above it: a heavier rule, a little air, and
-     both its label and its value in the strong foreground at 700, so the
-     pair reads as one weight. In forced colours the rule takes CanvasText
-     and keeps its 2px, so the total is still set apart by more than weight. */
+  /* The Total: a heavier rule, a little air, and both its label and its
+     value in the strong foreground at 700, so the pair reads as one weight.
+     In forced colours the rule takes CanvasText and keeps its 2px, so the
+     total is still set apart by more than weight. */
   div.item.total {
     border-block-start: 2px solid var(--loam-color-line-strong);
     margin-block-start: var(--loam-space-xs);

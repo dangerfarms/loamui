@@ -8,14 +8,14 @@ here:
   `@loamui/ui/styles.css`. The ui layer (`loamui.ui`) sits above the core
   layers; your own unlayered CSS still wins.
 - **Every composition is a compound component.** `Hero.Root`, `Hero.Title`,
-  `Stats.Item`, `Testimonial.Quote`. Arrange the parts in your markup; put
+  `Stat.Value`, `Testimonial.Quote`. Arrange the parts in your markup; put
   core components (`Button`, `Badge`, `SignpostLink`, `Avatar`) inside them.
 - **No size, variant or colour props.** Mark a highlighted tile or a
   featured item by declaring `--loam-context: primary` (or a status) on
   that part's root, in your stylesheet or a style attribute; the parts inside
   answer it.
-- **The unit stands alone.** A `Stats.Item` works on its own, in a Card or a
-  grid you wrote yourself; `Stats.Root` arranges several for the common case
+- **The unit stands alone.** A `Stat.Root` works on its own, in a Card or a
+  grid you wrote yourself; `Stat.Group` arranges several for the common case
   and is optional. To repeat an item across a page, write the grid yourself.
 - **Width comes from the container.** Each root declares
   `container-type: inline-size`; put a composition in a narrow column and its

@@ -72,6 +72,35 @@ Body content is optional.
 </div>
 ```
 
+### Dismissible
+
+onClose renders an Alert.Close, a LoamUI Button named Dismiss (or labels.close), at the inline end. The alert does not remove itself: the handler stops rendering it, because only you know whether acknowledging the message ends the condition it reports.
+
+```tsx
+const [open, setOpen] = useState(true);
+
+{open && (
+  <Alert title="Draft restored" onClose={() => setOpen(false)}>
+    We recovered the draft you were editing.
+  </Alert>
+)}
+```
+
+### Composed from parts
+
+The parts in the anatomy the convenience form renders. Alert.Title takes render where the title belongs in the page outline; Alert.Close takes labels for its name.
+
+```tsx
+<Alert.Root>
+  <Alert.Icon><span aria-hidden>⚠</span></Alert.Icon>
+  <Alert.Body>
+    <Alert.Title render={<h2 />}>Storage almost full</Alert.Title>
+    <Alert.Description>Free up space to keep syncing.</Alert.Description>
+  </Alert.Body>
+  <Alert.Close onClose={dismiss} labels={{ close: "Hide this warning" }} />
+</Alert.Root>
+```
+
 ## When to use it
 
 - For in-page status the user needs to act on or know about now (a failed deploy, a quota about to run out), placed next to the content it describes.
@@ -90,7 +119,7 @@ An alert reports the current state of the page the user is on. Information they 
 
 ### Persistent by design
 
-There is no auto-dismiss and no built-in close button: an alert exists exactly as long as the condition it reports. Remove it by no longer rendering it when the state changes: a warning that disappears on its own while the problem remains would be lying.
+There is no auto-dismiss: an alert exists exactly as long as the condition it reports. Remove it by no longer rendering it when the state changes: a warning that disappears on its own while the problem remains would be lying. Alert.Close is for the message the reader may acknowledge (a restored draft, a notice already read); it reports through onClose and leaves the removal to you, so a dismissed alert is a decision, not a timeout.
 
 ### Announcement happens at insertion
 
@@ -114,6 +143,43 @@ Status is not a prop: it comes from the surrounding `--loam-context` region (see
 | `title` | `ReactNode` | — | Bold heading rendered above the body. |
 | `icon` | `ReactNode` | — | Icon rendered to the inline-start of the content. |
 | `children` | `ReactNode` | — | Alert body content. |
+| `onClose` | `() => void` | — | Renders an Alert.Close that calls this when activated. |
+| `labels` | `{ close?: string }` | `{ close: "Dismiss" }` | The close button's name, when onClose renders one. |
 | `role` | `string` | `"status"` | Live-region role. The polite default announces without interrupting; pass "alert" for a message that appears in response to an action and must interrupt. |
 | `...others` | `HTMLAttributes<HTMLDivElement>` | — | All native <div> props are forwarded. |
+
+## Parts
+
+### Alert.Root
+
+The live region: a <div role="status"> carrying the class and the context; all native <div> props are forwarded, so role="alert" overrides the default.
+
+### Alert.Icon
+
+The leading icon slot, rendered aria-hidden. Native <span> props are forwarded.
+
+### Alert.Body
+
+The column holding the title and description. Native <div> props are forwarded.
+
+### Alert.Title
+
+The bold heading, in the channel's hue mixed for contrast. A <div> by default.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `render` | `RenderProp` | — | Substitute the element (render={<h2 />}) where the title belongs in the page outline; the class merges onto it. |
+
+### Alert.Description
+
+The message: full-strength text, muted beside a title so the heading leads. Native <div> props are forwarded.
+
+### Alert.Close
+
+A LoamUI Button at the inline end. Icon-only and named by labels.close unless given children; every Button prop is forwarded.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `onClose` | `() => void` | — | Called when the button is activated; stop rendering the alert in it. |
+| `labels` | `{ close?: string }` | `{ close: "Dismiss" }` | The button's accessible name when it has no children. |
 

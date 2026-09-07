@@ -19,6 +19,7 @@
 @import url("./components/Button/Button.css") layer(loamui.components);
 @import url("./components/Card/Card.css") layer(loamui.components);
 @import url("./components/Checkbox/Checkbox.css") layer(loamui.components);
+@import url("./components/Combobox/Combobox.css") layer(loamui.components);
 @import url("./components/CopyButton/CopyButton.css") layer(loamui.components);
 @import url("./components/DateInput/DateInput.css") layer(loamui.components);
 @import url("./components/Drawer/Drawer.css") layer(loamui.components);
@@ -27,6 +28,7 @@
 @import url("./components/FileInput/FileInput.css") layer(loamui.components);
 @import url("./components/Fieldset/Fieldset.css") layer(loamui.components);
 @import url("./components/Input/Input.css") layer(loamui.components);
+@import url("./components/PasswordInput/PasswordInput.css") layer(loamui.components);
 @import url("./components/Loader/Loader.css") layer(loamui.components);
 @import url("./components/Menu/Menu.css") layer(loamui.components);
 @import url("./components/Meter/Meter.css") layer(loamui.components);
@@ -42,7 +44,6 @@
 @import url("./components/Skeleton/Skeleton.css") layer(loamui.components);
 @import url("./components/Range/Range.css") layer(loamui.components);
 @import url("./components/Rating/Rating.css") layer(loamui.components);
-@import url("./components/SchemeToggle/SchemeToggle.css") layer(loamui.components);
 @import url("./components/Search/Search.css") layer(loamui.components);
 @import url("./components/Switch/Switch.css") layer(loamui.components);
 @import url("./components/Table/Table.css") layer(loamui.components);

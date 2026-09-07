@@ -28,13 +28,13 @@ The spinner is the only anatomy: one indeterminate glyph, no variant prop. Pair 
 
 ### Sizes
 
-Use a token or pass a pixel number.
+size is one of three tokens, emitted as data-size and answered by the stylesheet. Without it the size comes from context: 1.5rem standalone, 1em inside a Button, or whatever a region sets --loam-loader-size to.
 
 ```tsx
 <Loader size="sm" />
 <Loader size="md" />
 <Loader size="lg" />
-<Loader size={48} />
+<span style={{ "--loam-loader-size": "3rem" }}><Loader /></span>
 ```
 
 ### Contexts
@@ -84,7 +84,7 @@ Status is not a prop: it comes from the surrounding `--loam-context` region (see
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `size` | `"sm" \| "md" \| "lg" \| number` | — | Overall size, as a token or an explicit pixel number. When omitted, the size comes from context: 1.5rem standalone, 1em inside a Button (like an icon). |
+| `size` | `"sm" \| "md" \| "lg"` | — | Overall size, emitted as data-size. When omitted, the size comes from context: 1.5rem standalone, 1em inside a Button (like an icon), or a region's --loam-loader-size. |
 | `label` | `string` | `"Loading"` | Accessible label announced to assistive tech. |
 | `...others` | `HTMLAttributes<HTMLSpanElement>` | — | All native <span> props are forwarded. |
 

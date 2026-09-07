@@ -13,7 +13,7 @@ An image, initials, or fallback glyph representing a user.
 ## Import
 
 ```tsx
-import { Avatar, AvatarGroup } from "@loamui/core";
+import { Avatar } from "@loamui/core";
 ```
 
 ## Usage
@@ -44,23 +44,32 @@ A bare Avatar with no name from any source renders a decorative person glyph. It
 <Avatar />
 ```
 
-### Group
+### Size
 
-AvatarGroup overlaps children with a surface-coloured ring.
+There is no size prop. The public --loam-avatar-size property sets the diameter per instance or on a region, and the initials follow it.
 
 ```tsx
-<AvatarGroup>
+<Avatar name="Jane Doe" style={{ "--loam-avatar-size": "1.5rem" }} />
+<Avatar name="Jane Doe" />
+<Avatar name="Jane Doe" style={{ "--loam-avatar-size": "4rem" }} />
+```
+
+### Group
+
+Avatar.Group is a list: each avatar is an item, overlapped and ringed in the surface colour, and more adds the overflow count as a final avatar named by labels.more.
+
+```tsx
+<Avatar.Group more={5} labels={{ more: (n) => `${n} more people` }}>
   <Avatar name="Jane Doe" />
   <Avatar name="Sam Reed" />
   <Avatar name="Amara Okafor" />
-  <Avatar name="+5" aria-label="5 more people" />
-</AvatarGroup>
+</Avatar.Group>
 ```
 
 ## When to use it
 
 - To identify a person next to something they did: a comment, an assignee, a row in a member list.
-- With AvatarGroup, to show a set of participants compactly where listing every name would not fit.
+- With Avatar.Group, to show a set of participants compactly where listing every name would not fit.
 
 ## When not to
 
@@ -93,13 +102,25 @@ Status is not a prop: it comes from the surrounding `--loam-context` region (see
 | --- | --- | --- | --- |
 | `src` | `string` | — | Image source. When set, renders an <img>. |
 | `alt` | `string` | — | Alt text for the image (falls back to name). |
-| `name` | `string` | — | Person's name; used for initials and as image alt. |
+| `name` | `string` | — | Person's name; used for initials (the first grapheme of the first and last words) and as image alt. |
 | `children` | `ReactNode` | — | Custom content; overrides the derived image/initials/glyph. |
 | `...others` | `SpanHTMLAttributes` | — | All native <span> props are forwarded. |
 
 ## Parts
 
-### AvatarGroup
+### Avatar.Group
 
-Overlaps a row of avatars with a surface-coloured ring; all native <div> props are forwarded.
+A <ul role="list"> of avatars, each child an item, overlapped with a surface-coloured ring; all native <ul> props are forwarded.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `more` | `number` | — | How many more people than avatars shown; rendered as a final +n avatar. |
+| `labels` | `{ more?: (n: number) => string }` | `(n) => `${n} more`` | The overflow avatar's accessible name. |
+
+## Custom properties
+
+| Property | Syntax | Default | Description |
+| --- | --- | --- | --- |
+| `--loam-avatar-size` | `CSS length` | `2.5rem` | The diameter; set per instance or on a region. |
+| `--loam-avatar-overlap` | `CSS length` | `0.5rem` | How far each item in an Avatar.Group overlaps the one before. |
 

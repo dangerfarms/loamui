@@ -3,7 +3,7 @@ export type {
   DrawerRootProps,
   DrawerTriggerProps,
   DrawerTriggerRenderProps,
-  DrawerPanelProps,
+  DrawerPopupProps,
   DrawerSide,
   DrawerTitleProps,
   DrawerDescriptionProps,

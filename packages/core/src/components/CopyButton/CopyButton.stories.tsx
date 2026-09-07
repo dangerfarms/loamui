@@ -12,7 +12,7 @@ const meta = {
       description: {
         component:
           "A Button that copies a string to the clipboard and says so: the " +
-          "label reads `copiedLabel` for `timeout` ms and a visually hidden " +
+          "label reads `labels.copied` for `timeout` ms and a visually hidden " +
           "status region announces it. A refused clipboard is announced too, " +
           "and the label is left alone.",
       },
@@ -53,8 +53,10 @@ export const CustomLabels: Story = {
   args: {
     value: "https://loamui.dev/docs/components/copy-button",
     children: "Copy link",
-    copiedLabel: "Link copied",
-    failedMessage: "The link could not be copied: select it and copy it yourself",
+    labels: {
+      copied: "Link copied",
+      failed: "The link could not be copied: select it and copy it yourself",
+    },
     timeout: 3000,
   },
 };

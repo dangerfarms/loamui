@@ -1,79 +1,67 @@
-@scope (.loam-Table-scroll) {
+/* Donut: the table hosts consumer-rendered cells. */
+@scope (.loam-Table) to ([class*="loam-"]) {
   :scope {
     border-radius: var(--loam-radius-md);
     inline-size: 100%;
-    overflow-inline: auto;
-  }
-}
 
-@scope (.loam-Table) to ([class*="loam-"]) {
-  :scope {
-    border-collapse: collapse;
+    /* overflow (shorthand), not the logical overflow-inline: the latter is
+       not yet Baseline (see elements.css `pre`), so wide tables would not
+       scroll in some browsers. */
+    overflow: auto;
+  }
+
+  table {
     font-size: var(--loam-text-sm);
     inline-size: 100%;
+  }
 
-    &[data-caption-side="top"] {
-      /* stylelint-disable-next-line value-keyword-layout-mappings --
-         caption-side has no logical equivalent; the physical keyword is
-         the only form. */
-      caption-side: top;
+  caption {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-xs);
+    padding-block: var(--loam-space-sm);
+    text-align: start;
+  }
+
+  th,
+  td {
+    border-block-end: 1px solid var(--loam-color-line);
+    padding-block: var(--loam-space-md);
+    padding-inline: var(--loam-space-lg);
+    vertical-align: middle;
+  }
+
+  thead th {
+    border-block-end: 1px solid var(--loam-color-line-strong);
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  tbody tr:last-child td {
+    border-block-end: none;
+  }
+
+  :scope[data-col-borders] th:not(:last-child),
+  :scope[data-col-borders] td:not(:last-child) {
+    border-inline-end: 1px solid var(--loam-color-line);
+  }
+
+  :scope[data-striped] tbody tr:nth-child(even) {
+    background: var(--loam-color-bg-subtle);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :scope[data-hover] tbody tr {
+      transition: background var(--loam-duration-md) var(--loam-ease);
     }
+  }
 
-    &[data-caption-side="bottom"] {
-      /* stylelint-disable-next-line value-keyword-layout-mappings --
-         see above: no logical equivalent exists. */
-      caption-side: bottom;
-    }
-
-    caption {
-      color: var(--loam-color-fg-muted);
-      font-size: var(--loam-text-xs);
-      padding-block: var(--loam-space-sm);
-      text-align: start;
-    }
-
-    th,
-    td {
-      border-block-end: 1px solid var(--loam-color-line);
-      padding-block: var(--loam-space-md);
-      padding-inline: var(--loam-space-lg);
-      text-align: start;
-      vertical-align: middle;
-    }
-
-    thead th {
-      border-block-end: 1px solid var(--loam-color-line-strong);
-      color: var(--loam-color-fg-muted);
-      font-size: var(--loam-text-xs);
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    tbody tr:last-child td {
-      border-block-end: none;
-    }
-
-    &[data-col-borders] th:not(:last-child),
-    &[data-col-borders] td:not(:last-child) {
-      border-inline-end: 1px solid var(--loam-color-line);
-    }
-
-    &[data-striped] tbody tr:nth-child(even) {
-      background: var(--loam-color-bg-subtle);
-    }
-
-    @media (prefers-reduced-motion: no-preference) {
-      &[data-hover] tbody tr {
-        transition: background var(--loam-duration-md) var(--loam-ease);
-      }
-    }
-
-    @media (hover: hover) {
-      &[data-hover] tbody tr:hover {
-        background: var(--loam-color-surface-hover);
-      }
+  @media (hover: hover) {
+    :scope[data-hover] tbody tr:hover {
+      background: var(--loam-color-surface-hover);
     }
   }
 }

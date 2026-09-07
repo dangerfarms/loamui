@@ -26,7 +26,7 @@ const errorPage: Composition = {
     {
       name: "ErrorPage.Title",
       description:
-        "What happened, in a few words. An h1 when the error is the page; pass render={<h2 />} inside a page. It names the Root while it is present.",
+        "What happened, in a few words. An h1 when the error is the page; pass render={<h2 />} inside a page. Its id, yours or the composition's, is what names the Root, in the server's HTML from the first render.",
     },
     {
       name: "ErrorPage.Description",

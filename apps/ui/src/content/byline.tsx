@@ -16,12 +16,12 @@ const byline: Composition = {
     {
       name: "Byline.Root",
       description:
-        "The unit: a div holding the pieces on one line that wraps, with a dot drawn before every piece but the first and never before the Author. Not the address itself, because the dates and the reading time are not contact information. Place a core Avatar first inside it, with the author's name for the initials and aria-hidden, since the name is printed beside it; then the Author.",
+        "The unit: a div holding the pieces on one line that wraps, with a dot drawn before every date and reading time that follows another part, and never before the Author. The dots are drawn from the composition's own parts, so a core Avatar (with the author's name for the initials and aria-hidden, since the name is printed beside it) sits anywhere in the row, usually first, without moving them. Not the address itself, because the dates and the reading time are not contact information.",
     },
     {
       name: "Byline.Author",
       description:
-        "The author's name in an address element, set upright rather than the browser's italic. Inside it, a link with rel=\"author\" when it has an href, or a render for a router link; a span when there is no profile to link to. The link keeps the page's underline, so the profile reads as the one thing here to click.",
+        "The author's name in an address element, set upright rather than the browser's italic. Inside it, a link with rel=\"author\" when it has an href, or a render for a router link; a span when there is no profile to link to. The link keeps the page's underline, so the profile reads as the one thing here to click. Place it first among the parts.",
     },
     {
       name: "Byline.Published",

@@ -1,23 +1,23 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState } from "react";
-import type { HTMLAttributes, LiHTMLAttributes, ReactNode, Ref } from "react";
+import { createContext, useContext, useMemo } from "react";
+import type { ReactNode } from "react";
 import { Time, renderWithProps, cx } from "@loamui/core";
-import type { RenderProp, TimeProps } from "@loamui/core";
+import type { PartProps, RenderProp, TimeProps } from "@loamui/core";
+import { useNamedRoot, useNamePart } from "../../naming";
 
 interface CommentContextValue {
   /** The id the Author takes unless the consumer gives it one. */
-  authorId: string;
+  nameId: string;
   /** The Author tells the article which id names it; the article is named only while one is present. */
-  registerAuthor: (id: string) => () => void;
+  register: (id: string) => () => void;
 }
 
 const CommentContext = createContext<CommentContextValue | null>(null);
 
-export interface CommentRootProps extends HTMLAttributes<HTMLElement> {
+export interface CommentRootProps extends PartProps<"article"> {
   /** Header, Body, then Actions and Replies as the comment has them. */
   children?: ReactNode;
-  ref?: Ref<HTMLElement>;
 }
 
 /**
@@ -45,54 +45,37 @@ export interface CommentRootProps extends HTMLAttributes<HTMLElement> {
  * </Comment.Root>
  * ```
  */
-function CommentRoot({ className, children, ref, ...rest }: CommentRootProps) {
-  const authorId = useId();
-  const [labelId, setLabelId] = useState<string | null>(null);
-  const registerAuthor = useCallback((id: string) => {
-    setLabelId(id);
-    return () => setLabelId((current) => (current === id ? null : current));
-  }, []);
-  const value = useMemo<CommentContextValue>(
-    () => ({ authorId, registerAuthor }),
-    [authorId, registerAuthor],
-  );
-  // A consumer's own name for the article wins over the author's, and the
-  // article points at an Author only while one is rendered: a reference to
-  // nothing would name it nothing.
-  const named = rest["aria-label"] != null || rest["aria-labelledby"] != null;
+function CommentRoot({ className, children, ...rest }: CommentRootProps) {
+  // The article is named by its Author from the first render, so the
+  // server HTML carries the name; a consumer's own name wins, and the
+  // reference goes once nothing is registered against it.
+  const { nameId, register, labelling } = useNamedRoot(rest);
+  const value = useMemo<CommentContextValue>(() => ({ nameId, register }), [nameId, register]);
   return (
     <CommentContext value={value}>
-      <article
-        ref={ref}
-        className={cx("loam-Comment", className)}
-        aria-labelledby={!named && labelId ? labelId : undefined}
-        {...rest}
-      >
+      <article className={cx("loam-Comment", className)} {...labelling} {...rest}>
         {children}
       </article>
     </CommentContext>
   );
 }
 
-export interface CommentPartProps extends HTMLAttributes<HTMLElement> {
-  children?: ReactNode;
-  ref?: Ref<HTMLElement>;
-}
+export interface CommentHeaderProps extends PartProps<"header"> {}
 
 /**
  * The byline: a wrapping row for an Avatar, the Author and the Time. Give
  * the Avatar the author's `name` and `aria-hidden`, because the name is
  * printed beside it and assistive technology should hear it once.
  */
-function CommentHeader({ className, children, ref, ...rest }: CommentPartProps) {
+function CommentHeader({ className, children, ...rest }: CommentHeaderProps) {
   return (
-    <header ref={ref} className={cx("header", className)} {...rest}>
+    <header className={cx("header", className)} {...rest}>
       {children}
     </header>
   );
 }
 
-export interface CommentAuthorProps extends HTMLAttributes<HTMLElement> {
+export interface CommentAuthorProps extends PartProps<"span"> {
   /**
    * Render as a different element: `render={<a href="/people/priya">Priya
    * Natarajan</a>}` to link the name to a profile. The part's classes and
@@ -101,8 +84,6 @@ export interface CommentAuthorProps extends HTMLAttributes<HTMLElement> {
    * in either place.
    */
   render?: RenderProp<Record<string, unknown>>;
-  children?: ReactNode;
-  ref?: Ref<HTMLElement>;
 }
 
 /**
@@ -110,23 +91,12 @@ export interface CommentAuthorProps extends HTMLAttributes<HTMLElement> {
  * (yours if you pass one, the composition's otherwise) is what the
  * article's `aria-labelledby` points at, which is what names the comment.
  */
-function CommentAuthor({ render, className, children, ref, id, ...rest }: CommentAuthorProps) {
+function CommentAuthor({ render, className, children, id, ...rest }: CommentAuthorProps) {
   const ctx = useContext(CommentContext);
-  if (!ctx) {
-    throw new Error("Comment.Author must be rendered inside <Comment.Root>.");
-  }
-  const authorId = id ?? ctx.authorId;
-  const { registerAuthor } = ctx;
-  useEffect(() => registerAuthor(authorId), [registerAuthor, authorId]);
-  const props = {
-    ref,
-    className: cx("author", className),
-    children,
-    ...rest,
-    id: authorId,
-  };
+  const authorId = useNamePart(ctx, id);
+  const props = { className: cx("author", className), children, ...rest, id: authorId };
   if (render) return <>{renderWithProps(render, props)}</>;
-  return <span {...(props as HTMLAttributes<HTMLSpanElement> & { ref?: Ref<HTMLSpanElement> })} />;
+  return <span {...props} />;
 }
 
 export interface CommentTimeProps extends TimeProps {
@@ -149,15 +119,12 @@ function CommentTime({ className, ...rest }: CommentTimeProps) {
   );
 }
 
-export interface CommentDivProps extends HTMLAttributes<HTMLDivElement> {
-  children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
-}
+export interface CommentDivProps extends PartProps<"div"> {}
 
 /** What they said: rich text, paragraphs, links and code, held to the reading measure. */
-function CommentBody({ className, children, ref, ...rest }: CommentDivProps) {
+function CommentBody({ className, children, ...rest }: CommentDivProps) {
   return (
-    <div ref={ref} className={cx("body", className)} {...rest}>
+    <div className={cx("body", className)} {...rest}>
       {children}
     </div>
   );
@@ -172,47 +139,67 @@ function CommentBody({ className, children, ref, ...rest }: CommentDivProps) {
  * class is core's, so it works inside a core `Button` as well as a native
  * `button` or `a` placed here.
  */
-function CommentActions({ className, children, ref, ...rest }: CommentDivProps) {
+function CommentActions({ className, children, ...rest }: CommentDivProps) {
   return (
-    <div ref={ref} className={cx("actions", className)} {...rest}>
+    <div className={cx("actions", className)} {...rest}>
       {children}
     </div>
   );
 }
 
-export interface CommentRepliesProps extends HTMLAttributes<HTMLUListElement> {
+/** The words the replies list says on its own, each with an English default. */
+export interface CommentRepliesLabels {
+  /** The list's accessible name. @default "Replies" */
+  replies?: string;
+}
+
+export interface CommentRepliesProps extends PartProps<"ul"> {
+  /** The list's own words: `replies` names it. An `aria-label` or `aria-labelledby` you pass wins. */
+  labels?: CommentRepliesLabels;
   /** Reply parts, each holding a nested Comment.Root. */
   children?: ReactNode;
-  ref?: Ref<HTMLUListElement>;
 }
 
 /**
- * The replies: a `ul` named "Replies", each reply a `li` around its own
- * comment. Indented once, with a rule marking the thread; replies to
- * replies sit at the same level, because a thread that steps in at every
- * depth soon leaves no room for the words. Beyond one level, link to the
- * parent in the reply's text instead.
+ * The replies: a `ul` named "Replies" (or `labels.replies`), each reply a
+ * `li` around its own comment. Indented once, with a rule marking the
+ * thread; replies to replies sit at the same level, because a thread that
+ * steps in at every depth soon leaves no room for the words. Beyond one
+ * level, link to the parent in the reply's text instead.
  */
-function CommentReplies({ className, children, ref, ...rest }: CommentRepliesProps) {
+function CommentReplies({
+  labels,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
+  className,
+  children,
+  ...rest
+}: CommentRepliesProps) {
+  const name = ariaLabelledBy ? ariaLabel : (ariaLabel ?? labels?.replies ?? "Replies");
   return (
     // list-style: none drops list semantics in some browsers; role="list"
     // keeps the replies a list.
-    <ul ref={ref} role="list" className={cx("replies", className)} aria-label="Replies" {...rest}>
+    <ul
+      role="list"
+      className={cx("replies", className)}
+      aria-label={name}
+      aria-labelledby={ariaLabelledBy}
+      {...rest}
+    >
       {children}
     </ul>
   );
 }
 
-export interface CommentReplyProps extends LiHTMLAttributes<HTMLLIElement> {
+export interface CommentReplyProps extends PartProps<"li"> {
   /** A nested Comment.Root. */
   children?: ReactNode;
-  ref?: Ref<HTMLLIElement>;
 }
 
 /** One reply: the list item around a nested comment. */
-function CommentReply({ className, children, ref, ...rest }: CommentReplyProps) {
+function CommentReply({ className, children, ...rest }: CommentReplyProps) {
   return (
-    <li ref={ref} className={cx("reply", className)} {...rest}>
+    <li className={cx("reply", className)} {...rest}>
       {children}
     </li>
   );

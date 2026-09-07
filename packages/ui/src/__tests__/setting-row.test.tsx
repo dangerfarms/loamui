@@ -2,7 +2,7 @@ import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "vitest-axe";
-import { Fieldset, Radio, Select, SwitchControl } from "@loamui/core";
+import { Fieldset, Radio, Select, Switch } from "@loamui/core";
 import { SettingRow } from "../components/SettingRow/index";
 
 afterEach(cleanup);
@@ -21,7 +21,7 @@ describe("SettingRow", () => {
             <SettingRow.Description>A summary every Monday morning.</SettingRow.Description>
           </SettingRow.Text>
           <SettingRow.Control>
-            <SwitchControl name="digest" />
+            <Switch.Control name="digest" />
           </SettingRow.Control>
         </SettingRow.Root>
         <SettingRow.Root>
@@ -30,7 +30,7 @@ describe("SettingRow", () => {
             <SettingRow.Description>When someone names you in a comment.</SettingRow.Description>
           </SettingRow.Text>
           <SettingRow.Control>
-            <SwitchControl name="mentions" defaultChecked />
+            <Switch.Control name="mentions" defaultChecked />
           </SettingRow.Control>
         </SettingRow.Root>
       </Fieldset.Root>,
@@ -91,7 +91,7 @@ describe("SettingRow", () => {
           <SettingRow.Label>Two-step sign-in</SettingRow.Label>
         </SettingRow.Text>
         <SettingRow.Control>
-          <SwitchControl name="two-step" defaultChecked />
+          <Switch.Control name="two-step" defaultChecked />
         </SettingRow.Control>
         <SettingRow.Error>Add a phone number before turning this on</SettingRow.Error>
       </SettingRow.Root>,
@@ -111,7 +111,7 @@ describe("SettingRow", () => {
           <SettingRow.Label>Two-step sign-in</SettingRow.Label>
         </SettingRow.Text>
         <SettingRow.Control>
-          <SwitchControl name="two-step" defaultChecked />
+          <Switch.Control name="two-step" defaultChecked />
         </SettingRow.Control>
         <SettingRow.Error>{null}</SettingRow.Error>
       </SettingRow.Root>,
@@ -133,9 +133,9 @@ describe("SettingRow", () => {
             aria-labelledby="theme-label"
             aria-describedby="theme-description"
           >
-            <Radio name="theme" value="system" label="System" defaultChecked />
-            <Radio name="theme" value="light" label="Light" />
-            <Radio name="theme" value="dark" label="Dark" />
+            <Radio id="theme-system" name="theme" value="system" label="System" defaultChecked />
+            <Radio id="theme-light" name="theme" value="light" label="Light" />
+            <Radio id="theme-dark" name="theme" value="dark" label="Dark" />
           </Fieldset.Root>
         </SettingRow.Control>
       </SettingRow.Root>,
@@ -143,6 +143,10 @@ describe("SettingRow", () => {
     const group = screen.getByRole("radiogroup", { name: "Theme" });
     expect(group).toHaveAccessibleDescription("Follow the system, or pick one.");
     expect(screen.getByRole("radio", { name: "System" })).toBeChecked();
+    // Each radio keeps the id it was given; the row's Field would otherwise
+    // hand all three the control's id.
+    expect(screen.getByRole("radio", { name: "Light" })).toHaveAttribute("id", "theme-light");
+    expect(container.querySelectorAll("#theme")).toHaveLength(0);
 
     // The words are a span with the Label's id, not a label pointing at
     // nothing: a label cannot name a fieldset.
@@ -163,7 +167,7 @@ describe("SettingRow", () => {
           <SettingRow.Label>Email digest</SettingRow.Label>
         </SettingRow.Text>
         <SettingRow.Control>
-          <SwitchControl name="digest" />
+          <Switch.Control name="digest" />
         </SettingRow.Control>
       </SettingRow.Root>,
     );

@@ -1,10 +1,5 @@
 /*
- * A Time sizes nothing: the date takes the font of whatever it sits in, so
- * the same element reads as a byline under a heading and as a figure in a
- * table cell. It fixes only the figures, so a column of dates stays straight.
+ * A Time sizes nothing: the date takes the font of whatever it sits in, and
+ * its figures (lining, tabular) are the `time` element rule in elements.css,
+ * so plain markup gets them too. Nothing is left for the component to add.
  */
-@scope (.loam-Time) to ([class*="loam-"]) {
-  :scope {
-    font-variant-numeric: lining-nums tabular-nums;
-  }
-}

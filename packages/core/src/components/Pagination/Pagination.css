@@ -1,12 +1,9 @@
-@scope (.loam-Pagination) {
+/* Donut: the list hosts Buttons (the Links), which keep their own recipe. */
+@scope (.loam-Pagination) to ([class*="loam-"]) {
   :scope {
-    /* Derived control height (the Button anatomy, incl. 1px borders) —
-       keeps square min-width and the dots cell in step with the pages. */
+    /* The Button anatomy's height (incl. 1px borders), so the ellipsis cell
+       stands in step with the links. */
     --_control-h: calc(1.2 * var(--loam-text-sm) + 2 * var(--loam-space-sm) + 2px);
-  }
-
-  li {
-    margin-block: 0;
   }
 
   ul {
@@ -19,91 +16,29 @@
     padding: 0;
   }
 
-  /* The Button base recipe on the neutral text channel — the contrast
-     audit reads these weights and asserts they match Button.css. */
-  .control {
-    align-items: center;
-    background: light-dark(
-      color-mix(in oklab, var(--loam-color-fg), var(--loam-color-bg) 90%),
-      color-mix(in oklab, var(--loam-color-fg), var(--loam-color-bg) 75%)
-    );
-    border: 1px solid color-mix(in oklab, var(--loam-color-fg), var(--loam-color-bg) 80%);
-    border-radius: var(--loam-radius-md);
-    box-shadow: var(--loam-shadow-raised);
-    color: light-dark(
-      color-mix(in oklab, var(--loam-color-fg) 70%, oklch(0% 0 0deg)),
-      color-mix(in oklab, var(--loam-color-fg) 55%, oklch(100% 0 0deg))
-    );
-    display: inline flex;
-    font-family: inherit;
-    font-size: var(--loam-text-sm);
-    font-weight: 600;
-    justify-content: center;
-    line-height: 1.2;
-    min-inline-size: var(--_control-h);
-    padding-block: var(--loam-space-sm);
-    padding-inline: var(--loam-space-sm);
-    text-decoration: none;
+  li {
+    margin-block: 0;
 
-    &:active:not([aria-current="page"], [data-disabled]) {
-      box-shadow: var(--loam-shadow-sm);
+    /* The current page is the ARIA state, detected rather than duplicated:
+       the item declares the primary context and its Button answers it. */
+    &:has(> [aria-current="page"]) {
+      --loam-context: primary;
     }
 
-    /* The current page is the ARIA state, detected rather than duplicated
-       as a data attribute. */
-    &[aria-current="page"] {
-      background: var(--loam-color-primary-strong);
-      border-color: var(--loam-color-primary);
-      color: var(--loam-color-on-strong);
-      cursor: default;
+    /* An unavailable direction keeps its space and drops out of reach. */
+    &:has(> [data-disabled]) {
+      opacity: var(--loam-disabled-opacity);
+      pointer-events: none;
     }
 
-    &[data-disabled] {
+    &.ellipsis {
+      align-items: center;
+      block-size: var(--_control-h);
       color: var(--loam-color-fg-dim);
-      opacity: 0.45;
-    }
-
-    svg {
-      block-size: 1.125em;
-      inline-size: 1.125em;
-    }
-
-    @media (prefers-reduced-motion: no-preference) {
-      transition:
-        background var(--loam-duration-sm) var(--loam-ease),
-        border-color var(--loam-duration-sm) var(--loam-ease),
-        color var(--loam-duration-sm) var(--loam-ease),
-        box-shadow var(--loam-duration-md) var(--loam-ease);
-    }
-
-    @media (hover: hover) {
-      &:hover:not([aria-current="page"], [data-disabled]) {
-        background: light-dark(
-          color-mix(in oklab, var(--loam-color-fg), var(--loam-color-bg) 85%),
-          color-mix(in oklab, var(--loam-color-fg), var(--loam-color-bg) 70%)
-        );
-      }
-    }
-  }
-
-  span.dots {
-    align-items: center;
-    block-size: var(--_control-h);
-    color: var(--loam-color-fg-dim);
-    display: inline flex;
-    justify-content: center;
-    min-inline-size: var(--_control-h);
-    user-select: none;
-  }
-
-  /* Forced colors: the active page's brand fill is stripped, leaving it
-     identical to its neighbours. */
-  @media (forced-colors: active) {
-    .control[aria-current="page"] {
-      background: Highlight;
-      border-color: Highlight;
-      color: HighlightText;
-      forced-color-adjust: none;
+      display: inline flex;
+      justify-content: center;
+      min-inline-size: var(--_control-h);
+      user-select: none;
     }
   }
 }

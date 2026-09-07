@@ -25,7 +25,7 @@ const taskList: Composition = {
     {
       name: "TaskList.Item",
       description:
-        "One task, an li: the title and description beside the status. It mints the ids that tie the description and the status to the title, each only while that part is mounted.",
+        "One task, an li: the title and description beside the status. It mints the ids that tie the description and the status to the title; both are referenced in the first render, so the server HTML is already described, and after mount each reference is kept only while its part is present.",
     },
     {
       name: "TaskList.Title",

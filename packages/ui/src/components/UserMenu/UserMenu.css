@@ -2,9 +2,11 @@
    header. Menu's parts are left as core styles them; these rules cover only
    the elements this composition renders itself: the span around the Menu,
    the button it puts in place of the default trigger and the header block
-   at the top of the popup. Each is its own scope root, because the core
-   Menu and its popup sit between them and carry no class of the
-   composition's. */
+   at the top of the popup. Three scope roots, deliberately, rather than
+   one: the core Menu.Root sits between the span and the trigger, and the
+   core Menu.Popup between the trigger and the header, and each carries a
+   loam- class of its own, so one donut from the span would stop at the
+   Menu and reach neither. */
 
 /* The wrapper is one inline box, the shape of the Menu.Root inside it. */
 @scope (.loam-UserMenu) {
@@ -47,12 +49,12 @@
     padding-inline: calc(var(--loam-space-xs) + var(--loam-space-sm));
   }
 
-  strong {
+  strong.name {
     color: var(--loam-color-fg-strong);
     font-size: var(--loam-text-sm);
   }
 
-  p {
+  p.email {
     color: var(--loam-color-fg-muted);
     font-size: var(--loam-text-sm);
     margin: 0;

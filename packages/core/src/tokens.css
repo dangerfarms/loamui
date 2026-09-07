@@ -201,6 +201,14 @@
     --loam-ease: cubic-bezier(0.4, 0, 0.2, 1);
     --loam-ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
 
+    /* Depth — one ladder for everything that floats, so no component picks
+       its own number. popup: menus, popovers, tooltips; overlay: dialogs and
+       drawers; toast: notifications above dialogs; skip-link: above all. */
+    --loam-z-popup: 40;
+    --loam-z-overlay: 50;
+    --loam-z-toast: 100;
+    --loam-z-skip-link: 110;
+
     /* Fixed interaction constants: chosen once, not derived. Ring width pairs
        with the derived --loam-color-ring; disabled opacity may be remapped by a
        component locally. */

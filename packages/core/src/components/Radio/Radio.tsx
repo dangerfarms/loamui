@@ -1,23 +1,27 @@
 "use client";
 
 import { useContext, useId } from "react";
-import type { ChangeEvent, InputHTMLAttributes, ReactNode, Ref } from "react";
+import type { ChangeEvent, ReactNode } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 import { useFieldControlProps } from "../Field/Field";
 import { RadioGroupContext } from "./group-context";
 
-export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {
+export interface RadioProps extends Omit<PartProps<"input">, "size" | "type"> {
   /** Label rendered next to the control. */
   label?: ReactNode;
   /** Helper text rendered under the label. */
   description?: ReactNode;
-  /** Root wrapper class. */
-  wrapperClassName?: string;
-  ref?: Ref<HTMLInputElement>;
+  /**
+   * Props for the labelled row (`label.loam-Radio-wrapper`), which exists
+   * only with a `label` or `description`. `className`, `style`, `ref` and
+   * every other prop land on the `<input>` itself.
+   */
+  wrapperProps?: Omit<PartProps<"label">, "children" | "htmlFor">;
 }
 
 /** The bare radio input, minus any label. */
-export type RadioControlProps = Omit<RadioProps, "label" | "description" | "wrapperClassName">;
+export type RadioControlProps = Omit<RadioProps, "label" | "description" | "wrapperProps">;
 
 /**
  * A plain `<input type="radio">` — the elements layer paints it with
@@ -27,7 +31,6 @@ export type RadioControlProps = Omit<RadioProps, "label" | "description" | "wrap
 function RadioControl({
   id,
   className,
-  disabled,
   "aria-describedby": ariaDescribedby,
   ref,
   ...rest
@@ -65,7 +68,6 @@ function RadioControl({
       id={resolvedId}
       type="radio"
       className={cx("loam-Radio", className)}
-      disabled={disabled}
       {...rest}
       aria-describedby={describedBy}
       name={name}
@@ -82,35 +84,32 @@ function RadioControl({
  * the bare input (it self-wires inside a `Field`). Usually lives inside a
  * {@link RadioGroup}.
  */
-export function Radio({
+function RadioLabelled({
   label,
   description,
-  disabled,
   id,
-  wrapperClassName,
+  wrapperProps,
+  "aria-describedby": ariaDescribedby,
   ref,
   ...control
 }: RadioProps) {
   const autoId = useId();
+  const field = useFieldControlProps();
 
   if (!label && !description) {
-    return <RadioControl ref={ref} id={id} disabled={disabled} {...control} />;
+    return <RadioControl ref={ref} id={id} aria-describedby={ariaDescribedby} {...control} />;
   }
 
-  const inputId = id ?? autoId;
+  const inputId = id ?? field.id ?? autoId;
   const descId = description ? `${inputId}-desc` : undefined;
+  const { className: wrapperClassName, ...wrapper } = wrapperProps ?? {};
 
   return (
-    <label
-      className={cx("loam-Radio-wrapper", wrapperClassName)}
-      htmlFor={inputId}
-      data-disabled={disabled || undefined}
-    >
+    <label className={cx("loam-Radio-wrapper", wrapperClassName)} {...wrapper} htmlFor={inputId}>
       <RadioControl
         ref={ref}
         id={inputId}
-        disabled={disabled}
-        aria-describedby={descId}
+        aria-describedby={cx(descId, ariaDescribedby ?? field["aria-describedby"]) || undefined}
         {...control}
       />
       <span className="body">
@@ -125,4 +124,7 @@ export function Radio({
   );
 }
 
-export { RadioControl };
+export const Radio = Object.assign(RadioLabelled, {
+  /** The bare input, for composing inside a `Field.Label` of its own. */
+  Control: RadioControl,
+});

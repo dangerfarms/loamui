@@ -10,7 +10,7 @@ const summaryList: Composition = {
   category: "Data display",
   description:
     "Label/value rows, each with an optional note and action: the answers about to be submitted, an order's details and its money lines, the facts of an account.",
-  lead: "The root is a description list, so each label and its value are associated and the pair reads as one thing. The action is a real link in the row and its accessible name says what it changes, Change name rather than Change, because a page of identical Change links tells a screen reader user nothing about where each goes. A row with no action keeps the column so values align; a note explains a value on the page rather than in a tooltip; the item that sums the others is marked total and set apart by a rule and weight while its label says so; a missing value is written, Not provided, rather than left blank; long values wrap and nothing truncates.",
+  lead: "The root is a description list, so each label and its value are associated and the pair reads as one thing. The action is a real link in the row and its accessible name says what it changes, Change name rather than Change, because a page of identical Change links tells a screen reader user nothing about where each goes. A row with no action keeps the column so values align; a note explains a value on the page rather than in a tooltip; the item that sums the others is a Total, set apart by a rule and weight while its label says so; a missing value is written, Not provided, rather than left blank; long values wrap and nothing truncates.",
   importLine: `import { SummaryList } from "@loamui/ui";`,
   parts: [
     {
@@ -21,7 +21,12 @@ const summaryList: Composition = {
     {
       name: "SummaryList.Item",
       description:
-        "One pair: a div grouping a Label, its Value and, optionally, a Note and its Actions. Give the item that sums the others className total.",
+        "One pair: a div grouping a Label, its Value and, optionally, a Note and its Actions.",
+    },
+    {
+      name: "SummaryList.Total",
+      description:
+        "The item that sums the ones above it: an Item set apart by a heavier rule, a little air and a heavier weight on its label and value. Its Label still says Total, so nothing is hidden that the page does not show. Place it last.",
     },
     {
       name: "SummaryList.Label",
@@ -243,7 +248,7 @@ const summaryList: Composition = {
     {
       title: "Order summary",
       description:
-        "The money lines of a checkout are a summary list, not a table: two columns of label and amount are pairs, not a grid to compare across. Every amount is a core Price, so the figures are lining and tabular and the number is machine-readable; the discount is negative and written with its minus, so a reader who sees it knows it was taken off. The delivery estimate is a Note under its amount, on the page rather than in a tooltip. The total is an Item with className total, heavier under a stronger rule, and its label says Total, so nothing is hidden that the page does not show. The delivery can still be changed, so it has an action named for it. The buttons beneath are your own row of core Buttons, the main one in a primary region.",
+        "The money lines of a checkout are a summary list, not a table: two columns of label and amount are pairs, not a grid to compare across. Every amount is a core Price, so the figures are lining and tabular and the number is machine-readable; the discount is negative and written with its minus, so a reader who sees it knows it was taken off. The delivery estimate is a Note under its amount, on the page rather than in a tooltip. The total is a SummaryList.Total, heavier under a stronger rule, and its label says Total, so nothing is hidden that the page does not show. The delivery can still be changed, so it has an action named for it. The buttons beneath are your own row of core Buttons, the main one in a primary region.",
       code: `<h2 id="order">Your order</h2>
 <SummaryList.Root aria-labelledby="order">
   <SummaryList.Item>
@@ -268,13 +273,13 @@ const summaryList: Composition = {
       <Price value={-5} currency="GBP" />
     </SummaryList.Value>
   </SummaryList.Item>
-  <SummaryList.Item className="total">
+  <SummaryList.Total>
     <SummaryList.Label>Total</SummaryList.Label>
     <SummaryList.Value>
       <Price value={41.49} currency="GBP" />
     </SummaryList.Value>
     <SummaryList.Note>Includes VAT at 20%</SummaryList.Note>
-  </SummaryList.Item>
+  </SummaryList.Total>
 </SummaryList.Root>
 <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--loam-space-sm)", marginBlockStart: "var(--loam-space-lg)" }}>
   <span style={{ "--loam-context": "primary" }}>
@@ -310,13 +315,13 @@ const summaryList: Composition = {
                 <Price value={-5} currency="GBP" />
               </SummaryList.Value>
             </SummaryList.Item>
-            <SummaryList.Item className="total">
+            <SummaryList.Total>
               <SummaryList.Label>Total</SummaryList.Label>
               <SummaryList.Value>
                 <Price value={41.49} currency="GBP" />
               </SummaryList.Value>
               <SummaryList.Note>Includes VAT at 20%</SummaryList.Note>
-            </SummaryList.Item>
+            </SummaryList.Total>
           </SummaryList.Root>
           <div
             style={{

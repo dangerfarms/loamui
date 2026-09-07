@@ -1,7 +1,8 @@
-import { Avatar, AvatarGroup } from "@loamui/core";
+import { Avatar } from "@loamui/core";
 import type { CSSProperties } from "react";
 import type { ComponentContent } from "@/renderer/types";
 import { Example } from "@/renderer/Example";
+import { AvatarGroupDemo } from "./avatar.client";
 
 const IMG =
   "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=128&h=128&fit=crop&crop=faces";
@@ -9,7 +10,7 @@ const IMG =
 const doc: ComponentContent = {
   slug: "avatar",
   lead: "An image, initials, or fallback glyph representing a user.",
-  importLine: `import { Avatar, AvatarGroup } from "@loamui/core";`,
+  importLine: `import { Avatar } from "@loamui/core";`,
   demos: [
     {
       title: "Image",
@@ -50,27 +51,35 @@ const doc: ComponentContent = {
       render: () => <Avatar />,
     },
     {
+      title: "Size",
+      description:
+        "There is no size prop. The public --loam-avatar-size property sets the diameter per instance or on a region, and the initials follow it.",
+      code: `<Avatar name="Jane Doe" style={{ "--loam-avatar-size": "1.5rem" }} />
+<Avatar name="Jane Doe" />
+<Avatar name="Jane Doe" style={{ "--loam-avatar-size": "4rem" }} />`,
+      render: () => (
+        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+          <Avatar name="Jane Doe" style={{ "--loam-avatar-size": "1.5rem" } as CSSProperties} />
+          <Avatar name="Jane Doe" />
+          <Avatar name="Jane Doe" style={{ "--loam-avatar-size": "4rem" } as CSSProperties} />
+        </div>
+      ),
+    },
+    {
       title: "Group",
-      description: "AvatarGroup overlaps children with a surface-coloured ring.",
-      code: `<AvatarGroup>
+      description:
+        "Avatar.Group is a list: each avatar is an item, overlapped and ringed in the surface colour, and more adds the overflow count as a final avatar named by labels.more.",
+      code: `<Avatar.Group more={5} labels={{ more: (n) => \`\${n} more people\` }}>
   <Avatar name="Jane Doe" />
   <Avatar name="Sam Reed" />
   <Avatar name="Amara Okafor" />
-  <Avatar name="+5" aria-label="5 more people" />
-</AvatarGroup>`,
-      render: () => (
-        <AvatarGroup>
-          <Avatar name="Jane Doe" />
-          <Avatar name="Sam Reed" />
-          <Avatar name="Amara Okafor" />
-          <Avatar name="+5" aria-label="5 more people" />
-        </AvatarGroup>
-      ),
+</Avatar.Group>`,
+      render: () => <AvatarGroupDemo />,
     },
   ],
   whenToUse: [
     "To identify a person next to something they did: a comment, an assignee, a row in a member list.",
-    "With AvatarGroup, to show a set of participants compactly where listing every name would not fit.",
+    "With Avatar.Group, to show a set of participants compactly where listing every name would not fit.",
   ],
   whenNotToUse: [
     "For arbitrary images. The image is cover-cropped into a fixed square or circle, which is right for faces and wrong for logos, screenshots or product photos; use a plain <img>.",
@@ -107,7 +116,8 @@ const doc: ComponentContent = {
     {
       name: "name",
       type: "string",
-      description: "Person's name; used for initials and as image alt.",
+      description:
+        "Person's name; used for initials (the first grapheme of the first and last words) and as image alt.",
     },
     {
       name: "children",
@@ -122,9 +132,36 @@ const doc: ComponentContent = {
   ],
   parts: [
     {
-      name: "AvatarGroup",
+      name: "Avatar.Group",
       description:
-        "Overlaps a row of avatars with a surface-coloured ring; all native <div> props are forwarded.",
+        'A <ul role="list"> of avatars, each child an item, overlapped with a surface-coloured ring; all native <ul> props are forwarded.',
+      props: [
+        {
+          name: "more",
+          type: "number",
+          description: "How many more people than avatars shown; rendered as a final +n avatar.",
+        },
+        {
+          name: "labels",
+          type: "{ more?: (n: number) => string }",
+          default: "(n) => `${n} more`",
+          description: "The overflow avatar's accessible name.",
+        },
+      ],
+    },
+  ],
+  cssProps: [
+    {
+      name: "--loam-avatar-size",
+      syntax: "CSS length",
+      default: "2.5rem",
+      description: "The diameter; set per instance or on a region.",
+    },
+    {
+      name: "--loam-avatar-overlap",
+      syntax: "CSS length",
+      default: "0.5rem",
+      description: "How far each item in an Avatar.Group overlaps the one before.",
     },
   ],
   contextual: true,

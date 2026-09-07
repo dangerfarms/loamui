@@ -11,18 +11,18 @@ const tagList: Composition = {
   name: "Tag list",
   category: "Blog",
   description: "The topics attached to something, each a link to everything that shares it.",
-  lead: "A tag looks like a Badge but is not one: a Badge is a span and never interactive, and a tag leads somewhere, so each tag is a link drawn as the same pill, named by its own text. The set is a ul named Tags, with role list restored because the markers are gone, so a screen reader announces the count before the first tag; the current tag on its own page is set heavier and underlined rather than told apart by colour; every target is floored at 24px; and long lists wrap rather than hiding tags behind a count, because a hidden tag is one the reader cannot follow.",
+  lead: "A tag looks like a Badge because it is one: core's Badge, rendered as a link through its render when the tag leads somewhere and as the plain span when it does not, so every tag is drawn as core draws a Badge and takes a context region's tint the same way. The set is a ul named Tags, with role list restored because the markers are gone, so a screen reader announces the count before the first tag; the current tag on its own page is ringed rather than told apart by colour; a tag is a target, so the Badge is the large size, which clears the 24px floor; and long lists wrap rather than hiding tags behind a count, because a hidden tag is one the reader cannot follow.",
   importLine: `import { TagList } from "@loamui/ui";`,
   parts: [
     {
       name: "TagList.Root",
       description:
-        'A ul with role list, named "Tags" unless you pass aria-label, or aria-labelledby pointing at a heading. Declares its own container and wraps its items.',
+        'A ul with role list, named by labels.list ("Tags" by default) unless you pass aria-label, or aria-labelledby pointing at a heading. Declares its own container and wraps its items.',
     },
     {
       name: "TagList.Item",
       description:
-        "One tag: an li holding a link named by its text when it has an href, or a render for a router's link; a plain span in the same pill when it has neither. The props are the link's: rel, target and aria-current=\"page\" on the tag's own page land on the a, not the li.",
+        "One tag: an li holding a core Badge, rendered as a link named by its text when it has an href, or through a render for a router's link; the plain span Badge when it has neither. The props are the link's: rel, target and aria-current=\"page\" on the tag's own page land on the Badge, not the li.",
     },
   ],
   demos: [
@@ -50,7 +50,7 @@ const tagList: Composition = {
     {
       title: "With the current tag",
       description:
-        'On the Accessibility tag\'s own page, that tag carries aria-current="page": heavier and underlined, so it reads as current without relying on colour, and still a link, since the page it points to is this one.',
+        'On the Accessibility tag\'s own page, that tag carries aria-current="page": the item around it is ringed, so it reads as current without relying on colour and the ring survives forced colours, and it is still a link, since the page it points to is this one.',
       code: `<TagList.Root>
   <TagList.Item href="/tags/css">CSS</TagList.Item>
   <TagList.Item href="/tags/accessibility" aria-current="page">
@@ -71,7 +71,7 @@ const tagList: Composition = {
     {
       title: "In a context",
       description:
-        "Inside a success region the pills take the status colour through the same tint recipe as a Badge, links and plain tags alike. The last tag has no href and is plain text in the same pill.",
+        "Inside a success region the pills take the status colour, because they are Badges and a Badge answers the region; links and plain tags alike. The last tag has no href and is the plain span Badge.",
       code: `<div style={{ "--loam-context": "success" }}>
   <TagList.Root aria-label="Categories">
     <TagList.Item href="/categories/shipped">Shipped</TagList.Item>

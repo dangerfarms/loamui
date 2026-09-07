@@ -133,11 +133,15 @@ The floating panel (role="dialog", popover attribute); native <div> props are fo
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `position` | `"bottom" \| "top"` | `"bottom"` | Which side of the trigger the panel opens toward. |
+| `side` | `"bottom" \| "top"` | `"bottom"` | Which side of the trigger the panel opens toward. |
 
 ### Popover.Title
 
 Optional heading that labels the popup for assistive technology; native heading props are forwarded.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `render` | `element \| (props) => node` | — | Substitute the heading element so its level follows the page (render={<h3 />}); defaults to an <h2>. |
 
 ### Popover.Description
 
@@ -146,4 +150,10 @@ Optional supporting text wired via aria-describedby; native <p> props are forwar
 ### Popover.Close
 
 A button that closes the popup from inside; native <button> props are forwarded.
+
+## Custom properties
+
+| Property | Syntax | Default | Description |
+| --- | --- | --- | --- |
+| `--loam-popover-size` | `CSS length` | `20rem` | The panel's widest extent; content sizes it between a floor derived from this and the cap. Never wider than the viewport. |
 

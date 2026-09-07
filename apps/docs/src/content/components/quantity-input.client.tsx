@@ -35,8 +35,7 @@ export function QuantityInputStepDemo() {
         defaultValue={10}
         min={10}
         step={10}
-        fewerLabel="One pack fewer"
-        moreLabel="One pack more"
+        labels={{ decrement: "One pack fewer", increment: "One pack more" }}
       />
     </Field.Root>
   );

@@ -13,7 +13,7 @@ One visible panel from a related set, chosen from a tab list in the same view.
 ## Import
 
 ```tsx
-import { Tabs, TabsList, TabsTab, TabsPanel } from "@loamui/core";
+import { Tabs } from "@loamui/core";
 ```
 
 ## Usage
@@ -23,16 +23,16 @@ import { Tabs, TabsList, TabsTab, TabsPanel } from "@loamui/core";
 Uncontrolled via defaultValue. Arrow keys move between tabs.
 
 ```tsx
-<Tabs defaultValue="account">
-  <TabsList>
-    <TabsTab value="account">Account</TabsTab>
-    <TabsTab value="security">Security</TabsTab>
-    <TabsTab value="notifications">Notifications</TabsTab>
-  </TabsList>
-  <TabsPanel value="account">Update your name and email address.</TabsPanel>
-  <TabsPanel value="security">Change your password and enable 2FA.</TabsPanel>
-  <TabsPanel value="notifications">Choose how you want to be notified.</TabsPanel>
-</Tabs>
+<Tabs.Root defaultValue="account">
+  <Tabs.List>
+    <Tabs.Tab value="account">Account</Tabs.Tab>
+    <Tabs.Tab value="security">Security</Tabs.Tab>
+    <Tabs.Tab value="notifications">Notifications</Tabs.Tab>
+  </Tabs.List>
+  <Tabs.Panel value="account">Update your name and email address.</Tabs.Panel>
+  <Tabs.Panel value="security">Change your password and enable 2FA.</Tabs.Panel>
+  <Tabs.Panel value="notifications">Choose how you want to be notified.</Tabs.Panel>
+</Tabs.Root>
 ```
 
 ### With icons (composed as children)
@@ -40,22 +40,22 @@ Uncontrolled via defaultValue. Arrow keys move between tabs.
 No leftSection prop: an svg child is detected via :has(svg) and gets a gap and label-relative sizing, the same detection Button uses. Compose the icon before the label and mark it aria-hidden.
 
 ```tsx
-<Tabs defaultValue="files">
-  <TabsList>
-    <TabsTab value="files">
+<Tabs.Root defaultValue="files">
+  <Tabs.List>
+    <Tabs.Tab value="files">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden>
         <path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0
           2-2V8l-6-6H6Zm7 1.5L18.5 9H13V3.5Z" />
       </svg>
       Files
-    </TabsTab>
-    <TabsTab value="team"><svg>…</svg> Team</TabsTab>
-    <TabsTab value="settings"><svg>…</svg> Settings</TabsTab>
-  </TabsList>
-  <TabsPanel value="files">All your documents in one place.</TabsPanel>
-  <TabsPanel value="team">Invite teammates and manage roles.</TabsPanel>
-  <TabsPanel value="settings">Configure your workspace preferences.</TabsPanel>
-</Tabs>
+    </Tabs.Tab>
+    <Tabs.Tab value="team"><svg>…</svg> Team</Tabs.Tab>
+    <Tabs.Tab value="settings"><svg>…</svg> Settings</Tabs.Tab>
+  </Tabs.List>
+  <Tabs.Panel value="files">All your documents in one place.</Tabs.Panel>
+  <Tabs.Panel value="team">Invite teammates and manage roles.</Tabs.Panel>
+  <Tabs.Panel value="settings">Configure your workspace preferences.</Tabs.Panel>
+</Tabs.Root>
 ```
 
 ### Disabled tab
@@ -63,16 +63,16 @@ No leftSection prop: an svg child is detected via :has(svg) and gets a gap and l
 A disabled tab is skipped by keyboard navigation.
 
 ```tsx
-<Tabs defaultValue="overview">
-  <TabsList>
-    <TabsTab value="overview">Overview</TabsTab>
-    <TabsTab value="reports">Reports</TabsTab>
-    <TabsTab value="billing" disabled>Billing</TabsTab>
-  </TabsList>
-  <TabsPanel value="overview">Everything at a glance.</TabsPanel>
-  <TabsPanel value="reports">Usage for the last month.</TabsPanel>
-  <TabsPanel value="billing">Upgrade to unlock billing.</TabsPanel>
-</Tabs>
+<Tabs.Root defaultValue="overview">
+  <Tabs.List>
+    <Tabs.Tab value="overview">Overview</Tabs.Tab>
+    <Tabs.Tab value="reports">Reports</Tabs.Tab>
+    <Tabs.Tab value="billing" disabled>Billing</Tabs.Tab>
+  </Tabs.List>
+  <Tabs.Panel value="overview">Everything at a glance.</Tabs.Panel>
+  <Tabs.Panel value="reports">Usage for the last month.</Tabs.Panel>
+  <Tabs.Panel value="billing">Upgrade to unlock billing.</Tabs.Panel>
+</Tabs.Root>
 ```
 
 ## When to use it
@@ -109,22 +109,23 @@ Switching a tab updates React state, not the URL; reloading returns to defaultVa
 - The wiring is generated from one id: role="tablist"/"tab"/"tabpanel" with aria-selected, aria-controls on each tab and aria-labelledby on each panel, so assistive technology announces which tab is active and what it controls.
 - Each panel has tabIndex 0, so a panel whose content contains no focusable element can still be reached and scrolled by keyboard.
 
-## Props
+## Parts
+
+### Tabs.Root
+
+Owns the active value (controlled or uncontrolled) and renders the wrapper; all native <div> props are forwarded.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `defaultValue` | `string` | — | Required initial tab value for uncontrolled usage. Omit only when value is supplied. |
 | `value` | `string` | — | Controlled active tab value. Required when defaultValue is omitted. |
 | `onChange` | `(value: string) => void` | — | Called with the new value when the active tab changes. |
-| `...others` | `HTMLAttributes<HTMLDivElement>` | — | All native <div> props are forwarded. |
 
-## Parts
-
-### TabsList
+### Tabs.List
 
 The tab strip (role="tablist") that owns the roving tabindex and arrow-key behaviour; all native <div> props are forwarded.
 
-### TabsTab
+### Tabs.Tab
 
 One tab button; all native <button> props are forwarded.
 
@@ -133,7 +134,7 @@ One tab button; all native <button> props are forwarded.
 | `value` | `string` | — | Unique value linking this tab to its panel (required). |
 | `disabled` | `boolean` | — | Disable the tab and skip it in keyboard navigation. |
 
-### TabsPanel
+### Tabs.Panel
 
 The content shown while its tab is active; all native <div> props are forwarded.
 

@@ -37,3 +37,72 @@ describe("Select ↔ Field wiring", () => {
     expect(screen.getByRole("alert")).toHaveTextContent("Select a country");
   });
 });
+
+describe("Select options", () => {
+  it("starts on a disabled empty option when one leads the children, else on the first option", () => {
+    render(
+      <>
+        <Select aria-label="Country">
+          <option value="" disabled>
+            Pick a country
+          </option>
+          <option value="ca">Canada</option>
+          <option value="uk">United Kingdom</option>
+        </Select>
+        <Select aria-label="Instrument">
+          <option>Violin</option>
+          <option>Cello</option>
+        </Select>
+      </>,
+    );
+    const country = screen.getByLabelText("Country") as HTMLSelectElement;
+    expect(country.value).toBe("");
+    expect(country.selectedOptions[0]).toHaveTextContent("Pick a country");
+    expect(country.selectedOptions[0]).toBeDisabled();
+    const instrument = screen.getByLabelText("Instrument") as HTMLSelectElement;
+    expect(instrument.value).toBe("Violin");
+  });
+
+  it("honours a defaultValue and a controlled value over the prompt", () => {
+    render(
+      <>
+        <Select aria-label="Country" defaultValue="uk">
+          <option value="" disabled>
+            Pick a country
+          </option>
+          <option value="ca">Canada</option>
+          <option value="uk">United Kingdom</option>
+        </Select>
+        <Select aria-label="Controlled" value="ca" onChange={() => {}}>
+          <option value="" disabled>
+            Pick a country
+          </option>
+          <option value="ca">Canada</option>
+        </Select>
+      </>,
+    );
+    expect((screen.getByLabelText("Country") as HTMLSelectElement).value).toBe("uk");
+    expect((screen.getByLabelText("Controlled") as HTMLSelectElement).value).toBe("ca");
+  });
+
+  it("lands className and ref on the select and wrapperProps on the box", () => {
+    let node: HTMLSelectElement | null = null;
+    const { container } = render(
+      <Select
+        aria-label="Country"
+        className="mine"
+        ref={(el) => {
+          node = el;
+        }}
+        wrapperProps={{ className: "box", id: "box" }}
+      >
+        <option>UK</option>
+      </Select>,
+    );
+    const select = screen.getByLabelText("Country");
+    expect(node).toBe(select);
+    expect(select).toHaveClass("mine");
+    expect(container.querySelector("#box")).toHaveClass("loam-Select-field", "box");
+    expect(container.querySelector("#box")).not.toHaveAttribute("data-disabled");
+  });
+});

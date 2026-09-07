@@ -53,7 +53,7 @@ const meta = {
       description: {
         component:
           "A list of actions opened from a trigger, composed from parts " +
-          "(Root, Trigger, Popup, Item, Separator, Group). The Popup uses the " +
+          "(Root, Trigger, Popup, Item, CheckboxItem, RadioGroup, RadioItem, Separator, Group). The Popup uses the " +
           "native `popover` attribute with CSS anchor positioning (and a " +
           "wrapper-anchored fallback), layered with the APG menu-button " +
           "pattern: arrow keys open and rove focus, typing jumps to a match, " +
@@ -145,6 +145,33 @@ export const DangerContext: Story = {
             <Menu.GroupLabel>Danger zone</Menu.GroupLabel>
             <Menu.Item onClick={() => {}}>Delete workspace</Menu.Item>
           </Menu.Group>
+        </Menu.Popup>
+      </Menu.Root>
+    </div>
+  ),
+};
+
+/**
+ * Settings that live in the menu: `CheckboxItem` toggles (role
+ * menuitemcheckbox), a `RadioGroup` of `RadioItem`s picks one (role
+ * menuitemradio). Both keep the menu open on activation, since a setting is
+ * usually one of several adjusted in one visit; the glyph is CSS.
+ */
+export const CheckableItems: Story = {
+  render: () => (
+    <div style={{ display: "flex", justifyContent: "center", padding: "4rem" }}>
+      <Menu.Root>
+        <Menu.Trigger>View</Menu.Trigger>
+        <Menu.Popup>
+          <Menu.CheckboxItem defaultChecked>Show hidden files</Menu.CheckboxItem>
+          <Menu.CheckboxItem>Show file extensions</Menu.CheckboxItem>
+          <Menu.Separator />
+          <Menu.RadioGroup defaultValue="name">
+            <Menu.GroupLabel>Sort by</Menu.GroupLabel>
+            <Menu.RadioItem value="name">Name</Menu.RadioItem>
+            <Menu.RadioItem value="date">Date modified</Menu.RadioItem>
+            <Menu.RadioItem value="size">Size</Menu.RadioItem>
+          </Menu.RadioGroup>
         </Menu.Popup>
       </Menu.Root>
     </div>

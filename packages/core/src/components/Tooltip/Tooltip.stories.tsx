@@ -35,7 +35,7 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = {};
 
 /** The bubble can point at any of the four sides of its target. */
-export const Positions: Story = {
+export const Sides: Story = {
   render: () => (
     <div
       style={{
@@ -46,11 +46,11 @@ export const Positions: Story = {
         padding: "3rem",
       }}
     >
-      {(["top", "bottom", "left", "right"] as const).map((position) => (
-        <Tooltip.Root key={position} delay={0}>
-          <Tooltip.Trigger>{position}</Tooltip.Trigger>
-          <Tooltip.Popup position={position}>
-            {position} <Tooltip.Arrow />
+      {(["top", "bottom", "left", "right"] as const).map((side) => (
+        <Tooltip.Root key={side} delay={0}>
+          <Tooltip.Trigger>{side}</Tooltip.Trigger>
+          <Tooltip.Popup side={side}>
+            {side} <Tooltip.Arrow />
           </Tooltip.Popup>
         </Tooltip.Root>
       ))}
@@ -117,7 +117,7 @@ export const ProviderGroup: Story = {
 
 /**
  * Forced flip: the trigger sits at the viewport's top edge while requesting
- * `position="top"`, so `position-try` flips the bubble below — and in
+ * `side="top"`, so `position-try` flips the bubble below — and in
  * browsers with anchored container queries (Chrome 143+) the arrow follows,
  * moving to the bubble's top edge and pointing back up at the trigger.
  */
@@ -135,7 +135,7 @@ export const FlipsAtViewportEdge: Story = {
       >
         <Tooltip.Root defaultOpen>
           <Tooltip.Trigger>Near the top edge</Tooltip.Trigger>
-          <Tooltip.Popup position="top">
+          <Tooltip.Popup side="top">
             Flipped below — arrow points up <Tooltip.Arrow />
           </Tooltip.Popup>
         </Tooltip.Root>

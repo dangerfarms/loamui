@@ -1,21 +1,38 @@
-@scope (.loam-Select-field) {
+/* The select keeps the field look elements.css gives every textual
+   control (surface, border, radius, padding, the focus ring); this scope
+   adds the states and the chevron. A select cannot host a pseudo-element,
+   and a mask-image would mask the control itself, text included, so the
+   chevron is a sibling svg and the box exists to position it and for
+   nothing else. */
+@scope (.loam-Select-field) to ([class*="loam-"]) {
   :scope {
-    align-items: center;
-    background: var(--loam-color-surface);
-    border: 1px solid var(--loam-color-line-strong);
-    border-radius: var(--_radius, var(--loam-radius-md));
     display: block flex;
 
-    /* Height is derived from the select's own padding + font (the Button
-       anatomy); the field contributes only the 1px border. */
+    /* The select's own size (elements.css), restated so the em-sized
+       chevron follows the control's type, not the page's. */
     font-size: var(--loam-text-sm);
-    line-height: 1.2;
     position: relative;
+  }
 
-    &:focus-within {
+  select {
+    /* The native arrow would sit under the chevron. */
+    appearance: none;
+    cursor: pointer;
+    flex: 1;
+    min-inline-size: 0;
+
+    /* Room for the chevron on the trailing side: its width plus the
+       inset it sits at plus the gap it keeps from the text. */
+    padding-inline-end: calc(1.125em + var(--loam-space-md) * 2);
+
+    &:focus-visible {
       border-color: var(--loam-color-primary);
-      outline: var(--loam-ring-width) solid var(--loam-color-ring);
-      outline-offset: 2px;
+    }
+
+    &:disabled {
+      background: var(--loam-color-bg-subtle);
+      cursor: not-allowed;
+      opacity: var(--loam-disabled-opacity);
     }
 
     @media (prefers-reduced-motion: no-preference) {
@@ -25,63 +42,29 @@
     }
   }
 
-  /* Autofilled: the wrapper border carries the signal (the select itself
-     paints the tint — see below). :autofill and :-webkit-autofill must stay
-     in separate blocks — one unsupported selector invalidates a shared
-     list. Declared before the error state so danger wins at equal
+  /* Autofilled: the border carries the signal and an inset shadow wider
+     than the control paints the tint (background-color cannot be
+     overridden on an autofilled field). :autofill and :-webkit-autofill
+     must stay in separate blocks — one unsupported selector invalidates a
+     shared list. Declared before the error state so danger wins at equal
      specificity. */
-  :scope:has(select:autofill) {
-    border-color: color-mix(in oklab, var(--loam-color-primary) 50%, var(--loam-color-line-strong));
-  }
-
-  :scope:has(select:-webkit-autofill) {
-    border-color: color-mix(in oklab, var(--loam-color-primary) 50%, var(--loam-color-line-strong));
-  }
-
-  :scope:has(select[aria-invalid="true"]) {
-    --loam-color-ring: var(--loam-color-danger-ring);
-
-    border-color: var(--loam-color-danger);
-  }
-
-  :scope[data-disabled] {
-    background: var(--loam-color-bg-subtle);
-    opacity: var(--loam-disabled-opacity);
-  }
-
-  select {
-    appearance: none;
-    background: transparent;
-    border: none;
-    color: inherit;
-    cursor: pointer;
-    flex: 1;
-    font: inherit;
-    min-inline-size: 0;
-    outline: none;
-
-    /* Padding lives on the <select> so its whole face stays clickable. */
-    padding-block: var(--loam-space-sm);
-
-    /* Leave room for the chevron on the trailing side. */
-    padding-inline: var(--loam-space-md) 2.25rem;
-
-    &:disabled {
-      cursor: not-allowed;
-    }
-  }
-
-  /* background-color cannot be overridden on an autofilled field; an inset
-     shadow wider than the control paints the tint instead. Separate blocks —
-     see the wrapper rules above. */
   select:autofill {
+    border-color: color-mix(in oklab, var(--loam-color-primary) 50%, var(--loam-color-line-strong));
     box-shadow: inset 0 0 0 100px
       color-mix(in oklab, var(--loam-color-primary) 8%, var(--loam-color-surface));
   }
 
   select:-webkit-autofill {
+    border-color: color-mix(in oklab, var(--loam-color-primary) 50%, var(--loam-color-line-strong));
     box-shadow: inset 0 0 0 100px
       color-mix(in oklab, var(--loam-color-primary) 8%, var(--loam-color-surface));
+  }
+
+  /* Invalid after a composed Field.Error or a native submit attempt. */
+  select[aria-invalid="true"] {
+    --loam-color-ring: var(--loam-color-danger-ring);
+
+    border-color: var(--loam-color-danger);
   }
 
   /* The unanswered prompt stays muted but AA-readable: it is the
@@ -102,5 +85,20 @@
     pointer-events: none;
     position: absolute;
     translate: 0 -50%;
+  }
+
+  /* Forced colours drop the danger border colour, so the invalid state
+     moves to an outline in a system colour; the focus ring is offset
+     further out and still reads as its own ring. Mirrors Input. */
+  @media (forced-colors: active) {
+    select[aria-invalid="true"] {
+      outline: 2px solid LinkText;
+      outline-offset: 1px;
+
+      &:focus-visible {
+        outline: var(--loam-ring-width) solid Highlight;
+        outline-offset: 2px;
+      }
+    }
   }
 }

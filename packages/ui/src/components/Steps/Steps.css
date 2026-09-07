@@ -99,8 +99,49 @@
     max-inline-size: var(--loam-measure);
   }
 
+  /* Progress: the consumer marks the step a sequence has reached with
+     aria-current="step", and the list reads the order from it. Steps
+     before it are done and keep the strong fill; the current step's
+     marker gains a ring in the strong colour; steps after it are upcoming
+     and drawn hollow, the muted foreground on the surface with the strong
+     line for an edge, their titles muted with them. The connector out of
+     a done step is strong; the rest stay the line. Nothing here is the
+     only carrier of the state: the attribute is what assistive technology
+     announces. */
+  > li:has(~ li[aria-current="step"])::after {
+    border-color: var(--loam-color-primary-strong);
+  }
+
+  > li[aria-current="step"] {
+    &::before,
+    > .marker {
+      outline: 2px solid var(--loam-color-primary-strong);
+      outline-offset: 2px;
+    }
+
+    .title {
+      color: var(--loam-color-fg-strong);
+    }
+  }
+
+  > li[aria-current="step"] ~ li {
+    &::before,
+    > .marker {
+      background: var(--loam-color-surface);
+      border: 1px solid var(--loam-color-line-strong);
+      color: var(--loam-color-fg-muted);
+    }
+
+    .title {
+      color: var(--loam-color-fg-muted);
+    }
+  }
+
   /* Forced colours: the fill is background-painted and would vanish, so the
-     marker keeps an outline, and the connector keeps its ink. */
+     marker keeps an outline, and the connector keeps its ink. The ring on
+     the current step is an outline and survives on its own; an upcoming
+     step's marker and the connector into it go dashed, so the order of
+     progress reads without the fills. */
   @media (forced-colors: active) {
     > li {
       &::before,
@@ -110,6 +151,20 @@
 
       &::after {
         border-color: CanvasText;
+      }
+    }
+
+    > li[aria-current="step"] {
+      &::after {
+        border-inline-start-style: dashed;
+      }
+
+      ~ li {
+        &::before,
+        > .marker,
+        &::after {
+          border-style: dashed;
+        }
       }
     }
   }

@@ -54,11 +54,14 @@
   /* The confirmation: the sentence, then the Hide button shrink-wrapped
      beneath it rather than stretched to the banner's width. A grid with
      no children has no height, which is what keeps the empty live region
-     out of the way. */
+     out of the way. It takes focus only when it has no button to hand it
+     to, and a ring on a region of prose would mark nothing the reader can
+     act on, so it draws none. */
   div.confirmation {
     display: block grid;
     gap: var(--loam-space-sm);
     justify-items: start;
+    outline: none;
 
     > p {
       margin: 0;

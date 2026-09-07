@@ -1,10 +1,11 @@
+/* The signpost inherits its font size, so it reads as the prose, heading or
+   card it sits in and the arrow (in em) rescales with it. */
 @scope (.loam-SignpostLink) to ([class*="loam-"]) {
   :scope {
     align-items: center;
     border-radius: var(--loam-radius-sm);
     color: var(--loam-color-fg-strong);
     display: inline flex;
-    font-size: var(--loam-text-md);
     font-weight: 600;
     gap: var(--loam-space-sm);
     max-inline-size: fit-content;
@@ -64,9 +65,7 @@
       text-decoration-thickness: max(0.16em, 2px);
       text-underline-offset: 0.3em;
     }
-  }
 
-  @media (hover: hover) {
     :scope:hover span.icon {
       translate: 0.15em 0;
     }

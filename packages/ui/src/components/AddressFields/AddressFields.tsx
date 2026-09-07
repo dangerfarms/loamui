@@ -219,14 +219,20 @@ export interface AddressFieldsCountryProps extends Omit<SelectProps, "autoComple
   optional?: boolean;
   /** An error for this line, in the words of its label ("Select your country"). */
   error?: ReactNode;
+  /**
+   * The prompt the Select starts on: a disabled first option with no
+   * value, so a reader who skips the line submits nothing rather than the
+   * first country in the list. @default "Select a country"
+   */
+  placeholder?: ReactNode;
   /** The `<option>`s, when `countries` is not given. */
   children?: ReactNode;
 }
 
 /**
- * The country, as a `Select` of names. It starts on a prompt, not the first
- * country in the list, so a reader who skips it submits nothing rather
- * than the wrong country.
+ * The country, as a `Select` of names. It starts on a prompt, a disabled
+ * option with no value, not the first country in the list, so a reader
+ * who skips it submits nothing rather than the wrong country.
  */
 function AddressFieldsCountry({
   countries,
@@ -246,7 +252,10 @@ function AddressFieldsCountry({
     <Field.Root id={id} className={className} style={style}>
       <Field.Label optional={optional}>{label}</Field.Label>
       <Field.Error>{error}</Field.Error>
-      <Select name={name} autoComplete={autoComplete} placeholder={placeholder} {...rest}>
+      <Select name={name} autoComplete={autoComplete} {...rest}>
+        <option value="" disabled>
+          {placeholder}
+        </option>
         {countries
           ? countries.map((country) => (
               <option key={country} value={country}>

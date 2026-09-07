@@ -155,7 +155,7 @@ consumer; it is built the way any consumer would (core parts never restyled,
 nothing in core changed); no configuration props; it passes the override test;
 it ships its reasoning and passes the gates. A composition that fails one of
 them is a recipe for the Composing guide, not a component. Model a new one on
-`Stats` (a standalone unit with an optional row) or `Testimonials` (a
+`Stat` (a standalone unit with an optional group) or `Testimonial` (a
 composition built on another composition); wire it exactly as Step 5 does,
 with `packages/ui/src/styles.css`, the ui tests, the gallery's `manifest.ts`
 and `registry.client.tsx`.

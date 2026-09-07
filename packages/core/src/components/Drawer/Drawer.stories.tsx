@@ -12,14 +12,14 @@ const meta = {
     docs: {
       description: {
         component:
-          "An edge-anchored panel that slides in over the page, composed from parts. The Panel is a native `<dialog>` opened with `showModal()`, so top layer, backdrop, focus containment, Escape and focus restore all come from the browser — a Drawer is a Modal pinned to an edge.",
+          "An edge-anchored panel that slides in over the page, composed from parts. The Popup is a native `<dialog>` opened with `showModal()`, so top layer, backdrop, focus containment, Escape and focus restore all come from the browser — a Drawer is a Modal pinned to an edge.",
       },
     },
   },
   render: () => (
     <Drawer.Root>
       <Drawer.Trigger>Open menu</Drawer.Trigger>
-      <Drawer.Panel side="start">
+      <Drawer.Popup side="start">
         <Drawer.Title>Navigation</Drawer.Title>
         <Drawer.Description>Jump to a section of the app.</Drawer.Description>
         <nav style={{ display: "flex", flexDirection: "column", gap: "var(--loam-space-md)" }}>
@@ -29,7 +29,7 @@ const meta = {
           <a href="#settings">Settings</a>
         </nav>
         <Drawer.Close>Close</Drawer.Close>
-      </Drawer.Panel>
+      </Drawer.Popup>
     </Drawer.Root>
   ),
 } satisfies Meta<typeof Drawer.Root>;
@@ -38,7 +38,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * Compose the drawer from parts. The Panel is a native `<dialog>` opened with
+ * Compose the drawer from parts. The Popup is a native `<dialog>` opened with
  * `showModal()` — top layer, backdrop, focus containment, Escape and focus
  * restore all come from the browser. A Drawer is a Modal pinned to an edge.
  */
@@ -58,13 +58,13 @@ export const Sides: Story = {
       {(["start", "end", "top", "bottom"] as DrawerSide[]).map((side) => (
         <Drawer.Root key={side}>
           <Drawer.Trigger>From {side}</Drawer.Trigger>
-          <Drawer.Panel side={side}>
+          <Drawer.Popup side={side}>
             <Drawer.Title>Side: {side}</Drawer.Title>
             <Drawer.Description>
               start/end set width; top/bottom set height. Both follow writing mode.
             </Drawer.Description>
             <Drawer.Close>Close</Drawer.Close>
-          </Drawer.Panel>
+          </Drawer.Popup>
         </Drawer.Root>
       ))}
     </div>
@@ -76,7 +76,7 @@ export const Sides: Story = {
  * height for top/bottom). Set `--loam-drawer-size` where the drawer is used
  * for a narrower or wider panel.
  */
-export const PanelSize: Story = {
+export const PopupSize: Story = {
   render: () => (
     <div
       style={{
@@ -89,11 +89,11 @@ export const PanelSize: Story = {
       {(["18rem", "24rem", "30rem"] as const).map((size) => (
         <Drawer.Root key={size}>
           <Drawer.Trigger>Open {size}</Drawer.Trigger>
-          <Drawer.Panel side="end" style={{ "--loam-drawer-size": size } as CSSProperties}>
+          <Drawer.Popup side="end" style={{ "--loam-drawer-size": size } as CSSProperties}>
             <Drawer.Title>A {size} drawer</Drawer.Title>
             <Drawer.Description>The width comes from one custom property.</Drawer.Description>
             <Drawer.Close>Close</Drawer.Close>
-          </Drawer.Panel>
+          </Drawer.Popup>
         </Drawer.Root>
       ))}
     </div>
@@ -105,7 +105,7 @@ export const WithHeaderClose: Story = {
   render: () => (
     <Drawer.Root>
       <Drawer.Trigger>Filters</Drawer.Trigger>
-      <Drawer.Panel side="end">
+      <Drawer.Popup side="end">
         <div
           style={{
             display: "flex",
@@ -118,7 +118,7 @@ export const WithHeaderClose: Story = {
           <Drawer.Close aria-label="Close">×</Drawer.Close>
         </div>
         <Drawer.Description>Refine the results shown in the list.</Drawer.Description>
-      </Drawer.Panel>
+      </Drawer.Popup>
     </Drawer.Root>
   ),
 };
@@ -130,11 +130,11 @@ export const CustomTrigger: Story = {
   render: () => (
     <Drawer.Root>
       <Drawer.Trigger render={<button aria-label="Open menu">☰</button>} />
-      <Drawer.Panel side="start">
+      <Drawer.Popup side="start">
         <Drawer.Title>Navigation</Drawer.Title>
         <Drawer.Description>Jump to a section of the app.</Drawer.Description>
         <Drawer.Close render={<button aria-label="Close">×</button>} />
-      </Drawer.Panel>
+      </Drawer.Popup>
     </Drawer.Root>
   ),
 };
@@ -144,11 +144,11 @@ export const OpenByDefault: Story = {
   render: () => (
     <Drawer.Root defaultOpen>
       <Drawer.Trigger>Open menu</Drawer.Trigger>
-      <Drawer.Panel side="start">
+      <Drawer.Popup side="start">
         <Drawer.Title>Navigation</Drawer.Title>
         <Drawer.Description>Anchored to the inline-start edge, full height.</Drawer.Description>
         <Drawer.Close>Close</Drawer.Close>
-      </Drawer.Panel>
+      </Drawer.Popup>
     </Drawer.Root>
   ),
 };

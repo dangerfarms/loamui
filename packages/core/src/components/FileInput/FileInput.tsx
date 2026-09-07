@@ -1,14 +1,9 @@
 "use client";
 
 import { createContext, useContext, useEffect, useId, useMemo, useRef, useState } from "react";
-import type {
-  HTMLAttributes,
-  InputHTMLAttributes,
-  LabelHTMLAttributes,
-  ReactNode,
-  Ref,
-} from "react";
+import type { ReactNode } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 import { composeRefs } from "../../render";
 import { useFieldControlProps } from "../Field/Field";
 import { useUserInvalid } from "../../use-user-invalid";
@@ -68,9 +63,8 @@ function firstOf(files: FileList): FileList {
   return list.files;
 }
 
-export interface FileInputRootProps extends HTMLAttributes<HTMLDivElement> {
+export interface FileInputRootProps extends PartProps<"div"> {
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /**
@@ -148,17 +142,16 @@ function FileInputRoot({
 }
 
 export interface FileInputControlProps extends Omit<
-  InputHTMLAttributes<HTMLInputElement>,
+  PartProps<"input">,
   "size" | "type" | "value" | "defaultValue"
-> {
-  ref?: Ref<HTMLInputElement>;
-}
+> {}
 
 /**
  * The native `<input type="file">`. Inside a `Field` it reads its id,
  * description and error wiring from context, like `Input`; inside a
- * `FileInput.Root` it reports its selection to the Files list. On its own
- * it is the plain native control.
+ * `FileInput.Root` it reports its selection to the Files list and is
+ * visually hidden, the Prompt being its label and its box. On its own it
+ * is the plain native control, in view.
  */
 function FileInputControl({
   id,
@@ -197,7 +190,7 @@ function FileInputControl({
       ref={inputRef}
       id={id ?? ctx?.id ?? field.id}
       type="file"
-      className={className}
+      className={cx(ctx ? "loam-VisuallyHidden" : undefined, className)}
       disabled={disabled}
       {...rest}
       aria-invalid={ariaInvalid ?? field["aria-invalid"] ?? (nativeInvalid || undefined)}
@@ -218,9 +211,8 @@ function FileInputControl({
   );
 }
 
-export interface FileInputPromptProps extends LabelHTMLAttributes<HTMLLabelElement> {
+export interface FileInputPromptProps extends PartProps<"label"> {
   children?: ReactNode;
-  ref?: Ref<HTMLLabelElement>;
 }
 
 /**
@@ -254,14 +246,13 @@ function formatSize(bytes: number, locale: string): string {
   }).format(bytes / factor);
 }
 
-export interface FileInputFilesProps extends Omit<HTMLAttributes<HTMLUListElement>, "children"> {
+export interface FileInputFilesProps extends Omit<PartProps<"ul">, "children"> {
   /**
    * The BCP 47 locale the sizes are written in. Set it to the page's
    * language.
    * @default "en"
    */
   locale?: string;
-  ref?: Ref<HTMLUListElement>;
 }
 
 /**
@@ -287,5 +278,3 @@ export const FileInput = {
   Prompt: FileInputPrompt,
   Files: FileInputFiles,
 };
-
-export { FileInputControl };

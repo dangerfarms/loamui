@@ -15,7 +15,7 @@ const tableOfContents: Composition = {
     {
       name: "TableOfContents.Root",
       description:
-        "The nav landmark, named by its Title, so a page with more than one nav has each named without writing the words twice. Pass aria-label only when there is no Title; an aria-labelledby you pass wins over both. Make it sticky with your own CSS if the page wants that.",
+        'The nav landmark, named by its Title from the first render, so a page with more than one nav has each named without writing the words twice. Without a Title it is named by labels.navigation, "On this page" by default; an aria-label or aria-labelledby you pass wins over both. Make it sticky with your own CSS if the page wants that.',
     },
     {
       name: "TableOfContents.Title",

@@ -1,6 +1,6 @@
 "use client";
 
-import { Fieldset, Radio, Select, SwitchControl } from "@loamui/core";
+import { Fieldset, Radio, Select, Switch } from "@loamui/core";
 import { SettingRow } from "@loamui/ui";
 import type { Composition } from "./types";
 
@@ -35,7 +35,7 @@ const settingRow: Composition = {
     {
       name: "SettingRow.Control",
       description:
-        "The slot at the inline end for the control: a bare SwitchControl, a Select, a CheckboxControl, which read their id and description from the row's Field on their own; or a Fieldset of radios, which you point at the Label and Description by id. Put nothing else here.",
+        "The slot at the inline end for the control: a bare Switch.Control, a Select, a Checkbox.Control, which read their id and description from the row's Field on their own; or a Fieldset of radios, which you point at the Label and Description by id. Put nothing else here.",
     },
     {
       name: "SettingRow.Error",
@@ -56,7 +56,7 @@ const settingRow: Composition = {
       <SettingRow.Description>A summary of activity every Monday morning.</SettingRow.Description>
     </SettingRow.Text>
     <SettingRow.Control>
-      <SwitchControl name="digest" defaultChecked />
+      <Switch.Control name="digest" defaultChecked />
     </SettingRow.Control>
   </SettingRow.Root>
   <SettingRow.Root>
@@ -65,7 +65,7 @@ const settingRow: Composition = {
       <SettingRow.Description>When someone names you in a comment.</SettingRow.Description>
     </SettingRow.Text>
     <SettingRow.Control>
-      <SwitchControl name="mentions" defaultChecked />
+      <Switch.Control name="mentions" defaultChecked />
     </SettingRow.Control>
   </SettingRow.Root>
   <SettingRow.Root>
@@ -74,7 +74,7 @@ const settingRow: Composition = {
       <SettingRow.Description>New features and changes, at most once a month.</SettingRow.Description>
     </SettingRow.Text>
     <SettingRow.Control>
-      <SwitchControl name="news" />
+      <Switch.Control name="news" />
     </SettingRow.Control>
   </SettingRow.Root>
 </Fieldset.Root>`,
@@ -89,7 +89,7 @@ const settingRow: Composition = {
               </SettingRow.Description>
             </SettingRow.Text>
             <SettingRow.Control>
-              <SwitchControl name="digest" defaultChecked />
+              <Switch.Control name="digest" defaultChecked />
             </SettingRow.Control>
           </SettingRow.Root>
           <SettingRow.Root>
@@ -98,7 +98,7 @@ const settingRow: Composition = {
               <SettingRow.Description>When someone names you in a comment.</SettingRow.Description>
             </SettingRow.Text>
             <SettingRow.Control>
-              <SwitchControl name="mentions" defaultChecked />
+              <Switch.Control name="mentions" defaultChecked />
             </SettingRow.Control>
           </SettingRow.Root>
           <SettingRow.Root>
@@ -109,7 +109,7 @@ const settingRow: Composition = {
               </SettingRow.Description>
             </SettingRow.Text>
             <SettingRow.Control>
-              <SwitchControl name="news" />
+              <Switch.Control name="news" />
             </SettingRow.Control>
           </SettingRow.Root>
         </Fieldset.Root>
@@ -125,7 +125,7 @@ const settingRow: Composition = {
     <SettingRow.Description>Ask for a code from your phone as well as your password.</SettingRow.Description>
   </SettingRow.Text>
   <SettingRow.Control>
-    <SwitchControl name="two-step" />
+    <Switch.Control name="two-step" />
   </SettingRow.Control>
 </SettingRow.Root>`,
       render: () => (
@@ -137,7 +137,7 @@ const settingRow: Composition = {
             </SettingRow.Description>
           </SettingRow.Text>
           <SettingRow.Control>
-            <SwitchControl name="two-step" />
+            <Switch.Control name="two-step" />
           </SettingRow.Control>
         </SettingRow.Root>
       ),
@@ -178,7 +178,7 @@ const settingRow: Composition = {
     {
       title: "A group of radios",
       description:
-        "A control that is itself a fieldset. A label cannot name a group, so the Label is rendered as a span with render={<span />}: it keeps the Label's id and drops the for, and the Fieldset names itself by it with aria-labelledby and takes the Description with aria-describedby. The Root's id fixes those ids. The radios are core Radio with their own labels; the legend is the row's words, not a second one inside the group.",
+        "A control that is itself a fieldset. A label cannot name a group, so the Label is rendered as a span with render={<span />}: it keeps the Label's id and drops the for, and the Fieldset names itself by it with aria-labelledby and takes the Description with aria-describedby. The Root's id fixes those ids. The radios are core Radio with their own labels and their own ids, because a core control inside the row reads the row's id from the Field otherwise, and radios in a set cannot share one; the legend is the row's words, not a second one inside the group.",
       code: `<SettingRow.Root id="density">
   <SettingRow.Text>
     <SettingRow.Label render={<span />}>Density</SettingRow.Label>
@@ -190,8 +190,8 @@ const settingRow: Composition = {
       aria-labelledby="density-label"
       aria-describedby="density-description"
     >
-      <Radio name="density" value="comfortable" label="Comfortable" defaultChecked />
-      <Radio name="density" value="compact" label="Compact" />
+      <Radio id="density-comfortable" name="density" value="comfortable" label="Comfortable" defaultChecked />
+      <Radio id="density-compact" name="density" value="compact" label="Compact" />
     </Fieldset.Root>
   </SettingRow.Control>
 </SettingRow.Root>`,
@@ -207,8 +207,14 @@ const settingRow: Composition = {
               aria-labelledby="density-label"
               aria-describedby="density-description"
             >
-              <Radio name="density" value="comfortable" label="Comfortable" defaultChecked />
-              <Radio name="density" value="compact" label="Compact" />
+              <Radio
+                id="density-comfortable"
+                name="density"
+                value="comfortable"
+                label="Comfortable"
+                defaultChecked
+              />
+              <Radio id="density-compact" name="density" value="compact" label="Compact" />
             </Fieldset.Root>
           </SettingRow.Control>
         </SettingRow.Root>
@@ -224,7 +230,7 @@ const settingRow: Composition = {
     <SettingRow.Description>Ask for a code from your phone as well as your password.</SettingRow.Description>
   </SettingRow.Text>
   <SettingRow.Control>
-    <SwitchControl name="two-step" defaultChecked />
+    <Switch.Control name="two-step" defaultChecked />
   </SettingRow.Control>
   <SettingRow.Error>Add a phone number before turning this on</SettingRow.Error>
 </SettingRow.Root>`,
@@ -237,7 +243,7 @@ const settingRow: Composition = {
             </SettingRow.Description>
           </SettingRow.Text>
           <SettingRow.Control>
-            <SwitchControl name="two-step" defaultChecked />
+            <Switch.Control name="two-step" defaultChecked />
           </SettingRow.Control>
           <SettingRow.Error>Add a phone number before turning this on</SettingRow.Error>
         </SettingRow.Root>

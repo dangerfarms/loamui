@@ -41,13 +41,13 @@ const emptyState: Composition = {
   category: "Page sections",
   description:
     "The screen shown when a list, a search or a section has nothing in it yet: what the place is for, why it is empty and one clear next action.",
-  lead: 'Five parts on a native section named by its title, centred in whatever holds it. It is not a live region by default, because a list that loaded empty is the page as it is and nothing happened; when it replaces results after a search the reader is waiting to hear, so the consumer passes role="status" and it is announced. The picture is hidden because the title already says what it shows, and the next step is one Button or SignpostLink, never a menu of them.',
+  lead: 'Five parts on a div, centred in whatever holds it. A div, because most empty states sit inside something that is already a landmark or a Card, and a section for each would be one landmark too many; when the empty state is the page, render it as a section and its title names it. It is not a live region either, because a list that loaded empty is the page as it is and nothing happened; when it replaces results after a search the reader is waiting to hear, so the consumer passes role="status" and it is announced. The picture is hidden because the title already says what it shows, and the next step is one Button or SignpostLink, never a menu of them.',
   importLine: `import { EmptyState } from "@loamui/ui";`,
   parts: [
     {
       name: "EmptyState.Root",
       description:
-        'The section: a centred grid, named by its Title unless you pass aria-label or aria-labelledby. Declares its own container so the fluid tokens answer its width. Pass role="status" when it replaces results after a search; pass render={<div />} where a section would be one landmark too many.',
+        'A centred grid on a div. Declares its own container so the fluid tokens answer its width. Pass render={<section />} when the empty state is the page or a whole region of it, and role="status" when it replaces results after a search; either way it is then named by its Title, unless you pass aria-label or aria-labelledby.',
     },
     {
       name: "EmptyState.Media",
@@ -57,7 +57,7 @@ const emptyState: Composition = {
     {
       name: "EmptyState.Title",
       description:
-        "What is empty, in a few words. An h2 by default; pass render={<h3 />} under a page's own headings. It names the Root while it is present.",
+        "What is empty, in a few words. An h2 by default; pass render={<h3 />} under a page's own headings. It names a section or status Root while it is present.",
     },
     {
       name: "EmptyState.Description",
@@ -74,8 +74,8 @@ const emptyState: Composition = {
     {
       title: "Nothing yet",
       description:
-        "The place has never had anything in it. The copy says what it is for and how to start, and the next step is one Button in a primary region; the icon is decorative and the title carries the meaning.",
-      code: `<EmptyState.Root>
+        "The place has never had anything in it, and the empty state is the whole of it, so the Root is rendered as a section and its title names the region. The copy says what it is for and how to start, and the next step is one Button in a primary region; the icon is decorative and the title carries the meaning.",
+      code: `<EmptyState.Root render={<section />}>
   <EmptyState.Media>
     <FolderIcon />
   </EmptyState.Media>
@@ -91,7 +91,7 @@ const emptyState: Composition = {
   </EmptyState.Actions>
 </EmptyState.Root>`,
       render: () => (
-        <EmptyState.Root>
+        <EmptyState.Root render={<section />}>
           <EmptyState.Media>
             <FolderIcon />
           </EmptyState.Media>
@@ -136,9 +136,9 @@ const emptyState: Composition = {
     {
       title: "Inside a Card",
       description:
-        "The unit sits in a Card, rendered as a div so the Card does not gain a landmark, with the title one level under the Card's own headings. The Card decides the width; the fluid tokens answer it.",
+        "The unit sits in a Card: a div, as it is by default, so the Card gains no landmark, with the title one level under the Card's own headings. The Card decides the width; the fluid tokens answer it.",
       code: `<Card>
-  <EmptyState.Root render={<div />}>
+  <EmptyState.Root>
     <EmptyState.Media>
       <InboxIcon />
     </EmptyState.Media>
@@ -150,7 +150,7 @@ const emptyState: Composition = {
 </Card>`,
       render: () => (
         <Card>
-          <EmptyState.Root render={<div />}>
+          <EmptyState.Root>
             <EmptyState.Media>
               <InboxIcon />
             </EmptyState.Media>

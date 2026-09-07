@@ -1,5 +1,6 @@
 import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
+import { renderToString } from "react-dom/server";
 import { axe } from "vitest-axe";
 import { Footer } from "../components/Footer/index";
 
@@ -82,5 +83,25 @@ describe("Footer", () => {
     const untitled = screen.getByRole("link", { name: "Status" }).closest("nav")!;
     expect(untitled).not.toHaveAttribute("aria-labelledby");
     expect(untitled).not.toHaveAttribute("aria-label");
+  });
+
+  it("names a column by its title in the server render, before any effect runs", () => {
+    const html = renderToString(
+      <Footer.Root>
+        <Footer.Columns>
+          <Footer.Column>
+            <Footer.ColumnTitle>Product</Footer.ColumnTitle>
+            <ul>
+              <li>
+                <a href="/docs">Docs</a>
+              </li>
+            </ul>
+          </Footer.Column>
+        </Footer.Columns>
+      </Footer.Root>,
+    );
+    const titleId = html.match(/<h3[^>]*\sid="([^"]+)"/)?.[1];
+    expect(titleId).toBeTruthy();
+    expect(html).toContain(`<nav class="column" aria-labelledby="${titleId}">`);
   });
 });

@@ -35,6 +35,16 @@ describe("ErrorPage", () => {
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 
+  it("names the section in the first render, so the server's HTML carries the name", () => {
+    render(
+      <ErrorPage.Root>
+        <ErrorPage.Title>Named on the server</ErrorPage.Title>
+      </ErrorPage.Root>,
+    );
+    const region = screen.getByRole("region", { name: "Named on the server" });
+    expect(region).toHaveAttribute("aria-labelledby", screen.getByRole("heading").id);
+  });
+
   it("lets a name of the consumer's own win over the title's", () => {
     render(
       <ErrorPage.Root aria-label="Something went wrong">

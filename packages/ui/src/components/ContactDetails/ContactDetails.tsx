@@ -1,10 +1,10 @@
-import type { HTMLAttributes, ReactNode, Ref } from "react";
+import type { ReactNode } from "react";
 import { cx } from "@loamui/core";
+import type { PartProps } from "@loamui/core";
 
-export interface ContactDetailsRootProps extends HTMLAttributes<HTMLElement> {
+export interface ContactDetailsRootProps extends PartProps<"address"> {
   /** `ContactDetails.Item`s, one per way to get in touch. */
   children?: ReactNode;
-  ref?: Ref<HTMLElement>;
 }
 
 /**
@@ -16,8 +16,10 @@ export interface ContactDetailsRootProps extends HTMLAttributes<HTMLElement> {
  * label and its value are associated. Make the phone number a `tel:` link
  * and the email a `mailto:` link, so a tap dials or opens the mail client;
  * keep a postal address's line breaks with `br`. Links take the page's
- * link styling. There are no layout props: a consumer wanting the pairs in
- * columns writes `grid-template-columns` on the `dl` in their own CSS.
+ * link styling. There are no layout props: the pairs sit in two columns
+ * where the container has room and stack where it does not; a consumer
+ * wanting more columns writes `grid-template-columns` on the `dl` in
+ * their own CSS.
  *
  * ```tsx
  * <ContactDetails.Root>
@@ -46,10 +48,9 @@ function ContactDetailsRoot({ className, children, ref, ...rest }: ContactDetail
   );
 }
 
-export interface ContactDetailsItemProps extends HTMLAttributes<HTMLDivElement> {
+export interface ContactDetailsItemProps extends PartProps<"div"> {
   /** A `ContactDetails.Label` then a `ContactDetails.Value`, in that order. */
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /**
@@ -64,13 +65,12 @@ function ContactDetailsItem({ className, children, ref, ...rest }: ContactDetail
   );
 }
 
-export interface ContactDetailsPartProps extends HTMLAttributes<HTMLElement> {
+export interface ContactDetailsLabelProps extends PartProps<"dt"> {
   children?: ReactNode;
-  ref?: Ref<HTMLElement>;
 }
 
 /** What the value is (Phone, Email, Address, Hours), a `dt`. Comes first in the markup. */
-function ContactDetailsLabel({ className, children, ref, ...rest }: ContactDetailsPartProps) {
+function ContactDetailsLabel({ className, children, ref, ...rest }: ContactDetailsLabelProps) {
   return (
     <dt ref={ref} className={cx("label", className)} {...rest}>
       {children}
@@ -78,11 +78,15 @@ function ContactDetailsLabel({ className, children, ref, ...rest }: ContactDetai
   );
 }
 
+export interface ContactDetailsValueProps extends PartProps<"dd"> {
+  children?: ReactNode;
+}
+
 /**
  * The value, a `dd`: a `tel:` or `mailto:` link, lines of a postal address
  * separated by `br`, plain text, or a short `ul` of links.
  */
-function ContactDetailsValue({ className, children, ref, ...rest }: ContactDetailsPartProps) {
+function ContactDetailsValue({ className, children, ref, ...rest }: ContactDetailsValueProps) {
   return (
     <dd ref={ref} className={cx("value", className)} {...rest}>
       {children}

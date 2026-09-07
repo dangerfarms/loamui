@@ -7,7 +7,10 @@ export type {
   ToastRootProps,
   ToastTitleProps,
   ToastDescriptionProps,
+  ToastTextRenderProps,
   ToastActionProps,
   ToastActionRenderProps,
   ToastCloseProps,
+  ToastCloseRenderProps,
+  ToastsProps,
 } from "./Toast";

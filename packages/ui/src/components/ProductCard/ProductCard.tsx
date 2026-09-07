@@ -1,21 +1,40 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState } from "react";
-import type { HTMLAttributes, ReactNode, Ref } from "react";
+import { createContext, useContext, useMemo } from "react";
+import type { ReactNode } from "react";
 import { Card, renderWithProps, cx } from "@loamui/core";
-import type { CardProps, RenderProp } from "@loamui/core";
+import type { CardProps, PartProps, RenderProp } from "@loamui/core";
+import { useNamedRoot, useNamePart } from "../../naming";
+
+/** The words a product card says on its own, each with an English default. */
+export interface ProductCardLabels {
+  /** The hidden word after the review count: "(128 reviews)". @default (n) => n === 1 ? "review" : "reviews" */
+  reviews?: (count: number) => ReactNode;
+  /** The hidden word before an old price. @default "Was" */
+  was?: ReactNode;
+  /** The hidden word before the current price when an old one precedes it. @default "Now" */
+  now?: ReactNode;
+}
+
+const DEFAULT_LABELS: Required<ProductCardLabels> = {
+  reviews: (count) => (count === 1 ? "review" : "reviews"),
+  was: "Was",
+  now: "Now",
+};
 
 interface ProductCardContextValue {
-  /** The Title tells the card its id; the card is named by it while it is present. */
-  registerTitle: (id: string) => () => void;
+  nameId: string;
+  register: (id: string) => () => void;
+  labels: Required<ProductCardLabels>;
 }
 
 const ProductCardContext = createContext<ProductCardContextValue | null>(null);
 
 export interface ProductCardRootProps extends CardProps {
+  /** The card's own words; Rating, Was and Value read them from here. */
+  labels?: ProductCardLabels;
   /** Media first, then Meta, Title, Rating, Value and Actions. */
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /**
@@ -30,6 +49,9 @@ export interface ProductCardRootProps extends CardProps {
  * `article` inside it, named by the Title, so a screen reader's list of
  * the page's articles reads "Linen shirt", "Leather boots" rather than
  * "article", "article".
+ *
+ * `className`, `style` and `ref` land on the Card; `aria-label` and
+ * `aria-labelledby` name the article inside it.
  *
  * ```tsx
  * <ProductCard.Root>
@@ -53,34 +75,41 @@ export interface ProductCardRootProps extends CardProps {
  * </ProductCard.Root>
  * ```
  */
-function ProductCardRoot({ children, ref, ...rest }: ProductCardRootProps) {
-  const [titleId, setTitleId] = useState<string | null>(null);
-  const registerTitle = useCallback((id: string) => {
-    setTitleId(id);
-    return () => setTitleId((current) => (current === id ? null : current));
-  }, []);
-  const value = useMemo<ProductCardContextValue>(() => ({ registerTitle }), [registerTitle]);
+function ProductCardRoot({
+  labels,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
+  children,
+  ...rest
+}: ProductCardRootProps) {
+  const { nameId, register, labelling } = useNamedRoot({
+    "aria-label": ariaLabel,
+    "aria-labelledby": ariaLabelledBy,
+  });
+  const value = useMemo<ProductCardContextValue>(
+    () => ({ nameId, register, labels: { ...DEFAULT_LABELS, ...labels } }),
+    [nameId, register, labels],
+  );
   // The Card's own render prop passes through: render={<li />} in a list.
-  // The article points at a Title only while one is rendered: a reference
-  // to nothing would name it nothing.
+  // The article is named by its Title from the first render, so the server
+  // HTML carries the name; a consumer's own name wins.
   return (
-    <Card ref={ref} {...rest}>
-      <article className="loam-ProductCard" aria-labelledby={titleId ?? undefined}>
+    <Card {...rest}>
+      <article
+        className="loam-ProductCard"
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledBy}
+        {...labelling}
+      >
         <ProductCardContext value={value}>{children}</ProductCardContext>
       </article>
     </Card>
   );
 }
 
-export interface ProductCardDivProps extends HTMLAttributes<HTMLDivElement> {
-  children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
-}
+export interface ProductCardDivProps extends PartProps<"div"> {}
 
-export interface ProductCardParagraphProps extends HTMLAttributes<HTMLParagraphElement> {
-  children?: ReactNode;
-  ref?: Ref<HTMLParagraphElement>;
-}
+export interface ProductCardParagraphProps extends PartProps<"p"> {}
 
 /**
  * The product's picture: your `<img>`, square and filling the card's width.
@@ -88,29 +117,28 @@ export interface ProductCardParagraphProps extends HTMLAttributes<HTMLParagraphE
  * finish); unlike an article's illustration, a product image carries
  * information the name alone does not.
  */
-function ProductCardMedia({ className, children, ref, ...rest }: ProductCardDivProps) {
+function ProductCardMedia({ className, children, ...rest }: ProductCardDivProps) {
   return (
-    <div ref={ref} className={cx("media", className)} {...rest}>
+    <div className={cx("media", className)} {...rest}>
       {children}
     </div>
   );
 }
 
 /** A small row for a Badge: a stock or offer note, coloured by a `--loam-context` region you place. */
-function ProductCardMeta({ className, children, ref, ...rest }: ProductCardParagraphProps) {
+function ProductCardMeta({ className, children, ...rest }: ProductCardParagraphProps) {
   return (
-    <p ref={ref} className={cx("meta", className)} {...rest}>
+    <p className={cx("meta", className)} {...rest}>
       {children}
     </p>
   );
 }
 
-export interface ProductCardTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+export interface ProductCardTitleProps extends PartProps<"h3"> {
   /** Render as a different heading: `render={<h2 />}` where the card is the page's own list. */
   render?: RenderProp<Record<string, unknown>>;
   /** The product's link: an `<a href>`, or a router link. */
   children?: ReactNode;
-  ref?: Ref<HTMLHeadingElement>;
 }
 
 /**
@@ -119,30 +147,17 @@ export interface ProductCardTitleProps extends HTMLAttributes<HTMLHeadingElement
  * otherwise) is what the article's `aria-labelledby` points at, which is
  * what names the card.
  */
-function ProductCardTitle({
-  render,
-  className,
-  children,
-  ref,
-  id,
-  ...rest
-}: ProductCardTitleProps) {
+function ProductCardTitle({ render, className, children, id, ...rest }: ProductCardTitleProps) {
   const ctx = useContext(ProductCardContext);
-  if (!ctx) {
-    throw new Error("ProductCard.Title must be rendered inside <ProductCard.Root>.");
-  }
-  const autoId = useId();
-  const titleId = id ?? autoId;
-  const { registerTitle } = ctx;
-  useEffect(() => registerTitle(titleId), [registerTitle, titleId]);
-  const props = { ref, id: titleId, className: cx("title", className), children, ...rest };
+  const titleId = useNamePart(ctx, id);
+  const props = { id: titleId, className: cx("title", className), children, ...rest };
   if (render) return <>{renderWithProps(render, props)}</>;
   return <h3 {...props}>{children}</h3>;
 }
 
 export interface ProductCardRatingProps extends ProductCardDivProps {
   /** How many reviews the rating averages, shown in brackets beside the stars. */
-  count?: ReactNode;
+  count?: number;
   /** A display-mode core Rating: `<Rating readOnly label="Average rating" value={4.5} />`. */
   children?: ReactNode;
 }
@@ -150,43 +165,68 @@ export interface ProductCardRatingProps extends ProductCardDivProps {
 /**
  * The average rating: your read-only core Rating, whose accessible name
  * carries the score, with the review count as text beside it. The count
- * reads "(128 reviews)" to assistive tech and "(128)" on screen.
+ * reads "(128 reviews)" to assistive tech and "(128)" on screen; the word
+ * is `labels.reviews(count)`, so it pluralises and translates.
  */
-function ProductCardRating({ count, className, children, ref, ...rest }: ProductCardRatingProps) {
+function ProductCardRating({ count, className, children, ...rest }: ProductCardRatingProps) {
+  const ctx = useContext(ProductCardContext);
+  const labels = ctx?.labels ?? DEFAULT_LABELS;
   return (
-    <div ref={ref} className={cx("rating", className)} {...rest}>
+    <div className={cx("rating", className)} {...rest}>
       {children}
-      {count != null && count !== false && (
+      {count != null && (
         <span className="count">
           ({count}
-          <span className="loam-VisuallyHidden"> reviews</span>)
+          <span className="loam-VisuallyHidden"> {labels.reviews(count)}</span>)
         </span>
       )}
     </div>
   );
 }
 
-export interface ProductCardValueProps extends ProductCardParagraphProps {
+export interface ProductCardWasProps extends PartProps<"s"> {
   /**
-   * The price before a reduction, as a core Price. Shown struck through
-   * before the current price, with "Was" and "Now" read out around the
-   * two so the change is announced, never carried by the strike alone.
+   * The words around the pair. Inside a `ProductCard.Root` they default to
+   * the Root's `labels`; outside one (in a `CartLine.Value`, say) to the
+   * English.
    */
-  was?: ReactNode;
-  /** The current price: a core Price. */
+  labels?: Pick<ProductCardLabels, "was" | "now">;
+  /** The price before the reduction: a core Price. */
   children?: ReactNode;
 }
 
-/** The price, large and bold, a core `Price` as its children; with `was`, the old price struck through before it. */
-function ProductCardValue({ was, className, children, ref, ...rest }: ProductCardValueProps) {
+/**
+ * The price before a reduction: a core Price struck through, placed
+ * before the current one. It writes `labels.was` before itself and
+ * `labels.now` after, both hidden, so the change is announced ("Was £45
+ * Now £36") and never carried by the strike alone. The judgment is the
+ * part's, so the same markup works in a `CartLine.Value`, where it reads
+ * the same words from its own `labels`.
+ */
+function ProductCardWas({ labels, className, children, ...rest }: ProductCardWasProps) {
+  const ctx = useContext(ProductCardContext);
+  const was = labels?.was ?? ctx?.labels.was ?? DEFAULT_LABELS.was;
+  const now = labels?.now ?? ctx?.labels.now ?? DEFAULT_LABELS.now;
   return (
-    <p ref={ref} className={cx("value", className)} {...rest}>
-      {was != null && was !== false && (
-        <>
-          <span className="loam-VisuallyHidden">Was </span>
-          <s>{was}</s> <span className="loam-VisuallyHidden">Now </span>
-        </>
-      )}
+    <>
+      <span className="loam-VisuallyHidden">{was} </span>
+      <s className={cx("was", className)} {...rest}>
+        {children}
+      </s>{" "}
+      <span className="loam-VisuallyHidden">{now} </span>
+    </>
+  );
+}
+
+export interface ProductCardValueProps extends ProductCardParagraphProps {
+  /** The current price, a core Price; a `ProductCard.Was` before it for a reduction. */
+  children?: ReactNode;
+}
+
+/** The price, large and bold: a core `Price` as its children, after a `ProductCard.Was` when there is one. */
+function ProductCardValue({ className, children, ...rest }: ProductCardValueProps) {
+  return (
+    <p className={cx("value", className)} {...rest}>
       {children}
     </p>
   );
@@ -198,9 +238,9 @@ function ProductCardValue({ was, className, children, ref, ...rest }: ProductCar
  * to basket Linen shirt"), so a listing of identical buttons tells them
  * apart.
  */
-function ProductCardActions({ className, children, ref, ...rest }: ProductCardDivProps) {
+function ProductCardActions({ className, children, ...rest }: ProductCardDivProps) {
   return (
-    <div ref={ref} className={cx("actions", className)} {...rest}>
+    <div className={cx("actions", className)} {...rest}>
       {children}
     </div>
   );
@@ -213,5 +253,6 @@ export const ProductCard = {
   Title: ProductCardTitle,
   Rating: ProductCardRating,
   Value: ProductCardValue,
+  Was: ProductCardWas,
   Actions: ProductCardActions,
 };

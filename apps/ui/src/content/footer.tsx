@@ -25,7 +25,7 @@ const footer: Composition = {
     {
       name: "Footer.Column",
       description:
-        "One column: a nav landmark named by its Footer.ColumnTitle, then your ul of li > a items. An aria-label you pass wins; a column with no title should be given one.",
+        "One column: a nav landmark named by its Footer.ColumnTitle from the first render, then your ul of li > a items. An aria-label you pass wins; a column with no title carries no name, a plain nav, so give it one.",
     },
     {
       name: "Footer.ColumnTitle",

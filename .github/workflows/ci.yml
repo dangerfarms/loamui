@@ -18,6 +18,8 @@ jobs:
         env:
           PAGES: "true"
       - run: pnpm check:skill
+      - run: pnpm check:strings
+      - run: pnpm check:scope
       - run: pnpm -r lint
       - run: pnpm lint:md
       - run: pnpm format:check

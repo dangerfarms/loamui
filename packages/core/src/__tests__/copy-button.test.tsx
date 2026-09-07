@@ -73,7 +73,7 @@ describe("CopyButton", () => {
   it("uses the given labels", async () => {
     const user = setup();
     render(
-      <CopyButton value="https://example.com" copiedLabel="Link copied">
+      <CopyButton value="https://example.com" labels={{ copied: "Link copied" }}>
         Copy link
       </CopyButton>,
     );
@@ -116,7 +116,7 @@ describe("CopyButton", () => {
 
   it("announces the failure when there is no clipboard API", async () => {
     const user = setup(null);
-    render(<CopyButton value="secret" failedMessage="Nothing was copied" />);
+    render(<CopyButton value="secret" labels={{ failed: "Nothing was copied" }} />);
     await user.click(screen.getByRole("button", { name: "Copy" }));
     await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Nothing was copied"));
   });

@@ -9,9 +9,6 @@ import {
   Switch,
   Checkbox,
   Tabs,
-  TabsList,
-  TabsTab,
-  TabsPanel,
   Details,
   ErrorSummary,
   Menu,
@@ -60,14 +57,14 @@ describe("Tabs", () => {
   it("switches panels on click and supports arrow keys", async () => {
     const user = userEvent.setup();
     render(
-      <Tabs defaultValue="a">
-        <TabsList>
-          <TabsTab value="a">Account</TabsTab>
-          <TabsTab value="b">Security</TabsTab>
-        </TabsList>
-        <TabsPanel value="a">Account panel</TabsPanel>
-        <TabsPanel value="b">Security panel</TabsPanel>
-      </Tabs>,
+      <Tabs.Root defaultValue="a">
+        <Tabs.List>
+          <Tabs.Tab value="a">Account</Tabs.Tab>
+          <Tabs.Tab value="b">Security</Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panel value="a">Account panel</Tabs.Panel>
+        <Tabs.Panel value="b">Security panel</Tabs.Panel>
+      </Tabs.Root>,
     );
     // Inactive panels stay mounted but hidden (preserves state).
     expect(screen.getByText("Account panel")).toBeVisible();
@@ -82,18 +79,18 @@ describe("Tabs", () => {
 
   it("falls back to the first enabled tab when an uncontrolled value is stale", async () => {
     render(
-      <Tabs defaultValue="missing">
-        <TabsList>
-          <TabsTab value="disabled" disabled>
+      <Tabs.Root defaultValue="missing">
+        <Tabs.List>
+          <Tabs.Tab value="disabled" disabled>
             Disabled
-          </TabsTab>
-          <TabsTab value="first">First available</TabsTab>
-          <TabsTab value="second">Second available</TabsTab>
-        </TabsList>
-        <TabsPanel value="disabled">Disabled panel</TabsPanel>
-        <TabsPanel value="first">First panel</TabsPanel>
-        <TabsPanel value="second">Second panel</TabsPanel>
-      </Tabs>,
+          </Tabs.Tab>
+          <Tabs.Tab value="first">First available</Tabs.Tab>
+          <Tabs.Tab value="second">Second available</Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panel value="disabled">Disabled panel</Tabs.Panel>
+        <Tabs.Panel value="first">First panel</Tabs.Panel>
+        <Tabs.Panel value="second">Second panel</Tabs.Panel>
+      </Tabs.Root>,
     );
 
     await waitFor(() =>
@@ -109,16 +106,16 @@ describe("Tabs", () => {
     const user = userEvent.setup();
     render(
       <div dir="rtl">
-        <Tabs defaultValue="b">
-          <TabsList>
-            <TabsTab value="a">Alpha</TabsTab>
-            <TabsTab value="b">Beta</TabsTab>
-            <TabsTab value="c">Gamma</TabsTab>
-          </TabsList>
-          <TabsPanel value="a">Alpha panel</TabsPanel>
-          <TabsPanel value="b">Beta panel</TabsPanel>
-          <TabsPanel value="c">Gamma panel</TabsPanel>
-        </Tabs>
+        <Tabs.Root defaultValue="b">
+          <Tabs.List>
+            <Tabs.Tab value="a">Alpha</Tabs.Tab>
+            <Tabs.Tab value="b">Beta</Tabs.Tab>
+            <Tabs.Tab value="c">Gamma</Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panel value="a">Alpha panel</Tabs.Panel>
+          <Tabs.Panel value="b">Beta panel</Tabs.Panel>
+          <Tabs.Panel value="c">Gamma panel</Tabs.Panel>
+        </Tabs.Root>
       </div>,
     );
 
@@ -278,11 +275,11 @@ describe("Drawer", () => {
     return (
       <Drawer.Root>
         <Drawer.Trigger>Open</Drawer.Trigger>
-        <Drawer.Panel side="end">
+        <Drawer.Popup side="end">
           <Drawer.Title>Filters</Drawer.Title>
           <Drawer.Description>Drawer body</Drawer.Description>
           <Drawer.Close>Done</Drawer.Close>
-        </Drawer.Panel>
+        </Drawer.Popup>
       </Drawer.Root>
     );
   }
@@ -297,7 +294,7 @@ describe("Drawer", () => {
     await user.click(trigger);
     expect(dialog.open).toBe(true);
     expect(trigger).toHaveAttribute("data-popup-open", "true");
-    expect(dialog).toHaveAttribute("data-position", "end");
+    expect(dialog).toHaveAttribute("data-side", "end");
     expect(dialog).toHaveAccessibleName("Filters");
     expect(dialog).toHaveAccessibleDescription("Drawer body");
 
@@ -423,6 +420,56 @@ describe("Menu", () => {
     await waitFor(() => expect(screen.getByRole("menuitem", { name: "Delete" })).toHaveFocus());
   });
 
+  it("toggles a CheckboxItem and keeps the menu open", async () => {
+    const user = userEvent.setup();
+    const onCheckedChange = vi.fn();
+    render(
+      <Menu.Root>
+        <Menu.Trigger>View</Menu.Trigger>
+        <Menu.Popup>
+          <Menu.CheckboxItem onCheckedChange={onCheckedChange}>Show hidden</Menu.CheckboxItem>
+        </Menu.Popup>
+      </Menu.Root>,
+    );
+    await user.click(screen.getByRole("button", { name: "View" }));
+    const item = screen.getByRole("menuitemcheckbox", { name: "Show hidden" });
+    await waitFor(() => expect(item).toHaveFocus());
+    expect(item).toHaveAttribute("aria-checked", "false");
+    await user.click(item);
+    expect(item).toHaveAttribute("aria-checked", "true");
+    expect(onCheckedChange).toHaveBeenLastCalledWith(true);
+    expect(screen.getByRole("menu")).toBeVisible();
+  });
+
+  it("selects one RadioItem of a RadioGroup and roves through them", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    render(
+      <Menu.Root>
+        <Menu.Trigger>Sort</Menu.Trigger>
+        <Menu.Popup>
+          <Menu.RadioGroup defaultValue="name" onValueChange={onValueChange}>
+            <Menu.GroupLabel>Sort by</Menu.GroupLabel>
+            <Menu.RadioItem value="name">Name</Menu.RadioItem>
+            <Menu.RadioItem value="date">Date</Menu.RadioItem>
+          </Menu.RadioGroup>
+        </Menu.Popup>
+      </Menu.Root>,
+    );
+    await user.click(screen.getByRole("button", { name: "Sort" }));
+    expect(screen.getByRole("group", { name: "Sort by" })).toBeInTheDocument();
+    const name = screen.getByRole("menuitemradio", { name: "Name" });
+    const date = screen.getByRole("menuitemradio", { name: "Date" });
+    await waitFor(() => expect(name).toHaveFocus());
+    expect(name).toHaveAttribute("aria-checked", "true");
+    await user.keyboard("{ArrowDown}");
+    expect(date).toHaveFocus();
+    await user.keyboard("{Enter}");
+    expect(date).toHaveAttribute("aria-checked", "true");
+    expect(name).toHaveAttribute("aria-checked", "false");
+    expect(onValueChange).toHaveBeenLastCalledWith("date");
+  });
+
   it("skips disabled items when roving", async () => {
     const user = userEvent.setup();
     render(
@@ -546,6 +593,52 @@ describe("Toast", () => {
     expect(screen.getAllByRole("status")).toHaveLength(2);
   });
 
+  it("speaks the consumer's words for the region and the dismiss button", async () => {
+    const user = userEvent.setup();
+    render(
+      <Toast.Provider>
+        <FireButton />
+        <Toasts labels={{ region: "Meldungen", dismiss: "Schließen" }} />
+      </Toast.Provider>,
+    );
+    expect(screen.getByRole("region", { name: "Meldungen" })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Fire" }));
+    const dismiss = screen.getByRole("button", { name: "Schließen" });
+    expect(dismiss).toHaveClass("loam-Button");
+    await user.click(dismiss);
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+  });
+
+  it("composed parts read their toast from the Root", async () => {
+    const user = userEvent.setup();
+    function Viewport() {
+      const { toasts } = useToast();
+      return (
+        <Toast.Viewport>
+          {toasts.map((toast) => (
+            <Toast.Root key={toast.id} toast={toast}>
+              <Toast.Title render={<strong />}>{toast.title}</Toast.Title>
+              <Toast.Description render={<p />}>{toast.description}</Toast.Description>
+              <Toast.Close render={<button />}>Bye</Toast.Close>
+            </Toast.Root>
+          ))}
+        </Toast.Viewport>
+      );
+    }
+    render(
+      <Toast.Provider>
+        <FireButton />
+        <Viewport />
+      </Toast.Provider>,
+    );
+    await user.click(screen.getByRole("button", { name: "Fire" }));
+    const status = screen.getByRole("status");
+    expect(status.querySelector("strong.title")).toHaveTextContent("Saved");
+    expect(status.querySelector("p.description")).toHaveTextContent("Done.");
+    await user.click(screen.getByRole("button", { name: "Dismiss notification" }));
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+  });
+
   it("runs the action and dismisses", async () => {
     const user = userEvent.setup();
     const undo = vi.fn();
@@ -626,6 +719,36 @@ describe("Modal (invoker commands)", () => {
     expect(await screen.findByRole("dialog")).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Done" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+  });
+});
+
+describe("Modal (naming)", () => {
+  it("reports a Popup with no Title and no aria-label in development", () => {
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      render(
+        <Modal.Root>
+          <Modal.Popup>
+            <Modal.Close>Done</Modal.Close>
+          </Modal.Popup>
+        </Modal.Root>,
+      );
+      expect(error).toHaveBeenCalledWith(
+        expect.stringContaining("<Modal.Popup> has no accessible name"),
+      );
+      error.mockClear();
+      cleanup();
+      render(
+        <Modal.Root>
+          <Modal.Popup aria-label="Filters">
+            <Modal.Close>Done</Modal.Close>
+          </Modal.Popup>
+        </Modal.Root>,
+      );
+      expect(error).not.toHaveBeenCalled();
+    } finally {
+      error.mockRestore();
+    }
   });
 });
 
@@ -741,8 +864,8 @@ describe("Popover", () => {
     render(
       <Popover.Root>
         <Popover.Trigger>Open</Popover.Trigger>
-        <Popover.Popup>
-          <Popover.Title>Settings</Popover.Title>
+        <Popover.Popup side="top">
+          <Popover.Title render={<h3 />}>Settings</Popover.Title>
           <Popover.Description>Preferences panel.</Popover.Description>
         </Popover.Popup>
       </Popover.Root>,
@@ -751,6 +874,8 @@ describe("Popover", () => {
     const popup = screen.getByRole("dialog");
     expect(popup).toHaveAccessibleName("Settings");
     expect(popup).toHaveAccessibleDescription("Preferences panel.");
+    expect(popup).toHaveAttribute("data-side", "top");
+    expect(screen.getByRole("heading", { level: 3, name: "Settings" })).toHaveClass("title");
   });
 });
 
@@ -849,11 +974,17 @@ describe("SignpostLink", () => {
     expect(link).toHaveClass("loam-SignpostLink");
   });
 
-  it("a label on the substituted element is wrapped in the arrow anatomy", () => {
-    render(<SignpostLink render={<a href="/apply">Start your application</a>} />);
+  it("the arrow anatomy becomes the substituted element's children", () => {
+    render(<SignpostLink render={<a href="/apply" />}>Start your application</SignpostLink>);
     const link = screen.getByRole("link", { name: "Start your application" });
     expect(link.querySelector("span.icon svg")).not.toBeNull();
     expect(link.querySelector("span.label")).toHaveTextContent("Start your application");
+  });
+
+  it("an element's own children win, per the merge contract", () => {
+    render(<SignpostLink render={<a href="/apply">Start your application</a>} />);
+    const link = screen.getByRole("link", { name: "Start your application" });
+    expect(link.querySelector("span.label")).toBeNull();
   });
 });
 
@@ -892,8 +1023,27 @@ describe("composition contract regressions", () => {
 });
 
 describe("Pagination", () => {
+  const href = (page: number) => `/results?page=${page}`;
+  function Pager(props: { page: number; count: number; onNavigate?: (page: number) => void }) {
+    return (
+      <Pagination.Root>
+        <Pagination.List>
+          <Pagination.Pages
+            page={props.page}
+            count={props.count}
+            getHref={href}
+            onNavigate={(page, event) => {
+              event.preventDefault();
+              props.onNavigate?.(page);
+            }}
+          />
+        </Pagination.List>
+      </Pagination.Root>
+    );
+  }
+
   it("windows pages around the active one with ellipses", () => {
-    render(<Pagination total={10} value={5} getHref={(page) => `/results?page=${page}`} />);
+    render(<Pager page={5} count={10} />);
     for (const page of ["1", "4", "5", "6", "10"]) {
       expect(screen.getByRole("link", { name: `Page ${page}` })).toHaveAttribute(
         "href",
@@ -902,39 +1052,58 @@ describe("Pagination", () => {
     }
     expect(screen.queryByRole("link", { name: "Page 2" })).toBeNull();
     expect(screen.getByRole("link", { name: "Page 5" })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("navigation", { name: "Pagination" })).toBeInTheDocument();
   });
 
   it("exposes prev/next relationships and lets client routers intercept navigation", async () => {
     const user = userEvent.setup();
-    const onNavigate = vi.fn((_page, event: ReactMouseEvent<HTMLAnchorElement>) =>
-      event.preventDefault(),
-    );
-    render(
-      <Pagination
-        total={10}
-        value={5}
-        getHref={(page) => `/results?page=${page}`}
-        onNavigate={onNavigate}
-      />,
-    );
+    const onNavigate = vi.fn();
+    render(<Pager page={5} count={10} onNavigate={onNavigate} />);
     await user.click(screen.getByRole("link", { name: "Page 6" }));
-    expect(onNavigate).toHaveBeenLastCalledWith(6, expect.anything());
+    expect(onNavigate).toHaveBeenLastCalledWith(6);
     const previous = screen.getByRole("link", { name: "Previous page" });
     expect(previous).toHaveAttribute("rel", "prev");
+    expect(previous).toHaveClass("loam-Button");
     await user.click(previous);
-    expect(onNavigate).toHaveBeenLastCalledWith(4, expect.anything());
+    expect(onNavigate).toHaveBeenLastCalledWith(4);
     expect(screen.getByRole("link", { name: "Next page" })).toHaveAttribute("rel", "next");
   });
 
   it("renders boundary placeholders outside the tab and accessibility order", () => {
-    const { container } = render(
-      <Pagination total={3} value={1} getHref={(page) => `/results?page=${page}`} />,
-    );
+    const { container } = render(<Pager page={1} count={3} />);
     expect(screen.queryByRole("link", { name: "Previous page" })).toBeNull();
-    expect(container.querySelector("span.control[data-disabled]")).toHaveAttribute(
-      "aria-hidden",
-      "true",
+    const placeholder = container.querySelector("[data-disabled]");
+    expect(placeholder).toHaveAttribute("aria-hidden", "true");
+    expect(placeholder).not.toHaveAttribute("href");
+  });
+
+  it("speaks the consumer's words and takes router links through render", () => {
+    render(
+      <Pagination.Root labels={{ navigation: "Seiten" }}>
+        <Pagination.List>
+          <Pagination.Item>
+            <Pagination.Link
+              render={<a href="/first" data-router-link />}
+              aria-label="Erste Seite"
+            />
+          </Pagination.Item>
+          <Pagination.Pages
+            page={2}
+            count={3}
+            getHref={href}
+            labels={{ previous: "Zurück", next: "Weiter", page: (n) => `Seite ${n}` }}
+          />
+          <Pagination.Ellipsis />
+        </Pagination.List>
+      </Pagination.Root>,
     );
+    expect(screen.getByRole("navigation", { name: "Seiten" })).toBeInTheDocument();
+    const first = screen.getByRole("link", { name: "Erste Seite" });
+    expect(first).toHaveAttribute("data-router-link");
+    expect(first).toHaveClass("loam-Button");
+    expect(screen.getByRole("link", { name: "Zurück" })).toHaveAttribute("href", "/results?page=1");
+    expect(screen.getByRole("link", { name: "Seite 2" })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByText("…")).toHaveAttribute("aria-hidden", "true");
   });
 });
 
@@ -944,8 +1113,8 @@ describe("DateInput", () => {
       <DateInput.Root name="expiry">
         <DateInput.Legend>Expiry date</DateInput.Legend>
         <DateInput.Fields>
-          <DateInput.Field part="month" />
-          <DateInput.Field part="year" />
+          <DateInput.Month />
+          <DateInput.Year />
         </DateInput.Fields>
       </DateInput.Root>,
     );
@@ -960,9 +1129,9 @@ describe("DateInput", () => {
         <DateInput.Legend>Date of birth</DateInput.Legend>
         <DateInput.Error parts={["year"]}>The year must include four digits</DateInput.Error>
         <DateInput.Fields>
-          <DateInput.Field part="day" />
-          <DateInput.Field part="month" />
-          <DateInput.Field part="year" />
+          <DateInput.Day />
+          <DateInput.Month />
+          <DateInput.Year />
         </DateInput.Fields>
       </DateInput.Root>,
     );
@@ -977,8 +1146,8 @@ describe("DateInput", () => {
       <DateInput.Root name="dob" autoComplete="bday">
         <DateInput.Legend>Date of birth</DateInput.Legend>
         <DateInput.Fields>
-          <DateInput.Field part="day" />
-          <DateInput.Field part="year" />
+          <DateInput.Day />
+          <DateInput.Year />
         </DateInput.Fields>
       </DateInput.Root>,
     );
@@ -1006,6 +1175,23 @@ describe("Breadcrumbs", () => {
     expect(onClick).toHaveBeenCalledTimes(1);
     expect(screen.getByText("Billing")).toHaveAttribute("aria-current", "page");
     expect(screen.queryByRole("link", { name: "Billing" })).toBeNull();
+  });
+
+  it("lands ref and rest on the item and takes the link through render", () => {
+    const ref = { current: null as HTMLLIElement | null };
+    render(
+      <Breadcrumbs.Root labels={{ navigation: "Pfad" }}>
+        <Breadcrumbs.Item ref={ref} className="mine" render={<a href="/" data-router-link />}>
+          Home
+        </Breadcrumbs.Item>
+        <Breadcrumbs.Item current>Billing</Breadcrumbs.Item>
+      </Breadcrumbs.Root>,
+    );
+    expect(screen.getByRole("navigation", { name: "Pfad" })).toBeInTheDocument();
+    expect(ref.current).toHaveClass("loam-Breadcrumbs-item", "mine");
+    const home = screen.getByRole("link", { name: "Home" });
+    expect(home).toHaveAttribute("data-router-link");
+    expect(ref.current).toContainElement(home);
   });
 });
 
@@ -1052,6 +1238,41 @@ describe("Table", () => {
     expect(screen.queryByRole("region")).toBeNull();
     await user.tab();
     expect(screen.getByRole("button", { name: "After" })).toHaveFocus();
+  });
+
+  it("puts ref, className and rest on the scroll wrapper and tableProps on the table", () => {
+    const ref = { current: null as HTMLDivElement | null };
+    const tableRef = { current: null as HTMLTableElement | null };
+    const { container } = render(
+      <Table ref={ref} className="mine" data-testid="wrap" tableProps={{ ref: tableRef, id: "t" }}>
+        <caption>Invoices</caption>
+      </Table>,
+    );
+    const wrap = container.querySelector(".loam-Table");
+    expect(wrap).toHaveClass("mine");
+    expect(wrap).toHaveAttribute("data-testid", "wrap");
+    expect(ref.current).toBe(wrap);
+    expect(tableRef.current).toBe(container.querySelector("table#t"));
+  });
+
+  it("names an overflowing captionless table with the consumer's words", async () => {
+    const scrollWidth = vi.spyOn(HTMLElement.prototype, "scrollWidth", "get").mockReturnValue(800);
+    const clientWidth = vi.spyOn(HTMLElement.prototype, "clientWidth", "get").mockReturnValue(400);
+    try {
+      render(
+        <Table labels={{ scrollable: "Tabelle" }}>
+          <tbody>
+            <tr>
+              <td>INV-1</td>
+            </tr>
+          </tbody>
+        </Table>,
+      );
+      expect(await screen.findByRole("region", { name: "Tabelle" })).toBeInTheDocument();
+    } finally {
+      scrollWidth.mockRestore();
+      clientWidth.mockRestore();
+    }
   });
 
   it("becomes a focusable region named by its caption when it overflows", async () => {
@@ -1105,6 +1326,13 @@ describe("Textarea", () => {
     expect(area).toHaveAccessibleDescription("Keep it short.");
     await user.type(area, "Hello");
     expect(area.value).toBe("Hello");
+  });
+
+  it("makes rows real: the attribute and the floor the stylesheet reads agree", () => {
+    render(<Textarea aria-label="Notes" rows={6} />);
+    const area = screen.getByLabelText("Notes") as HTMLTextAreaElement;
+    expect(area).toHaveAttribute("rows", "6");
+    expect(area.style.getPropertyValue("--_rows")).toBe("6");
   });
 });
 

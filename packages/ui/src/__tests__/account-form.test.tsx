@@ -1,7 +1,8 @@
 import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
+import { renderToString } from "react-dom/server";
 import { axe } from "vitest-axe";
-import { Alert, Button, Checkbox, ErrorSummary, Field, Input } from "@loamui/core";
+import { Alert, Button, Checkbox, ErrorSummary, Field, Input, Modal } from "@loamui/core";
 import { AccountForm } from "../components/AccountForm/index";
 
 afterEach(cleanup);
@@ -12,28 +13,30 @@ describe("AccountForm", () => {
   it("wraps a core Card, names the form after the title, and signs in with no axe violations", async () => {
     const { container } = render(
       <AccountForm.Root>
-        <AccountForm.Title>Sign in</AccountForm.Title>
-        <AccountForm.Form action="/sign-in">
-          <Field.Root>
-            <Field.Label>Email address</Field.Label>
-            <Input name="email" type="email" autoComplete="email" required />
-          </Field.Root>
-          <Field.Root>
-            <Field.Label>Password</Field.Label>
-            <Input name="password" type="password" autoComplete="current-password" required />
-          </Field.Root>
-          <Checkbox name="remember" label="Keep me signed in" />
-          <AccountForm.Actions>
-            <Button type="submit">Sign in</Button>
-          </AccountForm.Actions>
-        </AccountForm.Form>
-        <AccountForm.Footer>
-          No account? <a href="/sign-up">Create one</a>
-        </AccountForm.Footer>
+        <AccountForm.Card>
+          <AccountForm.Title>Sign in</AccountForm.Title>
+          <AccountForm.Form action="/sign-in">
+            <Field.Root>
+              <Field.Label>Email address</Field.Label>
+              <Input name="email" type="email" autoComplete="email" required />
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>Password</Field.Label>
+              <Input name="password" type="password" autoComplete="current-password" required />
+            </Field.Root>
+            <Checkbox name="remember" label="Keep me signed in" />
+            <AccountForm.Actions>
+              <Button type="submit">Sign in</Button>
+            </AccountForm.Actions>
+          </AccountForm.Form>
+          <AccountForm.Footer>
+            No account? <a href="/sign-up">Create one</a>
+          </AccountForm.Footer>
+        </AccountForm.Card>
       </AccountForm.Root>,
     );
     // The wrapper is the composition's; the Card inside is core's, with no
-    // second class on it.
+    // second class on it, and the parts carry roots of their own.
     const root = container.firstElementChild!;
     expect(root).toHaveClass("loam-AccountForm");
     expect(root).not.toHaveClass("loam-Card");
@@ -43,9 +46,17 @@ describe("AccountForm", () => {
 
     const title = screen.getByRole("heading", { level: 1 });
     expect(title).toHaveTextContent("Sign in");
+    expect(title).toHaveClass("loam-AccountForm-title");
     const form = screen.getByRole("form", { name: "Sign in" });
     expect(form).toHaveAttribute("action", "/sign-in");
     expect(form).toHaveAttribute("aria-labelledby", title.id);
+    expect(form).toHaveClass("loam-AccountForm-form");
+    expect(form.querySelector(":scope > .loam-AccountForm-actions")).toContainElement(
+      screen.getByRole("button", { name: "Sign in" }),
+    );
+    expect(card.querySelector(":scope > p.loam-AccountForm-footer")).toHaveTextContent(
+      "No account? Create one",
+    );
 
     expect(screen.getByLabelText("Email address")).toHaveAttribute("autocomplete", "email");
     expect(screen.getByLabelText("Password")).toHaveAttribute("autocomplete", "current-password");
@@ -58,45 +69,47 @@ describe("AccountForm", () => {
   it("creates an account: a new password with its rules first, unticked consent, no confirm field", async () => {
     const { container } = render(
       <AccountForm.Root>
-        <AccountForm.Title>Create an account</AccountForm.Title>
-        <AccountForm.Form action="/sign-up">
-          <Field.Root>
-            <Field.Label>Full name</Field.Label>
-            <Input name="name" autoComplete="name" required />
-          </Field.Root>
-          <Field.Root>
-            <Field.Label>Email address</Field.Label>
-            <Input name="email" type="email" autoComplete="email" inputMode="email" required />
-          </Field.Root>
-          <Field.Root>
-            <Field.Label>Password</Field.Label>
-            <Field.Description>
-              At least 12 characters. Use a mix of words, not a single dictionary word.
-            </Field.Description>
-            <Input
-              name="password"
-              type="password"
-              autoComplete="new-password"
-              minLength={12}
+        <AccountForm.Card>
+          <AccountForm.Title>Create an account</AccountForm.Title>
+          <AccountForm.Form action="/sign-up">
+            <Field.Root>
+              <Field.Label>Full name</Field.Label>
+              <Input name="name" autoComplete="name" required />
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>Email address</Field.Label>
+              <Input name="email" type="email" autoComplete="email" inputMode="email" required />
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>Password</Field.Label>
+              <Field.Description>
+                At least 12 characters. Use a mix of words, not a single dictionary word.
+              </Field.Description>
+              <Input
+                name="password"
+                type="password"
+                autoComplete="new-password"
+                minLength={12}
+                required
+              />
+            </Field.Root>
+            <Checkbox
+              name="consent"
+              label={
+                <>
+                  I agree to the <a href="/terms">terms of service</a>
+                </>
+              }
               required
             />
-          </Field.Root>
-          <Checkbox
-            name="consent"
-            label={
-              <>
-                I agree to the <a href="/terms">terms of service</a>
-              </>
-            }
-            required
-          />
-          <AccountForm.Actions>
-            <Button type="submit">Create account</Button>
-          </AccountForm.Actions>
-        </AccountForm.Form>
-        <AccountForm.Footer>
-          Already have an account? <a href="/sign-in">Sign in</a>
-        </AccountForm.Footer>
+            <AccountForm.Actions>
+              <Button type="submit">Create account</Button>
+            </AccountForm.Actions>
+          </AccountForm.Form>
+          <AccountForm.Footer>
+            Already have an account? <a href="/sign-in">Sign in</a>
+          </AccountForm.Footer>
+        </AccountForm.Card>
       </AccountForm.Root>,
     );
     expect(screen.getByRole("form", { name: "Create an account" })).toHaveAttribute(
@@ -130,40 +143,42 @@ describe("AccountForm", () => {
   it("holds an ErrorSummary and field errors after a failed submit", async () => {
     const { container } = render(
       <AccountForm.Root>
-        <AccountForm.Title>Create an account</AccountForm.Title>
-        <AccountForm.Form action="/sign-up">
-          <ErrorSummary.Root>
-            <ErrorSummary.Title />
-            <ErrorSummary.List>
-              <ErrorSummary.Item href="#name">Enter your full name</ErrorSummary.Item>
-              <ErrorSummary.Item href="#password">
-                Password must be 12 characters or more
-              </ErrorSummary.Item>
-            </ErrorSummary.List>
-          </ErrorSummary.Root>
-          <Field.Root id="name">
-            <Field.Label>Full name</Field.Label>
-            <Field.Error>Enter your full name</Field.Error>
-            <Input name="name" autoComplete="name" required />
-          </Field.Root>
-          <Field.Root id="password">
-            <Field.Label>Password</Field.Label>
-            <Field.Description>
-              At least 12 characters. Use a mix of words, not a single dictionary word.
-            </Field.Description>
-            <Field.Error>Password must be 12 characters or more</Field.Error>
-            <Input
-              name="password"
-              type="password"
-              autoComplete="new-password"
-              minLength={12}
-              required
-            />
-          </Field.Root>
-          <AccountForm.Actions>
-            <Button type="submit">Create account</Button>
-          </AccountForm.Actions>
-        </AccountForm.Form>
+        <AccountForm.Card>
+          <AccountForm.Title>Create an account</AccountForm.Title>
+          <AccountForm.Form action="/sign-up">
+            <ErrorSummary.Root>
+              <ErrorSummary.Title />
+              <ErrorSummary.List>
+                <ErrorSummary.Item href="#name">Enter your full name</ErrorSummary.Item>
+                <ErrorSummary.Item href="#password">
+                  Password must be 12 characters or more
+                </ErrorSummary.Item>
+              </ErrorSummary.List>
+            </ErrorSummary.Root>
+            <Field.Root id="name">
+              <Field.Label>Full name</Field.Label>
+              <Field.Error>Enter your full name</Field.Error>
+              <Input name="name" autoComplete="name" required />
+            </Field.Root>
+            <Field.Root id="password">
+              <Field.Label>Password</Field.Label>
+              <Field.Description>
+                At least 12 characters. Use a mix of words, not a single dictionary word.
+              </Field.Description>
+              <Field.Error>Password must be 12 characters or more</Field.Error>
+              <Input
+                name="password"
+                type="password"
+                autoComplete="new-password"
+                minLength={12}
+                required
+              />
+            </Field.Root>
+            <AccountForm.Actions>
+              <Button type="submit">Create account</Button>
+            </AccountForm.Actions>
+          </AccountForm.Form>
+        </AccountForm.Card>
       </AccountForm.Root>,
     );
     expect(screen.getByRole("group", { name: "There is a problem" })).toHaveFocus();
@@ -179,26 +194,30 @@ describe("AccountForm", () => {
   it("resets a password: a described email field, a named action and a way back", async () => {
     const { container } = render(
       <AccountForm.Root>
-        <AccountForm.Title>Forgot your password?</AccountForm.Title>
-        <AccountForm.Description>
-          Enter the email address you signed up with and we'll send you a link to reset your
-          password.
-        </AccountForm.Description>
-        <AccountForm.Form action="/forgot-password">
-          <Field.Root>
-            <Field.Label>Email address</Field.Label>
-            <Input name="email" type="email" autoComplete="email" inputMode="email" required />
-          </Field.Root>
-          <AccountForm.Actions>
-            <Button type="submit">Send reset link</Button>
-          </AccountForm.Actions>
-        </AccountForm.Form>
-        <AccountForm.Footer>
-          <a href="/sign-in">Back to sign in</a>
-        </AccountForm.Footer>
+        <AccountForm.Card>
+          <AccountForm.Title>Forgot your password?</AccountForm.Title>
+          <AccountForm.Description>
+            Enter the email address you signed up with and we'll send you a link to reset your
+            password.
+          </AccountForm.Description>
+          <AccountForm.Form action="/forgot-password">
+            <Field.Root>
+              <Field.Label>Email address</Field.Label>
+              <Input name="email" type="email" autoComplete="email" inputMode="email" required />
+            </Field.Root>
+            <AccountForm.Actions>
+              <Button type="submit">Send reset link</Button>
+            </AccountForm.Actions>
+          </AccountForm.Form>
+          <AccountForm.Footer>
+            <a href="/sign-in">Back to sign in</a>
+          </AccountForm.Footer>
+        </AccountForm.Card>
       </AccountForm.Root>,
     );
-    expect(screen.getByText(/send you a link to reset your password/)).toHaveClass("description");
+    expect(screen.getByText(/send you a link to reset your password/)).toHaveClass(
+      "loam-AccountForm-description",
+    );
     expect(screen.getByRole("form", { name: "Forgot your password?" })).toHaveAttribute(
       "action",
       "/forgot-password",
@@ -221,11 +240,13 @@ describe("AccountForm", () => {
   it("holds the neutral confirmation in place of the form with no axe violations", async () => {
     const { container } = render(
       <AccountForm.Root>
-        <AccountForm.Title>Check your email</AccountForm.Title>
-        <Alert>If that address has an account, we've sent a link. Check your email.</Alert>
-        <AccountForm.Footer>
-          <a href="/sign-in">Back to sign in</a>
-        </AccountForm.Footer>
+        <AccountForm.Card>
+          <AccountForm.Title>Check your email</AccountForm.Title>
+          <Alert>If that address has an account, we've sent a link. Check your email.</Alert>
+          <AccountForm.Footer>
+            <a href="/sign-in">Back to sign in</a>
+          </AccountForm.Footer>
+        </AccountForm.Card>
       </AccountForm.Root>,
     );
     expect(screen.getByRole("status")).toHaveTextContent(/If that address has an account/);
@@ -236,7 +257,9 @@ describe("AccountForm", () => {
   it("leaves the form unnamed without a Title, and lets the consumer's own name win", () => {
     const { rerender } = render(
       <AccountForm.Root>
-        <AccountForm.Form action="/sign-in" />
+        <AccountForm.Card>
+          <AccountForm.Form action="/sign-in" />
+        </AccountForm.Card>
       </AccountForm.Root>,
     );
     // A form with no accessible name has no form role to query.
@@ -245,8 +268,10 @@ describe("AccountForm", () => {
 
     rerender(
       <AccountForm.Root>
-        <AccountForm.Title>Sign in</AccountForm.Title>
-        <AccountForm.Form action="/sign-in" aria-label="Sign in to your account" />
+        <AccountForm.Card>
+          <AccountForm.Title>Sign in</AccountForm.Title>
+          <AccountForm.Form action="/sign-in" aria-label="Sign in to your account" />
+        </AccountForm.Card>
       </AccountForm.Root>,
     );
     expect(screen.getByRole("form", { name: "Sign in to your account" })).not.toHaveAttribute(
@@ -257,8 +282,10 @@ describe("AccountForm", () => {
   it("renders the title as an h2 when asked, and the form still names itself by it", () => {
     render(
       <AccountForm.Root>
-        <AccountForm.Title render={<h2 />}>Sign in</AccountForm.Title>
-        <AccountForm.Form action="/sign-in" />
+        <AccountForm.Card>
+          <AccountForm.Title render={<h2 />}>Sign in</AccountForm.Title>
+          <AccountForm.Form action="/sign-in" />
+        </AccountForm.Card>
       </AccountForm.Root>,
     );
     const title = screen.getByRole("heading", { level: 2 });
@@ -267,5 +294,56 @@ describe("AccountForm", () => {
       "aria-labelledby",
       title.id,
     );
+  });
+
+  it("names the form after the title in the server render, before any effect runs", () => {
+    const html = renderToString(
+      <AccountForm.Root>
+        <AccountForm.Card>
+          <AccountForm.Title>Sign in</AccountForm.Title>
+          <AccountForm.Form action="/sign-in" />
+        </AccountForm.Card>
+      </AccountForm.Root>,
+    );
+    const titleId = html.match(/<h1[^>]*\sid="([^"]+)"/)?.[1];
+    expect(titleId).toBeTruthy();
+    expect(html).toContain(`aria-labelledby="${titleId}"`);
+  });
+
+  it("stands without the Card, on the surface a Modal already gives it", async () => {
+    const { container } = render(
+      <Modal.Root defaultOpen>
+        <Modal.Trigger>Sign in</Modal.Trigger>
+        <Modal.Popup aria-labelledby="dialog-sign-in">
+          <AccountForm.Root>
+            <AccountForm.Title render={<h2 />} id="dialog-sign-in">
+              Sign in
+            </AccountForm.Title>
+            <AccountForm.Form action="/sign-in">
+              <Field.Root>
+                <Field.Label>Email address</Field.Label>
+                <Input name="email" type="email" autoComplete="email" required />
+              </Field.Root>
+              <AccountForm.Actions>
+                <Button type="submit">Sign in</Button>
+              </AccountForm.Actions>
+            </AccountForm.Form>
+            <AccountForm.Footer>
+              <Modal.Close>Cancel</Modal.Close>
+            </AccountForm.Footer>
+          </AccountForm.Root>
+        </Modal.Popup>
+      </Modal.Root>,
+    );
+    const dialog = screen.getByRole("dialog", { name: "Sign in" });
+    // No Card: the wrapper's first child is the Title itself.
+    const root = dialog.querySelector(".loam-AccountForm")!;
+    expect(root.querySelector(".loam-Card")).toBeNull();
+    expect(root.firstElementChild).toBe(screen.getByRole("heading", { level: 2 }));
+    expect(screen.getByRole("form", { name: "Sign in" })).toHaveAttribute(
+      "aria-labelledby",
+      "dialog-sign-in",
+    );
+    expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 });

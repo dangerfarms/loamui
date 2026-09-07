@@ -89,6 +89,28 @@ describe("Comment", () => {
     expect(article).not.toHaveAttribute("aria-labelledby");
   });
 
+  it("names the list of replies by its labels, or by the consumer's own name", () => {
+    const { container } = render(
+      <>
+        <Comment.Replies labels={{ replies: "Svar" }}>
+          <Comment.Reply>
+            <Comment.Root>
+              <Comment.Body>
+                <p>Ja.</p>
+              </Comment.Body>
+            </Comment.Root>
+          </Comment.Reply>
+        </Comment.Replies>
+        <h3 id="replies-to-priya">Replies to Priya</h3>
+        <Comment.Replies aria-labelledby="replies-to-priya" />
+      </>,
+    );
+    expect(screen.getByRole("list", { name: "Svar" })).toBeInTheDocument();
+    const byHeading = screen.getByRole("list", { name: "Replies to Priya" });
+    expect(byHeading).not.toHaveAttribute("aria-label");
+    expect(container.querySelectorAll("ul.replies")).toHaveLength(2);
+  });
+
   it("lists replies as nested articles in a list named Replies", async () => {
     const { container } = render(
       <Comment.Root>

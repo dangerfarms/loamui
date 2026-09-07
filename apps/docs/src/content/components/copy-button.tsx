@@ -50,11 +50,13 @@ const doc: ComponentContent = {
     {
       title: "Your own words",
       description:
-        "The rest label is the children, the confirmation is copiedLabel and the failure is failedMessage, so every word can be translated or made specific. The timeout decides how long the confirmation stands.",
+        "The rest label is the children; the confirmation and the failure are labels.copied and labels.failed, so every word can be translated or made specific. The timeout decides how long the confirmation stands.",
       code: `<CopyButton
   value="https://loamui.dev/docs/components/copy-button"
-  copiedLabel="Link copied"
-  failedMessage="The link could not be copied: select it and copy it yourself"
+  labels={{
+    copied: "Link copied",
+    failed: "The link could not be copied: select it and copy it yourself",
+  }}
   timeout={3000}
 >
   Copy link
@@ -62,8 +64,10 @@ const doc: ComponentContent = {
       render: () => (
         <CopyButton
           value="https://loamui.dev/docs/components/copy-button"
-          copiedLabel="Link copied"
-          failedMessage="The link could not be copied: select it and copy it yourself"
+          labels={{
+            copied: "Link copied",
+            failed: "The link could not be copied: select it and copy it yourself",
+          }}
           timeout={3000}
         >
           Copy link
@@ -123,16 +127,11 @@ const doc: ComponentContent = {
       description: "The label at rest. An svg child is detected by Button as an icon.",
     },
     {
-      name: "copiedLabel",
-      type: "string",
-      default: `"Copied"`,
-      description: "The label shown, and announced, after a successful copy.",
-    },
-    {
-      name: "failedMessage",
-      type: "string",
-      default: `"Copy failed: select the text and copy it yourself"`,
-      description: "What is announced when the clipboard refuses. The label is left as it was.",
+      name: "labels",
+      type: "{ copied?: ReactNode; failed?: ReactNode }",
+      default: `{ copied: "Copied", failed: "Copy failed: select the text and copy it yourself" }`,
+      description:
+        "The words the button says: copied is shown, and announced, after a successful copy; failed is announced when the clipboard refuses, and the label is left as it was.",
     },
     {
       name: "timeout",

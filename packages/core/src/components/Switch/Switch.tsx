@@ -1,40 +1,48 @@
 "use client";
 
 import { useId, useMemo } from "react";
-import type { InputHTMLAttributes, ReactNode, Ref } from "react";
+import type { ReactNode } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 import { useFieldControlProps } from "../Field/Field";
 import { useUserInvalid } from "../../use-user-invalid";
 import { composeRefs } from "../../render";
 
-export interface SwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {
+/** The bare toggle (input + track), minus any label. */
+export interface SwitchControlProps extends Omit<PartProps<"input">, "size" | "type"> {
+  /**
+   * Props for the span around the input and its track
+   * (`span.loam-Switch-control`). `className`, `style`, `ref` and every
+   * other prop land on the `<input>` itself.
+   */
+  wrapperProps?: Omit<PartProps<"span">, "children">;
+}
+
+export interface SwitchProps extends Omit<SwitchControlProps, "wrapperProps"> {
   /** Label rendered beside the toggle. */
   label?: ReactNode;
   /** Helper text rendered below the label. */
   description?: ReactNode;
   /** Which side of the toggle the label sits on. @default "end" */
   labelPosition?: "start" | "end";
-  /** Root wrapper class. */
-  wrapperClassName?: string;
-  ref?: Ref<HTMLInputElement>;
+  /**
+   * Props for the labelled row (`label.loam-Switch-wrapper`), which exists
+   * only with a `label` or `description`. `className`, `style`, `ref` and
+   * every other prop land on the `<input>` itself.
+   */
+  wrapperProps?: Omit<PartProps<"label">, "children" | "htmlFor">;
 }
-
-/** The bare toggle (input + track), minus any label. */
-export type SwitchControlProps = Omit<
-  SwitchProps,
-  "label" | "description" | "labelPosition" | "wrapperClassName"
->;
 
 /**
  * The bare track + `<input role="switch">`. When rendered
  * inside a `Field` it reads its id / describedby / invalid from context
- * (`<Field.Label><SwitchControl /> …</Field.Label>`); otherwise it uses its
- * own props.
+ * (`<Field.Label><Switch.Control /> …</Field.Label>`); otherwise it uses
+ * its own props.
  */
 function SwitchControl({
   id,
   className,
-  disabled,
+  wrapperProps,
   "aria-invalid": ariaInvalid,
   "aria-describedby": ariaDescribedby,
   onInput,
@@ -48,9 +56,10 @@ function SwitchControl({
     useUserInvalid<HTMLInputElement>();
   const inputRef = useMemo(() => composeRefs(ref, validationRef), [ref, validationRef]);
   const resolvedAriaInvalid = ariaInvalid ?? field["aria-invalid"] ?? (nativeInvalid || undefined);
+  const { className: wrapperClassName, ...wrapper } = wrapperProps ?? {};
 
   return (
-    <span className="loam-Switch-control" data-disabled={disabled || undefined}>
+    <span className={cx("loam-Switch-control", wrapperClassName)} {...wrapper}>
       {/* role-has-required-aria-props is off for this file (.oxlintrc):
           the native checkbox's checkedness maps to aria-checked */}
       <input
@@ -59,7 +68,6 @@ function SwitchControl({
         type="checkbox"
         role="switch"
         className={className}
-        disabled={disabled}
         {...rest}
         aria-invalid={resolvedAriaInvalid}
         aria-describedby={ariaDescribedby ?? field["aria-describedby"]}
@@ -84,43 +92,45 @@ function SwitchControl({
  *
  * Renders an accessible inline row when given `label`/`description`,
  * or the bare track alone (self-wiring inside a `Field`). Errors
- * compose via `Field.Error`.
+ * compose via `Field.Error`. The labelled row reads the Field too: its
+ * input takes the Field's id, so a `Field.Label` in the same Field points
+ * at it, and the Field's description and error join its own description
+ * in `aria-describedby`.
  * Stateless and server-safe: `defaultChecked` uncontrolled, or
  * `checked` + `onChange`.
  */
-export function Switch({
+function SwitchLabelled({
   label,
   description,
-  required,
   labelPosition = "end",
-  disabled,
   id,
-  wrapperClassName,
+  wrapperProps,
+  "aria-describedby": ariaDescribedby,
   ref,
   ...control
 }: SwitchProps) {
   const autoId = useId();
+  const field = useFieldControlProps();
 
   if (!label && !description) {
-    return <SwitchControl ref={ref} id={id} disabled={disabled} required={required} {...control} />;
+    return <SwitchControl ref={ref} id={id} aria-describedby={ariaDescribedby} {...control} />;
   }
 
-  const inputId = id ?? autoId;
+  const inputId = id ?? field.id ?? autoId;
   const descId = description ? `${inputId}-desc` : undefined;
+  const { className: wrapperClassName, ...wrapper } = wrapperProps ?? {};
 
   const labelRow = (
     <label
-      className={cx("loam-Switch-wrapper", !description ? wrapperClassName : undefined)}
-      htmlFor={inputId}
+      className={cx("loam-Switch-wrapper", wrapperClassName)}
       data-label-position={labelPosition}
-      data-disabled={disabled || undefined}
+      {...wrapper}
+      htmlFor={inputId}
     >
       <SwitchControl
         ref={ref}
         id={inputId}
-        disabled={disabled}
-        required={required}
-        aria-describedby={descId}
+        aria-describedby={cx(descId, ariaDescribedby ?? field["aria-describedby"]) || undefined}
         {...control}
       />
       <span className="label">{label}</span>
@@ -130,18 +140,16 @@ export function Switch({
   if (!description) return labelRow;
 
   return (
-    <div
-      className={cx("loam-Switch-field", wrapperClassName)}
-      data-disabled={disabled || undefined}
-    >
+    <div className="loam-Switch-field">
       {labelRow}
-      {description && (
-        <span className="description" id={descId}>
-          {description}
-        </span>
-      )}
+      <span className="description" id={descId}>
+        {description}
+      </span>
     </div>
   );
 }
 
-export { SwitchControl };
+export const Switch = Object.assign(SwitchLabelled, {
+  /** The bare toggle, for composing inside a `Field.Label` of its own. */
+  Control: SwitchControl,
+});

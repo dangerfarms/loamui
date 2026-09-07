@@ -1,13 +1,10 @@
 /*
  * A Price sizes nothing: the amount takes the font of whatever it sits in,
  * so the same element reads as a headline in a plan and as a figure in a
- * table cell. It fixes only the figures and dresses the qualifier.
+ * table cell. The figures themselves are the `data` element rule in
+ * elements.css; this dresses only the qualifier.
  */
 @scope (.loam-Price) to ([class*="loam-"]) {
-  :scope {
-    font-variant-numeric: lining-nums tabular-nums;
-  }
-
   /* The qualifier is secondary: muted, small, and back to the running
      figures so it never competes with the amount. */
   small.per {

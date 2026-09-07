@@ -9,7 +9,7 @@ const contactDetails: Composition = {
   category: "Data display",
   description:
     "How to reach an organisation or person: phone, email, postal address, hours, or a labelled list of links.",
-  lead: "The root is an address element, contact information for its nearest article or for the page, holding a description list so each label and its value are associated. The phone number is a tel: link and the email a mailto: link, so a tap dials or opens the mail client; a postal address keeps its line breaks. There are no layout props: the pairs sit in two columns, labels beside values, and stack in a narrow container.",
+  lead: "The root is an address element, contact information for its nearest article or for the page, holding a description list so each label and its value are associated. The phone number is a tel: link and the email a mailto: link, so a tap dials or opens the mail client; a postal address keeps its line breaks. There are no layout props: the pairs sit in two columns, labels beside values, where the container is 22rem or wider, and stack beneath that; each width owns its layout, so neither overrides the other.",
   importLine: `import { ContactDetails } from "@loamui/ui";`,
   parts: [
     {

@@ -87,6 +87,19 @@ export const Persistent: Story = {
 };
 
 /**
+ * Every default string is overridable: `labels` names the region and the
+ * dismiss button in the page's own words.
+ */
+export const Labels: Story = {
+  render: () => (
+    <Toast.Provider>
+      <FireToast label="Speichern" title="Gespeichert" description="Ihre Änderungen sind live." />
+      <Toasts labels={{ region: "Meldungen", dismiss: "Meldung schließen" }} />
+    </Toast.Provider>
+  ),
+};
+
+/**
  * Interaction test: firing a toast announces it via a status live region,
  * and the labelled dismiss button removes it.
  */

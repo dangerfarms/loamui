@@ -10,13 +10,13 @@ const productCard: Composition = {
   category: "Data display",
   description:
     "One product in a listing: an image, a linked title, a rating, a price and one action, in an article inside a core Card.",
-  lead: "Seven parts in an article inside a core Card, the article named by the title so a list of the page's articles is a list of products. The name holds the link and the card does not, so the button beneath keeps its own name; the rating is core's Rating in display mode, whose accessible name is the score; a reduction is the old price struck through with Was and Now read out around it, never a colour alone; and the image describes the product, because a picture of a product says what the name does not.",
-  importLine: `import { ProductCard } from "@loamui/ui";`,
+  lead: "Eight parts in an article inside a core Card, the article named by the title so a list of the page's articles is a list of products. The name holds the link and the card does not, so the button beneath keeps its own name; the rating is core's Rating in display mode, whose accessible name is the score; a reduction is a Was before the price, the old figure struck through with Was and Now read out around the pair, never a colour alone, and the same part works in a CartLine; the image describes the product, because a picture of a product says what the name does not; and every word the card says on its own, the review word, Was, Now, comes from labels.",
+  importLine: `import { ProductCard } from "@loamui/ui";\nimport { Badge, Button, Price, Rating } from "@loamui/core";`,
   parts: [
     {
       name: "ProductCard.Root",
       description:
-        "The unit: a core Card, left as core styles it, holding an article with the parts in a column. The article's aria-labelledby points at the Title while one is rendered.",
+        "The unit: a core Card, left as core styles it, holding an article with the parts in a column. The article's aria-labelledby points at the Title from the first render, so the server HTML carries the name (your own aria-label or aria-labelledby wins). className, style and ref land on the Card. labels holds the card's words: reviews, a function of the count, was and now.",
     },
     {
       name: "ProductCard.Media",
@@ -36,12 +36,17 @@ const productCard: Composition = {
     {
       name: "ProductCard.Rating",
       description:
-        "Your display-mode core Rating, whose accessible name carries the score (4.5 out of 5), with the review count as text beside it: (128) on screen, (128 reviews) to assistive tech.",
+        "Your display-mode core Rating, whose accessible name carries the score (4.5 out of 5), with the review count as text beside it: (128) on screen, (128 reviews) to assistive tech. The word is labels.reviews(count), so it pluralises and translates.",
     },
     {
       name: "ProductCard.Value",
       description:
-        "The price, large and bold, a core Price as its children. Pass the old one as was and it is struck through before the current price, with Was and Now in core's loam-VisuallyHidden class so the change is announced.",
+        "The price, large and bold: a core Price as its children, after a ProductCard.Was when there is one.",
+    },
+    {
+      name: "ProductCard.Was",
+      description:
+        "The price before a reduction: a core Price struck through, placed before the current one in Value. It writes labels.was before itself and labels.now after, both hidden, so the change is announced (Was £45 Now £36) and never carried by the strike alone. The judgment is the part's, so the same markup works in a CartLine.Value, where it reads its words from its own labels.",
     },
     {
       name: "ProductCard.Actions",
@@ -101,7 +106,7 @@ const productCard: Composition = {
     {
       title: "On sale",
       description:
-        "The old price goes to was: struck through before the current price, with Was and Now read out around the pair so the reduction is announced, not left to the strike. The offer is a Badge in a success region you place in Meta.",
+        "The old price goes in a ProductCard.Was before the current one: struck through, with Was and Now read out around the pair so the reduction is announced, not left to the strike. The offer is a Badge in a success region you place in Meta.",
       code: `<ProductCard.Root>
   <ProductCard.Media>
     <img src="https://picsum.photos/seed/boots/600/600" alt="Leather boots in dark brown, laced" />
@@ -117,7 +122,10 @@ const productCard: Composition = {
   <ProductCard.Rating count={64}>
     <Rating readOnly label="Average rating" value={4} />
   </ProductCard.Rating>
-  <ProductCard.Value was={<Price value={150} currency="GBP" />}>
+  <ProductCard.Value>
+    <ProductCard.Was>
+      <Price value={150} currency="GBP" />
+    </ProductCard.Was>
     <Price value={120} currency="GBP" />
   </ProductCard.Value>
   <ProductCard.Actions>
@@ -145,7 +153,10 @@ const productCard: Composition = {
           <ProductCard.Rating count={64}>
             <Rating readOnly label="Average rating" value={4} />
           </ProductCard.Rating>
-          <ProductCard.Value was={<Price value={150} currency="GBP" />}>
+          <ProductCard.Value>
+            <ProductCard.Was>
+              <Price value={150} currency="GBP" />
+            </ProductCard.Was>
             <Price value={120} currency="GBP" />
           </ProductCard.Value>
           <ProductCard.Actions>
@@ -200,7 +211,10 @@ const productCard: Composition = {
         <ProductCard.Rating count={64}>
           <Rating readOnly label="Average rating" value={4} />
         </ProductCard.Rating>
-        <ProductCard.Value was={<Price value={150} currency="GBP" />}>
+        <ProductCard.Value>
+          <ProductCard.Was>
+            <Price value={150} currency="GBP" />
+          </ProductCard.Was>
           <Price value={120} currency="GBP" />
         </ProductCard.Value>
         <ProductCard.Actions>
@@ -294,7 +308,10 @@ const productCard: Composition = {
                 <ProductCard.Rating count={64}>
                   <Rating readOnly label="Average rating" value={4} />
                 </ProductCard.Rating>
-                <ProductCard.Value was={<Price value={150} currency="GBP" />}>
+                <ProductCard.Value>
+                  <ProductCard.Was>
+                    <Price value={150} currency="GBP" />
+                  </ProductCard.Was>
                   <Price value={120} currency="GBP" />
                 </ProductCard.Value>
                 <ProductCard.Actions>

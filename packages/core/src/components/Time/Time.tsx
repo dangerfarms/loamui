@@ -1,18 +1,17 @@
-import type { ReactNode, Ref, TimeHTMLAttributes } from "react";
+import type { ReactNode } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 
 export type TimeStyle = "full" | "long" | "medium" | "short";
 
-export interface TimeProps extends Omit<
-  TimeHTMLAttributes<HTMLTimeElement>,
-  "children" | "dateTime"
-> {
+export interface TimeProps extends Omit<PartProps<"time">, "children" | "dateTime"> {
   /** The moment or calendar date: an ISO 8601 string ("2026-08-12", "2026-08-12T14:30:00Z") or a Date. */
   value: Date | string;
   /**
    * The BCP 47 locale the date is written in: the order of the parts, the
-   * names of months and days, 12- or 24-hour time. Set it to the page's
-   * language. @default "en"
+   * names of months and days, 12- or 24-hour time. Pass the page's
+   * language; the default is a fixed value only so the server and the
+   * browser write the same text. @default "en"
    */
   locale?: string;
   /**
@@ -38,7 +37,6 @@ export interface TimeProps extends Omit<
   timeZone?: string;
   /** Your own words in place of the written form ("Yesterday"); the machine-readable dateTime stays. */
   children?: ReactNode;
-  ref?: Ref<HTMLTimeElement>;
 }
 
 // A value with no time part is a calendar date, and a calendar date is the

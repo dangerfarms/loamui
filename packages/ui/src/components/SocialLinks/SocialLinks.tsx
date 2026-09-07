@@ -1,7 +1,8 @@
-import type { AnchorHTMLAttributes, HTMLAttributes, LiHTMLAttributes, ReactNode, Ref } from "react";
+import type { ReactNode } from "react";
 import { cx } from "@loamui/core";
+import type { PartProps } from "@loamui/core";
 
-export interface SocialLinksRootProps extends HTMLAttributes<HTMLElement> {
+export interface SocialLinksRootProps extends PartProps<"nav"> {
   /**
    * Names the landmark for assistive technology; every nav on a page needs
    * a distinct one. Yields to an `aria-labelledby` you pass instead.
@@ -10,7 +11,6 @@ export interface SocialLinksRootProps extends HTMLAttributes<HTMLElement> {
   "aria-label"?: string;
   /** `SocialLinks.Item`s. */
   children?: ReactNode;
-  ref?: Ref<HTMLElement>;
 }
 
 /**
@@ -68,10 +68,9 @@ function SocialLinksRoot({
   );
 }
 
-export interface SocialLinksItemProps extends LiHTMLAttributes<HTMLLIElement> {
+export interface SocialLinksItemProps extends PartProps<"li"> {
   /** One `SocialLinks.Link`. */
   children?: ReactNode;
-  ref?: Ref<HTMLLIElement>;
 }
 
 /** One entry in the list, an `li`. */
@@ -83,7 +82,7 @@ function SocialLinksItem({ className, children, ref, ...rest }: SocialLinksItemP
   );
 }
 
-export interface SocialLinksLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+export interface SocialLinksLinkProps extends PartProps<"a"> {
   /**
    * The profile's name, the link's accessible name: "GitHub", "Mastodon".
    * Rendered as visually hidden text, not as `aria-label`.
@@ -97,7 +96,6 @@ export interface SocialLinksLinkProps extends AnchorHTMLAttributes<HTMLAnchorEle
   rel?: string;
   /** The icon: an `svg`. It is hidden from assistive technology; the label names the link. */
   children?: ReactNode;
-  ref?: Ref<HTMLAnchorElement>;
 }
 
 /**

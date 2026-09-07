@@ -1,19 +1,20 @@
-import type { HTMLAttributes, ReactNode, Ref } from "react";
+import type { ReactNode } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 
-export interface PriceProps extends Omit<HTMLAttributes<HTMLDataElement>, "children"> {
+export interface PriceProps extends Omit<PartProps<"data">, "children"> {
   /** The amount in the currency's major unit: 24 for £24, 9.5 for £9.50. */
   value: number;
   /** The ISO 4217 currency code: "GBP", "USD", "EUR". */
   currency: string;
   /**
    * The BCP 47 locale the amount is written in: grouping, decimal mark and
-   * where the symbol sits. Set it to the page's language. @default "en"
+   * where the symbol sits. Pass the page's language; the default is a fixed
+   * value only so the server and the browser write the same text. @default "en"
    */
   locale?: string;
   /** What the amount covers ("per seat, per month"), written after it in small text. */
   children?: ReactNode;
-  ref?: Ref<HTMLDataElement>;
 }
 
 /**

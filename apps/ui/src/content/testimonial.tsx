@@ -24,7 +24,7 @@ const testimonial: Composition = {
     {
       name: "Testimonial.Author",
       description:
-        "Who said it: the figure's caption, a row. Put an Avatar, a Name and a Role inside; the Name and Role are gathered into one column of text beside the Avatar, whatever order you wrote them in.",
+        "Who said it: the figure's caption, a grid. Put an Avatar, a Name and a Role inside, in any order: the stylesheet stacks the Name over the Role beside the Avatar, which spans both their rows, so a name that wraps pushes the role down rather than sideways; anything after them runs the full width. Nothing is re-parented: the DOM is what you wrote.",
     },
     {
       name: "Testimonial.Name",

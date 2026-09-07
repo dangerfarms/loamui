@@ -1,14 +1,12 @@
 "use client";
 
 import { useId } from "react";
-import type { ChangeEvent, HTMLAttributes, Ref } from "react";
+import type { ChangeEvent, Ref } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 import { Fieldset } from "../Fieldset/Fieldset";
 
-export interface RatingProps extends Omit<
-  HTMLAttributes<HTMLElement>,
-  "defaultValue" | "onChange"
-> {
+export interface RatingProps extends Omit<PartProps<"fieldset">, "defaultValue" | "onChange"> {
   /**
    * What is being rated ("Rate this recipe", "Average rating"). Names the
    * group of stars for assistive tech; visually hidden unless `showLabel`.
@@ -50,7 +48,6 @@ export interface RatingProps extends Omit<
   required?: boolean;
   /** Disables every star (via the fieldset, so the whole group greys out). */
   disabled?: boolean;
-  ref?: Ref<HTMLElement>;
 }
 
 // One glyph, one path, painted with currentColor. Drawn twice: an outline
@@ -121,7 +118,12 @@ export function Rating({
         data-show-label={showLabel || undefined}
         {...rest}
       >
-        <span className="label">{label}</span>
+        {/* The label always names the stars; unshown, it is only hidden. */}
+        {showLabel ? (
+          <span className="label">{label}</span>
+        ) : (
+          <span className="loam-VisuallyHidden">{label}</span>
+        )}
         <span className="stars" role="img" aria-label={valueLabel(shown, max)}>
           {stars.map((star) => {
             const amount = halves - (star - 1) * 2;
@@ -144,13 +146,15 @@ export function Rating({
 
   return (
     <Fieldset.Root
-      ref={ref as Ref<HTMLFieldSetElement>}
+      ref={ref}
       className={cx("loam-Rating", className)}
       data-show-label={showLabel || undefined}
       disabled={disabled}
       {...rest}
     >
-      <Fieldset.Legend>{label}</Fieldset.Legend>
+      <Fieldset.Legend className={showLabel ? undefined : "loam-VisuallyHidden"}>
+        {label}
+      </Fieldset.Legend>
       <span className="stars">
         {stars.map((star) => (
           <label key={star} className="star">

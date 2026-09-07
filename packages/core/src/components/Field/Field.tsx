@@ -1,8 +1,9 @@
 "use client";
 
 import { createContext, useContext, useEffect, useId, useMemo } from "react";
-import type { HTMLAttributes, LabelHTMLAttributes } from "react";
+import type { ReactNode } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 import { usePresence } from "../../use-presence";
 import { renderWithProps } from "../../render";
 import type { RenderProp } from "../../render";
@@ -25,6 +26,22 @@ import type { RenderProp } from "../../render";
  * ```
  */
 
+/** The words a Field says on its own, each with an English default. */
+export interface FieldLabels {
+  /** The text after an optional Label's words. @default "(optional)" */
+  optional?: ReactNode;
+  /**
+   * The hidden words before an Error's message, so the announcement is
+   * unmistakable out of context. @default "Error: "
+   */
+  errorPrefix?: ReactNode;
+}
+
+const DEFAULT_LABELS: Required<FieldLabels> = {
+  optional: "(optional)",
+  errorPrefix: "Error: ",
+};
+
 interface FieldContextValue {
   fieldId: string;
   descriptionId: string;
@@ -34,6 +51,7 @@ interface FieldContextValue {
   invalid: boolean;
   /** Composed aria-describedby (description + error ids that are present). */
   describedBy: string | undefined;
+  labels: Required<FieldLabels>;
   registerDescription: () => () => void;
   registerError: () => () => void;
 }
@@ -53,8 +71,9 @@ function useFieldContext(part: string): FieldContextValue {
  *
  * Returns `{}` when used outside a `Field.Root`, so a control can wire itself
  * to the Field when composed inside one
- * (`<Field.Label><Checkbox /> …</Field.Label>`) and fall back to its own
- * props when used standalone. The shape matches {@link FieldControlRenderProps}.
+ * (`<Field.Label><Checkbox.Control /> …</Field.Label>`) and fall back to its
+ * own props when used standalone. The shape matches
+ * {@link FieldControlRenderProps}.
  */
 export function useFieldControlProps(): Partial<FieldControlRenderProps> {
   const ctx = useContext(FieldContext);
@@ -66,16 +85,20 @@ export function useFieldControlProps(): Partial<FieldControlRenderProps> {
   };
 }
 
-export interface FieldRootProps extends HTMLAttributes<HTMLDivElement> {
+export interface FieldRootProps extends PartProps<"div"> {
   /** Base id for the control; auto-generated when omitted. */
   id?: string;
+  /** The Field's own words; Label and Error read them from here. */
+  labels?: FieldLabels;
 }
 
-function FieldRoot({ id, className, children, ...rest }: FieldRootProps) {
+function FieldRoot({ id, labels, className, children, ref, ...rest }: FieldRootProps) {
   const autoId = useId();
   const fieldId = id ?? autoId;
   const [hasDescription, registerDescription] = usePresence();
   const [hasError, registerError] = usePresence();
+  const optionalLabel = labels?.optional ?? DEFAULT_LABELS.optional;
+  const errorPrefix = labels?.errorPrefix ?? DEFAULT_LABELS.errorPrefix;
 
   // Invalid is never declared, only detected: the field is invalid exactly
   // when a Field.Error with content is rendered. CSS detects the same thing
@@ -95,6 +118,7 @@ function FieldRoot({ id, className, children, ...rest }: FieldRootProps) {
       hasError,
       invalid,
       describedBy,
+      labels: { optional: optionalLabel, errorPrefix },
       registerDescription,
       registerError,
     }),
@@ -106,6 +130,8 @@ function FieldRoot({ id, className, children, ...rest }: FieldRootProps) {
       hasError,
       invalid,
       describedBy,
+      optionalLabel,
+      errorPrefix,
       registerDescription,
       registerError,
     ],
@@ -113,36 +139,42 @@ function FieldRoot({ id, className, children, ...rest }: FieldRootProps) {
 
   return (
     <FieldContext value={value}>
-      <div className={cx("loam-Field", className)} {...rest}>
+      <div ref={ref} className={cx("loam-Field", className)} {...rest}>
         {children}
       </div>
     </FieldContext>
   );
 }
 
-export interface FieldLabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
+export interface FieldLabelProps extends PartProps<"label"> {
   /** Mark the field optional in text rather than with a required asterisk. */
   optional?: boolean;
 }
 
-function FieldLabel({ optional, className, children, ...rest }: FieldLabelProps) {
+function FieldLabel({ optional, className, children, ref, ...rest }: FieldLabelProps) {
   const ctx = useFieldContext("Field.Label");
   return (
-    <label className={cx("loam-Field-label", className)} htmlFor={ctx.fieldId} {...rest}>
+    <label ref={ref} className={cx("loam-Field-label", className)} htmlFor={ctx.fieldId} {...rest}>
       {children}
-      {optional && <span className="optional"> (optional)</span>}
+      {optional && (
+        <>
+          {" "}
+          <span className="optional">{ctx.labels.optional}</span>
+        </>
+      )}
     </label>
   );
 }
 
-export interface FieldDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {}
+export interface FieldDescriptionProps extends PartProps<"p"> {}
 
-function FieldDescription({ className, children, ...rest }: FieldDescriptionProps) {
+function FieldDescription({ className, children, ref, ...rest }: FieldDescriptionProps) {
   const ctx = useFieldContext("Field.Description");
   const { registerDescription } = ctx;
   useEffect(() => registerDescription(), [registerDescription]);
   return (
     <p
+      ref={ref}
       className={cx("loam-Field-description description", className)}
       id={ctx.descriptionId}
       {...rest}
@@ -152,9 +184,9 @@ function FieldDescription({ className, children, ...rest }: FieldDescriptionProp
   );
 }
 
-export interface FieldErrorProps extends HTMLAttributes<HTMLParagraphElement> {}
+export interface FieldErrorProps extends PartProps<"p"> {}
 
-function FieldError({ className, children, ...rest }: FieldErrorProps) {
+function FieldError({ className, children, ref, ...rest }: FieldErrorProps) {
   const ctx = useFieldContext("Field.Error");
   const { registerError } = ctx;
   const hasContent = children != null && children !== false;
@@ -165,8 +197,14 @@ function FieldError({ className, children, ...rest }: FieldErrorProps) {
 
   if (!hasContent) return null;
   return (
-    <p className={cx("loam-Field-error error", className)} id={ctx.errorId} role="alert" {...rest}>
-      <span className="loam-VisuallyHidden">Error: </span>
+    <p
+      ref={ref}
+      className={cx("loam-Field-error error", className)}
+      id={ctx.errorId}
+      role="alert"
+      {...rest}
+    >
+      <span className="loam-VisuallyHidden">{ctx.labels.errorPrefix}</span>
       {children}
     </p>
   );

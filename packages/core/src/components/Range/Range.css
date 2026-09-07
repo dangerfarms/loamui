@@ -1,6 +1,6 @@
 /* The bare control is the `<input type="range">` itself — no wrapper element
    in that form — so the input is its own scope root. */
-@scope (.loam-Range) {
+@scope (.loam-Range) to ([class*="loam-"]) {
   :scope {
     --_track-h: 0.4167em;
     --_thumb: 1.25em;
@@ -19,12 +19,9 @@
       --loam-color-ring: var(--loam-color-danger-ring);
     }
 
-    &[data-disabled] {
-      opacity: var(--loam-disabled-opacity);
-    }
-
     &:disabled {
       cursor: not-allowed;
+      opacity: var(--loam-disabled-opacity);
     }
   }
 

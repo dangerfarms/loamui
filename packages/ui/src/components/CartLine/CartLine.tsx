@@ -1,27 +1,59 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState } from "react";
-import type { HTMLAttributes, ReactNode, Ref } from "react";
-import { renderWithProps, cx } from "@loamui/core";
-import type { RenderProp } from "@loamui/core";
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
+import type { ReactNode, Ref } from "react";
+import { Button, Field, renderWithProps, cx } from "@loamui/core";
+import type { ButtonProps, FieldLabelProps, PartProps, RenderProp } from "@loamui/core";
+import { useNamedRoot, useNamePart } from "../../naming";
+
+/** The words a cart line says on its own, each with an English default. */
+export interface CartLineLabels {
+  /**
+   * The quantity control's label, hidden on screen, written from the
+   * product's name so a basket of controls reads apart: "Quantity for Linen
+   * shirt". Before the Title's text is known (on the server, and until
+   * hydration) it is called with `undefined`. @default "Quantity for {title}"
+   */
+  quantity?: (title: string | undefined) => ReactNode;
+  /** The remove Button's visible word; the product's name follows it, hidden. @default "Remove" */
+  remove?: ReactNode;
+}
+
+const DEFAULT_LABELS: Required<CartLineLabels> = {
+  quantity: (title) => (title ? `Quantity for ${title}` : "Quantity"),
+  remove: "Remove",
+};
 
 interface CartLineContextValue {
-  /** The Title tells the line its id; the line is named by it while it is present. */
-  registerTitle: (id: string) => () => void;
+  nameId: string;
+  register: (id: string) => () => void;
+  /** The Title's text, read from the element once it is in the document. */
+  title: string | undefined;
+  setTitle: (text: string | undefined) => void;
+  labels: Required<CartLineLabels>;
 }
 
 const CartLineContext = createContext<CartLineContextValue | null>(null);
 
-export interface CartLineRootProps extends HTMLAttributes<HTMLElement> {
+function useCartLine(part: string): CartLineContextValue {
+  const ctx = useContext(CartLineContext);
+  if (!ctx) {
+    throw new Error(`${part} must be rendered inside <CartLine.Root>.`);
+  }
+  return ctx;
+}
+
+export interface CartLineRootProps extends PartProps<"article"> {
   /**
    * Render as a different element: `render={<li />}` inside a basket's
    * list. The part's classes and attributes merge onto the element it
    * renders, the same contract as every core part.
    */
   render?: RenderProp<Record<string, unknown>>;
+  /** The line's own words; QuantityLabel and Remove read them from here. */
+  labels?: CartLineLabels;
   /** Media, Title, Description, Control, Value, Note and Actions. */
   children?: ReactNode;
-  ref?: Ref<HTMLElement>;
 }
 
 /**
@@ -35,12 +67,12 @@ export interface CartLineRootProps extends HTMLAttributes<HTMLElement> {
  * or an order confirmation, and a basket is a `ul` you write with each
  * line rendered as a `li`. The quantity is your own core `QuantityInput`
  * in a `Field`, so a form, constraint validation and React all see one
- * value in one native input; write its label as the product's name,
- * visually hidden, so a screen reader hears "Quantity for Linen shirt"
- * and not "Quantity" three times in a row, and name the product in the
- * remove Button the same way. The line does no arithmetic: the total is a
- * `Price` you compute, so the figure on screen is the figure the server
- * charged.
+ * value in one native input; its label is `CartLine.QuantityLabel`, which
+ * writes the product's name into a hidden `Field.Label` so a screen reader
+ * hears "Quantity for Linen shirt" and not "Quantity" three times in a
+ * row, and `CartLine.Remove` names the product in the remove Button the
+ * same way. The line does no arithmetic: the total is a `Price` you
+ * compute, so the figure on screen is the figure the server charged.
  *
  * ```tsx
  * <CartLine.Root>
@@ -53,7 +85,7 @@ export interface CartLineRootProps extends HTMLAttributes<HTMLElement> {
  *   <CartLine.Description>Size M, Blue</CartLine.Description>
  *   <CartLine.Control>
  *     <Field.Root>
- *       <Field.Label className="loam-VisuallyHidden">Quantity for Linen shirt</Field.Label>
+ *       <CartLine.QuantityLabel />
  *       <QuantityInput name="quantity" defaultValue={2} min={1} />
  *     </Field.Root>
  *   </CartLine.Control>
@@ -64,29 +96,32 @@ export interface CartLineRootProps extends HTMLAttributes<HTMLElement> {
  *     <Price value={45} currency="GBP">each</Price>
  *   </CartLine.Note>
  *   <CartLine.Actions>
- *     <Button onClick={remove}>
- *       Remove<span className="loam-VisuallyHidden"> Linen shirt</span>
- *     </Button>
+ *     <CartLine.Remove onClick={remove} />
  *   </CartLine.Actions>
  * </CartLine.Root>
  * ```
  */
-function CartLineRoot({ render, className, children, ref, ...rest }: CartLineRootProps) {
-  const [titleId, setTitleId] = useState<string | null>(null);
-  const registerTitle = useCallback((id: string) => {
-    setTitleId(id);
-    return () => setTitleId((current) => (current === id ? null : current));
-  }, []);
-  const value = useMemo<CartLineContextValue>(() => ({ registerTitle }), [registerTitle]);
-  // A name the consumer gives wins over the title's, and the line points
-  // at a Title only while one is rendered: a reference to nothing would
-  // name it nothing.
-  const named = rest["aria-label"] != null || rest["aria-labelledby"] != null;
+function CartLineRoot({ render, labels, className, children, ...rest }: CartLineRootProps) {
+  // The line is named by its Title from the first render, so the server
+  // HTML carries the name; a consumer's own name wins.
+  const { nameId, register, labelling } = useNamedRoot(rest);
+  const [title, setTitle] = useState<string | undefined>(undefined);
+  const value = useMemo<CartLineContextValue>(
+    () => ({
+      nameId,
+      register,
+      title,
+      setTitle,
+      labels: { ...DEFAULT_LABELS, ...labels },
+    }),
+    [nameId, register, title, labels],
+  );
+  // The article is only the container; the grid is the inner element,
+  // because an element cannot answer its own container query.
   const props = {
-    ref,
     className: cx("loam-CartLine", className),
-    "aria-labelledby": !named && titleId ? titleId : undefined,
-    children,
+    ...labelling,
+    children: <div className="inner">{children}</div>,
     ...rest,
   };
   return (
@@ -96,83 +131,118 @@ function CartLineRoot({ render, className, children, ref, ...rest }: CartLineRoo
   );
 }
 
-export interface CartLineDivProps extends HTMLAttributes<HTMLDivElement> {
-  children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
-}
+export interface CartLineDivProps extends PartProps<"div"> {}
 
-export interface CartLineParagraphProps extends HTMLAttributes<HTMLParagraphElement> {
-  children?: ReactNode;
-  ref?: Ref<HTMLParagraphElement>;
-}
+export interface CartLineParagraphProps extends PartProps<"p"> {}
 
 /**
- * The product's picture: your `img`, sized to a square thumbnail. Give it
- * an empty `alt`: the product's name is text beside it, and a screen
- * reader should hear the name once, not "Linen shirt, link, Linen shirt".
+ * The product's picture: your `img`, sized to a square thumbnail by the
+ * public `--loam-cart-line-media-size` (5rem by default), set on the line
+ * or on a region. Give it an empty `alt`: the product's name is text
+ * beside it, and a screen reader should hear the name once, not "Linen
+ * shirt, link, Linen shirt".
  */
-function CartLineMedia({ className, children, ref, ...rest }: CartLineDivProps) {
+function CartLineMedia({ className, children, ...rest }: CartLineDivProps) {
   return (
-    <div ref={ref} className={cx("media", className)} {...rest}>
+    <div className={cx("media", className)} {...rest}>
       {children}
     </div>
   );
 }
 
-export interface CartLineTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+export interface CartLineTitleProps extends PartProps<"h3"> {
   /** Render as a different heading, or a `p` where the line is not a section of the page. */
   render?: RenderProp<Record<string, unknown>>;
   /** The product's link: an `<a href>`, or a router link. */
   children?: ReactNode;
-  ref?: Ref<HTMLHeadingElement>;
+}
+
+/** Hand a node to two refs: the consumer's and the composition's. */
+function composeRefs<T>(...refs: Array<Ref<T> | undefined>) {
+  return (node: T | null) => {
+    for (const ref of refs) {
+      if (typeof ref === "function") ref(node);
+      else if (ref) ref.current = node;
+    }
+  };
 }
 
 /**
  * The product's name around your link to its page. An `h3` by default. Its
  * `id` (yours if you pass one, the composition's otherwise) is what the
- * line's `aria-labelledby` points at, which is what names the line.
+ * line's `aria-labelledby` points at, which is what names the line; its
+ * text is what `QuantityLabel` and `Remove` write after their words.
  */
-function CartLineTitle({ render, className, children, ref, id, ...rest }: CartLineTitleProps) {
-  const ctx = useContext(CartLineContext);
-  if (!ctx) {
-    throw new Error("CartLine.Title must be rendered inside <CartLine.Root>.");
-  }
-  const autoId = useId();
-  const titleId = id ?? autoId;
-  const { registerTitle } = ctx;
-  useEffect(() => registerTitle(titleId), [registerTitle, titleId]);
-  const props = { ref, id: titleId, className: cx("title", className), children, ...rest };
+function CartLineTitle({ render, className, children, id, ref, ...rest }: CartLineTitleProps) {
+  const ctx = useCartLine("CartLine.Title");
+  const titleId = useNamePart(ctx, id);
+  const { setTitle } = ctx;
+  // The text is read from the element after every commit, not from the
+  // children, so a router link or a component renders whatever it likes
+  // and the name still follows; setting the same text again is a no-op.
+  const node = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    setTitle(node.current?.textContent?.trim() || undefined);
+  });
+  const props = {
+    id: titleId,
+    ref: composeRefs(ref, node),
+    className: cx("title", className),
+    children,
+    ...rest,
+  };
   if (render) return <>{renderWithProps(render, props)}</>;
   return <h3 {...props}>{children}</h3>;
 }
 
 /** The options chosen ("Size M, Blue"), a small muted line under the name. */
-function CartLineDescription({ className, children, ref, ...rest }: CartLineParagraphProps) {
+function CartLineDescription({ className, children, ...rest }: CartLineParagraphProps) {
   return (
-    <p ref={ref} className={cx("description", className)} {...rest}>
+    <p className={cx("description", className)} {...rest}>
       {children}
     </p>
   );
 }
 
 /**
- * How many of it: hosts your core `QuantityInput` in a `Field.Root`, its
- * `Field.Label` the product's name in the `loam-VisuallyHidden` class,
- * "Quantity for Linen shirt". The control is core's, left as core styles
- * it; this part only gives it its place in the line.
+ * How many of it: hosts your core `QuantityInput` in a `Field.Root`, with
+ * `CartLine.QuantityLabel` as the Field's label. The control is core's,
+ * left as core styles it; this part only gives it its place in the line.
  */
-function CartLineControl({ className, children, ref, ...rest }: CartLineDivProps) {
+function CartLineControl({ className, children, ...rest }: CartLineDivProps) {
   return (
-    <div ref={ref} className={cx("control", className)} {...rest}>
+    <div className={cx("control", className)} {...rest}>
       {children}
     </div>
   );
 }
 
-/** The line total: a core `Price` you compute. The line does no arithmetic. */
-function CartLineValue({ className, children, ref, ...rest }: CartLineDivProps) {
+export interface CartLineQuantityLabelProps extends Omit<FieldLabelProps, "children"> {}
+
+/**
+ * The quantity control's label: a core `Field.Label`, visually hidden,
+ * whose text is `labels.quantity` written with the Title's text, "Quantity
+ * for Linen shirt". Place it inside the `Field.Root` in `CartLine.Control`,
+ * before the QuantityInput. Real text, so it translates and shows in
+ * reader mode; hidden, because the product's name is already on screen.
+ */
+function CartLineQuantityLabel({ className, ...rest }: CartLineQuantityLabelProps) {
+  const { title, labels } = useCartLine("CartLine.QuantityLabel");
   return (
-    <div ref={ref} className={cx("value", className)} {...rest}>
+    <Field.Label className={cx("loam-VisuallyHidden", className)} {...rest}>
+      {labels.quantity(title)}
+    </Field.Label>
+  );
+}
+
+/**
+ * The line total: a core `Price` you compute. The line does no arithmetic.
+ * For a reduced line, put a `ProductCard.Was` before the Price: the old
+ * price struck through, with "Was" and "Now" read out around the pair.
+ */
+function CartLineValue({ className, children, ...rest }: CartLineDivProps) {
+  return (
+    <div className={cx("value", className)} {...rest}>
       {children}
     </div>
   );
@@ -183,25 +253,46 @@ function CartLineValue({ className, children, ref, ...rest }: CartLineDivProps) 
  * a core `Price` with "each" as its children, so the qualifier is visible
  * and the unit price is never mistaken for the total.
  */
-function CartLineNote({ className, children, ref, ...rest }: CartLineParagraphProps) {
+function CartLineNote({ className, children, ...rest }: CartLineParagraphProps) {
   return (
-    <p ref={ref} className={cx("note", className)} {...rest}>
+    <p className={cx("note", className)} {...rest}>
       {children}
     </p>
   );
 }
 
 /**
- * The line's actions, at the end of its last row: your core `Button` that
- * removes it, its visible text "Remove" and the product's name after it in
- * the `loam-VisuallyHidden` class, so a list of remove buttons is a list of
- * products to a screen reader.
+ * The line's actions, at the end of its last row: a `CartLine.Remove`, or
+ * a core Button of your own that names the product in the
+ * `loam-VisuallyHidden` class.
  */
-function CartLineActions({ className, children, ref, ...rest }: CartLineDivProps) {
+function CartLineActions({ className, children, ...rest }: CartLineDivProps) {
   return (
-    <div ref={ref} className={cx("actions", className)} {...rest}>
+    <div className={cx("actions", className)} {...rest}>
       {children}
     </div>
+  );
+}
+
+export interface CartLineRemoveProps extends ButtonProps {
+  /** The visible word. @default labels.remove ("Remove") */
+  children?: ReactNode;
+}
+
+/**
+ * The remove action: a core `Button` whose visible text is `labels.remove`
+ * (or your children) and whose name goes on to the Title's text, hidden,
+ * so a basket of remove buttons is a list of products to a screen reader.
+ * Pass `onClick`, or `render={<button type="submit" name="remove" value={id} />}`
+ * to make it a form's own.
+ */
+function CartLineRemove({ children, ...rest }: CartLineRemoveProps) {
+  const { title, labels } = useCartLine("CartLine.Remove");
+  return (
+    <Button {...rest}>
+      {children ?? labels.remove}
+      {title && <span className="loam-VisuallyHidden"> {title}</span>}
+    </Button>
   );
 }
 
@@ -211,7 +302,9 @@ export const CartLine = {
   Title: CartLineTitle,
   Description: CartLineDescription,
   Control: CartLineControl,
+  QuantityLabel: CartLineQuantityLabel,
   Value: CartLineValue,
   Note: CartLineNote,
   Actions: CartLineActions,
+  Remove: CartLineRemove,
 };

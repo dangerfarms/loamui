@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar } from "@loamui/core";
+import { Avatar, Button } from "@loamui/core";
 import { Comment } from "@loamui/ui";
 import type { Composition } from "./types";
 
@@ -11,12 +11,12 @@ const comment: Composition = {
   description:
     "One comment in a discussion: who wrote it, when, and what they said, with its replies.",
   lead: "The unit is the comment: an article named by its author, so a screen reader's list of the page's articles reads the names rather than 'article, article'; a Time whose dateTime is always the machine-readable moment; a body of rich text; and replies as a nested list that steps in once and no further. A thread is a list you write with each comment in a li.",
-  importLine: `import { Comment } from "@loamui/ui";`,
+  importLine: `import { Comment } from "@loamui/ui";\nimport { Avatar, Button } from "@loamui/core";`,
   parts: [
     {
       name: "Comment.Root",
       description:
-        "The article. Its aria-labelledby points at the Author, which names it, while one is rendered; an aria-label you pass wins. Declares its own container so the fluid tokens answer its width.",
+        "The article. Its aria-labelledby points at the Author, which names it, from the first render, so the server HTML carries the name; the reference is dropped if no Author is rendered, and an aria-label you pass wins. Declares its own container so the fluid tokens answer its width.",
     },
     {
       name: "Comment.Header",
@@ -40,12 +40,12 @@ const comment: Composition = {
     {
       name: "Comment.Actions",
       description:
-        "A row for your own controls. Complete each one's name with real text hidden by core's .loam-VisuallyHidden, Reply to Priya Natarajan, so every Reply on the page says which comment it answers; it works inside a core Button as well as a native button.",
+        "A row for your own controls. Complete each one's name with real text hidden by core's .loam-VisuallyHidden, Reply<span className=\"loam-VisuallyHidden\"> to Priya Natarajan</span>, so every Reply on the page says which comment it answers; real text translates and shows in reader mode where an aria-label does neither, and the class works inside a core Button as well as a native button.",
     },
     {
       name: "Comment.Replies",
       description:
-        "The replies: a ul with role list, named Replies unless you pass another aria-label, indented once with a rule. Replies to replies sit at the same level.",
+        "The replies: a ul with role list, named by labels.replies (Replies by default) unless you pass an aria-label or aria-labelledby, indented once with a rule. Replies to replies sit at the same level.",
     },
     {
       name: "Comment.Reply",
@@ -89,7 +89,7 @@ const comment: Composition = {
     {
       title: "A thread",
       description:
-        "A comment with two replies. The replies are a list named Replies, each reply its own article, stepped in once behind a rule. The second reply carries an Actions row: the button reads Reply to Tom Okafor, the rest of its name real text and visually hidden, so every Reply on the page says which comment it answers.",
+        "A comment with two replies. The replies are a list named Replies, each reply its own article, stepped in once behind a rule. The second reply carries an Actions row: a core Button whose visible text is Reply and whose name goes on, in a span with core's loam-VisuallyHidden class, to say which comment it answers, Reply to Tom Okafor. That is the recipe for every control placed here: real text, hidden, never an aria-label.",
       code: `<Comment.Root>
   <Comment.Header>
     <Avatar name="Priya Natarajan" aria-hidden />
@@ -123,9 +123,9 @@ const comment: Composition = {
           <p>Confirmed in a 240px column; the small step is the floor of the clamp.</p>
         </Comment.Body>
         <Comment.Actions>
-          <button type="button">
+          <Button>
             Reply<span className="loam-VisuallyHidden"> to Tom Okafor</span>
-          </button>
+          </Button>
         </Comment.Actions>
       </Comment.Root>
     </Comment.Reply>
@@ -173,9 +173,9 @@ const comment: Composition = {
                   <p>Confirmed in a 240px column; the small step is the floor of the clamp.</p>
                 </Comment.Body>
                 <Comment.Actions>
-                  <button type="button">
+                  <Button>
                     Reply<span className="loam-VisuallyHidden"> to Tom Okafor</span>
-                  </button>
+                  </Button>
                 </Comment.Actions>
               </Comment.Root>
             </Comment.Reply>

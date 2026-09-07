@@ -12,13 +12,15 @@
   }
 
   /* The square is sized in em on the title's size, so it rides the fluid
-     scale with the text beside it. */
+     scale with the text beside it. The glyph is the strong token on the
+     soft tint, the pair the audit checks as a glyph; the raw hue is never
+     ink. */
   div.icon {
     align-items: center;
     background: var(--loam-color-primary-soft);
     block-size: 2.25em;
     border-radius: var(--loam-radius-md);
-    color: var(--loam-color-primary);
+    color: var(--loam-color-primary-strong);
     display: block flex;
     font-size: var(--loam-text-lg);
     inline-size: 2.25em;

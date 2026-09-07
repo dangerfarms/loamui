@@ -2,8 +2,10 @@
  * Rating — stars that are real inputs. In input mode the root is a Fieldset
  * (its reset and legend come from that layer) holding one native radio per
  * star, hidden under its glyph; in display mode the same glyphs are one
- * named picture. The glyph is an inline svg painted with currentcolor and
- * sized in em, so it follows the surrounding type. Each star carries two
+ * named picture. The label always names the stars: unshown, the
+ * component gives it .loam-VisuallyHidden. The glyph is an inline svg
+ * painted with currentcolor and sized in em, so it follows the
+ * surrounding type. Each star carries two
  * private numbers: --_paint (its colour) and --_amount (how much of the
  * fill shows, 0–1); everything else derives from those.
  */
@@ -20,19 +22,6 @@
       align-items: center;
       display: inline flex;
       gap: var(--loam-space-sm);
-    }
-
-    /* The label always names the stars; it is only visually hidden. */
-    &:not([data-show-label]) :is(legend, span.label) {
-      block-size: 1px;
-      border: 0;
-      clip-path: inset(50%);
-      inline-size: 1px;
-      margin: -1px;
-      overflow: clip;
-      padding: 0;
-      position: absolute;
-      white-space: nowrap;
     }
 
     &:disabled {

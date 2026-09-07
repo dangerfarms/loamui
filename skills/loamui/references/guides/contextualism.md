@@ -171,7 +171,7 @@ remember. The arrangement is the declaration.
 
 When the DOM already expresses a state, LoamUI styles it with `:has()` instead of
 asking you to repeat it as a prop. An icon inside a button is detected (no
-`leftSection` prop):
+`startSection` prop):
 
 ```css
 .loam-Button:has(svg) {

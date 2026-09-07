@@ -1,5 +1,9 @@
-import type { FieldsetHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+"use client";
+
+import { createContext, useContext, useMemo } from "react";
+import type { ReactNode } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 
 /**
  * Groups related controls under a shared, semantic label.
@@ -17,29 +21,52 @@ import { cx } from "../../utils";
  * ```
  */
 
-export interface FieldsetRootProps extends FieldsetHTMLAttributes<HTMLFieldSetElement> {
-  ref?: Ref<HTMLFieldSetElement>;
+/** The words a Fieldset says on its own, each with an English default. */
+export interface FieldsetLabels {
+  /** The text after an optional Legend's words. @default "(optional)" */
+  optional?: ReactNode;
 }
 
-function FieldsetRoot({ className, children, ref, ...rest }: FieldsetRootProps) {
+const DEFAULT_LABELS: Required<FieldsetLabels> = {
+  optional: "(optional)",
+};
+
+// A Legend outside a Root (or under one without labels) reads the defaults.
+const FieldsetContext = createContext<Required<FieldsetLabels>>(DEFAULT_LABELS);
+
+export interface FieldsetRootProps extends PartProps<"fieldset"> {
+  /** The Fieldset's own words; the Legend reads them from here. */
+  labels?: FieldsetLabels;
+}
+
+function FieldsetRoot({ labels, className, children, ref, ...rest }: FieldsetRootProps) {
+  const optional = labels?.optional ?? DEFAULT_LABELS.optional;
+  const value = useMemo<Required<FieldsetLabels>>(() => ({ optional }), [optional]);
   return (
-    <fieldset ref={ref} className={cx("loam-Fieldset", className)} {...rest}>
-      {children}
-    </fieldset>
+    <FieldsetContext value={value}>
+      <fieldset ref={ref} className={cx("loam-Fieldset", className)} {...rest}>
+        {children}
+      </fieldset>
+    </FieldsetContext>
   );
 }
 
-export interface FieldsetLegendProps extends HTMLAttributes<HTMLLegendElement> {
+export interface FieldsetLegendProps extends PartProps<"legend"> {
   /** Mark the whole group optional in text rather than with an asterisk. */
   optional?: boolean;
-  children?: ReactNode;
 }
 
-function FieldsetLegend({ optional, className, children, ...rest }: FieldsetLegendProps) {
+function FieldsetLegend({ optional, className, children, ref, ...rest }: FieldsetLegendProps) {
+  const labels = useContext(FieldsetContext);
   return (
-    <legend className={className} {...rest}>
+    <legend ref={ref} className={className} {...rest}>
       {children}
-      {optional && <span className="optional"> (optional)</span>}
+      {optional && (
+        <>
+          {" "}
+          <span className="optional">{labels.optional}</span>
+        </>
+      )}
     </legend>
   );
 }

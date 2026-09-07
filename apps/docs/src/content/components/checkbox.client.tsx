@@ -1,6 +1,6 @@
 "use client";
 
-import { Checkbox, CheckboxControl, Field } from "@loamui/core";
+import { Checkbox, Field } from "@loamui/core";
 
 export function CheckboxErrorDemo() {
   return (
@@ -15,7 +15,7 @@ export function CheckboxFieldDemo() {
   return (
     <Field.Root>
       <Field.Label>
-        <CheckboxControl /> Subscribe to the newsletter
+        <Checkbox.Control /> Subscribe to the newsletter
       </Field.Label>
       <Field.Description>A short summary, once a week.</Field.Description>
     </Field.Root>

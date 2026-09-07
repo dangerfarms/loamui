@@ -3,7 +3,7 @@ import { render, screen, cleanup, fireEvent, within } from "@testing-library/rea
 import userEvent from "@testing-library/user-event";
 import { axe } from "vitest-axe";
 
-import { FileInput, FileInputControl } from "../components/FileInput/index";
+import { FileInput } from "../components/FileInput/index";
 import { Field } from "../index";
 
 afterEach(cleanup);
@@ -36,6 +36,9 @@ describe("FileInput", () => {
     render(<Picker />);
     const input = screen.getByLabelText(/Passport scan/) as HTMLInputElement;
     expect(input.type).toBe("file");
+    // Inside a Root the Prompt is the box, so the control wears the shared
+    // hidden class rather than a recipe of its own.
+    expect(input).toHaveClass("loam-VisuallyHidden");
     expect(screen.getByLabelText(/Choose a file or drop it here/)).toBe(input);
     expect(input).toHaveAccessibleDescription("PDF or PNG, up to 5 MB");
   });
@@ -70,11 +73,13 @@ describe("FileInput", () => {
       <Field.Root>
         <Field.Label>Receipt</Field.Label>
         <Field.Error>Choose a file smaller than 5 MB</Field.Error>
-        <FileInputControl />
+        <FileInput.Control />
       </Field.Root>,
     );
     const input = screen.getByLabelText("Receipt");
     expect(input).toHaveAttribute("type", "file");
+    // Outside a Root there is no box to stand in for it, so it stays in view.
+    expect(input).not.toHaveClass("loam-VisuallyHidden");
     expect(input).toHaveAttribute("aria-invalid", "true");
     expect(input).toHaveAccessibleDescription(/Choose a file smaller than 5 MB/);
   });

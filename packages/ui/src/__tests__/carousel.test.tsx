@@ -1,5 +1,6 @@
 import { describe, it, expect, afterEach, vi } from "vitest";
 import { render, screen, cleanup, fireEvent } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { axe } from "vitest-axe";
 import { Card } from "@loamui/core";
 import { Carousel } from "../components/Carousel/index";
@@ -38,12 +39,12 @@ function Guides() {
 }
 
 describe("Carousel", () => {
-  it("renders a section, a list of items and the controls with no axe violations", async () => {
+  it("renders a section, a named list of items and the controls with no axe violations", async () => {
     const { container } = render(<Guides />);
     const region = screen.getByRole("region", { name: "Guides" });
     expect(region).toHaveClass("loam-Carousel");
     expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("Guides");
-    const track = screen.getByRole("list");
+    const track = screen.getByRole("list", { name: "Carousel" });
     expect(track.tagName).toBe("UL");
     expect(track).toHaveClass("track");
     // Explicit, because the stylesheet strips the markers and some browsers
@@ -71,16 +72,71 @@ describe("Carousel", () => {
     expect(scrollBy).toHaveBeenLastCalledWith({ left: -400 });
   });
 
-  it("takes translated labels for the controls", () => {
+  // jsdom has no scrolling, so this asserts what the browser's own arrow-key
+  // scrolling needs: the track is in the tab order and named, and the keys
+  // reach it unhandled, so the scroller moves and the snap points settle it
+  // on an item.
+  it("is a keyboard scroller: Tab reaches the named track and ArrowRight is left to the browser", async () => {
+    const user = userEvent.setup();
+    render(<Guides />);
+    const track = screen.getByRole("list", { name: "Carousel" });
+    expect(track).toHaveAttribute("tabindex", "0");
+    await user.tab();
+    expect(track).toHaveFocus();
+    // Not prevented: the default action, the browser's scroll, goes ahead.
+    expect(fireEvent.keyDown(track, { key: "ArrowRight" })).toBe(true);
+    await user.tab();
+    expect(screen.getByRole("button", { name: "Previous" })).toHaveFocus();
+  });
+
+  it("lets a name of the consumer's own win over the track's, and takes a translated one", () => {
+    const { rerender } = render(
+      <Carousel.Root>
+        <h2 id="quotes">Quotes</h2>
+        <Carousel.Track aria-labelledby="quotes">
+          <Carousel.Item>One</Carousel.Item>
+        </Carousel.Track>
+      </Carousel.Root>,
+    );
+    expect(screen.getByRole("list", { name: "Quotes" })).not.toHaveAttribute("aria-label");
+
+    rerender(
+      <Carousel.Root>
+        <Carousel.Track labels={{ track: "Carrousel" }}>
+          <Carousel.Item>One</Carousel.Item>
+        </Carousel.Track>
+      </Carousel.Root>,
+    );
+    expect(screen.getByRole("list", { name: "Carrousel" })).toBeInTheDocument();
+  });
+
+  it("takes translated labels for the controls, which page the track wherever they sit", () => {
     render(
       <Carousel.Root>
+        <Carousel.Controls previousLabel="Précédent" nextLabel="Suivant" />
         <Carousel.Track>
           <Carousel.Item>One</Carousel.Item>
         </Carousel.Track>
-        <Carousel.Controls previousLabel="Précédent" nextLabel="Suivant" />
       </Carousel.Root>,
     );
+    const track = screen.getByRole("list") as HTMLUListElement;
+    Object.defineProperty(track, "clientWidth", { value: 300, configurable: true });
+    const scrollBy = vi.fn();
+    track.scrollBy = scrollBy;
+    fireEvent.click(screen.getByRole("button", { name: "Suivant" }));
+    expect(scrollBy).toHaveBeenLastCalledWith({ left: 300 });
     expect(screen.getByRole("button", { name: "Précédent" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Suivant" })).toBeInTheDocument();
+  });
+
+  it("forwards the consumer's ref to the track alongside its own", () => {
+    const ref = { current: null as HTMLUListElement | null };
+    render(
+      <Carousel.Root>
+        <Carousel.Track ref={ref}>
+          <Carousel.Item>One</Carousel.Item>
+        </Carousel.Track>
+      </Carousel.Root>,
+    );
+    expect(ref.current).toHaveClass("track");
   });
 });

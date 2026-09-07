@@ -111,7 +111,7 @@ Files is a polite live region that is in the page before any choice is made, so 
 
 - Renders a real <input type="file">: the picker, the keyboard behaviour and the platform's own file-name display come from the browser, before and without JavaScript.
 - The Prompt is a <label> for the input, so its text joins the accessible name and clicking it opens the picker; inside a Field, Field.Label names the control too, and Field.Description and Field.Error are linked via aria-describedby with a rendered error also setting aria-invalid.
-- The native control is visually hidden, never display: none, so it keeps focus; the ring is drawn on the box with :has(input:focus-visible), and the dragging and error states move to system colours under forced colours.
+- Inside a Root the native control wears the library's shared .loam-VisuallyHidden class, never display: none, so it keeps focus; the ring is drawn on the box with :has(input:focus-visible), and the dragging and error states move to system colours under forced colours. Outside a Root the control stays in view.
 
 ## Error messages
 
@@ -133,7 +133,7 @@ The drop target, rendered as a <div>. Holds the selection for the Files part and
 
 ### FileInput.Control
 
-The native <input type="file">, also exported bare as FileInputControl. Inside a Field it reads its id, aria-describedby and aria-invalid from context, like Input; inside a Root it reports its selection to the list.
+The native <input type="file">. Inside a Field it reads its id, aria-describedby and aria-invalid from context, like Input; inside a Root it reports its selection to the list and is visually hidden, the Prompt being its box. On its own it is the plain native control, in view.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |

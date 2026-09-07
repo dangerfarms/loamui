@@ -19,14 +19,16 @@ export interface BylineRootProps extends HTMLAttributes<HTMLDivElement> {
  * around the name or the link to the profile: the spec's own example of
  * the element. (The root is not the address because the dates and the
  * reading time are not contact information, and not a `p`, because a `p`
- * cannot hold an `address`.) Place the Author first, after the optional
- * Avatar: the row draws a dot before every piece but the first, and never
- * before the Author, so the author's name is never preceded by a dot.
- * The dates are core `Time`s, so each carries a machine-readable
- * `dateTime` while the text is written in the page's locale. The avatar is
- * core's `Avatar`, placed first by you with the author's `name` for the
- * initials and `aria-hidden`, because the name is printed beside it and
- * assistive technology should hear it once.
+ * cannot hold an `address`.) Place the Author first: the row draws a dot
+ * before every date and reading time that follows another part, and never
+ * before the Author, so the author's name is never preceded by a dot. The
+ * dates are core `Time`s, so each carries a machine-readable `dateTime`
+ * while the text is written in the page's locale. The avatar is core's
+ * `Avatar`, placed by you (first, usually) with the author's `name` for
+ * the initials and `aria-hidden`, because the name is printed beside it
+ * and assistive technology should hear it once; the dots are drawn from
+ * the composition's own parts, so where the Avatar sits does not move
+ * them.
  *
  * ```tsx
  * <Byline.Root>
@@ -65,7 +67,7 @@ export interface BylineAuthorProps extends AnchorHTMLAttributes<HTMLElement> {
  * author's profile is. Inside it, a link with `rel="author"` when there is
  * an `href` (or a `render`), so the relationship is stated in the markup,
  * not just in the word beside it; a `span` when there is no profile to
- * link to. Place it first in the row, after the optional Avatar.
+ * link to. Place it first among the parts.
  */
 function BylineAuthor({ href, render, rel, className, children, ref, ...rest }: BylineAuthorProps) {
   let name: ReactNode;

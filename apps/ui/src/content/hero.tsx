@@ -15,7 +15,7 @@ const hero: Composition = {
     {
       name: "Hero.Root",
       description:
-        "The section, named by its Title unless you pass aria-label or aria-labelledby. Declares its own container so the fluid tokens answer the hero's width, and renders the grid as an inner element, because an element cannot answer its own container query.",
+        "The section, named by its Title in the server's HTML unless you pass aria-label or aria-labelledby; pass render={<header />} when the hero is the page's banner. Declares its own container so the fluid tokens answer the hero's width, and renders the grid as an inner element, because an element cannot answer its own container query.",
     },
     {
       name: "Hero.Eyebrow",
@@ -24,7 +24,7 @@ const hero: Composition = {
     {
       name: "Hero.Title",
       description:
-        "The headline. An h1 by default; pass render={<h2 />} inside a page. It names the Root while it is present.",
+        "The headline. An h1 by default; pass render={<h2 />} inside a page. Its id, yours or the composition's, is what names the Root.",
     },
     {
       name: "Hero.Lede",

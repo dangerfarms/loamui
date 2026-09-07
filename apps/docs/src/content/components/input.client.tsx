@@ -136,13 +136,22 @@ export function InputSectionsDemo() {
     >
       <Field.Root>
         <Field.Label>Handle</Field.Label>
-        <Input leftSection="@" />
+        <Input startSection="@" />
       </Field.Root>
       <Field.Root>
         <Field.Label>Site name</Field.Label>
-        <Input rightSection=".dev" />
+        <Input endSection=".dev" />
       </Field.Root>
     </div>
+  );
+}
+
+export function InputSizedDemo() {
+  return (
+    <Field.Root>
+      <Field.Label>Sort code</Field.Label>
+      <Input inputMode="numeric" size={6} />
+    </Field.Root>
   );
 }
 

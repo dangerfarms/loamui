@@ -1,8 +1,8 @@
-import type { MeterHTMLAttributes, ReactNode, Ref } from "react";
-import { cx, type LoamUISize } from "../../utils";
+import type { ReactNode } from "react";
+import { cx, type LoamUISize, type PartProps } from "../../utils";
 
 export interface MeterProps extends Omit<
-  MeterHTMLAttributes<HTMLMeterElement>,
+  PartProps<"meter">,
   "color" | "value" | "min" | "max" | "low" | "high" | "optimum"
 > {
   /** The measured value. The browser clamps it into `min`–`max`. */
@@ -34,7 +34,6 @@ export interface MeterProps extends Omit<
    * @default the value as a percentage of the range
    */
   children?: ReactNode;
-  ref?: Ref<HTMLMeterElement>;
 }
 
 /** Where `value` sits in `min`–`max`, as a whole percentage. */

@@ -1,7 +1,7 @@
 "use client";
 
-import { Button, Field, Price, QuantityInput } from "@loamui/core";
-import { CartLine } from "@loamui/ui";
+import { Field, Price, QuantityInput } from "@loamui/core";
+import { CartLine, ProductCard } from "@loamui/ui";
 import type { Composition } from "./types";
 
 interface LineProps {
@@ -30,7 +30,7 @@ function line({ slug, product, options, name, quantity, unit }: LineProps) {
       <CartLine.Description>{options}</CartLine.Description>
       <CartLine.Control>
         <Field.Root>
-          <Field.Label className="loam-VisuallyHidden">Quantity for {product}</Field.Label>
+          <CartLine.QuantityLabel />
           <QuantityInput name={name} defaultValue={quantity} min={1} max={10} />
         </Field.Root>
       </CartLine.Control>
@@ -43,9 +43,7 @@ function line({ slug, product, options, name, quantity, unit }: LineProps) {
         </Price>
       </CartLine.Note>
       <CartLine.Actions>
-        <Button onClick={() => {}}>
-          Remove<span className="loam-VisuallyHidden"> {product}</span>
-        </Button>
+        <CartLine.Remove onClick={() => {}} />
       </CartLine.Actions>
     </CartLine.Root>
   );
@@ -56,24 +54,24 @@ const cartLine: Composition = {
   name: "Cart line",
   category: "Data display",
   description:
-    "One item in a basket: image, linked title, the options chosen, a slot for your QuantityInput, the line total with the unit price under it, and a remove action.",
-  lead: 'The unit is the line, an article named by its title, so a screen reader\'s list of the page\'s articles reads "Linen shirt", "Wool socks" rather than "article", "article"; a basket is a ul you write with each line a li. The quantity is your own core QuantityInput inside a Field whose label is the product\'s name in core\'s loam-VisuallyHidden class, so a screen reader hears "Quantity for Linen shirt" and not "Quantity" three times in a row; the remove Button in Actions names the product the same way. The line does no arithmetic: the total is a Price you compute, with the unit price as a Note under it, so the figure on screen is the figure the server charged.',
-  importLine: `import { CartLine } from "@loamui/ui";\nimport { Button, Field, Price, QuantityInput } from "@loamui/core";`,
+    "One item in a basket: image, linked title, the options chosen, a slot for your QuantityInput with its label written for you, the line total with the unit price under it, and a remove action named for the product.",
+  lead: 'The unit is the line, an article named by its title, so a screen reader\'s list of the page\'s articles reads "Linen shirt", "Wool socks" rather than "article", "article"; a basket is a ul you write with each line a li. The quantity is your own core QuantityInput inside a Field, and its label is the composition\'s: a hidden Field.Label written from the title, "Quantity for Linen shirt", so a screen reader never hears "Quantity" three times in a row; the Remove is a core Button that goes on, hidden, to say the product\'s name the same way, and both take their words from labels. The line does no arithmetic: the total is a Price you compute, with the unit price as a Note under it, so the figure on screen is the figure the server charged.',
+  importLine: `import { CartLine } from "@loamui/ui";\nimport { Field, Price, QuantityInput } from "@loamui/core";`,
   parts: [
     {
       name: "CartLine.Root",
       description:
-        "The line: a grid of thumbnail, text column and end column, separated from the next by a rule. An article by default, named by its Title through aria-labelledby while one is rendered (your own aria-label wins); pass render={<li />} inside a basket's list. Declares its own container.",
+        "The line: an article by default, named by its Title through aria-labelledby from the first render (your own aria-label wins); pass render={<li />} inside a basket's list. It declares the container and renders the grid inside it, thumbnail, text column and end column, separated from the next line by a rule. labels holds the line's words: quantity, a function of the title, and remove.",
     },
     {
       name: "CartLine.Media",
       description:
-        "The product's picture: your img, sized to a square thumbnail. Give it an empty alt; the name is text beside it, and a screen reader should hear it once.",
+        "The product's picture: your img, sized to a square thumbnail by the public --loam-cart-line-media-size (5rem by default), set on the line or on a region. Give it an empty alt; the name is text beside it, and a screen reader should hear it once.",
     },
     {
       name: "CartLine.Title",
       description:
-        "The product's name around your link to its page. An h3 by default; pass render={<p />} where the line is not a section of the page. Its id, yours or the composition's, is what names the line.",
+        "The product's name around your link to its page. An h3 by default; pass render={<p />} where the line is not a section of the page. Its id, yours or the composition's, is what names the line, and its text is what QuantityLabel and Remove write after their words.",
     },
     {
       name: "CartLine.Description",
@@ -82,12 +80,17 @@ const cartLine: Composition = {
     {
       name: "CartLine.Control",
       description:
-        "Hosts your core QuantityInput in a Field.Root, its Field.Label the product's name in the loam-VisuallyHidden class: \"Quantity for Linen shirt\". Give the input min 1, since zero of a thing is the remove action. The control is core's, left as core styles it.",
+        "Hosts your core QuantityInput in a Field.Root, with CartLine.QuantityLabel as the Field's label. Give the input min 1, since zero of a thing is the remove action. The control is core's, left as core styles it.",
+    },
+    {
+      name: "CartLine.QuantityLabel",
+      description:
+        'A core Field.Label, visually hidden, whose text is labels.quantity written with the Title\'s text: "Quantity for Linen shirt". Place it inside the Field.Root in Control, before the input. The text is read from the Title once it is in the document, so on the server it reads "Quantity" until hydration.',
     },
     {
       name: "CartLine.Value",
       description:
-        "The line total: a core Price you compute. The composition does no arithmetic, so what is shown is what is charged.",
+        "The line total: a core Price you compute. The composition does no arithmetic, so what is shown is what is charged. For a reduced line, put a ProductCard.Was before the Price: the old price struck through, with Was and Now read out around the pair.",
     },
     {
       name: "CartLine.Note",
@@ -96,15 +99,19 @@ const cartLine: Composition = {
     },
     {
       name: "CartLine.Actions",
+      description: "The line's actions, at the end of its last row: a CartLine.Remove.",
+    },
+    {
+      name: "CartLine.Remove",
       description:
-        'Your core Button that removes the line, reading "Remove" with the product\'s name after it in the loam-VisuallyHidden class. Pass onClick, or render={<button type="submit" name="remove" value={id} />} on the Button to make it a form\'s own.',
+        'A core Button reading labels.remove ("Remove") with the Title\'s text after it, hidden, so a basket of remove buttons is a list of products to a screen reader. Pass onClick, or render={<button type="submit" name="remove" value={id} />} to make it a form\'s own.',
     },
   ],
   demos: [
     {
       title: "One line",
       description:
-        'A line needs no list: the single item in a mini-basket, or a line on an order confirmation. The QuantityInput is labelled "Quantity for Linen shirt" and the button is named "Remove Linen shirt"; neither label is on screen because the name already is. The article is named by the title.',
+        'A line needs no list: the single item in a mini-basket, or a line on an order confirmation. The QuantityInput is labelled "Quantity for Linen shirt" and the button is named "Remove Linen shirt", both written by the composition from the title; neither name is on screen because the title already is.',
       code: `<CartLine.Root>
   <CartLine.Media>
     <img src="https://picsum.photos/seed/loam-shirt/320/320" alt="" width="320" height="320" />
@@ -115,7 +122,7 @@ const cartLine: Composition = {
   <CartLine.Description>Size M, Blue</CartLine.Description>
   <CartLine.Control>
     <Field.Root>
-      <Field.Label className="loam-VisuallyHidden">Quantity for Linen shirt</Field.Label>
+      <CartLine.QuantityLabel />
       <QuantityInput name="quantity" defaultValue={2} min={1} max={10} />
     </Field.Root>
   </CartLine.Control>
@@ -126,9 +133,7 @@ const cartLine: Composition = {
     <Price value={45} currency="GBP">each</Price>
   </CartLine.Note>
   <CartLine.Actions>
-    <Button onClick={() => {}}>
-      Remove<span className="loam-VisuallyHidden"> Linen shirt</span>
-    </Button>
+    <CartLine.Remove onClick={() => {}} />
   </CartLine.Actions>
 </CartLine.Root>`,
       render: () => (
@@ -147,7 +152,7 @@ const cartLine: Composition = {
           <CartLine.Description>Size M, Blue</CartLine.Description>
           <CartLine.Control>
             <Field.Root>
-              <Field.Label className="loam-VisuallyHidden">Quantity for Linen shirt</Field.Label>
+              <CartLine.QuantityLabel />
               <QuantityInput name="quantity" defaultValue={2} min={1} max={10} />
             </Field.Root>
           </CartLine.Control>
@@ -160,9 +165,7 @@ const cartLine: Composition = {
             </Price>
           </CartLine.Note>
           <CartLine.Actions>
-            <Button onClick={() => {}}>
-              Remove<span className="loam-VisuallyHidden"> Linen shirt</span>
-            </Button>
+            <CartLine.Remove onClick={() => {}} />
           </CartLine.Actions>
         </CartLine.Root>
       ),
@@ -182,7 +185,7 @@ const cartLine: Composition = {
     <CartLine.Description>Size M, Blue</CartLine.Description>
     <CartLine.Control>
       <Field.Root>
-        <Field.Label className="loam-VisuallyHidden">Quantity for Linen shirt</Field.Label>
+        <CartLine.QuantityLabel />
         <QuantityInput name="quantity[shirt]" defaultValue={2} min={1} max={10} />
       </Field.Root>
     </CartLine.Control>
@@ -193,9 +196,7 @@ const cartLine: Composition = {
       <Price value={45} currency="GBP">each</Price>
     </CartLine.Note>
     <CartLine.Actions>
-      <Button onClick={() => {}}>
-        Remove<span className="loam-VisuallyHidden"> Linen shirt</span>
-      </Button>
+      <CartLine.Remove onClick={() => {}} />
     </CartLine.Actions>
   </CartLine.Root>
   <CartLine.Root render={<li />}>
@@ -208,7 +209,7 @@ const cartLine: Composition = {
     <CartLine.Description>One size, Charcoal</CartLine.Description>
     <CartLine.Control>
       <Field.Root>
-        <Field.Label className="loam-VisuallyHidden">Quantity for Wool socks</Field.Label>
+        <CartLine.QuantityLabel />
         <QuantityInput name="quantity[socks]" defaultValue={3} min={1} max={10} />
       </Field.Root>
     </CartLine.Control>
@@ -219,9 +220,7 @@ const cartLine: Composition = {
       <Price value={12.5} currency="GBP">each</Price>
     </CartLine.Note>
     <CartLine.Actions>
-      <Button onClick={() => {}}>
-        Remove<span className="loam-VisuallyHidden"> Wool socks</span>
-      </Button>
+      <CartLine.Remove onClick={() => {}} />
     </CartLine.Actions>
   </CartLine.Root>
   <CartLine.Root render={<li />}>
@@ -234,7 +233,7 @@ const cartLine: Composition = {
     <CartLine.Description>85 cm, Tan</CartLine.Description>
     <CartLine.Control>
       <Field.Root>
-        <Field.Label className="loam-VisuallyHidden">Quantity for Leather belt</Field.Label>
+        <CartLine.QuantityLabel />
         <QuantityInput name="quantity[belt]" defaultValue={1} min={1} max={10} />
       </Field.Root>
     </CartLine.Control>
@@ -245,9 +244,7 @@ const cartLine: Composition = {
       <Price value={38} currency="GBP">each</Price>
     </CartLine.Note>
     <CartLine.Actions>
-      <Button onClick={() => {}}>
-        Remove<span className="loam-VisuallyHidden"> Leather belt</span>
-      </Button>
+      <CartLine.Remove onClick={() => {}} />
     </CartLine.Actions>
   </CartLine.Root>
 </ul>`,
@@ -278,6 +275,66 @@ const cartLine: Composition = {
             unit: 38,
           })}
         </ul>
+      ),
+    },
+    {
+      title: "A reduced line",
+      description:
+        "The same Was and Now judgment as a ProductCard, in a basket: ProductCard.Was goes before the Price in Value, the old price struck through and Was and Now read out around the pair, so the reduction is announced and never left to the strike. Outside a ProductCard the part reads its words from its own labels. The thumbnail is smaller here, a mini-basket's size, through the public property on the line.",
+      code: `<CartLine.Root style={{ "--loam-cart-line-media-size": "3.5rem" }}>
+  <CartLine.Media>
+    <img src="https://picsum.photos/seed/loam-boots/320/320" alt="" width="320" height="320" />
+  </CartLine.Media>
+  <CartLine.Title>
+    <a href="/products/leather-boots">Leather boots</a>
+  </CartLine.Title>
+  <CartLine.Description>UK 9, Dark brown</CartLine.Description>
+  <CartLine.Control>
+    <Field.Root>
+      <CartLine.QuantityLabel />
+      <QuantityInput name="quantity[boots]" defaultValue={1} min={1} max={10} />
+    </Field.Root>
+  </CartLine.Control>
+  <CartLine.Value>
+    <ProductCard.Was>
+      <Price value={150} currency="GBP" />
+    </ProductCard.Was>
+    <Price value={120} currency="GBP" />
+  </CartLine.Value>
+  <CartLine.Actions>
+    <CartLine.Remove onClick={() => {}} />
+  </CartLine.Actions>
+</CartLine.Root>`,
+      render: () => (
+        <CartLine.Root style={{ "--loam-cart-line-media-size": "3.5rem" } as React.CSSProperties}>
+          <CartLine.Media>
+            <img
+              src="https://picsum.photos/seed/loam-boots/320/320"
+              alt=""
+              width="320"
+              height="320"
+            />
+          </CartLine.Media>
+          <CartLine.Title>
+            <a href="/products/leather-boots">Leather boots</a>
+          </CartLine.Title>
+          <CartLine.Description>UK 9, Dark brown</CartLine.Description>
+          <CartLine.Control>
+            <Field.Root>
+              <CartLine.QuantityLabel />
+              <QuantityInput name="quantity[boots]" defaultValue={1} min={1} max={10} />
+            </Field.Root>
+          </CartLine.Control>
+          <CartLine.Value>
+            <ProductCard.Was>
+              <Price value={150} currency="GBP" />
+            </ProductCard.Was>
+            <Price value={120} currency="GBP" />
+          </CartLine.Value>
+          <CartLine.Actions>
+            <CartLine.Remove onClick={() => {}} />
+          </CartLine.Actions>
+        </CartLine.Root>
       ),
     },
   ],

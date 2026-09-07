@@ -13,7 +13,9 @@
      share one width, the public --loam-carousel-item-size, 20rem unless
      the consumer sets it on the Root, and never wider than the track, so
      a narrow container still shows one whole item. The markers are
-     stripped, which is why the markup carries role="list". */
+     stripped, which is why the markup carries role="list". The track is
+     in the tab order, so the global focus ring marks it; the padding
+     keeps that ring and an item's own inside the scrollport. */
   ul.track {
     display: block grid;
     gap: var(--loam-space-lg);

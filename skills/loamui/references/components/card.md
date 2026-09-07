@@ -8,7 +8,7 @@ description: A flexible surface container.
 
 # Card
 
-A surface container that groups related content.
+A surface container that groups related content: the one surface primitive, which compositions such as a product card or a testimonial are built on rather than restyling.
 
 ## Import
 
@@ -28,6 +28,17 @@ A padded surface holding a heading, text, and an action.
   <p>Your team shipped 12 tasks this week. Review activity and plan the next sprint.</p>
   <Button>View report</Button>
 </Card>
+```
+
+### Another element
+
+render substitutes the <div>: an <li> in a list of cards, a <label> when the whole surface is a control's label, an <article> for a self-contained piece. The class and attributes merge onto the element.
+
+```tsx
+<ul>
+  <Card render={<li />}>North Field</Card>
+  <Card render={<li />}>South Field</Card>
+</ul>
 ```
 
 ## When to use it
@@ -60,5 +71,6 @@ Screen-reader users navigate by heading; sighted users scan the same way. Start 
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
+| `render` | `RenderProp` | — | Substitute the rendered element (render={<li />}, render={<label />}, render={<article />}); the Card's class and attributes merge onto it. |
 | `...others` | `DivHTMLAttributes` | — | All native <div> props are forwarded. |
 

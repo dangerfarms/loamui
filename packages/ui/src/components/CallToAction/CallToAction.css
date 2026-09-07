@@ -4,7 +4,9 @@
    the surface and is only the container; the grid is the inner element
    the Root renders, because an element cannot answer its own container
    query: every layout rule below asks the section, not whatever
-   container sits above it. */
+   container sits above it. Each width owns its layout outright: the
+   stacked column lives in the narrow query and the two-column grid in
+   the wide one, so neither overrides a rule the other set. */
 @scope (.loam-CallToAction) to ([class*="loam-"]) {
   :scope {
     background: var(--loam-color-bg-subtle);
@@ -15,9 +17,33 @@
 
   div.inner {
     display: block grid;
+  }
+
+  div.actions {
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
     gap: var(--loam-space-lg);
+  }
+
+  /* Words alone are centred; beside media they align start. The two are
+     written as a pair, so neither is the other's override. */
+  div.inner:not(:has(> div.media)) {
     justify-items: center;
     text-align: center;
+
+    > div.actions {
+      justify-content: center;
+    }
+  }
+
+  div.inner:has(> div.media) {
+    justify-items: start;
+    text-align: start;
+
+    > div.actions {
+      justify-content: start;
+    }
   }
 
   .title {
@@ -33,14 +59,6 @@
     max-inline-size: var(--loam-measure);
   }
 
-  div.actions {
-    align-items: center;
-    display: block flex;
-    flex-wrap: wrap;
-    gap: var(--loam-space-lg);
-    justify-content: center;
-  }
-
   div.media {
     inline-size: 100%;
 
@@ -53,30 +71,32 @@
     }
   }
 
-  /* With media the words align start and, where the container has room,
-     the block is two columns: each text part has a named row in the
-     first, the media spans them all in the second. Rows are named rather
-     than counted, so a part left out leaves no hole; the row gap goes and
-     the parts that are present space themselves, so an empty row costs
-     nothing. The container decides; there is no layout prop. */
-  div.inner:has(> div.media) {
-    justify-items: start;
-    text-align: start;
-
-    div.actions {
-      justify-content: start;
+  /* Narrow: one column, media and all, spaced by the grid's gap. */
+  @container (inline-size < 48rem) {
+    div.inner {
+      gap: var(--loam-space-lg);
     }
   }
 
-  @container (inline-size >= 40rem) {
+  /* Wide: without media, the same column. With media, two columns: each
+     text part has a named row in the first, the media spans them all in
+     the second. Rows are named rather than counted, so a part left out
+     leaves no hole; the row gap goes and the parts that are present space
+     themselves, so an empty row costs nothing. The container decides;
+     there is no layout prop. */
+  @container (inline-size >= 48rem) {
+    div.inner:not(:has(> div.media)) {
+      gap: var(--loam-space-lg);
+    }
+
     div.inner:has(> div.media) {
       align-items: center;
+      gap: 0 var(--loam-space-lg);
       grid-template-areas:
         "title media"
         "lede media"
         "actions media";
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      row-gap: 0;
 
       > .title {
         grid-area: title;

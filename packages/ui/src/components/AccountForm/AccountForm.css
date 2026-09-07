@@ -1,11 +1,10 @@
-/* An account form: a wrapper around a core Card, with the parts inside
-   the Card. The wrapper caps the Card at a readable width and centres it
-   in whatever holds it, and declares the container the fluid tokens
-   answer; the Card is core's, and no rule here selects it. The fence
-   starts inside the Card rather than at it, so the parts the composition
-   renders in the Card are reachable and the core Fields, Checkbox, Button,
-   ErrorSummary and Alert they hold are not. */
-@scope (.loam-AccountForm) to (.loam-Card [class*="loam-"]) {
+/* An account form: a wrapper that caps the form at a readable width and
+   centres it in whatever holds it, and declares the container the fluid
+   tokens answer. The surface inside it is core's Card, or none, and no
+   rule here selects it; the donut stops at it, so the parts carry scope
+   roots of their own, the way core's Field parts do, and keep their look
+   inside a Card, a Modal.Popup or nothing at all. */
+@scope (.loam-AccountForm) to ([class*="loam-"]) {
   /* An explicit inline-size: with auto margins alone a grid or flex parent
      sizes the wrapper to its content, and inline-size containment makes
      that content-size zero. */
@@ -15,37 +14,48 @@
     margin-inline: auto;
     max-inline-size: 24rem;
   }
+}
 
-  .title {
+@scope (.loam-AccountForm-title) {
+  :scope {
     font-size: var(--loam-text-xl);
-    margin: 0 0 var(--loam-space-lg);
+    margin-block: 0 var(--loam-space-lg);
   }
 
-  /* The title's bottom margin is the gap to the form; when a description
+  /* The title's end margin is the gap to the form; when a description
      sits between them it takes that gap over. */
-  .title:has(+ p.description) {
+  :scope:has(+ .loam-AccountForm-description) {
     margin-block-end: var(--loam-space-sm);
   }
+}
 
-  p.description {
+@scope (.loam-AccountForm-description) {
+  :scope {
     color: var(--loam-color-fg-muted);
-    margin: 0 0 var(--loam-space-lg);
+    margin-block: 0 var(--loam-space-lg);
   }
+}
 
-  form.form {
+/* One column with a large gap; the fields inside are core's, out of reach. */
+@scope (.loam-AccountForm-form) to ([class*="loam-"]) {
+  :scope {
     display: block grid;
     gap: var(--loam-space-lg);
   }
+}
 
-  /* A single-cell grid, so the Button inside stretches to the card's width. */
-  div.actions {
+/* A single-cell grid, so the Button inside stretches to the form's width. */
+@scope (.loam-AccountForm-actions) to ([class*="loam-"]) {
+  :scope {
     display: block grid;
   }
+}
 
-  p.footer {
+@scope (.loam-AccountForm-footer) {
+  :scope {
     color: var(--loam-color-fg-muted);
     font-size: var(--loam-text-sm);
-    margin: var(--loam-space-lg) 0 0;
+    margin-block: var(--loam-space-lg) 0;
     text-align: center;
   }
 }

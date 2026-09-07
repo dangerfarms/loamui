@@ -131,12 +131,12 @@ describe("SummaryList", () => {
             <Price value={-5} currency="GBP" />
           </SummaryList.Value>
         </SummaryList.Item>
-        <SummaryList.Item className="total">
+        <SummaryList.Total>
           <SummaryList.Label>Total</SummaryList.Label>
           <SummaryList.Value>
             <Price value={41.49} currency="GBP" />
           </SummaryList.Value>
-        </SummaryList.Item>
+        </SummaryList.Total>
       </SummaryList.Root>,
     );
     const dl = container.querySelector("dl.loam-SummaryList")!;
@@ -160,12 +160,13 @@ describe("SummaryList", () => {
     expect(note!.previousElementSibling).toHaveClass("value");
     expect(note!.nextElementSibling).toHaveClass("actions");
 
-    // The total is an item marked by class whose dt says so; nothing is
-    // hidden that the page does not show.
+    // The Total is an Item the composition marks, whose dt says so;
+    // nothing is hidden that the page does not show.
     const total = dl.querySelector(":scope > div.item.total");
     expect(total).not.toBeNull();
     expect(total!.querySelector(":scope > dt")).toHaveTextContent("Total");
     expect(total).toBe(dl.lastElementChild);
+    expect(dl.querySelectorAll(":scope > div.item")).toHaveLength(4);
 
     expect(screen.getByRole("link", { name: "Change delivery" })).toHaveAttribute(
       "href",

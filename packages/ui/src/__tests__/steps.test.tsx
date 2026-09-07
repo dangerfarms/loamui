@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach, vi } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { axe } from "vitest-axe";
-import { Steps } from "../index";
+import { Steps } from "../components/Steps/index";
 
 afterEach(cleanup);
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };
@@ -78,6 +78,32 @@ describe("Steps", () => {
     expect(marker).not.toBeNull();
     expect(marker!.querySelector("time")).toHaveAttribute("dateTime", "2026-03");
     expect(marker).not.toHaveAttribute("aria-hidden");
+    expect(await axe(container, axeOptions)).toHaveNoViolations();
+  });
+
+  // jsdom cannot evaluate the :has() rules, so this asserts what they key
+  // on: the attribute the consumer sets is on the li the stylesheet reads,
+  // and assistive technology announces it, so the progress is never colour
+  // alone.
+  it("marks the step a sequence has reached with aria-current on the item", async () => {
+    const { container } = render(
+      <Steps.Root>
+        <Steps.Item>
+          <Steps.Title>Order placed</Steps.Title>
+        </Steps.Item>
+        <Steps.Item aria-current="step">
+          <Steps.Title>Dispatched</Steps.Title>
+        </Steps.Item>
+        <Steps.Item>
+          <Steps.Title>Delivered</Steps.Title>
+        </Steps.Item>
+      </Steps.Root>,
+    );
+    const items = screen.getAllByRole("listitem");
+    expect(items[0]).not.toHaveAttribute("aria-current");
+    expect(items[1]).toHaveAttribute("aria-current", "step");
+    expect(items[2]).not.toHaveAttribute("aria-current");
+    expect(container.querySelector("li[aria-current='step']")).toHaveTextContent("Dispatched");
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 });

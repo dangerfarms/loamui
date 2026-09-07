@@ -28,3 +28,17 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {};
+
+/** `render` swaps the element: a card in a list is an `<li>`. */
+export const AsListItem: Story = {
+  render: () => (
+    <ul style={{ display: "grid", gap: "0.75rem", listStyle: "none", margin: 0, padding: 0 }}>
+      <Card render={<li />}>
+        <h3 style={{ margin: 0 }}>North Field</h3>
+      </Card>
+      <Card render={<li />}>
+        <h3 style={{ margin: 0 }}>South Field</h3>
+      </Card>
+    </ul>
+  ),
+};

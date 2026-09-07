@@ -16,12 +16,12 @@ const callToAction: Composition = {
     {
       name: "CallToAction.Root",
       description:
-        "The section: a subtle surface with a large radius, named by its Title unless you pass aria-label or aria-labelledby. Declares its own container so the fluid tokens answer the section's width, and renders the grid as an inner element, because an element cannot answer its own container query.",
+        "The section: a subtle surface with a large radius, named by its Title in the server's HTML unless you pass aria-label or aria-labelledby; pass render={<aside />} beside an article. Declares its own container so the fluid tokens answer the section's width, and renders the grid as an inner element, because an element cannot answer its own container query.",
     },
     {
       name: "CallToAction.Title",
       description:
-        "The headline. An h2 by default; pass render={<h3 />} under a page's own headings. It names the Root while it is present.",
+        "The headline. An h2 by default; pass render={<h3 />} under a page's own headings. Its id, yours or the composition's, is what names the Root.",
     },
     {
       name: "CallToAction.Lede",

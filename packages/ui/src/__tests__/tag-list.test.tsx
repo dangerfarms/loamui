@@ -28,9 +28,12 @@ describe("TagList", () => {
     ]) {
       const link = screen.getByRole("link", { name });
       expect(link).toHaveAttribute("href", href);
-      expect(link).toHaveClass("tag");
+      // The pill is core's Badge, rendered as the link; a target, so the
+      // large size, which clears the 24px floor.
+      expect(link).toHaveClass("loam-Badge");
+      expect(link).toHaveAttribute("data-size", "lg");
       expect(link).not.toHaveAttribute("aria-label");
-      expect(link.closest("li")).toHaveClass("item");
+      expect(link.parentElement).toHaveClass("item");
     }
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
@@ -45,8 +48,8 @@ describe("TagList", () => {
     expect(screen.getAllByRole("link")).toHaveLength(1);
     const plain = screen.getByText("Draft");
     expect(plain.tagName).toBe("SPAN");
-    expect(plain).toHaveClass("tag");
-    expect(plain.closest("li")).not.toBeNull();
+    expect(plain).toHaveClass("loam-Badge");
+    expect(plain.parentElement).toHaveClass("item");
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 
@@ -86,7 +89,16 @@ describe("TagList", () => {
     const link = screen.getByRole("link", { name: "CSS" });
     expect(link).toHaveAttribute("data-router");
     expect(link).toHaveAttribute("href", "/tags/css");
-    expect(link).toHaveClass("tag");
+    expect(link).toHaveClass("loam-Badge");
     expect(link.closest("li")).toHaveClass("item");
+  });
+
+  it("takes the list's name from labels", () => {
+    render(
+      <TagList.Root labels={{ list: "Emner" }}>
+        <TagList.Item href="/tags/css">CSS</TagList.Item>
+      </TagList.Root>,
+    );
+    expect(screen.getByRole("list", { name: "Emner" })).toBeInTheDocument();
   });
 });

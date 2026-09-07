@@ -28,7 +28,7 @@ metadata:
   accessibility contract live there, not here.
 - The references match the library at the same commit; check the installed
   version in `node_modules/@loamui/core/package.json` if behaviour differs.
-- **Compositions:** `@loamui/ui` (Hero, Carousel, Stats, ...) is built on
+- **Compositions:** `@loamui/ui` (Hero, Carousel, Stat, ...) is built on
   core the way any consumer would; its gallery, code and guidance are at
   <https://loamui.com/ui/> and it ships its own `AGENTS.md`. This skill
   covers core; read a composition's page there before using it.
@@ -74,13 +74,13 @@ metadata:
 
 ## Components
 
-| Category     | Components                                                                                                                                                                    |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Inputs       | Field, Fieldset, ErrorSummary, Button, Input, Textarea, Select, DateInput, Checkbox, Radio, Switch, Range, Search, QuantityInput, Rating, FileInput, CopyButton, SchemeToggle |
-| Data display | Badge, Price, Time, Card, Avatar, Table, Separator                                                                                                                            |
-| Feedback     | Alert, Progress, Meter, Skeleton, Loader, Toast                                                                                                                               |
-| Disclosures  | Details, Tooltip, Modal, Drawer, Popover, Menu                                                                                                                                |
-| Navigation   | Tabs, SignpostLink, SkipLink, Breadcrumbs, Pagination                                                                                                                         |
+| Category     | Components                                                                                                                                                                               |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Inputs       | Field, Fieldset, ErrorSummary, Button, Input, Textarea, Select, DateInput, Checkbox, Radio, Switch, Range, Search, QuantityInput, Rating, FileInput, CopyButton, Combobox, PasswordInput |
+| Data display | Badge, Price, Time, Card, Avatar, Table, Separator                                                                                                                                       |
+| Feedback     | Alert, Progress, Meter, Skeleton, Loader, Toast                                                                                                                                          |
+| Disclosures  | Details, Tooltip, Modal, Drawer, Popover, Menu                                                                                                                                           |
+| Navigation   | Tabs, SignpostLink, SkipLink, Breadcrumbs, Pagination                                                                                                                                    |
 
 No layout components (use native CSS modules with the space tokens), no
 `Heading`/`Text` (a semantic element plus a scoped rule), no `Accordion`
@@ -163,7 +163,7 @@ Each of these has been seen in real migrations. Check your output against them.
   Say what happened and how to fix it, in the words of the question:
   "Enter your email address", "Select a country". No "please", "invalid",
   "required", or error codes.
-- **Expecting slot props** (`icon=`, `leftSection=`). Put the icon in as a
+- **Expecting slot props** (`icon=`, `startSection=`). Put the icon in as a
   child; the component detects it.
 - **Reset-then-restyle.** Do not add a CSS reset or zero every margin — the
   element styles are the baseline. Build on them.

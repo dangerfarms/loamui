@@ -9,7 +9,7 @@ import {
 
 const doc: ComponentContent = {
   slug: "select",
-  lead: "A styled wrapper around a native select, accessible and zero-JS. Compose it inside a Field for its label, description and error.",
+  lead: "A native select with a fluid chevron, accessible and zero-JS. Compose it inside a Field for its label, description and error.",
   importLine: `import { Field, Select } from "@loamui/core";`,
   demos: [
     {
@@ -27,11 +27,13 @@ const doc: ComponentContent = {
       render: () => <SelectBasicDemo />,
     },
     {
-      title: "With placeholder",
-      description: "Pass a placeholder to render an empty prompt option first.",
+      title: "Starting unanswered",
+      description:
+        "An unanswered start is an option like any other: a first child with an empty value, disabled so it can never be chosen. The select starts on it, so a required field the user skipped is caught, and the prompt reads muted until answered.",
       code: `<Field.Root>
   <Field.Label>Country</Field.Label>
-  <Select placeholder="Pick a country">
+  <Select>
+    <option value="" disabled>Pick a country</option>
     <option value="ca">Canada</option>
     <option value="uk">United Kingdom</option>
     <option value="us">United States</option>
@@ -79,7 +81,8 @@ const doc: ComponentContent = {
       code: `<Field.Root>
   <Field.Label>Country</Field.Label>
   <Field.Error>Select a country</Field.Error>
-  <Select placeholder="Pick a country">
+  <Select>
+    <option value="" disabled>Pick a country</option>
     <option>Canada</option>
     <option>United Kingdom</option>
     <option>United States</option>
@@ -100,7 +103,7 @@ const doc: ComponentContent = {
   howItWorks: [
     {
       title: "Start without a value",
-      body: "Pass placeholder to render a disabled, empty first option, so the field starts unanswered and required validation catches an untouched select. Without it the first real option is pre-selected, and users who skip the field silently submit an answer they never chose.",
+      body: "Make the first child a disabled option with an empty value, so the field starts unanswered and required validation catches an untouched select. With no such option the first real one is pre-selected, and users who skip the field silently submit an answer they never chose. The prompt is an option, not a prop: the platform already has the element for it.",
     },
     {
       title: "Order the options",
@@ -120,28 +123,27 @@ const doc: ComponentContent = {
   accessibility: [
     "Wraps a native <select>, so keyboard interaction, typeahead and the mobile picker come from the platform.",
     'Inside a Field.Root it self-wires: the label, description and error are linked via id / aria-describedby / aria-invalid, with the error announced as role="alert". See the Field page.',
-    "A placeholder renders as a disabled first option so it is never a selectable value.",
+    "A prompt is a disabled first option with an empty value, so it is never a selectable value; the select starts on it when nothing else is chosen.",
+    "Under forced colours the danger border colour is dropped, so an invalid select carries its state as an outline in a system colour, with the focus ring offset further out.",
   ],
   props: [
     {
-      name: "placeholder",
-      type: "string",
-      description: "Non-selectable prompt shown as the first, empty option.",
-    },
-    {
       name: "children",
       type: "ReactNode",
-      description: "Native <option> / <optgroup> elements, passed straight through.",
+      description:
+        'Native <option> / <optgroup> elements, passed straight through. A leading <option value="" disabled> is the unanswered start.',
     },
     {
-      name: "wrapperClassName",
-      type: "string",
-      description: "Class for the bordered field wrapper; className goes to the control itself.",
+      name: "wrapperProps",
+      type: 'PartProps<"div">',
+      description:
+        "Props for the box around the select, which positions the chevron. className, style, ref and every other prop land on the <select> itself; this is the one way to reach the box.",
     },
     {
       name: "...others",
       type: "SelectHTMLAttributes",
-      description: "All native <select> props are forwarded, except size (sizing is contextual).",
+      description:
+        "All native <select> props, and ref, are forwarded to the <select>, except size (a listbox is not this component).",
     },
   ],
 };

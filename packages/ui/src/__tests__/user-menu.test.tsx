@@ -13,7 +13,10 @@ function renderUserMenu(props: { action?: string; onSignOut?: () => void } = {})
     <UserMenu.Root>
       <UserMenu.Trigger name="Imogen Hartley" />
       <UserMenu.Popup>
-        <UserMenu.Header name="Imogen Hartley" email="imogen@example.com" />
+        <UserMenu.Header>
+          <UserMenu.Name>Imogen Hartley</UserMenu.Name>
+          <UserMenu.Email>imogen@example.com</UserMenu.Email>
+        </UserMenu.Header>
         <UserMenu.Item href="/account">Profile</UserMenu.Item>
         <UserMenu.Item href="/settings">Settings</UserMenu.Item>
         <UserMenu.Separator />
@@ -54,8 +57,9 @@ describe("UserMenu", () => {
     expect(menu.className).toBe("loam-Menu-popup");
     expect(menu).toHaveAccessibleName("Imogen Hartley imogen@example.com");
     const header = menu.querySelector("div.loam-UserMenu-header")!;
-    expect(header.querySelector("strong")).toHaveTextContent("Imogen Hartley");
-    expect(header.querySelector("p")).toHaveTextContent("imogen@example.com");
+    expect(menu).toHaveAttribute("aria-labelledby", header.id);
+    expect(header.querySelector("strong.name")).toHaveTextContent("Imogen Hartley");
+    expect(header.querySelector("p.email")).toHaveTextContent("imogen@example.com");
     expect(header).not.toHaveAttribute("role");
 
     const items = screen.getAllByRole("menuitem");
@@ -121,6 +125,21 @@ describe("UserMenu", () => {
     await user.click(signOut);
     expect(onSignOut).toHaveBeenCalledOnce();
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
+  });
+
+  it("says the trigger's words in the language the labels give it", () => {
+    render(
+      <UserMenu.Root>
+        <UserMenu.Trigger
+          name="Imogen Hartley"
+          labels={{ trigger: (name) => `Compte de ${name}` }}
+        />
+        <UserMenu.Popup>
+          <UserMenu.Item href="/account">Profil</UserMenu.Item>
+        </UserMenu.Popup>
+      </UserMenu.Root>,
+    );
+    expect(screen.getByRole("button", { name: "Compte de Imogen Hartley" })).toBeInTheDocument();
   });
 
   it("leaves the menu unnamed when no header is rendered, and hands the consumer's ref the button", () => {

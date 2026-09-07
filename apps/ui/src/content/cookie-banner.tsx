@@ -9,13 +9,13 @@ const cookieBanner: Composition = {
   category: "Page sections",
   description:
     "A cookie consent banner: a title, a paragraph or two, and the choices as real buttons, then a confirmation the reader can hide.",
-  lead: "A section named by its title, first inside body and in the flow of the page: a region and not a dialog, so nothing is covered and the page stays usable; nothing is pre-ticked and only a press of Accept counts; the choices are submit buttons in a post form, so they work before JavaScript; after the choice a status confirmation, mounted empty so it announces, takes the banner's place, and the choice itself is yours to persist.",
+  lead: "A section named by its title, first inside body and in the flow of the page: a region and not a dialog, so nothing is covered and the page stays usable; nothing is pre-ticked and only a press of Accept counts; the choices are submit buttons in a post form, so they work before JavaScript; after the choice a status confirmation, mounted empty so it announces, takes the banner's place and takes the focus the pressed button left behind, and when it is hidden focus moves on to the next thing the reader could have tabbed to. The choice itself is yours to persist.",
   importLine: `import { CookieBanner } from "@loamui/ui";`,
   parts: [
     {
       name: "CookieBanner.Root",
       description:
-        "A section named by its Title, or Cookies when there is none, unless you pass aria-label or aria-labelledby; on the subtle background with a line beneath it, declaring its own container. Holds only what the reader sees: the banner, then the confirmation, then nothing. onAccept and onReject fire once with the choice; open, defaultOpen and onOpenChange control the last step from outside. Given action, the Actions form posts the choice there for readers without JavaScript, and for readers with it when there is no handler.",
+        "A section named by its Title, or Cookies when there is none, unless you pass aria-label or aria-labelledby; on the subtle background with a line beneath it, declaring its own container. Holds only what the reader sees: the banner, then the confirmation, then nothing. onAccept and onReject fire once with the choice; open, defaultOpen and onOpenChange control the last step from outside; confirmation takes a Confirmation of your own. Given action, the Actions form posts the choice there for readers without JavaScript, and for readers with it when there is no handler.",
     },
     {
       name: "CookieBanner.Title",
@@ -45,18 +45,19 @@ const cookieBanner: Composition = {
     {
       name: "CookieBanner.Confirmation",
       description:
-        "What replaces the banner after a choice: a div with role status, mounted empty alongside the banner and filled on the choice, which is what makes the outcome announce, holding the sentence and the Hide button. The Root renders it; place one among the children only to change the words, with a Hide of your own inside.",
+        "What replaces the banner after a choice: a div with role status, mounted empty alongside the banner and filled on the choice, which is what makes the outcome announce, holding the sentence and the Hide button. On the choice focus moves here, to the Hide button, because the button the reader pressed has gone with the banner. The Root renders it; pass one through the Root's confirmation prop only to change the words, with a Hide of your own inside.",
     },
     {
       name: "CookieBanner.Hide",
-      description: 'A core Button, "Hide this message", that removes the confirmation.',
+      description:
+        'A core Button, "Hide this message", that removes the confirmation. Before it goes, focus moves on to the next thing the reader could have tabbed to, or to main when nothing follows.',
     },
   ],
   demos: [
     {
       title: "Before a choice",
       description:
-        "The banner as the reader meets it. Press Accept or Reject and the whole banner gives way to a status confirmation that names the choice, with a button to hide it; the region is named by the title, so a screen reader's list of landmarks reads it. The handlers are where you persist the answer, in a cookie or a request to your server, and while it stands you do not render the banner again.",
+        "The banner as the reader meets it. Press Accept or Reject and the whole banner gives way to a status confirmation that names the choice, with a button to hide it, and focus lands on that button because the one just pressed has gone. The region is named by the title, so a screen reader's list of landmarks reads it. The handlers are where you persist the answer, in a cookie or a request to your server, and while it stands you do not render the banner again.",
       code: `// Persist the choice: a cookie, or a request to your server.
 function save(choice: "accept" | "reject") {
   return choice;

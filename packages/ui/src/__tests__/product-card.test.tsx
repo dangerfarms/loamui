@@ -52,6 +52,7 @@ describe("ProductCard", () => {
     // The words that complete a name are in core's visually hidden class;
     // the card ships no recipe of its own.
     expect(screen.getByText("reviews")).toHaveClass("loam-VisuallyHidden");
+    expect(container.querySelector("div.rating > span.count")).toHaveTextContent("(128 reviews)");
     expect(container.querySelector("p.value > data.loam-Price")).toHaveAttribute("value", "45");
     expect(screen.getByRole("button", { name: "Add to basket Linen shirt" })).toBeInTheDocument();
     expect(await axe(container, axeOptions)).toHaveNoViolations();
@@ -68,17 +69,47 @@ describe("ProductCard", () => {
         <ProductCard.Title>
           <a href="/shop/linen-shirt">Linen shirt</a>
         </ProductCard.Title>
-        <ProductCard.Value was={<Price value={45} currency="GBP" />}>
+        <ProductCard.Value>
+          <ProductCard.Was>
+            <Price value={45} currency="GBP" />
+          </ProductCard.Was>
           <Price value={36} currency="GBP" />
         </ProductCard.Value>
       </ProductCard.Root>,
     );
     expect(screen.getByText("Was")).toHaveClass("loam-VisuallyHidden");
     expect(screen.getByText("Now")).toHaveClass("loam-VisuallyHidden");
-    expect(screen.getByText("£45").closest("s")).not.toBeNull();
+    expect(screen.getByText("£45").closest("s")).toHaveClass("was");
     expect(screen.getByText("£36").closest("s")).toBeNull();
     expect(container.querySelector("p.value")).toHaveTextContent("Was £45 Now £36");
     expect(await axe(container, axeOptions)).toHaveNoViolations();
+  });
+
+  it("writes its words from labels: the review word pluralised, Was and Now translated", () => {
+    const { container } = render(
+      <ProductCard.Root
+        labels={{
+          reviews: (n) => (n === 1 ? "anmeldelse" : "anmeldelser"),
+          was: "Før",
+          now: "Nå",
+        }}
+      >
+        <ProductCard.Title>
+          <a href="/shop/one">One</a>
+        </ProductCard.Title>
+        <ProductCard.Rating count={1}>
+          <Rating readOnly label="Average rating" value={5} />
+        </ProductCard.Rating>
+        <ProductCard.Value>
+          <ProductCard.Was>
+            <Price value={45} currency="GBP" />
+          </ProductCard.Was>
+          <Price value={36} currency="GBP" />
+        </ProductCard.Value>
+      </ProductCard.Root>,
+    );
+    expect(container.querySelector("span.count")).toHaveTextContent("(1 anmeldelse)");
+    expect(container.querySelector("p.value")).toHaveTextContent("Før £45 Nå £36");
   });
 
   it("sits in a list the consumer wrote, with the name at the level they choose", async () => {

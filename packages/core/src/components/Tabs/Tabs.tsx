@@ -10,8 +10,9 @@ import {
   useRef,
   useState,
 } from "react";
-import type { ButtonHTMLAttributes, HTMLAttributes, KeyboardEvent, ReactNode, Ref } from "react";
+import type { KeyboardEvent, ReactNode } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 import { composeRefs } from "../../render";
 
 interface TabsContextValue {
@@ -24,25 +25,22 @@ interface TabsContextValue {
 
 const TabsContext = createContext<TabsContextValue | null>(null);
 
-function useTabsContext(component: string): TabsContextValue {
+function useTabsContext(part: string): TabsContextValue {
   const ctx = useContext(TabsContext);
   if (!ctx) {
-    throw new Error(`${component} must be rendered inside <Tabs>.`);
+    throw new Error(`${part} must be rendered inside <Tabs.Root>.`);
   }
   return ctx;
 }
 
-interface TabsCommonProps extends Omit<
-  HTMLAttributes<HTMLDivElement>,
-  "onChange" | "defaultValue"
-> {
+interface TabsRootCommonProps extends Omit<PartProps<"div">, "onChange" | "defaultValue"> {
   /** Called with the new value when the active tab changes. */
   onChange?: (value: string) => void;
   children?: ReactNode;
 }
 
 /** Tabs must start with one selected value, controlled or uncontrolled. */
-export type TabsProps = TabsCommonProps &
+export type TabsRootProps = TabsRootCommonProps &
   (
     | {
         /** Controlled active tab value. */
@@ -56,37 +54,43 @@ export type TabsProps = TabsCommonProps &
       }
   );
 
-export interface TabsListProps extends HTMLAttributes<HTMLDivElement> {
-  children?: ReactNode;
-}
+export interface TabsListProps extends PartProps<"div"> {}
 
-export interface TabsTabProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "value"> {
+export interface TabsTabProps extends Omit<PartProps<"button">, "value"> {
   /** Unique value linking this tab to its panel. */
   value: string;
-  children?: ReactNode;
 }
 
-export interface TabsPanelProps extends HTMLAttributes<HTMLDivElement> {
-  ref?: Ref<HTMLDivElement>;
+export interface TabsPanelProps extends PartProps<"div"> {
   /** Value of the tab this panel belongs to. */
   value: string;
-  children?: ReactNode;
 }
 
 /**
- * Switch between related panels of content.
+ * Switch between related panels of content, composed from parts.
  *
  * Supports uncontrolled (`defaultValue`) and controlled (`value`/`onChange`)
- * usage. Compose with `Tabs.List`, `Tabs.Tab` and `Tabs.Panel`.
+ * usage.
+ *
+ * ```tsx
+ * <Tabs.Root defaultValue="account">
+ *   <Tabs.List>
+ *     <Tabs.Tab value="account">Account</Tabs.Tab>
+ *     <Tabs.Tab value="security">Security</Tabs.Tab>
+ *   </Tabs.List>
+ *   <Tabs.Panel value="account">…</Tabs.Panel>
+ *   <Tabs.Panel value="security">…</Tabs.Panel>
+ * </Tabs.Root>
+ * ```
  */
-function TabsBase({
+function TabsRoot({
   defaultValue,
   value: controlled,
   onChange,
   className,
   children,
   ...rest
-}: TabsProps) {
+}: TabsRootProps) {
   const baseId = useId();
   const [uncontrolled, setUncontrolled] = useState<string | null>(defaultValue ?? null);
   const isControlled = controlled !== undefined;
@@ -115,9 +119,10 @@ function TabsBase({
 }
 
 /** The row of tab controls. */
-export function TabsList({ className, children, ...rest }: TabsListProps) {
+function TabsList({ className, children, ref: refProp, ...rest }: TabsListProps) {
   const { value, setValue, isControlled } = useTabsContext("Tabs.List");
   const listRef = useRef<HTMLDivElement>(null);
+  const composedRef = useMemo(() => composeRefs(refProp, listRef), [refProp]);
 
   // The type requires an initial selection. This runtime fallback also keeps
   // plain JavaScript and stale values accessible by selecting the first
@@ -187,7 +192,7 @@ export function TabsList({ className, children, ...rest }: TabsListProps) {
     // focus roves between the tabs; the list itself is never a stop
     <div
       {...rest}
-      ref={listRef}
+      ref={composedRef}
       role="tablist"
       className={cx("loam-Tabs-list", className)}
       onKeyDown={onKeyDown}
@@ -198,7 +203,7 @@ export function TabsList({ className, children, ...rest }: TabsListProps) {
 }
 
 /** A single tab control. */
-export function TabsTab({ value, disabled, className, children, onClick, ...rest }: TabsTabProps) {
+function TabsTab({ value, disabled, className, children, onClick, ...rest }: TabsTabProps) {
   const { value: active, setValue, baseId } = useTabsContext("Tabs.Tab");
   const selected = active === value;
 
@@ -213,7 +218,7 @@ export function TabsTab({ value, disabled, className, children, onClick, ...rest
       tabIndex={selected ? 0 : -1}
       // aria-disabled, not native disabled: the tab stays in the a11y tree
       // (announced as disabled) but is skipped by roving focus and can't be
-      // activated — the same pattern as Menu items.
+      // activated, the same pattern as Menu items.
       aria-disabled={disabled || undefined}
       data-tab-value={value}
       className={cx("tab", className)}
@@ -232,7 +237,7 @@ export function TabsTab({ value, disabled, className, children, onClick, ...rest
 }
 
 /** The panel shown for its matching tab. */
-export function TabsPanel({ value, className, children, ref: refProp, ...rest }: TabsPanelProps) {
+function TabsPanel({ value, className, children, ref: refProp, ...rest }: TabsPanelProps) {
   const { value: active, setValue, baseId } = useTabsContext("Tabs.Panel");
   const selected = active === value;
   const ref = useRef<HTMLDivElement>(null);
@@ -273,8 +278,9 @@ export function TabsPanel({ value, className, children, ref: refProp, ...rest }:
   );
 }
 
-export const Tabs = Object.assign(TabsBase, {
+export const Tabs = {
+  Root: TabsRoot,
   List: TabsList,
   Tab: TabsTab,
   Panel: TabsPanel,
-});
+};

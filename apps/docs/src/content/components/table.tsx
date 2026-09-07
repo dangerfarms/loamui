@@ -148,14 +148,15 @@ const doc: ComponentContent = {
     },
     {
       title: "Caption below the table",
-      description: "captionSide places the <caption> under the table instead of above it.",
-      code: `<Table captionSide="bottom">
+      description:
+        "Caption placement is the platform's own caption-side property, set on the <table> through tableProps (or a class of your own).",
+      code: `<Table tableProps={{ style: { captionSide: "bottom" } }}>
   <caption>Recent invoices by status</caption>
   {/* thead / tbody */}
 </Table>`,
       render: () => (
         <div style={{ inlineSize: "100%", maxInlineSize: "32rem" }}>
-          <Table captionSide="bottom">
+          <Table tableProps={{ style: { captionSide: "bottom" } }}>
             <caption>Recent invoices by status</caption>
             <thead>
               <tr>
@@ -194,11 +195,11 @@ const doc: ComponentContent = {
     },
     {
       title: "Wide tables scroll in place",
-      body: "The table ships inside a scroll wrapper with overflow-inline: auto, so an overflowing table scrolls horizontally within its own container instead of stretching the page; only when it actually overflows does the wrapper become a focusable, labelled region, so a page of narrow tables adds no tab stops. Whether a table should instead reflow into cards or lists on small screens is your layout call. The component keeps the table a table and makes overflow survivable.",
+      body: "The component's own element is a scroll wrapper (overflow: auto), so an overflowing table scrolls horizontally within its own container instead of stretching the page; only when it actually overflows does the wrapper become a focusable, labelled region, so a page of narrow tables adds no tab stops. className, ref and the rest land on that wrapper; the <table> takes tableProps. Whether a table should instead reflow into cards or lists on small screens is your layout call. The component keeps the table a table and makes overflow survivable.",
     },
     {
       title: "Caption every table",
-      body: "A <caption> names the table in its own words: it is what screen readers announce when listing the page's tables, and what sighted users read to know whether to bother scanning. captionSide places it above or below; a heading near the table is not a substitute, because it is not programmatically attached.",
+      body: "A <caption> names the table in its own words: it is what screen readers announce when listing the page's tables, and what sighted users read to know whether to bother scanning. The platform's caption-side property places it above or below (tableProps={{ style: { captionSide: 'bottom' } }}); a heading near the table is not a substitute, because it is not programmatically attached.",
     },
   ],
   accessibility: [
@@ -206,7 +207,7 @@ const doc: ComponentContent = {
     "Give every table a <caption>: it is the table's accessible name, announced when screen-reader users list or enter the table.",
     'Mark header cells with scope (<th scope="col"> in thead, <th scope="row"> for row headers) so data cells are read with their headers as context.',
     "The scroll wrapper keeps horizontal overflow inside the component, so zoomed-in and small-viewport users scroll the table, not the whole page.",
-    'When the table overflows its container, the wrapper becomes a focusable role="region" so keyboard users can reach it and scroll; it is named by the table\'s own <caption> when there is one, and by "Scrollable table" otherwise. A table that fits adds no tab stop.',
+    'When the table overflows its container, the wrapper becomes a focusable role="region" so keyboard users can reach it and scroll; it is named by the table\'s own <caption> when there is one, and by labels.scrollable ("Scrollable table") otherwise. A table that fits adds no tab stop.',
     "striped and highlightOnHover are visual aids only: never encode meaning in row shading, because assistive tech does not announce it.",
   ],
   props: [
@@ -226,15 +227,21 @@ const doc: ComponentContent = {
       description: "Draw vertical borders between columns.",
     },
     {
-      name: "captionSide",
-      type: `"top" | "bottom"`,
-      default: `"top"`,
-      description: "Which side to place a <caption>.",
+      name: "tableProps",
+      type: "TableHTMLAttributes & { ref }",
+      description: "Attributes for the <table> itself (caption-side, ref, id).",
+    },
+    {
+      name: "labels",
+      type: "{ scrollable?: string }",
+      default: `{ scrollable: "Scrollable table" }`,
+      description: "The scroll region's name when the table overflows and has no <caption>.",
     },
     {
       name: "...others",
-      type: "TableHTMLAttributes",
-      description: "All native <table> props are forwarded.",
+      type: "HTMLAttributes<HTMLDivElement> & { ref }",
+      description:
+        "All native <div> props land on the scroll wrapper, the component's own element.",
     },
   ],
 };

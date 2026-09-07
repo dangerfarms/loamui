@@ -36,6 +36,21 @@ describe("Byline", () => {
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 
+  it("renders every part as a direct child with the composition's own class, wherever the Avatar sits", () => {
+    const { container } = render(
+      <Byline.Root>
+        <Byline.Author>Imogen Hartley</Byline.Author>
+        <Byline.Published value="2026-08-12" locale="en-GB" dateStyle="long" />
+        <Avatar name="Imogen Hartley" aria-hidden />
+        <Byline.ReadingTime>6 min read</Byline.ReadingTime>
+      </Byline.Root>,
+    );
+    // The dots are drawn by the stylesheet from these classes and their
+    // order; the Avatar carries none of them, so it can sit anywhere.
+    const classes = [...container.firstElementChild!.children].map((el) => el.className);
+    expect(classes).toEqual(["author", "published", "loam-Avatar", "reading-time"]);
+  });
+
   it("writes the visible word Updated before the second time, or the word you give it", async () => {
     const { container } = render(
       <Byline.Root>

@@ -1,19 +1,20 @@
-import { Skeleton } from "@loamui/core";
+import { Avatar, Skeleton } from "@loamui/core";
+import type { CSSProperties } from "react";
 import type { ComponentContent } from "@/renderer/types";
 import { SkeletonSwapDemo } from "./skeleton.client";
 
 const doc: ComponentContent = {
   slug: "skeleton",
-  lead: "An animated placeholder shown while content loads.",
+  lead: "A placeholder shown while content loads, sized by the content it stands in for.",
   importLine: `import { Skeleton } from "@loamui/core";`,
   demos: [
     {
       title: "Basic lines",
       description:
-        "Stack skeletons to stand in for text while it loads. A bare Skeleton is one line tall (1lh) in the local typography, so it needs no height.",
+        "Stack skeletons to stand in for text while it loads. A bare Skeleton is one line tall (1lh) in the local typography and full width; a shorter line is a CSS decision, through the public --loam-skeleton-inline-size property.",
       code: `<Skeleton />
-<Skeleton width="80%" />
-<Skeleton width="60%" />`,
+<Skeleton style={{ "--loam-skeleton-inline-size": "80%" }} />
+<Skeleton style={{ "--loam-skeleton-inline-size": "60%" }} />`,
       render: () => (
         <div
           style={{
@@ -24,19 +25,20 @@ const doc: ComponentContent = {
           }}
         >
           <Skeleton />
-          <Skeleton width="80%" />
-          <Skeleton width="60%" />
+          <Skeleton style={{ "--loam-skeleton-inline-size": "80%" } as CSSProperties} />
+          <Skeleton style={{ "--loam-skeleton-inline-size": "60%" } as CSSProperties} />
         </div>
       ),
     },
     {
       title: "Circle + lines",
-      description: "An avatar-and-text placeholder for a list item.",
+      description:
+        "An avatar-and-text placeholder for a list item. The circle is a wrapped Avatar: the child sizes and shapes the placeholder, so there is no circle prop and nothing to keep in step with the avatar's size.",
       code: `<div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
-  <Skeleton circle width="2.5rem" />
+  <Skeleton><Avatar /></Skeleton>
   <div style={{ display: "grid", gap: "0.4rem", flex: 1 }}>
-    <Skeleton height="0.75rem" width="40%" />
-    <Skeleton height="0.75rem" width="70%" />
+    <Skeleton style={{ "--loam-skeleton-inline-size": "40%" }} />
+    <Skeleton style={{ "--loam-skeleton-inline-size": "70%" }} />
   </div>
 </div>`,
       render: () => (
@@ -49,33 +51,37 @@ const doc: ComponentContent = {
             maxInlineSize: "22rem",
           }}
         >
-          <Skeleton circle width="2.5rem" />
+          <Skeleton>
+            <Avatar />
+          </Skeleton>
           <div style={{ display: "grid", gap: "0.4rem", flex: 1 }}>
-            <Skeleton height="0.75rem" width="40%" />
-            <Skeleton height="0.75rem" width="70%" />
+            <Skeleton style={{ "--loam-skeleton-inline-size": "40%" } as CSSProperties} />
+            <Skeleton style={{ "--loam-skeleton-inline-size": "70%" } as CSSProperties} />
           </div>
         </div>
       ),
     },
     {
-      title: "Custom sizes",
+      title: "A bare placeholder from CSS",
       description:
-        "Use width and height for cards or thumbnails; shape comes from --loam-skeleton-radius or circle.",
+        "Where there is no content to wrap, a thumbnail's size and shape are CSS decisions: --loam-skeleton-inline-size, --loam-skeleton-block-size and --loam-skeleton-radius, set per instance or on a region.",
       code: `<Skeleton
-  width="8rem"
-  height="8rem"
-  style={{ "--loam-skeleton-radius": "var(--loam-radius-lg)" }}
-/>
-<Skeleton width="8rem" height="8rem" circle />`,
+  style={{
+    "--loam-skeleton-inline-size": "8rem",
+    "--loam-skeleton-block-size": "8rem",
+    "--loam-skeleton-radius": "var(--loam-radius-lg)",
+  }}
+/>`,
       render: () => (
-        <>
-          <Skeleton
-            width="8rem"
-            height="8rem"
-            style={{ "--loam-skeleton-radius": "var(--loam-radius-lg)" } as React.CSSProperties}
-          />
-          <Skeleton width="8rem" height="8rem" circle />
-        </>
+        <Skeleton
+          style={
+            {
+              "--loam-skeleton-inline-size": "8rem",
+              "--loam-skeleton-block-size": "8rem",
+              "--loam-skeleton-radius": "var(--loam-radius-lg)",
+            } as CSSProperties
+          }
+        />
       ),
     },
     {
@@ -103,34 +109,20 @@ const doc: ComponentContent = {
     },
     {
       title: "Swap in place with visible",
-      body: "Wrap the real content and flip visible to false when it is ready. The wrapped children size the placeholder themselves, so it mirrors the coming layout without declared dimensions; width and height exist for bare placeholders, where the absent content cannot be measured. While the skeleton is visible, children are hidden from pointer, selection and assistive tech, so nothing half-loaded leaks out.",
+      body: "Wrap the real content and flip visible to false when it is ready. The wrapped children size the placeholder themselves, so it mirrors the coming layout without declared dimensions; the public custom properties exist for bare placeholders, where the absent content cannot be measured. While the skeleton is visible, children are hidden from pointer, selection and assistive tech, so nothing half-loaded leaks out.",
+    },
+    {
+      title: "Say the region is busy",
+      body: 'Skeletons are silent, so the region they fill should not be. Put aria-busy="true" on the region while its skeletons show and remove it when the content lands: assistive technology then knows the region is being updated rather than empty, and can hold announcements until it settles. A wait that needs announcing gets a Loader or a visually hidden status message beside the region.',
     },
   ],
   accessibility: [
-    "The root renders aria-hidden: skeletons are never announced. Screen-reader users hear the real content when it arrives instead of a stream of meaningless placeholders.",
+    "The root renders aria-hidden: skeletons are never announced. Screen-reader users hear the real content when it arrives instead of a stream of meaningless placeholders. Mark the region they fill aria-busy while they show.",
     'Because skeletons are silent, announce the wait elsewhere if it needs announcing: a Loader (which renders role="status") or a visually hidden status message.',
     "The moving shimmer is gated behind prefers-reduced-motion: no-preference. Reduced-motion users get the same placeholder with a static gradient, with no override needed because the motion is opt-in.",
-    "While visible, wrapped children are also unreachable by pointer and text selection (pointer-events: none, user-select: none), so nothing interactive is exposed before it is real.",
+    "While visible, wrapped children keep their layout but paint nothing (visibility: hidden inherits through the whole subtree) and are unreachable by pointer and text selection, so nothing interactive is exposed before it is real.",
   ],
   props: [
-    {
-      name: "width",
-      type: "number | string",
-      default: `"100%"`,
-      description:
-        "Inline size for a bare placeholder (number → px, or any CSS length). Wrapped content sizes itself.",
-    },
-    {
-      name: "height",
-      type: "number | string",
-      default: `"1lh"`,
-      description: "Block size (number → px, or any CSS length).",
-    },
-    {
-      name: "circle",
-      type: "boolean",
-      description: "Render as a circle (equal width/height, full radius).",
-    },
     {
       name: "visible",
       type: "boolean",
@@ -150,9 +142,21 @@ const doc: ComponentContent = {
   ],
   cssProps: [
     {
+      name: "--loam-skeleton-inline-size",
+      syntax: "CSS length",
+      default: "100% (bare), fit-content (wrapped)",
+      description: "Inline size of a bare placeholder, where there is no content to measure.",
+    },
+    {
+      name: "--loam-skeleton-block-size",
+      syntax: "CSS length",
+      default: "1lh (bare), auto (wrapped)",
+      description: "Block size of a bare placeholder.",
+    },
+    {
       name: "--loam-skeleton-radius",
       syntax: "CSS length",
-      default: "var(--loam-radius-md)",
+      default: "var(--loam-radius-md); var(--loam-radius-full) around an Avatar",
       description: "Corner rounding of the placeholder; set per instance or on a region.",
     },
   ],

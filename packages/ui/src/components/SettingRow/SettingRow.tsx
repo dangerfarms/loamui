@@ -1,9 +1,9 @@
 "use client";
 
 import { createContext, useContext, useId, useMemo } from "react";
-import type { HTMLAttributes, ReactNode, Ref } from "react";
+import type { ReactNode } from "react";
 import { Field, renderWithProps, cx } from "@loamui/core";
-import type { FieldErrorProps, FieldLabelProps, RenderProp } from "@loamui/core";
+import type { FieldErrorProps, FieldLabelProps, PartProps, RenderProp } from "@loamui/core";
 
 interface SettingRowContextValue {
   /** The control's id, and the base every other id in the row derives from. */
@@ -22,7 +22,7 @@ function useSettingRow(part: string): SettingRowContextValue {
   return ctx;
 }
 
-export interface SettingRowRootProps extends HTMLAttributes<HTMLDivElement> {
+export interface SettingRowRootProps extends PartProps<"div"> {
   /**
    * The control's id, and the base the Label (`<id>-label`), Description
    * (`<id>-description`) and Error (`<id>-error`) derive theirs from.
@@ -31,7 +31,6 @@ export interface SettingRowRootProps extends HTMLAttributes<HTMLDivElement> {
    */
   id?: string;
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /**
@@ -44,15 +43,17 @@ export interface SettingRowRootProps extends HTMLAttributes<HTMLDivElement> {
  * is joined to the control with `aria-describedby`, so a screen reader
  * hears the explanation. The Field's parts keep their own look; this
  * composition only places them, the words in a `Text` column and the
- * control in its slot. Put a bare `SwitchControl` (or a `Select`, or a
- * `CheckboxControl`) in the Control slot; it reads its id and description
+ * control in its slot. Put a bare `Switch.Control` (or a `Select`, or a
+ * `Checkbox.Control`) in the Control slot; it reads its id and description
  * from the surrounding Field on its own. Group rows under a core
  * `Fieldset` with a legend; that is the consumer's markup.
  *
  * When the control is itself a group, a `Fieldset` of radios, a `<label>`
  * cannot name it: render the Label as a span (`render={<span />}`) and
  * point the fieldset at it with `aria-labelledby="<id>-label"`, and at the
- * Description with `aria-describedby="<id>-description"`.
+ * Description with `aria-describedby="<id>-description"`. Give each Radio
+ * an `id` of its own: a core control inside the row reads the row's id
+ * from the Field otherwise, and radios in a set cannot share one.
  *
  * ```tsx
  * <Fieldset.Root>
@@ -63,7 +64,7 @@ export interface SettingRowRootProps extends HTMLAttributes<HTMLDivElement> {
  *       <SettingRow.Description>A summary every Monday morning.</SettingRow.Description>
  *     </SettingRow.Text>
  *     <SettingRow.Control>
- *       <SwitchControl name="digest" defaultChecked />
+ *       <Switch.Control name="digest" defaultChecked />
  *     </SettingRow.Control>
  *   </SettingRow.Root>
  * </Fieldset.Root>
@@ -90,9 +91,8 @@ function SettingRowRoot({ id, className, children, ref, ...rest }: SettingRowRoo
   );
 }
 
-export interface SettingRowPartProps extends HTMLAttributes<HTMLDivElement> {
+export interface SettingRowPartProps extends PartProps<"div"> {
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /** The words: the Label and, under it, the Description, in a column at the inline start. */
@@ -119,7 +119,8 @@ export interface SettingRowLabelProps extends Omit<FieldLabelProps, "htmlFor"> {
  * The control's `<label>`: core `Field.Label`, wired to the control by the
  * Root, carrying the id `<id>-label`. With `render`, the same words on the
  * element you give, id kept and `for` dropped, for a control that is a
- * group.
+ * group; that element is the composition's own, set as a label reads,
+ * since core's `Field.Label` is a `<label>` and renders as nothing else.
  */
 function SettingRowLabel({ render, className, children, ...rest }: SettingRowLabelProps) {
   const { labelId } = useSettingRow("SettingRow.Label");
@@ -159,6 +160,10 @@ export interface SettingRowErrorProps extends FieldErrorProps {
  * The message when the setting could not be saved, under the words: core
  * `Field.Error` in its own slot. It marks the control invalid, joins the
  * message to it and announces it. Renders nothing without content.
+ *
+ * `className`, `style`, `ref` and every other prop land on the
+ * `Field.Error` itself; the `div.error` around it is the row's grid cell,
+ * internal, and takes nothing.
  */
 function SettingRowError({ children, ...rest }: SettingRowErrorProps) {
   if (children == null || children === false) return null;

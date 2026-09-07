@@ -13,27 +13,24 @@
     gap: var(--loam-space-xs) var(--loam-space-sm);
   }
 
-  /* The pieces are separated by a middle dot drawn as generated content on
-     every piece after the first, with an empty alt so it stays out of the
-     accessibility tree (the same device as core's Breadcrumbs). Generated
-     content over a rendered span because only the CSS knows the order the
-     consumer arranged the parts in: a part cannot tell whether it is first.
-     The dot sits before its piece, never after. The Avatar is a scope limit
-     and receives no dot; the piece after it is the first piece of text and
-     receives none either. The author receives none in any position, so a
-     dot never sits against the author's name: the author is placed first,
-     after the optional avatar, and the dots follow it. Each date is a span
+  /* The pieces are separated by a middle dot drawn as generated content,
+     with an empty alt so it stays out of the accessibility tree (the same
+     device as core's Breadcrumbs). Generated content over a rendered span
+     because only the CSS knows the order the consumer arranged the parts
+     in: a part cannot tell whether it is first. The dot is drawn before a
+     date or a reading time that follows another of the composition's own
+     parts, and never before the author, so the first part and the author
+     carry none and a dot never sits against the author's name. The parts
+     are addressed by the classes this composition renders, so the Avatar,
+     a scope limit with no class of this composition's, sits anywhere in
+     the row without changing where the dots fall. Each date is a span
      around its Time: the Time's own root is fenced out of this scope, so
      the span is what the row addresses. */
-  > * + *::before {
+  > :is(.author, .published, .updated, .reading-time)
+    ~ :is(.published, .updated, .reading-time)::before {
     content: "·" / "";
     margin-inline-end: var(--loam-space-sm);
     user-select: none;
-  }
-
-  > .loam-Avatar + *::before,
-  > .author::before {
-    content: none;
   }
 
   /* The author is the strongest piece, in the strong foreground whether or

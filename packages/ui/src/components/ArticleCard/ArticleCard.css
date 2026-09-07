@@ -1,11 +1,11 @@
 /* One article card: the parts in their own column inside a core Card. The
    Card's surface, line, radius and padding are core's; this scope arranges
    what sits inside it. It is the unit; an index of them is the consumer's
-   grid. It hosts a Badge, a link and a Byline, hence the donut. */
+   grid. It hosts a Badge, a Time, a link and a Byline, hence the donut. */
 @scope (.loam-ArticleCard) to ([class*="loam-"]) {
   :scope {
     /* Percentage, not min-block-size: it resolves against a Card that a
-       grid has stretched, so the byline sits at the foot of every card. */
+       grid has stretched, so the foot sits at the foot of every card. */
     block-size: 100%;
     container-type: inline-size;
     display: block flex;
@@ -13,12 +13,13 @@
     gap: var(--loam-space-sm);
   }
 
-  /* The consumer's optional image, placed first. */
-  > img {
+  /* The article's picture, first in the card and filling its width; the
+     file's own ratio, since a post's picture is not a product's square. */
+  div.media img {
     block-size: auto;
     border-radius: var(--loam-radius-md);
+    display: block flow;
     inline-size: 100%;
-    margin-block-end: var(--loam-space-sm);
   }
 
   p.meta {
@@ -56,17 +57,22 @@
   }
 
   /* Clamped only where the standalone property exists; elsewhere the
-     excerpt runs its full length rather than half-applying a clamp. The
-     auto margin takes the column's slack, so whatever follows (the Byline,
-     a scope limit this stylesheet cannot address) sits at the foot of
-     every card in a row, with a little room above it. */
-  p.excerpt {
+     description runs its full length rather than half-applying a clamp. */
+  p.description {
     color: var(--loam-color-fg-muted);
-    margin-block: 0 auto;
-    padding-block-end: var(--loam-space-sm);
+    margin: 0;
 
     @supports (line-clamp: 3) {
       line-clamp: 3;
     }
+  }
+
+  /* The foot is the composition's own element around the Byline (a scope
+     limit this stylesheet cannot address). Its auto margin takes the
+     column's slack, so the byline sits at the foot of every card in a row
+     whichever parts sit above it, with a little room above. */
+  div.foot {
+    margin-block-start: auto;
+    padding-block-start: var(--loam-space-sm);
   }
 }

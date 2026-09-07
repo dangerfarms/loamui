@@ -9,13 +9,13 @@ const passwordField: Composition = {
   category: "Forms",
   description:
     "A field for making up a password: the input, a strength meter and the rules in plain words, ticked as they are met.",
-  lead: "A core Field around a password Input, with a Show password toggle beside it, a core Meter that reads the strength in a word, and a list of rules written as sentences that tick as the typing meets them. Nothing blocks the submit: the rules are guidance while typing, the strength is a reading, and the server decides.",
+  lead: "A core Field around core's PasswordInput, the box with its Show password toggle, a core Meter that reads the strength in a word, and a list of rules written as sentences that tick as the typing meets them, joined to the box so a screen reader hears them on landing in it. Nothing blocks the submit: the rules are guidance while typing, the strength is a reading, and the server decides.",
   importLine: `import { PasswordField } from "@loamui/ui";`,
   parts: [
     {
       name: "PasswordField.Root",
       description:
-        'A core Field.Root around one column. It wires the label, description and error to the input the way any core Field does, and holds what is typed so the Strength and Rules can read it. The value stays in the component; it is scored and tested, and goes nowhere. Every word the composition says on its own is in labels, each with an English default: show ("Show password"), meter ("Password strength"), strength (a level 0–4 to "Weak", "Fair" or "Strong"), met and notMet.',
+        'A core Field.Root around one column. It wires the label, description and error to the input the way any core Field does, and holds what is typed so the Strength and Rules can read it. The value stays in the component; it is scored and tested, and goes nowhere. Every word the composition says on its own is in labels, each with an English default: show ("Show password"), meter ("Password strength"), strength (a level 0–4 to nothing, "Weak", "Fair" or "Strong"), empty ("Nothing typed yet", the Meter\'s words while there is no strength word), met and notMet.',
     },
     {
       name: "PasswordField.Label",
@@ -29,17 +29,17 @@ const passwordField: Composition = {
     {
       name: "PasswordField.Input",
       description:
-        'A core Input, type password, with autoComplete="new-password" so a password manager offers to make one up, and a core Button after it that shows and hides the value. The Button says "Show password" in words, not an eye alone, and its name never changes: it reports its state with aria-pressed, the one signal a toggle button gives, where a name that swapped to "Hide password" as well would say it twice. Shown, the box is plain text with spellcheck and auto-capitalisation off, so nothing is corrected behind the visitor\'s back.',
+        "Core PasswordInput, untouched: the box and its Show password toggle, with autoComplete=\"new-password\" so a password manager offers to make one up. The toggle's words come from the Root's labels.show, and the part adds the Rules list to the box's aria-describedby while one is rendered. className, style, ref and every other prop land on the input itself; wrapperProps reach the row.",
     },
     {
       name: "PasswordField.Strength",
       description:
-        "A core Meter, untouched, in the composition's own slot, with the level beside it in a word: Weak, Fair or Strong. The word is also the meter's aria-valuetext, so a screen reader hears the word rather than a percentage, and it is a polite live region, announced when the word changes and never per keystroke. Pass strength, a function from the value to 0–4; the default counts length only and says so.",
+        "A core Meter, untouched, in the composition's own slot, with the level beside it in a word: Weak, Fair or Strong, and nothing while nothing is typed, because an empty box is not a weak password. The word is also the meter's aria-valuetext (labels.empty while there is no word), so a screen reader hears the word rather than a percentage, and it is a polite live region, announced when the word changes and never per keystroke. Pass strength, a function from the value to 0–4; the default counts length only and says so.",
     },
     {
       name: "PasswordField.Rules",
       description:
-        "The list of rules: a plain ul, no roles. Not a live region: a list that re-announced on every keystroke would drown the typing.",
+        "The list of rules: a plain ul, no roles, joined to the input with aria-describedby while it is rendered, so a screen reader hears the rules on landing in the box. Not a live region: a list that re-announced on every keystroke would drown the typing.",
     },
     {
       name: "PasswordField.Rule",

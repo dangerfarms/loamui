@@ -2,7 +2,8 @@ import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { axe } from "vitest-axe";
 import { Avatar, Card } from "@loamui/core";
-import { Carousel, Testimonial } from "../index";
+import { Carousel } from "../components/Carousel/index";
+import { Testimonial } from "../components/Testimonial/index";
 
 afterEach(cleanup);
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };
@@ -27,18 +28,17 @@ describe("Testimonial", () => {
     const author = figure.querySelector("figcaption.author")!;
     expect(author).toHaveTextContent("Priya Natarajan");
     expect(author).toHaveTextContent("Head of product, logistics");
-    // The Name and the Role are gathered into one column beside the Avatar.
-    expect(author.querySelector(":scope > .loam-Avatar")).not.toBeNull();
-    expect(author.querySelector(":scope > div.text > span.name")).toHaveTextContent(
-      "Priya Natarajan",
-    );
-    expect(author.querySelector(":scope > div.text > span.role")).toHaveTextContent(
-      "Head of product, logistics",
-    );
+    // The children are rendered as written: the stylesheet places them,
+    // and nothing is re-parented, so the DOM is what the consumer wrote.
+    const children = Array.from(author.children);
+    expect(children).toHaveLength(3);
+    expect(children[0]).toHaveClass("loam-Avatar");
+    expect(children[1]).toHaveClass("name");
+    expect(children[2]).toHaveClass("role");
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 
-  it("stacks the name and role whatever order they were written in, and needs no avatar", () => {
+  it("keeps the name and role as direct children whatever order they were written in, and needs no avatar", () => {
     const { container } = render(
       <Testimonial.Root>
         <Testimonial.Quote>It just worked.</Testimonial.Quote>
@@ -50,10 +50,10 @@ describe("Testimonial", () => {
         </Testimonial.Author>
       </Testimonial.Root>,
     );
-    const text = container.querySelector("figcaption.author > div.text")!;
-    expect(text.children).toHaveLength(2);
-    expect(text.children[0]).toHaveClass("role");
-    expect(text.children[1]).toHaveClass("name");
+    const author = container.querySelector("figcaption.author")!;
+    expect(author.children).toHaveLength(2);
+    expect(author.children[0]).toHaveClass("role");
+    expect(author.children[1]).toHaveClass("name");
     expect(screen.getByRole("link", { name: "Sam Reid" })).toHaveAttribute("href", "/people/sam");
   });
 

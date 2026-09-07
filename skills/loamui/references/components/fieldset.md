@@ -45,18 +45,15 @@ Mark the whole group optional in words rather than with an asterisk.
 
 ### With a RadioGroup
 
-RadioGroup renders a Fieldset internally, so a legend labels the set of radios.
+RadioGroup.Root is a Fieldset.Root, so RadioGroup.Legend labels the set of radios.
 
 ```tsx
-<RadioGroup
-  label="Plan"
-  name="plan"
-  defaultValue="pro"
->
+<RadioGroup.Root name="plan" defaultValue="pro">
+  <RadioGroup.Legend>Plan</RadioGroup.Legend>
   <Radio value="free" label="Free" />
   <Radio value="pro" label="Pro" />
   <Radio value="team" label="Team" />
-</RadioGroup>
+</RadioGroup.Root>
 ```
 
 ## When to use it
@@ -89,7 +86,11 @@ Everything inside the fieldset is announced under the legend's name, so a fields
 
 ### Fieldset.Root
 
-Renders a native <fieldset> grouping the controls; native <fieldset> props are forwarded.
+Renders a native <fieldset> grouping the controls; native <fieldset> props and ref are forwarded.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `labels` | `{ optional?: ReactNode }` | `{ optional: "(optional)" }` | The Fieldset's own words, read by the Legend: the text after an optional legend. Pass it in the page's language. |
 
 ### Fieldset.Legend
 
@@ -97,5 +98,5 @@ The accessible group label; native <legend> props are forwarded.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `optional` | `boolean` | `false` | Appends "(optional)". Optional is marked in words, not with an asterisk. |
+| `optional` | `boolean` | `false` | Appends labels.optional ("(optional)"). Optional is marked in words, not with an asterisk. |
 

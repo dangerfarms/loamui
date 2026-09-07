@@ -44,14 +44,17 @@
     margin-block-start: 0.05em;
   }
 
+  /* The body takes the slack, so a Close (a Button behind the donut,
+     never restyled here) sits at the inline end. */
   div.body {
     display: block flex;
+    flex: 1 1 auto;
     flex-direction: column;
     gap: var(--loam-space-xs);
     min-inline-size: 0;
   }
 
-  div.title {
+  .title {
     /* The title is TEXT in the channel's hue, not a swatch: mixed toward
        black (light) / white (dark) so it keeps AA contrast on the tint even
        for light channels like warning. Only the decorative icon carries the
@@ -63,14 +66,15 @@
     font-size: var(--loam-text-sm);
     font-weight: 600;
     line-height: 1.4;
+    margin: 0;
   }
 
-  /* The message carries full-strength text; next to a title it recedes to
-     muted so the accent-coloured heading leads. */
-  div.message {
+  /* The description carries full-strength text; next to a title it recedes
+     to muted so the accent-coloured heading leads. */
+  div.description {
     color: var(--loam-color-fg);
 
-    :scope:has(> div.body > div.title) > div.body > & {
+    :scope:has(> div.body > .title) > div.body > & {
       color: var(--loam-color-fg-muted);
     }
   }

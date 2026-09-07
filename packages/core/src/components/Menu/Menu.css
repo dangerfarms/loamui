@@ -9,14 +9,18 @@
    carries its own scope (same engine as Popover). */
 @scope (.loam-Menu-popup) to ([class*="loam-"]) {
   :scope {
+    /* Content decides the width between a floor and a cap; the cap is the
+       public `--loam-menu-size`, the floor derives from it. */
+    --_size: var(--loam-menu-size, 18rem);
+
     background: var(--loam-color-surface);
     border: 1px solid var(--loam-color-line);
     border-radius: var(--loam-radius-md);
     box-shadow: var(--loam-shadow-lg);
     inline-size: max-content;
     margin: 0;
-    max-inline-size: min(18rem, 90vi);
-    min-inline-size: 11rem;
+    max-inline-size: min(var(--_size), 90vi);
+    min-inline-size: calc(var(--_size) * 0.6);
     padding: var(--loam-space-xs);
 
     /* Enhanced: top layer + anchor positioning, tethered to the trigger. */
@@ -28,11 +32,11 @@
       position: fixed;
       position-try: flip-block;
 
-      &[data-position="bottom"] {
+      &[data-side="bottom"] {
         inset-block-start: calc(anchor(end) + var(--loam-space-xs));
       }
 
-      &[data-position="top"] {
+      &[data-side="top"] {
         inset-block-end: calc(anchor(start) + var(--loam-space-xs));
       }
 
@@ -53,7 +57,7 @@
           translate: 0 -0.25rem;
         }
 
-        &[data-position="top"] {
+        &[data-side="top"] {
           &:not(:popover-open) {
             translate: 0 0.25rem;
           }
@@ -75,13 +79,13 @@
     @supports not (anchor-name: --loam-probe) {
       inset-inline-start: 0;
       position: absolute;
-      z-index: 50;
+      z-index: var(--loam-z-popup);
 
-      &[data-position="bottom"] {
+      &[data-side="bottom"] {
         inset-block-start: calc(100% + var(--loam-space-xs));
       }
 
-      &[data-position="top"] {
+      &[data-side="top"] {
         inset-block-end: calc(100% + var(--loam-space-xs));
       }
     }
@@ -125,6 +129,26 @@
       inline-size: 1em;
     }
 
+    /* Checkable items keep a glyph cell whether or not they are checked, so
+       labels line up; the glyph itself is cut from currentColor. */
+    &[role="menuitemcheckbox"]::before,
+    &[role="menuitemradio"]::before {
+      block-size: 1em;
+      content: "";
+      flex-shrink: 0;
+      inline-size: 1em;
+    }
+
+    &[role="menuitemcheckbox"][aria-checked="true"]::before {
+      background: currentcolor;
+      clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0, 43% 62%);
+    }
+
+    &[role="menuitemradio"][aria-checked="true"]::before {
+      background: currentcolor;
+      clip-path: circle(25%);
+    }
+
     @media (prefers-reduced-motion: no-preference) {
       transition: background var(--loam-duration-sm) var(--loam-ease);
     }
@@ -165,6 +189,12 @@
 
     .item[aria-disabled="true"] {
       color: GrayText;
+    }
+
+    /* The glyph is a background cut to shape; keep it painted in the
+       item's own forced colour. */
+    .item[aria-checked="true"]::before {
+      forced-color-adjust: none;
     }
   }
 }

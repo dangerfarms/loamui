@@ -1,7 +1,7 @@
 // LoamUI — public API barrel.
 
 export { cx } from "./utils";
-export type { LoamUISize } from "./utils";
+export type { LoamUISize, PartProps } from "./utils";
 
 // Composition plumbing: the `render` contract every compound part honours,
 // exported so a composition built on core can offer the same prop.
@@ -13,9 +13,11 @@ export * from "./components/Field/index";
 export * from "./components/Fieldset/index";
 export * from "./components/Button/index";
 export * from "./components/Input/index";
+export * from "./components/PasswordInput/index";
 export * from "./components/Textarea/index";
 export * from "./components/Select/index";
 export * from "./components/Checkbox/index";
+export * from "./components/Combobox/index";
 export * from "./components/DateInput/index";
 export * from "./components/ErrorSummary/index";
 export * from "./components/Radio/index";
@@ -26,7 +28,6 @@ export * from "./components/QuantityInput/index";
 export * from "./components/FileInput/index";
 export * from "./components/Rating/index";
 export * from "./components/CopyButton/index";
-export * from "./components/SchemeToggle/index";
 
 // Data display
 export * from "./components/Badge/index";

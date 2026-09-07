@@ -9,7 +9,6 @@ const meta = {
   args: {
     children: "Badge",
     size: "md",
-    dot: false,
   },
   argTypes: {
     size: { control: "inline-radio", options: ["sm", "md", "lg"] },
@@ -59,24 +58,38 @@ export const Contexts: Story = {
   ),
 };
 
-/** The status dot is semantics, not emphasis — it follows the context. */
+/** The status dot is a composed child, `Badge.Dot`; it follows the context. */
 export const WithDot: Story = {
   render: (args) => (
     <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-      <Badge {...args} dot>
+      <Badge {...args}>
+        <Badge.Dot />
         Offline
       </Badge>
       <span style={{ "--loam-context": "success" } as CSSProperties}>
-        <Badge {...args} dot>
+        <Badge {...args}>
+          <Badge.Dot />
           Online
         </Badge>
       </span>
       <span style={{ "--loam-context": "warning" } as CSSProperties}>
-        <Badge {...args} dot>
+        <Badge {...args}>
+          <Badge.Dot />
           Degraded
         </Badge>
       </span>
     </div>
+  ),
+};
+
+/** `render` swaps the element: a badge that is a link keeps the pill. */
+export const AsLink: Story = {
+  render: (args) => (
+    <span style={{ "--loam-context": "info" } as CSSProperties}>
+      <Badge {...args} render={<a href="#tag-design" />}>
+        design
+      </Badge>
+    </span>
   ),
 };
 

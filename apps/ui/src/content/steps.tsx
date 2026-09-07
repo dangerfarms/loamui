@@ -9,7 +9,7 @@ const steps: Composition = {
   category: "Page sections",
   description:
     "An ordered sequence: each step a marker, a title and a description; a timeline when the marker is a date.",
-  lead: "The order lives in the ol, so assistive tech announces “2 of 4” from the list itself, and the visible number is a CSS counter with an empty alt: decorative, never the only carrier of order. Leave the Marker out and the stylesheet draws the number; put one in to host a date or an icon, and a hairline connects each marker to the next so the eye reads the sequence the way the list does.",
+  lead: "The order lives in the ol, so assistive tech announces “2 of 4” from the list itself, and the visible number is a CSS counter with an empty alt: decorative, never the only carrier of order. Leave the Marker out and the stylesheet draws the number; put one in to host a date or an icon, and a hairline connects each marker to the next so the eye reads the sequence the way the list does. A sequence under way marks the step it has reached with aria-current on the Item, and the stylesheet reads done, current and upcoming from that one attribute, which is also what assistive tech announces.",
   importLine: `import { Steps } from "@loamui/ui";`,
   parts: [
     {
@@ -20,7 +20,7 @@ const steps: Composition = {
     {
       name: "Steps.Item",
       description:
-        "One step, an li inside the Root: a marker column beside the title and description. The counter increments here.",
+        'One step, an li inside the Root: a marker column beside the title and description. The counter increments here. Pass aria-current="step" on the step a sequence has reached: the steps before it read as done, it gains a ring, and the steps after it are drawn hollow and muted.',
     },
     {
       name: "Steps.Marker",
@@ -131,10 +131,58 @@ const steps: Composition = {
         </Steps.Root>
       ),
     },
+    {
+      title: "An order's progress",
+      description:
+        'A sequence under way. The consumer puts aria-current="step" on the step it has reached, and the stylesheet reads the rest from that: the steps before it are done and keep the strong fill, the current one gains a ring, and the steps after it are drawn hollow in muted ink. The attribute is what a screen reader announces, so the state is never colour alone, and in forced colours the upcoming markers and their connectors go dashed.',
+      code: `<Steps.Root>
+  <Steps.Item>
+    <Steps.Title>Order placed</Steps.Title>
+    <Steps.Description>We have your order and your payment has cleared.</Steps.Description>
+  </Steps.Item>
+  <Steps.Item aria-current="step">
+    <Steps.Title>Being packed</Steps.Title>
+    <Steps.Description>Your items are being picked and packed at the warehouse.</Steps.Description>
+  </Steps.Item>
+  <Steps.Item>
+    <Steps.Title>Dispatched</Steps.Title>
+    <Steps.Description>We will send the tracking number when the courier collects it.</Steps.Description>
+  </Steps.Item>
+  <Steps.Item>
+    <Steps.Title>Delivered</Steps.Title>
+    <Steps.Description>Usually two working days after dispatch.</Steps.Description>
+  </Steps.Item>
+</Steps.Root>`,
+      render: () => (
+        <Steps.Root>
+          <Steps.Item>
+            <Steps.Title>Order placed</Steps.Title>
+            <Steps.Description>We have your order and your payment has cleared.</Steps.Description>
+          </Steps.Item>
+          <Steps.Item aria-current="step">
+            <Steps.Title>Being packed</Steps.Title>
+            <Steps.Description>
+              Your items are being picked and packed at the warehouse.
+            </Steps.Description>
+          </Steps.Item>
+          <Steps.Item>
+            <Steps.Title>Dispatched</Steps.Title>
+            <Steps.Description>
+              We will send the tracking number when the courier collects it.
+            </Steps.Description>
+          </Steps.Item>
+          <Steps.Item>
+            <Steps.Title>Delivered</Steps.Title>
+            <Steps.Description>Usually two working days after dispatch.</Steps.Description>
+          </Steps.Item>
+        </Steps.Root>
+      ),
+    },
   ],
   whenToUse: [
     "Instructions the reader follows in order: a setup guide, an onboarding flow, how a submission is processed.",
-    "Events in time: a changelog, a project history or an order's progress, with a date in each Marker.",
+    "Events in time: a changelog, a project history, with a date in each Marker.",
+    "A sequence under way, an order's progress or an application's stages, with aria-current on the step it has reached.",
   ],
   whenNotToUse: [
     "A set of things with no order between them; a list of a product's features is a grid of Feature units, and a plain ul is fine for the rest.",

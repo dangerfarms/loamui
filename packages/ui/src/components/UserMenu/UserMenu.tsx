@@ -1,9 +1,16 @@
 "use client";
 
-import type { HTMLAttributes, ReactNode, Ref } from "react";
-import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState } from "react";
+import type { ReactNode, Ref } from "react";
+import { createContext, useContext, useMemo } from "react";
 import { Avatar, Menu, cx } from "@loamui/core";
-import type { MenuItemProps, MenuPopupProps, MenuRootProps, MenuTriggerProps } from "@loamui/core";
+import type {
+  MenuItemProps,
+  MenuPopupProps,
+  MenuRootProps,
+  MenuTriggerProps,
+  PartProps,
+} from "@loamui/core";
+import { useNamePart, useNamedRoot } from "../../naming";
 
 /**
  * The signed-in person's menu: an avatar button that opens a menu with the
@@ -27,7 +34,10 @@ import type { MenuItemProps, MenuPopupProps, MenuRootProps, MenuTriggerProps } f
  * <UserMenu.Root>
  *   <UserMenu.Trigger name="Imogen Hartley" src="/imogen.jpg" />
  *   <UserMenu.Popup>
- *     <UserMenu.Header name="Imogen Hartley" email="imogen@example.com" />
+ *     <UserMenu.Header>
+ *       <UserMenu.Name>Imogen Hartley</UserMenu.Name>
+ *       <UserMenu.Email>imogen@example.com</UserMenu.Email>
+ *     </UserMenu.Header>
  *     <UserMenu.Item href="/account">Profile</UserMenu.Item>
  *     <UserMenu.Item href="/settings">Settings</UserMenu.Item>
  *     <UserMenu.Separator />
@@ -56,12 +66,27 @@ function UserMenuRoot({ className, children, ref, ...rest }: UserMenuRootProps) 
   );
 }
 
+/** The words the trigger says on its own, each with an English default. */
+export interface UserMenuLabels {
+  /**
+   * The trigger's hidden accessible name, from the person's name.
+   * @default (name) => `Account menu for ${name}`
+   */
+  trigger?: (name: string) => ReactNode;
+}
+
+const DEFAULT_LABELS: Required<UserMenuLabels> = {
+  trigger: (name) => `Account menu for ${name}`,
+};
+
 export interface UserMenuTriggerProps extends Omit<MenuTriggerProps, "render"> {
   /** The person's name: the avatar's initials and the button's accessible name. */
   name: string;
   /** The person's picture. Falls back to initials when absent or broken. */
   src?: string;
-  /** The hidden accessible name. @default "Account menu for {name}" */
+  /** The trigger's own words. */
+  labels?: UserMenuLabels;
+  /** The hidden accessible name, in place of `labels.trigger(name)`. */
   children?: ReactNode;
   ref?: Ref<HTMLButtonElement>;
 }
@@ -74,7 +99,16 @@ export interface UserMenuTriggerProps extends Omit<MenuTriggerProps, "render"> {
  * the accessible name, it translates, and it shows in reader mode; the
  * `Avatar` is hidden from assistive technology so the name is heard once.
  */
-function UserMenuTrigger({ name, src, className, children, ref, ...rest }: UserMenuTriggerProps) {
+function UserMenuTrigger({
+  name,
+  src,
+  labels,
+  className,
+  children,
+  ref,
+  ...rest
+}: UserMenuTriggerProps) {
+  const trigger = labels?.trigger ?? DEFAULT_LABELS.trigger;
   // The label rides on the element itself, so the button is never without
   // one. The consumer's ref merges with Menu's own, so focus still returns
   // to the trigger on close.
@@ -83,7 +117,7 @@ function UserMenuTrigger({ name, src, className, children, ref, ...rest }: UserM
       render={
         <button type="button" className={cx("loam-UserMenu-trigger", className)} ref={ref}>
           <Avatar name={name} src={src} aria-hidden />
-          <span className="loam-VisuallyHidden">{children ?? `Account menu for ${name}`}</span>
+          <span className="loam-VisuallyHidden">{children ?? trigger(name)}</span>
         </button>
       }
       {...rest}
@@ -92,8 +126,8 @@ function UserMenuTrigger({ name, src, className, children, ref, ...rest }: UserM
 }
 
 interface UserMenuPopupContextValue {
-  labelId: string;
-  registerLabel: () => () => void;
+  nameId: string;
+  register: (id: string) => () => void;
 }
 
 const UserMenuPopupContext = createContext<UserMenuPopupContextValue | null>(null);
@@ -102,52 +136,72 @@ export interface UserMenuPopupProps extends MenuPopupProps {}
 
 /**
  * The core `Menu.Popup`, left as core renders it and named by the Header
- * when one is rendered: the same registration Menu.Group uses for its
- * label, so a popup without a Header carries no dangling reference.
+ * from the first render; the reference is dropped after mount when no
+ * Header is rendered, so a popup without one carries no dangling
+ * reference. Your own `aria-label` or `aria-labelledby` wins.
  */
 function UserMenuPopup({ children, ...rest }: UserMenuPopupProps) {
-  const labelId = `${useId()}-usermenu`;
-  const [labelCount, setLabelCount] = useState(0);
-  const registerLabel = useCallback(() => {
-    setLabelCount((n) => n + 1);
-    return () => setLabelCount((n) => n - 1);
-  }, []);
-  const value = useMemo(() => ({ labelId, registerLabel }), [labelId, registerLabel]);
+  const { nameId, register, labelling } = useNamedRoot(rest);
+  const value = useMemo<UserMenuPopupContextValue>(
+    () => ({ nameId, register }),
+    [nameId, register],
+  );
   return (
     <UserMenuPopupContext value={value}>
-      <Menu.Popup aria-labelledby={labelCount > 0 ? labelId : undefined} {...rest}>
+      <Menu.Popup {...labelling} {...rest}>
         {children}
       </Menu.Popup>
     </UserMenuPopupContext>
   );
 }
 
-export interface UserMenuHeaderProps extends HTMLAttributes<HTMLDivElement> {
-  /** The person's name. */
-  name: string;
-  /** The account's email address, the line that tells two accounts apart. */
-  email?: string;
-  ref?: Ref<HTMLDivElement>;
+export interface UserMenuHeaderProps extends PartProps<"div"> {
+  /** A `UserMenu.Name`, then a `UserMenu.Email`. */
+  children?: ReactNode;
 }
 
 /**
- * Who is signed in: the name and, beneath it, the email. Plain text before
+ * Who is signed in: the Name and, beneath it, the Email. Plain text before
  * the items, not an item itself, so arrow keys skip it; it is heard as the
  * menu's name instead. Its own scope root, since the popup around it is
  * core's and carries no class of the composition's.
  */
-function UserMenuHeader({ name, email, className, ref, ...rest }: UserMenuHeaderProps) {
+function UserMenuHeader({ id, className, children, ref, ...rest }: UserMenuHeaderProps) {
   const ctx = useContext(UserMenuPopupContext);
   if (!ctx) {
     throw new Error("UserMenu.Header must be rendered inside <UserMenu.Popup>.");
   }
-  const { registerLabel } = ctx;
-  useEffect(() => registerLabel(), [registerLabel]);
+  const headerId = useNamePart(ctx, id);
   return (
-    <div ref={ref} id={ctx.labelId} className={cx("loam-UserMenu-header", className)} {...rest}>
-      <strong>{name}</strong>
-      {email && <p>{email}</p>}
+    <div ref={ref} id={headerId} className={cx("loam-UserMenu-header", className)} {...rest}>
+      {children}
     </div>
+  );
+}
+
+export interface UserMenuNameProps extends PartProps<"strong"> {
+  children?: ReactNode;
+}
+
+/** The person's name, in the Header: a `strong`. */
+function UserMenuName({ className, children, ref, ...rest }: UserMenuNameProps) {
+  return (
+    <strong ref={ref} className={cx("name", className)} {...rest}>
+      {children}
+    </strong>
+  );
+}
+
+export interface UserMenuEmailProps extends PartProps<"p"> {
+  children?: ReactNode;
+}
+
+/** The account's email address, under the Name: the line that tells two accounts apart. */
+function UserMenuEmail({ className, children, ref, ...rest }: UserMenuEmailProps) {
+  return (
+    <p ref={ref} className={cx("email", className)} {...rest}>
+      {children}
+    </p>
   );
 }
 
@@ -187,6 +241,8 @@ export const UserMenu = {
   Trigger: UserMenuTrigger,
   Popup: UserMenuPopup,
   Header: UserMenuHeader,
+  Name: UserMenuName,
+  Email: UserMenuEmail,
   Item: Menu.Item,
   Separator: Menu.Separator,
   SignOut: UserMenuSignOut,

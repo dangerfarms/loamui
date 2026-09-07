@@ -1,10 +1,11 @@
 export { Comment } from "./Comment";
 export type {
   CommentRootProps,
-  CommentPartProps,
+  CommentHeaderProps,
   CommentAuthorProps,
   CommentTimeProps,
   CommentDivProps,
+  CommentRepliesLabels,
   CommentRepliesProps,
   CommentReplyProps,
 } from "./Comment";

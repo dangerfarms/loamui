@@ -1,12 +1,10 @@
 "use client";
 
-import type { InputHTMLAttributes, Ref } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 import { useFieldControlProps } from "../Field/Field";
 
-export interface RangeProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {
-  ref?: Ref<HTMLInputElement>;
-}
+export interface RangeProps extends Omit<PartProps<"input">, "size" | "type"> {}
 
 /**
  * A styled `<input type="range">` for choosing a value from a range.
@@ -22,7 +20,6 @@ export function Range({
   step = 1,
   id,
   className,
-  disabled,
   "aria-invalid": ariaInvalid,
   "aria-describedby": ariaDescribedby,
   ref,
@@ -36,11 +33,9 @@ export function Range({
       id={id ?? field.id}
       type="range"
       className={cx("loam-Range", className)}
-      data-disabled={disabled || undefined}
       min={min}
       max={max}
       step={step}
-      disabled={disabled}
       // No native-validation state is needed here: every range thumb position
       // is valid, so only a composed Field error can mark it invalid.
       aria-invalid={ariaInvalid ?? field["aria-invalid"]}

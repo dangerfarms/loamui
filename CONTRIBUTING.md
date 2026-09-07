@@ -26,7 +26,7 @@ pnpm dev        # runs the docs site
   component has several roots); parts inside the scope are type selectors or
   short classes (`label`, `p.description`). The encapsulation is `@scope`'s
   job, not the class name's.
-- `packages/ui`: the `@loamui/ui` compositions (Hero, Carousel, Stats, ...),
+- `packages/ui`: the `@loamui/ui` compositions (Hero, Carousel, Stat, ...),
   built from core the way any consumer would and held to the same pillars and
   gates. Same file anatomy as core, in `@layer loamui.ui`; a composition never
   changes a primitive, and never overrides a core part's own declarations.
@@ -196,20 +196,20 @@ Any JSX that uses compound parts (docs demos included) must live in a
 **State attributes**: the shared styling vocabulary, identical on every
 component (never invent synonyms):
 
-| Attribute                                          | Where                                           | Meaning                                                                                                |
-| -------------------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `data-popup-open`                                  | trigger                                         | its popup/bubble is open                                                                               |
-| `data-open`                                        | popup/panel                                     | open; uniform across enhanced & fallback                                                               |
-| `data-disabled`                                    | wrapper/control                                 | disabled styling hook                                                                                  |
-| `data-current`                                     | nav item                                        | current page/location                                                                                  |
-| `data-size` / `data-position`                      | Badge, Progress, Meter; Drawer's panel (`side`) | instance styling hooks read by the stylesheet; form controls have no size hooks: their sizing is fluid |
-| `data-orientation`                                 | RadioGroup                                      | display hook (see Sanctioned exceptions)                                                               |
-| `data-label-position`                              | Switch                                          | display hook (see Sanctioned exceptions)                                                               |
-| `data-striped` / `data-hover` / `data-col-borders` | Table                                           | display hooks (see Sanctioned exceptions)                                                              |
-| `data-striped` / `data-animated`                   | Progress                                        | display hooks (see Sanctioned exceptions)                                                              |
-| `data-show-label`                                  | Rating, SchemeToggle                            | display hook (see Sanctioned exceptions)                                                               |
-| `data-read-only`                                   | Rating                                          | display mode: a picture of the value, not inputs                                                       |
-| `data-dragging`                                    | `FileInput.Root`                                | a drag carrying files is over the box; detected from the drag events, never a prop                     |
+| Attribute                                          | Where                                                                    | Meaning                                                                                                |
+| -------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `data-popup-open`                                  | trigger                                                                  | its popup/bubble is open                                                                               |
+| `data-open`                                        | popup/panel                                                              | open; uniform across enhanced & fallback                                                               |
+| `data-disabled`                                    | `Pagination.Link`                                                        | a paging link with nowhere to go; controls are detected via `:disabled`                                |
+| `data-current`                                     | nav item                                                                 | current page/location                                                                                  |
+| `data-size` / `data-side`                          | Badge, Loader, Progress, Meter; Drawer, Popover, Menu and Tooltip popups | instance styling hooks read by the stylesheet; form controls have no size hooks: their sizing is fluid |
+| `data-orientation`                                 | RadioGroup                                                               | display hook (see Sanctioned exceptions)                                                               |
+| `data-label-position`                              | Switch                                                                   | display hook (see Sanctioned exceptions)                                                               |
+| `data-striped` / `data-hover` / `data-col-borders` | Table                                                                    | display hooks (see Sanctioned exceptions)                                                              |
+| `data-striped` / `data-animated`                   | Progress (root)                                                          | display hooks (see Sanctioned exceptions)                                                              |
+| `data-show-label`                                  | Rating (and `@loamui/ui`'s SchemeToggle)                                 | display hook (see Sanctioned exceptions)                                                               |
+| `data-read-only`                                   | Rating                                                                   | display mode: a picture of the value, not inputs                                                       |
+| `data-dragging`                                    | `FileInput.Root`                                                         | a drag carrying files is over the box; detected from the drag events, never a prop                     |
 
 Components built on native state use the platform's hook instead (e.g.
 Details styles `details[open]`). **Prefer detection over declaration**:
@@ -246,7 +246,7 @@ derived anatomy (`padding-block: var(--loam-space-sm)` +
 `font-size: var(--loam-text-sm)` × `line-height: 1.2` + 1px borders), so they
 height-align by construction at every container width. There are no
 control-height tokens and no size props on form controls; a control that
-must match this height adopts the same stack (see Pagination).
+must match this height renders Button, or adopts the same stack.
 Glyph controls (Checkbox, Radio, Switch, Range) size their geometry in `em`
 on a `font-size: var(--loam-text-sm)` basis, so glyphs ride the same fluid
 scale as their labels.
@@ -255,12 +255,12 @@ scale as their labels.
 re-encode a visual decision; it does not ban the platform's own numbers.
 The exceptions, and why each is a semantic rather than a size:
 
-| Component                              | Props                                      | What they are                                                                                           |
-| -------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
-| `Meter`                                | `min` / `max` / `low` / `high` / `optimum` | the range and its bands, forwarded to `<meter>`; the browser picks the band, the CSS paints it          |
-| `QuantityInput`                        | `min` / `max` / `step`                     | the count's bounds and increment, forwarded to `<input type="number">`; the buttons disable at the ends |
-| `Rating`                               | `max`                                      | how many stars there are, which is how many radios                                                      |
-| `Badge`, `Loader`, `Progress`, `Meter` | `size`                                     | the one sanctioned `size`: an intrinsic glyph or track that no container can size                       |
+| Component                              | Props                                      | What they are                                                                                                                           |
+| -------------------------------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `Meter`                                | `min` / `max` / `low` / `high` / `optimum` | the range and its bands, forwarded to `<meter>`; the browser picks the band, the CSS paints it                                          |
+| `QuantityInput`                        | `min` / `max` / `step`                     | the count's bounds and increment, forwarded to `<input type="number">`; the buttons disable at the ends                                 |
+| `Rating`                               | `max`                                      | how many stars there are, which is how many radios                                                                                      |
+| `Badge`, `Loader`, `Progress`, `Meter` | `size`                                     | the one sanctioned `size`, always `"sm" \| "md" \| "lg"` emitted as `data-size`: an intrinsic glyph or track that no container can size |
 
 ### Sanctioned exceptions
 
@@ -268,9 +268,10 @@ Under review: these are the exceptions to the doctrine above; do not add to
 this list without a maintainer ruling. Each exists today and is accepted until
 a maintainer decides otherwise.
 
-- Input `leftSection` / `rightSection`: adornments inside the field box, not
+- Input `startSection` / `endSection`: adornments inside the field box, not
   icons in flow, so `:has()` detection cannot place them.
-- Alert `icon` on the convenience form: mirrors the `Alert.Icon` part.
+- Alert `icon` and `onClose` on the convenience form: mirror the `Alert.Icon`
+  and `Alert.Close` parts.
 - Table `striped` / `highlightOnHover` / `withColumnBorders`: display hooks,
   emitted as the `data-striped` / `data-hover` / `data-col-borders`
   attributes.
@@ -279,8 +280,8 @@ a maintainer decides otherwise.
 - RadioGroup `orientation`: emits `data-orientation`; the layout of a set, not
   a control.
 - Switch `labelPosition`: emits `data-label-position`.
-- RadioGroup `error`: a group-level message that Field cannot supply.
-- Rating and SchemeToggle `showLabel`: emits `data-show-label`; whether the
+- Rating `showLabel` (and `@loamui/ui`'s SchemeToggle): emits
+  `data-show-label`; whether the
   group's name is painted as well as read. Rating `readOnly` emits
   `data-read-only` for display mode.
 

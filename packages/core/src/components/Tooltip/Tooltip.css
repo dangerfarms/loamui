@@ -10,7 +10,7 @@
 @scope (.loam-Tooltip-popup) to ([class*="loam-"]) {
   :scope {
     --_gap: var(--loam-space-xs);
-    --_arrow: 0.3125rem;
+    --_arrow: 0.4em;
 
     background: var(--loam-color-fg);
     border: 0;
@@ -20,7 +20,7 @@
     font-size: var(--loam-text-xs);
     inline-size: max-content;
     margin: 0;
-    max-inline-size: 16rem;
+    max-inline-size: var(--loam-tooltip-size, 16rem);
 
     /* The UA gives [popover] `overflow: auto`, which would clip the arrow
        poking outside the bubble. Tooltips never scroll. */
@@ -50,25 +50,25 @@
       inset: auto;
       position: fixed;
 
-      &[data-position="top"] {
+      &[data-side="top"] {
         inset-block-end: calc(anchor(start) + var(--_gap));
         justify-self: anchor-center;
         position-try: flip-block;
       }
 
-      &[data-position="bottom"] {
+      &[data-side="bottom"] {
         inset-block-start: calc(anchor(end) + var(--_gap));
         justify-self: anchor-center;
         position-try: flip-block;
       }
 
-      &[data-position="left"] {
+      &[data-side="left"] {
         align-self: anchor-center;
         inset-inline-end: calc(anchor(start) + var(--_gap));
         position-try: flip-inline;
       }
 
-      &[data-position="right"] {
+      &[data-side="right"] {
         align-self: anchor-center;
         inset-inline-start: calc(anchor(end) + var(--_gap));
         position-try: flip-inline;
@@ -99,11 +99,11 @@
     /* Fallback: anchored to the wrapper. */
     @supports not (anchor-name: --loam-probe) {
       position: absolute;
-      z-index: 40;
+      z-index: var(--loam-z-popup);
 
       /* translate is physical, inset-inline-* is flow-relative — the
          centering shift must follow the text direction. */
-      &[data-position="top"] {
+      &[data-side="top"] {
         inset-block-end: calc(100% + var(--_gap));
         inset-inline-start: 50%;
 
@@ -116,7 +116,7 @@
         }
       }
 
-      &[data-position="bottom"] {
+      &[data-side="bottom"] {
         inset-block-start: calc(100% + var(--_gap));
         inset-inline-start: 50%;
 
@@ -129,13 +129,13 @@
         }
       }
 
-      &[data-position="left"] {
+      &[data-side="left"] {
         inset-block-start: 50%;
         inset-inline-end: calc(100% + var(--_gap));
         translate: 0 -50%;
       }
 
-      &[data-position="right"] {
+      &[data-side="right"] {
         inset-block-start: 50%;
         inset-inline-start: calc(100% + var(--_gap));
         translate: 0 -50%;
@@ -150,25 +150,25 @@
     inline-size: 0;
     position: absolute;
 
-    :scope[data-position="top"] & {
+    :scope[data-side="top"] & {
       border-block-start-color: var(--loam-color-fg);
       inset-block-start: 100%;
       inset-inline-start: calc(50% - var(--_arrow));
     }
 
-    :scope[data-position="bottom"] & {
+    :scope[data-side="bottom"] & {
       border-block-end-color: var(--loam-color-fg);
       inset-block-end: 100%;
       inset-inline-start: calc(50% - var(--_arrow));
     }
 
-    :scope[data-position="left"] & {
+    :scope[data-side="left"] & {
       border-inline-start-color: var(--loam-color-fg);
       inset-block-start: calc(50% - var(--_arrow));
       inset-inline-start: 100%;
     }
 
-    :scope[data-position="right"] & {
+    :scope[data-side="right"] & {
       border-inline-end-color: var(--loam-color-fg);
       inset-block-start: calc(50% - var(--_arrow));
       inset-inline-end: 100%;
@@ -180,13 +180,13 @@
        are inherently overrides of the requested side; browsers without
        them keep the requested-side arrow. */
     @container anchored(fallback: flip-block) {
-      :scope[data-position="top"] & {
+      :scope[data-side="top"] & {
         border-block-end-color: var(--loam-color-fg);
         border-block-start-color: transparent;
         inset-block: auto 100%;
       }
 
-      :scope[data-position="bottom"] & {
+      :scope[data-side="bottom"] & {
         border-block-end-color: transparent;
         border-block-start-color: var(--loam-color-fg);
         inset-block: 100% auto;
@@ -194,13 +194,13 @@
     }
 
     @container anchored(fallback: flip-inline) {
-      :scope[data-position="left"] & {
+      :scope[data-side="left"] & {
         border-inline-end-color: var(--loam-color-fg);
         border-inline-start-color: transparent;
         inset-inline: auto 100%;
       }
 
-      :scope[data-position="right"] & {
+      :scope[data-side="right"] & {
         border-inline-end-color: transparent;
         border-inline-start-color: var(--loam-color-fg);
         inset-inline: 100% auto;

@@ -1,0 +1,56 @@
+/* One tile: a core Card rendered as a description list of a single pair.
+   The Card is the surface, the line, the radius and the padding, and
+   nothing here repeats them; these rules only arrange the pair inside,
+   which is the composition's own. It hosts consumer content, hence the
+   donut. */
+@scope (.loam-Stat) to ([class*="loam-"]) {
+  :scope {
+    display: block flex;
+    flex-direction: column;
+    gap: var(--loam-space-xs);
+    margin: 0;
+  }
+
+  /* The label is first in the markup (term, then definition) and last on
+     screen; the value leads the tile visually. */
+  dt.label {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    order: 1;
+  }
+
+  dd.value {
+    color: var(--loam-color-fg-strong);
+    font-family: var(--loam-font-display);
+    font-size: var(--loam-text-2xl);
+    font-variant-numeric: lining-nums tabular-nums;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0;
+  }
+
+  /* Context: a status region on the tile tints its value. The token layer
+     re-answers primary-strong to the region's status, and -strong (not the
+     raw hue) holds 4.5:1 as text in both schemes; raw warning sits at 2.5:1
+     on the light surface. */
+  @container (style(--loam-context: primary)) or (style(--loam-context: success)) or
+    (style(--loam-context: warning)) or (style(--loam-context: info)) or
+    (style(--loam-context: danger)) {
+    dd.value {
+      color: var(--loam-color-primary-strong);
+    }
+  }
+}
+
+/* The optional row: a region that declares its container so the tiles fit
+   by width. It holds only layout; every tile carries its own root above, so
+   a tile looks the same inside the row and on its own. */
+@scope (.loam-Stat-group) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-md);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  }
+}

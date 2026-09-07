@@ -1,27 +1,10 @@
 "use client";
 
-import {
-  Children,
-  createContext,
-  isValidElement,
-  useCallback,
-  useContext,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import type {
-  FormEvent,
-  FormHTMLAttributes,
-  HTMLAttributes,
-  ReactNode,
-  Ref,
-  RefObject,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
+import type { FormEvent, ReactNode, RefObject } from "react";
 import { Button, cx, renderWithProps } from "@loamui/core";
-import type { ButtonProps, RenderProp } from "@loamui/core";
+import type { ButtonProps, PartProps, RenderProp } from "@loamui/core";
+import { useNamedRoot, useNamePart } from "../../naming";
 
 export type CookieBannerChoice = "accept" | "reject";
 
@@ -33,10 +16,14 @@ interface CookieBannerState {
   choice: CookieBannerChoice | null;
   /** The button pressed, recorded on click so the submit knows the choice in every browser. */
   pending: RefObject<CookieBannerChoice | null>;
+  /** The section, so Hide can find where focus goes once it is gone. */
+  root: RefObject<HTMLElement | null>;
   choose: (choice: CookieBannerChoice) => void;
   hide: () => void;
-  /** The Title tells the section its id; the section is named by it while it is present. */
-  registerTitle: (id: string) => () => void;
+  /** The id the Title takes unless the consumer gives it one; the section points at it. */
+  nameId: string;
+  /** The Title registers on mount so the section's reference stays honest. */
+  register: (id: string) => () => void;
 }
 
 const CookieBannerContext = createContext<CookieBannerState | null>(null);
@@ -47,7 +34,31 @@ function useCookieBanner(part: string) {
   return ctx;
 }
 
-export interface CookieBannerRootProps extends HTMLAttributes<HTMLElement> {
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), summary, iframe, [contenteditable="true"], [tabindex]:not([tabindex="-1"])';
+
+/**
+ * Where focus goes when the banner leaves the page: the next thing the
+ * reader could have tabbed to, so they carry on from where they were; the
+ * `main` landmark when nothing follows; the body otherwise.
+ */
+function focusAfter(root: HTMLElement) {
+  const doc = root.ownerDocument;
+  for (const el of doc.querySelectorAll<HTMLElement>(FOCUSABLE)) {
+    if (root.contains(el)) continue;
+    if (root.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) {
+      el.focus();
+      return;
+    }
+  }
+  const main = doc.querySelector<HTMLElement>("main");
+  if (main) {
+    if (!main.hasAttribute("tabindex")) main.setAttribute("tabindex", "-1");
+    main.focus();
+  }
+}
+
+export interface CookieBannerRootProps extends PartProps<"section"> {
   /**
    * Where the buttons post the choice without JavaScript: the Actions form
    * posts `cookies=accept` or `cookies=reject` here. With JavaScript and a
@@ -67,17 +78,18 @@ export interface CookieBannerRootProps extends HTMLAttributes<HTMLElement> {
   /** Called with `false` when the reader hides the confirmation. */
   onOpenChange?: (open: boolean) => void;
   /**
+   * What replaces the banner after the choice: a `CookieBanner.Confirmation`
+   * of your own, with your words and a `CookieBanner.Hide` inside. The
+   * default says which choice was made and offers to hide the message.
+   */
+  confirmation?: ReactNode;
+  /**
    * The region's name when there is no Title to name it, and no
    * `aria-labelledby` of your own. @default "Cookies"
    */
   "aria-label"?: string;
-  /** The Title, Body and Actions, and optionally a Confirmation of your own. */
+  /** The Title, Body and Actions. */
   children?: ReactNode;
-  ref?: Ref<HTMLElement>;
-}
-
-function isConfirmation(child: ReactNode) {
-  return isValidElement(child) && child.type === CookieBannerConfirmation;
 }
 
 /**
@@ -88,11 +100,13 @@ function isConfirmation(child: ReactNode) {
  * It is a `section` named by its Title ("Cookies" when there is none), a
  * region and not a dialog: no focus trap, no backdrop, and the page behind
  * it stays usable, because a choice about cookies should not hold the page
- * hostage. Render it first inside `body`, so it is the first thing
- * keyboard and screen-reader users meet and they can move past it; it sits
- * in the flow of the page, never over the content. Nothing is pre-ticked
- * and nothing counts as consent except a press of Accept: the buttons are
- * the only way to choose, and scrolling, closing or waiting decide nothing.
+ * hostage. The name is in the server's HTML: the Root mints the id and
+ * points `aria-labelledby` at it in the first render, the Title renders
+ * it. Render it first inside `body`, so it is the first thing keyboard and
+ * screen-reader users meet and they can move past it; it sits in the flow
+ * of the page, never over the content. Nothing is pre-ticked and nothing
+ * counts as consent except a press of Accept: the buttons are the only way
+ * to choose, and scrolling, closing or waiting decide nothing.
  *
  * The choice is yours to keep. `onAccept` and `onReject` fire once; store
  * the answer (a cookie, a request to your server) and do not render the
@@ -101,9 +115,13 @@ function isConfirmation(child: ReactNode) {
  * accepted additional cookies. You can change your cookie settings at any
  * time.") with a "Hide this message" button; after that, nothing. The
  * confirmation is a `role="status"` live region mounted empty from the
- * start and filled on the choice, which is what makes it announce. `open`,
- * `defaultOpen` and `onOpenChange` control the last step from outside when
- * you need to.
+ * start and filled on the choice, which is what makes it announce; pass
+ * one of your own through `confirmation` to change the words. Focus
+ * follows the reader: the button they pressed leaves with the banner, so
+ * focus moves to the Hide button, and when that leaves too it moves to
+ * the next thing they could have tabbed to, or to `main`. `open`,
+ * `defaultOpen` and `onOpenChange` control the last step from outside
+ * when you need to.
  *
  * The Actions are a `form method="post"` and the two buttons submit it,
  * carrying `name="cookies"` with the values `accept` and `reject`. Give
@@ -134,6 +152,7 @@ function CookieBannerRoot({
   open,
   defaultOpen = true,
   onOpenChange,
+  confirmation,
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabelledBy,
   className,
@@ -145,11 +164,13 @@ function CookieBannerRoot({
   const [ownOpen, setOwnOpen] = useState(defaultOpen);
   const isOpen = open ?? ownOpen;
   const pending = useRef<CookieBannerChoice | null>(null);
-  const [titleId, setTitleId] = useState<string | null>(null);
-  const registerTitle = useCallback((id: string) => {
-    setTitleId(id);
-    return () => setTitleId((current) => (current === id ? null : current));
-  }, []);
+  const root = useRef<HTMLElement | null>(null);
+  // A name of the consumer's wins; the Title names the region while it is
+  // present; "Cookies" is the fallback once the Title has gone with the banner.
+  const { nameId, register, labelling } = useNamedRoot(
+    { "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy },
+    "Cookies", // i18n-default: the consumer's aria-label replaces it
+  );
   const handled = onAccept != null || onReject != null;
 
   const state = useMemo<CookieBannerState>(
@@ -158,51 +179,48 @@ function CookieBannerRoot({
       handled,
       choice,
       pending,
+      root,
       choose(next) {
         setChoice(next);
         if (next === "accept") onAccept?.();
         else onReject?.();
       },
       hide() {
+        // The section is still in the page here; focus moves before it goes.
+        if (root.current) focusAfter(root.current);
         setOwnOpen(false);
         onOpenChange?.(false);
       },
-      registerTitle,
+      nameId,
+      register,
     }),
-    [action, handled, choice, onAccept, onReject, onOpenChange, registerTitle],
+    [action, handled, choice, onAccept, onReject, onOpenChange, nameId, register],
   );
 
   if (!isOpen) return null;
 
-  // The confirmation is always mounted, empty until the choice: the one you
-  // placed among the children, or the default. The rest of the children are
-  // the banner, and they go once the choice is made.
-  const all = Children.toArray(children);
-  const confirmation = all.find(isConfirmation) ?? <CookieBannerConfirmation />;
-  const banner = all.filter((child) => !isConfirmation(child));
-
-  // A name of the consumer's wins; the Title names the region while it is
-  // present; "Cookies" is the fallback.
-  const labelledBy = ariaLabelledBy ?? (ariaLabel == null && titleId ? titleId : undefined);
-  const label = labelledBy ? undefined : (ariaLabel ?? "Cookies");
-
   return (
     <section
-      ref={ref}
-      aria-label={label}
-      aria-labelledby={labelledBy}
+      ref={(node) => {
+        root.current = node;
+        if (typeof ref === "function") return ref(node);
+        if (ref) ref.current = node;
+      }}
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledBy}
+      {...labelling}
       className={cx("loam-CookieBanner", className)}
       {...rest}
     >
       <CookieBannerContext value={state}>
-        {choice === null && <div className="inner">{banner}</div>}
-        {confirmation}
+        {choice === null && <div className="inner">{children}</div>}
+        {confirmation ?? <CookieBannerConfirmation />}
       </CookieBannerContext>
     </section>
   );
 }
 
-export interface CookieBannerTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+export interface CookieBannerTitleProps extends PartProps<"h2"> {
   /**
    * Render as a different heading: `render={<h3 />}` when the page's
    * outline needs it. The part's classes and attributes merge onto the
@@ -210,12 +228,12 @@ export interface CookieBannerTitleProps extends HTMLAttributes<HTMLHeadingElemen
    */
   render?: RenderProp<Record<string, unknown>>;
   children?: ReactNode;
-  ref?: Ref<HTMLHeadingElement>;
 }
 
 /**
  * The banner's heading. An `h2` by default; pass `render={<h3 />}` to
- * change the level. It names the Root while it is present.
+ * change the level. Its id (yours if you pass one, the composition's
+ * otherwise) is what the section's `aria-labelledby` points at.
  */
 function CookieBannerTitle({
   render,
@@ -225,19 +243,16 @@ function CookieBannerTitle({
   id,
   ...rest
 }: CookieBannerTitleProps) {
-  const { registerTitle } = useCookieBanner("Title");
-  const autoId = useId();
-  const titleId = id ?? autoId;
-  useEffect(() => registerTitle(titleId), [registerTitle, titleId]);
+  const ctx = useCookieBanner("Title");
+  const titleId = useNamePart(ctx, id);
   const props = { ref, id: titleId, className: cx("title", className), ...rest };
   if (render) return <>{renderWithProps(render, { ...props, children })}</>;
   return <h2 {...props}>{children}</h2>;
 }
 
-export interface CookieBannerBodyProps extends HTMLAttributes<HTMLDivElement> {
+export interface CookieBannerBodyProps extends PartProps<"div"> {
   /** One or two paragraphs: what the essential cookies do, and what the additional ones would. */
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /** The explanation: one or two paragraphs, held to a readable measure. */
@@ -249,13 +264,9 @@ function CookieBannerBody({ className, children, ref, ...rest }: CookieBannerBod
   );
 }
 
-export interface CookieBannerActionsProps extends Omit<
-  FormHTMLAttributes<HTMLFormElement>,
-  "action" | "method"
-> {
+export interface CookieBannerActionsProps extends Omit<PartProps<"form">, "action" | "method"> {
   /** `CookieBanner.Accept`, `CookieBanner.Reject` and a link to the settings page. */
   children?: ReactNode;
-  ref?: Ref<HTMLFormElement>;
 }
 
 /**
@@ -356,23 +367,25 @@ function CookieBannerReject({
   );
 }
 
-export interface CookieBannerConfirmationProps extends HTMLAttributes<HTMLDivElement> {
+export interface CookieBannerConfirmationProps extends PartProps<"div"> {
   /**
    * The message and a `CookieBanner.Hide`. Defaults to "You've accepted
    * (or rejected) additional cookies. You can change your cookie settings
    * at any time." and the Hide button.
    */
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /**
  * What replaces the banner once the reader has chosen: a `role="status"`
  * live region holding the sentence and a Hide button. It is mounted empty
  * with the banner and filled on the choice, because a live region that
- * arrives with its content already in it is not announced. The Root
- * renders it; place one among the Root's children only to change the
- * words, and include a `CookieBanner.Hide` when you do.
+ * arrives with its content already in it is not announced. On the choice
+ * focus moves here, to the Hide button when there is one and to the
+ * region itself otherwise, because the button the reader pressed has gone
+ * with the banner. The Root renders it; pass one through the Root's
+ * `confirmation` prop only to change the words, and include a
+ * `CookieBanner.Hide` when you do.
  */
 function CookieBannerConfirmation({
   className,
@@ -381,9 +394,27 @@ function CookieBannerConfirmation({
   ...rest
 }: CookieBannerConfirmationProps) {
   const { choice } = useCookieBanner("Confirmation");
+  const own = useRef<HTMLDivElement | null>(null);
   const verb = choice === "accept" ? "accepted" : "rejected";
+
+  useEffect(() => {
+    if (choice === null || !own.current) return;
+    const target = own.current.querySelector<HTMLElement>("button") ?? own.current;
+    target.focus();
+  }, [choice]);
+
   return (
-    <div ref={ref} role="status" className={cx("confirmation", className)} {...rest}>
+    <div
+      ref={(node) => {
+        own.current = node;
+        if (typeof ref === "function") return ref(node);
+        if (ref) ref.current = node;
+      }}
+      role="status"
+      tabIndex={-1}
+      className={cx("confirmation", className)}
+      {...rest}
+    >
       {choice !== null &&
         (children ?? (
           <>
@@ -402,7 +433,11 @@ export interface CookieBannerHideProps extends ButtonProps {
   children?: ReactNode;
 }
 
-/** The button that removes the confirmation, "Hide this message". */
+/**
+ * The button that removes the confirmation, "Hide this message". Before
+ * the region goes, focus moves on to the next thing the reader could have
+ * tabbed to, or to `main` when nothing follows.
+ */
 function CookieBannerHide({
   children = "Hide this message",
   onClick,

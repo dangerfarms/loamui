@@ -1,21 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { CSSProperties } from "react";
 import { Breadcrumbs } from "../../index";
 
 const meta = {
   title: "Navigation/Breadcrumbs",
   component: Breadcrumbs.Root,
   tags: ["autodocs"],
-  args: {
-    separator: "/",
-  },
-  argTypes: {
-    separator: { control: "text" },
-  },
   parameters: {
     docs: {
       description: {
         component:
-          "Shows the path to the current page. Items are links via `href`, plain text when `current`, or any element via `render`; the consumer marks the current page explicitly and separators are drawn in CSS, not the DOM.",
+          "Shows the path to the current page. Items are links via `href`, plain text when `current`, or any element via `render`; the consumer marks the current page explicitly and separators are drawn in CSS from the public `--loam-breadcrumbs-separator` property, not the DOM.",
       },
     },
   },
@@ -34,9 +29,18 @@ type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {};
 
-/** A custom separator glyph, drawn by CSS between items. */
+/**
+ * A custom separator glyph: set the public `--loam-breadcrumbs-separator`
+ * property (a CSS string) where the trail is used; CSS draws it.
+ */
 export const CustomSeparator: Story = {
-  args: { separator: "›" },
+  render: (args) => (
+    <Breadcrumbs.Root {...args} style={{ "--loam-breadcrumbs-separator": '"›"' } as CSSProperties}>
+      <Breadcrumbs.Item href="#root">Home</Breadcrumbs.Item>
+      <Breadcrumbs.Item href="#crops">Crops</Breadcrumbs.Item>
+      <Breadcrumbs.Item current>Wheat</Breadcrumbs.Item>
+    </Breadcrumbs.Root>
+  ),
 };
 
 /** A short two-level trail. */

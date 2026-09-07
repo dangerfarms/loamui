@@ -52,28 +52,9 @@
     }
   }
 
-  /* With scripting the box does the inviting, so the native control is
-     hidden from sight but not from focus or the accessibility tree (the
-     visually-hidden recipe from Field). Without scripting the native
-     control stays in view with its own file-name display. */
-  input {
-    @media (scripting: enabled) {
-      block-size: 1px;
-      border: 0;
-      clip-path: inset(50%);
-      inline-size: 1px;
-      margin: -1px;
-      overflow: clip;
-      padding: 0;
-      position: absolute;
-      white-space: nowrap;
-    }
-
-    @media (scripting: none) {
-      display: block flow;
-      margin-block-end: var(--loam-space-sm);
-    }
-  }
+  /* The native control inside a Root wears .loam-VisuallyHidden (set by
+     the component): out of sight, still focusable and in the
+     accessibility tree, the box doing the inviting. */
 
   ul {
     font-size: var(--loam-text-sm);

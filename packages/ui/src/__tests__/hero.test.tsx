@@ -95,6 +95,38 @@ describe("Hero", () => {
     expect(refs.media.current).toHaveClass("media");
   });
 
+  it("names the section in the first render, so the server's HTML carries the name", () => {
+    render(
+      <Hero.Root>
+        <Hero.Title>Named on the server</Hero.Title>
+      </Hero.Root>,
+    );
+    const region = screen.getByRole("region", { name: "Named on the server" });
+    expect(region).toHaveAttribute("aria-labelledby", screen.getByRole("heading").id);
+  });
+
+  it("drops the reference when there is no Title to point at", () => {
+    const { container } = render(
+      <Hero.Root>
+        <Hero.Lede>No title here.</Hero.Lede>
+      </Hero.Root>,
+    );
+    expect(container.querySelector(".loam-Hero")).not.toHaveAttribute("aria-labelledby");
+  });
+
+  it("renders the root as a header when asked", () => {
+    render(
+      <Hero.Root render={<header />}>
+        <Hero.Title>As a header</Hero.Title>
+      </Hero.Root>,
+    );
+    expect(screen.getByRole("banner")).toHaveClass("loam-Hero");
+    expect(screen.getByRole("banner")).toHaveAttribute(
+      "aria-labelledby",
+      screen.getByRole("heading").id,
+    );
+  });
+
   it("lets a name of the consumer's own win over the title's", () => {
     render(
       <Hero.Root aria-label="Welcome">

@@ -9,7 +9,7 @@ afterEach(cleanup);
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };
 
 describe("EmptyState", () => {
-  it("renders a section named by its title, with a hidden picture, the description and the action, with no axe violations", async () => {
+  it("renders a div, unnamed because a generic cannot be, with a hidden picture, the description and the action, with no axe violations", async () => {
     const { container } = render(
       <EmptyState.Root>
         <EmptyState.Media>
@@ -24,10 +24,11 @@ describe("EmptyState", () => {
         </EmptyState.Actions>
       </EmptyState.Root>,
     );
-    const region = screen.getByRole("region", { name: "No projects yet" });
-    expect(region.tagName).toBe("SECTION");
-    expect(region).toHaveClass("loam-EmptyState");
-    expect(region).not.toHaveAttribute("role", "status");
+    const root = container.querySelector(".loam-EmptyState")!;
+    expect(root.tagName).toBe("DIV");
+    expect(root).not.toHaveAttribute("role");
+    expect(root).not.toHaveAttribute("aria-labelledby");
+    expect(screen.queryByRole("region")).toBeNull();
     expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("No projects yet");
     expect(screen.getByText("Create your first project to start.")).toHaveClass("description");
     expect(container.querySelector("div.media")).toHaveAttribute("aria-hidden", "true");
@@ -35,17 +36,27 @@ describe("EmptyState", () => {
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 
-  it("lets a name of the consumer's own win over the title's", () => {
-    render(
-      <EmptyState.Root aria-label="Projects">
+  it("is a section named by its title when it is the page, and lets a name of the consumer's own win", async () => {
+    const { container, rerender } = render(
+      <EmptyState.Root render={<section />}>
         <EmptyState.Title>No projects yet</EmptyState.Title>
       </EmptyState.Root>,
     );
-    const region = screen.getByRole("region", { name: "Projects" });
-    expect(region).not.toHaveAttribute("aria-labelledby");
+    const region = screen.getByRole("region", { name: "No projects yet" });
+    expect(region.tagName).toBe("SECTION");
+    expect(region).toHaveClass("loam-EmptyState");
+    expect(region).toHaveAttribute("aria-labelledby", screen.getByRole("heading").id);
+    expect(await axe(container, axeOptions)).toHaveNoViolations();
+
+    rerender(
+      <EmptyState.Root render={<section />} aria-label="Projects">
+        <EmptyState.Title>No projects yet</EmptyState.Title>
+      </EmptyState.Root>,
+    );
+    expect(screen.getByRole("region", { name: "Projects" })).not.toHaveAttribute("aria-labelledby");
   });
 
-  it("is a status when the consumer says the empty state replaced results", async () => {
+  it("is a status named by its title when the consumer says the empty state replaced results", async () => {
     const { container } = render(
       <EmptyState.Root role="status">
         <EmptyState.Title>No results for "loam"</EmptyState.Title>
@@ -61,15 +72,12 @@ describe("EmptyState", () => {
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 
-  it("renders the title as an h3 and the root as a div when asked", () => {
-    const { container } = render(
-      <EmptyState.Root render={<div />}>
+  it("renders the title as an h3 when asked", () => {
+    render(
+      <EmptyState.Root>
         <EmptyState.Title render={<h3 />}>Nothing here</EmptyState.Title>
       </EmptyState.Root>,
     );
     expect(screen.getByRole("heading", { level: 3 })).toHaveTextContent("Nothing here");
-    const root = container.querySelector(".loam-EmptyState");
-    expect(root?.tagName).toBe("DIV");
-    expect(container.querySelector("section")).toBeNull();
   });
 });

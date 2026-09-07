@@ -2,5 +2,6 @@ export { ContactDetails } from "./ContactDetails";
 export type {
   ContactDetailsRootProps,
   ContactDetailsItemProps,
-  ContactDetailsPartProps,
+  ContactDetailsLabelProps,
+  ContactDetailsValueProps,
 } from "./ContactDetails";

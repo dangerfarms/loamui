@@ -16,11 +16,14 @@
     padding-inline: var(--loam-space-lg);
     position: fixed;
     text-decoration: none;
-    z-index: 110;
+    z-index: var(--loam-z-skip-link);
 
-    /* Hidden is the unfocused state — :focus, not :focus-visible, because
+    /* Hidden is the unfocused state: :focus, not :focus-visible, because
        assistive tech can focus without the keyboard heuristics and the
-       link must appear for every focus. */
+       link must appear for every focus. These are the .loam-VisuallyHidden
+       declarations (elements.css) behind that gate; the shared class has
+       no gate, and undoing it on :focus would restate every property in
+       reverse. */
     &:not(:focus) {
       block-size: 1px;
       border: 0;

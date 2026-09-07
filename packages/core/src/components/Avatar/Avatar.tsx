@@ -1,10 +1,11 @@
 "use client";
 
-import type { HTMLAttributes, ReactNode, Ref } from "react";
-import { useState } from "react";
+import type { ReactNode } from "react";
+import { Children, useState } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 
-export interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, "color"> {
+export interface AvatarProps extends Omit<PartProps<"span">, "color"> {
   /** Image source. When set, renders an <img>. */
   src?: string;
   /** Alt text for the image (falls back to `name`). */
@@ -12,7 +13,21 @@ export interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, "colo
   /** Person's name; used for initials and, if no `alt`, the image alt. */
   name?: string;
   children?: ReactNode;
-  ref?: Ref<HTMLSpanElement>;
+}
+
+/** The first `n` user-perceived characters of a string: graphemes, not code units. */
+function graphemes(s: string, n: number): string {
+  if (typeof Intl.Segmenter === "function") {
+    let out = "";
+    for (const { segment } of new Intl.Segmenter(undefined, { granularity: "grapheme" }).segment(
+      s,
+    )) {
+      if (n-- <= 0) break;
+      out += segment;
+    }
+    return out;
+  }
+  return [...s].slice(0, n).join("");
 }
 
 /** Derive up to two uppercase initials from a name. */
@@ -21,8 +36,8 @@ function initialsFrom(name: string): string {
   const first = parts[0];
   const last = parts[parts.length - 1];
   if (!first || !last) return "";
-  if (parts.length === 1) return first.slice(0, 2).toUpperCase();
-  return ((first[0] ?? "") + (last[0] ?? "")).toUpperCase();
+  if (parts.length === 1) return graphemes(first, 2).toUpperCase();
+  return (graphemes(first, 1) + graphemes(last, 1)).toUpperCase();
 }
 
 /** Fallback user glyph shown when there is no image or name. */
@@ -36,8 +51,11 @@ function UserGlyph() {
 
 /**
  * An image, initials, or fallback glyph representing a user.
+ *
+ * Sized by the public `--loam-avatar-size` property (2.5rem by default), set
+ * per instance or on a region. A set of people is `Avatar.Group`.
  */
-export function Avatar({ src, alt, name, className, style, children, ref, ...rest }: AvatarProps) {
+function AvatarBase({ src, alt, name, className, children, ref, ...rest }: AvatarProps) {
   // A failed image falls back to initials instead of the broken-image glyph.
   const [imageFailed, setImageFailed] = useState(false);
   const initials = name ? initialsFrom(name) : "";
@@ -71,11 +89,6 @@ export function Avatar({ src, alt, name, className, style, children, ref, ...res
       role={src || (!accessibleName && !consumerNamed) ? undefined : "img"}
       aria-label={src ? undefined : accessibleName}
       aria-hidden={!src && !accessibleName && !consumerNamed ? true : undefined}
-      style={
-        {
-          ...style,
-        } as React.CSSProperties
-      }
       {...rest}
     >
       {content}
@@ -83,18 +96,36 @@ export function Avatar({ src, alt, name, className, style, children, ref, ...res
   );
 }
 
-export interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {
+export interface AvatarGroupProps extends PartProps<"ul"> {
+  /**
+   * How many more people there are than avatars shown. Rendered as a final
+   * "+n" avatar named by `labels.more`.
+   */
+  more?: number;
+  /** The words the overflow avatar speaks: `more(n)` names it ("5 more"). */
+  labels?: {
+    more?: (n: number) => string;
+  };
+  /** The avatars; each becomes a list item. */
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /**
- * Overlaps a row of avatars with a surface-colored ring.
+ * A set of people: a list whose avatars overlap with a surface-coloured
+ * ring. Each child is one item; `more` adds an overflow count at the end.
  */
-export function AvatarGroup({ className, style, children, ref, ...rest }: AvatarGroupProps) {
+function AvatarGroup({ more, labels, className, children, ref, ...rest }: AvatarGroupProps) {
+  const moreLabel = labels?.more ?? ((n: number) => `${n} more`);
   return (
-    <div ref={ref} className={cx("loam-Avatar-group", className)} style={style} {...rest}>
-      {children}
-    </div>
+    <ul ref={ref} className={cx("loam-Avatar-group", className)} {...rest}>
+      {Children.map(children, (child) => (child == null ? null : <li>{child}</li>))}
+      {more != null && more > 0 && (
+        <li>
+          <AvatarBase aria-label={moreLabel(more)}>+{more}</AvatarBase>
+        </li>
+      )}
+    </ul>
   );
 }
+
+export const Avatar = Object.assign(AvatarBase, { Group: AvatarGroup });

@@ -3,7 +3,7 @@ import type { ComponentContent } from "@/renderer/types";
 
 const doc: ComponentContent = {
   slug: "card",
-  lead: "A surface container that groups related content.",
+  lead: "A surface container that groups related content: the one surface primitive, which compositions such as a product card or a testimonial are built on rather than restyling.",
   importLine: `import { Card } from "@loamui/core";`,
   demos: [
     {
@@ -22,6 +22,31 @@ const doc: ComponentContent = {
             <Button>View report</Button>
           </Card>
         </div>
+      ),
+    },
+    {
+      title: "Another element",
+      description:
+        "render substitutes the <div>: an <li> in a list of cards, a <label> when the whole surface is a control's label, an <article> for a self-contained piece. The class and attributes merge onto the element.",
+      code: `<ul>
+  <Card render={<li />}>North Field</Card>
+  <Card render={<li />}>South Field</Card>
+</ul>`,
+      render: () => (
+        <ul
+          style={{
+            display: "grid",
+            gap: "0.75rem",
+            listStyle: "none",
+            margin: 0,
+            padding: 0,
+            inlineSize: "100%",
+            maxInlineSize: "22rem",
+          }}
+        >
+          <Card render={<li />}>North Field</Card>
+          <Card render={<li />}>South Field</Card>
+        </ul>
       ),
     },
   ],
@@ -49,6 +74,12 @@ const doc: ComponentContent = {
     "Border and shadow are purely visual grouping, invisible to assistive tech, so the content must also read as a unit in document order alone.",
   ],
   props: [
+    {
+      name: "render",
+      type: "RenderProp",
+      description:
+        "Substitute the rendered element (render={<li />}, render={<label />}, render={<article />}); the Card's class and attributes merge onto it.",
+    },
     {
       name: "...others",
       type: "DivHTMLAttributes",

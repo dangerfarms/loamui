@@ -1,16 +1,15 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import type { HTMLAttributes, LiHTMLAttributes, OlHTMLAttributes, ReactNode, Ref } from "react";
+import type { ReactNode } from "react";
 import { cx, renderWithProps } from "@loamui/core";
-import type { RenderProp } from "@loamui/core";
+import type { PartProps, RenderProp } from "@loamui/core";
 
 /** True inside a `Steps.Root`; an Item has no list to be a step of anywhere else. */
 const StepsContext = createContext(false);
 
-export interface StepsRootProps extends OlHTMLAttributes<HTMLOListElement> {
+export interface StepsRootProps extends PartProps<"ol"> {
   children?: ReactNode;
-  ref?: Ref<HTMLOListElement>;
 }
 
 /**
@@ -26,6 +25,14 @@ export interface StepsRootProps extends OlHTMLAttributes<HTMLOListElement> {
  * `Steps.Title` is an `h3`; pass `render={<h2 />}` when the page's outline
  * needs it. The list is a region and declares its container, so the fluid
  * tokens answer its width.
+ *
+ * A sequence that is under way, an order's progress or an application's
+ * stages, marks where it has got to: put `aria-current="step"` on that
+ * Item and the stylesheet reads the order from it. The steps before it
+ * are done and keep the strong fill, the current one gains a ring, and the
+ * steps after it are upcoming, drawn hollow in muted ink; the attribute
+ * is what assistive technology announces, so the marking is never colour
+ * alone.
  *
  * ```tsx
  * <Steps.Root>
@@ -59,13 +66,17 @@ function StepsRoot({ className, children, ref, ...rest }: StepsRootProps) {
   );
 }
 
-export interface StepsItemProps extends LiHTMLAttributes<HTMLLIElement> {
+export interface StepsItemProps extends PartProps<"li"> {
   /** An optional `Steps.Marker`, then a `Steps.Title`, then a `Steps.Description`. */
   children?: ReactNode;
-  ref?: Ref<HTMLLIElement>;
 }
 
-/** One step: an `li` inside the Root, laid out as a marker column beside the title and description. */
+/**
+ * One step: an `li` inside the Root, laid out as a marker column beside
+ * the title and description. Pass `aria-current="step"` on the step a
+ * sequence has reached; the steps before it read as done and the steps
+ * after it as upcoming.
+ */
 function StepsItem({ className, children, ref, ...rest }: StepsItemProps) {
   if (!useContext(StepsContext)) {
     throw new Error("Steps.Item must be rendered inside <Steps.Root>.");
@@ -77,10 +88,9 @@ function StepsItem({ className, children, ref, ...rest }: StepsItemProps) {
   );
 }
 
-export interface StepsMarkerProps extends HTMLAttributes<HTMLSpanElement> {
+export interface StepsMarkerProps extends PartProps<"span"> {
   /** A `<time>`, an icon or a short label. */
   children?: ReactNode;
-  ref?: Ref<HTMLSpanElement>;
 }
 
 /**
@@ -96,7 +106,7 @@ function StepsMarker({ className, children, ref, ...rest }: StepsMarkerProps) {
   );
 }
 
-export interface StepsTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+export interface StepsTitleProps extends PartProps<"h3"> {
   /**
    * Render as a different heading: `render={<h2 />}` when the steps are a
    * page's top-level sections. The part's classes and attributes merge onto
@@ -104,7 +114,6 @@ export interface StepsTitleProps extends HTMLAttributes<HTMLHeadingElement> {
    */
   render?: RenderProp<Record<string, unknown>>;
   children?: ReactNode;
-  ref?: Ref<HTMLHeadingElement>;
 }
 
 /** The step's name. Renders an `h3` by default; pass `render={<h2 />}` to change the level. */
@@ -121,9 +130,8 @@ function StepsTitle({ render, className, children, ref, ...rest }: StepsTitlePro
   );
 }
 
-export interface StepsDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {
+export interface StepsDescriptionProps extends PartProps<"p"> {
   children?: ReactNode;
-  ref?: Ref<HTMLParagraphElement>;
 }
 
 /** One or two muted sentences on what happens in this step. */

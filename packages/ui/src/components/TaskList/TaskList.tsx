@@ -1,14 +1,12 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState } from "react";
-import type { AnchorHTMLAttributes, HTMLAttributes, LiHTMLAttributes, ReactNode, Ref } from "react";
+import { createContext, useContext, useEffect, useMemo } from "react";
+import type { ReactNode, Ref } from "react";
 import { cx, renderWithProps } from "@loamui/core";
-import type { RenderProp } from "@loamui/core";
+import type { PartProps, RenderProp } from "@loamui/core";
+import { useOptionalSlot } from "../../naming";
 
-export interface TaskListRootProps extends HTMLAttributes<HTMLUListElement> {
-  children?: ReactNode;
-  ref?: Ref<HTMLUListElement>;
-}
+export interface TaskListRootProps extends PartProps<"ul"> {}
 
 /**
  * The things a person must complete across a multi-step process, each with
@@ -43,13 +41,13 @@ export interface TaskListRootProps extends HTMLAttributes<HTMLUListElement> {
  * </TaskList.Root>
  * ```
  */
-function TaskListRoot({ className, children, ref, ...rest }: TaskListRootProps) {
+function TaskListRoot({ className, children, ...rest }: TaskListRootProps) {
   return (
     // role="list" is not redundant here: the stylesheet removes the
     // markers, and a ul styled with list-style: none loses its list
     // semantics in some browsers; the explicit role restores "list, 5
     // items" for assistive tech.
-    <ul ref={ref} role="list" className={cx("loam-TaskList", className)} {...rest}>
+    <ul role="list" className={cx("loam-TaskList", className)} {...rest}>
       {children}
     </ul>
   );
@@ -58,8 +56,8 @@ function TaskListRoot({ className, children, ref, ...rest }: TaskListRootProps) 
 interface TaskListItemContextValue {
   descriptionId: string;
   statusId: string;
-  hasDescription: boolean;
-  hasStatus: boolean;
+  /** The ids the title is described by, in the first render and thereafter only while the parts are present. */
+  describedBy: string | undefined;
   registerDescription: () => () => void;
   registerStatus: () => () => void;
 }
@@ -74,54 +72,42 @@ function useTaskListItemContext(part: string): TaskListItemContextValue {
   return ctx;
 }
 
-function useRegistry(): [boolean, () => () => void] {
-  const [count, setCount] = useState(0);
-  const register = useCallback(() => {
-    setCount((n) => n + 1);
-    return () => setCount((n) => n - 1);
-  }, []);
-  return [count > 0, register];
-}
-
-export interface TaskListItemProps extends LiHTMLAttributes<HTMLLIElement> {
+export interface TaskListItemProps extends PartProps<"li"> {
   /** A `TaskList.Title`, an optional `TaskList.Description` and an optional `TaskList.Status`. */
   children?: ReactNode;
-  ref?: Ref<HTMLLIElement>;
 }
 
 /**
  * One task: an `li` laid out as the title and description beside the
  * status. It mints the ids that tie the description and the status to the
- * title; each association is made only while that part is mounted, so a
- * task without one carries no dangling reference.
+ * title. Both are referenced in the first render, so the server HTML is
+ * already described; after mount each reference is kept only while its
+ * part is present, so a task without one carries no dangling reference.
  */
-function TaskListItem({ className, children, ref, ...rest }: TaskListItemProps) {
-  const id = useId();
-  const [hasDescription, registerDescription] = useRegistry();
-  const [hasStatus, registerStatus] = useRegistry();
+function TaskListItem({ children, ...rest }: TaskListItemProps) {
+  const description = useOptionalSlot();
+  const status = useOptionalSlot();
+  const describedBy = cx(description.ref, status.ref) || undefined;
 
   const value = useMemo<TaskListItemContextValue>(
     () => ({
-      descriptionId: `${id}-description`,
-      statusId: `${id}-status`,
-      hasDescription,
-      hasStatus,
-      registerDescription,
-      registerStatus,
+      descriptionId: description.id,
+      statusId: status.id,
+      describedBy,
+      registerDescription: description.register,
+      registerStatus: status.register,
     }),
-    [id, hasDescription, hasStatus, registerDescription, registerStatus],
+    [description.id, status.id, describedBy, description.register, status.register],
   );
 
   return (
     <TaskListItemContext value={value}>
-      <li ref={ref} className={className} {...rest}>
-        {children}
-      </li>
+      <li {...rest}>{children}</li>
     </TaskListItemContext>
   );
 }
 
-export interface TaskListTitleProps extends AnchorHTMLAttributes<HTMLElement> {
+export interface TaskListTitleProps extends Omit<PartProps<"a">, "ref"> {
   /**
    * Where the task is done. With it the title is an `a`; without it the
    * title is plain text, for a task that cannot be started yet.
@@ -136,6 +122,7 @@ export interface TaskListTitleProps extends AnchorHTMLAttributes<HTMLElement> {
   render?: RenderProp<Record<string, unknown>>;
   /** The task's name. */
   children?: ReactNode;
+  /** Reaches the link or the span, whichever the title turns out to be. */
   ref?: Ref<HTMLElement>;
 }
 
@@ -146,15 +133,11 @@ export interface TaskListTitleProps extends AnchorHTMLAttributes<HTMLElement> {
  * announced with what the task needs and where it stands.
  */
 function TaskListTitle({ href, render, className, children, ref, ...rest }: TaskListTitleProps) {
-  const { descriptionId, statusId, hasDescription, hasStatus } =
-    useTaskListItemContext("TaskList.Title");
-  const describedBy = [hasDescription && descriptionId, hasStatus && statusId]
-    .filter(Boolean)
-    .join(" ");
+  const { describedBy } = useTaskListItemContext("TaskList.Title");
   const props = {
     ref,
     className: cx("title", className),
-    "aria-describedby": describedBy || undefined,
+    "aria-describedby": describedBy,
     children,
     ...rest,
   };
@@ -174,29 +157,25 @@ function TaskListTitle({ href, render, className, children, ref, ...rest }: Task
   );
 }
 
-export interface TaskListDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {
-  children?: ReactNode;
-  ref?: Ref<HTMLParagraphElement>;
-}
+export interface TaskListDescriptionProps extends PartProps<"p"> {}
 
 /**
  * Optional. One muted line under the title on what the task needs. It
  * carries the id the title is described by while it is mounted.
  */
-function TaskListDescription({ className, children, ref, ...rest }: TaskListDescriptionProps) {
+function TaskListDescription({ className, children, ...rest }: TaskListDescriptionProps) {
   const { descriptionId, registerDescription } = useTaskListItemContext("TaskList.Description");
   useEffect(() => registerDescription(), [registerDescription]);
   return (
-    <p ref={ref} className={cx("description", className)} id={descriptionId} {...rest}>
+    <p className={cx("description", className)} id={descriptionId} {...rest}>
       {children}
     </p>
   );
 }
 
-export interface TaskListStatusProps extends HTMLAttributes<HTMLDivElement> {
+export interface TaskListStatusProps extends PartProps<"div"> {
   /** A `Badge`. */
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /**
@@ -205,11 +184,11 @@ export interface TaskListStatusProps extends HTMLAttributes<HTMLDivElement> {
  * `style` or on any ancestor; a style query is answered by an ancestor, and
  * this part is the Badge's.
  */
-function TaskListStatus({ className, children, ref, ...rest }: TaskListStatusProps) {
+function TaskListStatus({ className, children, ...rest }: TaskListStatusProps) {
   const { statusId, registerStatus } = useTaskListItemContext("TaskList.Status");
   useEffect(() => registerStatus(), [registerStatus]);
   return (
-    <div ref={ref} className={cx("status", className)} id={statusId} {...rest}>
+    <div className={cx("status", className)} id={statusId} {...rest}>
       {children}
     </div>
   );

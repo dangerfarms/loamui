@@ -75,13 +75,13 @@
 
   /* The price is the figure the eye lands on. An old price steps back to
      the muted colour and regular weight; the strike marks it, and the
-     hidden "Was" and "Now" say it. */
+     hidden words say it. */
   p.value {
     font-size: var(--loam-text-lg);
     font-weight: 700;
     margin: 0;
 
-    s {
+    s.was {
       color: var(--loam-color-fg-muted);
       font-weight: 400;
       margin-inline-end: var(--loam-space-xs);

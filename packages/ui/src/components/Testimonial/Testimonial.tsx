@@ -1,10 +1,9 @@
-import { Children, isValidElement } from "react";
-import type { BlockquoteHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+import type { ReactNode } from "react";
 import { cx } from "@loamui/core";
+import type { PartProps } from "@loamui/core";
 
-export interface TestimonialRootProps extends HTMLAttributes<HTMLElement> {
+export interface TestimonialRootProps extends PartProps<"figure"> {
   children?: ReactNode;
-  ref?: Ref<HTMLElement>;
 }
 
 /**
@@ -41,9 +40,8 @@ function TestimonialRoot({ className, children, ref, ...rest }: TestimonialRootP
   );
 }
 
-export interface TestimonialQuoteProps extends BlockquoteHTMLAttributes<HTMLQuoteElement> {
+export interface TestimonialQuoteProps extends PartProps<"blockquote"> {
   children?: ReactNode;
-  ref?: Ref<HTMLQuoteElement>;
 }
 
 /** The quotation, a blockquote. Pass `cite` when the source has a URL. */
@@ -55,39 +53,29 @@ function TestimonialQuote({ className, children, ref, ...rest }: TestimonialQuot
   );
 }
 
-export interface TestimonialAuthorProps extends HTMLAttributes<HTMLElement> {
+export interface TestimonialAuthorProps extends PartProps<"figcaption"> {
   /** An Avatar, then a `Testimonial.Name` and a `Testimonial.Role`. */
   children?: ReactNode;
-  ref?: Ref<HTMLElement>;
-}
-
-function isText(child: ReactNode) {
-  return (
-    isValidElement(child) && (child.type === TestimonialName || child.type === TestimonialRole)
-  );
 }
 
 /**
- * Who said it: the figure's caption, a row. The Name and the Role are
- * gathered into one column of text beside whatever else is in it, an
- * Avatar, so the two lines stack against the picture whatever order you
- * wrote them in.
+ * Who said it: the figure's caption, a grid. The Name and the Role stack
+ * in a column beside the first thing that is neither, an Avatar, which
+ * spans both their rows; anything after them runs the caption's full
+ * width. The stylesheet does the placing, so the two lines stack against
+ * the picture whatever order you wrote them in, and a name that wraps
+ * pushes the role down rather than sideways.
  */
 function TestimonialAuthor({ className, children, ref, ...rest }: TestimonialAuthorProps) {
-  const all = Children.toArray(children);
-  const text = all.filter(isText);
-  const others = all.filter((child) => !isText(child));
   return (
     <figcaption ref={ref} className={cx("author", className)} {...rest}>
-      {others}
-      {text.length > 0 && <div className="text">{text}</div>}
+      {children}
     </figcaption>
   );
 }
 
-export interface TestimonialNameProps extends HTMLAttributes<HTMLSpanElement> {
+export interface TestimonialNameProps extends PartProps<"span"> {
   children?: ReactNode;
-  ref?: Ref<HTMLSpanElement>;
 }
 
 /** The author's name, set strong. Wrap the words in a link when the person has a page. */
@@ -99,9 +87,8 @@ function TestimonialName({ className, children, ref, ...rest }: TestimonialNameP
   );
 }
 
-export interface TestimonialRoleProps extends HTMLAttributes<HTMLSpanElement> {
+export interface TestimonialRoleProps extends PartProps<"span"> {
   children?: ReactNode;
-  ref?: Ref<HTMLSpanElement>;
 }
 
 /** The author's role, muted, on its own line under the name. */

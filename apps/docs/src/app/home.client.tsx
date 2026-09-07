@@ -61,7 +61,7 @@ export function HeroShowcase() {
         <Switch
           label="Email notifications"
           labelPosition="start"
-          wrapperClassName={classes.showcaseSwitch}
+          wrapperProps={{ className: classes.showcaseSwitch }}
           checked={notify}
           onChange={(e) => setNotify(e.currentTarget.checked)}
         />
@@ -75,7 +75,10 @@ export function HeroShowcase() {
             } as CSSProperties
           }
         >
-          <Badge dot>{notify ? "Notifications on" : "Muted"}</Badge>
+          <Badge>
+            <Badge.Dot />
+            {notify ? "Notifications on" : "Muted"}
+          </Badge>
         </span>
       </div>
 

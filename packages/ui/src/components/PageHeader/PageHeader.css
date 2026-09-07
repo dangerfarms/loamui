@@ -1,0 +1,84 @@
+/* A page header is a grid of named areas: breadcrumbs, then the title,
+   description and meta in a column, and the actions after them, moving
+   beside the column when the container is wide enough for both. The rows
+   carry no gap; each part brings its own margin, so a header missing a
+   part has no space where it would have been. It hosts core Breadcrumbs,
+   Badges, Times and Buttons, hence the donut. */
+@scope (.loam-PageHeader) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: 0 var(--loam-space-lg);
+    grid-template-areas:
+      "breadcrumbs"
+      "title"
+      "description"
+      "meta"
+      "actions";
+    grid-template-columns: minmax(0, 1fr);
+    padding-block-end: var(--loam-space-lg);
+  }
+
+  div.breadcrumbs {
+    grid-area: breadcrumbs;
+    margin-block-end: var(--loam-space-sm);
+  }
+
+  /* The title is any heading the consumer renders, so it is matched by
+     class alone. */
+  .title {
+    font-size: var(--loam-text-2xl);
+    grid-area: title;
+    line-height: 1.15;
+    margin: 0;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+  }
+
+  p.description {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-md);
+    grid-area: description;
+    margin-block: var(--loam-space-xs) 0;
+    max-inline-size: 60ch;
+    text-wrap: pretty;
+  }
+
+  div.meta {
+    align-items: center;
+    color: var(--loam-color-fg-muted);
+    display: block flex;
+    flex-wrap: wrap;
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-xs) var(--loam-space-md);
+    grid-area: meta;
+    margin-block-start: var(--loam-space-sm);
+  }
+
+  div.actions {
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm);
+    grid-area: actions;
+    margin-block-start: var(--loam-space-md);
+  }
+
+  /* Wide: the actions move beside the column, level with the title. */
+  @container (width > 40rem) {
+    :scope {
+      grid-template-areas:
+        "breadcrumbs breadcrumbs"
+        "title actions"
+        "description actions"
+        "meta actions";
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    div.actions {
+      align-self: start;
+      justify-content: end;
+      margin-block-start: 0;
+    }
+  }
+}

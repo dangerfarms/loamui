@@ -26,17 +26,26 @@ const userMenu: Composition = {
     {
       name: "UserMenu.Trigger",
       description:
-        "The avatar button. Takes the person's name, for the initials and the accessible name (\"Account menu for Imogen Hartley\"), and an optional src for their picture. The Avatar is decorative; the name is real text hidden by core's .loam-VisuallyHidden, and children replace the default wording.",
+        "The avatar button. Takes the person's name, for the initials and the accessible name (\"Account menu for Imogen Hartley\", from labels.trigger), and an optional src for their picture. The Avatar is decorative; the name is real text hidden by core's .loam-VisuallyHidden, and children replace the default wording.",
     },
     {
       name: "UserMenu.Popup",
       description:
-        "The core Menu.Popup, left as core renders it and named by the Header while one is rendered. Put the Header first, then the items.",
+        "The core Menu.Popup, left as core renders it and named by the Header from the first render; without one the reference is dropped after mount. Put the Header first, then the items.",
     },
     {
       name: "UserMenu.Header",
       description:
-        "Who is signed in: the name over the email, in the composition's own div. Plain text before the items, so arrow keys skip it and it is heard as the menu's name instead.",
+        "Who is signed in: the Name over the Email, in the composition's own div. Plain text before the items, so arrow keys skip it and it is heard as the menu's name instead.",
+    },
+    {
+      name: "UserMenu.Name",
+      description: "The person's name, a strong in the Header.",
+    },
+    {
+      name: "UserMenu.Email",
+      description:
+        "The account's email address, a paragraph under the Name: the line that tells two accounts apart.",
     },
     {
       name: "UserMenu.Item",
@@ -71,7 +80,10 @@ const userMenu: Composition = {
     <UserMenu.Root>
       <UserMenu.Trigger name="Imogen Hartley" />
       <UserMenu.Popup>
-        <UserMenu.Header name="Imogen Hartley" email="imogen@example.com" />
+        <UserMenu.Header>
+          <UserMenu.Name>Imogen Hartley</UserMenu.Name>
+          <UserMenu.Email>imogen@example.com</UserMenu.Email>
+        </UserMenu.Header>
         <UserMenu.Item href="/account">Profile</UserMenu.Item>
         <UserMenu.Item href="/settings">Settings</UserMenu.Item>
         <UserMenu.Separator />
@@ -99,7 +111,10 @@ const userMenu: Composition = {
             <UserMenu.Root>
               <UserMenu.Trigger name="Imogen Hartley" />
               <UserMenu.Popup>
-                <UserMenu.Header name="Imogen Hartley" email="imogen@example.com" />
+                <UserMenu.Header>
+                  <UserMenu.Name>Imogen Hartley</UserMenu.Name>
+                  <UserMenu.Email>imogen@example.com</UserMenu.Email>
+                </UserMenu.Header>
                 <UserMenu.Item href="/account">Profile</UserMenu.Item>
                 <UserMenu.Item href="/settings">Settings</UserMenu.Item>
                 <UserMenu.Separator />
@@ -117,7 +132,10 @@ const userMenu: Composition = {
       code: `<UserMenu.Root>
   <UserMenu.Trigger name="Rafael Okonkwo" />
   <UserMenu.Popup>
-    <UserMenu.Header name="Rafael Okonkwo" email="rafael@example.com" />
+    <UserMenu.Header>
+      <UserMenu.Name>Rafael Okonkwo</UserMenu.Name>
+      <UserMenu.Email>rafael@example.com</UserMenu.Email>
+    </UserMenu.Header>
     <UserMenu.Item href="/account">Profile</UserMenu.Item>
     <UserMenu.Separator />
     <UserMenu.SignOut action="/sign-out" onClick={stay} />
@@ -127,7 +145,10 @@ const userMenu: Composition = {
         <UserMenu.Root>
           <UserMenu.Trigger name="Rafael Okonkwo" />
           <UserMenu.Popup>
-            <UserMenu.Header name="Rafael Okonkwo" email="rafael@example.com" />
+            <UserMenu.Header>
+              <UserMenu.Name>Rafael Okonkwo</UserMenu.Name>
+              <UserMenu.Email>rafael@example.com</UserMenu.Email>
+            </UserMenu.Header>
             <UserMenu.Item href="/account">Profile</UserMenu.Item>
             <UserMenu.Separator />
             <UserMenu.SignOut action="/sign-out" onClick={stay} />

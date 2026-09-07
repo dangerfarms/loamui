@@ -50,13 +50,15 @@
         "jsx-a11y/no-redundant-roles": "off"
       }
     },
-    // A gallery page passes the element to render into through core's
-    // render prop (render={<h2 />}); the part supplies the heading's content,
-    // so the empty element is not an empty heading.
+    // A docs or gallery page passes the element to render into through core's
+    // render prop (render={<h2 />}, render={<a href />}); the part supplies the
+    // content, so the empty element is not an empty heading, link or control.
     {
-      "files": ["**/apps/ui/src/content/*.tsx"],
+      "files": ["**/apps/ui/src/content/*.tsx", "**/apps/docs/src/content/components/*.tsx"],
       "rules": {
-        "jsx-a11y/heading-has-content": "off"
+        "jsx-a11y/heading-has-content": "off",
+        "jsx-a11y/anchor-has-content": "off",
+        "jsx-a11y/control-has-associated-label": "off"
       }
     },
     // A sandbox permissive enough for a video or map player is no sandbox; the consumer passes one for untrusted sources.
@@ -111,11 +113,10 @@
         "jsx-a11y/no-autofocus": "off"
       }
     },
-    // Highlighted code lines and pagination slots have no identity beyond
-    // their position, and both lists rebuild wholesale on change — index
-    // keys are the correct keys.
+    // Highlighted code lines have no identity beyond their position and the
+    // list rebuilds wholesale on change — index keys are the correct keys.
     {
-      "files": ["**/renderer/CodeBlock.tsx", "**/Pagination/Pagination.tsx"],
+      "files": ["**/renderer/CodeBlock.tsx"],
       "rules": {
         "react/no-array-index-key": "off"
       }

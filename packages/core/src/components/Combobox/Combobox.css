@@ -1,0 +1,112 @@
+/*
+ * Combobox — a text box with a listbox of suggestions under it. The box is
+ * the library's Input and the optional trigger its Button, behind the
+ * donut; the scope arranges the row and paints the list.
+ */
+@scope (.loam-Combobox) to ([class*="loam-"]) {
+  /* One row: the box grows, a Trigger beside it keeps its width. The list
+     is out of flow, so it takes no track. */
+  :scope {
+    display: block grid;
+    gap: var(--loam-space-sm);
+    grid-auto-columns: max-content;
+    grid-auto-flow: column;
+    grid-template-columns: minmax(0, 1fr);
+    position: relative;
+  }
+
+  ul {
+    background: var(--loam-color-surface);
+    border: 1px solid var(--loam-color-line);
+    border-radius: var(--loam-radius-md);
+    box-shadow: var(--loam-shadow-lg);
+    list-style: none;
+    margin: 0;
+    max-block-size: min(16rem, 50vb);
+    overflow: auto;
+    overscroll-behavior: contain;
+    padding: var(--loam-space-xs);
+    z-index: var(--loam-z-popup);
+
+    /* Enhanced: tethered to the box (the Input's wrapper carries the anchor
+       name), as wide as it, flipping above when the viewport runs out. */
+    @supports (anchor-name: --loam-probe) {
+      inline-size: anchor-size(inline);
+      inset: auto;
+      inset-block-start: calc(anchor(end) + var(--loam-space-xs));
+      inset-inline-start: anchor(start);
+      position: fixed;
+      position-try: flip-block;
+    }
+
+    /* Fallback: under the whole row, as wide as it. */
+    @supports not (anchor-name: --loam-probe) {
+      inset-block-start: calc(100% + var(--loam-space-xs));
+      inset-inline: 0;
+      position: absolute;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition:
+        opacity var(--loam-duration-md) var(--loam-ease),
+        translate var(--loam-duration-md) var(--loam-ease);
+
+      @starting-style {
+        opacity: 0;
+        translate: 0 -0.25rem;
+      }
+    }
+  }
+
+  li {
+    margin: 0;
+  }
+
+  [role="option"] {
+    border-radius: var(--loam-radius-sm);
+    cursor: default;
+    font-size: var(--loam-text-sm);
+    padding-block: var(--loam-space-sm);
+    padding-inline: var(--loam-space-sm);
+    user-select: none;
+
+    /* The highlight follows the keyboard and the pointer alike; focus
+       itself never leaves the box (aria-activedescendant). */
+    &[data-highlighted] {
+      background: var(--loam-color-primary-soft);
+    }
+
+    &[aria-selected="true"] {
+      font-weight: 600;
+    }
+
+    &[aria-disabled="true"] {
+      color: var(--loam-color-fg-dim);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition: background var(--loam-duration-sm) var(--loam-ease);
+    }
+  }
+
+  li.empty {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    padding-block: var(--loam-space-sm);
+    padding-inline: var(--loam-space-sm);
+  }
+
+  /* Forced colours: the highlight is background-only, and aria-disabled
+     (unlike :disabled) gets no automatic GrayText. */
+  @media (forced-colors: active) {
+    [role="option"][data-highlighted] {
+      background: Highlight;
+      color: HighlightText;
+      forced-color-adjust: none;
+    }
+
+    [role="option"][aria-disabled="true"] {
+      color: GrayText;
+    }
+  }
+}

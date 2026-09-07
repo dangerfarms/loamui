@@ -117,7 +117,7 @@ const doc: ComponentContent = {
     },
     {
       title: "Always render a Title",
-      body: 'Modal.Title labels the dialog via aria-labelledby; it is what screen readers announce on open. A dialog without one is announced as, at best, "dialog": the user hears that something opened but not what it wants.',
+      body: 'Modal.Title labels the dialog via aria-labelledby; it is what screen readers announce on open. A dialog without one is announced as, at best, "dialog": the user hears that something opened but not what it wants. A Popup with neither a Title nor an aria-label is reported in development.',
     },
   ],
   accessibility: [

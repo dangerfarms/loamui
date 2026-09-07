@@ -30,9 +30,11 @@ const doc: ComponentContent = {
     {
       title: "Router link",
       description:
-        "Substitute the element with render to keep client-side navigation. The label may live on either element, and the arrow anatomy wraps it. The visual is identical to Basic; the point is the swapped element (a framework router link), visible in the Code tab.",
-      code: `<SignpostLink render={<Link href="/apply">Start your application</Link>} />`,
-      render: () => <SignpostLink render={<a href="#apply">Start your application</a>} />,
+        "Substitute the element with render to keep client-side navigation. The label stays on SignpostLink and the arrow anatomy becomes the element's children; an element that brings children of its own keeps them, as the merge contract says, and so skips the arrow. The visual is identical to Basic; the point is the swapped element (a framework router link), visible in the Code tab.",
+      code: `<SignpostLink render={<Link href="/apply" />}>Start your application</SignpostLink>`,
+      render: () => (
+        <SignpostLink render={<a href="#apply" />}>Start your application</SignpostLink>
+      ),
     },
   ],
   whenToUse: [
@@ -52,7 +54,7 @@ const doc: ComponentContent = {
     },
     {
       title: "The arrow is decoration",
-      body: "The circled arrow is aria-hidden: assistive technology hears only the label and the link role. It rides the font size in em, so the whole signpost rescales as one piece if a consumer changes font-size. No size prop.",
+      body: "The circled arrow is aria-hidden: assistive technology hears only the label and the link role. The signpost inherits its font size from where it sits, and the arrow rides it in em, so the whole thing rescales as one piece in a heading, a card or a paragraph. No size prop.",
     },
   ],
   accessibility: [
@@ -65,7 +67,8 @@ const doc: ComponentContent = {
     {
       name: "render",
       type: "RenderProp",
-      description: "Substitute the built-in <a>, e.g. a router link: render={<Link href=… />}.",
+      description:
+        "Substitute the built-in <a>, e.g. a router link: render={<Link href=… />}. The label stays as SignpostLink's children.",
     },
     {
       name: "...others",

@@ -19,16 +19,22 @@ import call_to_action from "./call-to-action";
 import carousel from "./carousel";
 import feature from "./feature";
 import testimonial from "./testimonial";
-import stats from "./stats";
+import stat from "./stat";
+import section_header from "./section-header";
 import footer from "./footer";
 import header from "./header";
 import product_card from "./product-card";
+import plan from "./plan";
+import article_header from "./article-header";
 import cart_line from "./cart-line";
 import comment from "./comment";
 import byline from "./byline";
-import selectable_card from "./selectable-card";
+import choice_card from "./choice-card";
+import mobile_nav from "./mobile-nav";
+import page_header from "./page-header";
 import password_field from "./password-field";
 import user_menu from "./user-menu";
+import scheme_toggle from "./scheme-toggle";
 import address_fields from "./address-fields";
 import side_nav from "./side-nav";
 import setting_row from "./setting-row";
@@ -59,7 +65,8 @@ const COMPOSITIONS: Composition[] = [
   account_form,
   header,
   footer,
-  stats,
+  stat,
+  section_header,
   article_card,
   table_of_contents,
   steps,
@@ -78,12 +85,17 @@ const COMPOSITIONS: Composition[] = [
   side_nav,
   address_fields,
   user_menu,
+  scheme_toggle,
   password_field,
-  selectable_card,
+  choice_card,
+  mobile_nav,
+  page_header,
   byline,
   comment,
   cart_line,
   product_card,
+  plan,
+  article_header,
 ];
 
 function bySlug(slug: string): Composition | undefined {

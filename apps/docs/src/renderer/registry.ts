@@ -6,8 +6,10 @@ import field from "@/content/components/field";
 import fieldset from "@/content/components/fieldset";
 import button from "@/content/components/button";
 import input from "@/content/components/input";
+import passwordInput from "@/content/components/password-input";
 import textarea from "@/content/components/textarea";
 import select from "@/content/components/select";
+import combobox from "@/content/components/combobox";
 import separator from "@/content/components/separator";
 import checkbox from "@/content/components/checkbox";
 import dateinput from "@/content/components/date-input";
@@ -20,7 +22,6 @@ import quantityInput from "@/content/components/quantity-input";
 import rating from "@/content/components/rating";
 import fileInput from "@/content/components/file-input";
 import copyButton from "@/content/components/copy-button";
-import schemeToggle from "@/content/components/scheme-toggle";
 
 // Data display
 import badge from "@/content/components/badge";
@@ -61,8 +62,10 @@ const content: ComponentContent[] = [
   fieldset,
   button,
   input,
+  passwordInput,
   textarea,
   select,
+  combobox,
   separator,
   checkbox,
   dateinput,
@@ -75,7 +78,6 @@ const content: ComponentContent[] = [
   rating,
   fileInput,
   copyButton,
-  schemeToggle,
   badge,
   price,
   time,

@@ -1,4 +1,4 @@
-export { FileInput, FileInputControl } from "./FileInput";
+export { FileInput } from "./FileInput";
 export type {
   FileInputRootProps,
   FileInputControlProps,
