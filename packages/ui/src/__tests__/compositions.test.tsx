@@ -62,21 +62,35 @@ describe("Footer", () => {
 });
 
 describe("Stats", () => {
-  it("is a description list with label before value in the DOM", async () => {
+  it("is a description list per tile, label before value in the DOM", async () => {
     const { container } = render(
       <Stats.Root>
         <Stats.Item>
           <Stats.Label>Components</Stats.Label>
-          <Stats.Value>33</Stats.Value>
+          <Stats.Value>34</Stats.Value>
         </Stats.Item>
       </Stats.Root>,
     );
-    const dl = container.querySelector("dl.loam-Stats");
+    const dl = container.querySelector("dl.loam-Stats-item");
     expect(dl).not.toBeNull();
+    expect(dl!.parentElement).toHaveClass("loam-Stats");
     const [dt, dd] = [dl!.querySelector("dt"), dl!.querySelector("dd")];
     expect(dt).toHaveTextContent("Components");
-    expect(dd).toHaveTextContent("33");
+    expect(dd).toHaveTextContent("34");
     expect(dt!.compareDocumentPosition(dd!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(await axe(container, axeOptions)).toHaveNoViolations();
+  });
+
+  it("stands alone without a Root", async () => {
+    const { container } = render(
+      <Stats.Item>
+        <Stats.Label>Uptime</Stats.Label>
+        <Stats.Value>99.9%</Stats.Value>
+      </Stats.Item>,
+    );
+    const dl = container.querySelector("dl.loam-Stats-item");
+    expect(dl).not.toBeNull();
+    expect(container.querySelector(".loam-Stats")).toBeNull();
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 });

@@ -43,7 +43,7 @@ export const MANIFEST: CompositionMeta[] = [
     slug: "stats",
     name: "Stats",
     category: "Data display",
-    description: "A row of headline figures: each a large value over a short label.",
+    description: "Headline figures: each tile a large value over a short label, alone or in a row.",
   },
   {
     slug: "pricing",

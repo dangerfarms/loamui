@@ -1,21 +1,26 @@
-/* A stats row is a region: it declares its container so the tiles fit by
-   width, and it hosts consumer content, hence the donut. */
+/* The optional row: a region that declares its container so the tiles fit
+   by width. It holds only layout; every tile carries its own root below, so
+   a tile looks the same inside the row and on its own. */
 @scope (.loam-Stats) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
     display: block grid;
     gap: var(--loam-space-md);
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
-    margin: 0;
   }
+}
 
-  div.item {
+/* One tile: a description list of a single pair. It hosts consumer
+   content, hence the donut. */
+@scope (.loam-Stats-item) to ([class*="loam-"]) {
+  :scope {
     background: var(--loam-color-surface);
     border: 1px solid var(--loam-color-line);
     border-radius: var(--loam-radius-lg);
     display: block flex;
     flex-direction: column;
     gap: var(--loam-space-xs);
+    margin: 0;
     padding-block: var(--loam-space-lg);
     padding-inline: var(--loam-space-lg);
   }
@@ -39,7 +44,7 @@
     margin: 0;
   }
 
-  /* Context: a status region on the item tints its value. The token layer
+  /* Context: a status region on the tile tints its value. The token layer
      re-answers primary-strong to the region's status, and -strong (not the
      raw hue) holds 4.5:1 as text in both schemes; raw warning sits at 2.5:1
      on the light surface. */

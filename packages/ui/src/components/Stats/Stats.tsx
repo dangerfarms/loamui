@@ -1,52 +1,53 @@
 import type { HTMLAttributes, ReactNode, Ref } from "react";
 import { cx } from "@loamui/core";
 
-export interface StatsRootProps extends HTMLAttributes<HTMLDListElement> {
+export interface StatsRootProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
-  ref?: Ref<HTMLDListElement>;
+  ref?: Ref<HTMLDivElement>;
 }
 
 /**
- * A row of headline figures: each a large value over a short label.
+ * Headline figures: each a large value over a short label.
  *
- * The root is a description list, so every figure is a term and its
- * definition. Write the label before the value in each item; the
- * stylesheet shows the value on top. A `--loam-context` region on an item
- * tints its value.
+ * The unit is the tile. `Stats.Item` is a description list of one pair
+ * (label, then value), so it stands on its own anywhere: a dashboard grid
+ * you lay out yourself, a sidebar, a Card. `Stats.Root` is optional: a
+ * row that fits as many tiles across as there is room for. Write the label
+ * before the value in each tile; the stylesheet shows the value on top. A
+ * `--loam-context` region on a tile tints its value.
  *
  * ```tsx
+ * <Stats.Item>
+ *   <Stats.Label>Components</Stats.Label>
+ *   <Stats.Value>34</Stats.Value>
+ * </Stats.Item>
+ *
  * <Stats.Root>
- *   <Stats.Item>
- *     <Stats.Label>Components</Stats.Label>
- *     <Stats.Value>33</Stats.Value>
- *   </Stats.Item>
- *   <Stats.Item style={{ "--loam-context": "success" }}>
- *     <Stats.Label>Contrast audit</Stats.Label>
- *     <Stats.Value>100%</Stats.Value>
- *   </Stats.Item>
+ *   <Stats.Item>…</Stats.Item>
+ *   <Stats.Item style={{ "--loam-context": "success" }}>…</Stats.Item>
  * </Stats.Root>
  * ```
  */
 function StatsRoot({ className, children, ref, ...rest }: StatsRootProps) {
   return (
-    <dl ref={ref} className={cx("loam-Stats", className)} {...rest}>
+    <div ref={ref} className={cx("loam-Stats", className)} {...rest}>
       {children}
-    </dl>
+    </div>
   );
 }
 
-export interface StatsItemProps extends HTMLAttributes<HTMLDivElement> {
+export interface StatsItemProps extends HTMLAttributes<HTMLDListElement> {
   /** A `Stats.Label` then a `Stats.Value`, in that order. */
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
+  ref?: Ref<HTMLDListElement>;
 }
 
-/** One tile, grouping a label and its value. */
+/** One tile: a description list holding a label and its value. Works on its own or inside a Root. */
 function StatsItem({ className, children, ref, ...rest }: StatsItemProps) {
   return (
-    <div ref={ref} className={cx("item", className)} {...rest}>
+    <dl ref={ref} className={cx("loam-Stats-item", className)} {...rest}>
       {children}
-    </div>
+    </dl>
   );
 }
 
