@@ -127,6 +127,13 @@ export const MANIFEST: CompositionMeta[] = [
     description:
       "An ordered sequence: each step a marker, a title and a description; a timeline when the marker is a date.",
   },
+  {
+    slug: "logo-wall",
+    name: "Logo wall",
+    category: "Page sections",
+    description:
+      "A row of client or partner logos, each an image with the organisation's name, sized to one shared height so marks of any shape read as one set.",
+  },
 ];
 
 export function metaBySlug(slug: string): CompositionMeta | undefined {

@@ -1,0 +1,53 @@
+/* The optional row: a region that declares its container so the fluid
+   tokens answer the wall's width. It holds only layout; every logo carries
+   its own root below, so a logo looks the same inside the row and in a list
+   of the consumer's own. A wrapping flex row, not a grid: the logos differ
+   in width, and equal columns would leave the narrow marks swimming. The
+   list-style reset drops the list semantics in some browsers, which is why
+   the markup carries role="list". */
+@scope (.loam-LogoWall) to ([class*="loam-"]) {
+  :scope {
+    align-items: center;
+    container-type: inline-size;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-xl);
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* One logo: a list item that hosts the consumer's img, or a link around
+   one, hence the donut. Nothing here paints a background or a colour, so
+   forced colours need no treatment: the image keeps its own pixels, and a
+   link takes the system ring through the elements layer. */
+@scope (.loam-LogoWall-item) to ([class*="loam-"]) {
+  :scope {
+    flex: none;
+    margin: 0;
+  }
+
+  /* A link around a logo takes the elements-layer focus ring, offset from
+     the image, so no outline of its own. Flex, so the box hugs the image
+     and the ring draws around the logo, not a line box. */
+  a {
+    display: block flex;
+  }
+
+  /* Every logo shares one height, the public --loam-logo-size, and its
+     width follows from its own aspect ratio, so a square mark and a wide
+     wordmark read as one set. Block, so no descender gap under the image
+     throws the row's centring. An inline svg wordmark is sized the same
+     way. No greyscale filter: brands own their colour; a consumer may add
+     one in their own CSS. */
+  img,
+  svg {
+    block-size: var(--loam-logo-size, 2.5rem);
+    display: block flow;
+    inline-size: auto;
+    max-inline-size: 100%;
+    object-fit: contain;
+  }
+}

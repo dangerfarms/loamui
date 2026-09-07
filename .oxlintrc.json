@@ -41,6 +41,13 @@
   },
   "ignorePatterns": ["dist", ".next", ".turbo", "node_modules", "storybook-static"],
   "overrides": [
+    // list-style: none drops list semantics in some browsers; role="list" restores them on the logo list.
+    {
+      "files": ["**/LogoWall/LogoWall.tsx"],
+      "rules": {
+        "jsx-a11y/no-redundant-roles": "off"
+      }
+    },
     // list-style: none drops list semantics in some browsers; role="list" restores them on an ol whose markers are drawn by CSS.
     {
       "files": ["**/Steps/Steps.tsx"],
