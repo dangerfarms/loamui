@@ -24,3 +24,4 @@
 @import url("./components/TableOfContents/TableOfContents.css") layer(loamui.ui);
 @import url("./components/Steps/Steps.css") layer(loamui.ui);
 @import url("./components/LogoWall/LogoWall.css") layer(loamui.ui);
+@import url("./components/Gallery/Gallery.css") layer(loamui.ui);

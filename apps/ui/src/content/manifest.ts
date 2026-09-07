@@ -134,6 +134,13 @@ export const MANIFEST: CompositionMeta[] = [
     description:
       "A row of client or partner logos, each an image with the organisation's name, sized to one shared height so marks of any shape read as one set.",
   },
+  {
+    slug: "gallery",
+    name: "Gallery",
+    category: "Page sections",
+    description:
+      "A grid of figures, each an image that opens larger: a real link to the full-size file, a lightbox once JavaScript arrives.",
+  },
 ];
 
 export function metaBySlug(slug: string): CompositionMeta | undefined {

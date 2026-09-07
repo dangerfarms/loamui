@@ -18,3 +18,4 @@ export * from "./components/ArticleCard/index";
 export * from "./components/TableOfContents/index";
 export * from "./components/Steps/index";
 export * from "./components/LogoWall/index";
+export * from "./components/Gallery/index";
