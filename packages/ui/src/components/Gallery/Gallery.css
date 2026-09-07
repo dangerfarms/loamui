@@ -1,8 +1,10 @@
 /* The optional grid: a list that declares its container so the fluid
-   tokens answer the gallery's width. It holds only layout; every figure
+   tokens answer the gallery's width. It holds only layout; every item
    carries its own root below, so an image looks the same in the grid and
    on its own. Columns are as many as fit at 12rem; a page that needs
-   different ones overrides grid-template-columns in its own CSS. */
+   different ones overrides grid-template-columns in its own CSS. The list
+   items are the Items, each a scope root of its own, so nothing here
+   addresses them. */
 @scope (.loam-Gallery) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -12,18 +14,14 @@
     list-style: none;
     margin: 0;
     padding: 0;
-
-    /* The list item is a bare slot; the figure inside is the unit. A grid,
-       so the figure fills the cell. */
-    > li {
-      display: block grid;
-      margin: 0;
-    }
   }
 }
 
-/* One figure: the thumbnail's link and an optional caption. It hosts
-   consumer content (the img), hence the donut. */
+/* One item: the thumbnail's link and an optional caption. On its own it is
+   the figure; inside a Root it is the list item, and the figure is an
+   inner element it renders, given the same grid so the parts stack the
+   same way and the figure fills the cell. It hosts consumer content (the
+   img), hence the donut. */
 @scope (.loam-Gallery-item) to ([class*="loam-"]) {
   :scope {
     /* The lightbox is a core Modal rendered inside the figure. Its width
@@ -31,6 +29,12 @@
        viewport allows, capped so a large image is still one glance. */
     --loam-modal-size: min(100% - 2 * var(--loam-space-lg), 72rem);
 
+    display: block grid;
+    gap: var(--loam-space-xs);
+    margin: 0;
+  }
+
+  figure {
     display: block grid;
     gap: var(--loam-space-xs);
     margin: 0;
@@ -85,16 +89,14 @@
     justify-items: center;
   }
 
-  /* The image keeps its own ratio and fits the viewport: the height cap is
-     the dialog's margin and padding, the gap, and a row for the Close, so
-     the dialog does not scroll to show the whole picture. */
+  /* The image keeps its own ratio and is capped at most of the viewport's
+     block size, leaving room for the dialog's own padding and the Close,
+     so the dialog never scrolls to show the whole picture. */
   img.full {
     block-size: auto;
     border-radius: var(--loam-radius-md);
     inline-size: auto;
-    max-block-size: calc(
-      100dvb - 2 * var(--loam-space-xl) - 2 * var(--loam-space-lg) - var(--loam-space-md) - 3rem
-    );
+    max-block-size: 90dvb;
     max-inline-size: 100%;
   }
 }

@@ -127,7 +127,7 @@ const logoWall: Composition = {
     {
       name: "LogoWall.Item",
       description:
-        "One logo: an li that sizes the img (or inline svg) inside it to --loam-logo-size, 2.5rem by default, its width following the image's own aspect ratio. Wrap the img in an a to link out; the link takes the elements-layer focus ring. Works in a list of your own or inside a Root.",
+        "One logo: an li that sizes the img (or inline svg) inside it to --loam-logo-size, 2.5rem by default, its width following the image's own aspect ratio. Wrap the img in an a to link out; the link takes the elements-layer focus ring. Works in a list of your own or inside a Root; pass render={<div />} where there is no list.",
     },
     {
       name: "LogoWall.Root",

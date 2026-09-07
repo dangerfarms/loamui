@@ -11,27 +11,28 @@ export interface BannerRootProps extends HTMLAttributes<HTMLDivElement> {
  * it, a Button or a link.
  *
  * The bar is a `div` with `role="status"`: a live region, so a message that
- * appears after load is announced. It is neutral by default. Wrap it in a
- * `--loam-context` region and the parts inside recolour while the bar's
- * own surface takes that status's soft tint. There is no dismiss button:
- * dismissal needs state the bar does not hold, so a consumer that wants
- * one keeps an `open` flag and renders nothing once it is false.
+ * appears after load is announced. It is neutral by default. Set
+ * `--loam-context` on the Root, or on any region around it, and the parts
+ * inside recolour while the bar's own surface takes that status's soft
+ * tint. The surface is painted on an inner element the Root renders,
+ * because an element cannot answer its own container query; the Root is
+ * the container that answers it. There is no dismiss button: dismissal
+ * needs state the bar does not hold, so a consumer that wants one keeps
+ * an `open` flag and renders nothing once it is false.
  *
  * ```tsx
- * <div style={{ "--loam-context": "warning" }}>
- *   <Banner.Root>
- *     <Banner.Message>Maintenance on Saturday from 08:00 to 10:00 UTC.</Banner.Message>
- *     <Banner.Actions>
- *       <a href="/status">See the status page</a>
- *     </Banner.Actions>
- *   </Banner.Root>
- * </div>
+ * <Banner.Root style={{ "--loam-context": "warning" }}>
+ *   <Banner.Message>Maintenance on Saturday from 08:00 to 10:00 UTC.</Banner.Message>
+ *   <Banner.Actions>
+ *     <a href="/status">See the status page</a>
+ *   </Banner.Actions>
+ * </Banner.Root>
  * ```
  */
 function BannerRoot({ className, children, ref, ...rest }: BannerRootProps) {
   return (
     <div ref={ref} role="status" className={cx("loam-Banner", className)} {...rest}>
-      {children}
+      <div className="inner">{children}</div>
     </div>
   );
 }

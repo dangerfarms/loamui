@@ -1,7 +1,8 @@
 export { ErrorPage } from "./ErrorPage";
 export type {
   ErrorPageRootProps,
-  ErrorPageParagraphProps,
+  ErrorPageCodeProps,
   ErrorPageTitleProps,
+  ErrorPageDescriptionProps,
   ErrorPageActionsProps,
 } from "./ErrorPage";

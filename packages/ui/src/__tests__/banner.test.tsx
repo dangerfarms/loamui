@@ -25,7 +25,32 @@ describe("Banner", () => {
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 
-  it("keeps the same markup inside a warning region and stays free of axe violations", async () => {
+  // jsdom cannot evaluate a style query, so this asserts the structure the
+  // stylesheet relies on: the Root is the container, and the bar that takes
+  // the tint is the inner element it renders, with the parts inside it.
+  it("paints the bar on an inner element so a context on the Root can tint it", async () => {
+    const { container } = render(
+      <Banner.Root style={{ "--loam-context": "warning" } as React.CSSProperties}>
+        <Banner.Message>Maintenance on Saturday from 08:00 to 10:00 UTC.</Banner.Message>
+        <Banner.Actions>
+          <Button>See the status page</Button>
+        </Banner.Actions>
+      </Banner.Root>,
+    );
+    const status = screen.getByRole("status");
+    expect(status).toHaveClass("loam-Banner");
+    expect(status.style.getPropertyValue("--loam-context")).toBe("warning");
+    const inner = status.querySelector(":scope > div.inner");
+    expect(inner).not.toBeNull();
+    expect(status.children).toHaveLength(1);
+    expect(inner!.querySelector(":scope > p.message")).toHaveTextContent("Maintenance");
+    expect(inner!.querySelector(":scope > div.actions")).toContainElement(
+      screen.getByRole("button", { name: "See the status page" }),
+    );
+    expect(await axe(container, axeOptions)).toHaveNoViolations();
+  });
+
+  it("keeps the same markup inside a region declared around it", async () => {
     const { container } = render(
       <div style={{ "--loam-context": "warning" } as React.CSSProperties}>
         <Banner.Root>

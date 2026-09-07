@@ -9,13 +9,13 @@ const gallery: Composition = {
   category: "Page sections",
   description:
     "A grid of figures, each an image that opens larger: a real link to the full-size file, a lightbox once JavaScript arrives.",
-  lead: "The unit is the figure: a link around your img and an optional figcaption, valid on its own in an article. The link's href is the full-size image, so every thumbnail works without JavaScript; once hydrated a click opens that image in a core Modal instead, and the native dialog brings the backdrop, Escape and focus restore with it. The optional Root is a list, so the count is announced, laid out as many columns as fit.",
+  lead: "The unit is the figure: a link around your img and an optional figcaption, valid on its own in an article. The link's href is the full-size image, so every thumbnail works without JavaScript; once hydrated a click opens that image in a core Modal instead, named by the caption or the alt, and the native dialog brings the backdrop, Escape and focus restore with it. The optional Root is a list, so the count is announced, laid out as many columns as fit; inside it each Item is the list item.",
   importLine: `import { Gallery } from "@loamui/ui";`,
   parts: [
     {
       name: "Gallery.Item",
       description:
-        "One image: a figure holding a Link and an optional Caption. Inside a Root it is wrapped in a list item; on its own it is just the figure. Thumbnails are square; set another aspect-ratio on the img in your own CSS.",
+        "One image: a Link and an optional Caption in a figure. Inside a Root the Item is the list item, with the figure inside, so a className, a style or a ref lands on the element the grid places; on its own it is just the figure. Pass render to make it another element. Thumbnails are square; set another aspect-ratio on the img in your own CSS.",
     },
     {
       name: "Gallery.Root",
@@ -25,7 +25,7 @@ const gallery: Composition = {
     {
       name: "Gallery.Link",
       description:
-        "The link around your img. href is the full-size image: where the link goes without JavaScript, and what the lightbox shows with it. A modified click (new tab) stays a link. Pass closeLabel to translate the lightbox's Close.",
+        "The link around your img. href is the full-size image: where the link goes without JavaScript, and what the lightbox shows with it. A modified click (new tab) stays a link. The dialog is named by the figure's Caption, then the img's alt, and the caption is not repeated inside it; pass label to name it yourself and closeLabel to translate the lightbox's Close.",
     },
     {
       name: "Gallery.Caption",

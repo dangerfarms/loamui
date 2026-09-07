@@ -128,7 +128,7 @@ export interface FieldLabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
 function FieldLabel({ optional, className, children, ...rest }: FieldLabelProps) {
   const ctx = useFieldContext("Field.Label");
   return (
-    <label className={className} htmlFor={ctx.fieldId} {...rest}>
+    <label className={cx("loam-Field-label", className)} htmlFor={ctx.fieldId} {...rest}>
       {children}
       {optional && <span className="optional"> (optional)</span>}
     </label>
@@ -142,7 +142,11 @@ function FieldDescription({ className, children, ...rest }: FieldDescriptionProp
   const { registerDescription } = ctx;
   useEffect(() => registerDescription(), [registerDescription]);
   return (
-    <p className={cx("description", className)} id={ctx.descriptionId} {...rest}>
+    <p
+      className={cx("loam-Field-description description", className)}
+      id={ctx.descriptionId}
+      {...rest}
+    >
       {children}
     </p>
   );
@@ -161,8 +165,8 @@ function FieldError({ className, children, ...rest }: FieldErrorProps) {
 
   if (!hasContent) return null;
   return (
-    <p className={cx("error", className)} id={ctx.errorId} role="alert" {...rest}>
-      <span className="loam-Error-prefix">Error: </span>
+    <p className={cx("loam-Field-error error", className)} id={ctx.errorId} role="alert" {...rest}>
+      <span className="loam-VisuallyHidden">Error: </span>
       {children}
     </p>
   );

@@ -72,7 +72,9 @@ Copy the structure of the closest existing component rather than inventing one:
 | A set participating via context (never `cloneElement`)  | `RadioGroup`+`Radio`, `Tabs`         |
 | Compound overlay (Root/Trigger/Popup parts)             | `Modal`, `Popover`, `Menu`, `Drawer` |
 | Native disclosure                                       | `Details`                            |
-| Display element that keeps `size`                       | `Badge`, `Loader`, `Progress`        |
+| Display element that keeps `size`                       | `Badge`, `Loader`, `Progress`, `Meter` |
+| Composed from other components, behind the donut        | `Search`, `QuantityInput`, `CopyButton` |
+| Text derived by `Intl` from a value (`<time>`, a price)  | `Time`, `Price`                      |
 
 ## Step 4 — Hold the API and CSS doctrine
 
@@ -81,7 +83,13 @@ Non-negotiables (full reasons in the README Standards section):
 - **No `size`/`variant`/`color`/`fullWidth` props.** Size comes from container
   queries and fluid tokens; status colour from a `--loam-context` region; width
   from the parent's layout. Exception: display components that size intrinsic
-  content keep `size`.
+  content keep `size` (Badge, Loader, Progress, Meter). Numeric bounds are not
+  size props: Meter's `min`/`max`/`low`/`high`/`optimum` and QuantityInput's
+  `min`/`max`/`step` are the platform's own semantics, forwarded as attributes
+  (the table in CONTRIBUTING → "Numeric bounds are not size props").
+- **Every default string is overridable.** An `aria-label`, a "Copied" status,
+  a button's name: a prop or children with an English default, never a
+  hard-coded string, so a page in another language passes its own.
 - **Compose, don't configure.** Compound components expose parts; element swap
   goes through the `render` prop; icons and loaders are detected children
   (`:has(svg, .loam-Loader)`), never slot props. Bare form controls self-wire
@@ -124,6 +132,14 @@ The CSS and TSX are the easy part; these are the steps low-risk additions miss:
       Distil that from long-established practice (GOV.UK, Polaris) but state it on
       the library's own authority; the guidance _is_ the differentiator, not
       filler, and the prose never names those sources.
+- [ ] **JSX that uses compound parts lives in `<slug>.client.tsx` with
+      `"use client"`; the server content page imports it.** The core bundle is
+      one client reference, so `Search.Root` or `FileInput.Control` is
+      `undefined` in a server module and the page crashes at prerender.
+      Callable forms (`<Rating>`, `<Meter>`, `<CopyButton>`) render from the
+      server page as they are.
+- [ ] Every default string (an `aria-label`, a status, a button's name) is a
+      prop or children, documented in the props table with its default.
 - [ ] If it introduces a new colour pairing, add a check to
       `scripts/contrast-audit.mjs`.
 

@@ -31,11 +31,18 @@
 - [Radio](components/radio.md) — Choose one option from a set. · [live](https://loamui.com/docs/components/radio.md)
 - [Switch](components/switch.md) — An on/off toggle switch. · [live](https://loamui.com/docs/components/switch.md)
 - [Range](components/range.md) — Pick a numeric value from a range. · [live](https://loamui.com/docs/components/range.md)
+- [Search](components/search.md) — The page's search, as a landmark. · [live](https://loamui.com/docs/components/search.md)
+- [QuantityInput](components/quantity-input.md) — A count adjusted one at a time. · [live](https://loamui.com/docs/components/quantity-input.md)
+- [Rating](components/rating.md) — Stars as real inputs, or as a picture of a score. · [live](https://loamui.com/docs/components/rating.md)
+- [FileInput](components/file-input.md) — Choose a file, or drop it. · [live](https://loamui.com/docs/components/file-input.md)
+- [CopyButton](components/copy-button.md) — Copy a value and say so. · [live](https://loamui.com/docs/components/copy-button.md)
+- [SchemeToggle](components/scheme-toggle.md) — Choose system, light or dark. · [live](https://loamui.com/docs/components/scheme-toggle.md)
 
 ## Components: Data display
 
 - [Badge](components/badge.md) — Compact status or label pill. · [live](https://loamui.com/docs/components/badge.md)
 - [Price](components/price.md) — A monetary amount, written for people. · [live](https://loamui.com/docs/components/price.md)
+- [Time](components/time.md) — A date or time, written for people. · [live](https://loamui.com/docs/components/time.md)
 - [Card](components/card.md) — A flexible surface container. · [live](https://loamui.com/docs/components/card.md)
 - [Avatar](components/avatar.md) — Represent a user with an image or initials. · [live](https://loamui.com/docs/components/avatar.md)
 - [Table](components/table.md) — Display rows and columns of data. · [live](https://loamui.com/docs/components/table.md)
@@ -45,6 +52,7 @@
 
 - [Alert](components/alert.md) — Draw attention to an important message. · [live](https://loamui.com/docs/components/alert.md)
 - [Progress](components/progress.md) — Show completion of a task. · [live](https://loamui.com/docs/components/progress.md)
+- [Meter](components/meter.md) — A measurement within a known range. · [live](https://loamui.com/docs/components/meter.md)
 - [Skeleton](components/skeleton.md) — Placeholder while content loads. · [live](https://loamui.com/docs/components/skeleton.md)
 - [Loader](components/loader.md) — Indicate an ongoing process. · [live](https://loamui.com/docs/components/loader.md)
 - [Toast](components/toast.md) — Transient notifications. · [live](https://loamui.com/docs/components/toast.md)

@@ -89,9 +89,12 @@ the authority for everything it covers: run it and believe it.
   container-relative tokens and container queries, status colour from a
   `--loam-context` region, width from the parent's layout. A prop would
   re-encode a decision the surrounding design already made. (Display components
-  that size an intrinsic glyph (Loader, Badge, Progress) keep `size`; Modal
-  sizes to its content, with `--loam-modal-size` as the public override, and
-  Drawer's panel width is the public `--loam-drawer-size` property.) A
+  that size an intrinsic glyph or track (Loader, Badge, Progress, Meter) keep
+  `size`; Modal sizes to its content, with `--loam-modal-size` as the public
+  override, and Drawer's panel width is the public `--loam-drawer-size`
+  property. Numeric bounds are not size props: Meter's
+  `min`/`max`/`low`/`high`/`optimum` and QuantityInput's `min`/`max`/`step` are
+  the platform's own semantics, forwarded as attributes.) A
   component is named for the HTML element it's built on, not a design-system
   alias: `Range` (`<input type="range">`), not `Slider`; `Details`
   (`<details>`), not `Accordion`.
@@ -104,9 +107,9 @@ the authority for everything it covers: run it and believe it.
   pillars and gates, and never a reason to change a primitive.
 - **Composition.** Compound components expose parts; element swap goes through
   `render`; icons and loaders are detected children, never slot props. Bare form
-  controls (Input, Select, Textarea, Range) self-wire from `Field`;
-  Checkbox / Radio / Switch keep an inline label because the control lives
-  inside it.
+  controls (Input, Select, Textarea, Range, QuantityInput, `FileInput.Control`,
+  `Search.Input`) self-wire from `Field`; Checkbox / Radio / Switch keep an
+  inline label because the control lives inside it.
 - **CSS.** Selectors are `@scope`d, not BEM: one `loam-` class per root, parts
   by element type or short class. A scope that hosts foreign content is fenced
   with a donut (`to ([class*="loam-"])`). Refer to elements directly, with no

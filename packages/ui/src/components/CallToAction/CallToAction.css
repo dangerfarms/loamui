@@ -1,15 +1,22 @@
 /* A call to action is a region: it declares its container so the fluid
    tokens answer the section's width, and it hosts consumer content (a
-   SignpostLink, a Button, a link), hence the donut. */
+   SignpostLink, a Button, a link), hence the donut. The section carries
+   the surface and is only the container; the grid is the inner element
+   the Root renders, because an element cannot answer its own container
+   query: every layout rule below asks the section, not whatever
+   container sits above it. */
 @scope (.loam-CallToAction) to ([class*="loam-"]) {
   :scope {
     background: var(--loam-color-bg-subtle);
     border-radius: var(--loam-radius-xl);
     container-type: inline-size;
+    padding: var(--loam-space-xl);
+  }
+
+  div.inner {
     display: block grid;
     gap: var(--loam-space-lg);
     justify-items: center;
-    padding: var(--loam-space-xl);
     text-align: center;
   }
 
@@ -19,7 +26,7 @@
     max-inline-size: 22ch;
   }
 
-  p.body {
+  p.lede {
     color: var(--loam-color-fg-muted);
     font-size: var(--loam-text-lg);
     margin: 0;
@@ -47,9 +54,12 @@
   }
 
   /* With media the words align start and, where the container has room,
-     the block is two columns with the media in the second. The container
-     decides; there is no layout prop. */
-  :scope:has(> div.media) {
+     the block is two columns: each text part has a named row in the
+     first, the media spans them all in the second. Rows are named rather
+     than counted, so a part left out leaves no hole; the row gap goes and
+     the parts that are present space themselves, so an empty row costs
+     nothing. The container decides; there is no layout prop. */
+  div.inner:has(> div.media) {
     justify-items: start;
     text-align: start;
 
@@ -59,17 +69,33 @@
   }
 
   @container (inline-size >= 40rem) {
-    :scope:has(> div.media) {
+    div.inner:has(> div.media) {
       align-items: center;
+      grid-template-areas:
+        "title media"
+        "lede media"
+        "actions media";
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      row-gap: 0;
 
-      > :not(div.media) {
-        grid-column: 1;
+      > .title {
+        grid-area: title;
+      }
+
+      > p.lede {
+        grid-area: lede;
+      }
+
+      > div.actions {
+        grid-area: actions;
       }
 
       > div.media {
-        grid-column: 2;
-        grid-row: 1 / span 10;
+        grid-area: media;
+      }
+
+      > :not(div.media) + :not(div.media) {
+        margin-block-start: var(--loam-space-lg);
       }
     }
   }

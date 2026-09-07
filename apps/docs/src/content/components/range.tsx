@@ -52,7 +52,7 @@ const doc: ComponentContent = {
     "When the effect of the value is visible as it changes, so users steer by the result rather than the figure.",
   ],
   whenNotToUse: [
-    'For exact numbers the user already knows (a quantity, an amount, a year). Use Input with inputMode="numeric" or "decimal"; landing on one precise value on a track is slow and error-prone, especially on touch.',
+    'For exact numbers the user already knows (an amount, a year, a reference). Use Input with inputMode="numeric" or "decimal"; landing on one precise value on a track is slow and error-prone, especially on touch. A small count adjusted one at a time is QuantityInput.',
     "For choosing among a few discrete options. Use RadioGroup, where every option is visible and labelled.",
   ],
   howItWorks: [

@@ -24,12 +24,13 @@ function GalleryCaption({ className, children, ref, ...rest }: GalleryCaptionPro
  * your `<img>` (a plain one or a framework's) and an optional
  * `Gallery.Caption`, so it stands on its own in an article as readily as
  * in a grid. `Gallery.Root` is optional: a list, so the count is
- * announced, laid out as many columns as fit. The link's `href` is the
- * full-size image, which makes every thumbnail a working link without
- * JavaScript; once hydrated a click opens that image in a lightbox
- * instead, a core Modal, so the native dialog supplies the backdrop,
- * Escape and focus restore. Thumbnails are square; set another
- * `aspect-ratio` on the `img` in your own CSS.
+ * announced, laid out as many columns as fit; inside it each Item is the
+ * list item, with the figure inside. The link's `href` is the full-size
+ * image, which makes every thumbnail a working link without JavaScript;
+ * once hydrated a click opens that image in a lightbox instead, a core
+ * Modal, so the native dialog supplies the backdrop, Escape and focus
+ * restore, named by the caption or the alt. Thumbnails are square; set
+ * another `aspect-ratio` on the `img` in your own CSS.
  *
  * ```tsx
  * <Gallery.Root>

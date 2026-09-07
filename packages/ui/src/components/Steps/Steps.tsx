@@ -1,6 +1,12 @@
+"use client";
+
+import { createContext, useContext } from "react";
 import type { HTMLAttributes, LiHTMLAttributes, OlHTMLAttributes, ReactNode, Ref } from "react";
 import { cx, renderWithProps } from "@loamui/core";
 import type { RenderProp } from "@loamui/core";
+
+/** True inside a `Steps.Root`; an Item has no list to be a step of anywhere else. */
+const StepsContext = createContext(false);
 
 export interface StepsRootProps extends OlHTMLAttributes<HTMLOListElement> {
   children?: ReactNode;
@@ -13,11 +19,13 @@ export interface StepsRootProps extends OlHTMLAttributes<HTMLOListElement> {
  *
  * The order lives in the `ol`, so assistive tech announces "2 of 4" from
  * the list itself; the visible number is a CSS counter with an empty alt,
- * decorative and never the only carrier of order. Leave `Steps.Marker` out
- * and the stylesheet draws the number; put one in to host a date or an
- * icon in its place. `Steps.Title` is an `h3`; pass `render={<h2 />}` when
- * the page's outline needs it. The list is a region and declares its
- * container, so the fluid tokens answer its width.
+ * decorative and never the only carrier of order. That is why the Root is
+ * required: an Item is a step of this list, and outside it there is no
+ * order to be part of. Leave `Steps.Marker` out and the stylesheet draws
+ * the number; put one in to host a date or an icon in its place.
+ * `Steps.Title` is an `h3`; pass `render={<h2 />}` when the page's outline
+ * needs it. The list is a region and declares its container, so the fluid
+ * tokens answer its width.
  *
  * ```tsx
  * <Steps.Root>
@@ -46,7 +54,7 @@ function StepsRoot({ className, children, ref, ...rest }: StepsRootProps) {
     // none loses its list semantics in some browsers, and the explicit
     // role is what restores "2 of 4" for assistive tech.
     <ol ref={ref} className={cx("loam-Steps", className)} role="list" {...rest}>
-      {children}
+      <StepsContext value>{children}</StepsContext>
     </ol>
   );
 }
@@ -57,8 +65,11 @@ export interface StepsItemProps extends LiHTMLAttributes<HTMLLIElement> {
   ref?: Ref<HTMLLIElement>;
 }
 
-/** One step: an `li` laid out as a marker column beside the title and description. */
+/** One step: an `li` inside the Root, laid out as a marker column beside the title and description. */
 function StepsItem({ className, children, ref, ...rest }: StepsItemProps) {
+  if (!useContext(StepsContext)) {
+    throw new Error("Steps.Item must be rendered inside <Steps.Root>.");
+  }
   return (
     <li ref={ref} className={className} {...rest}>
       {children}

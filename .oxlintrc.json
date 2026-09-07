@@ -41,6 +41,15 @@
   },
   "ignorePatterns": ["dist", ".next", ".turbo", "node_modules", "storybook-static"],
   "overrides": [
+    // list-style: none drops list semantics in some browsers (WebKit); every
+    // composition that strips markers restores them with role="list", so the
+    // rule is off for the whole ui package rather than per file.
+    {
+      "files": ["**/packages/ui/src/components/**/*.tsx"],
+      "rules": {
+        "jsx-a11y/no-redundant-roles": "off"
+      }
+    },
     // A gallery page passes the element to render into through core's
     // render prop (render={<h2 />}); the part supplies the heading's content,
     // so the empty element is not an empty heading.
@@ -55,27 +64,6 @@
       "files": ["**/Embed/Embed.tsx"],
       "rules": {
         "react/iframe-missing-sandbox": "off"
-      }
-    },
-    // list-style: none drops list semantics in some browsers; role="list" restores them on the figure grid.
-    {
-      "files": ["**/Gallery/GalleryList.tsx"],
-      "rules": {
-        "jsx-a11y/no-redundant-roles": "off"
-      }
-    },
-    // list-style: none drops list semantics in some browsers; role="list" restores them on the logo list.
-    {
-      "files": ["**/LogoWall/LogoWall.tsx"],
-      "rules": {
-        "jsx-a11y/no-redundant-roles": "off"
-      }
-    },
-    // list-style: none drops list semantics in some browsers; role="list" restores them on an ol whose markers are drawn by CSS.
-    {
-      "files": ["**/Steps/Steps.tsx"],
-      "rules": {
-        "jsx-a11y/no-redundant-roles": "off"
       }
     },
     // Tests and stories render fixtures: static-array keys, focus probes,

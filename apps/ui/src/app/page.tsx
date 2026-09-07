@@ -9,7 +9,7 @@ export default function GalleryPage() {
         <span className="eyebrow">@loamui/ui</span>
         <h1>Compositions built from the primitives.</h1>
         <p className={c.lede}>
-          Ready-made sections assembled from @loamui/core: tokens, element styles and the 34
+          Ready-made sections assembled from @loamui/core: tokens, element styles and the 42
           components. Install the package and compose the parts, or copy the code into your own
           codebase. Nothing here adds a component to core; every composition is what your agent
           could build from the primitives, done once and checked.

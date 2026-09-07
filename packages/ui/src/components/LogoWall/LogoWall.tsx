@@ -1,5 +1,6 @@
 import type { HTMLAttributes, ReactNode, Ref } from "react";
-import { cx } from "@loamui/core";
+import { cx, renderWithProps } from "@loamui/core";
+import type { RenderProp } from "@loamui/core";
 
 export interface LogoWallRootProps extends HTMLAttributes<HTMLUListElement> {
   children?: ReactNode;
@@ -13,10 +14,12 @@ export interface LogoWallRootProps extends HTMLAttributes<HTMLUListElement> {
  * `img` (or a link around one), and it sizes the image to one shared
  * height, `--loam-logo-size` (2.5rem by default), so a square mark and a
  * wide wordmark sit together; the width follows from the image's own aspect
- * ratio. An item stands on its own inside any list you lay out yourself.
- * `LogoWall.Root` is optional: a `ul` with `role="list"` (list-style none
- * drops the list semantics in some browsers) that wraps the logos into a
- * centred row, so assistive technology announces how many there are.
+ * ratio. An item stands on its own inside any list you lay out yourself,
+ * and renders as another element (`render={<div />}`) where there is no
+ * list. `LogoWall.Root` is optional: a `ul` with `role="list"` (list-style
+ * none drops the list semantics in some browsers) that wraps the logos
+ * into a centred row, so assistive technology announces how many there
+ * are.
  *
  * Give every image a real `alt`, the organisation's name, never "logo";
  * when a logo links out, the link carries that name. No greyscale filter:
@@ -47,18 +50,22 @@ function LogoWallRoot({ className, children, ref, ...rest }: LogoWallRootProps) 
 }
 
 export interface LogoWallItemProps extends HTMLAttributes<HTMLLIElement> {
+  /**
+   * Render as a different element: `render={<div />}` where the logo sits
+   * outside any list. The part's classes and attributes merge onto the
+   * element it renders, the same contract as every core part.
+   */
+  render?: RenderProp<Record<string, unknown>>;
   /** An `img` with the organisation's name as its `alt`, or a link around one. */
   children?: ReactNode;
   ref?: Ref<HTMLLIElement>;
 }
 
 /** One logo: a list item that sizes the image inside it. Works in a list of your own or inside a Root. */
-function LogoWallItem({ className, children, ref, ...rest }: LogoWallItemProps) {
-  return (
-    <li ref={ref} className={cx("loam-LogoWall-item", className)} {...rest}>
-      {children}
-    </li>
-  );
+function LogoWallItem({ render, className, children, ref, ...rest }: LogoWallItemProps) {
+  const props = { ref, className: cx("loam-LogoWall-item", className), children, ...rest };
+  if (render) return <>{renderWithProps(render, props)}</>;
+  return <li {...props} />;
 }
 
 export const LogoWall = {

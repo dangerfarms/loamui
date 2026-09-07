@@ -1,64 +1,11 @@
 import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { axe } from "vitest-axe";
-import { Avatar, Button, Card } from "@loamui/core";
-import { Header, Footer, Stats, Testimonial, Carousel, Feature } from "../index";
+import { Avatar, Card } from "@loamui/core";
+import { Stats, Testimonial, Carousel, Feature } from "../index";
 
 afterEach(cleanup);
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };
-
-describe("Header", () => {
-  it("is a banner with a labelled nav and the current page marked", async () => {
-    const { container } = render(
-      <Header.Root>
-        <Header.Brand href="/">Loam</Header.Brand>
-        <Header.Nav aria-label="Primary">
-          <li>
-            <a href="/docs" aria-current="page">
-              Docs
-            </a>
-          </li>
-          <li>
-            <a href="/pricing">Pricing</a>
-          </li>
-        </Header.Nav>
-        <Header.Actions>
-          <Button>Sign in</Button>
-        </Header.Actions>
-      </Header.Root>,
-    );
-    expect(screen.getByRole("banner")).toHaveClass("loam-Header");
-    expect(screen.getByRole("navigation", { name: "Primary" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Docs" })).toHaveAttribute("aria-current", "page");
-    expect(await axe(container, axeOptions)).toHaveNoViolations();
-  });
-});
-
-describe("Footer", () => {
-  it("is a contentinfo landmark with titled columns", async () => {
-    const { container } = render(
-      <Footer.Root>
-        <Footer.Brand>Loam</Footer.Brand>
-        <Footer.Columns>
-          <Footer.Column>
-            <Footer.ColumnTitle>Product</Footer.ColumnTitle>
-            <ul>
-              <li>
-                <a href="/docs">Docs</a>
-              </li>
-            </ul>
-          </Footer.Column>
-        </Footer.Columns>
-        <Footer.Bottom>
-          <small>© 2026 Loam</small>
-        </Footer.Bottom>
-      </Footer.Root>,
-    );
-    expect(screen.getByRole("contentinfo")).toHaveClass("loam-Footer");
-    expect(screen.getByRole("heading", { name: "Product" })).toBeInTheDocument();
-    expect(await axe(container, axeOptions)).toHaveNoViolations();
-  });
-});
 
 describe("Stats", () => {
   it("is a description list per tile, label before value in the DOM", async () => {

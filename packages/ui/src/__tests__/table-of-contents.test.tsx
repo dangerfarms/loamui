@@ -8,9 +8,9 @@ afterEach(cleanup);
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };
 
 describe("TableOfContents", () => {
-  it("renders a named nav with a nested list, a current link and no axe violations", async () => {
+  it("renders a nav named by its title with a nested list, a current link and no axe violations", async () => {
     const { container } = render(
-      <TableOfContents.Root aria-label="On this page">
+      <TableOfContents.Root>
         <TableOfContents.Title>On this page</TableOfContents.Title>
         <TableOfContents.List>
           <TableOfContents.Item>
@@ -40,6 +40,8 @@ describe("TableOfContents", () => {
     );
     const nav = screen.getByRole("navigation", { name: "On this page" });
     expect(nav).toHaveClass("loam-TableOfContents");
+    expect(nav).not.toHaveAttribute("aria-label");
+    expect(nav).toHaveAttribute("aria-labelledby", screen.getByText("On this page").id);
     expect(screen.getAllByRole("list")).toHaveLength(2);
     expect(screen.getAllByRole("link")).toHaveLength(6);
     expect(screen.getByRole("link", { name: "Element styles" })).toHaveAttribute(
@@ -50,5 +52,36 @@ describe("TableOfContents", () => {
       screen.getByRole("link", { name: "Tokens" }).closest("ol"),
     );
     expect(await axe(container, axeOptions)).toHaveNoViolations();
+  });
+
+  it("takes a name from aria-label without a title, and yields to aria-labelledby", () => {
+    const { container } = render(
+      <>
+        <h2 id="contents">Contents</h2>
+        <TableOfContents.Root aria-label="Sections">
+          <TableOfContents.List>
+            <TableOfContents.Item>
+              <a href="#one">One</a>
+            </TableOfContents.Item>
+          </TableOfContents.List>
+        </TableOfContents.Root>
+        <TableOfContents.Root aria-labelledby="contents">
+          <TableOfContents.Title>On this page</TableOfContents.Title>
+          <TableOfContents.List>
+            <TableOfContents.Item>
+              <a href="#two">Two</a>
+            </TableOfContents.Item>
+          </TableOfContents.List>
+        </TableOfContents.Root>
+      </>,
+    );
+    expect(screen.getByRole("navigation", { name: "Sections" })).not.toHaveAttribute(
+      "aria-labelledby",
+    );
+    expect(screen.getByRole("navigation", { name: "Contents" })).toHaveAttribute(
+      "aria-labelledby",
+      "contents",
+    );
+    expect(container.querySelectorAll("nav")).toHaveLength(2);
   });
 });

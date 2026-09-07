@@ -83,14 +83,14 @@ export const MANIFEST: CompositionMeta[] = [
     slug: "contact-form",
     name: "Contact form",
     category: "Forms",
-    description: "A stack of fields and a row of actions on a native form.",
+    description: "One column of fields and a row of actions on a native form.",
   },
   {
-    slug: "sign-in-form",
-    name: "Sign-in form",
+    slug: "account-form",
+    name: "Account form",
     category: "Forms",
     description:
-      "A sign-in form in a Card: a title, one column of fields, a stretched action and a footer link.",
+      "The card an account form lives in: a title, one column of fields, a stretched action and a footer link. One shell for signing in, creating an account and resetting a password.",
   },
   {
     slug: "error-page",
@@ -166,6 +166,109 @@ export const MANIFEST: CompositionMeta[] = [
     category: "Data display",
     description:
       "How to reach an organisation or person: phone, email, postal address, hours, or a labelled list of links.",
+  },
+  {
+    slug: "task-list",
+    name: "Task list",
+    category: "Data display",
+    description:
+      "The things a person must complete across a multi-step process, each with its status: a title that is a link when the task can be started, a description of what it needs and a Badge for where it stands.",
+  },
+  {
+    slug: "summary-list",
+    name: "Summary list",
+    category: "Data display",
+    description:
+      "Label/value rows, each with an optional note and action: the answers about to be submitted, an order's details and its money lines, the facts of an account.",
+  },
+  {
+    slug: "empty-state",
+    name: "Empty state",
+    category: "Page sections",
+    description:
+      "The screen shown when a list, a search or a section has nothing in it yet: what the place is for, why it is empty and one clear next action.",
+  },
+  {
+    slug: "cookie-banner",
+    name: "Cookie banner",
+    category: "Page sections",
+    description:
+      "A cookie consent banner: a title, a paragraph or two, and the choices as real buttons, then a confirmation the reader can hide.",
+  },
+  {
+    slug: "tag-list",
+    name: "Tag list",
+    category: "Blog",
+    description: "The topics attached to something, each a link to everything that shares it.",
+  },
+  {
+    slug: "setting-row",
+    name: "Setting row",
+    category: "Forms",
+    description: "A label, a line explaining it, and the control that sets it, in one row.",
+  },
+  {
+    slug: "side-nav",
+    name: "Side navigation",
+    category: "Navigation",
+    description:
+      "Vertical navigation for an application or a documentation site: lists of links, the current page marked, related pages folded into groups.",
+  },
+  {
+    slug: "address-fields",
+    name: "Address fields",
+    category: "Forms",
+    description:
+      "The fields for a postal address: a Fieldset with one labelled line per part, each carrying its autofill purpose.",
+  },
+  {
+    slug: "user-menu",
+    name: "User menu",
+    category: "Navigation",
+    description:
+      "The signed-in person's menu: an avatar button that opens their name, email and account actions, ending with sign out.",
+  },
+  {
+    slug: "password-field",
+    name: "Password field",
+    category: "Forms",
+    description:
+      "A field for making up a password: the input, a strength meter and the rules in plain words, ticked as they are met.",
+  },
+  {
+    slug: "selectable-card",
+    name: "Selectable card",
+    category: "Forms",
+    description:
+      "A choice presented as a card: a plan, a delivery option, a template. The whole card is the label of a real checkbox or radio.",
+  },
+  {
+    slug: "byline",
+    name: "Byline",
+    category: "Blog",
+    description:
+      "Who wrote an article and when, at the top of it: an avatar, the author linked to their profile, the dates and the reading time on one line.",
+  },
+  {
+    slug: "comment",
+    name: "Comment",
+    category: "Blog",
+    description:
+      "One comment in a discussion: who wrote it, when, and what they said, with its replies.",
+  },
+  {
+    slug: "cart-line",
+    name: "Cart line",
+    category: "Data display",
+    description:
+      "One item in a basket: image, linked title, the options chosen, a slot for your QuantityInput, the line total with the unit price under it, and a remove action.",
+  },
+  {
+    slug: "product-card",
+    name: "Product card",
+    category: "Data display",
+    description:
+      "One product in a listing: an image, a linked title, a rating, a price and one action, in an article inside a core Card.",
   },
 ];
 

@@ -1,11 +1,18 @@
 /* A hero is a region: it declares its container so the fluid tokens answer
-   the hero's own width, and it hosts consumer content, hence the donut. */
+   the hero's own width, and it hosts consumer content, hence the donut.
+   The section is only the container. The grid is the inner element the
+   Root renders, because an element cannot answer its own container query:
+   every layout rule below, the template and the placement alike, asks the
+   section, and none of them asks whatever container sits above it. */
 @scope (.loam-Hero) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
+    padding-block: var(--loam-space-xl);
+  }
+
+  div.inner {
     display: block grid;
     gap: var(--loam-space-lg);
-    padding-block: var(--loam-space-xl);
   }
 
   div.eyebrow {
@@ -48,21 +55,45 @@
     }
   }
 
-  /* With media and room for it, two columns: the text stacks in the
-     first, the media spans the second. Without either, nothing changes.
-     The container decides; there is no layout prop. */
+  /* With media and room for it, two columns: each text part has a named
+     row in the first, the media spans them all in the second. Rows are
+     named rather than counted, so a part left out leaves no hole; the row
+     gap goes and the parts that are present space themselves, so an empty
+     row costs nothing. Without media, nothing changes. The container
+     decides; there is no layout prop. */
   @container (inline-size >= 48rem) {
-    :scope:has(> div.media) {
+    div.inner:has(> div.media) {
       align-items: center;
+      grid-template-areas:
+        "eyebrow media"
+        "title media"
+        "lede media"
+        "actions media";
       grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      row-gap: 0;
 
-      > :not(div.media) {
-        grid-column: 1;
+      > div.eyebrow {
+        grid-area: eyebrow;
+      }
+
+      > .title {
+        grid-area: title;
+      }
+
+      > p.lede {
+        grid-area: lede;
+      }
+
+      > div.actions {
+        grid-area: actions;
       }
 
       > div.media {
-        grid-column: 2;
-        grid-row: 1 / span 10;
+        grid-area: media;
+      }
+
+      > :not(div.media) + :not(div.media) {
+        margin-block-start: var(--loam-space-lg);
       }
     }
   }

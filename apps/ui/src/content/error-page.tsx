@@ -10,13 +10,13 @@ const errorPage: Composition = {
   category: "Page sections",
   description:
     "An error page: the status code, a title that says what happened, a line on what to do next and a row of ways out.",
-  lead: "Five parts on a native section, centred in a column. The code is dim and the title carries the message, because the reader needs to know what happened and where to go, not which number the server sent; the section stays agnostic of main, so it drops into whatever shell the page already has.",
+  lead: "Five parts on a native section, centred in a column and named by its title. The code is dim and the title carries the message, because the reader needs to know what happened and where to go, not which number the server sent; the section stays agnostic of main, so it drops into whatever shell the page already has, and renders as main when the error is the page.",
   importLine: `import { ErrorPage } from "@loamui/ui";`,
   parts: [
     {
       name: "ErrorPage.Root",
       description:
-        "The section: a centred column at least 24rem tall. Declares its own container so the fluid tokens answer its width.",
+        "The section: a centred column at least 24rem tall, named by its Title unless you pass aria-label or aria-labelledby. Declares its own container so the fluid tokens answer its width. Pass render={<main />} when the error is the whole page and nothing else supplies the main landmark.",
     },
     {
       name: "ErrorPage.Code",
@@ -26,10 +26,10 @@ const errorPage: Composition = {
     {
       name: "ErrorPage.Title",
       description:
-        "What happened, in a few words. An h1 when the error is the page; pass render={<h2 />} inside a page.",
+        "What happened, in a few words. An h1 when the error is the page; pass render={<h2 />} inside a page. It names the Root while it is present.",
     },
     {
-      name: "ErrorPage.Body",
+      name: "ErrorPage.Description",
       description:
         "One or two muted sentences on what the reader can do next, capped at a readable measure.",
     },
@@ -47,10 +47,10 @@ const errorPage: Composition = {
       code: `<ErrorPage.Root>
   <ErrorPage.Code>404</ErrorPage.Code>
   <ErrorPage.Title>Page not found</ErrorPage.Title>
-  <ErrorPage.Body>
+  <ErrorPage.Description>
     The page may have moved, or the address may have a typo. Check the address, or go back
     to the home page and find it from there.
-  </ErrorPage.Body>
+  </ErrorPage.Description>
   <ErrorPage.Actions>
     <SignpostLink href="/">Back to home</SignpostLink>
     <a href="/support">Contact support</a>
@@ -60,10 +60,10 @@ const errorPage: Composition = {
         <ErrorPage.Root>
           <ErrorPage.Code>404</ErrorPage.Code>
           <ErrorPage.Title>Page not found</ErrorPage.Title>
-          <ErrorPage.Body>
+          <ErrorPage.Description>
             The page may have moved, or the address may have a typo. Check the address, or go back
             to the home page and find it from there.
-          </ErrorPage.Body>
+          </ErrorPage.Description>
           <ErrorPage.Actions>
             <SignpostLink href="/">Back to home</SignpostLink>
             <a href="/support">Contact support</a>

@@ -1,0 +1,12 @@
+/*
+ * CopyButton — a Button that says what it did. The scope root is a span
+ * with no box (display: contents), so the Button inside takes part in the
+ * parent's layout exactly as a bare Button would: a grid region stretches
+ * it, a narrow container makes it full width. The donut stops at
+ * .loam-Button, so nothing here restyles the Button.
+ */
+@scope (.loam-CopyButton) to ([class*="loam-"]) {
+  :scope {
+    display: contents;
+  }
+}

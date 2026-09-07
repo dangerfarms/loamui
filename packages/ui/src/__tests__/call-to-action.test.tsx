@@ -9,13 +9,13 @@ afterEach(cleanup);
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };
 
 describe("CallToAction", () => {
-  it("renders a section with the parts in order and no axe violations", async () => {
+  it("renders a section named by its title, with the parts in order and no axe violations", async () => {
     const { container } = render(
-      <CallToAction.Root aria-labelledby="cta">
-        <CallToAction.Title id="cta">Start building</CallToAction.Title>
-        <CallToAction.Body>
+      <CallToAction.Root>
+        <CallToAction.Title>Start building</CallToAction.Title>
+        <CallToAction.Lede>
           Install the package, import one stylesheet and start with any component.
-        </CallToAction.Body>
+        </CallToAction.Lede>
         <CallToAction.Actions>
           <SignpostLink href="/docs">Read the docs</SignpostLink>
           <a href="/docs/components">Browse components</a>
@@ -25,6 +25,7 @@ describe("CallToAction", () => {
     const region = screen.getByRole("region", { name: "Start building" });
     expect(region).toHaveClass("loam-CallToAction");
     expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("Start building");
+    expect(screen.getByText(/Install the package/)).toHaveClass("lede");
     expect(screen.getByRole("link", { name: "Read the docs" })).toHaveAttribute("href", "/docs");
     expect(screen.getByRole("link", { name: "Browse components" })).toBeInTheDocument();
     expect(await axe(container, axeOptions)).toHaveNoViolations();
@@ -39,8 +40,46 @@ describe("CallToAction", () => {
         </CallToAction.Media>
       </CallToAction.Root>,
     );
-    expect(container.querySelector(".loam-CallToAction > div.media > img")).toHaveAttribute("alt");
+    expect(container.querySelector(".loam-CallToAction div.media > img")).toHaveAttribute("alt");
     expect(await axe(container, axeOptions)).toHaveNoViolations();
+  });
+
+  // jsdom cannot lay out a container query, so this asserts the structure
+  // the stylesheet relies on: the section is the container, the grid is
+  // the inner element it renders, and every part is a direct child of that
+  // grid, media included. The block sits outside any container of its own.
+  it("renders the grid as an inner element of the section, with every part a direct child", () => {
+    const { container } = render(
+      <CallToAction.Root>
+        <CallToAction.Title>Two columns</CallToAction.Title>
+        <CallToAction.Lede>Where there is room.</CallToAction.Lede>
+        <CallToAction.Actions>
+          <a href="/docs">Docs</a>
+        </CallToAction.Actions>
+        <CallToAction.Media>
+          <img src="/docs.png" alt="" width="800" height="600" />
+        </CallToAction.Media>
+      </CallToAction.Root>,
+    );
+    const section = container.querySelector("section.loam-CallToAction")!;
+    const inner = section.querySelector(":scope > div.inner");
+    expect(inner).not.toBeNull();
+    expect(section.children).toHaveLength(1);
+    const parts = Array.from(inner!.children).map((child) => child.className);
+    expect(parts).toEqual(["title", "lede", "actions", "media"]);
+    expect(inner!.querySelector(":scope > div.media > img")).not.toBeNull();
+  });
+
+  it("lets a name of the consumer's own win over the title's", () => {
+    render(
+      <>
+        <h2 id="next">What next</h2>
+        <CallToAction.Root aria-labelledby="next">
+          <CallToAction.Title>Start building</CallToAction.Title>
+        </CallToAction.Root>
+      </>,
+    );
+    expect(screen.getByRole("region", { name: "What next" })).toBeInTheDocument();
   });
 
   it("renders the title as an h3 when asked", () => {

@@ -1,0 +1,67 @@
+/*
+ * QuantityInput — a bare <input type="number"> between two Buttons.
+ *
+ * The input keeps the field look elements.css gives every textual input
+ * (border, radius, padding, surface, the focus ring) and the buttons are
+ * core Buttons, so all three share the derived control height and align
+ * by construction. This file only centres the figure, sizes the box to a
+ * few digits and hides the native spinner, whose job the buttons now do.
+ *
+ * Forced colours: nothing to add. The input's border and the Buttons'
+ * borders survive in system colours, disabled buttons take GrayText, and
+ * the invalid state below is a border colour plus aria-invalid, which the
+ * Field's error text carries in words.
+ */
+@scope (.loam-QuantityInput) to ([class*="loam-"]) {
+  :scope {
+    align-items: center;
+    display: block flex;
+    gap: var(--loam-space-xs);
+
+    /* Shrink-wrapped even as a stretched Field child: a count is a small
+       thing, and a wide box would read as a bigger question. */
+    inline-size: fit-content;
+  }
+
+  input {
+    /* The native spinner would duplicate the buttons in a corner of the
+       box. `appearance: textfield` drops it in Firefox; WebKit needs the
+       pseudo-element told directly (below). */
+    appearance: textfield;
+
+    /* Content-box so the character widths below mean characters, not
+       characters minus padding. Three digits covers any count a person
+       adjusts one at a time; larger numbers are typed into an Input. */
+    box-sizing: content-box;
+    font-variant-numeric: lining-nums tabular-nums;
+    inline-size: 3ch;
+    text-align: center;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      appearance: none;
+      margin: 0;
+    }
+
+    &[aria-invalid="true"] {
+      --loam-color-ring: var(--loam-color-danger-ring);
+
+      border-color: var(--loam-color-danger);
+    }
+
+    &:disabled {
+      background: var(--loam-color-bg-subtle);
+      opacity: var(--loam-disabled-opacity);
+    }
+  }
+
+  /* Where the platform sizes a field to its content, let it: the floor
+     above still applies, and a four-digit value no longer clips. */
+  @supports (field-sizing: content) {
+    input {
+      field-sizing: content;
+      inline-size: auto;
+      min-inline-size: 3ch;
+    }
+  }
+}

@@ -36,6 +36,22 @@
 }
 
 @layer loamui.elements {
+  /* Text for assistive technology only: "Error: " before a message, the
+     name of an icon-only control, a label a design hides. One class, usable
+     inside any component (a Button, a Field) and by any consumer, because a
+     scoped recipe cannot reach past another component's root. */
+  .loam-VisuallyHidden {
+    block-size: 1px;
+    border: 0;
+    clip-path: inset(50%);
+    inline-size: 1px;
+    margin: -1px;
+    overflow: clip;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+  }
+
   *,
   *::before,
   *::after {

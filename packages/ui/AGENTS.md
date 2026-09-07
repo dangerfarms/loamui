@@ -23,7 +23,15 @@ here:
 - **Do not restyle a composition's internals.** If it needs structural
   overrides to fit, copy the code from the gallery into your codebase and
   change it there; that is what the gallery is for.
-- **Every part forwards native props** (`className`, `style`, `aria-*`,
-  `ref`), so wire your own attributes on the part, not on a wrapper.
+- **Parts forward rest props and `ref` to their root element**, the one that
+  carries the part's class, so wire `className`, `style` and `aria-*` on the
+  part, not on a wrapper. A part that wraps a core part says where they land:
+  `AddressFields.Root` puts `className` and `style` on its grid and the rest
+  on the Fieldset; `Byline.Date` puts `className` on its span and everything
+  else, `ref` included, on the Time. The part's props type is the contract.
+- **Every default string is a prop.** A part's built-in words (an
+  `aria-label`, a "Copied" status, a caption) are overridable through a prop
+  or children; nothing user-facing is hard-coded, so a page in another
+  language passes its own.
 
 Gallery and code: <https://loamui.com/ui/>.

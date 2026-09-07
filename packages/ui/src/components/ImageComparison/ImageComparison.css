@@ -2,11 +2,13 @@
    a position the reader moves. The frame is the first grid row. Before,
    After and the divider all occupy it, stacked in DOM order, so nothing is
    absolutely positioned and the row's height is the images' shared aspect
-   ratio. Both slots host the consumer's img, and the Handle is core's
-   Range, hence the donut. */
+   ratio. The position is the public --loam-comparison-position, written
+   onto the Root by the Handle; every use below falls back to 50%, so a
+   frame with no script yet, or none at all, shows half of each image.
+   Both slots host the consumer's img, and the Handle is core's Range,
+   hence the donut. */
 @scope (.loam-ImageComparison) to ([class*="loam-"]) {
   :scope {
-    --_position: 50%;
     --loam-comparison-ratio: 16 / 9;
 
     container-type: inline-size;
@@ -24,7 +26,7 @@
       grid-area: 1 / 1;
       inline-size: 2px;
       justify-self: start;
-      margin-inline-start: calc(var(--_position) - 1px);
+      margin-inline-start: calc(var(--loam-comparison-position, 50%) - 1px);
       pointer-events: none;
 
       @media (forced-colors: active) {
@@ -55,10 +57,10 @@
      inset is physical, so it flips for right-to-left text, where the Range
      runs the other way. */
   div.after {
-    clip-path: inset(0 calc(100% - var(--_position)) 0 0);
+    clip-path: inset(0 calc(100% - var(--loam-comparison-position, 50%)) 0 0);
 
     &:dir(rtl) {
-      clip-path: inset(0 0 0 calc(100% - var(--_position)));
+      clip-path: inset(0 0 0 calc(100% - var(--loam-comparison-position, 50%)));
     }
   }
 

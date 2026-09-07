@@ -157,8 +157,8 @@ Button). The `render` prop exists only to _substitute_ that element
 common case needs `render`, the part has the wrong default element. The
 exception is `Field.Control`, whose entire purpose is wiring an arbitrary
 element into the field: the LoamUI controls (`Input`, `Select`, `Textarea`,
-`Range`) self-wire from Field context when rendered inside `Field.Root`, so
-they never go through it.
+`Range`, `QuantityInput`, `FileInput.Control`, `Search.Input`) self-wire from
+Field context when rendered inside `Field.Root`, so they never go through it.
 
 **One merge contract** (`src/render.ts`, used by every part): event handlers
 chain (the element's own handler runs first, wiring second, both always run);
@@ -175,10 +175,15 @@ chain (the element's own handler runs first, wiring second, both always run);
   `Object.assign(Convenience, { Root, … })` so both `<Alert title=…>` and
   `<Alert.Root>` work
 - Form controls → bare controls that self-wire from Field context via
-  `useFieldControlProps()` (`Input`, `Select`, `Textarea`, `Range`): no
+  `useFieldControlProps()` (`Input`, `Select`, `Textarea`, `Range`,
+  `QuantityInput`, `FileInput.Control`, `Search.Input`): no
   label/description/error props; composition inside `Field.Root` supplies
   them. Inline controls whose anatomy is a row (Checkbox, Switch, Radio)
   keep the labelled convenience form plus a bare `XControl` part
+- Composed from other components (Search from Input + Button, QuantityInput
+  from `<input>` + two Buttons, CopyButton from Button) → the inner
+  components keep their own props and CSS behind the scope's donut; the
+  composite adds only its wiring
 
 RSC note: `@loamui/core` ships as a single bundle with a `"use client"`
 banner, so in React Server Components **every** compound export is a client
@@ -191,17 +196,20 @@ Any JSX that uses compound parts (docs demos included) must live in a
 **State attributes**: the shared styling vocabulary, identical on every
 component (never invent synonyms):
 
-| Attribute                                          | Where                                    | Meaning                                                                                                |
-| -------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `data-popup-open`                                  | trigger                                  | its popup/bubble is open                                                                               |
-| `data-open`                                        | popup/panel                              | open; uniform across enhanced & fallback                                                               |
-| `data-disabled`                                    | wrapper/control                          | disabled styling hook                                                                                  |
-| `data-current`                                     | nav item                                 | current page/location                                                                                  |
-| `data-size` / `data-position`                      | Badge, Progress; Drawer's panel (`side`) | instance styling hooks read by the stylesheet; form controls have no size hooks: their sizing is fluid |
-| `data-orientation`                                 | RadioGroup                               | display hook (see Sanctioned exceptions)                                                               |
-| `data-label-position`                              | Switch                                   | display hook (see Sanctioned exceptions)                                                               |
-| `data-striped` / `data-hover` / `data-col-borders` | Table                                    | display hooks (see Sanctioned exceptions)                                                              |
-| `data-striped` / `data-animated`                   | Progress                                 | display hooks (see Sanctioned exceptions)                                                              |
+| Attribute                                          | Where                                           | Meaning                                                                                                |
+| -------------------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `data-popup-open`                                  | trigger                                         | its popup/bubble is open                                                                               |
+| `data-open`                                        | popup/panel                                     | open; uniform across enhanced & fallback                                                               |
+| `data-disabled`                                    | wrapper/control                                 | disabled styling hook                                                                                  |
+| `data-current`                                     | nav item                                        | current page/location                                                                                  |
+| `data-size` / `data-position`                      | Badge, Progress, Meter; Drawer's panel (`side`) | instance styling hooks read by the stylesheet; form controls have no size hooks: their sizing is fluid |
+| `data-orientation`                                 | RadioGroup                                      | display hook (see Sanctioned exceptions)                                                               |
+| `data-label-position`                              | Switch                                          | display hook (see Sanctioned exceptions)                                                               |
+| `data-striped` / `data-hover` / `data-col-borders` | Table                                           | display hooks (see Sanctioned exceptions)                                                              |
+| `data-striped` / `data-animated`                   | Progress                                        | display hooks (see Sanctioned exceptions)                                                              |
+| `data-show-label`                                  | Rating, SchemeToggle                            | display hook (see Sanctioned exceptions)                                                               |
+| `data-read-only`                                   | Rating                                          | display mode: a picture of the value, not inputs                                                       |
+| `data-dragging`                                    | `FileInput.Root`                                | a drag carrying files is over the box; detected from the drag events, never a prop                     |
 
 Components built on native state use the platform's hook instead (e.g.
 Details styles `details[open]`). **Prefer detection over declaration**:
@@ -243,6 +251,17 @@ Glyph controls (Checkbox, Radio, Switch, Range) size their geometry in `em`
 on a `font-size: var(--loam-text-sm)` basis, so glyphs ride the same fluid
 scale as their labels.
 
+**Numeric bounds are not size props.** The doctrine bans props that
+re-encode a visual decision; it does not ban the platform's own numbers.
+The exceptions, and why each is a semantic rather than a size:
+
+| Component                              | Props                                      | What they are                                                                                           |
+| -------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| `Meter`                                | `min` / `max` / `low` / `high` / `optimum` | the range and its bands, forwarded to `<meter>`; the browser picks the band, the CSS paints it          |
+| `QuantityInput`                        | `min` / `max` / `step`                     | the count's bounds and increment, forwarded to `<input type="number">`; the buttons disable at the ends |
+| `Rating`                               | `max`                                      | how many stars there are, which is how many radios                                                      |
+| `Badge`, `Loader`, `Progress`, `Meter` | `size`                                     | the one sanctioned `size`: an intrinsic glyph or track that no container can size                       |
+
 ### Sanctioned exceptions
 
 Under review: these are the exceptions to the doctrine above; do not add to
@@ -261,6 +280,9 @@ a maintainer decides otherwise.
   a control.
 - Switch `labelPosition`: emits `data-label-position`.
 - RadioGroup `error`: a group-level message that Field cannot supply.
+- Rating and SchemeToggle `showLabel`: emits `data-show-label`; whether the
+  group's name is painted as well as read. Rating `readOnly` emits
+  `data-read-only` for display mode.
 
 ## Adding or changing a component
 
@@ -318,6 +340,10 @@ every line below; a composition that fails one is a recipe for the
    to, and why its defaults are what they are, on the gallery page; the same
    lint, type, contrast and test gates as core, with an axe check per
    composition.
+8. **Every default string is overridable.** An `aria-label`, a "Copied"
+   status, an "Updated" caption: each is a prop or children with an English
+   default, never a hard-coded string, so a page in another language, or one
+   with its own words, replaces it without forking the composition.
 
 ## Before opening a PR
 

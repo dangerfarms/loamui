@@ -8,15 +8,14 @@ const hero: Composition = {
   slug: "hero",
   name: "Hero",
   category: "Page sections",
-  description:
-    "A page-opening section: eyebrow, title, lede, a row of actions and, when the page has one, media beside them.",
-  lead: "Five parts on a native section. The type comes from the element styles and the fluid scale, so the hero reads the same in a marketing page and a dashboard header; a --loam-context region recolours the badge and the signpost inside. Media is optional: with it the hero becomes two columns where the container has room, and the container decides, not a prop.",
+  description: "A page-opening section: eyebrow, title, lede and a row of actions.",
+  lead: "Six parts on a native section named by its title. The type comes from the element styles and the fluid scale, so the hero reads the same in a marketing page and a dashboard header; a --loam-context region recolours the badge and the signpost inside. Media is optional: with it the hero becomes two columns where the container has room, and the container decides, not a prop.",
   importLine: `import { Hero } from "@loamui/ui";`,
   parts: [
     {
       name: "Hero.Root",
       description:
-        "The section. Declares its own container so the fluid tokens answer the hero's width.",
+        "The section, named by its Title unless you pass aria-label or aria-labelledby. Declares its own container so the fluid tokens answer the hero's width, and renders the grid as an inner element, because an element cannot answer its own container query.",
     },
     {
       name: "Hero.Eyebrow",
@@ -24,7 +23,8 @@ const hero: Composition = {
     },
     {
       name: "Hero.Title",
-      description: "The headline. An h1 by default; pass render={<h2 />} inside a page.",
+      description:
+        "The headline. An h1 by default; pass render={<h2 />} inside a page. It names the Root while it is present.",
     },
     {
       name: "Hero.Lede",
@@ -126,7 +126,7 @@ const hero: Composition = {
   ],
   whenNotToUse: [
     "Above content that is already self-explanatory: a settings page needs a heading, not a hero.",
-    "As a container for a form; that is a ContactForm or a SignInForm. A Carousel of images belongs inside Hero.Media, not around the hero.",
+    "As a container for a form; that is a ContactForm or an AccountForm. A Carousel of images belongs inside Hero.Media, not around the hero.",
   ],
 };
 

@@ -1,0 +1,113 @@
+/* Summary list: a description list of label/value items, each with an
+   optional note and action. It hosts consumer content (a list, a Price, a
+   Button), hence the donut. Three columns: the labels take a share of the
+   width with a floor so they never crush, the values the rest, the actions
+   their own width. Each item is a subgrid of the root, so the actions
+   column is one width down the whole list and an item without an action
+   leaves it empty; values align on both sides. */
+@scope (.loam-SummaryList) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    grid-template-columns: minmax(8rem, 30%) 1fr auto;
+    margin: 0;
+  }
+
+  /* A rule between items, not a box around them: the list reads as one
+     thing. The item spans every column and lays its cells on the root's
+     tracks. */
+  div.item {
+    border-block-end: 1px solid var(--loam-color-line);
+    display: block grid;
+    gap: var(--loam-space-xs) var(--loam-space-lg);
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    padding-block: var(--loam-space-sm);
+  }
+
+  dt.label {
+    color: var(--loam-color-fg-strong);
+    font-weight: 600;
+  }
+
+  /* A long value (an email, a reference, an address on one line) breaks
+     rather than widening its column; nothing truncates. */
+  dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* A value that is several things: one per line, no markers, no indent. */
+  dd.value {
+    ul {
+      display: block grid;
+      gap: var(--loam-space-xs);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      margin: 0;
+    }
+  }
+
+  /* The action sits at the end of the item's first row and never wraps
+     mid-word: its column is sized to it. Placed by cell, not by flow, so a
+     note before it in the source still lands on its own row beneath. */
+  dd.actions {
+    grid-column: 3;
+    grid-row: 1;
+    text-align: end;
+    white-space: nowrap;
+  }
+
+  /* The note is an aside to the value: small, muted and back to the running
+     weight, so it never competes with the figure above it. It sits under the
+     value, on the value's tracks, whatever weight the item carries. */
+  dd.note {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    font-weight: 400;
+    grid-column: 2 / -1;
+  }
+
+  /* The item that sums the ones above it: a heavier rule, a little air, and
+     both its label and its value in the strong foreground at 700, so the
+     pair reads as one weight. In forced colours the rule takes CanvasText
+     and keeps its 2px, so the total is still set apart by more than weight. */
+  div.item.total {
+    border-block-start: 2px solid var(--loam-color-line-strong);
+    margin-block-start: var(--loam-space-xs);
+
+    dt.label,
+    dd.value {
+      color: var(--loam-color-fg-strong);
+      font-weight: 700;
+    }
+  }
+
+  /* Narrow: one column, label over value over note over action, the action
+     at the start where the eye returns. The query lives on the items because
+     a container query is answered by an ancestor, never by the root that
+     declares it. */
+  @container (inline-size < 36rem) {
+    div.item {
+      grid-template-columns: 1fr;
+    }
+
+    dd.actions {
+      grid-column: 1;
+      grid-row: auto;
+      text-align: start;
+    }
+
+    dd.note {
+      grid-column: 1;
+    }
+  }
+
+  /* Forced colours: the items are kept apart by borders, which the system
+     palette draws in CanvasText; nothing here is background-painted, so
+     there is nothing to restore. */
+}

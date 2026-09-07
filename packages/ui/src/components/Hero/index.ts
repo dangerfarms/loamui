@@ -1,2 +1,9 @@
 export { Hero } from "./Hero";
-export type { HeroRootProps, HeroPartProps, HeroTitleProps } from "./Hero";
+export type {
+  HeroRootProps,
+  HeroEyebrowProps,
+  HeroTitleProps,
+  HeroLedeProps,
+  HeroActionsProps,
+  HeroMediaProps,
+} from "./Hero";

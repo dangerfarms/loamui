@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "ui-gallery",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@loamui/ui-site", "dev"],
+      "port": 3008
+    },
+    {
+      "name": "docs",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@loamui/docs", "dev"],
+      "port": 3000
+    }
+  ]
+}

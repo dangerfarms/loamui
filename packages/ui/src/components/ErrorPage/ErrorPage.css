@@ -31,7 +31,7 @@
     margin: 0;
   }
 
-  p.body {
+  p.description {
     color: var(--loam-color-fg-muted);
     margin: 0;
     max-inline-size: var(--loam-measure);

@@ -2,7 +2,8 @@
 
 import { createContext, useContext } from "react";
 import type { HTMLAttributes, ReactNode, Ref } from "react";
-import { cx } from "@loamui/core";
+import { cx, renderWithProps } from "@loamui/core";
+import type { RenderProp } from "@loamui/core";
 
 /** True inside a `Gallery.Root`, where an Item is a list item. */
 const ListContext = createContext(false);
@@ -28,6 +29,12 @@ export function GalleryRoot({ className, children, ref, ...rest }: GalleryRootPr
 }
 
 export interface GalleryItemProps extends HTMLAttributes<HTMLElement> {
+  /**
+   * Render as a different element. The part's classes and attributes merge
+   * onto the element it renders, the same contract as every core part; the
+   * children go straight in, so a `figure` of your own is yours to write.
+   */
+  render?: RenderProp<Record<string, unknown>>;
   /** A `Gallery.Link` around your `<img>`, then an optional `Gallery.Caption`. */
   children?: ReactNode;
   ref?: Ref<HTMLElement>;
@@ -35,15 +42,24 @@ export interface GalleryItemProps extends HTMLAttributes<HTMLElement> {
 
 /**
  * One image: a figure holding the link and its caption. Inside a Root the
- * figure is wrapped in a list item; on its own it is just the figure, so
- * it is valid HTML wherever a figure is.
+ * item is the list item, and the figure is an inner element it renders, so
+ * a class, a style or a ref lands on the element the grid places; on its
+ * own it is just the figure, so it is valid HTML wherever a figure is.
  */
-export function GalleryItem({ className, children, ref, ...rest }: GalleryItemProps) {
+export function GalleryItem({ render, className, children, ref, ...rest }: GalleryItemProps) {
   const inList = useContext(ListContext);
-  const figure = (
-    <figure ref={ref} className={cx("loam-Gallery-item", className)} {...rest}>
+  const props = { className: cx("loam-Gallery-item", className), ...rest };
+  if (render) return <>{renderWithProps(render, { ref, ...props, children })}</>;
+  if (inList) {
+    return (
+      <li ref={ref as Ref<HTMLLIElement>} {...props}>
+        <figure>{children}</figure>
+      </li>
+    );
+  }
+  return (
+    <figure ref={ref} {...props}>
       {children}
     </figure>
   );
-  return inList ? <li>{figure}</li> : figure;
 }

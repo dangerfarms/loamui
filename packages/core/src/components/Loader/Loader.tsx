@@ -46,7 +46,7 @@ export function Loader({ size, label = "Loading", className, style, ref, ...rest
       {...rest}
     >
       <span className="spinner" aria-hidden />
-      <span className="sr-only">{label}</span>
+      <span className="loam-VisuallyHidden">{label}</span>
     </span>
   );
 }

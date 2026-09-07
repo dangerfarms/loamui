@@ -115,6 +115,42 @@ export const COMPONENTS: NavItem[] = [
     category: "Inputs",
     description: "Pick a numeric value from a range.",
   },
+  {
+    name: "Search",
+    slug: "search",
+    category: "Inputs",
+    description: "The page's search, as a landmark.",
+  },
+  {
+    name: "QuantityInput",
+    slug: "quantity-input",
+    category: "Inputs",
+    description: "A count adjusted one at a time.",
+  },
+  {
+    name: "Rating",
+    slug: "rating",
+    category: "Inputs",
+    description: "Stars as real inputs, or as a picture of a score.",
+  },
+  {
+    name: "FileInput",
+    slug: "file-input",
+    category: "Inputs",
+    description: "Choose a file, or drop it.",
+  },
+  {
+    name: "CopyButton",
+    slug: "copy-button",
+    category: "Inputs",
+    description: "Copy a value and say so.",
+  },
+  {
+    name: "SchemeToggle",
+    slug: "scheme-toggle",
+    category: "Inputs",
+    description: "Choose system, light or dark.",
+  },
   // Data display
   {
     name: "Badge",
@@ -127,6 +163,12 @@ export const COMPONENTS: NavItem[] = [
     slug: "price",
     category: "Data display",
     description: "A monetary amount, written for people.",
+  },
+  {
+    name: "Time",
+    slug: "time",
+    category: "Data display",
+    description: "A date or time, written for people.",
   },
   {
     name: "Card",
@@ -164,6 +206,12 @@ export const COMPONENTS: NavItem[] = [
     slug: "progress",
     category: "Feedback",
     description: "Show completion of a task.",
+  },
+  {
+    name: "Meter",
+    slug: "meter",
+    category: "Feedback",
+    description: "A measurement within a known range.",
   },
   {
     name: "Skeleton",

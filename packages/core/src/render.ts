@@ -44,12 +44,19 @@ const ARIA_LIST_KEYS = new Set(["aria-describedby", "aria-labelledby"]);
 export function mergeProps<W extends object, O extends object>(wiring: W, own: O): W & O {
   const wiringProps = wiring as AnyProps;
   const ownProps = own as AnyProps;
-  const merged: AnyProps = { ...wiringProps, ...ownProps };
+  // Start from the wiring and let own props in only when they are defined:
+  // a `ref={undefined}` or `onClick={cond ? fn : undefined}` on the element
+  // must not erase the wiring that makes the part work.
+  const merged: AnyProps = { ...wiringProps };
 
-  for (const key of Object.keys(wiringProps)) {
+  for (const key of Object.keys(ownProps)) {
     const w = wiringProps[key];
     const o = ownProps[key];
-    if (o === undefined || w === undefined) continue;
+    if (o === undefined) continue;
+    if (w === undefined) {
+      merged[key] = o;
+      continue;
+    }
 
     if (isEventHandlerKey(key) && typeof w === "function" && typeof o === "function") {
       merged[key] = (...args: unknown[]) => {
@@ -64,8 +71,7 @@ export function mergeProps<W extends object, O extends object>(wiring: W, own: O
       merged[key] = cx(o as string, w as string);
     } else if (key === "ref") {
       merged[key] = composeRefs(w as Ref<unknown>, o as Ref<unknown>);
-    }
-    // else: own already wins via the spread order.
+    } else merged[key] = o;
   }
 
   return merged as W & O;

@@ -9,11 +9,15 @@
   }
 
   /* A column grid inside a scrollport. Every item snaps to the start, and
-     a page is one clientWidth, which is what Controls scrolls by. */
+     a page is one clientWidth, which is what Controls scrolls by. Items
+     share one width, the public --loam-carousel-item-size, 20rem unless
+     the consumer sets it on the Root, and never wider than the track, so
+     a narrow container still shows one whole item. The markers are
+     stripped, which is why the markup carries role="list". */
   ul.track {
     display: block grid;
     gap: var(--loam-space-lg);
-    grid-auto-columns: min(100%, 20rem);
+    grid-auto-columns: min(100%, var(--loam-carousel-item-size, 20rem));
     grid-auto-flow: column;
     list-style: none;
     margin: 0;

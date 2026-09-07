@@ -9,7 +9,7 @@ const footer: Composition = {
   category: "Navigation",
   description:
     "A site footer: brand and tagline, columns of links and a bottom row for small print.",
-  lead: "Five parts on a native footer. The columns are an auto-fit grid, so they take as many across as the container allows and stack in a narrow one without a breakpoint; the brand moves beside them when there is room, and everything is set in the muted text colour because a footer is reference, not the page's voice.",
+  lead: "Six parts on a native footer. Each column is a nav named by its title, so a screen reader's list of the page's landmarks reads Product, Company, Support; the columns are an auto-fit grid, so they take as many across as the container allows and stack in a narrow one without a breakpoint; the brand moves beside them when there is room, and everything is set in the muted text colour because a footer is reference, not the page's voice.",
   importLine: `import { Footer } from "@loamui/ui";`,
   parts: [
     {
@@ -19,14 +19,19 @@ const footer: Composition = {
     },
     {
       name: "Footer.Brand",
-      description: "The logo or name as a link, and a one-line tagline as a paragraph.",
+      description: "The logo or name around your link home, and a one-line tagline as a paragraph.",
     },
     { name: "Footer.Columns", description: "An auto-fit grid of columns." },
     {
       name: "Footer.Column",
-      description: "One column: a Footer.ColumnTitle, then your ul of li > a items.",
+      description:
+        "One column: a nav landmark named by its Footer.ColumnTitle, then your ul of li > a items. An aria-label you pass wins; a column with no title should be given one.",
     },
-    { name: "Footer.ColumnTitle", description: "The column's heading, an h3." },
+    {
+      name: "Footer.ColumnTitle",
+      description:
+        "The column's heading, an h3 by default; pass render={<h2 />} where the columns sit under no h2. Its id (yours if you pass one) is what names the column.",
+    },
     {
       name: "Footer.Bottom",
       description: "A wrapping flex row at the foot: a small copyright line and small links.",
@@ -36,7 +41,7 @@ const footer: Composition = {
     {
       title: "Site footer",
       description:
-        "Three columns of links with a brand and a bottom row. Narrow the preview and the columns stack.",
+        "Three columns of links with a brand and a bottom row, each column a nav named by its title. Narrow the preview and the columns stack.",
       code: `<Footer.Root>
   <Footer.Brand>
     <a href="/">Loam</a>

@@ -15,12 +15,12 @@ const steps: Composition = {
     {
       name: "Steps.Root",
       description:
-        'An ol with role="list" (list-style: none drops list semantics in some browsers); declares its own container.',
+        'Required: an ol with role="list" (list-style: none drops list semantics in some browsers) that carries the order and draws the numbers; declares its own container. An Item outside it has no list to be a step of.',
     },
     {
       name: "Steps.Item",
       description:
-        "One step, an li: a marker column beside the title and description. The counter increments here.",
+        "One step, an li inside the Root: a marker column beside the title and description. The counter increments here.",
     },
     {
       name: "Steps.Marker",
@@ -137,7 +137,7 @@ const steps: Composition = {
     "Events in time: a changelog, a project history or an order's progress, with a date in each Marker.",
   ],
   whenNotToUse: [
-    "A set of things with no order between them; a list of a product's features belongs in Features, and a plain ul is fine for the rest.",
+    "A set of things with no order between them; a list of a product's features is a grid of Feature units, and a plain ul is fine for the rest.",
     "A single step; one action with an explanation is a heading and a paragraph, not a list of one.",
   ],
 };

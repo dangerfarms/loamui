@@ -9,13 +9,13 @@ const imageComparison: Composition = {
   category: "Page sections",
   description:
     "A before/after comparison: two images in one frame, the second revealed by a slider.",
-  lead: "The control is a real range input, so the comparison can be worked with a keyboard and is announced with a name and a value, not a pointer-only drag handle; the position defaults to 50%, so with no JavaScript the frame still shows half of each image; both images need real alt text and share one aspect ratio set on the frame.",
+  lead: "The control is a real range input, so the comparison can be worked with a keyboard and is announced with a name and a value, not a pointer-only drag handle; the position is a custom property on the frame whose fallback is 50%, so with no JavaScript the frame still shows half of each image; both images need real alt text and share one aspect ratio set on the frame.",
   importLine: `import { ImageComparison } from "@loamui/ui";`,
   parts: [
     {
       name: "ImageComparison.Root",
       description:
-        "A figure that holds the frame, the Handle and the Caption. Set --loam-comparison-ratio here to change the frame's aspect ratio (default 16 / 9).",
+        "A figure that holds the frame, the Handle and the Caption. Set --loam-comparison-ratio here to change the frame's aspect ratio (default 16 / 9). The reveal is --loam-comparison-position, a percentage the Handle writes here; the stylesheet falls back to 50% until it does.",
     },
     {
       name: "ImageComparison.Before",
@@ -30,7 +30,7 @@ const imageComparison: Composition = {
     {
       name: "ImageComparison.Handle",
       description:
-        "Core's Range, 0 to 100 starting at 50. The required label names the slider; each move sets the position on the Root.",
+        "Core's Range, 0 to 100. Uncontrolled with defaultValue (50), or controlled with value and onValueChange; each move reaches the Root as the position. The label is the slider's aria-label, \"Reveal the after image\" unless you pass another, and yields to an aria-labelledby.",
     },
     {
       name: "ImageComparison.Caption",
@@ -41,7 +41,7 @@ const imageComparison: Composition = {
     {
       title: "Before and after",
       description:
-        "Two photographs in a 16:9 frame. Drag the slider, or focus it and use the arrow keys, to reveal the second image.",
+        "Two photographs in a 16:9 frame. Drag the slider, or focus it and use the arrow keys, to reveal the second image. The Handle's default label names it; pass label for other words.",
       code: `<ImageComparison.Root>
   <ImageComparison.Before>
     <img src="https://picsum.photos/seed/before/1200/675" alt="The garden before planting, bare soil" />
@@ -49,7 +49,7 @@ const imageComparison: Composition = {
   <ImageComparison.After>
     <img src="https://picsum.photos/seed/after/1200/675" alt="The garden after planting, in full growth" />
   </ImageComparison.After>
-  <ImageComparison.Handle label="Reveal the after image" />
+  <ImageComparison.Handle />
   <ImageComparison.Caption>The garden, before and after planting.</ImageComparison.Caption>
 </ImageComparison.Root>`,
       render: () => (
@@ -66,7 +66,7 @@ const imageComparison: Composition = {
               alt="The garden after planting, in full growth"
             />
           </ImageComparison.After>
-          <ImageComparison.Handle label="Reveal the after image" />
+          <ImageComparison.Handle />
           <ImageComparison.Caption>The garden, before and after planting.</ImageComparison.Caption>
         </ImageComparison.Root>
       ),

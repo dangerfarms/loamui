@@ -1,4 +1,4 @@
-import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+import type { HTMLAttributes, ReactNode, Ref } from "react";
 import { cx } from "@loamui/core";
 
 export interface HeaderRootProps extends HTMLAttributes<HTMLElement> {
@@ -9,15 +9,17 @@ export interface HeaderRootProps extends HTMLAttributes<HTMLElement> {
 /**
  * A site header: brand, primary navigation and a row of actions.
  *
- * Compose it from parts. The nav is a plain list of links the consumer
- * writes, with the current page marked by `aria-current="page"`; in a
- * narrow container the list wraps beneath the brand row with no script and
- * no hamburger. Stickiness is the consumer's CSS (`position: sticky` on
- * the root), not a prop.
+ * Compose it from parts. The brand is your own link home inside
+ * `Header.Brand`, and the nav is a plain list of links the consumer
+ * writes, with the current page marked by `aria-current="page"`, so a
+ * router and a static site drive both the same way; in a narrow container
+ * the list wraps beneath the brand row with no script and no hamburger.
+ * Stickiness is the consumer's CSS (`position: sticky` on the root), not
+ * a prop.
  *
  * ```tsx
  * <Header.Root>
- *   <Header.Brand href="/">Loam</Header.Brand>
+ *   <Header.Brand><a href="/">Loam</a></Header.Brand>
  *   <Header.Nav aria-label="Primary">
  *     <li><a href="/docs" aria-current="page">Docs</a></li>
  *     <li><a href="/pricing">Pricing</a></li>
@@ -36,27 +38,41 @@ function HeaderRoot({ className, children, ref, ...rest }: HeaderRootProps) {
   );
 }
 
-export interface HeaderBrandProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+export interface HeaderBrandProps extends HTMLAttributes<HTMLDivElement> {
+  /** Your link home: an `<a href="/">`, or a router link, holding the logo or the name. */
   children?: ReactNode;
-  ref?: Ref<HTMLAnchorElement>;
+  ref?: Ref<HTMLDivElement>;
 }
 
-/** The logo or name, as a link home. Always an anchor. */
+/**
+ * The logo or name, around your link home: the same shape as
+ * `Footer.Brand`, so a router link goes in as itself. (It was once the
+ * anchor; the link is yours now.)
+ */
 function HeaderBrand({ className, children, ref, ...rest }: HeaderBrandProps) {
   return (
-    <a ref={ref} className={cx("brand", className)} {...rest}>
+    <div ref={ref} className={cx("brand", className)} {...rest}>
       {children}
-    </a>
+    </div>
   );
 }
 
-export interface HeaderNavProps extends HTMLAttributes<HTMLElement> {
-  /** Names the landmark for assistive technology; every nav on a page needs a distinct one. */
-  "aria-label": string;
+interface HeaderNavBaseProps extends HTMLAttributes<HTMLElement> {
   /** The items: `<li><a href>` pairs. Mark the current page with `aria-current="page"`. */
   children?: ReactNode;
   ref?: Ref<HTMLElement>;
 }
+
+/**
+ * The nav needs a name, because every nav on a page needs a distinct one:
+ * either an `aria-label` ("Primary") or an `aria-labelledby` pointing at
+ * text already on the page.
+ */
+export type HeaderNavProps = HeaderNavBaseProps &
+  (
+    | { "aria-label": string; "aria-labelledby"?: string }
+    | { "aria-label"?: string; "aria-labelledby": string }
+  );
 
 /** A `nav` landmark wrapping a `ul` of the consumer's `li > a` items. */
 function HeaderNav({ className, children, ref, ...rest }: HeaderNavProps) {

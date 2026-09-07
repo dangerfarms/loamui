@@ -8,8 +8,8 @@ const person: Composition = {
   slug: "person",
   name: "Person",
   category: "Page sections",
-  description: "A grid of team members, each an avatar over a name and a role.",
-  lead: "Five parts on a native section and list. The avatar is the core Avatar, placed first by you with the person's name for its initials and aria-hidden, because the name is printed beneath it and assistive technology should hear each person once; the grid decides how many sit across.",
+  description: "One person: an avatar over a name and a role, alone or in a grid you write.",
+  lead: "Three parts on one centred column. The unit is the person: it stands alone beside a quote or in a Card, and a team is a grid you write with each person rendered as a li through render. The avatar is the core Avatar, placed first by you with the person's name for its initials and aria-hidden, because the name is printed beneath it and assistive technology should hear each person once.",
   importLine: `import { Person } from "@loamui/ui";`,
   parts: [
     {

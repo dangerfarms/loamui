@@ -1,0 +1,46 @@
+/* A setting row is a two-column grid: the words in the first column, the
+   control in the second, centred on them; an error, when there is one,
+   takes a row of its own under the words. The row sits inside the core
+   Field that wires it, and the label, description and error inside keep
+   the look Field gives them: the rules here place the composition's own
+   slots and never touch a Field part. The control slot hosts a core
+   SwitchControl, Select or Fieldset, hence the donut. */
+@scope (.loam-SettingRow) to ([class*="loam-"]) {
+  :scope {
+    align-items: center;
+
+    /* The colour is forced to a system colour in forced-colors mode; the
+       border itself survives, so rows stay separated. */
+    border-block-end: 1px solid var(--loam-color-line);
+    display: block grid;
+    gap: var(--loam-space-xs) var(--loam-space-lg);
+    grid-template-columns: 1fr auto;
+    padding-block: var(--loam-space-sm);
+  }
+
+  /* The label over the description, in a column. */
+  div.text {
+    display: block flex;
+    flex-direction: column;
+    gap: var(--loam-space-xs);
+    grid-column: 1;
+  }
+
+  /* The words when the Label is rendered as a span, for a control that is
+     a fieldset: the composition's own element, set as a label reads. */
+  span.label {
+    font-size: var(--loam-text-sm);
+    font-weight: 500;
+  }
+
+  div.control {
+    align-items: center;
+    display: block flex;
+    grid-column: 2;
+    justify-content: end;
+  }
+
+  div.error {
+    grid-column: 1;
+  }
+}

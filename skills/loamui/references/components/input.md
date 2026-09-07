@@ -128,7 +128,7 @@ Sections sit inside the field but outside the accessible name, so the Field.Labe
 
 ### Asking for numbers
 
-Never use type="number": scroll wheels and arrow keys silently change the value, and browsers give poor feedback when the input is invalid. Pass inputMode="numeric" for whole numbers or inputMode="decimal" for amounts (both forward straight to the native input) so touch devices raise a number pad while the field keeps normal text behaviour.
+Never use type="number": scroll wheels and arrow keys silently change the value, and browsers give poor feedback when the input is invalid. Pass inputMode="numeric" for whole numbers or inputMode="decimal" for amounts (both forward straight to the native input) so touch devices raise a number pad while the field keeps normal text behaviour. A small count a person nudges by one (items in a cart, guests, seats) is QuantityInput, the library's one use of a number input: its buttons make the stepping deliberate.
 
 ```tsx
 <Field.Root>

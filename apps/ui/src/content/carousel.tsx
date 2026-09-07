@@ -10,7 +10,7 @@ const carousel: Composition = {
   category: "Page sections",
   description:
     "A scroll-snap track for any run of content, cards, images or quotes, with a pair of Buttons that page through it.",
-  lead: "Four parts on a native section and list. The track is an ordinary scroller with snap points, so it works with a wheel, a swipe, a keyboard and no JavaScript at all; each item hosts whatever you put in it, and the Controls only add two Buttons that page the track by one width.",
+  lead: "Four parts on a native section and list. The track is an ordinary scroller with snap points, so it works with a wheel, a swipe, a keyboard and no JavaScript at all; each item hosts whatever you put in it, sized by the public --loam-carousel-item-size, and the Controls only add two Buttons that page the track by one width.",
   importLine: `import { Carousel } from "@loamui/ui";`,
   parts: [
     {
@@ -21,12 +21,12 @@ const carousel: Composition = {
     {
       name: "Carousel.Track",
       description:
-        "The scroller: a column grid, each column at most 20rem, with inline scroll snapping and room for a focus ring inside the scrollport.",
+        'The scroller: a ul with role="list", because stripping the markers drops the list semantics in some browsers. A column grid with inline scroll snapping and room for a focus ring inside the scrollport; each column is --loam-carousel-item-size, 20rem by default and never wider than the track, so set it on the Root for wider or narrower items.',
     },
     {
       name: "Carousel.Item",
       description:
-        "One item: a snap point that hosts your content, a Card, an image, a figure or a quote. A grid, so the content stretches to the row's height.",
+        "One item, an li: a snap point that hosts your content, a Card, an image, a figure or a quote. A grid, so the content stretches to the row's height.",
     },
     {
       name: "Carousel.Controls",

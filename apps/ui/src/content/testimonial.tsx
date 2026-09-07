@@ -9,7 +9,7 @@ const testimonial: Composition = {
   name: "Testimonial",
   category: "Page sections",
   description: "One testimonial: a quotation and who said it, alone, in a Card or in a Carousel.",
-  lead: "The unit is the testimonial: a figure whose quote is a blockquote and whose author is the figcaption, so the attribution is tied to the quote by the platform, not by layout. It stands in flow on its own, sits in a Card, and rides in a Carousel or a grid you write; the arrangement is never the testimonial's business.",
+  lead: "The unit is the testimonial: a figure whose quote is a blockquote and whose author is the figcaption, so the attribution is tied to the quote by the platform, not by layout; the author's name and role are parts, not free text, so the caption has one structure everywhere. It stands in flow on its own, sits in a Card, and rides in a Carousel or a grid you write; the arrangement is never the testimonial's business.",
   importLine: `import { Testimonial } from "@loamui/ui";`,
   parts: [
     {
@@ -24,7 +24,16 @@ const testimonial: Composition = {
     {
       name: "Testimonial.Author",
       description:
-        "Who said it: the figure's caption, a row for an Avatar and the name and role beside it.",
+        "Who said it: the figure's caption, a row. Put an Avatar, a Name and a Role inside; the Name and Role are gathered into one column of text beside the Avatar, whatever order you wrote them in.",
+    },
+    {
+      name: "Testimonial.Name",
+      description:
+        "The author's name, set strong. Wrap the words in a link when the person has a page.",
+    },
+    {
+      name: "Testimonial.Role",
+      description: "The author's role, muted, on its own line under the name.",
     },
   ],
   demos: [
@@ -38,11 +47,8 @@ const testimonial: Composition = {
   </Testimonial.Quote>
   <Testimonial.Author>
     <Avatar name="Hannah Weiss" aria-hidden />
-    <p>
-      <strong>Hannah Weiss</strong>
-      <br />
-      Accessibility consultant
-    </p>
+    <Testimonial.Name>Hannah Weiss</Testimonial.Name>
+    <Testimonial.Role>Accessibility consultant</Testimonial.Role>
   </Testimonial.Author>
 </Testimonial.Root>`,
       render: () => (
@@ -53,11 +59,8 @@ const testimonial: Composition = {
           </Testimonial.Quote>
           <Testimonial.Author>
             <Avatar name="Hannah Weiss" aria-hidden />
-            <p>
-              <strong>Hannah Weiss</strong>
-              <br />
-              Accessibility consultant
-            </p>
+            <Testimonial.Name>Hannah Weiss</Testimonial.Name>
+            <Testimonial.Role>Accessibility consultant</Testimonial.Role>
           </Testimonial.Author>
         </Testimonial.Root>
       ),
@@ -78,11 +81,8 @@ const testimonial: Composition = {
           </Testimonial.Quote>
           <Testimonial.Author>
             <Avatar name="Priya Natarajan" aria-hidden />
-            <p>
-              <strong>Priya Natarajan</strong>
-              <br />
-              Head of product, logistics
-            </p>
+            <Testimonial.Name>Priya Natarajan</Testimonial.Name>
+            <Testimonial.Role>Head of product, logistics</Testimonial.Role>
           </Testimonial.Author>
         </Testimonial.Root>
       </Card>
@@ -96,11 +96,8 @@ const testimonial: Composition = {
           </Testimonial.Quote>
           <Testimonial.Author>
             <Avatar name="Tom Okafor" aria-hidden />
-            <p>
-              <strong>Tom Okafor</strong>
-              <br />
-              Product designer, healthcare
-            </p>
+            <Testimonial.Name>Tom Okafor</Testimonial.Name>
+            <Testimonial.Role>Product designer, healthcare</Testimonial.Role>
           </Testimonial.Author>
         </Testimonial.Root>
       </Card>
@@ -114,11 +111,8 @@ const testimonial: Composition = {
           </Testimonial.Quote>
           <Testimonial.Author>
             <Avatar name="Sam Reid" aria-hidden />
-            <p>
-              <strong>Sam Reid</strong>
-              <br />
-              Founder, a two-person studio
-            </p>
+            <Testimonial.Name>Sam Reid</Testimonial.Name>
+            <Testimonial.Role>Founder, a two-person studio</Testimonial.Role>
           </Testimonial.Author>
         </Testimonial.Root>
       </Card>
@@ -139,11 +133,8 @@ const testimonial: Composition = {
                   </Testimonial.Quote>
                   <Testimonial.Author>
                     <Avatar name="Priya Natarajan" aria-hidden />
-                    <p>
-                      <strong>Priya Natarajan</strong>
-                      <br />
-                      Head of product, logistics
-                    </p>
+                    <Testimonial.Name>Priya Natarajan</Testimonial.Name>
+                    <Testimonial.Role>Head of product, logistics</Testimonial.Role>
                   </Testimonial.Author>
                 </Testimonial.Root>
               </Card>
@@ -157,11 +148,8 @@ const testimonial: Composition = {
                   </Testimonial.Quote>
                   <Testimonial.Author>
                     <Avatar name="Tom Okafor" aria-hidden />
-                    <p>
-                      <strong>Tom Okafor</strong>
-                      <br />
-                      Product designer, healthcare
-                    </p>
+                    <Testimonial.Name>Tom Okafor</Testimonial.Name>
+                    <Testimonial.Role>Product designer, healthcare</Testimonial.Role>
                   </Testimonial.Author>
                 </Testimonial.Root>
               </Card>
@@ -175,11 +163,8 @@ const testimonial: Composition = {
                   </Testimonial.Quote>
                   <Testimonial.Author>
                     <Avatar name="Sam Reid" aria-hidden />
-                    <p>
-                      <strong>Sam Reid</strong>
-                      <br />
-                      Founder, a two-person studio
-                    </p>
+                    <Testimonial.Name>Sam Reid</Testimonial.Name>
+                    <Testimonial.Role>Founder, a two-person studio</Testimonial.Role>
                   </Testimonial.Author>
                 </Testimonial.Root>
               </Card>

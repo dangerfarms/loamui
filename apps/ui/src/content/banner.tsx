@@ -27,13 +27,13 @@ const banner: Composition = {
   category: "Page sections",
   description:
     "A one-line announcement bar for the top of a page: a message and, beside it, a Button or a link.",
-  lead: "Three parts on a div with role status. The bar is neutral by default; wrap it in a --loam-context region and the parts inside recolour while the bar's own surface takes that status's soft tint, and there is no dismiss button because dismissal needs state the bar does not hold.",
+  lead: "Three parts on a div with role status. The bar is neutral by default; set --loam-context on the Root, or on a region around it, and the parts inside recolour while the bar's own surface takes that status's soft tint, and there is no dismiss button because dismissal needs state the bar does not hold.",
   importLine: `import { Banner } from "@loamui/ui";`,
   parts: [
     {
       name: "Banner.Root",
       description:
-        "A div with role status: a live region, so a message that appears after load is announced. A flex row on the subtle background with a line beneath it; declares its own container.",
+        "A div with role status: a live region, so a message that appears after load is announced. Declares its own container and renders the bar, a flex row on the subtle background with a line beneath it, as an inner element, because an element cannot answer its own container query: that is what lets a --loam-context on the Root tint the bar.",
     },
     {
       name: "Banner.Message",
@@ -66,26 +66,22 @@ const banner: Composition = {
       ),
     },
     {
-      title: "In a warning region",
+      title: "As a warning",
       description:
-        "The same markup inside a warning region. The Button answers the context through the tokens, and the bar's own surface takes the warning tint.",
-      code: `<div style={{ "--loam-context": "warning" }}>
-  <Banner.Root>
-    <Banner.Message>Maintenance on Saturday from 08:00 to 10:00 UTC.</Banner.Message>
-    <Banner.Actions>
-      <Button>See the status page</Button>
-    </Banner.Actions>
-  </Banner.Root>
-</div>`,
+        "The same markup with --loam-context set on the Root, as it would be on a Stats tile. The Button answers the context through the tokens, and the bar's own surface takes the warning tint. A region declared around the bar does the same.",
+      code: `<Banner.Root style={{ "--loam-context": "warning" }}>
+  <Banner.Message>Maintenance on Saturday from 08:00 to 10:00 UTC.</Banner.Message>
+  <Banner.Actions>
+    <Button>See the status page</Button>
+  </Banner.Actions>
+</Banner.Root>`,
       render: () => (
-        <div style={{ "--loam-context": "warning" } as React.CSSProperties}>
-          <Banner.Root>
-            <Banner.Message>Maintenance on Saturday from 08:00 to 10:00 UTC.</Banner.Message>
-            <Banner.Actions>
-              <Button>See the status page</Button>
-            </Banner.Actions>
-          </Banner.Root>
-        </div>
+        <Banner.Root style={{ "--loam-context": "warning" } as React.CSSProperties}>
+          <Banner.Message>Maintenance on Saturday from 08:00 to 10:00 UTC.</Banner.Message>
+          <Banner.Actions>
+            <Button>See the status page</Button>
+          </Banner.Actions>
+        </Banner.Root>
       ),
     },
     {
@@ -111,7 +107,7 @@ const banner: Composition = {
   ],
   whenToUse: [
     "One announcement that applies to every page, such as a release, a maintenance window or a move, where a line at the top is enough and nothing needs a decision.",
-    "A status the reader should see before the page's own content, with a region declaring warning or info so the bar reads as that status without a prop.",
+    "A status the reader should see before the page's own content, with --loam-context declaring warning or info so the bar reads as that status without a prop.",
   ],
   whenNotToUse: [
     "A message about one form or one section: an Alert sits beside the thing it describes; a bar at the top of the page is for the whole page.",

@@ -40,8 +40,10 @@
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
   }
 
-  div.column {
-    h3.title {
+  /* Each column is a nav named by its title; the markers go (inside a
+     nav, every browser keeps the list's semantics without them). */
+  nav.column {
+    .title {
       color: var(--loam-color-fg-strong);
       font-family: var(--loam-font);
       font-size: var(--loam-text-sm);
@@ -80,7 +82,7 @@
 
   /* Links inherit the muted colour and light up on hover; the current
      colour scheme decides how far. */
-  div.column a,
+  nav.column a,
   div.bottom a {
     color: inherit;
     text-decoration: none;

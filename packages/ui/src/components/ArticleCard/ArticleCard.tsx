@@ -1,23 +1,25 @@
 import type { HTMLAttributes, ReactNode, Ref } from "react";
 import { Card, renderWithProps, cx } from "@loamui/core";
 import type { CardProps, RenderProp } from "@loamui/core";
+import { Byline } from "../Byline/Byline";
 
 export interface ArticleCardRootProps extends CardProps {
-  /** An optional `<img>` first, then Meta, Title, Excerpt and Author. */
+  /** An optional `<img>` first, then Meta, Title, Excerpt and Byline. */
   children?: ReactNode;
   ref?: Ref<HTMLDivElement>;
 }
 
 /**
  * One article: a Card holding a category and date, a linked title, an
- * excerpt and an author.
+ * excerpt and a byline.
  *
  * The unit is the card. It stands on its own beside an article's end, and
- * an index is a grid you write with each card in a `li`. The title holds
- * the link, not the card: a card that is one big link reads its whole
- * contents as the link's name and swallows every other control inside
- * it. The surface is core's Card, left exactly as core styles it; the
- * parts sit in their own `article` inside it.
+ * an index is a grid you write, each card rendered as a `li` through the
+ * Card's `render`. The title holds the link, not the card: a card that is
+ * one big link reads its whole contents as the link's name and swallows
+ * every other control inside it. The surface is core's Card, left exactly
+ * as core styles it; the parts sit in their own `article` inside it, and
+ * the foot is a Byline, the same row that heads the article itself.
  *
  * ```tsx
  * <ArticleCard.Root>
@@ -29,14 +31,15 @@ export interface ArticleCardRootProps extends CardProps {
  *     <a href="/blog/static-css">Why the stylesheet is one static file</a>
  *   </ArticleCard.Title>
  *   <ArticleCard.Excerpt>Nothing runs at runtime, and that is the point.</ArticleCard.Excerpt>
- *   <ArticleCard.Author>
+ *   <ArticleCard.Byline>
  *     <Avatar name="Imogen Hartley" aria-hidden />
- *     Imogen Hartley
- *   </ArticleCard.Author>
+ *     <Byline.Author href="/authors/imogen-hartley">Imogen Hartley</Byline.Author>
+ *   </ArticleCard.Byline>
  * </ArticleCard.Root>
  * ```
  */
 function ArticleCardRoot({ children, ref, ...rest }: ArticleCardRootProps) {
+  // The Card's own render prop passes through: render={<li />} in a list.
   return (
     <Card ref={ref} {...rest}>
       <article className="loam-ArticleCard">{children}</article>
@@ -80,19 +83,14 @@ function ArticleCardTitle({ render, className, children, ref, ...rest }: Article
   );
 }
 
-/** The opening lines, muted and clamped to three where the browser can clamp. */
+/**
+ * The opening lines, muted and clamped to three where the browser can
+ * clamp. It takes the slack in the column, so the byline sits at the foot
+ * of every card in a row whatever the excerpt's length.
+ */
 function ArticleCardExcerpt({ className, children, ref, ...rest }: ArticleCardParagraphProps) {
   return (
     <p ref={ref} className={cx("excerpt", className)} {...rest}>
-      {children}
-    </p>
-  );
-}
-
-/** Who wrote it: a flex row for an Avatar and the name beside it, at the foot of the card. */
-function ArticleCardAuthor({ className, children, ref, ...rest }: ArticleCardParagraphProps) {
-  return (
-    <p ref={ref} className={cx("author", className)} {...rest}>
       {children}
     </p>
   );
@@ -103,5 +101,10 @@ export const ArticleCard = {
   Meta: ArticleCardMeta,
   Title: ArticleCardTitle,
   Excerpt: ArticleCardExcerpt,
-  Author: ArticleCardAuthor,
+  /**
+   * Who wrote it, at the foot of the card: a `Byline.Root`, so an Avatar,
+   * a `Byline.Author` and, if you want them there, a `Byline.ReadingTime`
+   * read the same way here as at the top of the article.
+   */
+  Byline: Byline.Root,
 };

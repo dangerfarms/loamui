@@ -110,7 +110,7 @@ export function RadioGroup({
         )}
         {error && (
           <span className="error" id={errId} role="alert">
-            <span className="loam-Error-prefix">Error: </span>
+            <span className="loam-VisuallyHidden">Error: </span>
             {error}
           </span>
         )}

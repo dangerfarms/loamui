@@ -12,7 +12,7 @@ import table_of_contents from "./table-of-contents";
 import article_card from "./article-card";
 import person from "./person";
 import error_page from "./error-page";
-import sign_in_form from "./sign-in-form";
+import account_form from "./account-form";
 import contact_form from "./contact-form";
 import banner from "./banner";
 import call_to_action from "./call-to-action";
@@ -22,6 +22,21 @@ import testimonial from "./testimonial";
 import stats from "./stats";
 import footer from "./footer";
 import header from "./header";
+import product_card from "./product-card";
+import cart_line from "./cart-line";
+import comment from "./comment";
+import byline from "./byline";
+import selectable_card from "./selectable-card";
+import password_field from "./password-field";
+import user_menu from "./user-menu";
+import address_fields from "./address-fields";
+import side_nav from "./side-nav";
+import setting_row from "./setting-row";
+import tag_list from "./tag-list";
+import cookie_banner from "./cookie-banner";
+import empty_state from "./empty-state";
+import summary_list from "./summary-list";
+import task_list from "./task-list";
 import contact_details from "./contact-details";
 import social_links from "./social-links";
 import embed from "./embed";
@@ -41,7 +56,7 @@ const COMPOSITIONS: Composition[] = [
   person,
   error_page,
   contact_form,
-  sign_in_form,
+  account_form,
   header,
   footer,
   stats,
@@ -54,6 +69,21 @@ const COMPOSITIONS: Composition[] = [
   image_comparison,
   galleryComposition,
   logo_wall,
+  task_list,
+  summary_list,
+  empty_state,
+  cookie_banner,
+  tag_list,
+  setting_row,
+  side_nav,
+  address_fields,
+  user_menu,
+  password_field,
+  selectable_card,
+  byline,
+  comment,
+  cart_line,
+  product_card,
 ];
 
 function bySlug(slug: string): Composition | undefined {

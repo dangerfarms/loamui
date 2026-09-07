@@ -12,7 +12,9 @@
     padding-block: var(--loam-space-md);
   }
 
-  a.brand {
+  /* The brand is the consumer's link home, set in the display face with
+     no underline: the name is the affordance. */
+  div.brand > a {
     align-items: center;
     color: var(--loam-color-fg-strong);
     display: inline flex;

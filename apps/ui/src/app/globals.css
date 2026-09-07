@@ -134,18 +134,6 @@
     letter-spacing: 0.04em;
     text-transform: uppercase;
   }
-
-  .visually-hidden {
-    block-size: 1px;
-    border: 0;
-    clip-path: inset(50%);
-    inline-size: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    white-space: nowrap;
-  }
 }
 
 /* The skip target takes programmatic focus; the page itself is not an

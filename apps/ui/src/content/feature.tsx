@@ -55,8 +55,8 @@ const feature: Composition = {
   name: "Feature",
   category: "Page sections",
   description:
-    "A grid of feature tiles: an icon, a title and a line of body text, separated by space alone.",
-  lead: "Six parts on a native section and list. There are no cards: a feature list is scanned, not compared, so the tiles are set apart by space and each one is an icon, a heading and a muted line, with the grid deciding how many sit across.",
+    "One feature: an icon, a title and a line on what it does, alone or in a grid you write.",
+  lead: "Four parts on one feature. There is no card: a run of features is scanned, not compared, so each one is an icon, a heading and a muted line set apart by space, and the grid you write decides how many sit across.",
   importLine: `import { Feature } from "@loamui/ui";`,
   parts: [
     {

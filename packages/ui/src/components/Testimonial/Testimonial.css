@@ -28,22 +28,27 @@
     }
   }
 
-  /* The caption is the attribution row; the figure's gap spaces it, so the
-     element style's top margin goes. */
+  /* The caption is the attribution row: the Avatar, then the column of
+     text the Author gathers the Name and Role into. The figure's gap
+     spaces it, so the element style's top margin goes. */
   figcaption.author {
     align-items: center;
     display: block flex;
     gap: var(--loam-space-sm);
     margin: auto 0 0;
 
-    p {
-      color: var(--loam-color-fg-muted);
+    > div.text {
+      display: block grid;
       font-size: var(--loam-text-sm);
-      margin: 0;
     }
+  }
 
-    strong {
-      color: var(--loam-color-fg-strong);
-    }
+  .name {
+    color: var(--loam-color-fg-strong);
+    font-weight: 600;
+  }
+
+  .role {
+    color: var(--loam-color-fg-muted);
   }
 }

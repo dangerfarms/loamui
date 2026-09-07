@@ -21,13 +21,13 @@ alongside this page.
   error message).
 - **The colour scheme.** `color-scheme` and `light-dark()` tokens.
 - **User preferences.** Motion opted in via `prefers-reduced-motion:
-  no-preference`.
+no-preference`.
 
 ## Declaring meaning: `--loam-context`
 
 `--loam-context` is a registered custom property (not a data attribute). It
 inherits, the nearest ancestor wins, and the library reads it with a container
-*style* query:
+_style_ query:
 
 ```css
 @container (style(--loam-context: danger)) {
@@ -37,7 +37,7 @@ inherits, the nearest ancestor wins, and the library reads it with a container
 }
 ```
 
-Because a style query is answered by an *ancestor*, the declaration must sit
+Because a style query is answered by an _ancestor_, the declaration must sit
 above what it styles. A recurring, named region declares it in its own
 stylesheet; a one-off sets it inline on a wrapper. That is not an inline style
 in the pejorative sense, but a single semantic property set at a subtree root,
@@ -57,7 +57,7 @@ with every visual consequence still living in stylesheets.
 </section>
 ```
 
-A context remaps the semantic colour tokens for *every* component inside:
+A context remaps the semantic colour tokens for _every_ component inside:
 checked states, focus rings, carets. No component contains
 context code; the cascade does it. **This is the entire status API:** a success
 alert is an `Alert` in a `success` region.
@@ -100,9 +100,9 @@ surrounding design has already made.
 
 ## Browser support
 
-Everything contextualism relies on is Baseline. Container *style* queries, the
+Everything contextualism relies on is Baseline. Container _style_ queries, the
 mechanism behind `--loam-context`, became Baseline Newly Available in May 2026.
-Container *size* queries, `:has()` and `color-mix()` are Widely Available, and
+Container _size_ queries, `:has()` and `color-mix()` are Widely Available, and
 relative-colour syntax has been Newly Available since 2024. In an older engine,
 contexts degrade to the neutral defaults: still functional, still accessible.
 There are no polyfills.

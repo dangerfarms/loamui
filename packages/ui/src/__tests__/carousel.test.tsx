@@ -43,8 +43,15 @@ describe("Carousel", () => {
     const region = screen.getByRole("region", { name: "Guides" });
     expect(region).toHaveClass("loam-Carousel");
     expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("Guides");
-    expect(screen.getByRole("list")).toHaveClass("track");
-    expect(screen.getAllByRole("listitem")).toHaveLength(3);
+    const track = screen.getByRole("list");
+    expect(track.tagName).toBe("UL");
+    expect(track).toHaveClass("track");
+    // Explicit, because the stylesheet strips the markers and some browsers
+    // drop the list semantics with them.
+    expect(track).toHaveAttribute("role", "list");
+    const items = screen.getAllByRole("listitem");
+    expect(items).toHaveLength(3);
+    for (const item of items) expect(item.tagName).toBe("LI");
     expect(screen.getByRole("button", { name: "Previous" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Next" })).toBeInTheDocument();
     expect(await axe(container, axeOptions)).toHaveNoViolations();

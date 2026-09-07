@@ -3,4 +3,6 @@ export type {
   TestimonialRootProps,
   TestimonialQuoteProps,
   TestimonialAuthorProps,
+  TestimonialNameProps,
+  TestimonialRoleProps,
 } from "./Testimonial";

@@ -2,7 +2,7 @@ export { CallToAction } from "./CallToAction";
 export type {
   CallToActionRootProps,
   CallToActionTitleProps,
-  CallToActionBodyProps,
+  CallToActionLedeProps,
   CallToActionActionsProps,
   CallToActionMediaProps,
 } from "./CallToAction";

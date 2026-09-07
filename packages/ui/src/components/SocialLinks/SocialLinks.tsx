@@ -4,7 +4,7 @@ import { cx } from "@loamui/core";
 export interface SocialLinksRootProps extends HTMLAttributes<HTMLElement> {
   /**
    * Names the landmark for assistive technology; every nav on a page needs
-   * a distinct one.
+   * a distinct one. Yields to an `aria-labelledby` you pass instead.
    * @default "Social"
    */
   "aria-label"?: string;
@@ -45,14 +45,21 @@ export interface SocialLinksRootProps extends HTMLAttributes<HTMLElement> {
  * ```
  */
 function SocialLinksRoot({
-  "aria-label": ariaLabel = "Social",
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
   className,
   children,
   ref,
   ...rest
 }: SocialLinksRootProps) {
   return (
-    <nav ref={ref} className={cx("loam-SocialLinks", className)} aria-label={ariaLabel} {...rest}>
+    <nav
+      ref={ref}
+      className={cx("loam-SocialLinks", className)}
+      aria-label={ariaLabelledBy ? ariaLabel : (ariaLabel ?? "Social")}
+      aria-labelledby={ariaLabelledBy}
+      {...rest}
+    >
       {/* The stylesheet removes the markers. Safari drops list semantics
           with them, except inside a nav, so no role="list" is needed here
           (the same shape as Header.Nav). */}
@@ -93,7 +100,12 @@ export interface SocialLinksLinkProps extends AnchorHTMLAttributes<HTMLAnchorEle
   ref?: Ref<HTMLAnchorElement>;
 }
 
-/** The link: an `a` holding a hidden icon and a visually hidden name. */
+/**
+ * The link: an `a` holding a hidden icon and the name as text hidden by
+ * core's `.loam-VisuallyHidden`. The part adds the judgment (the name as
+ * real text, the icon hidden, the rel), which is why it is a part and not
+ * your own `a`.
+ */
 function SocialLinksLink({
   label,
   rel = "me",
@@ -107,7 +119,7 @@ function SocialLinksLink({
       <span className="icon" aria-hidden>
         {children}
       </span>
-      <span className="label">{label}</span>
+      <span className="loam-VisuallyHidden">{label}</span>
     </a>
   );
 }

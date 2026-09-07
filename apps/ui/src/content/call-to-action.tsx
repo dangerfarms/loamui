@@ -9,22 +9,22 @@ const callToAction: Composition = {
   name: "Call to action",
   category: "Page sections",
   description:
-    "A closing section: a title, one sentence and a row of actions on a subtle surface, alone or beside media.",
-  lead: "Five parts on a native section. The surface is the subtle background token with a large radius, so the block reads as the page's last word without a border or a colour of its own; a --loam-context region recolours the signpost inside. Media is optional: with it the words align start and the block is two columns where the container has room.",
+    "A closing section: a title, one sentence and a row of actions, centred on a subtle surface.",
+  lead: "Five parts on a native section named by its title. The surface is the subtle background token with a large radius, so the block reads as the page's last word without a border or a colour of its own; a --loam-context region recolours the signpost inside. Media is optional: with it the words align start and the block is two columns where the container has room.",
   importLine: `import { CallToAction } from "@loamui/ui";`,
   parts: [
     {
       name: "CallToAction.Root",
       description:
-        "The section: a subtle surface with a large radius. Declares its own container so the fluid tokens answer the section's width.",
+        "The section: a subtle surface with a large radius, named by its Title unless you pass aria-label or aria-labelledby. Declares its own container so the fluid tokens answer the section's width, and renders the grid as an inner element, because an element cannot answer its own container query.",
     },
     {
       name: "CallToAction.Title",
       description:
-        "The headline. An h2 by default; pass render={<h3 />} under a page's own headings.",
+        "The headline. An h2 by default; pass render={<h3 />} under a page's own headings. It names the Root while it is present.",
     },
     {
-      name: "CallToAction.Body",
+      name: "CallToAction.Lede",
       description:
         "One sentence that says what happens next, muted and capped at a readable measure.",
     },
@@ -46,9 +46,9 @@ const callToAction: Composition = {
         "One primary path and one alternative. The signpost is a link, because starting is navigation, not an action.",
       code: `<CallToAction.Root>
   <CallToAction.Title>Start building</CallToAction.Title>
-  <CallToAction.Body>
+  <CallToAction.Lede>
     Install the package, import one stylesheet and start with any component.
-  </CallToAction.Body>
+  </CallToAction.Lede>
   <CallToAction.Actions>
     <SignpostLink href="/docs">Read the docs</SignpostLink>
     <a href="/docs/components">Browse components</a>
@@ -57,9 +57,9 @@ const callToAction: Composition = {
       render: () => (
         <CallToAction.Root>
           <CallToAction.Title>Start building</CallToAction.Title>
-          <CallToAction.Body>
+          <CallToAction.Lede>
             Install the package, import one stylesheet and start with any component.
-          </CallToAction.Body>
+          </CallToAction.Lede>
           <CallToAction.Actions>
             <SignpostLink href="/docs">Read the docs</SignpostLink>
             <a href="/docs/components">Browse components</a>
@@ -73,7 +73,7 @@ const callToAction: Composition = {
         "Add CallToAction.Media and the words align start with the media in a second column where the container is wide enough; narrower, it stacks beneath. The container decided.",
       code: `<CallToAction.Root>
   <CallToAction.Title>Take the docs with you</CallToAction.Title>
-  <CallToAction.Body>Every page has a markdown twin, and llms.txt indexes them.</CallToAction.Body>
+  <CallToAction.Lede>Every page has a markdown twin, and llms.txt indexes them.</CallToAction.Lede>
   <CallToAction.Actions>
     <SignpostLink href="/llms.txt">Open llms.txt</SignpostLink>
   </CallToAction.Actions>
@@ -84,9 +84,9 @@ const callToAction: Composition = {
       render: () => (
         <CallToAction.Root>
           <CallToAction.Title>Take the docs with you</CallToAction.Title>
-          <CallToAction.Body>
+          <CallToAction.Lede>
             Every page has a markdown twin, and llms.txt indexes them.
-          </CallToAction.Body>
+          </CallToAction.Lede>
           <CallToAction.Actions>
             <SignpostLink href="/llms.txt">Open llms.txt</SignpostLink>
           </CallToAction.Actions>
@@ -108,7 +108,7 @@ const callToAction: Composition = {
   ],
   whenNotToUse: [
     "In the middle of a page, or more than once: the block earns its surface by being the close, and a repeated call to action reads as noise.",
-    "For a choice between several equal paths: a Features grid or a list of links serves a set of options; this section carries one primary action and at most one alternative.",
+    "For a choice between several equal paths: a grid of Feature items or a list of links serves a set of options; this section carries one primary action and at most one alternative.",
   ],
 };
 

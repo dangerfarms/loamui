@@ -1,0 +1,51 @@
+/* An account form: a wrapper around a core Card, with the parts inside
+   the Card. The wrapper caps the Card at a readable width and centres it
+   in whatever holds it, and declares the container the fluid tokens
+   answer; the Card is core's, and no rule here selects it. The fence
+   starts inside the Card rather than at it, so the parts the composition
+   renders in the Card are reachable and the core Fields, Checkbox, Button,
+   ErrorSummary and Alert they hold are not. */
+@scope (.loam-AccountForm) to (.loam-Card [class*="loam-"]) {
+  /* An explicit inline-size: with auto margins alone a grid or flex parent
+     sizes the wrapper to its content, and inline-size containment makes
+     that content-size zero. */
+  :scope {
+    container-type: inline-size;
+    inline-size: 100%;
+    margin-inline: auto;
+    max-inline-size: 24rem;
+  }
+
+  .title {
+    font-size: var(--loam-text-xl);
+    margin: 0 0 var(--loam-space-lg);
+  }
+
+  /* The title's bottom margin is the gap to the form; when a description
+     sits between them it takes that gap over. */
+  .title:has(+ p.description) {
+    margin-block-end: var(--loam-space-sm);
+  }
+
+  p.description {
+    color: var(--loam-color-fg-muted);
+    margin: 0 0 var(--loam-space-lg);
+  }
+
+  form.form {
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  /* A single-cell grid, so the Button inside stretches to the card's width. */
+  div.actions {
+    display: block grid;
+  }
+
+  p.footer {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    margin: var(--loam-space-lg) 0 0;
+    text-align: center;
+  }
+}

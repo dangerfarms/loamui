@@ -21,6 +21,12 @@ export * from "./components/ErrorSummary/index";
 export * from "./components/Radio/index";
 export * from "./components/Switch/index";
 export * from "./components/Range/index";
+export * from "./components/Search/index";
+export * from "./components/QuantityInput/index";
+export * from "./components/FileInput/index";
+export * from "./components/Rating/index";
+export * from "./components/CopyButton/index";
+export * from "./components/SchemeToggle/index";
 
 // Data display
 export * from "./components/Badge/index";
@@ -28,11 +34,13 @@ export * from "./components/Separator/index";
 export * from "./components/Card/index";
 export * from "./components/Avatar/index";
 export * from "./components/Price/index";
+export * from "./components/Time/index";
 export * from "./components/Table/index";
 
 // Feedback
 export * from "./components/Alert/index";
 export * from "./components/Progress/index";
+export * from "./components/Meter/index";
 export * from "./components/Skeleton/index";
 export * from "./components/Loader/index";
 export * from "./components/Toast/index";

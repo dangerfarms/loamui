@@ -1,11 +1,11 @@
 /* One article card: the parts in their own column inside a core Card. The
    Card's surface, line, radius and padding are core's; this scope arranges
    what sits inside it. It is the unit; an index of them is the consumer's
-   grid. It hosts a Badge, an Avatar and a link, hence the donut. */
+   grid. It hosts a Badge, a link and a Byline, hence the donut. */
 @scope (.loam-ArticleCard) to ([class*="loam-"]) {
   :scope {
     /* Percentage, not min-block-size: it resolves against a Card that a
-       grid has stretched, so the author sits at the foot of every card. */
+       grid has stretched, so the byline sits at the foot of every card. */
     block-size: 100%;
     container-type: inline-size;
     display: block flex;
@@ -56,25 +56,17 @@
   }
 
   /* Clamped only where the standalone property exists; elsewhere the
-     excerpt runs its full length rather than half-applying a clamp. */
+     excerpt runs its full length rather than half-applying a clamp. The
+     auto margin takes the column's slack, so whatever follows (the Byline,
+     a scope limit this stylesheet cannot address) sits at the foot of
+     every card in a row, with a little room above it. */
   p.excerpt {
     color: var(--loam-color-fg-muted);
-    margin: 0;
+    margin-block: 0 auto;
+    padding-block-end: var(--loam-space-sm);
 
     @supports (line-clamp: 3) {
       line-clamp: 3;
     }
-  }
-
-  /* The author sits at the foot of every card, whatever the excerpt's length. */
-  p.author {
-    align-items: center;
-    color: var(--loam-color-fg-strong);
-    display: block flex;
-    font-size: var(--loam-text-sm);
-    font-weight: 600;
-    gap: var(--loam-space-sm);
-    margin-block: auto 0;
-    padding-block-start: var(--loam-space-sm);
   }
 }

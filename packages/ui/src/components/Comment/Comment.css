@@ -1,0 +1,79 @@
+/* One comment: an article named by its author, holding a byline, a body
+   and, when it has them, a row of actions and a list of replies. It is the
+   unit; a thread is the consumer's list of comments. It declares its own
+   container so the fluid tokens answer its width, and it hosts a core
+   Avatar and Time, hence the donut. */
+@scope (.loam-Comment) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-sm);
+  }
+
+  /* The byline: avatar, name and time in one wrapping row. The row sets
+     the small muted type and the core Time takes it, as a Time takes the
+     type of whatever it sits in; the name alone is set back to the body
+     size, strong. */
+  header.header {
+    align-items: center;
+    color: var(--loam-color-fg-muted);
+    display: block flex;
+    flex-wrap: wrap;
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-sm);
+  }
+
+  /* A linked name keeps its underline, so the affordance stays. */
+  .author {
+    color: var(--loam-color-fg-strong);
+    font-size: var(--loam-text-md);
+    font-weight: 600;
+  }
+
+  /* The body is rich text held to the reading measure. Blocks carry only
+     a block-end margin, so only the last one's goes; the grid gap spaces
+     what follows. */
+  div.body {
+    max-inline-size: var(--loam-measure);
+
+    > :last-child {
+      margin-block-end: 0;
+    }
+  }
+
+  div.actions {
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm);
+  }
+
+  /* The replies step in once, marked by a rule. The rule is a border, so
+     forced colours keep it in a system colour rather than dropping it. The
+     flag is inherited through the donut by every comment inside the list,
+     and a reply's own replies read it from the comment above and stay at
+     the same level: a thread that steps in at every depth soon leaves no
+     room for the words. */
+  ul.replies {
+    --_in-reply: 1;
+
+    border-inline-start: 2px solid var(--loam-color-line);
+    display: block grid;
+    gap: var(--loam-space-lg);
+    list-style: none;
+    margin: 0;
+    padding-inline-start: var(--loam-space-lg);
+
+    > li {
+      margin: 0;
+    }
+
+    @container (style(--_in-reply: 1)) {
+      border-inline-start: 0;
+      padding-inline-start: 0;
+    }
+  }
+
+  /* The rest of an action's name is real text hidden by core's
+     .loam-VisuallyHidden, which reaches inside a Button too; nothing to
+     draw here. */
+}

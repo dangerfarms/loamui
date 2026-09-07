@@ -46,13 +46,13 @@ const socialLinks: Composition = {
     {
       name: "SocialLinks.Root",
       description:
-        'A nav landmark, named "Social" unless you pass aria-label, around a ul of items. Declares its own container.',
+        'A nav landmark, named "Social" unless you pass aria-label, or aria-labelledby pointing at a heading, around a ul of items. Declares its own container.',
     },
     { name: "SocialLinks.Item", description: "One entry, an li." },
     {
       name: "SocialLinks.Link",
       description:
-        'The link. Takes a required label, the profile\'s name, and your svg as its child; rel defaults to "me".',
+        "The link. Takes a required label, the profile's name, written as real text hidden by core's .loam-VisuallyHidden, and your svg as its child, hidden from assistive technology; rel defaults to \"me\".",
     },
   ],
   demos: [

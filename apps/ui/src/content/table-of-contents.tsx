@@ -9,17 +9,18 @@ const tableOfContents: Composition = {
   category: "Blog",
   description:
     "A table of contents for the page in view: a small label over a list of links to the headings, with the current section marked.",
-  lead: 'Four parts on a native nav. The links are yours, so a static page and one that tracks the scroll position drive it the same way: write the anchors, set aria-current="location" on the section in view and the stylesheet marks it; stickiness is your CSS, not a prop.',
+  lead: 'Four parts on a native nav, named by its own Title so "On this page" is written once. The links are yours, so a static page and one that tracks the scroll position drive it the same way: write the anchors, set aria-current="location" on the section in view and the stylesheet marks it; stickiness is your CSS, not a prop.',
   importLine: `import { TableOfContents } from "@loamui/ui";`,
   parts: [
     {
       name: "TableOfContents.Root",
       description:
-        "The nav landmark. Requires an aria-label, because a page with more than one nav needs each named. Make it sticky with your own CSS if the page wants that.",
+        "The nav landmark, named by its Title, so a page with more than one nav has each named without writing the words twice. Pass aria-label only when there is no Title; an aria-labelledby you pass wins over both. Make it sticky with your own CSS if the page wants that.",
     },
     {
       name: "TableOfContents.Title",
-      description: "A small uppercase label above the list, a paragraph rather than a heading.",
+      description:
+        "A small uppercase label above the list, a paragraph rather than a heading. It carries an id (yours if you pass one) and names the nav.",
     },
     {
       name: "TableOfContents.List",
@@ -36,8 +37,8 @@ const tableOfContents: Composition = {
     {
       title: "Five headings, one nested",
       description:
-        "The current section is marked in the markup with aria-current, and the stylesheet draws its marker over the list's line. The nested list drops the line and indents its links instead, so every marker sits on the same edge.",
-      code: `<TableOfContents.Root aria-label="On this page">
+        "The current section is marked in the markup with aria-current, and the stylesheet draws its marker over the list's line. The nested list drops the line and indents its links instead, so every marker sits on the same edge. The nav takes its name from the Title, so no aria-label repeats it.",
+      code: `<TableOfContents.Root>
   <TableOfContents.Title>On this page</TableOfContents.Title>
   <TableOfContents.List>
     <TableOfContents.Item>
@@ -65,7 +66,7 @@ const tableOfContents: Composition = {
   </TableOfContents.List>
 </TableOfContents.Root>`,
       render: () => (
-        <TableOfContents.Root aria-label="On this page">
+        <TableOfContents.Root>
           <TableOfContents.Title>On this page</TableOfContents.Title>
           <TableOfContents.List>
             <TableOfContents.Item>

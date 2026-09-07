@@ -1,12 +1,19 @@
 /* A banner is a region: it declares its container so the fluid tokens
    answer the bar's width, and it hosts consumer content (a Button, a
-   link), hence the donut. */
+   link), hence the donut. The Root is only the container; the bar itself,
+   surface and row, is the inner element the Root renders, because an
+   element cannot answer its own container query. That is what lets a
+   `--loam-context` set on the Root tint the bar, the same as one set on
+   a region around it. */
 @scope (.loam-Banner) to ([class*="loam-"]) {
   :scope {
+    container-type: inline-size;
+  }
+
+  div.inner {
     align-items: center;
     background: var(--loam-color-bg-subtle);
     border-block-end: 1px solid var(--loam-color-line);
-    container-type: inline-size;
     display: block flex;
     flex-wrap: wrap;
     gap: var(--loam-space-sm) var(--loam-space-lg);
@@ -29,35 +36,35 @@
     gap: var(--loam-space-sm);
   }
 
-  /* Context: the consumer's region recolours the parts inside through the
-     tokens; the bar's own surface takes the status's soft tint as well, so
-     the whole strip reads as the status, not only the Button in it. */
+  /* Context: the region recolours the parts inside through the tokens;
+     the bar's own surface takes the status's soft tint as well, so the
+     whole strip reads as the status, not only the Button in it. */
   @container (style(--loam-context: primary)) {
-    :scope {
+    div.inner {
       background: var(--loam-color-primary-soft);
     }
   }
 
   @container (style(--loam-context: success)) {
-    :scope {
+    div.inner {
       background: var(--loam-color-success-soft);
     }
   }
 
   @container (style(--loam-context: warning)) {
-    :scope {
+    div.inner {
       background: var(--loam-color-warning-soft);
     }
   }
 
   @container (style(--loam-context: info)) {
-    :scope {
+    div.inner {
       background: var(--loam-color-info-soft);
     }
   }
 
   @container (style(--loam-context: danger)) {
-    :scope {
+    div.inner {
       background: var(--loam-color-danger-soft);
     }
   }

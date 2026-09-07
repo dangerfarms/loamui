@@ -55,4 +55,18 @@ describe("LogoWall", () => {
     expect(screen.getByRole("img", { name: "Acme" })).toBeInTheDocument();
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
+
+  it("renders as another element outside any list when asked", async () => {
+    const { container } = render(
+      <LogoWall.Item render={<div />} data-testid="logo">
+        <img src="/logos/acme.svg" alt="Acme" />
+      </LogoWall.Item>,
+    );
+    const item = screen.getByTestId("logo");
+    expect(item.tagName).toBe("DIV");
+    expect(item).toHaveClass("loam-LogoWall-item");
+    expect(container.querySelector("li")).toBeNull();
+    expect(item).toContainElement(screen.getByRole("img", { name: "Acme" }));
+    expect(await axe(container, axeOptions)).toHaveNoViolations();
+  });
 });

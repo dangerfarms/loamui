@@ -188,7 +188,7 @@ function DateInputError({ parts, className, children, ...rest }: DateInputErrorP
   if (!hasContent) return null;
   return (
     <p id={ctx.errorId} role="alert" className={cx("error", className)} {...rest}>
-      <span className="loam-Error-prefix">Error: </span>
+      <span className="loam-VisuallyHidden">Error: </span>
       {children}
     </p>
   );

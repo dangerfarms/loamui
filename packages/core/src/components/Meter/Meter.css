@@ -1,0 +1,116 @@
+/* The scope root is the native <meter> itself. `appearance: none` opts out
+   of the UA painting, so the element is the track and the vendor
+   pseudo-elements carry the fill — each browser names them differently,
+   so each gets its own rule. */
+@scope (.loam-Meter) to ([class*="loam-"]) {
+  :scope {
+    --_h: 0.625rem;
+
+    /* The browser decides the band from low/high/optimum; the CSS only
+       answers each band with a colour. Fills are the -strong family so
+       they hold 3:1 on the subtle track in both schemes. Without bands
+       every value is "optimum", and the fill IS the primary token — a
+       `--loam-context` region re-answers it (see the Contexts section of
+       tokens.css), so status needs no component code here. */
+    --_optimum: var(--loam-color-primary-strong);
+
+    /* Firefox names the band with a pseudo-class on the element, so its
+       one fill pseudo-element reads the answer from here. */
+    --_fill: var(--_optimum);
+
+    appearance: none;
+    background: var(--loam-color-bg-subtle);
+    block-size: var(--_h);
+    border: none;
+    border-radius: var(--loam-radius-full);
+    display: block flow;
+    inline-size: 100%;
+    overflow: clip;
+
+    &[data-size="sm"] {
+      --_h: 0.375rem;
+    }
+
+    &[data-size="lg"] {
+      --_h: 1rem;
+    }
+
+    /* With bands declared, the good band is a status of its own (success),
+       not the surrounding context: the bands are the meter's judgment. */
+    &:is([low], [high]) {
+      --_optimum: var(--loam-color-success-strong);
+    }
+
+    &:-moz-meter-sub-optimum {
+      --_fill: var(--loam-color-warning-strong);
+    }
+
+    &:-moz-meter-sub-sub-optimum {
+      --_fill: var(--loam-color-danger-strong);
+    }
+  }
+
+  /* ---- Track ---- */
+
+  /* Chromium and WebKit paint their own track box with a UA gradient once
+     appearance is none; make it the same surface as the element. */
+  :scope::-webkit-meter-bar {
+    background: var(--loam-color-bg-subtle);
+    block-size: 100%;
+    border: none;
+    border-radius: var(--loam-radius-full);
+  }
+
+  /* ---- Fill ---- */
+  :scope::-webkit-meter-optimum-value {
+    background: var(--_optimum);
+    block-size: 100%;
+    border-radius: var(--loam-radius-full);
+  }
+
+  :scope::-webkit-meter-suboptimum-value {
+    background: var(--loam-color-warning-strong);
+    block-size: 100%;
+    border-radius: var(--loam-radius-full);
+  }
+
+  :scope::-webkit-meter-even-less-good-value {
+    background: var(--loam-color-danger-strong);
+    block-size: 100%;
+    border-radius: var(--loam-radius-full);
+  }
+
+  :scope::-moz-meter-bar {
+    background: var(--_fill);
+    border-radius: var(--loam-radius-full);
+  }
+
+  /* Forced colors: track and fill are background-painted and would vanish.
+     Every fill rule above is one pseudo-element deep, so these win by
+     order, whichever band the value is in. */
+  @media (forced-colors: active) {
+    :scope {
+      border: 1px solid CanvasText;
+    }
+
+    :scope::-webkit-meter-optimum-value {
+      background: Highlight;
+      forced-color-adjust: none;
+    }
+
+    :scope::-webkit-meter-suboptimum-value {
+      background: Highlight;
+      forced-color-adjust: none;
+    }
+
+    :scope::-webkit-meter-even-less-good-value {
+      background: Highlight;
+      forced-color-adjust: none;
+    }
+
+    :scope::-moz-meter-bar {
+      background: Highlight;
+      forced-color-adjust: none;
+    }
+  }
+}

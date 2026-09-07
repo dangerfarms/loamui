@@ -14,8 +14,10 @@ export interface CarouselRootProps extends HTMLAttributes<HTMLElement> {
  * The track is an ordinary scroller, so it works with a wheel, a swipe, a
  * keyboard and no JavaScript; `Carousel.Controls` only adds the two
  * Buttons. Each item is a snap point that hosts whatever you put in it: a
- * Card, an image, a figure, a quote. Smooth scrolling is opt-in via the
- * reader's motion preference.
+ * Card, an image, a figure, a quote. Items share one width, the public
+ * `--loam-carousel-item-size` (20rem by default, never wider than the
+ * track), set on the Root. Smooth scrolling is opt-in via the reader's
+ * motion preference.
  *
  * ```tsx
  * <Carousel.Root aria-labelledby="guides">
@@ -48,10 +50,16 @@ export interface CarouselTrackProps extends HTMLAttributes<HTMLUListElement> {
   ref?: Ref<HTMLUListElement>;
 }
 
-/** The scroller: a column grid with inline scroll snapping. Controls page it by one width. */
+/**
+ * The scroller: a `ul` laid out as a column grid with inline scroll
+ * snapping. Controls page it by one width.
+ */
 function CarouselTrack({ className, children, ref, ...rest }: CarouselTrackProps) {
   return (
-    <ul ref={ref} className={cx("track", className)} {...rest}>
+    // role="list" is not redundant here: the stylesheet strips the markers,
+    // and a list styled with list-style: none loses its list semantics in
+    // some browsers; the explicit role keeps the count announced.
+    <ul ref={ref} role="list" className={cx("track", className)} {...rest}>
       {children}
     </ul>
   );
@@ -62,7 +70,7 @@ export interface CarouselItemProps extends HTMLAttributes<HTMLLIElement> {
   ref?: Ref<HTMLLIElement>;
 }
 
-/** One item: a snap point that hosts your content, a Card, an image, a figure or a quote. */
+/** One item, an `li`: a snap point that hosts your content, a Card, an image, a figure or a quote. */
 function CarouselItem({ className, children, ref, ...rest }: CarouselItemProps) {
   return (
     <li ref={ref} className={className} {...rest}>

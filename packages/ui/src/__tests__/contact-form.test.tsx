@@ -9,34 +9,26 @@ afterEach(cleanup);
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };
 
 describe("ContactForm", () => {
-  it("renders a form of labelled controls with no axe violations", async () => {
+  it("renders one column of labelled controls with no axe violations", async () => {
     const { container } = render(
       <ContactForm.Root action="/contact" aria-label="Contact us">
-        <ContactForm.Fields>
-          <ContactForm.Row>
-            <Field.Root>
-              <Field.Label>First name</Field.Label>
-              <Input name="given-name" autoComplete="given-name" required />
-            </Field.Root>
-            <Field.Root>
-              <Field.Label>Last name</Field.Label>
-              <Input name="family-name" autoComplete="family-name" required />
-            </Field.Root>
-          </ContactForm.Row>
-          <Field.Root>
-            <Field.Label>Email address</Field.Label>
-            <Field.Description>We'll only use this to reply.</Field.Description>
-            <Input name="email" type="email" autoComplete="email" required />
-          </Field.Root>
-          <Field.Root>
-            <Field.Label optional>Company</Field.Label>
-            <Input name="organization" autoComplete="organization" />
-          </Field.Root>
-          <Field.Root>
-            <Field.Label>Message</Field.Label>
-            <Textarea name="message" rows={5} required />
-          </Field.Root>
-        </ContactForm.Fields>
+        <Field.Root>
+          <Field.Label>Full name</Field.Label>
+          <Input name="name" autoComplete="name" required />
+        </Field.Root>
+        <Field.Root>
+          <Field.Label>Email address</Field.Label>
+          <Field.Description>We'll only use this to reply.</Field.Description>
+          <Input name="email" type="email" autoComplete="email" required />
+        </Field.Root>
+        <Field.Root>
+          <Field.Label optional>Company</Field.Label>
+          <Input name="organization" autoComplete="organization" />
+        </Field.Root>
+        <Field.Root>
+          <Field.Label>Message</Field.Label>
+          <Textarea name="message" rows={5} required />
+        </Field.Root>
         <ContactForm.Actions>
           <Button type="submit">Send message</Button>
         </ContactForm.Actions>
@@ -45,8 +37,9 @@ describe("ContactForm", () => {
     const form = screen.getByRole("form", { name: "Contact us" });
     expect(form).toHaveClass("loam-ContactForm");
     expect(form).toHaveAttribute("action", "/contact");
-    expect(screen.getByLabelText("First name")).toHaveAttribute("autocomplete", "given-name");
-    expect(screen.getByLabelText("Last name")).toBeInTheDocument();
+    // The fields are the form's direct children: nothing wraps or pairs them.
+    expect(form.querySelectorAll(":scope > .loam-Field")).toHaveLength(4);
+    expect(screen.getByLabelText("Full name")).toHaveAttribute("autocomplete", "name");
     expect(screen.getByLabelText("Email address")).toHaveAccessibleDescription(
       "We'll only use this to reply.",
     );
@@ -59,15 +52,13 @@ describe("ContactForm", () => {
   it("marks a field invalid when a Field.Error is rendered before its control", async () => {
     const { container } = render(
       <ContactForm.Root aria-label="Contact us" noValidate>
-        <ContactForm.Fields>
-          <Field.Root>
-            <Field.Label>Email address</Field.Label>
-            <Field.Error>
-              Enter an email address in the correct format, like name@example.com
-            </Field.Error>
-            <Input name="email" type="email" defaultValue="sam.okafor" />
-          </Field.Root>
-        </ContactForm.Fields>
+        <Field.Root>
+          <Field.Label>Email address</Field.Label>
+          <Field.Error>
+            Enter an email address in the correct format, like name@example.com
+          </Field.Error>
+          <Input name="email" type="email" defaultValue="sam.okafor" />
+        </Field.Root>
         <ContactForm.Actions>
           <Button type="submit">Send message</Button>
         </ContactForm.Actions>

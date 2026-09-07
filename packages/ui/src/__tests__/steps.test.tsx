@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from "vitest";
+import { describe, it, expect, afterEach, vi } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { axe } from "vitest-axe";
 import { Steps } from "../index";
@@ -34,6 +34,18 @@ describe("Steps", () => {
     expect(container.querySelectorAll("ol > li")).toHaveLength(3);
     expect(screen.getAllByRole("heading", { level: 3 })).toHaveLength(3);
     expect(await axe(container, axeOptions)).toHaveNoViolations();
+  });
+
+  it("refuses an Item outside a Root, which is the list it is a step of", () => {
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    expect(() =>
+      render(
+        <Steps.Item>
+          <Steps.Title>Orphan</Steps.Title>
+        </Steps.Item>,
+      ),
+    ).toThrow("Steps.Item must be rendered inside <Steps.Root>.");
+    error.mockRestore();
   });
 
   it("renders the title as the heading the page needs", () => {

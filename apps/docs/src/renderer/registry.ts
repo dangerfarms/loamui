@@ -15,10 +15,17 @@ import errorsummary from "@/content/components/error-summary";
 import radio from "@/content/components/radio";
 import switchDoc from "@/content/components/switch";
 import range from "@/content/components/range";
+import search from "@/content/components/search";
+import quantityInput from "@/content/components/quantity-input";
+import rating from "@/content/components/rating";
+import fileInput from "@/content/components/file-input";
+import copyButton from "@/content/components/copy-button";
+import schemeToggle from "@/content/components/scheme-toggle";
 
 // Data display
 import badge from "@/content/components/badge";
 import price from "@/content/components/price";
+import time from "@/content/components/time";
 import card from "@/content/components/card";
 import avatar from "@/content/components/avatar";
 import table from "@/content/components/table";
@@ -26,6 +33,7 @@ import table from "@/content/components/table";
 // Feedback
 import alert from "@/content/components/alert";
 import progress from "@/content/components/progress";
+import meter from "@/content/components/meter";
 import skeleton from "@/content/components/skeleton";
 import loader from "@/content/components/loader";
 import toast from "@/content/components/toast";
@@ -62,13 +70,21 @@ const content: ComponentContent[] = [
   radio,
   switchDoc,
   range,
+  search,
+  quantityInput,
+  rating,
+  fileInput,
+  copyButton,
+  schemeToggle,
   badge,
   price,
+  time,
   card,
   avatar,
   table,
   alert,
   progress,
+  meter,
   skeleton,
   loader,
   toast,

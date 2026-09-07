@@ -40,7 +40,7 @@ describe("SocialLinks", () => {
       const link = screen.getByRole("link", { name: label });
       expect(link.getAttribute("rel")?.split(" ")).toContain("me");
       expect(link).not.toHaveAttribute("aria-label");
-      expect(link.querySelector("span.label")).toHaveTextContent(label);
+      expect(link.querySelector("span.loam-VisuallyHidden")).toHaveTextContent(label);
       expect(link.querySelector("svg")!.closest('[aria-hidden="true"]')).not.toBeNull();
     }
     expect(await axe(container, axeOptions)).toHaveNoViolations();
@@ -58,5 +58,23 @@ describe("SocialLinks", () => {
     );
     expect(screen.getByRole("navigation", { name: "Follow Priya" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Mastodon" })).toHaveAttribute("rel", "external");
+  });
+
+  it("yields its default name to a consumer's aria-labelledby", () => {
+    render(
+      <>
+        <h2 id="follow">Follow us</h2>
+        <SocialLinks.Root aria-labelledby="follow">
+          <SocialLinks.Item>
+            <SocialLinks.Link href="https://github.com/loamui" label="GitHub">
+              <Icon />
+            </SocialLinks.Link>
+          </SocialLinks.Item>
+        </SocialLinks.Root>
+      </>,
+    );
+    const nav = screen.getByRole("navigation", { name: "Follow us" });
+    expect(nav).not.toHaveAttribute("aria-label");
+    expect(nav).toHaveAttribute("aria-labelledby", "follow");
   });
 });

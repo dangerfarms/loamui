@@ -232,6 +232,16 @@ for (const scheme of ["light", "dark"]) {
     check(`${status}-strong text on bg`, scheme, t(`--loam-color-${status}-strong`), t("--loam-color-bg"), 4.5);
     check(`${status}-strong text on surface`, scheme, t(`--loam-color-${status}-strong`), t("--loam-color-surface"), 4.5);
   }
+  // Fills and edges on the subtle surface: Meter and Progress tracks, the
+  // SchemeToggle's chosen option, FileInput's drop zone; and the accent as a
+  // glyph on a Card (Rating in a ProductCard).
+  for (const status of ["primary", "success", "danger", "warning", "info"]) {
+    check(`${status}-strong fill on bg-subtle`, scheme, t(`--loam-color-${status}-strong`), t("--loam-color-bg-subtle"), 3.0);
+  }
+  check("line-strong on bg-subtle", scheme, t("--loam-color-line-strong"), t("--loam-color-bg-subtle"), 3.0);
+  check("text-muted on bg-subtle", scheme, t("--loam-color-fg-muted"), t("--loam-color-bg-subtle"), 4.5);
+  check("primary-strong edge on primary-soft", scheme, t("--loam-color-primary-strong"), t("--loam-color-primary-soft"), 3.0);
+  check("accent glyph on surface", scheme, t("--loam-color-accent"), t("--loam-color-surface"), 3.0);
   check("fill text on primary-strong", scheme, t("--loam-color-on-strong"), t("--loam-color-primary-strong"), 4.5);
   check("fill text on success-strong", scheme, t("--loam-color-on-strong"), t("--loam-color-success-strong"), 4.5);
   check("fill text on danger-strong", scheme, t("--loam-color-on-strong"), t("--loam-color-danger-strong"), 4.5);

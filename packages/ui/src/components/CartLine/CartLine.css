@@ -1,0 +1,113 @@
+/* One line of a basket: a thumbnail beside a column of name, options and
+   quantity, with the total, its unit price and the remove action in an end
+   column. It is the unit; a basket is the consumer's list. It declares its
+   own container so the layout answers its width, and it hosts a link, a
+   Field holding a core QuantityInput and a core Button, hence the donut:
+   those parts keep core's styling and this scope only places their slots.
+   Every part has a named area, so a line written without one of them
+   leaves nothing behind; the rows carry no gap and each lower part brings
+   its own top margin, so an empty area costs no space. */
+@scope (.loam-CartLine) to ([class*="loam-"]) {
+  :scope {
+    align-items: start;
+
+    /* The separator is a border, so it survives forced colours (the colour
+       is forced to CanvasText, the line stays); nothing here is painted as
+       a background. */
+    border-block-end: 1px solid var(--loam-color-line);
+    column-gap: var(--loam-space-md);
+    container-type: inline-size;
+    display: block grid;
+    grid-template-areas:
+      "media title value"
+      "media description note"
+      "media control actions";
+    grid-template-columns: auto 1fr auto;
+    padding-block: var(--loam-space-md);
+  }
+
+  div.media {
+    grid-area: media;
+
+    img {
+      aspect-ratio: 1;
+      block-size: auto;
+      border-radius: var(--loam-radius-md);
+      display: block flow;
+      inline-size: 5rem;
+      object-fit: cover;
+    }
+  }
+
+  /* The name is the link and keeps the heading's colour; the underline
+     stays, since the row holds a control the link must read apart from. */
+  .title {
+    font-size: var(--loam-text-md);
+    grid-area: title;
+    margin: 0;
+
+    a {
+      color: inherit;
+    }
+  }
+
+  p.description {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    grid-area: description;
+    margin: 0;
+    margin-block-start: var(--loam-space-xs);
+  }
+
+  div.control {
+    grid-area: control;
+    margin-block-start: var(--loam-space-sm);
+  }
+
+  /* The total sits beside the name, at the end, and the note under it in
+     the small muted text; the remove action ends the last row beneath. */
+  div.value {
+    font-weight: 600;
+    grid-area: value;
+    justify-self: end;
+  }
+
+  p.note {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    grid-area: note;
+    justify-self: end;
+    margin: 0;
+    margin-block-start: var(--loam-space-xs);
+  }
+
+  div.actions {
+    grid-area: actions;
+    justify-self: end;
+    margin-block-start: var(--loam-space-sm);
+  }
+
+  /* Narrow: the end column folds under the text, total and note back at
+     the start, and the control and the remove action share the last row.
+     The query lives on the parts because a container query is answered by
+     an ancestor, never by the root that declares it. */
+  @container (inline-size < 30rem) {
+    :scope {
+      grid-template-areas:
+        "media title title"
+        "media description description"
+        "media value value"
+        "media note note"
+        "media control actions";
+    }
+
+    div.value,
+    p.note {
+      justify-self: start;
+    }
+
+    div.value {
+      margin-block-start: var(--loam-space-xs);
+    }
+  }
+}
