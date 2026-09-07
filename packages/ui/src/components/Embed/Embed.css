@@ -1,0 +1,37 @@
+/* The figure: a container so the frame is sized by its own width, and a
+   stack of frame then caption. It hosts consumer content in the caption,
+   hence the donut. */
+@scope (.loam-Embed) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-sm);
+    margin: 0;
+  }
+
+  /* The frame is sized by ratio before it loads, so the page never shifts
+     when it does. --loam-embed-ratio is public: set it on the Root for a
+     map (4 / 3) or a square. The subtle background is the frame's footprint
+     in the meantime. */
+  iframe.frame {
+    aspect-ratio: var(--loam-embed-ratio, 16 / 9);
+    background: var(--loam-color-bg-subtle);
+    block-size: auto;
+    border: 0;
+    border-radius: var(--loam-radius-md);
+    display: block flow;
+    inline-size: 100%;
+
+    /* Forced colours drop the background, so the footprint would vanish
+       until the frame loads; a border in the text colour keeps it. */
+    @media (forced-colors: active) {
+      border: 1px solid CanvasText;
+    }
+  }
+
+  /* Colour and size come from the element styles for figcaption; only its
+     margin goes, since the grid gap already spaces it. */
+  figcaption.caption {
+    margin-block-start: 0;
+  }
+}

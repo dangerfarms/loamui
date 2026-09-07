@@ -148,6 +148,13 @@ export const MANIFEST: CompositionMeta[] = [
     description:
       "A before/after comparison: two images in one frame, the second revealed by a slider.",
   },
+  {
+    slug: "embed",
+    name: "Embed",
+    category: "Page sections",
+    description:
+      "A third-party frame in the page: a video, a map, sized before it loads and named for assistive technology.",
+  },
 ];
 
 export function metaBySlug(slug: string): CompositionMeta | undefined {

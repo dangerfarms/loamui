@@ -41,6 +41,13 @@
   },
   "ignorePatterns": ["dist", ".next", ".turbo", "node_modules", "storybook-static"],
   "overrides": [
+    // A sandbox permissive enough for a video or map player is no sandbox; the consumer passes one for untrusted sources.
+    {
+      "files": ["**/Embed/Embed.tsx"],
+      "rules": {
+        "react/iframe-missing-sandbox": "off"
+      }
+    },
     // list-style: none drops list semantics in some browsers; role="list" restores them on the figure grid.
     {
       "files": ["**/Gallery/GalleryList.tsx"],

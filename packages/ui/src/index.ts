@@ -20,3 +20,4 @@ export * from "./components/Steps/index";
 export * from "./components/LogoWall/index";
 export * from "./components/Gallery/index";
 export * from "./components/ImageComparison/index";
+export * from "./components/Embed/index";
