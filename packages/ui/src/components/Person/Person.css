@@ -1,0 +1,25 @@
+/* One person: a centred column of avatar, name and role. It is the unit; a
+   team is the consumer's grid. It declares its own container so the fluid
+   tokens answer its width, and it hosts a core Avatar, hence the donut. */
+@scope (.loam-Person) to ([class*="loam-"]) {
+  :scope {
+    align-items: center;
+    container-type: inline-size;
+    display: block flex;
+    flex-direction: column;
+    gap: var(--loam-space-xs);
+    margin: 0;
+    text-align: center;
+  }
+
+  .name {
+    font-size: var(--loam-text-lg);
+    margin-block: var(--loam-space-sm) 0;
+  }
+
+  p.role {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    margin: 0;
+  }
+}

@@ -10,7 +10,7 @@ import page from "@/app/[slug]/page.module.css";
 import hero from "./hero";
 import table_of_contents from "./table-of-contents";
 import article_cards from "./article-cards";
-import team from "./team";
+import person from "./person";
 import error_page from "./error-page";
 import sign_in from "./sign-in";
 import contact_form from "./contact-form";
@@ -31,7 +31,7 @@ const COMPOSITIONS: Composition[] = [
   carousel,
   call_to_action,
   banner,
-  team,
+  person,
   error_page,
   contact_form,
   sign_in,

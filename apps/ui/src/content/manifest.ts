@@ -101,10 +101,10 @@ export const MANIFEST: CompositionMeta[] = [
       "An error page: the status code, a title that says what happened, a line on what to do next and a row of ways out.",
   },
   {
-    slug: "team",
-    name: "Team",
+    slug: "person",
+    name: "Person",
     category: "Page sections",
-    description: "A grid of team members, each an avatar over a name and a role.",
+    description: "One person: an avatar over a name and a role, alone or in a grid you write.",
   },
   {
     slug: "article-cards",
