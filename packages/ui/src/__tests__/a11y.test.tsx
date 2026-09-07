@@ -28,6 +28,19 @@ describe("Hero", () => {
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 
+  it("hosts media beside the text with no axe violations", async () => {
+    const { container } = render(
+      <Hero.Root>
+        <Hero.Title>With a picture</Hero.Title>
+        <Hero.Media>
+          <img src="/hero.png" alt="A desk with component sheets" width="1200" height="800" />
+        </Hero.Media>
+      </Hero.Root>,
+    );
+    expect(container.querySelector(".loam-Hero > div.media > img")).toHaveAttribute("alt");
+    expect(await axe(container, axeOptions)).toHaveNoViolations();
+  });
+
   it("renders the title as an h2 when asked", () => {
     render(
       <Hero.Root>

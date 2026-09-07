@@ -8,10 +8,15 @@ export interface HeroRootProps extends HTMLAttributes<HTMLElement> {
 }
 
 /**
- * A page-opening section: eyebrow, title, lede and a row of actions.
+ * A page-opening section: eyebrow, title, lede, a row of actions and,
+ * when the page has one, a piece of media beside them.
  *
  * Compose it from parts; the section's look comes from the element styles
  * and tokens, and a `--loam-context` region recolours the parts inside.
+ * `Hero.Media` hosts whatever the page opens with: an image, a video, a
+ * Carousel. With it the hero becomes two columns where there is room and
+ * stacks where there is not; without it the text runs alone. There is no
+ * layout prop: the container decides.
  *
  * ```tsx
  * <Hero.Root>
@@ -89,10 +94,23 @@ function HeroActions({ className, children, ...rest }: HeroPartProps) {
   );
 }
 
+/**
+ * What the page opens with: an image, a video, a Carousel. Optional; when
+ * present the hero becomes two columns where the container has room.
+ */
+function HeroMedia({ className, children, ...rest }: HeroPartProps) {
+  return (
+    <div className={cx("media", className)} {...rest}>
+      {children}
+    </div>
+  );
+}
+
 export const Hero = {
   Root: HeroRoot,
   Eyebrow: HeroEyebrow,
   Title: HeroTitle,
   Lede: HeroLede,
   Actions: HeroActions,
+  Media: HeroMedia,
 };

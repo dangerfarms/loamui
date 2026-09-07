@@ -33,4 +33,37 @@
     flex-wrap: wrap;
     gap: var(--loam-space-lg);
   }
+
+  /* Media takes the hero's width and keeps its own ratio; a Carousel
+     inside is fenced by the donut and styles itself. */
+  div.media {
+    inline-size: 100%;
+
+    > img,
+    > video {
+      block-size: auto;
+      border-radius: var(--loam-radius-lg);
+      display: block flow;
+      inline-size: 100%;
+    }
+  }
+
+  /* With media and room for it, two columns: the text stacks in the
+     first, the media spans the second. Without either, nothing changes.
+     The container decides; there is no layout prop. */
+  @container (inline-size >= 48rem) {
+    :scope:has(> div.media) {
+      align-items: center;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+
+      > :not(div.media) {
+        grid-column: 1;
+      }
+
+      > div.media {
+        grid-column: 2;
+        grid-row: 1 / span 10;
+      }
+    }
+  }
 }
