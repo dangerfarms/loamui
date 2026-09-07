@@ -141,6 +141,13 @@ export const MANIFEST: CompositionMeta[] = [
     description:
       "A grid of figures, each an image that opens larger: a real link to the full-size file, a lightbox once JavaScript arrives.",
   },
+  {
+    slug: "image-comparison",
+    name: "Image comparison",
+    category: "Page sections",
+    description:
+      "A before/after comparison: two images in one frame, the second revealed by a slider.",
+  },
 ];
 
 export function metaBySlug(slug: string): CompositionMeta | undefined {
