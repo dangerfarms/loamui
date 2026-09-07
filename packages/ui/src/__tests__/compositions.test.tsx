@@ -3,7 +3,7 @@ import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "vitest-axe";
 import { Avatar, Button } from "@loamui/core";
-import { Header, Footer, Stats, Testimonials, Features } from "../index";
+import { Header, Footer, Stats, Testimonials, Feature } from "../index";
 
 afterEach(cleanup);
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };
@@ -123,24 +123,34 @@ describe("Testimonials", () => {
   });
 });
 
-describe("Features", () => {
-  it("renders a list of titled tiles with hidden icons", async () => {
+describe("Feature", () => {
+  it("is a tile with a titled, hidden-icon anatomy that stands alone", async () => {
     const { container } = render(
-      <Features.Root aria-labelledby="why">
-        <h2 id="why">Why LoamUI</h2>
-        <Features.Grid>
-          <Features.Item>
-            <Features.Icon>
-              <svg viewBox="0 0 16 16" />
-            </Features.Icon>
-            <Features.Title>Three primitives</Features.Title>
-            <Features.Body>Tokens, element styles and components.</Features.Body>
-          </Features.Item>
-        </Features.Grid>
-      </Features.Root>,
+      <Feature.Root>
+        <Feature.Icon>
+          <svg viewBox="0 0 16 16" />
+        </Feature.Icon>
+        <Feature.Title>Three primitives</Feature.Title>
+        <Feature.Description>Tokens, element styles and components.</Feature.Description>
+      </Feature.Root>,
     );
+    expect(container.firstElementChild).toHaveClass("loam-Feature");
     expect(screen.getByRole("heading", { level: 3 })).toHaveTextContent("Three primitives");
-    expect(container.querySelector(".loam-Features .icon")).toHaveAttribute("aria-hidden", "true");
+    expect(container.querySelector(".loam-Feature .icon")).toHaveAttribute("aria-hidden", "true");
+    expect(await axe(container, axeOptions)).toHaveNoViolations();
+  });
+
+  it("renders as a list item inside a list the consumer wrote", async () => {
+    const { container } = render(
+      <ul>
+        <Feature.Root render={<li />}>
+          <Feature.Title render={<h4 />}>In a list</Feature.Title>
+          <Feature.Description>Rendered as a li, titled as an h4.</Feature.Description>
+        </Feature.Root>
+      </ul>,
+    );
+    expect(screen.getByRole("listitem")).toHaveClass("loam-Feature");
+    expect(screen.getByRole("heading", { level: 4 })).toHaveTextContent("In a list");
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 });

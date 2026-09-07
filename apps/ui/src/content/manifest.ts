@@ -53,11 +53,11 @@ export const MANIFEST: CompositionMeta[] = [
       "A scroll-snap carousel of quotes, each in a Card, with a pair of Buttons that page through it.",
   },
   {
-    slug: "features",
-    name: "Features",
+    slug: "feature",
+    name: "Feature",
     category: "Page sections",
     description:
-      "A grid of feature tiles: an icon, a title and a line of body text, separated by space alone.",
+      "One feature: an icon, a title and a line on what it does, alone or in a grid you write.",
   },
   {
     slug: "carousel",
