@@ -9,8 +9,8 @@ const callToAction: Composition = {
   name: "Call to action",
   category: "Page sections",
   description:
-    "A closing section: a title, one sentence and a row of actions, centred on a subtle surface.",
-  lead: "Four parts on a native section. The surface is the subtle background token with a large radius, so the block reads as the page's last word without a border or a colour of its own; a --loam-context region recolours the signpost inside.",
+    "A closing section: a title, one sentence and a row of actions on a subtle surface, alone or beside media.",
+  lead: "Five parts on a native section. The surface is the subtle background token with a large radius, so the block reads as the page's last word without a border or a colour of its own; a --loam-context region recolours the signpost inside. Media is optional: with it the words align start and the block is two columns where the container has room.",
   importLine: `import { CallToAction } from "@loamui/ui";`,
   parts: [
     {
@@ -32,6 +32,11 @@ const callToAction: Composition = {
       name: "CallToAction.Actions",
       description:
         "A centred, wrapping flex row: a SignpostLink for the primary path, a plain link beside it.",
+    },
+    {
+      name: "CallToAction.Media",
+      description:
+        "Optional. What sits beside the words: an image, a row of store badges, a ContactForm. With it the block is two columns where there is room.",
     },
   ],
   demos: [
@@ -59,6 +64,40 @@ const callToAction: Composition = {
             <SignpostLink href="/docs">Read the docs</SignpostLink>
             <a href="/docs/components">Browse components</a>
           </CallToAction.Actions>
+        </CallToAction.Root>
+      ),
+    },
+    {
+      title: "Beside media",
+      description:
+        "Add CallToAction.Media and the words align start with the media in a second column where the container is wide enough; narrower, it stacks beneath. The container decided.",
+      code: `<CallToAction.Root>
+  <CallToAction.Title>Take the docs with you</CallToAction.Title>
+  <CallToAction.Body>Every page has a markdown twin, and llms.txt indexes them.</CallToAction.Body>
+  <CallToAction.Actions>
+    <SignpostLink href="/llms.txt">Open llms.txt</SignpostLink>
+  </CallToAction.Actions>
+  <CallToAction.Media>
+    <img src="https://picsum.photos/seed/loam-cta/800/600" alt="A printed page of documentation" width="800" height="600" />
+  </CallToAction.Media>
+</CallToAction.Root>`,
+      render: () => (
+        <CallToAction.Root>
+          <CallToAction.Title>Take the docs with you</CallToAction.Title>
+          <CallToAction.Body>
+            Every page has a markdown twin, and llms.txt indexes them.
+          </CallToAction.Body>
+          <CallToAction.Actions>
+            <SignpostLink href="/llms.txt">Open llms.txt</SignpostLink>
+          </CallToAction.Actions>
+          <CallToAction.Media>
+            <img
+              src="https://picsum.photos/seed/loam-cta/800/600"
+              alt="A printed page of documentation"
+              width="800"
+              height="600"
+            />
+          </CallToAction.Media>
         </CallToAction.Root>
       ),
     },

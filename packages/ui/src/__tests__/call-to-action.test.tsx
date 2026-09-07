@@ -30,6 +30,19 @@ describe("CallToAction", () => {
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 
+  it("hosts media beside the words with no axe violations", async () => {
+    const { container } = render(
+      <CallToAction.Root>
+        <CallToAction.Title>Take the docs with you</CallToAction.Title>
+        <CallToAction.Media>
+          <img src="/docs.png" alt="A printed page of documentation" width="800" height="600" />
+        </CallToAction.Media>
+      </CallToAction.Root>,
+    );
+    expect(container.querySelector(".loam-CallToAction > div.media > img")).toHaveAttribute("alt");
+    expect(await axe(container, axeOptions)).toHaveNoViolations();
+  });
+
   it("renders the title as an h3 when asked", () => {
     render(
       <CallToAction.Root>

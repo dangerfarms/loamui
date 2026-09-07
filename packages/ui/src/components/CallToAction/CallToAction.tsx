@@ -8,13 +8,16 @@ export interface CallToActionRootProps extends HTMLAttributes<HTMLElement> {
 }
 
 /**
- * A closing section: a title, one sentence and a row of actions, centred
- * on a subtle surface.
+ * A closing section: a title, one sentence and a row of actions on a
+ * subtle surface, centred, or beside a piece of media when there is one.
  *
  * The surface is the subtle background token with a large radius, so the
  * block reads as the page's last word without a border or a colour of its
  * own. A `--loam-context` region recolours the SignpostLink or Button
- * inside.
+ * inside. `CallToAction.Media` is optional: an image, an app-store badge
+ * row, a ContactForm; with it the text aligns start and the block becomes
+ * two columns where the container has room. No layout prop: the container
+ * decides.
  *
  * ```tsx
  * <CallToAction.Root>
@@ -90,9 +93,27 @@ function CallToActionActions({ className, children, ref, ...rest }: CallToAction
   );
 }
 
+export interface CallToActionMediaProps extends HTMLAttributes<HTMLDivElement> {
+  children?: ReactNode;
+  ref?: Ref<HTMLDivElement>;
+}
+
+/**
+ * Optional: what sits beside the words. An image, a row of store badges,
+ * a ContactForm. With it the block is two columns where there is room.
+ */
+function CallToActionMedia({ className, children, ref, ...rest }: CallToActionMediaProps) {
+  return (
+    <div ref={ref} className={cx("media", className)} {...rest}>
+      {children}
+    </div>
+  );
+}
+
 export const CallToAction = {
   Root: CallToActionRoot,
   Title: CallToActionTitle,
   Body: CallToActionBody,
   Actions: CallToActionActions,
+  Media: CallToActionMedia,
 };

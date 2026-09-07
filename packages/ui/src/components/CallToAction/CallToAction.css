@@ -33,4 +33,44 @@
     gap: var(--loam-space-lg);
     justify-content: center;
   }
+
+  div.media {
+    inline-size: 100%;
+
+    > img,
+    > video {
+      block-size: auto;
+      border-radius: var(--loam-radius-md);
+      display: block flow;
+      inline-size: 100%;
+    }
+  }
+
+  /* With media the words align start and, where the container has room,
+     the block is two columns with the media in the second. The container
+     decides; there is no layout prop. */
+  :scope:has(> div.media) {
+    justify-items: start;
+    text-align: start;
+
+    div.actions {
+      justify-content: start;
+    }
+  }
+
+  @container (inline-size >= 40rem) {
+    :scope:has(> div.media) {
+      align-items: center;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+
+      > :not(div.media) {
+        grid-column: 1;
+      }
+
+      > div.media {
+        grid-column: 2;
+        grid-row: 1 / span 10;
+      }
+    }
+  }
 }

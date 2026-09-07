@@ -4,4 +4,5 @@ export type {
   CallToActionTitleProps,
   CallToActionBodyProps,
   CallToActionActionsProps,
+  CallToActionMediaProps,
 } from "./CallToAction";
