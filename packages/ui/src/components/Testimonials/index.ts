@@ -1,9 +1,9 @@
 export { Testimonials } from "./Testimonials";
 export type {
   TestimonialsRootProps,
-  TestimonialsTrackProps,
   TestimonialsItemProps,
   TestimonialsQuoteProps,
   TestimonialsAuthorProps,
 } from "./Testimonials";
-export type { TestimonialsControlsProps } from "../Carousel/CarouselControls";
+export type { CarouselTrackProps as TestimonialsTrackProps } from "../Carousel/Carousel";
+export type { CarouselControlsProps as TestimonialsControlsProps } from "../Carousel/CarouselControls";

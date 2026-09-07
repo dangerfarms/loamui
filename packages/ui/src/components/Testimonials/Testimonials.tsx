@@ -1,19 +1,18 @@
 import type { BlockquoteHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
 import { Card, cx } from "@loamui/core";
-import { TestimonialsControls } from "../Carousel/CarouselControls";
+import { Carousel } from "../Carousel/Carousel";
+import type { CarouselItemProps, CarouselRootProps } from "../Carousel/Carousel";
+import { CarouselControls } from "../Carousel/CarouselControls";
 
-export interface TestimonialsRootProps extends HTMLAttributes<HTMLElement> {
-  children?: ReactNode;
-  ref?: Ref<HTMLElement>;
-}
+export type TestimonialsRootProps = CarouselRootProps;
 
 /**
- * A testimonials section: a scroll-snap carousel of quotes, each in a Card,
- * with a pair of Buttons that page through it.
+ * A testimonials section: a Carousel of quotes, each in a Card.
  *
- * The track is an ordinary scroller, so it works with a wheel, a swipe, a
- * keyboard and no JavaScript; `Testimonials.Controls` only adds the two
- * Buttons. Smooth scrolling is opt-in via the reader's motion preference.
+ * Root, Track and Controls are the Carousel's own, so the track is an
+ * ordinary scroll-snap list that works with a wheel, a swipe, a keyboard
+ * and no JavaScript. What Testimonials adds is the item: a Card with a
+ * quote and its author laid out inside it.
  *
  * ```tsx
  * <Testimonials.Root>
@@ -30,39 +29,20 @@ export interface TestimonialsRootProps extends HTMLAttributes<HTMLElement> {
  * </Testimonials.Root>
  * ```
  */
-function TestimonialsRoot({ className, children, ref, ...rest }: TestimonialsRootProps) {
+function TestimonialsRoot({ className, ...rest }: TestimonialsRootProps) {
+  return <Carousel.Root className={cx("loam-Testimonials", className)} {...rest} />;
+}
+
+export type TestimonialsItemProps = CarouselItemProps;
+
+/** One testimonial: a Carousel item wrapping a Card, with the quote and author in a column inside it. */
+function TestimonialsItem({ children, ...rest }: TestimonialsItemProps) {
   return (
-    <section ref={ref} className={cx("loam-Testimonials", className)} {...rest}>
-      {children}
-    </section>
-  );
-}
-
-export interface TestimonialsTrackProps extends HTMLAttributes<HTMLUListElement> {
-  children?: ReactNode;
-  ref?: Ref<HTMLUListElement>;
-}
-
-/** The scroller: a column grid with inline scroll snapping. Controls page it by one width. */
-function TestimonialsTrack({ className, children, ref, ...rest }: TestimonialsTrackProps) {
-  return (
-    <ul ref={ref} className={cx("track", className)} {...rest}>
-      {children}
-    </ul>
-  );
-}
-
-export interface TestimonialsItemProps extends HTMLAttributes<HTMLLIElement> {
-  children?: ReactNode;
-  ref?: Ref<HTMLLIElement>;
-}
-
-/** One testimonial: a snap point wrapping a Card. */
-function TestimonialsItem({ className, children, ref, ...rest }: TestimonialsItemProps) {
-  return (
-    <li ref={ref} className={className} {...rest}>
-      <Card className="loam-Testimonials-item">{children}</Card>
-    </li>
+    <Carousel.Item {...rest}>
+      <Card>
+        <div className="loam-Testimonials-item">{children}</div>
+      </Card>
+    </Carousel.Item>
   );
 }
 
@@ -96,9 +76,9 @@ function TestimonialsAuthor({ className, children, ref, ...rest }: TestimonialsA
 
 export const Testimonials = {
   Root: TestimonialsRoot,
-  Track: TestimonialsTrack,
+  Track: Carousel.Track,
   Item: TestimonialsItem,
   Quote: TestimonialsQuote,
   Author: TestimonialsAuthor,
-  Controls: TestimonialsControls,
+  Controls: CarouselControls,
 };
