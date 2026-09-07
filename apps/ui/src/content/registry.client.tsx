@@ -48,6 +48,12 @@ const COMPOSITIONS: Composition[] = [
   article_card,
   table_of_contents,
   steps,
+  contact_details,
+  social_links,
+  embed,
+  image_comparison,
+  gallery,
+  logo_wall,
 ];
 
 function bySlug(slug: string): Composition | undefined {
