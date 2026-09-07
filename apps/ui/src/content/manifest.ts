@@ -49,8 +49,7 @@ export const MANIFEST: CompositionMeta[] = [
     slug: "testimonial",
     name: "Testimonial",
     category: "Page sections",
-    description:
-      "One testimonial: a quotation and who said it, alone, in a Card or in a Carousel.",
+    description: "One testimonial: a quotation and who said it, alone, in a Card or in a Carousel.",
   },
   {
     slug: "feature",
@@ -159,8 +158,7 @@ export const MANIFEST: CompositionMeta[] = [
     slug: "social-links",
     name: "Social links",
     category: "Navigation",
-    description:
-      "A row of icon-only links to profiles, each named by hidden text.",
+    description: "A row of icon-only links to profiles, each named by hidden text.",
   },
   {
     slug: "contact-details",

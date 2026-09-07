@@ -8,7 +8,7 @@ description: How to build your own components (a hero, a pricing card, a carouse
 
 # Composing components
 
-LoamUI's core ships 34 low-level components and no more. A hero, a pricing table, a carousel or a testimonial wall is a composition: built from the three primitives the way any consumer would, in your own codebase or, for the ones worth sharing, in [`@loamui/ui`](https://loamui.com/ui/). This page is the recipe, for you and for your agent; the compositions gallery is the same recipe applied sixteen times.
+LoamUI's core ships 34 low-level components and no more. A hero, a pricing table, a carousel or a testimonial wall is a composition: built from the three primitives the way any consumer would, in your own codebase or, for the ones worth sharing, in [`@loamui/ui`](https://loamui.com/ui/). This page is the recipe, for you and for your agent; the compositions gallery is the same recipe applied twenty-two times.
 
 ## The recipe
 
@@ -113,6 +113,35 @@ Nothing in the library changed. The heading and the lede come from the element s
 ```
 
 Three plans in a row is a grid on the parent (`grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr))`), not a prop on the card; see the [Layout guide](/docs/layout).
+
+## A FAQ
+
+A list of questions is a list of native disclosures. Core's `Details` is the general accordion: give every item the same `name` and the browser keeps at most one open, leave it off and readers can hold two answers open to compare, and find-in-page opens a closed answer when it matches inside. Nothing runs at runtime, and there is no FAQ component to learn.
+
+```tsx
+<section aria-labelledby="faq-title" className="faq">
+  <h2 id="faq-title">Questions</h2>
+  <Details.Root name="faq">
+    <Details.Summary>Does it work without JavaScript?</Details.Summary>
+    <Details.Content>Yes. The stylesheet is static CSS and the disclosures are native.</Details.Content>
+  </Details.Root>
+  <Details.Root name="faq">
+    <Details.Summary>Which browsers are supported?</Details.Summary>
+    <Details.Content>Every browser with Baseline Newly Available CSS.</Details.Content>
+  </Details.Root>
+</section>
+```
+
+```css
+@scope (.faq) {
+  :scope {
+    display: block grid;
+    gap: var(--loam-space-sm);
+  }
+}
+```
+
+If the page needs `FAQPage` structured data, build it from the same questions in the code that renders them; the markup above is all the reader sees.
 
 ## Where a carousel goes
 

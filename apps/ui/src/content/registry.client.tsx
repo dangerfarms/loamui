@@ -26,7 +26,7 @@ import contact_details from "./contact-details";
 import social_links from "./social-links";
 import embed from "./embed";
 import image_comparison from "./image-comparison";
-import gallery from "./gallery";
+import galleryComposition from "./gallery";
 import logo_wall from "./logo-wall";
 import steps from "./steps";
 
@@ -52,7 +52,7 @@ const COMPOSITIONS: Composition[] = [
   social_links,
   embed,
   image_comparison,
-  gallery,
+  galleryComposition,
   logo_wall,
 ];
 

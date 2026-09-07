@@ -197,7 +197,7 @@ const contactForm: Composition = {
   ],
   whenNotToUse: [
     "Anything with steps, branching or more than a screen of fields: that is a form split across pages, each with an ErrorSummary at the top after a failed submit, not one long stack.",
-    "Signing in: that form is one narrow column with a stretched action and a footer link, which is a different shape. Use SignIn.",
+    "Signing in: that form is one narrow column with a stretched action and a footer link, which is a different shape. Use SignInForm.",
   ],
 };
 
