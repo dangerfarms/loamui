@@ -1,10 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
-  "plugins": [
-    "react",
-    "typescript",
-    "jsx-a11y"
-  ],
+  "plugins": ["react", "typescript", "jsx-a11y"],
   "env": {
     "browser": true,
     "es2024": true
@@ -39,28 +35,23 @@
     "no-console": [
       "error",
       {
-        "allow": [
-          "error"
-        ]
+        "allow": ["error"]
       }
     ]
   },
-  "ignorePatterns": [
-    "dist",
-    ".next",
-    ".turbo",
-    "node_modules",
-    "storybook-static"
-  ],
+  "ignorePatterns": ["dist", ".next", ".turbo", "node_modules", "storybook-static"],
   "overrides": [
+    // list-style: none drops list semantics in some browsers; role="list" restores them on an ol whose markers are drawn by CSS.
+    {
+      "files": ["**/Steps/Steps.tsx"],
+      "rules": {
+        "jsx-a11y/no-redundant-roles": "off"
+      }
+    },
     // Tests and stories render fixtures: static-array keys, focus probes,
     // and bare interactive stubs are deliberate there.
     {
-      "files": [
-        "**/*.test.tsx",
-        "**/*.test.ts",
-        "**/*.stories.tsx"
-      ],
+      "files": ["**/*.test.tsx", "**/*.test.ts", "**/*.stories.tsx"],
       "rules": {
         "react/jsx-key": "off",
         "jsx-a11y/no-autofocus": "off",
@@ -73,9 +64,7 @@
     // aria-checked through the host language; the rule can't see that
     // mapping and would demand a redundant (and drift-prone) attribute.
     {
-      "files": [
-        "**/Switch/Switch.tsx"
-      ],
+      "files": ["**/Switch/Switch.tsx"],
       "rules": {
         "jsx-a11y/role-has-required-aria-props": "off"
       }
@@ -83,10 +72,7 @@
     // Roving tabindex: the tablist element carries the keydown handler but
     // is never itself a tab stop — the tabs inside it are.
     {
-      "files": [
-        "**/Tabs/Tabs.tsx",
-        "**/renderer/Preview.tsx"
-      ],
+      "files": ["**/Tabs/Tabs.tsx", "**/renderer/Preview.tsx"],
       "rules": {
         "jsx-a11y/interactive-supports-focus": "off"
       }
@@ -94,9 +80,7 @@
     // The toast region listens for hover/focus to pause dismissal timers —
     // a convenience on a live region, not an interactive control.
     {
-      "files": [
-        "**/Toast/Toast.tsx"
-      ],
+      "files": ["**/Toast/Toast.tsx"],
       "rules": {
         "jsx-a11y/no-noninteractive-element-interactions": "off"
       }
@@ -104,9 +88,7 @@
     // The modal example demonstrates initial-focus placement, which is
     // what autofocus is for inside a just-opened dialog.
     {
-      "files": [
-        "**/modal.client.tsx"
-      ],
+      "files": ["**/modal.client.tsx"],
       "rules": {
         "jsx-a11y/no-autofocus": "off"
       }
@@ -115,10 +97,7 @@
     // their position, and both lists rebuild wholesale on change — index
     // keys are the correct keys.
     {
-      "files": [
-        "**/renderer/CodeBlock.tsx",
-        "**/Pagination/Pagination.tsx"
-      ],
+      "files": ["**/renderer/CodeBlock.tsx", "**/Pagination/Pagination.tsx"],
       "rules": {
         "react/no-array-index-key": "off"
       }

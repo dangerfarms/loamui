@@ -16,3 +16,4 @@ export * from "./components/ErrorPage/index";
 export * from "./components/Person/index";
 export * from "./components/ArticleCard/index";
 export * from "./components/TableOfContents/index";
+export * from "./components/Steps/index";

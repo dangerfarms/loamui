@@ -22,6 +22,7 @@ import testimonial from "./testimonial";
 import stats from "./stats";
 import footer from "./footer";
 import header from "./header";
+import steps from "./steps";
 
 /** Every composition, in gallery order. Add a file under src/content and list it here and in manifest.ts. */
 const COMPOSITIONS: Composition[] = [
@@ -40,6 +41,7 @@ const COMPOSITIONS: Composition[] = [
   stats,
   article_card,
   table_of_contents,
+  steps,
 ];
 
 function bySlug(slug: string): Composition | undefined {

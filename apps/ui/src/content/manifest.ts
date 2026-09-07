@@ -120,6 +120,13 @@ export const MANIFEST: CompositionMeta[] = [
     description:
       "A table of contents for the page in view: a small label over a list of links to the headings, with the current section marked.",
   },
+  {
+    slug: "steps",
+    name: "Steps",
+    category: "Page sections",
+    description:
+      "An ordered sequence: each step a marker, a title and a description; a timeline when the marker is a date.",
+  },
 ];
 
 export function metaBySlug(slug: string): CompositionMeta | undefined {
