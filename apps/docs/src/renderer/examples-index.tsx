@@ -8,10 +8,38 @@ import type { ExampleEntry } from "@/examples/types";
 import classes from "./examples-index.module.css";
 import { LazyThumb } from "./examples-thumb";
 
+/**
+ * Categories whose cards show a screenshot instead of a live render, shot
+ * with scripts/shoot-previews.mjs into public/examples/previews/<slug>.webp.
+ * A picture costs the page nothing on scroll, where a live render costs
+ * it style, layout and paint; the rest follow once their shots exist.
+ */
+const PREVIEW_CATEGORIES = new Set([
+  "page-sections",
+  "navigation",
+  "forms",
+  "data-display",
+  "app-cards",
+  "users",
+  "blog",
+  "commerce",
+  "buttons",
+  "sliders",
+  "faq",
+  "grids",
+  "errors",
+]);
+
 function matches(e: ExampleEntry, term: string, uses: string): boolean {
   if (uses && !e.meta.uses.includes(uses)) return false;
   if (!term) return true;
-  const hay = [e.meta.title, e.meta.description, e.slug, ...(e.meta.tags ?? []), ...e.meta.uses]
+  const hay = [
+    e.meta.title,
+    e.meta.description,
+    e.slug,
+    ...(e.meta.tags ?? []),
+    ...e.meta.uses,
+  ]
     .join(" ")
     .toLowerCase();
   return term.split(/\s+/).every((word) => hay.includes(word));
@@ -33,7 +61,10 @@ export function ExamplesIndex() {
   const groups = useMemo(
     () =>
       examplesByCategory()
-        .map((g) => ({ ...g, items: g.items.filter((e) => matches(e, term, uses)) }))
+        .map((g) => ({
+          ...g,
+          items: g.items.filter((e) => matches(e, term, uses)),
+        }))
         .filter((g) => g.items.length > 0),
     [term, uses],
   );
@@ -54,7 +85,9 @@ export function ExamplesIndex() {
           className={classes.search}
           onSubmit={(e) => e.preventDefault()}
         >
-          <Search.Label className="loam-VisuallyHidden">Search examples</Search.Label>
+          <Search.Label className="loam-VisuallyHidden">
+            Search examples
+          </Search.Label>
           <Search.Input
             placeholder="Search examples…"
             value={query}
@@ -109,7 +142,10 @@ export function ExamplesIndex() {
             <h2 id={`${category.slug}-heading`} className={classes.groupTitle}>
               {category.title}
             </h2>
-            <Link href={`/examples/${category.slug}`} className={classes.groupLink}>
+            <Link
+              href={`/examples/${category.slug}`}
+              className={classes.groupLink}
+            >
               {filtered ? "View all" : `All ${items.length}`}
               <span className="loam-VisuallyHidden"> in {category.title}</span>
               <span aria-hidden> →</span>
@@ -121,11 +157,22 @@ export function ExamplesIndex() {
                 {/* The preview is a live render and may contain links and
                     buttons, so it sits beside the card's link (inert), not
                     inside it; the link's ::after covers the whole card. */}
-                <LazyThumb className={classes.thumb}>
+                {PREVIEW_CATEGORIES.has(e.category) ? (
+                  <div className={classes.thumb} aria-hidden>
+                    <img
+                      className={classes.thumbImage}
+                      src={`/examples/previews/${e.slug}.webp`}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                ) : null}
+                {/*<LazyThumb className={classes.thumb}>
                   <div className={classes.thumbInner}>
                     <e.Example />
                   </div>
-                </LazyThumb>
+                </LazyThumb>*/}
                 <div className={classes.cardBody}>
                   <Link href={exampleHref(e)} className={classes.cardLink}>
                     {e.meta.title}

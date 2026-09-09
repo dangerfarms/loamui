@@ -13,6 +13,7 @@
   flex-wrap: wrap;
   gap: 0.5rem 1rem;
   justify-content: space-between;
+  padding: var(--loam-space-sm);
 }
 
 .copyBoth {
@@ -28,4 +29,12 @@
 .code {
   border: none;
   border-radius: 0;
+}
+
+/* The bar draws the row's line, so the list gives up its own. Core's
+   class is not named here: a CSS module hashes every class it sees, so
+   `.loam-Tabs-list` would never match; the list takes a local class
+   instead. */
+.list {
+  border-block-end: none;
 }

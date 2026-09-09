@@ -129,6 +129,10 @@ export default function Example() {
     gap: var(--loam-space-xs);
   }
 
+  a.link {
+    border: none;
+  }
+
   @container (inline-size < 48rem) {
     :scope {
       flex-basis: 100%;

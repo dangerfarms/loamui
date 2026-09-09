@@ -178,6 +178,18 @@
   transform-origin: 0 0;
 }
 
+/* A screenshot in place of the live render: the whole picture fits
+   inside the frame and sits in its middle, whatever its shape, on the
+   page-coloured ground the shot was taken against. */
+.thumbImage {
+  block-size: 100%;
+  display: block flow;
+  inline-size: 100%;
+  object-fit: contain;
+  object-position: center;
+  padding: var(--loam-space-md);
+}
+
 .cardBody {
   align-content: start;
   display: block grid;
