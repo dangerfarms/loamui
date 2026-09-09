@@ -1,0 +1,40 @@
+/* An order's progress: a header naming the order, the Stepper reading
+   done, current and upcoming from the one aria-current the markup sets,
+   and a way back. The Stepper keeps its own recipe behind the donut; the
+   example only spaces the three. */
+@scope (.stepper-progress) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  header {
+    display: block grid;
+    gap: var(--loam-space-xs);
+
+    > p {
+      color: var(--loam-color-fg-muted);
+      margin: 0;
+      max-inline-size: var(--loam-measure);
+    }
+  }
+
+  p.eyebrow {
+    font-size: var(--loam-text-sm);
+    font-variant-numeric: lining-nums tabular-nums;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: var(--loam-text-xl);
+    margin: 0;
+  }
+
+  p.back {
+    font-size: var(--loam-text-sm);
+    margin: 0;
+  }
+}

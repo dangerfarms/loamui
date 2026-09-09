@@ -1,0 +1,83 @@
+/* The header is a container and a grid of two columns. The breadcrumbs
+   are placed by the grid's own flow into the first row; the text is
+   pinned to the first column, so the actions land beside it, in the
+   second, where the header is wide, and beneath it where it is narrow.
+   The donut leaves the Breadcrumbs, the Badge, the Time and the Buttons
+   on their own styles. */
+@scope (.page-header) to ([class*="loam-"]) {
+  :scope {
+    border-block-end: 1px solid var(--loam-color-line);
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-md) var(--loam-space-lg);
+    grid-template-columns: minmax(0, 1fr);
+    padding-block-end: var(--loam-space-lg);
+  }
+
+  div.text {
+    display: block grid;
+    gap: var(--loam-space-xs);
+    grid-column: 1;
+  }
+
+  h1 {
+    font-size: var(--loam-text-2xl);
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  p.description {
+    color: var(--loam-color-fg-muted);
+    margin: 0;
+    max-inline-size: var(--loam-measure);
+  }
+
+  /* A row of facts, not headings and not actions, with the markers gone. */
+  ul.meta {
+    align-items: center;
+    color: var(--loam-color-fg-muted);
+    display: block flex;
+    flex-wrap: wrap;
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-xs) var(--loam-space-md);
+    list-style: none;
+    margin-block: var(--loam-space-xs) 0;
+    margin-inline: 0;
+    padding: 0;
+
+    li {
+      margin: 0;
+    }
+  }
+
+  /* The status is a success region: the Badge inside takes the colour
+     from where it sits, not from a prop. */
+  li.status {
+    --loam-context: success;
+  }
+
+  /* The actions, last in the reading order; the one that matters most
+     sits in its own primary region. */
+  div.actions {
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm);
+  }
+
+  span.primary {
+    --loam-context: primary;
+  }
+
+  @container (inline-size > 40rem) {
+    :scope {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    div.actions {
+      align-self: start;
+      grid-column: 2;
+      justify-content: end;
+    }
+  }
+}

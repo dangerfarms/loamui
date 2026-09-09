@@ -50,6 +50,19 @@ The locale decides grouping, the decimal mark and where the symbol sits. Set it 
 <Price value={1250} currency="JPY" locale="ja-JP" />
 ```
 
+### Signed amounts
+
+A summary of changes shows which way each one goes. signDisplay is Intl.NumberFormat's: exceptZero writes a sign on every non-zero amount, so a credit and a charge read apart at a glance.
+
+```tsx
+<dl>
+  <dt>Prorated credit</dt>
+  <dd><Price value={2} currency="GBP" signDisplay="exceptZero" /></dd>
+  <dt>New plan</dt>
+  <dd><Price value={-4.65} currency="GBP" signDisplay="exceptZero" /></dd>
+</dl>
+```
+
 ## When to use it
 
 - Any amount of money the reader is meant to weigh: a plan's price, a line in an order, a total, a figure in a table column.
@@ -87,6 +100,7 @@ The amount is written the way the page's language writes money. The locale defau
 | `value` | `number` | — | The amount in the currency's major unit: 24 for £24, 9.5 for £9.50. |
 | `currency` | `string` | — | The ISO 4217 currency code: "GBP", "USD", "EUR". |
 | `locale` | `string` | `"en"` | The BCP 47 locale the amount is written in: grouping, decimal mark and symbol placement. Set it to the page's language. |
+| `signDisplay` | `"auto" \| "always" \| "never" \| "exceptZero" \| "negative"` | `"auto"` | When the sign is written, as Intl.NumberFormat has it: auto marks negative amounts only; exceptZero marks every non-zero amount, for a summary of credits and charges. |
 | `children` | `ReactNode` | — | What the amount covers ("per seat, per month"), written after it in small text. |
 | `...others` | `HTMLAttributes<HTMLDataElement>` | — | All native <data> props are forwarded. |
 

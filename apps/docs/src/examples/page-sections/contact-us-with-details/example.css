@@ -1,0 +1,116 @@
+/* The ways to reach the nursery on one side and a short form on the
+   other. The section paints the subtle surface and is the container;
+   the inner element is the grid, because an element cannot answer its
+   own container query. The details are an address holding a description
+   list, each term led by a glyph, and the form is a Card past the donut. */
+@scope (.contact-us-with-details) to ([class*="loam-"]) {
+  :scope {
+    background: var(--loam-color-bg-subtle);
+    border-radius: var(--loam-radius-xl);
+    container-type: inline-size;
+    padding: var(--loam-space-xl);
+  }
+
+  div.inner {
+    display: block grid;
+    gap: var(--loam-space-xl);
+  }
+
+  div.details {
+    align-content: start;
+    display: block grid;
+    gap: var(--loam-space-md);
+
+    > p {
+      color: var(--loam-color-fg-muted);
+      margin: 0;
+      max-inline-size: var(--loam-measure);
+      text-wrap: pretty;
+    }
+  }
+
+  h2 {
+    font-size: var(--loam-text-2xl);
+    margin: 0;
+  }
+
+  /* Browsers set address in italic, a convention from letters that reads
+     as emphasis here, so it is set upright. */
+  address {
+    font-style: normal;
+  }
+
+  dl {
+    display: block grid;
+    gap: var(--loam-space-md);
+    margin: 0;
+  }
+
+  div.pair {
+    display: block grid;
+    gap: var(--loam-space-xs);
+  }
+
+  /* The term is a glyph and a word on one line; the glyph is the strong
+     token, sized in em so it rides the term's type. */
+  dt {
+    align-items: center;
+    color: var(--loam-color-fg-muted);
+    display: block flex;
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-xs);
+
+    svg {
+      block-size: 1.125em;
+      color: var(--loam-color-primary-strong);
+      inline-size: 1.125em;
+    }
+  }
+
+  /* A long email breaks rather than widening the column. */
+  dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* Wide: the details and the form side by side, the form the larger. */
+  @container (inline-size >= 44rem) {
+    div.inner {
+      align-items: start;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    }
+  }
+
+  /* Forced colours: the tint goes, so the block keeps an edge. */
+  @media (forced-colors: active) {
+    :scope {
+      border: 1px solid CanvasText;
+    }
+  }
+}
+
+/* The form is a Card rendered as the form, so the Card element is this
+   scope's root: the heading and the actions row inside are reachable,
+   the Fields and the Button are fenced by the donut, and the Card's own
+   surface, line, radius and padding are left alone. */
+@scope (.contact-us-with-details form.form) to ([class*="loam-"]) {
+  :scope {
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  h3 {
+    font-size: var(--loam-text-lg);
+    margin: 0;
+  }
+
+  /* A wrapping row, so the Button keeps its natural width, and a primary
+     region, so the one action takes the brand colour from where it sits. */
+  div.actions {
+    --loam-context: primary;
+
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-md);
+  }
+}

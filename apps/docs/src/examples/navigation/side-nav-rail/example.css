@@ -1,0 +1,108 @@
+/* A rail: one column as wide as its squares, the brand at the top and
+   the links beneath. There is no Nav here on purpose: Tooltip.Root wraps
+   each link in an element of its own, which is a limit of Nav's donut, so
+   a Nav.Link inside a tooltip would never receive Nav's rules. The links
+   are plain anchors in a plain nav, and the rail draws them itself from
+   the same tokens Nav uses: a 2.75rem square, the target a thumb or a
+   pointer hits reliably when there are no words to aim at, and the
+   current page marked by a line and weight as well as a background. The
+   Tooltips and their popups are core's, past the donut. */
+@scope (.side-nav-rail) to ([class*="loam-"]) {
+  :scope {
+    --_square: 2.75rem;
+
+    border-inline-end: 1px solid var(--loam-color-line);
+    display: block grid;
+    gap: var(--loam-space-md);
+    inline-size: fit-content;
+    justify-items: center;
+    padding-block: var(--loam-space-md);
+    padding-inline: var(--loam-space-sm);
+  }
+
+  /* The brand is the icon alone, named by hidden text, in a square the
+     size of the links below so the column lines up. */
+  a.brand {
+    align-items: center;
+    block-size: var(--_square);
+    border-radius: var(--loam-radius-md);
+    color: var(--loam-color-primary-strong);
+    display: inline flex;
+    inline-size: var(--_square);
+    justify-content: center;
+
+    svg {
+      block-size: 1.75rem;
+      inline-size: 1.75rem;
+    }
+  }
+
+  /* The markers go; inside a nav every browser keeps the list's
+     semantics, and the markup keeps role="list" besides. */
+  ul {
+    display: block grid;
+    gap: var(--loam-space-xs);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    margin: 0;
+  }
+}
+
+/* Each link sits inside a Tooltip.Root, core's span and a limit of the
+   scope above, so the link is placed from the Tooltip's own scope: the
+   wrapper a block so the line has no descender gap, and the link a
+   square with the icon centred and a transparent start edge where the
+   marker will go. */
+@scope (.side-nav-rail .loam-Tooltip) to ([class*="loam-"]) {
+  :scope {
+    display: block flow;
+  }
+
+  a {
+    align-items: center;
+    block-size: var(--_square);
+    border-inline-start: 2px solid transparent;
+    border-radius: var(--loam-radius-md);
+    color: var(--loam-color-fg);
+    display: block flex;
+    inline-size: var(--_square);
+    justify-content: center;
+
+    svg {
+      block-size: auto;
+      flex: none;
+      inline-size: 1.25rem;
+    }
+
+    /* The current page: a line in the strong token and a background, so
+       the state survives a flattened background; the line takes the
+       system highlight in forced colours. */
+    &[aria-current] {
+      background: var(--loam-color-bg-subtle);
+      border-color: var(--loam-color-primary-strong);
+      color: var(--loam-color-fg-strong);
+
+      @media (forced-colors: active) {
+        border-color: Highlight;
+      }
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        background: var(--loam-color-bg-subtle);
+        color: var(--loam-color-fg-strong);
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition:
+        background var(--loam-duration-sm) var(--loam-ease),
+        border-color var(--loam-duration-sm) var(--loam-ease),
+        color var(--loam-duration-sm) var(--loam-ease);
+    }
+  }
+}

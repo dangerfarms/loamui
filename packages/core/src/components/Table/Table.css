@@ -8,6 +8,11 @@
        not yet Baseline (see elements.css `pre`), so wide tables would not
        scroll in some browsers. */
     overflow: auto;
+
+    /* A containing block for hidden text: a .loam-VisuallyHidden span inside
+       a cell is positioned, and without this it escapes the scroller and
+       widens the page. */
+    position: relative;
   }
 
   table {
@@ -25,6 +30,10 @@
   th,
   td {
     border-block-end: 1px solid var(--loam-color-line);
+
+    /* The page hyphenates prose; a squeezed data cell should wrap at spaces
+       or scroll, never break "desk-top" or "HW-1042". */
+    hyphens: manual;
     padding-block: var(--loam-space-md);
     padding-inline: var(--loam-space-lg);
     vertical-align: middle;
@@ -40,8 +49,14 @@
     white-space: nowrap;
   }
 
-  tbody tr:last-child td {
+  tbody tr:last-child :is(td, th) {
     border-block-end: none;
+  }
+
+  /* A sortable header holds a Button, which brings its own padding; the
+     cell gives some of its own back so the row stays near header height. */
+  thead th[aria-sort] {
+    padding-block: var(--loam-space-xs);
   }
 
   :scope[data-col-borders] th:not(:last-child),
@@ -63,5 +78,25 @@
     :scope[data-hover] tbody tr:hover {
       background: var(--loam-color-surface-hover);
     }
+  }
+}
+
+/* The sort control is a core Button, past the table's donut: this scope
+   adds only the glyph, read from the `aria-sort` on the cell around it.
+   Text arrows in the button's own colour: the unsorted state is the
+   two-headed shape, not a dimmer paint, so the glyph holds the button's
+   contrast in every context and forced colours paint it as text. */
+@scope (.loam-Table-sort) {
+  :scope::after {
+    content: "\2195";
+    margin-inline-start: var(--loam-space-xs);
+  }
+
+  th[aria-sort="ascending"] > :scope::after {
+    content: "\2191";
+  }
+
+  th[aria-sort="descending"] > :scope::after {
+    content: "\2193";
   }
 }

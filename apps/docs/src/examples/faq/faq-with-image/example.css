@@ -1,0 +1,81 @@
+/* Questions beside a picture. The section is the container and the
+   inner element the grid, because an element cannot answer its own
+   container query. Narrow is one column with the picture last, so the
+   questions come first for anyone scrolling; wide puts the picture in
+   the start column, pinned to the top of the questions. The drawing is
+   lines in the current colour with fills in the soft tint. */
+@scope (.faq-with-image) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    padding-block: var(--loam-space-xl);
+  }
+
+  div.inner {
+    display: block grid;
+    gap: var(--loam-space-xl);
+  }
+
+  svg.illustration {
+    block-size: auto;
+    color: var(--loam-color-primary-strong);
+    inline-size: 100%;
+    justify-self: center;
+    max-inline-size: 16rem;
+    order: 1;
+
+    .fill {
+      fill: var(--loam-color-primary-soft);
+    }
+  }
+
+  div.text {
+    display: block grid;
+    gap: var(--loam-space-md);
+
+    > p {
+      color: var(--loam-color-fg-muted);
+      margin: 0;
+      max-inline-size: var(--loam-measure);
+      text-wrap: pretty;
+    }
+  }
+
+  h2 {
+    font-size: var(--loam-text-2xl);
+    margin: 0;
+  }
+
+  div.questions {
+    display: block grid;
+    gap: var(--loam-space-sm);
+    margin-block-start: var(--loam-space-sm);
+  }
+
+  /* Wide: the picture in its own column on the start side, in source
+     order again, and held to the top while the questions open. */
+  @container (inline-size >= 48rem) {
+    div.inner {
+      align-items: start;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    }
+
+    svg.illustration {
+      inset-block-start: var(--loam-space-lg);
+      max-inline-size: 20rem;
+      order: 0;
+      position: sticky;
+    }
+  }
+
+  /* Forced colours: the tint goes; the drawing is its lines in the
+     system text colour. */
+  @media (forced-colors: active) {
+    svg.illustration {
+      color: CanvasText;
+
+      .fill {
+        fill: Canvas;
+      }
+    }
+  }
+}

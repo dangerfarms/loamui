@@ -210,3 +210,9 @@ One suggestion (<li role="option">). Choosing it, by Enter or click, commits val
 
 Shown in the list when it has no Options. Children replace labels.empty. A sighted-user message, hidden from assistive technology, which hears the count from the status region. Native <li> props are forwarded.
 
+## Custom properties
+
+| Property | Syntax | Default | Description |
+| --- | --- | --- | --- |
+| `--loam-combobox-list-size` | `CSS length` | `16rem` | The most height the list takes before it scrolls, always capped at half the viewport. Set it on the Root or any ancestor. |
+

@@ -12,7 +12,8 @@
     "format:check": "oxfmt --check \"**/*.{ts,tsx,css,md}\"",
     "check:skill": "node scripts/check-skill.mjs",
     "check:strings": "node scripts/check-strings.mjs",
-    "check:scope": "node scripts/check-scope.mjs"
+    "check:scope": "node scripts/check-scope.mjs",
+    "check:examples": "node scripts/check-examples.mjs"
   },
   "devDependencies": {
     "oxfmt": "0.63.0",

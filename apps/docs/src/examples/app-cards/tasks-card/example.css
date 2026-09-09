@@ -1,0 +1,61 @@
+/* The Card is the article, so its element is this scope's root: core's
+   surface, line, radius and padding stay, and the column inside is the
+   example's own. The Time, the Progress and the Avatar.Group keep their
+   recipes behind the donut. */
+@scope (.tasks-card) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block flex;
+    flex-direction: column;
+    gap: var(--loam-space-sm);
+  }
+
+  p.due {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    margin: 0;
+  }
+
+  h3 {
+    font-size: var(--loam-text-lg);
+    margin: 0;
+  }
+
+  p.description {
+    color: var(--loam-color-fg-muted);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* The bar and the count under it, the count in tabular figures at the
+     end so it sits under the end of the fill. */
+  div.progress {
+    display: block grid;
+    gap: var(--loam-space-xs);
+    margin-block-start: var(--loam-space-sm);
+  }
+
+  p.count {
+    color: var(--loam-color-fg-strong);
+    font-size: var(--loam-text-sm);
+    font-variant-numeric: lining-nums tabular-nums;
+    font-weight: 600;
+    margin: 0;
+    text-align: end;
+
+    span {
+      color: var(--loam-color-fg-muted);
+      font-weight: 400;
+    }
+  }
+
+  /* The team sits at the foot whatever the description's length, so a
+     row of these cards lines its groups up. */
+  div.foot {
+    --loam-avatar-size: 2rem;
+
+    display: block flex;
+    margin-block-start: auto;
+    padding-block-start: var(--loam-space-sm);
+  }
+}

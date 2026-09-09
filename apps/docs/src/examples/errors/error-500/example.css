@@ -1,0 +1,77 @@
+/* An error page is a region: it declares its container so the fluid
+   tokens answer its own width, and it hosts a Button, hence the donut.
+   Everything centres on one axis: the illustration, the code, the title,
+   the line and the ways out. */
+@scope (.error-500) to ([class*="loam-"]) {
+  :scope {
+    align-items: center;
+    container-type: inline-size;
+    display: block flex;
+    flex-direction: column;
+    gap: var(--loam-space-md);
+    justify-content: center;
+    min-block-size: 24rem;
+    padding-block: var(--loam-space-xl);
+    text-align: center;
+  }
+
+  /* The illustration is decoration, stroked in the dim foreground so it
+     sits behind the words; the leaf and the spilled seeds keep a little
+     colour. */
+  svg.illustration {
+    block-size: auto;
+    color: var(--loam-color-fg-dim);
+    inline-size: 7.5rem;
+
+    path.leaf {
+      fill: var(--loam-color-success-soft);
+      stroke: var(--loam-color-success-strong);
+    }
+
+    circle.seed {
+      fill: var(--loam-color-warning-soft);
+      stroke: var(--loam-color-warning-strong);
+    }
+  }
+
+  /* The code is set dim on purpose: it identifies the error for anyone
+     who needs it and stays behind the title, which is what the reader
+     needs. */
+  p.code {
+    color: var(--loam-color-fg-dim);
+    font-family: var(--loam-font-display);
+    font-size: var(--loam-text-xl);
+    font-variant-numeric: lining-nums tabular-nums;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    line-height: 1;
+    margin: 0;
+  }
+
+  h1 {
+    font-size: var(--loam-text-2xl);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  p.description {
+    color: var(--loam-color-fg-muted);
+    margin: 0;
+    max-inline-size: var(--loam-measure);
+    text-wrap: pretty;
+  }
+
+  /* The ways out are a primary region: the Button takes the brand colour
+     as the main action, and the plain link beside it is an element style,
+     which no region recolours. */
+  div.actions {
+    --loam-context: primary;
+
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-md) var(--loam-space-lg);
+    justify-content: center;
+    margin-block-start: var(--loam-space-sm);
+  }
+}

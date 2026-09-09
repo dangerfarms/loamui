@@ -242,9 +242,12 @@ describe("Modal", () => {
     const trigger = screen.getByRole("button", { name: "Open" });
     const dialog = document.querySelector("dialog")!;
     expect(dialog.open).toBe(false);
+    expect(trigger).toHaveAttribute("aria-haspopup", "dialog");
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
 
     await user.click(trigger);
     expect(dialog.open).toBe(true);
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
     expect(trigger).toHaveAttribute("data-popup-open", "true");
     expect(dialog).toHaveAttribute("data-open");
     expect(dialog).toHaveAccessibleName("Hello");
@@ -252,7 +255,27 @@ describe("Modal", () => {
 
     await user.click(screen.getByRole("button", { name: "Done" }));
     await waitFor(() => expect(dialog.open).toBe(false));
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
     expect(trigger).not.toHaveAttribute("data-popup-open");
+  });
+
+  it("lists the Title and Description ids before the consumer's, each once", () => {
+    render(
+      <>
+        <p id="notice">Read this first.</p>
+        <Modal.Root>
+          <Modal.Popup aria-labelledby="notice" aria-describedby="notice notice">
+            <Modal.Title>Hello</Modal.Title>
+            <Modal.Description>Modal body</Modal.Description>
+          </Modal.Popup>
+        </Modal.Root>
+      </>,
+    );
+    const dialog = document.querySelector("dialog")!;
+    const titleId = screen.getByText("Hello").id;
+    const descriptionId = screen.getByText("Modal body").id;
+    expect(dialog).toHaveAttribute("aria-labelledby", `${titleId} notice`);
+    expect(dialog).toHaveAttribute("aria-describedby", `${descriptionId} notice`);
   });
 
   it("syncs native close events back into state", async () => {
@@ -290,9 +313,12 @@ describe("Drawer", () => {
     const trigger = screen.getByRole("button", { name: "Open" });
     const dialog = document.querySelector("dialog")!;
     expect(dialog.open).toBe(false);
+    expect(trigger).toHaveAttribute("aria-haspopup", "dialog");
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
 
     await user.click(trigger);
     expect(dialog.open).toBe(true);
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
     expect(trigger).toHaveAttribute("data-popup-open", "true");
     expect(dialog).toHaveAttribute("data-side", "end");
     expect(dialog).toHaveAccessibleName("Filters");
@@ -300,6 +326,7 @@ describe("Drawer", () => {
 
     await user.click(screen.getByRole("button", { name: "Done" }));
     await waitFor(() => expect(dialog.open).toBe(false));
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
     expect(trigger).not.toHaveAttribute("data-popup-open");
   });
 
@@ -723,11 +750,20 @@ describe("Modal (invoker commands)", () => {
 });
 
 describe("Modal (naming)", () => {
-  it("reports a Popup with no Title and no aria-label in development", () => {
+  it("reports a Popup with no Title and no aria-label in development, once it opens", () => {
     const error = vi.spyOn(console, "error").mockImplementation(() => {});
     try {
-      render(
-        <Modal.Root>
+      const { rerender } = render(
+        <Modal.Root open={false}>
+          <Modal.Popup>
+            <Modal.Close>Done</Modal.Close>
+          </Modal.Popup>
+        </Modal.Root>,
+      );
+      // Closed, the dialog is not read, and its name may still be on its way.
+      expect(error).not.toHaveBeenCalled();
+      rerender(
+        <Modal.Root open>
           <Modal.Popup>
             <Modal.Close>Done</Modal.Close>
           </Modal.Popup>
@@ -739,13 +775,39 @@ describe("Modal (naming)", () => {
       error.mockClear();
       cleanup();
       render(
-        <Modal.Root>
+        <Modal.Root open>
           <Modal.Popup aria-label="Filters">
             <Modal.Close>Done</Modal.Close>
           </Modal.Popup>
         </Modal.Root>,
       );
       expect(error).not.toHaveBeenCalled();
+    } finally {
+      error.mockRestore();
+    }
+  });
+
+  it("applies the same check to a Drawer", () => {
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const { rerender } = render(
+        <Drawer.Root open={false}>
+          <Drawer.Popup>
+            <Drawer.Close>Done</Drawer.Close>
+          </Drawer.Popup>
+        </Drawer.Root>,
+      );
+      expect(error).not.toHaveBeenCalled();
+      rerender(
+        <Drawer.Root open>
+          <Drawer.Popup>
+            <Drawer.Close>Done</Drawer.Close>
+          </Drawer.Popup>
+        </Drawer.Root>,
+      );
+      expect(error).toHaveBeenCalledWith(
+        expect.stringContaining("<Drawer.Popup> has no accessible name"),
+      );
     } finally {
       error.mockRestore();
     }

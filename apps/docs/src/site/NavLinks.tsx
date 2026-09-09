@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { GETTING_STARTED, PRIMITIVES, componentsByCategory } from "./nav";
+import { EXAMPLES_NAV, GETTING_STARTED, PRIMITIVES, componentsByCategory } from "./nav";
 import classes from "./Sidebar.module.css";
 
 /**
@@ -58,6 +58,11 @@ export function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className={classes.group}>
+        <p className={classes.groupTitle}>Examples</p>
+        <ul>{EXAMPLES_NAV.map((e) => renderLink(e.href, e.name))}</ul>
       </div>
     </>
   );

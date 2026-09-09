@@ -1,0 +1,8 @@
+/* The column the nav lives in. Width is the layout's decision, here a
+   column of 18rem or the space available; the Nav inside takes whatever
+   its column gives it and keeps its own styles behind the donut. */
+@scope (.side-nav) to ([class*="loam-"]) {
+  :scope {
+    inline-size: min(100%, 18rem);
+  }
+}

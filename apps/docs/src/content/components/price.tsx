@@ -65,6 +65,36 @@ const doc: ComponentContent = {
         </ul>
       ),
     },
+    {
+      title: "Signed amounts",
+      description:
+        "A summary of changes shows which way each one goes. signDisplay is Intl.NumberFormat's: exceptZero writes a sign on every non-zero amount, so a credit and a charge read apart at a glance.",
+      code: `<dl>
+  <dt>Prorated credit</dt>
+  <dd><Price value={2} currency="GBP" signDisplay="exceptZero" /></dd>
+  <dt>New plan</dt>
+  <dd><Price value={-4.65} currency="GBP" signDisplay="exceptZero" /></dd>
+</dl>`,
+      render: () => (
+        <dl
+          style={{
+            display: "grid",
+            gap: "0.25rem var(--loam-space-lg)",
+            gridTemplateColumns: "auto auto",
+            margin: 0,
+          }}
+        >
+          <dt>Prorated credit</dt>
+          <dd style={{ margin: 0, textAlign: "end" }}>
+            <Price value={2} currency="GBP" signDisplay="exceptZero" />
+          </dd>
+          <dt>New plan</dt>
+          <dd style={{ margin: 0, textAlign: "end" }}>
+            <Price value={-4.65} currency="GBP" signDisplay="exceptZero" />
+          </dd>
+        </dl>
+      ),
+    },
   ],
   whenToUse: [
     "Any amount of money the reader is meant to weigh: a plan's price, a line in an order, a total, a figure in a table column.",
@@ -110,6 +140,13 @@ const doc: ComponentContent = {
       default: '"en"',
       description:
         "The BCP 47 locale the amount is written in: grouping, decimal mark and symbol placement. Set it to the page's language.",
+    },
+    {
+      name: "signDisplay",
+      type: '"auto" | "always" | "never" | "exceptZero" | "negative"',
+      default: '"auto"',
+      description:
+        "When the sign is written, as Intl.NumberFormat has it: auto marks negative amounts only; exceptZero marks every non-zero amount, for a summary of credits and charges.",
     },
     {
       name: "children",

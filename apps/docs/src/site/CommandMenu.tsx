@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SearchIcon } from "./Icons";
-import { COMPONENTS, GETTING_STARTED, PRIMITIVES } from "./nav";
+import { COMPONENTS, EXAMPLES_NAV, GETTING_STARTED, PRIMITIVES } from "./nav";
+import { EXAMPLE_META } from "@/examples/generated-meta";
 import classes from "./CommandMenu.module.css";
 
 interface Result {
@@ -27,6 +28,16 @@ const ALL: Result[] = [
     label: c.name,
     hint: c.category,
     href: `/docs/components/${c.slug}`,
+  })),
+  ...EXAMPLES_NAV.map((e) => ({
+    label: e.name,
+    hint: "Examples",
+    href: e.href,
+  })),
+  ...EXAMPLE_META.map((e) => ({
+    label: e.meta.title,
+    hint: "Example",
+    href: `/examples/${e.category}/${e.slug}`,
   })),
 ];
 
@@ -133,7 +144,7 @@ export function CommandMenu() {
           <input
             ref={inputRef}
             className={classes.input}
-            placeholder="Search components and guides…"
+            placeholder="Search components, guides and examples…"
             value={q}
             onChange={(e) => {
               setQ(e.target.value);

@@ -1,0 +1,124 @@
+/* Two rows under a line. The first holds the brand and its tagline at the
+   start and the social links at the end; the second, the small print and
+   the legal links, separated by a lighter line. Both rows wrap by the
+   footer's own width. Set in the muted colour because a footer is
+   reference, not the page's voice. */
+@scope (.footer-with-social) to ([class*="loam-"]) {
+  :scope {
+    border-block-start: 1px solid var(--loam-color-line);
+    color: var(--loam-color-fg-muted);
+    container-type: inline-size;
+    display: block grid;
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-lg);
+    padding-block: var(--loam-space-xl) var(--loam-space-lg);
+  }
+
+  div.top,
+  div.bottom {
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-md) var(--loam-space-lg);
+    justify-content: space-between;
+  }
+
+  div.bottom {
+    border-block-start: 1px solid var(--loam-color-line);
+    padding-block-start: var(--loam-space-md);
+  }
+
+  div.about {
+    display: block grid;
+    gap: var(--loam-space-xs);
+    max-inline-size: 28rem;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  a.brand {
+    align-items: center;
+    color: var(--loam-color-fg-strong);
+    display: inline flex;
+    font-family: var(--loam-font-display);
+    font-size: var(--loam-text-lg);
+    font-weight: 700;
+    gap: var(--loam-space-xs);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+
+    svg {
+      block-size: 1.25em;
+      inline-size: 1.25em;
+    }
+  }
+
+  /* The markers go in both navs; inside a nav every browser keeps the
+     list's semantics without them. */
+  nav {
+    ul {
+      display: block flex;
+      flex-wrap: wrap;
+      gap: var(--loam-space-xs) var(--loam-space-md);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      margin: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+
+      @media (hover: hover) {
+        &:hover {
+          color: var(--loam-color-fg-strong);
+          text-decoration: underline;
+        }
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        transition: color var(--loam-duration-sm) var(--loam-ease);
+      }
+    }
+  }
+
+  /* The social links are icons alone: each target is floored at 24px
+     whatever the font makes the glyph, with a gap so neighbours stay
+     apart; the icon follows the footer's small type. */
+  nav[aria-label="Social"] {
+    ul {
+      gap: var(--loam-space-sm);
+    }
+
+    a {
+      align-items: center;
+      border-radius: var(--loam-radius-md);
+      display: inline flex;
+      justify-content: center;
+      min-block-size: 1.5rem;
+      min-inline-size: 1.5rem;
+      padding: var(--loam-space-xs);
+
+      @media (hover: hover) {
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+
+    svg {
+      block-size: 1.25em;
+      inline-size: 1.25em;
+    }
+  }
+
+  small {
+    font-size: inherit;
+  }
+}

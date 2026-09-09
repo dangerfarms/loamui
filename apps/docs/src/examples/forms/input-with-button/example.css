@@ -1,0 +1,35 @@
+/* The form is the root and the container the row answers. The row sits
+   inside the core Field, which is a limit of the donut, so it is reached
+   from a scope rooted at the row itself: a grid whose first track takes
+   the width and whose second shrink-wraps the Button, so the box and the
+   button share the derived control height and sit level, both core parts
+   past the donut. The action cell is a primary region, so the Button is
+   the row's action without a variant prop. */
+@scope (.input-with-button) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+  }
+}
+
+@scope (.input-with-button div.row) to ([class*="loam-"]) {
+  :scope {
+    align-items: end;
+    display: block grid;
+    gap: var(--loam-space-sm);
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  div.action {
+    --loam-context: primary;
+
+    display: block grid;
+  }
+
+  /* Too narrow for a row: the button goes under the box at its width.
+     The query is answered by the form, the nearest container. */
+  @container (inline-size < 24rem) {
+    :scope {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

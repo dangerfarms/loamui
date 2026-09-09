@@ -4,6 +4,7 @@
 // and command menu can import it without pulling in demo code.
 
 import type { Category } from "@/renderer/types";
+import { EXAMPLE_CATEGORIES } from "../examples/categories";
 
 export interface NavItem {
   name: string;
@@ -31,6 +32,14 @@ export const PRIMITIVES: { name: string; href: string }[] = [
   { name: "Tokens", href: "/docs/tokens" },
   { name: "Element styles", href: "/docs/element-styles" },
   { name: "Components", href: "/docs/components" },
+];
+
+// The examples section: the index, then a link per category. Derived from
+// the examples' own category list, so the navigation cannot name a
+// category the section does not have.
+export const EXAMPLES_NAV: { name: string; href: string }[] = [
+  { name: "All examples", href: "/examples" },
+  ...EXAMPLE_CATEGORIES.map((c) => ({ name: c.title, href: `/examples/${c.slug}` })),
 ];
 
 export const CATEGORY_ORDER = [
@@ -116,6 +125,12 @@ export const COMPONENTS: NavItem[] = [
     description: "Choose one option from a set.",
   },
   {
+    name: "SegmentedControl",
+    slug: "segmented-control",
+    category: "Inputs",
+    description: "Choose one option from a row of segments.",
+  },
+  {
     name: "Switch",
     slug: "switch",
     category: "Inputs",
@@ -199,6 +214,18 @@ export const COMPONENTS: NavItem[] = [
     slug: "separator",
     category: "Data display",
     description: "A rule between groups of content.",
+  },
+  {
+    name: "Carousel",
+    slug: "carousel",
+    category: "Data display",
+    description: "A scroll-snap track of items, paged and announced.",
+  },
+  {
+    name: "Stepper",
+    slug: "stepper",
+    category: "Data display",
+    description: "Where a sequence has got to, detected from the current step.",
   },
   // Feedback
   {
@@ -304,6 +331,12 @@ export const COMPONENTS: NavItem[] = [
     slug: "pagination",
     category: "Navigation",
     description: "Navigate between pages of content.",
+  },
+  {
+    name: "Nav",
+    slug: "nav",
+    category: "Navigation",
+    description: "Lists of links with the current one marked.",
   },
 ];
 

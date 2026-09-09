@@ -1,0 +1,91 @@
+/* One Card holding three figures, each with a sentence and a comparison.
+   The Card is the section, so its element is this scope's root: core's
+   surface, line, radius and padding stay; the Card is the container and
+   the list inside answers it. The Price keeps its recipe behind the donut. */
+@scope (.grouped-stats) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-md);
+  }
+
+  h2 {
+    font-size: var(--loam-text-lg);
+    margin: 0;
+  }
+
+  /* Stacked with a line between each; wide, a row divided by lines. */
+  dl.groups {
+    display: block grid;
+    margin: 0;
+  }
+
+  div.group {
+    border-block-start: 1px solid var(--loam-color-line);
+    display: block grid;
+    gap: var(--loam-space-xs);
+    padding-block: var(--loam-space-md);
+
+    &:last-child {
+      padding-block-end: 0;
+    }
+  }
+
+  dt {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+  }
+
+  dd {
+    margin: 0;
+
+    &.value {
+      color: var(--loam-color-fg-strong);
+      font-family: var(--loam-font-display);
+      font-size: var(--loam-text-2xl);
+      font-variant-numeric: lining-nums tabular-nums;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    &.sentence {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-sm);
+      text-wrap: pretty;
+    }
+
+    &.compare {
+      font-size: var(--loam-text-sm);
+      font-variant-numeric: lining-nums tabular-nums;
+      font-weight: 500;
+    }
+  }
+
+  @container (inline-size >= 40rem) {
+    dl.groups {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    /* The sentence's row takes the slack, so the three comparisons sit on
+       one line at the foot however long the sentences above them run. */
+    div.group {
+      border-block-start: 0;
+      grid-template-rows: auto auto 1fr auto;
+      padding-block: 0;
+      padding-inline: var(--loam-space-lg);
+
+      &:first-child {
+        padding-inline-start: 0;
+      }
+
+      &:last-child {
+        padding-inline-end: 0;
+      }
+
+      + div.group {
+        border-inline-start: 1px solid var(--loam-color-line);
+      }
+    }
+  }
+}

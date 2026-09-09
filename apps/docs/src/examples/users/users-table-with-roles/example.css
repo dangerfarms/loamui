@@ -1,0 +1,76 @@
+/* The form is the root: the Table and the save button are its two rows.
+   The one action is the form's primary one, so its row is a primary
+   region and the Button takes the colour from where it sits. */
+@scope (.users-table-with-roles) to ([class*="loam-"]) {
+  :scope {
+    display: block grid;
+    gap: var(--loam-space-md);
+    margin: 0;
+  }
+
+  div.actions {
+    --loam-context: primary;
+
+    display: block flex;
+    justify-content: end;
+  }
+}
+
+/* Core's Table is a limit for the form's scope, so its cells are shaped
+   from a scope of its own; the Avatars, Selects, Times and Badges inside
+   stay behind the donut. */
+@scope (.users-table-with-roles .loam-Table) to ([class*="loam-"]) {
+  /* The member is the row's header: the picture beside the name over
+     the email, read as the row rather than as a figure. */
+  tbody th {
+    font-weight: 400;
+    text-align: start;
+  }
+
+  span.member {
+    align-items: center;
+    display: block flex;
+    gap: var(--loam-space-sm);
+
+    span.text {
+      display: block grid;
+      gap: calc(var(--loam-space-xs) / 2);
+
+      strong {
+        color: var(--loam-color-fg-strong);
+        font-weight: 500;
+        white-space: nowrap;
+      }
+
+      > span {
+        color: var(--loam-color-fg-muted);
+        font-size: var(--loam-text-xs);
+      }
+    }
+  }
+
+  /* The role cell is wide enough for its longest option, so the column
+     does not resize as a choice changes. */
+  td.role {
+    min-inline-size: 12rem;
+  }
+
+  span.never {
+    color: var(--loam-color-fg-muted);
+  }
+
+  /* Each status is a region of its own kind, so the Badge inside takes
+     the colour from where it sits and says the state in words; the dot
+     is a swatch and survives forced colours as an outline. */
+  span.active {
+    --loam-context: success;
+  }
+
+  span.invited {
+    --loam-context: info;
+  }
+
+  span.suspended {
+    --loam-context: danger;
+  }
+}

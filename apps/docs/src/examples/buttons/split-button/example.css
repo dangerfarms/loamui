@@ -1,0 +1,33 @@
+/* The form is the root and the group: a primary region, so both Buttons
+   answer the same colour, and a two-cell grid so they sit level. The
+   shared edge is the one public hook Button keeps, --loam-button-radius,
+   inherited by each half: the main button squares its end corners and
+   the menu's trigger squares its start ones. border-radius is physical,
+   so the halves swap under :dir(rtl). The main cell pulls back one pixel
+   so the two borders share a line. The Buttons, the Menu and its popup
+   are core parts past the donut. */
+@scope (.split-button) to ([class*="loam-"]) {
+  :scope {
+    --loam-context: primary;
+    --loam-button-radius: 0 var(--loam-radius-md) var(--loam-radius-md) 0;
+
+    display: inline grid;
+    grid-auto-flow: column;
+    margin: 0;
+
+    &:dir(rtl) {
+      --loam-button-radius: var(--loam-radius-md) 0 0 var(--loam-radius-md);
+    }
+  }
+
+  span.main {
+    --loam-button-radius: var(--loam-radius-md) 0 0 var(--loam-radius-md);
+
+    display: block grid;
+    margin-inline-end: -1px;
+
+    :scope:dir(rtl) & {
+      --loam-button-radius: 0 var(--loam-radius-md) var(--loam-radius-md) 0;
+    }
+  }
+}

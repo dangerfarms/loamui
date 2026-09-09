@@ -1,0 +1,89 @@
+/* A grid of figures, each a real link to the full-size file, so every
+   thumbnail works before JavaScript; once hydrated a click opens the
+   file in a Modal instead. The list keeps its semantics through
+   role="list" in the markup, since list-style: none drops them in some
+   browsers. The Modal's width is its public knob, set here and inherited
+   by the dialog: as wide as the viewport allows, capped so a large image
+   is still one glance. */
+@scope (.gallery-lightbox) to ([class*="loam-"]) {
+  :scope {
+    --loam-modal-size: min(100% - 2 * var(--loam-space-lg), 72rem);
+
+    container-type: inline-size;
+  }
+
+  ul {
+    display: block grid;
+    gap: var(--loam-space-md);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 12rem), 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    margin: 0;
+  }
+
+  figure {
+    display: block grid;
+    gap: var(--loam-space-xs);
+    margin: 0;
+  }
+
+  /* The link is a block the size of its image, with the image's radius so
+     the focus ring follows the corners. It lifts on hover only where a
+     pointer can hover and motion is welcome. */
+  a {
+    border-radius: var(--loam-radius-md);
+    display: block flow;
+
+    @media (prefers-reduced-motion: no-preference) and (hover: hover) {
+      transition: translate var(--loam-duration-md) var(--loam-ease);
+
+      &:hover {
+        translate: 0 -2px;
+      }
+    }
+  }
+
+  /* Square thumbnails, cropped rather than squashed, so a grid of mixed
+     photographs reads as one grid. */
+  img {
+    aspect-ratio: 1;
+    block-size: auto;
+    border-radius: var(--loam-radius-md);
+    display: block flow;
+    inline-size: 100%;
+    object-fit: cover;
+  }
+
+  figcaption {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    margin: 0;
+  }
+}
+
+/* The lightbox's contents sit inside the Modal's Popup, which the donut
+   above fences off, so they are reached from a second scope rooted at
+   the example's own element in it. The Modal's look is untouched; this
+   arranges the large image and the Close within it. The image keeps its
+   own ratio and is capped at most of the viewport's block size, leaving
+   room for the dialog's padding and the Close, so the dialog never
+   scrolls to show the whole picture. */
+@scope (.gallery-lightbox div.lightbox) to ([class*="loam-"]) {
+  :scope {
+    display: block grid;
+    gap: var(--loam-space-md);
+    justify-items: center;
+  }
+
+  img {
+    block-size: auto;
+    border-radius: var(--loam-radius-md);
+    inline-size: auto;
+    max-block-size: 80dvb;
+    max-inline-size: 100%;
+  }
+}

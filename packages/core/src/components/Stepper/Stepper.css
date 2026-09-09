@@ -1,0 +1,225 @@
+/* A stepper is a region: it declares its container so the fluid tokens
+   answer its width and the steps know whether there is room for a row,
+   and each step hosts consumer content (a link in a title, an icon in a
+   marker), hence the donut. The ol carries the order and the Step the
+   state, in hidden words; the marker is drawn and hidden. The marker's
+   diameter is the public --loam-stepper-marker-size, twice the body text
+   by default so it rides the fluid scale. */
+@scope (.loam-Stepper) to ([class*="loam-"]) {
+  :scope {
+    --_marker-size: var(--loam-stepper-marker-size, calc(2 * var(--loam-text-md)));
+    --_gap: var(--loam-space-lg);
+
+    container-type: inline-size;
+    counter-reset: step;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--_gap);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* One step: the marker in a column of its own, spanning the title and
+     the description beside it. Each step takes the whole row, so the list
+     stacks; the row layout below changes only the flex basis. */
+  > li {
+    counter-increment: step;
+    display: block grid;
+    flex: 1 1 100%;
+    gap: var(--loam-space-xs) var(--loam-space-md);
+    grid-template:
+      "marker title" max-content
+      "marker description" 1fr
+      / max-content minmax(0, 1fr);
+    margin: 0;
+    min-inline-size: 0;
+
+    /* The connector: a hairline from this marker to the next. It shares
+       the marker's cell, centred on the column whatever the marker's
+       width, and its negative end margin runs it across the list's gap.
+       The last step has nothing to connect to. */
+    &::after {
+      border-inline-start: 1px solid var(--loam-color-line-strong);
+      content: "";
+      grid-area: marker;
+      justify-self: center;
+      margin-block: var(--_marker-size) calc(-1 * var(--_gap));
+    }
+
+    &:last-child::after {
+      content: none;
+    }
+  }
+
+  /* The circle. A marker holding more than a digit or two grows along
+     the inline axis into a pill. Strong fill with on-strong text: the raw
+     hue is never text. */
+  span.marker {
+    align-items: center;
+    align-self: start;
+    background: var(--loam-color-primary-strong);
+    block-size: var(--_marker-size);
+    border-radius: var(--loam-radius-full);
+    color: var(--loam-color-on-strong);
+    display: block flex;
+    font-size: var(--loam-text-sm);
+    font-variant-numeric: lining-nums tabular-nums;
+    font-weight: 600;
+    grid-area: marker;
+    justify-content: center;
+    line-height: 1;
+    min-inline-size: var(--_marker-size);
+    padding-inline: var(--loam-space-sm);
+    white-space: nowrap;
+
+    /* The number is drawn only into an empty marker; children take its place. */
+    &:empty::before {
+      content: counter(step);
+    }
+
+    svg {
+      block-size: auto;
+      inline-size: 1em;
+    }
+  }
+
+  /* .title, not span.title: the part keeps its styling when rendered as
+     a heading or a link. */
+  .title {
+    color: var(--loam-color-fg);
+    font-size: var(--loam-text-md);
+    font-weight: 600;
+    grid-area: title;
+    margin: 0;
+  }
+
+  p.description {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    grid-area: description;
+    margin: 0;
+    max-inline-size: var(--loam-measure);
+  }
+
+  /* Progress, read from the one attribute the consumer sets. Steps before
+     the current one are complete: their connector goes strong and an
+     empty marker shows a check in place of its number (a background cut
+     to shape, so it survives forced colours). The current step's marker
+     gains a ring. Steps after it are upcoming: hollow markers, muted
+     titles, the connector left as a line. */
+  > li:has(~ li[aria-current="step"]) {
+    &::after {
+      border-color: var(--loam-color-primary-strong);
+    }
+
+    > span.marker:empty::before {
+      background: currentcolor;
+      block-size: 0.8em;
+      clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0, 43% 62%);
+      content: "";
+      inline-size: 0.8em;
+    }
+  }
+
+  > li[aria-current="step"] {
+    > span.marker {
+      outline: 2px solid var(--loam-color-primary-strong);
+      outline-offset: 2px;
+    }
+
+    .title {
+      color: var(--loam-color-fg-strong);
+    }
+  }
+
+  > li[aria-current="step"] ~ li {
+    > span.marker {
+      background: var(--loam-color-surface);
+      border: 1px solid var(--loam-color-line-strong);
+      color: var(--loam-color-fg-muted);
+    }
+
+    .title {
+      color: var(--loam-color-fg-muted);
+    }
+  }
+
+  /* The words a screen reader hears for the state, chosen by the same
+     :has() that paints it. Every step carries both; the wrong one is kept
+     out of the accessibility tree with display: none, and the right one
+     is a box-less wrapper around the .loam-VisuallyHidden span inside it
+     (past the donut, so it keeps the element style). The server HTML is
+     right before any script runs. Two rules under exclusive conditions,
+     not a base and an override. */
+  > li:has(~ li[aria-current="step"]) > span.complete,
+  > li[aria-current="step"] > span.current {
+    display: contents;
+  }
+
+  > li:not(:has(~ li[aria-current="step"])) > span.complete,
+  > li:not([aria-current="step"]) > span.current {
+    display: none;
+  }
+
+  /* A row when there is room: each step sits beside the last, its marker
+     over its title, and the connector runs along the marker's row to the
+     next step's marker. */
+  @container (inline-size >= 40rem) {
+    > li {
+      flex: 1 1 0;
+      grid-template:
+        "marker line" max-content
+        "title title" max-content
+        "description description" 1fr
+        / max-content minmax(0, 1fr);
+
+      &::after {
+        border-block-start: 1px solid var(--loam-color-line-strong);
+        border-inline-start: none;
+        grid-area: line;
+        margin-block: 0;
+        margin-inline: 0 calc(-1 * var(--_gap));
+        place-self: center stretch;
+      }
+    }
+
+    > li:has(~ li[aria-current="step"])::after {
+      border-color: var(--loam-color-primary-strong);
+    }
+  }
+
+  /* Forced colours: the fills are background-painted and would vanish, so
+     every marker keeps a border and the check keeps its own paint. The ring
+     on the current step is an outline and survives on its own; an upcoming
+     step's marker and the connectors from the current step on go dashed,
+     so progress reads without the fills. */
+  @media (forced-colors: active) {
+    span.marker {
+      border: 1px solid CanvasText;
+    }
+
+    > li {
+      &::after {
+        border-color: CanvasText;
+      }
+
+      &:has(~ li[aria-current="step"]) > span.marker:empty::before {
+        forced-color-adjust: none;
+      }
+    }
+
+    > li[aria-current="step"] {
+      &::after {
+        border-style: dashed;
+      }
+
+      ~ li {
+        &::after,
+        > span.marker {
+          border-style: dashed;
+        }
+      }
+    }
+  }
+}

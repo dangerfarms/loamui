@@ -1,0 +1,47 @@
+/* The table and a status line under it. The Table is a limit of the
+   donut and keeps its own recipe; this scope reaches the status. */
+@scope (.table-with-selection) to ([class*="loam-"]) {
+  :scope {
+    display: block grid;
+    gap: var(--loam-space-sm);
+  }
+
+  p.status {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    font-variant-numeric: lining-nums tabular-nums;
+    margin: 0;
+  }
+}
+
+/* The cells are inside the Table, so they are reached from a second
+   scope rooted at it. A selected row is detected from its own checked
+   box rather than declared with an attribute; the box is what says
+   selected in forced colours, so the tint needs no treatment there. */
+@scope (.table-with-selection div.orders) to ([class*="loam-"]) {
+  th.select,
+  td.select {
+    inline-size: 1px;
+    padding-inline-end: 0;
+  }
+
+  th.number,
+  td.number {
+    text-align: end;
+  }
+
+  td.number {
+    font-variant-numeric: lining-nums tabular-nums;
+    white-space: nowrap;
+  }
+
+  /* An order number holds one line, whatever the width. */
+  tbody th {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  tbody tr:has(input:checked) {
+    background: var(--loam-color-primary-soft);
+  }
+}

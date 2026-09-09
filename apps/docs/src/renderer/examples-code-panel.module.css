@@ -1,0 +1,7 @@
+.details {
+  border-radius: var(--loam-radius-lg);
+}
+
+.content {
+  padding: 0;
+}

@@ -1,0 +1,47 @@
+/* The closing block: a subtle surface with a large radius, so it reads as
+   the page's last word without a border or a colour of its own. The words
+   are centred and capped at their measures; the donut keeps the
+   SignpostLink on its own styles. */
+@scope (.call-to-action) to ([class*="loam-"]) {
+  :scope {
+    background: var(--loam-color-bg-subtle);
+    border-radius: var(--loam-radius-xl);
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-lg);
+    justify-items: center;
+    padding: var(--loam-space-xl);
+    text-align: center;
+  }
+
+  h2 {
+    font-size: var(--loam-text-2xl);
+    margin: 0;
+    max-inline-size: 22ch;
+    text-wrap: balance;
+  }
+
+  p.lede {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-lg);
+    margin: 0;
+    max-inline-size: var(--loam-measure);
+    text-wrap: pretty;
+  }
+
+  div.actions {
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-lg);
+    justify-content: center;
+  }
+
+  /* Forced colours drop the tint, so the block keeps an edge that says
+     where it starts and ends. */
+  @media (forced-colors: active) {
+    :scope {
+      border: 1px solid CanvasText;
+    }
+  }
+}

@@ -1,0 +1,62 @@
+/* The column the nav lives in: the brand in the first row and the Nav
+   stretched through the second. In an app shell the column is as tall as
+   the viewport; here it is given a height so the pinning shows. */
+@scope (.side-nav-two-sections) to ([class*="loam-"]) {
+  :scope {
+    display: block grid;
+    gap: var(--loam-space-md);
+    grid-template-rows: auto 1fr;
+    inline-size: min(100%, 18rem);
+    min-block-size: 32rem;
+  }
+
+  a.brand {
+    align-items: center;
+    color: var(--loam-color-fg-strong);
+    display: inline flex;
+    font-family: var(--loam-font-display);
+    font-size: var(--loam-text-lg);
+    font-weight: 700;
+    gap: var(--loam-space-xs);
+    letter-spacing: -0.02em;
+    padding-inline: var(--loam-space-sm);
+    text-decoration: none;
+
+    svg {
+      block-size: 1.25em;
+      inline-size: 1.25em;
+    }
+  }
+}
+
+/* Core's Nav, placed from its own scope. Its three children, the title
+   and two lists, are three rows; the middle one takes the free space, so
+   the account list sits at the block end however tall the column is. */
+@scope (.side-nav-two-sections .loam-Nav) to ([class*="loam-"]) {
+  :scope {
+    grid-template-rows: auto 1fr auto;
+  }
+
+  ul.account {
+    border-block-start: 1px solid var(--loam-color-line);
+    padding-block-start: var(--loam-space-sm);
+  }
+
+  /* The form is plumbing around the sign-out line and has no box. */
+  form {
+    margin: 0;
+  }
+
+  /* Sign out is a button rendered through Nav.Link, so it wears the
+     link's class and the Nav's line styles; the elements layer's button
+     dressing, the raised pill, is set aside so it reads as one line among
+     the links. The marker border on the start side is the Nav's own. */
+  button.link {
+    background: none;
+    border-block: 0;
+    border-inline-end: 0;
+    box-shadow: none;
+    inline-size: 100%;
+    text-align: start;
+  }
+}

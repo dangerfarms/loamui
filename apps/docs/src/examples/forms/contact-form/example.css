@@ -1,0 +1,44 @@
+/* The form itself is the root and the grid: one column with a large gap
+   between the fields, and the container the fluid tokens answer, capped
+   at a readable measure. The Fields and the Button are core parts past
+   the donut; the rules here reach only the form's own heading, note and
+   actions row. */
+@scope (.contact-form) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-lg);
+    inline-size: 100%;
+    max-inline-size: 36rem;
+  }
+
+  /* The heading and the note are one opening, closer to each other than
+     the fields are, so the intro has a gap of its own. */
+  div.intro {
+    display: block grid;
+    gap: var(--loam-space-sm);
+
+    h2 {
+      font-size: var(--loam-text-xl);
+      margin: 0;
+    }
+
+    p {
+      color: var(--loam-color-fg-muted);
+      margin: 0;
+      max-inline-size: var(--loam-measure);
+    }
+  }
+
+  /* A wrapping row, so the Button keeps its natural width: one column of
+     fields ends in one action, not a bar. The row is a primary region,
+     so that action takes the brand colour from where it sits. */
+  div.actions {
+    --loam-context: primary;
+
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-md);
+  }
+}

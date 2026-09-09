@@ -26,7 +26,15 @@ describe("mergeProps", () => {
       { className: "own", "aria-describedby": "existing" },
     );
     expect(props.className).toBe("wiring own");
-    expect(props["aria-describedby"]).toBe("existing tip-1");
+    expect(props["aria-describedby"]).toBe("tip-1 existing");
+  });
+
+  it("lists each id once, wiring first", () => {
+    const props = mergeProps(
+      { "aria-describedby": "desc err" },
+      { "aria-describedby": "rules err" },
+    );
+    expect(props["aria-describedby"]).toBe("desc err rules");
   });
 
   it("merges style with wiring winning on conflicts", () => {

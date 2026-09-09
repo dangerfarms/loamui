@@ -1,0 +1,78 @@
+/* A promotional banner: the photograph fills one side and the offer
+   sits on the other. No Card, because a Card pads every side and the
+   picture here runs to the edge, so the section paints its own surface
+   and line from the same tokens. The section is both the container and
+   the grid; the picture is placed by the query, not by the markup. */
+@scope (.banner-with-image) to ([class*="loam-"]) {
+  :scope {
+    background: var(--loam-color-surface);
+    border: 1px solid var(--loam-color-line);
+    border-radius: var(--loam-radius-xl);
+    container-type: inline-size;
+    display: block grid;
+    overflow: clip;
+  }
+
+  img.media {
+    aspect-ratio: 16 / 9;
+    block-size: auto;
+    inline-size: 100%;
+    object-fit: cover;
+  }
+
+  div.text {
+    align-content: center;
+    display: block grid;
+    gap: var(--loam-space-md);
+    padding: var(--loam-space-xl);
+  }
+
+  /* The eyebrow is a warning region: the Badge inside takes the warning
+     colour from the context, because a closing date is a deadline, not a
+     brand mark. */
+  p.eyebrow {
+    --loam-context: warning;
+
+    align-items: center;
+    color: var(--loam-color-fg-muted);
+    display: block flex;
+    flex-wrap: wrap;
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-sm);
+    margin: 0;
+  }
+
+  h2 {
+    font-size: var(--loam-text-2xl);
+    margin: 0;
+    max-inline-size: 22ch;
+    text-wrap: balance;
+  }
+
+  p.description {
+    color: var(--loam-color-fg-muted);
+    margin: 0;
+    max-inline-size: var(--loam-measure);
+    text-wrap: pretty;
+  }
+
+  div.actions {
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-md);
+  }
+
+  /* Wide: the picture takes the smaller column and grows to the height
+     of the words beside it, cropped rather than letterboxed. */
+  @container (inline-size >= 44rem) {
+    :scope {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    }
+
+    img.media {
+      aspect-ratio: auto;
+      block-size: 100%;
+      min-block-size: 0;
+    }
+  }
+}

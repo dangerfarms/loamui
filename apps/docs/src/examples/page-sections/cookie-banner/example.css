@@ -1,0 +1,55 @@
+/* A cookie banner is a region at the start of the document, in the flow
+   of the page and never over it: no sticky or fixed position and no
+   stacking, so nothing is covered while the choice is open. The
+   confirmation sits beside the banner as a live region that is empty
+   until the choice, so it takes no room and no gap while the banner
+   shows. In forced colours the background goes but the line beneath
+   keeps the banner's edge. */
+@scope (.cookie-banner) to ([class*="loam-"]) {
+  :scope {
+    background: var(--loam-color-bg-subtle);
+    border-block-end: 1px solid var(--loam-color-line);
+    container-type: inline-size;
+    padding: var(--loam-space-lg);
+  }
+
+  div.inner {
+    display: block grid;
+    gap: var(--loam-space-sm);
+  }
+
+  h2 {
+    font-size: var(--loam-text-lg);
+    margin: 0;
+  }
+
+  /* The paragraphs keep to a readable measure; the grid gap spaces them,
+     so the element margin goes. */
+  p {
+    margin: 0;
+    max-inline-size: var(--loam-measure);
+    text-wrap: pretty;
+  }
+
+  /* The choices: a wrapping row. The Buttons and the link keep their own
+     widths and wrap when the banner is narrow. */
+  form {
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm);
+    margin-block-start: var(--loam-space-sm);
+  }
+
+  /* The confirmation: the sentence, then the Hide button shrink-wrapped
+     beneath it. A grid with no children has no height, which keeps the
+     empty live region out of the way. It takes focus only when it has no
+     button to hand it to, and a ring on a region of prose would mark
+     nothing the reader can act on, so it draws none. */
+  div.confirmation {
+    display: block grid;
+    gap: var(--loam-space-sm);
+    justify-items: start;
+    outline: none;
+  }
+}

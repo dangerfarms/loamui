@@ -1,0 +1,144 @@
+/* The root holds the trigger and sets the panel's width: the Drawer's
+   public property inherits into the dialog from here, top layer or not.
+   Everything inside the dialog sits behind the donut, so the basket's
+   own parts open a second scope rooted inside it. */
+@scope (.mini-basket) to ([class*="loam-"]) {
+  :scope {
+    --loam-drawer-size: 28rem;
+  }
+}
+
+/* The panel's contents: a head, the lines, the summary and the actions,
+   in a column. The Drawer.Title is the Drawer's own h2; only its margin
+   is set, since the column's gap spaces it here. */
+@scope (.mini-basket div.basket) to ([class*="loam-"]) {
+  :scope {
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  div.head {
+    align-items: center;
+    display: block flex;
+    gap: var(--loam-space-sm);
+    justify-content: space-between;
+
+    h2 {
+      margin: 0;
+    }
+  }
+
+  /* The lines are separated by borders, which forced colours keep. The
+     markers go; the markup keeps the list's role with role="list", since
+     list-style: none drops it in some browsers. */
+  ul.lines {
+    display: block grid;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    > li {
+      margin: 0;
+
+      + li {
+        border-block-start: 1px solid var(--loam-color-line);
+        margin-block-start: var(--loam-space-md);
+        padding-block-start: var(--loam-space-md);
+      }
+    }
+  }
+
+  /* One line: a small thumbnail, then the name and options with the
+     quantity under them, the total beside the name and the remove action
+     ending the last row. */
+  article {
+    align-items: start;
+    column-gap: var(--loam-space-sm);
+    display: block grid;
+    grid-template-areas:
+      "media title total"
+      "media options options"
+      "media control remove";
+    grid-template-columns: auto 1fr auto;
+  }
+
+  img.media {
+    aspect-ratio: 1;
+    block-size: auto;
+    border-radius: var(--loam-radius-md);
+    grid-area: media;
+    inline-size: 4rem;
+    object-fit: cover;
+  }
+
+  h3 {
+    font-size: var(--loam-text-sm);
+    font-weight: 600;
+    grid-area: title;
+    margin: 0;
+
+    a {
+      color: inherit;
+    }
+  }
+
+  p.options {
+    color: var(--loam-color-fg-muted);
+    grid-area: options;
+    margin-block: var(--loam-space-xs) 0;
+  }
+
+  div.control {
+    grid-area: control;
+    margin-block-start: var(--loam-space-sm);
+  }
+
+  p.total {
+    font-weight: 600;
+    grid-area: total;
+    justify-self: end;
+    margin: 0;
+  }
+
+  div.remove {
+    grid-area: remove;
+    margin-block-start: var(--loam-space-sm);
+    place-self: end;
+  }
+
+  /* The summary is a description list in two columns, the figures at the
+     end; the total is set apart by a rule and weight, not colour. */
+  dl.summary {
+    display: block grid;
+    gap: var(--loam-space-xs);
+    margin: 0;
+
+    > div {
+      display: block flex;
+      justify-content: space-between;
+
+      &:last-child {
+        border-block-start: 1px solid var(--loam-color-line);
+        font-size: var(--loam-text-md);
+        font-weight: 700;
+        margin-block-start: var(--loam-space-xs);
+        padding-block-start: var(--loam-space-sm);
+      }
+    }
+
+    dt {
+      color: var(--loam-color-fg-muted);
+    }
+
+    dd {
+      margin: 0;
+    }
+  }
+
+  /* The checkout signpost and the close each take the panel's width in a
+     one-column grid, going somewhere first. */
+  div.actions {
+    display: block grid;
+    gap: var(--loam-space-sm);
+  }
+}

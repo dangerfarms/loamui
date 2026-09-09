@@ -8,7 +8,7 @@ import type { PartProps } from "../../utils";
 export interface AvatarProps extends Omit<PartProps<"span">, "color"> {
   /** Image source. When set, renders an <img>. */
   src?: string;
-  /** Alt text for the image (falls back to `name`). */
+  /** Alt text for the image (falls back to `name`; `""` when the Avatar is `aria-hidden`). */
   alt?: string;
   /** Person's name; used for initials and, if no `alt`, the image alt. */
   name?: string;
@@ -63,6 +63,9 @@ function AvatarBase({ src, alt, name, className, children, ref, ...rest }: Avata
   // expose an unnamed role="img" to assistive technology.
   const accessibleName = name ?? alt;
   const consumerNamed = rest["aria-label"] != null || rest["aria-labelledby"] != null;
+  // A decorative avatar (aria-hidden, beside the printed name) carries an
+  // empty alt, so the name is not read twice where aria-hidden is not honoured.
+  const hidden = rest["aria-hidden"] === true || rest["aria-hidden"] === "true";
 
   let content: ReactNode;
   if (children) {
@@ -72,7 +75,7 @@ function AvatarBase({ src, alt, name, className, children, ref, ...rest }: Avata
       <img
         className="image"
         src={src}
-        alt={alt ?? name ?? ""}
+        alt={hidden ? "" : (alt ?? name ?? "")}
         onError={() => setImageFailed(true)}
       />
     );

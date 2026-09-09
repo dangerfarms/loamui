@@ -1,0 +1,36 @@
+/* An announcement bar for the top of a page: a message that takes the
+   row's slack and a link that keeps its width and wraps beneath when the
+   bar is narrow. A div with no role: a bar in the page from the start is
+   content, not news. */
+@scope (.banner) to ([class*="loam-"]) {
+  :scope {
+    align-items: center;
+    background: var(--loam-color-bg-subtle);
+    border-block-end: 1px solid var(--loam-color-line);
+    container-type: inline-size;
+    display: block flex;
+    flex-wrap: wrap;
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-sm) var(--loam-space-lg);
+    padding-block: var(--loam-space-sm);
+    padding-inline: var(--loam-space-lg);
+  }
+
+  p {
+    flex: 1 1 24ch;
+    margin: 0;
+  }
+
+  a {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* Forced colours: the tint goes with every background, so the bar
+     keeps an edge on every side and reads as a strip apart from the page. */
+  @media (forced-colors: active) {
+    :scope {
+      border: 1px solid CanvasText;
+    }
+  }
+}

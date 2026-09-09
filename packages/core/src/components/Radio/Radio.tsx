@@ -35,12 +35,12 @@ function RadioControl({
   ref,
   ...rest
 }: RadioControlProps) {
-  const field = useFieldControlProps();
+  const field = useFieldControlProps(ariaDescribedby);
   const group = useContext(RadioGroupContext);
   // No aria-invalid here: ARIA allows it on the radiogroup, not the
   // individual radio, so the group's fieldset carries composed errors.
   const resolvedId = id ?? field.id;
-  const describedBy = ariaDescribedby ?? field["aria-describedby"];
+  const describedBy = field["aria-describedby"];
 
   // Group participation via context (no cloneElement): shared name and
   // selection state, unless the Radio's own props say otherwise.
@@ -109,7 +109,7 @@ function RadioLabelled({
       <RadioControl
         ref={ref}
         id={inputId}
-        aria-describedby={cx(descId, ariaDescribedby ?? field["aria-describedby"]) || undefined}
+        aria-describedby={cx(descId, ariaDescribedby) || undefined}
         {...control}
       />
       <span className="body">

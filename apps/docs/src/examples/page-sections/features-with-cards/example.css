@@ -1,0 +1,103 @@
+/* Features on cards: each one is a surface of its own because these are
+   things a visitor picks between, not a list to scan. The section is the
+   container; the list is the grid, fitting as many cards across as the
+   section's own width allows, and the markup keeps role="list" for the
+   browsers that drop the semantics with the marker. */
+@scope (.features-with-cards) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-xl);
+  }
+
+  header {
+    display: block grid;
+    gap: var(--loam-space-sm);
+    justify-items: center;
+    text-align: center;
+  }
+
+  p.eyebrow {
+    color: var(--loam-color-primary-strong);
+    font-size: var(--loam-text-sm);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: var(--loam-text-2xl);
+    margin: 0;
+    max-inline-size: 26ch;
+    text-wrap: balance;
+  }
+
+  p.description {
+    color: var(--loam-color-fg-muted);
+    margin: 0;
+    max-inline-size: var(--loam-measure);
+    text-wrap: pretty;
+  }
+
+  ul {
+    display: block grid;
+    gap: var(--loam-space-md);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* Each card is a Card rendered as the list item, so the Card element is
+   this scope's root: the icon, heading and line inside are reachable,
+   and the Card's own surface, line, radius and padding are left alone. */
+@scope (.features-with-cards li.feature) to ([class*="loam-"]) {
+  :scope {
+    align-content: start;
+    display: block grid;
+    gap: var(--loam-space-sm);
+    margin: 0;
+  }
+
+  /* The square is sized in em on the title's size, so it rides the fluid
+     scale with the text beside it. The glyph is the strong token on the
+     soft tint, the pair the audit checks as a glyph. */
+  div.icon {
+    align-items: center;
+    background: var(--loam-color-primary-soft);
+    block-size: 2.25em;
+    border-radius: var(--loam-radius-md);
+    color: var(--loam-color-primary-strong);
+    display: block flex;
+    font-size: var(--loam-text-lg);
+    inline-size: 2.25em;
+    justify-content: center;
+    margin-block-end: var(--loam-space-xs);
+
+    svg {
+      block-size: auto;
+      inline-size: 1em;
+    }
+  }
+
+  h3 {
+    font-size: var(--loam-text-lg);
+    margin: 0;
+  }
+
+  p {
+    color: var(--loam-color-fg-muted);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* Forced colours: the tint behind the glyph goes, so the square keeps
+     an edge and the glyph takes the system text colour. */
+  @media (forced-colors: active) {
+    div.icon {
+      border: 1px solid CanvasText;
+    }
+  }
+}

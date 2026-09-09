@@ -1,0 +1,13 @@
+/* The root is the core Field, which stacks the label, the description and
+   the row. The row is the example's: the box shrink-wraps its three
+   characters, by the native size attribute the Input honours, and the
+   range takes the rest, centred on the box's line. Both are core parts
+   past the donut. */
+@scope (.number-input-with-slider) to ([class*="loam-"]) {
+  div.row {
+    align-items: center;
+    display: block grid;
+    gap: var(--loam-space-md);
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+}

@@ -1,0 +1,91 @@
+/* The section is the container, so the rows can restack below a narrow
+   width. The list carries no marker, since a task list is read by status,
+   not by position, and the markup restores the list role that some
+   browsers drop with the markers. */
+@scope (.task-list) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+  }
+
+  h2 {
+    font-size: var(--loam-text-xl);
+    margin-block-end: var(--loam-space-xs);
+  }
+
+  p.summary {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    margin-block: 0 var(--loam-space-md);
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* One row: the title and its description in the first column, the
+     status in the second, spanning both rows so it sits level with the
+     title whether or not a description follows. The row gap is zero because
+     the span leaves an empty second row in a task with no description; the
+     description carries its own top margin instead. */
+  li {
+    align-items: start;
+    border-block-end: 1px solid var(--loam-color-line);
+    display: block grid;
+    gap: 0 var(--loam-space-lg);
+    grid-template-columns: 1fr auto;
+    margin: 0;
+    padding-block: var(--loam-space-sm);
+  }
+
+  /* The title. A link keeps the page's link styling; plain text, the title
+     of a task that cannot be started, is muted so the row reads as
+     unavailable before the status is read. */
+  .title {
+    font-weight: 600;
+
+    &:not(a) {
+      color: var(--loam-color-fg-muted);
+    }
+  }
+
+  p.description {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    grid-column: 1;
+    margin: 0;
+    margin-block-start: var(--loam-space-xs);
+  }
+
+  /* The status hosts the Badge and declares what the task's state means:
+     a completed task is a success region, one under way an info region,
+     and one not yet begun no region at all, so its Badge stays neutral. */
+  div.status {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+
+    &.complete {
+      --loam-context: success;
+    }
+
+    &.started {
+      --loam-context: info;
+    }
+  }
+
+  /* Narrow: one column, the status under the title and description. The
+     query sits on the rows because a container query is answered by an
+     ancestor, never by the element that declares it. */
+  @container (inline-size < 24rem) {
+    li {
+      grid-template-columns: 1fr;
+    }
+
+    div.status {
+      grid-column: 1;
+      grid-row: auto;
+      margin-block-start: var(--loam-space-xs);
+    }
+  }
+}

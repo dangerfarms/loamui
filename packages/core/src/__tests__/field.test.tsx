@@ -29,6 +29,56 @@ describe("Field composition wiring", () => {
     expect(error).toHaveAttribute("role", "alert");
   });
 
+  it("keeps a control's own aria-describedby after the Field's ids", () => {
+    const { rerender } = render(
+      <>
+        <p id="rules">Letters and digits only.</p>
+        <Field.Root>
+          <Field.Label>Username</Field.Label>
+          <Field.Description>Shown on your profile.</Field.Description>
+          <Field.Error>{null}</Field.Error>
+          <Input aria-describedby="rules" />
+        </Field.Root>
+      </>,
+    );
+    const input = screen.getByLabelText("Username");
+    const description = screen.getByText("Shown on your profile.");
+    expect(input).toHaveAttribute("aria-describedby", `${description.id} rules`);
+
+    rerender(
+      <>
+        <p id="rules">Letters and digits only.</p>
+        <Field.Root>
+          <Field.Label>Username</Field.Label>
+          <Field.Description>Shown on your profile.</Field.Description>
+          <Field.Error>Enter a username</Field.Error>
+          <Input aria-describedby="rules" />
+        </Field.Root>
+      </>,
+    );
+    const error = screen.getByRole("alert");
+    expect(input).toHaveAttribute("aria-describedby", `${description.id} ${error.id} rules`);
+    expect(input).toHaveAccessibleDescription(
+      "Shown on your profile. Error: Enter a username Letters and digits only.",
+    );
+  });
+
+  it("does the same through Field.Control, each id once", () => {
+    render(
+      <>
+        <p id="rules">Letters and digits only.</p>
+        <Field.Root>
+          <Field.Label>Username</Field.Label>
+          <Field.Description>Shown on your profile.</Field.Description>
+          <Field.Control render={<input aria-describedby="rules rules" />} />
+        </Field.Root>
+      </>,
+    );
+    const input = screen.getByLabelText("Username");
+    const description = screen.getByText("Shown on your profile.");
+    expect(input).toHaveAttribute("aria-describedby", `${description.id} rules`);
+  });
+
   it("omits error wiring when there is no error content", () => {
     render(
       <Field.Root>

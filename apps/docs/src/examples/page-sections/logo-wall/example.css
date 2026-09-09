@@ -1,0 +1,55 @@
+/* A row of marks under a small heading. A wrapping flex row rather than
+   a grid: the marks differ in width, and equal columns would leave the
+   narrow ones swimming. Every mark shares one height and its width
+   follows from its own aspect ratio, so a square mark and a wide
+   wordmark read as one set. The list keeps its semantics through
+   role="list" in the markup, since list-style: none drops them in some
+   browsers. */
+@scope (.logo-wall) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-lg);
+    justify-items: center;
+  }
+
+  h2 {
+    color: var(--loam-color-fg-muted);
+    font-family: var(--loam-font);
+    font-size: var(--loam-text-sm);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  ul {
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-lg) var(--loam-space-xl);
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    flex: none;
+    margin: 0;
+  }
+
+  /* Placeholder marks in one ink: a real page puts an img with the
+     organisation's name as its alt here, in the brand's own colour. A
+     mark is a picture, so the letters in it keep their order under
+     right-to-left text, as the letters in an img would. */
+  svg {
+    block-size: 2.5rem;
+    color: var(--loam-color-fg-muted);
+    direction: ltr;
+    display: block flow;
+    font-family: var(--loam-font-display);
+    inline-size: auto;
+    max-inline-size: 100%;
+  }
+}

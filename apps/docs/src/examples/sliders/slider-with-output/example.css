@@ -1,0 +1,5 @@
+/* Nothing to add. The root is the core Field; the Range.Root carries the
+   thumb's position as a fraction and its own grid puts the Output on
+   the row above the track, over the thumb, by the same geometry the
+   marks use. The readout's box, its tabular figures and its border,
+   which survives forced colours, are core's. */

@@ -40,7 +40,7 @@ export function Select({
   ref,
   ...rest
 }: SelectProps) {
-  const field = useFieldControlProps();
+  const field = useFieldControlProps(ariaDescribedby);
   const { nativeInvalid, validationRef, checkOnInput, checkOnInvalid } =
     useUserInvalid<HTMLSelectElement>();
   const selectRef = useMemo(() => composeRefs(ref, validationRef), [ref, validationRef]);
@@ -60,7 +60,7 @@ export function Select({
         id={id ?? field.id}
         {...rest}
         aria-invalid={ariaInvalid ?? field["aria-invalid"] ?? (nativeInvalid || undefined)}
-        aria-describedby={ariaDescribedby ?? field["aria-describedby"]}
+        aria-describedby={field["aria-describedby"]}
         onInput={(e) => {
           onInput?.(e);
           checkOnInput(e);

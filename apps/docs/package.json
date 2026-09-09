@@ -3,13 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "predev": "node scripts/sync-css.mjs && node scripts/sync-agent-demo.mjs && tsx --tsconfig scripts/tsconfig.export.json scripts/export-markdown.mts",
+    "predev": "node scripts/sync-css.mjs && node scripts/sync-agent-demo.mjs && tsx --tsconfig scripts/tsconfig.export.json scripts/build-examples.mts && tsx --tsconfig scripts/tsconfig.export.json scripts/export-markdown.mts",
     "dev": "node scripts/sync-css.mjs --watch & next dev --port 3007",
-    "prebuild": "node scripts/sync-css.mjs && node scripts/sync-agent-demo.mjs && tsx --tsconfig scripts/tsconfig.export.json scripts/export-markdown.mts",
+    "prebuild": "node scripts/sync-css.mjs && node scripts/sync-agent-demo.mjs && tsx --tsconfig scripts/tsconfig.export.json scripts/build-examples.mts && tsx --tsconfig scripts/tsconfig.export.json scripts/export-markdown.mts",
     "build": "next build",
     "start": "next start --port 3007",
     "check-types": "tsc --noEmit",
-    "lint": "oxlint --config ../../.oxlintrc.json src && stylelint \"src/**/*.css\""
+    "lint": "oxlint --config ../../.oxlintrc.json src && stylelint \"src/**/*.css\"",
+    "build-examples": "tsx --tsconfig scripts/tsconfig.export.json scripts/build-examples.mts",
+    "test": "vitest run"
   },
   "dependencies": {
     "@loamui/core": "workspace:*",
@@ -22,12 +24,19 @@
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
     "@next/mdx": "^16.3.1",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
     "@types/mdx": "^2.0.14",
     "@types/node": "22.12.0",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "jsdom": "^25.0.1",
     "remark-gfm": "^4.0.1",
     "tsx": "^4.23.12",
-    "typescript": "5.9.2"
+    "typescript": "5.9.2",
+    "vite": "^6.0.0",
+    "vitest": "^3.0.0",
+    "vitest-axe": "^0.1.0"
   }
 }

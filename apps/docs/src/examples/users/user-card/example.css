@@ -1,0 +1,68 @@
+/* The Card is the root: it is rendered as the article, so the column
+   inside is in reach while the Card's surface, line, radius and padding
+   are left as they are, and the Avatar and the Button inside stay behind
+   the donut. The avatar's size is Avatar's public property, set here and
+   inherited. Width is the layout's; here the card takes 20rem or the
+   space available. */
+@scope (.user-card) to ([class*="loam-"]) {
+  :scope {
+    --loam-avatar-size: 5rem;
+
+    display: block grid;
+    gap: var(--loam-space-xs);
+    inline-size: min(100%, 20rem);
+    justify-items: center;
+    text-align: center;
+  }
+
+  h2 {
+    font-size: var(--loam-text-xl);
+    margin-block: var(--loam-space-sm) 0;
+  }
+
+  p.role {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    margin: 0;
+  }
+
+  /* Three pairs across; the figure leads each pair on screen while the
+     markup keeps term then description. */
+  dl.stats {
+    display: block grid;
+    gap: var(--loam-space-sm);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    inline-size: 100%;
+    margin-block: var(--loam-space-md) var(--loam-space-sm);
+
+    div {
+      display: block grid;
+      gap: calc(var(--loam-space-xs) / 2);
+    }
+
+    dt {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-xs);
+      order: 1;
+    }
+
+    dd {
+      color: var(--loam-color-fg-strong);
+      font-family: var(--loam-font-display);
+      font-size: var(--loam-text-lg);
+      font-variant-numeric: lining-nums tabular-nums;
+      font-weight: 700;
+      line-height: 1.1;
+      margin: 0;
+    }
+  }
+
+  /* The one action is the card's primary one, and a grid region
+     stretches the Button to the card's width natively. */
+  div.actions {
+    --loam-context: primary;
+
+    display: block grid;
+    inline-size: 100%;
+  }
+}

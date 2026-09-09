@@ -1,0 +1,13 @@
+/* The column the nav lives in. The one thing asked of the Nav is its
+   indent: each group's title carries an icon before its words, so a
+   nested list is pushed in by the icon's width and the gap after it,
+   through Nav's public --loam-nav-indent, and the nested words line up
+   under the group's words rather than under its icon. The icon is 1.25em
+   of the link's own type, which is the md step. */
+@scope (.side-nav-with-groups) to ([class*="loam-"]) {
+  :scope {
+    --loam-nav-indent: calc(1.25 * var(--loam-text-md) + var(--loam-space-sm));
+
+    inline-size: min(100%, 18rem);
+  }
+}

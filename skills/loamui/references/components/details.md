@@ -68,7 +68,7 @@ Give several Details the same name and the browser itself closes the others when
 ## When not to
 
 - When most users need the content: content hidden by default may simply never be read. Collapsed sections routinely go unopened. Put it on the page under headings.
-- For FAQs: a table of contents over plain headings serves readers better than an accordion of questions. A long FAQ is usually a symptom that the page it answers for is unclear.
+- For a long FAQ: a dozen questions or more, or one people arrive at by link, belongs under headings with a table of contents, because a closed disclosure hides the answer from find-in-page and from a link into the page wherever the browser does not open it automatically. A short set of questions reads well as an exclusive set. A long FAQ is usually a symptom that the page it answers for is unclear.
 - For small amounts of content: the click cost of opening outweighs the space saved; plain prose is simpler.
 - Nested inside another Details: stacked disclosure widgets make it unclear what is open, what is hidden, and how much content remains.
 

@@ -1,0 +1,67 @@
+/* The current account as one control: a bare button, not a Button. The
+   elements layer dresses every button as a Button, a centred pill in
+   heavy type; an account row is a start-aligned line of ordinary text,
+   so the pill's paint goes and the row's own shape takes its place. The
+   border stays, transparent, so forced colours keep an edge; the hover
+   surface carries no state, so it needs no treatment there. */
+@scope (.user-button) to ([class*="loam-"]) {
+  :scope {
+    align-items: center;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: var(--loam-radius-md);
+    box-shadow: none;
+    color: var(--loam-color-fg);
+    display: block flex;
+    font-weight: 400;
+    gap: var(--loam-space-sm);
+    inline-size: min(100%, 20rem);
+    padding: var(--loam-space-sm);
+    text-align: start;
+    white-space: normal;
+
+    @media (hover: hover) {
+      &:hover {
+        background: var(--loam-color-bg-subtle);
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition: background var(--loam-duration-sm) var(--loam-ease);
+    }
+  }
+
+  /* The name over the email; the email is the line that tells two
+     accounts apart, and it clips with an ellipsis rather than wrapping
+     the row. */
+  span.text {
+    display: block grid;
+    flex: 1;
+    min-inline-size: 0;
+
+    strong {
+      color: var(--loam-color-fg-strong);
+    }
+
+    > span {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-xs);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  /* The chevron says the row opens something; it turns with the writing
+     direction because the path is drawn for the inline end. */
+  svg {
+    block-size: 1em;
+    color: var(--loam-color-fg-muted);
+    flex: none;
+    inline-size: 1em;
+
+    &:dir(rtl) {
+      scale: -1 1;
+    }
+  }
+}

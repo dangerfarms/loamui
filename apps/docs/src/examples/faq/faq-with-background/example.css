@@ -1,0 +1,61 @@
+/* The same four disclosures on a subtle surface with room around them:
+   a block that stands apart from the page rather than a list in it. The
+   section paints the surface and is the container; the inner element
+   is capped at a reading width and centred, and the padding grows with
+   the section's own width rather than the viewport's. */
+@scope (.faq-with-background) to ([class*="loam-"]) {
+  :scope {
+    background: var(--loam-color-bg-subtle);
+    border-radius: var(--loam-radius-xl);
+    container-type: inline-size;
+    padding: var(--loam-space-xl) var(--loam-space-lg);
+  }
+
+  div.inner {
+    display: block grid;
+    gap: var(--loam-space-xl);
+    margin-inline: auto;
+    max-inline-size: 44rem;
+  }
+
+  header {
+    display: block grid;
+    gap: var(--loam-space-sm);
+    justify-items: center;
+    text-align: center;
+
+    > p {
+      color: var(--loam-color-fg-muted);
+      margin: 0;
+      max-inline-size: var(--loam-measure);
+      text-wrap: pretty;
+    }
+  }
+
+  h2 {
+    font-size: var(--loam-text-2xl);
+    margin: 0;
+    max-inline-size: 24ch;
+    text-wrap: balance;
+  }
+
+  div.questions {
+    display: block grid;
+    gap: var(--loam-space-sm);
+  }
+
+  /* Wide: more room on every side, so the block reads as a place of its
+     own on a page with a lot around it. */
+  @container (inline-size >= 48rem) {
+    :scope {
+      padding: calc(var(--loam-space-xl) * 2) var(--loam-space-xl);
+    }
+  }
+
+  /* Forced colours: the tint goes, so the block keeps an edge. */
+  @media (forced-colors: active) {
+    :scope {
+      border: 1px solid CanvasText;
+    }
+  }
+}

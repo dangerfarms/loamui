@@ -126,6 +126,7 @@ The browser restores focus to the trigger when the drawer closes. Keep a single,
 
 - Built on the native <dialog> opened with showModal(): the browser provides the top layer, ::backdrop, real focus containment, Escape handling, and restores focus to the trigger on close, none of it re-implemented in JavaScript.
 - Drawer.Title and Drawer.Description automatically label and describe the dialog via aria-labelledby / aria-describedby.
+- Drawer.Trigger carries aria-haspopup="dialog" and aria-expanded, which follows the open state, so a screen reader says what the button opens and whether it is open.
 - Light dismiss (clicking the backdrop) uses the closedby attribute where supported, with a small feature-detected coordinate-check fallback elsewhere: no polyfills, per the browser support policy.
 - The slide transition lives inside prefers-reduced-motion: no-preference, so users who ask for reduced motion get an instant open with no movement.
 - A forced-colors border keeps the panel edge visible when background colours are overridden; body scroll is locked while open.

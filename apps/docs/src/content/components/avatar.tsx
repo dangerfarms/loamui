@@ -99,7 +99,7 @@ const doc: ComponentContent = {
     "With src, a real <img> is rendered and its alt falls back to name: pass the name and the image announces the person.",
     'Without an image, the root becomes role="img" with aria-label from name (or alt): screen readers hear the full name (“Jane Doe”), never the raw initials (“JD”).',
     "A bare <Avatar /> with no name from any source is treated as decorative automatically (aria-hidden, no role). An identifying avatar must be given a name, an alt, or an aria-label.",
-    "When the name is visibly printed next to the avatar, pass aria-hidden so assistive tech does not read the same name twice.",
+    "When the name is visibly printed next to the avatar, pass aria-hidden so assistive tech does not read the same name twice; the image's alt is then empty as well, so the name is not read where aria-hidden is not honoured.",
     'The fallback glyph is aria-hidden and focusable="false": it is decoration; identity always comes from the name/alt wiring above.',
   ],
   props: [
@@ -111,7 +111,8 @@ const doc: ComponentContent = {
     {
       name: "alt",
       type: "string",
-      description: "Alt text for the image (falls back to name).",
+      description:
+        "Alt text for the image (falls back to name). Empty when the Avatar is aria-hidden, so a decorative image is not described.",
     },
     {
       name: "name",

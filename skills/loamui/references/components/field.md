@@ -125,7 +125,7 @@ The message renders once, inside the field, tied to the control by aria-describe
 ## Accessibility
 
 - Field.Root generates one id and hands it to Field.Label (via htmlFor) and to the control, so label and control are always associated.
-- Description and error ids are added to the control's aria-describedby only when those parts are present.
+- Description and error ids are added to the control's aria-describedby only when those parts are present, ahead of any aria-describedby the control carries itself, each id once: a control that brings its own description keeps it.
 - Any Field.Error with content sets aria-invalid on the control and is announced with role="alert"; a visually hidden "Error: " prefix (labels.errorPrefix on the Root) makes the announcement unmistakable out of context.
 - The LoamUI controls read this wiring from context; Field.Control hands it to arbitrary elements, letting you keep semantic, native controls instead of re-implementing them.
 

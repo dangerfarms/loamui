@@ -1,0 +1,64 @@
+/* A comment and its replies: the root article is the parent comment, the
+   replies are a list of articles inside it, and every comment at either
+   level is the Comment example. The donut keeps the Avatars, Badge, Times
+   and Buttons on their own styles. */
+@scope (.comment-thread) to ([class*="loam-"]) {
+  :scope,
+  article {
+    display: block grid;
+    gap: var(--loam-space-sm);
+  }
+
+  :scope {
+    container-type: inline-size;
+  }
+
+  header {
+    --loam-avatar-size: 2rem;
+
+    align-items: center;
+    color: var(--loam-color-fg-muted);
+    display: block flex;
+    flex-wrap: wrap;
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-sm);
+  }
+
+  a.author {
+    color: var(--loam-color-fg-strong);
+    font-size: var(--loam-text-md);
+    font-weight: 600;
+  }
+
+  div.body {
+    max-inline-size: var(--loam-measure);
+
+    > :last-child {
+      margin-block-end: 0;
+    }
+  }
+
+  div.actions {
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm);
+  }
+
+  /* The replies step in once, marked by a rule. The rule is a border, so
+     forced colours keep it in a system colour rather than dropping it.
+     The markers go; the markup keeps the list's role with role="list",
+     since list-style: none drops it in some browsers. */
+  ul.replies {
+    border-inline-start: 2px solid var(--loam-color-line);
+    display: block grid;
+    gap: var(--loam-space-lg);
+    list-style: none;
+    margin-block: var(--loam-space-xs) 0;
+    margin-inline: 0;
+    padding-inline-start: var(--loam-space-lg);
+
+    > li {
+      margin: 0;
+    }
+  }
+}

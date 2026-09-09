@@ -19,6 +19,7 @@ export function Header() {
             <Link href="/docs/tokens">Tokens</Link>
             <Link href="/docs/element-styles">Element styles</Link>
             <Link href="/docs/components">Components</Link>
+            <Link href="/examples">Examples</Link>
           </nav>
         </div>
 

@@ -3,7 +3,12 @@
 @scope (.loam-Range) to ([class*="loam-"]) {
   :scope {
     --_track-h: 0.4167em;
-    --_thumb: 1.25em;
+
+    /* The thumb's diameter is the public --loam-range-thumb-size. Its
+       default is written on the token, not in em, because the marks and
+       the output below read the same property from a smaller font size
+       and must land on the same pixel. */
+    --_thumb: var(--loam-range-thumb-size, calc(1.25 * var(--loam-text-sm)));
 
     /* appearance: none opts out of native painting, so the track and thumb
        below carry the colour. -strong (not raw primary) so a --loam-context
@@ -157,6 +162,84 @@
       background: Highlight;
       border-color: Canvas;
       forced-color-adjust: none;
+    }
+  }
+}
+
+/* The optional wrapper: a stacked grid carrying `--_value` (the thumb's
+   position as a fraction, set by the component) for the output above. */
+@scope (.loam-Range-root) to ([class*="loam-"]) {
+  :scope {
+    display: block grid;
+    gap: var(--loam-space-xs);
+    inline-size: 100%;
+  }
+}
+
+/* Ticks and labels under the track, read from the same
+   --loam-range-thumb-size as the input: the thumb's centre travels from
+   half a thumb in to half a thumb from the end, so a mark at fraction
+   `--_at` sits at thumb/2 + (width - thumb) * --_at. The ticks are
+   borders, so forced colours keep them in CanvasText without a rule of
+   their own. */
+@scope (.loam-Range-marks) to ([class*="loam-"]) {
+  :scope {
+    --_thumb: var(--loam-range-thumb-size, calc(1.25 * var(--loam-text-sm)));
+
+    block-size: calc(0.5em + 1lh);
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-xs);
+    position: relative;
+  }
+
+  /* Centred on its tick: the shift is toward the line's start, so it
+     reverses with the writing direction. */
+  span {
+    inset-block-start: 0;
+    inset-inline-start: calc(var(--_thumb) / 2 + (100% - var(--_thumb)) * var(--_at, 0));
+    padding-block-start: 0.5em;
+    position: absolute;
+    translate: -50%;
+    white-space: nowrap;
+
+    &:dir(rtl) {
+      translate: 50%;
+    }
+
+    &::before {
+      block-size: 0.5em;
+      border-inline-start: 1px solid var(--loam-color-line-strong);
+      content: "";
+      inset-block-start: 0;
+      inset-inline-start: 50%;
+      position: absolute;
+    }
+  }
+}
+
+/* The value bubble, on the row above the input in the root's grid; the
+   same thumb geometry as the marks places it over the thumb, and the
+   centring shift reverses with the writing direction. */
+@scope (.loam-Range-output) {
+  :scope {
+    --_thumb: var(--loam-range-thumb-size, calc(1.25 * var(--loam-text-sm)));
+
+    background: var(--loam-color-surface);
+    border: 1px solid var(--loam-color-line-strong);
+    border-radius: var(--loam-radius-sm);
+    font-size: var(--loam-text-xs);
+    font-variant-numeric: lining-nums tabular-nums;
+    inline-size: fit-content;
+    justify-self: start;
+    margin-inline-start: calc(var(--_thumb) / 2 + (100% - var(--_thumb)) * var(--_value, 0));
+    order: -1;
+    padding-block: var(--loam-space-xs);
+    padding-inline: var(--loam-space-sm);
+    translate: -50%;
+    white-space: nowrap;
+
+    &:dir(rtl) {
+      translate: 50%;
     }
   }
 }

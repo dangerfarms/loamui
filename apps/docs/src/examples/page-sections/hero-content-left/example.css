@@ -1,0 +1,81 @@
+/* Words on the start side, a picture on the end side. The section is the
+   container and the inner element the grid, because an element cannot
+   answer its own container query. Narrow is one column with the picture
+   last; wide is two columns centred on the shared axis. The picture is a
+   line drawing in the current colour, with its fills in the soft primary
+   tint, so it takes the scheme and the region's context like the text. */
+@scope (.hero-content-left) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    padding-block: var(--loam-space-xl);
+  }
+
+  div.inner {
+    display: block grid;
+    gap: var(--loam-space-xl);
+  }
+
+  div.text {
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  h1 {
+    font-size: var(--loam-text-3xl);
+    margin: 0;
+    max-inline-size: 16ch;
+    text-wrap: balance;
+  }
+
+  p.lede {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-lg);
+    margin: 0;
+    max-inline-size: var(--loam-measure);
+    text-wrap: pretty;
+  }
+
+  div.actions {
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-md);
+  }
+
+  svg.illustration {
+    block-size: auto;
+    color: var(--loam-color-primary-strong);
+    inline-size: 100%;
+    justify-self: center;
+    max-inline-size: 24rem;
+
+    .fill {
+      fill: var(--loam-color-primary-soft);
+    }
+  }
+
+  /* Wide: the words take the larger share and the picture the rest,
+     which is what keeps the headline short enough to balance. */
+  @container (inline-size >= 48rem) {
+    div.inner {
+      align-items: center;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    }
+
+    svg.illustration {
+      justify-self: end;
+    }
+  }
+
+  /* Forced colours: the tint goes; the drawing is its lines, in the
+     system text colour, which is all it ever needed. */
+  @media (forced-colors: active) {
+    svg.illustration {
+      color: CanvasText;
+
+      .fill {
+        fill: Canvas;
+      }
+    }
+  }
+}

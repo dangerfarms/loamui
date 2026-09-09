@@ -1,0 +1,69 @@
+/* The section is the container and the inner element is the grid: an
+   element cannot answer its own container query. The donut keeps the
+   Badge, the Button and the SignpostLink inside on their own styles. */
+@scope (.hero-with-image) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    padding-block: var(--loam-space-xl);
+  }
+
+  div.inner {
+    display: block grid;
+    gap: var(--loam-space-xl);
+  }
+
+  div.text {
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  /* The eyebrow is a primary region: the Badge inside takes the brand
+     colour from the context, not from a prop. */
+  p.eyebrow {
+    --loam-context: primary;
+
+    align-items: center;
+    color: var(--loam-color-fg-muted);
+    display: block flex;
+    flex-wrap: wrap;
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-sm);
+    margin: 0;
+  }
+
+  h1 {
+    font-size: var(--loam-text-3xl);
+    margin: 0;
+    max-inline-size: 18ch;
+    text-wrap: balance;
+  }
+
+  p.lede {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-lg);
+    margin: 0;
+    max-inline-size: var(--loam-measure);
+  }
+
+  div.actions {
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-md);
+  }
+
+  img.media {
+    block-size: auto;
+    border-radius: var(--loam-radius-lg);
+    inline-size: 100%;
+  }
+
+  /* Wide: text beside the image, each in its own column, centred on the
+     shared axis. Narrow keeps the single column above. */
+  @container (inline-size >= 48rem) {
+    div.inner {
+      align-items: center;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    }
+  }
+}

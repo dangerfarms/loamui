@@ -1,0 +1,48 @@
+/* One comment: a byline over the body over a row of actions. The
+   article declares its own container so the fluid tokens answer its
+   width; the donut keeps the Avatar, the Time and the Buttons on their
+   own styles. */
+@scope (.comment) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-sm);
+  }
+
+  /* The byline sets the small muted type and the Time takes it; the name
+     alone is set back to the body size, strong. A linked name keeps its
+     underline, so the affordance stays. */
+  header {
+    --loam-avatar-size: 2rem;
+
+    align-items: center;
+    color: var(--loam-color-fg-muted);
+    display: block flex;
+    flex-wrap: wrap;
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-sm);
+  }
+
+  a.author {
+    color: var(--loam-color-fg-strong);
+    font-size: var(--loam-text-md);
+    font-weight: 600;
+  }
+
+  /* The body is rich text held to the reading measure. Blocks carry only
+     a block-end margin, so the last one's goes and the grid gap spaces
+     what follows. */
+  div.body {
+    max-inline-size: var(--loam-measure);
+
+    > :last-child {
+      margin-block-end: 0;
+    }
+  }
+
+  div.actions {
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm);
+  }
+}

@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useId, useMemo, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent, Ref, RefObject } from "react";
-import { composeRefs } from "./render";
+import { composeRefs, idList } from "./render";
 import { usePresence } from "./use-presence";
 import { useOpenState } from "./use-popup";
 import type { OpenStateOptions } from "./use-popup";
@@ -95,6 +95,7 @@ export interface DialogTriggerRenderProps {
   commandfor: string | undefined;
   command: "show-modal" | undefined;
   "aria-haspopup": "dialog";
+  "aria-expanded": boolean;
   /** Styling hook: present while the dialog is open. */
   "data-popup-open": "true" | undefined;
   onClick: (e: ReactMouseEvent<Element>) => void;
@@ -111,6 +112,7 @@ export function dialogTriggerProps(ctx: DialogState): DialogTriggerRenderProps {
     commandfor: ctx.invokers ? ctx.dialogId : undefined,
     command: ctx.invokers ? "show-modal" : undefined,
     "aria-haspopup": "dialog",
+    "aria-expanded": ctx.open,
     "data-popup-open": ctx.open ? "true" : undefined,
     onClick: () => {
       if (!ctx.invokers) ctx.setOpen(true);
@@ -145,11 +147,11 @@ export interface DialogPopupOptions {
   ref?: Ref<HTMLDialogElement>;
   /** Clicking the backdrop closes the dialog. @default true */
   lightDismiss?: boolean;
-  /** Consumer-supplied `aria-labelledby`, merged with the Title's id. */
+  /** Consumer-supplied `aria-labelledby`, listed after the Title's id, each id once. */
   labelledBy?: string;
   /** Consumer-supplied `aria-label`, for the development-only naming check. */
   label?: string;
-  /** Consumer-supplied `aria-describedby`, merged with the Description's id. */
+  /** Consumer-supplied `aria-describedby`, listed after the Description's id, each id once. */
   describedBy?: string;
 }
 
@@ -157,6 +159,8 @@ export interface DialogPopupOptions {
  * The Popup's behaviour on the `<dialog>`: state reconciliation, native
  * event sync, the light-dismiss fallback and the body scroll lock. Returns
  * the attributes the dialog must carry; rest must never override them.
+ * `aria-labelledby` and `aria-describedby` follow the merge contract: the
+ * wiring's ids (Title, Description) first, then the consumer's, each once.
  */
 export function useDialogPopup(
   ctx: DialogState,
@@ -225,11 +229,11 @@ export function useDialogPopup(
     };
   }, [open]);
 
-  // A dialog without a name is announced as, at best, "dialog". The Title
-  // registers through state, which has not settled on the Popup's first
-  // effect, so the check reads the committed DOM once instead.
+  // A dialog without a name is announced as, at best, "dialog". Checked
+  // each time the dialog opens, from the committed DOM: a name that arrives
+  // with the content is in place by then, and a closed dialog is not read.
   useEffect(() => {
-    if (process.env.NODE_ENV === "production") return;
+    if (process.env.NODE_ENV === "production" || !open) return;
     const el = ref.current;
     if (!el) return;
     const named =
@@ -242,20 +246,14 @@ export function useDialogPopup(
           `Render a <${ctx.component}.Title> inside it, or give it an aria-label.`,
       );
     }
-    // Effectively mount-only: both ids are stable for the Root's lifetime.
-  }, [ctx.component, ctx.titleId]);
-
-  const labels = [labelledBy, ctx.hasTitle ? ctx.titleId : undefined].filter(Boolean).join(" ");
-  const descriptions = [describedBy, ctx.hasDescription ? ctx.descriptionId : undefined]
-    .filter(Boolean)
-    .join(" ");
+  }, [open, ctx.component, ctx.titleId]);
 
   return {
     ref: composedRef,
     id: ctx.dialogId,
     "aria-label": label,
-    "aria-labelledby": labels || undefined,
-    "aria-describedby": descriptions || undefined,
+    "aria-labelledby": idList(ctx.hasTitle ? ctx.titleId : undefined, labelledBy),
+    "aria-describedby": idList(ctx.hasDescription ? ctx.descriptionId : undefined, describedBy),
     "data-open": open || undefined,
   };
 }

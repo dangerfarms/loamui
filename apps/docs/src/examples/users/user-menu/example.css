@@ -1,0 +1,45 @@
+/* The class rides on core's Menu.Root, so the trigger inside is in reach;
+   the Menu's own rules are untouched. The trigger is a bare button, not a
+   Button: the elements layer dresses every button as one, and a padded,
+   tinted pill around a round avatar is not the shape of an account
+   control, so the box collapses to the avatar and the global focus ring,
+   which follows the radius, marks focus. The border is transparent
+   rather than gone so forced colours keep an edge. */
+@scope (.user-menu) to ([class*="loam-"]) {
+  button.trigger {
+    background: none;
+    border: 1px solid transparent;
+    border-radius: var(--loam-radius-full);
+    box-shadow: none;
+    display: inline flex;
+    padding: 0;
+  }
+}
+
+/* The popup is core's too, and carries its own class, so the account
+   block at its top has a scope of its own. It takes an item's inline
+   padding, so its words line up with the items' words, and the line
+   under it is a Menu.Separator in the markup, not a border of its own. */
+@scope (.user-menu .loam-Menu-popup) to ([class*="loam-"]) {
+  div.account {
+    display: block grid;
+    font-size: var(--loam-text-sm);
+    gap: calc(var(--loam-space-xs) / 2);
+    padding-block: var(--loam-space-sm);
+    padding-inline: var(--loam-space-sm);
+
+    strong {
+      color: var(--loam-color-fg-strong);
+    }
+
+    span {
+      color: var(--loam-color-fg-muted);
+      overflow-wrap: anywhere;
+    }
+  }
+
+  /* The form is plumbing around the last item and has no box of its own. */
+  form {
+    margin: 0;
+  }
+}

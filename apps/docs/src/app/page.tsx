@@ -5,6 +5,8 @@ import { COMPONENTS, componentsByCategory } from "@/site/nav";
 import { BoltIcon, CheckIcon, GitHubIcon } from "@/site/Icons";
 import { HeroShowcase, InstallSnippet } from "./home.client";
 import { AgentShowcase } from "./AgentShowcase.client";
+import { ExamplesTeaser } from "@/renderer/examples-teaser";
+import { EXAMPLE_META } from "@/examples/generated-meta";
 import { RestaurantMenu } from "./agent-demo/menu";
 import { menu } from "./agent-demo/generated";
 import c from "./home.module.css";
@@ -258,7 +260,7 @@ export default function HomePage() {
           <span className="eyebrow">Built with an agent</span>
           <h2 className={c.sectionTitle}>Ask for a component. Get one built on the primitives.</h2>
           <p className={c.sectionSub}>
-            LoamUI&rsquo;s core ships 43 low-level parts and no more. Everything else, a menu, a
+            LoamUI&rsquo;s core ships 47 low-level parts and no more. Everything else, a menu, a
             hero, a carousel, is a composition: your agent builds it from the three primitives,
             reading the same documentation you do, or takes one ready-made from{" "}
             <a href="https://loamui.com/ui/">@loamui/ui</a>. Here is one, exactly as an agent
@@ -560,6 +562,20 @@ export default function HomePage() {
             </Link>
           ))}
         </div>
+      </section>
+
+      {/* Examples */}
+      <section className={`container ${c.section}`} data-no-hyphens>
+        <div className={`${c.sectionHead} ${c.center}`}>
+          <span className="eyebrow">Examples</span>
+          <h2 className={c.sectionTitle}>{EXAMPLE_META.length} examples, ready to copy.</h2>
+          <p className={c.sectionSub}>
+            Heroes, forms, pricing, navigation and more, each a component and a stylesheet built on
+            the primitives and held to the pillars. Copy the two files, or point your agent at the
+            markdown twin.
+          </p>
+        </div>
+        <ExamplesTeaser />
       </section>
 
       {/* Final CTA */}

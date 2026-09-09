@@ -1,0 +1,96 @@
+/* The list is the grid: as many cards across as it has room for, each at
+   least 12rem, and the grid stretches every item to its row. The markers
+   go; the markup keeps the list's role with role="list", since
+   list-style: none drops it in some browsers. */
+@scope (.product-grid) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-md);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    margin: 0;
+  }
+}
+
+/* Each card is a Card rendered as the article, so the Card element is
+   this scope's root: the column inside is reachable, the Badge, Rating,
+   Prices and Button are fenced by the donut, and the Card's own surface,
+   line, radius and padding are left alone. */
+@scope (.product-grid article.product) to ([class*="loam-"]) {
+  :scope {
+    /* A percentage, so it resolves against the item the grid stretched:
+       every button lands at the same foot. */
+    block-size: 100%;
+    display: block flex;
+    flex-direction: column;
+    gap: var(--loam-space-sm);
+  }
+
+  img.media {
+    aspect-ratio: 1;
+    block-size: auto;
+    border-radius: var(--loam-radius-md);
+    inline-size: 100%;
+    object-fit: cover;
+  }
+
+  p.meta {
+    --loam-context: success;
+
+    margin: 0;
+  }
+
+  h3 {
+    font-size: var(--loam-text-lg);
+    margin: 0;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+
+      &:focus-visible {
+        text-decoration: underline;
+      }
+
+      @media (hover: hover) {
+        &:hover {
+          text-decoration: underline;
+          text-decoration-color: var(--loam-color-primary);
+        }
+      }
+    }
+  }
+
+  div.rating {
+    align-items: center;
+    color: var(--loam-color-fg-muted);
+    display: block flex;
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-xs);
+  }
+
+  p.price {
+    font-size: var(--loam-text-lg);
+    font-weight: 700;
+    margin: 0;
+
+    s {
+      color: var(--loam-color-fg-muted);
+      font-weight: 400;
+      margin-inline-end: var(--loam-space-xs);
+    }
+  }
+
+  div.actions {
+    --loam-context: primary;
+
+    display: block grid;
+    margin-block-start: auto;
+  }
+}

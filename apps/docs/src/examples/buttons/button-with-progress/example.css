@@ -1,0 +1,37 @@
+/* The Button and the Progress are core parts past the donut, laid one
+   over the other by the example's stack: an inline grid with one cell,
+   which the Button fills by auto-placement and the bar is placed into by
+   name, sitting on the button's bottom edge inside its border. The bar is
+   a sibling, not a child, because a <button> may hold only phrasing
+   content and a progress bar is not; it is painted where it reads as
+   part of the button. The stack is a primary region, so the button and
+   the bar's fill answer the same colour. */
+@scope (.button-with-progress) to ([class*="loam-"]) {
+  :scope {
+    display: block grid;
+    gap: var(--loam-space-sm);
+    justify-items: start;
+  }
+
+  span.stack {
+    --loam-context: primary;
+
+    display: inline grid;
+  }
+
+  span.bar {
+    align-self: end;
+    grid-area: 1 / 1;
+    padding-block-end: var(--loam-space-xs);
+    padding-inline: var(--loam-space-sm);
+    pointer-events: none;
+  }
+
+  /* The confirmation keeps its line while empty, so nothing below jumps. */
+  p {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    margin: 0;
+    min-block-size: 1lh;
+  }
+}

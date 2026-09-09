@@ -1,0 +1,60 @@
+/* The header is the container: the brand, the nav and the action share a
+   row where it has room, and the nav takes a row of its own beneath the
+   other two where it has not. The donut leaves the Nav and the
+   SignpostLink on their own styles. */
+@scope (.header-simple) to ([class*="loam-"]) {
+  :scope {
+    align-items: center;
+    border-block-end: 1px solid var(--loam-color-line);
+    container-type: inline-size;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm) var(--loam-space-lg);
+    padding-block: var(--loam-space-md);
+  }
+
+  /* The brand is the link home, in the display face with no underline:
+     the name is the affordance. */
+  a.brand {
+    align-items: center;
+    color: var(--loam-color-fg-strong);
+    display: inline flex;
+    font-family: var(--loam-font-display);
+    font-size: var(--loam-text-lg);
+    font-weight: 700;
+    gap: var(--loam-space-xs);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+
+    svg {
+      block-size: 1.25em;
+      inline-size: 1.25em;
+    }
+  }
+
+  div.actions {
+    align-items: center;
+    display: block flex;
+    gap: var(--loam-space-sm);
+    margin-inline-start: auto;
+  }
+}
+
+/* The Nav is core's and keeps its own scope; a horizontal nav is the
+   consumer's flex row on the List, which is the one thing asked of it
+   here. Where the header is narrow the whole nav drops to a row of its
+   own, after the action. */
+@scope (.header-simple .loam-Nav) to ([class*="loam-"]) {
+  ul.row {
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-xs);
+  }
+
+  @container (inline-size < 48rem) {
+    :scope {
+      flex-basis: 100%;
+      order: 1;
+    }
+  }
+}

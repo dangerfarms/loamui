@@ -265,6 +265,15 @@ const matches = COUNTRIES.filter((c) =>
         "Shown in the list when it has no Options. Children replace labels.empty. A sighted-user message, hidden from assistive technology, which hears the count from the status region. Native <li> props are forwarded.",
     },
   ],
+  cssProps: [
+    {
+      name: "--loam-combobox-list-size",
+      syntax: "CSS length",
+      default: "16rem",
+      description:
+        "The most height the list takes before it scrolls, always capped at half the viewport. Set it on the Root or any ancestor.",
+    },
+  ],
 };
 
 export default doc;

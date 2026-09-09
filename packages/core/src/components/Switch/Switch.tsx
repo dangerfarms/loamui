@@ -50,7 +50,7 @@ function SwitchControl({
   ref,
   ...rest
 }: SwitchControlProps) {
-  const field = useFieldControlProps();
+  const field = useFieldControlProps(ariaDescribedby);
 
   const { nativeInvalid, validationRef, checkOnInput, checkOnInvalid } =
     useUserInvalid<HTMLInputElement>();
@@ -70,7 +70,7 @@ function SwitchControl({
         className={className}
         {...rest}
         aria-invalid={resolvedAriaInvalid}
-        aria-describedby={ariaDescribedby ?? field["aria-describedby"]}
+        aria-describedby={field["aria-describedby"]}
         onInput={(e) => {
           onInput?.(e);
           checkOnInput(e);
@@ -130,7 +130,7 @@ function SwitchLabelled({
       <SwitchControl
         ref={ref}
         id={inputId}
-        aria-describedby={cx(descId, ariaDescribedby ?? field["aria-describedby"]) || undefined}
+        aria-describedby={cx(descId, ariaDescribedby) || undefined}
         {...control}
       />
       <span className="label">{label}</span>

@@ -1,0 +1,5 @@
+/* Nothing to add. The root is the core Field, and the ticks and their
+   labels under the track are core's own picture of the datalist the
+   marks become, placed by the thumb's geometry so each sits under the
+   value it names; the labels keep their colour in forced colours and the
+   ticks are borders, which survive them. */

@@ -1,0 +1,67 @@
+/* The closing block beside a photograph. The section carries the surface
+   and is the container; the inner element is the grid, because an
+   element cannot answer its own container query. Beside media the words
+   align start, since a centred column next to a picture reads as two
+   things rather than one. */
+@scope (.call-to-action-with-media) to ([class*="loam-"]) {
+  :scope {
+    background: var(--loam-color-bg-subtle);
+    border-radius: var(--loam-radius-xl);
+    container-type: inline-size;
+    padding: var(--loam-space-xl);
+  }
+
+  div.inner {
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  div.text {
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  h2 {
+    font-size: var(--loam-text-2xl);
+    margin: 0;
+    max-inline-size: 22ch;
+    text-wrap: balance;
+  }
+
+  p.lede {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-lg);
+    margin: 0;
+    max-inline-size: var(--loam-measure);
+    text-wrap: pretty;
+  }
+
+  div.actions {
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-lg);
+  }
+
+  img.media {
+    block-size: auto;
+    border-radius: var(--loam-radius-md);
+    inline-size: 100%;
+  }
+
+  /* Wide: the words and the picture side by side, centred on the shared
+     axis. Narrow keeps the single column above, picture last. */
+  @container (inline-size >= 48rem) {
+    div.inner {
+      align-items: center;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+  }
+
+  /* Forced colours drop the tint, so the block keeps an edge. */
+  @media (forced-colors: active) {
+    :scope {
+      border: 1px solid CanvasText;
+    }
+  }
+}

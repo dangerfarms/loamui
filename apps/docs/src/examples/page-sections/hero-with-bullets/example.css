@@ -1,0 +1,113 @@
+/* A hero that makes its case in three points before the one action. The
+   section is the container and the inner element the grid; the points
+   are a list whose markers are replaced by a tick in a soft circle, so
+   the markup keeps role="list" for the browsers that drop the semantics
+   with the marker. */
+@scope (.hero-with-bullets) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    padding-block: var(--loam-space-xl);
+  }
+
+  div.inner {
+    display: block grid;
+    gap: var(--loam-space-xl);
+  }
+
+  div.text {
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  h1 {
+    font-size: var(--loam-text-3xl);
+    margin: 0;
+    max-inline-size: 18ch;
+    text-wrap: balance;
+  }
+
+  p.lede {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-lg);
+    margin: 0;
+    max-inline-size: var(--loam-measure);
+    text-wrap: pretty;
+  }
+
+  ul.points {
+    display: block grid;
+    gap: var(--loam-space-md);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    > li {
+      align-items: start;
+      display: block grid;
+      gap: var(--loam-space-md);
+      grid-template-columns: auto minmax(0, 1fr);
+      margin: 0;
+    }
+
+    strong {
+      color: var(--loam-color-fg-strong);
+      display: block flow;
+    }
+
+    p {
+      color: var(--loam-color-fg-muted);
+      margin: 0;
+      text-wrap: pretty;
+    }
+  }
+
+  /* The tick is sized in em on the point's type so it rides the fluid
+     scale, and the glyph is the strong token on the soft tint, the pair
+     the audit checks as a glyph. */
+  span.check {
+    align-items: center;
+    background: var(--loam-color-primary-soft);
+    block-size: 1.75em;
+    border-radius: var(--loam-radius-full);
+    color: var(--loam-color-primary-strong);
+    display: block flex;
+    inline-size: 1.75em;
+    justify-content: center;
+
+    svg {
+      block-size: 1em;
+      inline-size: 1em;
+    }
+  }
+
+  div.actions {
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-md);
+  }
+
+  img.media {
+    aspect-ratio: 9 / 10;
+    block-size: auto;
+    border-radius: var(--loam-radius-lg);
+    inline-size: 100%;
+    object-fit: cover;
+  }
+
+  /* Wide: words beside the picture, the picture in the smaller column
+     and as tall as the words it sits beside. */
+  @container (inline-size >= 48rem) {
+    div.inner {
+      align-items: center;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    }
+  }
+
+  /* Forced colours: the tint behind the tick goes, so the circle keeps
+     an edge and the tick takes the system text colour. */
+  @media (forced-colors: active) {
+    span.check {
+      border: 1px solid CanvasText;
+    }
+  }
+}

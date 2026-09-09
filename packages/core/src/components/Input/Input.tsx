@@ -52,7 +52,7 @@ export function Input({
   ref,
   ...rest
 }: InputProps) {
-  const field = useFieldControlProps();
+  const field = useFieldControlProps(ariaDescribedby);
   const { nativeInvalid, validationRef, checkOnInput, checkOnInvalid } =
     useUserInvalid<HTMLInputElement>();
   const inputRef = useMemo(() => composeRefs(ref, validationRef), [ref, validationRef]);
@@ -66,7 +66,7 @@ export function Input({
         id={id ?? field.id}
         {...rest}
         aria-invalid={ariaInvalid ?? field["aria-invalid"] ?? (nativeInvalid || undefined)}
-        aria-describedby={ariaDescribedby ?? field["aria-describedby"]}
+        aria-describedby={field["aria-describedby"]}
         onInput={(e) => {
           onInput?.(e);
           checkOnInput(e);

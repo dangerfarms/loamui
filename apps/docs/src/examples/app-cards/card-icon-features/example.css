@@ -1,0 +1,99 @@
+/* The Card is the article, so its element is this scope's root: core's
+   surface, line, radius and padding stay, and the column inside is the
+   example's own. The Badge, the Prices and the Button keep their recipes
+   behind the donut. */
+@scope (.card-icon-features) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block flex;
+    flex-direction: column;
+    gap: var(--loam-space-md);
+  }
+
+  img.media {
+    aspect-ratio: 16 / 10;
+    block-size: auto;
+    border-radius: var(--loam-radius-md);
+    inline-size: 100%;
+    object-fit: cover;
+  }
+
+  div.head {
+    align-items: start;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm);
+    justify-content: space-between;
+  }
+
+  h3 {
+    flex: 1 1 14rem;
+    font-size: var(--loam-text-lg);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  /* The flag is an info region: the Badge inside takes the colour. */
+  p.flag {
+    --loam-context: info;
+
+    margin: 0;
+  }
+
+  p.description {
+    color: var(--loam-color-fg-muted);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  ul.features {
+    display: block grid;
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-xs);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    > li {
+      align-items: center;
+      display: block flex;
+      gap: var(--loam-space-sm);
+      margin: 0;
+    }
+
+    svg {
+      block-size: auto;
+      color: var(--loam-color-primary-strong);
+      flex: none;
+      inline-size: 1.25em;
+    }
+  }
+
+  /* The price and the action on one line where there is room, the price
+     leading; a narrow Card stacks them and the Button goes full width. */
+  div.foot {
+    align-items: center;
+    border-block-start: 1px solid var(--loam-color-line);
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-md);
+    justify-content: space-between;
+    margin-block-start: auto;
+    padding-block-start: var(--loam-space-md);
+  }
+
+  /* The amount leads in the display face; the qualifier is the Price's
+     own small text after it. */
+  p.price {
+    color: var(--loam-color-fg-strong);
+    font-family: var(--loam-font-display);
+    font-size: var(--loam-text-xl);
+    font-weight: 700;
+    margin: 0;
+  }
+
+  div.actions {
+    display: block grid;
+    flex: 1 1 12rem;
+  }
+}

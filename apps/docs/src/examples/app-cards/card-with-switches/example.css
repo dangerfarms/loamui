@@ -1,0 +1,51 @@
+/* The Card is the surface and the Fieldset inside it is core's, so the
+   Card's own scope reaches nothing: it only declares the container the
+   rows answer. */
+@scope (.card-with-switches) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+  }
+}
+
+/* The Fieldset is a limit of the donut above, so the rows inside it are
+   reached from a second scope rooted at it. The Fieldset keeps its own
+   reset and legend; this scope lays out the description and the rows,
+   and each Switch.Control past the donut keeps its track and thumb. */
+@scope (.card-with-switches fieldset.preferences) to ([class*="loam-"]) {
+  p.description {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    margin: 0 0 var(--loam-space-sm);
+  }
+
+  div.rows {
+    display: block grid;
+  }
+
+  /* The words in the first column, the toggle in the second, centred on
+     them; a line under each row separates it from the next. */
+  div.row {
+    align-items: center;
+    border-block-start: 1px solid var(--loam-color-line);
+    display: block grid;
+    gap: var(--loam-space-lg);
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding-block: var(--loam-space-md);
+  }
+
+  div.text {
+    display: block grid;
+    gap: var(--loam-space-xs);
+
+    label {
+      color: var(--loam-color-fg-strong);
+      font-weight: 500;
+    }
+
+    p {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-sm);
+      margin: 0;
+    }
+  }
+}

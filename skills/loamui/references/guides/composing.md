@@ -8,7 +8,7 @@ description: How to build your own components (a hero, a pricing card, a carouse
 
 # Composing components
 
-LoamUI's core ships 43 low-level components and no more. A hero, a pricing table, a carousel or a testimonial wall is a composition: built from the three primitives the way any consumer would, in your own codebase or, for the ones worth sharing, in [`@loamui/ui`](https://loamui.com/ui/). This page is the recipe, for you and for your agent; the compositions gallery is the same recipe applied forty times.
+LoamUI's core ships 47 low-level components and no more. A hero, a pricing table, a carousel or a testimonial wall is a composition: built from the three primitives the way any consumer would, in your own codebase or, for the ones worth sharing, in [`@loamui/ui`](https://loamui.com/ui/). This page is the recipe, for you and for your agent; the compositions gallery is the same recipe applied forty times.
 
 ## The recipe
 

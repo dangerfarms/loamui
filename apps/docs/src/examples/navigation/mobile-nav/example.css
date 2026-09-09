@@ -1,0 +1,48 @@
+/* A narrow header: the brand at the start and the Menu button at the end.
+   The panel is core's Drawer, a native dialog in the top layer, so it
+   takes nothing from the header's layout. */
+@scope (.mobile-nav) to ([class*="loam-"]) {
+  :scope {
+    align-items: center;
+    border-block-end: 1px solid var(--loam-color-line);
+    display: block flex;
+    gap: var(--loam-space-md);
+    justify-content: space-between;
+    padding-block: var(--loam-space-sm);
+  }
+
+  a.brand {
+    align-items: center;
+    color: var(--loam-color-fg-strong);
+    display: inline flex;
+    font-family: var(--loam-font-display);
+    font-size: var(--loam-text-lg);
+    font-weight: 700;
+    gap: var(--loam-space-xs);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+
+    svg {
+      block-size: 1.25em;
+      inline-size: 1.25em;
+    }
+  }
+}
+
+/* Inside the panel: the title and the close button share the first row,
+   and the Nav beneath is given a thumb's line height through its public
+   property, since a finger, not a pointer, is what opens this menu. The
+   dialog, the title and the two Buttons keep core's own styles. */
+@scope (.mobile-nav .loam-Drawer-popup) to ([class*="loam-"]) {
+  :scope {
+    --loam-nav-link-size: 2.75rem;
+  }
+
+  div.top {
+    align-items: start;
+    display: block flex;
+    gap: var(--loam-space-sm);
+    justify-content: space-between;
+    margin-block-end: var(--loam-space-md);
+  }
+}

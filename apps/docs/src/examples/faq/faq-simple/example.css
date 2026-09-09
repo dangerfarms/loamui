@@ -1,0 +1,28 @@
+/* Four questions as native disclosures that share a name, so the browser
+   closes one as another opens with no script. Each Details paints its
+   own surface and line; the example adds only the heading, a line under
+   it and the rhythm between the questions. */
+@scope (.faq-simple) to ([class*="loam-"]) {
+  :scope {
+    display: block grid;
+    gap: var(--loam-space-md);
+  }
+
+  h2 {
+    font-size: var(--loam-text-2xl);
+    margin: 0;
+  }
+
+  p.description {
+    color: var(--loam-color-fg-muted);
+    margin: 0;
+    max-inline-size: var(--loam-measure);
+    text-wrap: pretty;
+  }
+
+  div.questions {
+    display: block grid;
+    gap: var(--loam-space-sm);
+    margin-block-start: var(--loam-space-sm);
+  }
+}

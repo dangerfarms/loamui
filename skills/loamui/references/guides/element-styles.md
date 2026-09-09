@@ -20,8 +20,9 @@ text, lining figures in headings, hanging punctuation, and automatic hyphenation
 derives its own line-height from its font size (`calc(0.5rem + 2ex)`), so leading tracks the text
 it leads. Margins are additive: blocks carry only a block-end margin, and the extra space before a
 heading comes from an adjacent-sibling rule, so nothing needs unsetting at the top of a container.
-Tables collapse their borders and start-align their headers; inline `code`, `kbd` and `samp` all
-get the same chip.
+Tables collapse their borders and start-align their headers; inline `code` and `samp` get a
+chip, `kbd` a key cap (a step smaller, with an edge, so a shortcut sits inside the line), and
+`mark` the highlight token, the same yellow as text selection.
 
 </div>
 

@@ -1,0 +1,108 @@
+/* A newsletter bar: what the letter is, one field, one action, and a
+   picture that keeps it company where there is room. The section paints
+   the subtle surface and is the container; the inner element is the
+   grid, because an element cannot answer its own container query. */
+@scope (.email-banner) to ([class*="loam-"]) {
+  :scope {
+    background: var(--loam-color-bg-subtle);
+    border-radius: var(--loam-radius-xl);
+    container-type: inline-size;
+    padding: var(--loam-space-xl);
+  }
+
+  div.inner {
+    align-items: center;
+    display: block grid;
+    gap: var(--loam-space-xl);
+  }
+
+  div.text {
+    display: block grid;
+    gap: var(--loam-space-md);
+
+    > p {
+      color: var(--loam-color-fg-muted);
+      margin: 0;
+      max-inline-size: var(--loam-measure);
+      text-wrap: pretty;
+    }
+  }
+
+  h2 {
+    font-size: var(--loam-text-2xl);
+    margin: 0;
+  }
+
+  /* The field takes the slack and the Button keeps its width beside it,
+     level with the box: the Field is a core part past the donut, so a
+     wrapper of the example's own carries the flex. Inputs and buttons
+     share one derived height, so aligning to the end lines them up
+     under the label without a number. */
+  form {
+    align-items: end;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm);
+    margin-block-start: var(--loam-space-xs);
+    max-inline-size: 30rem;
+  }
+
+  /* The field grows a thousand times faster than the action, so on one
+     line the Button keeps its own width, and on a line of its own, once
+     the row has wrapped, it takes the whole line. */
+  div.grow {
+    flex: 999 1 14rem;
+  }
+
+  /* The one action is the form's primary one, so its cell is a primary
+     region and the Button takes the colour from where it sits. */
+  span.action {
+    --loam-context: primary;
+
+    display: block grid;
+    flex: 1 1 auto;
+  }
+
+  svg.illustration {
+    block-size: auto;
+    color: var(--loam-color-primary-strong);
+    inline-size: 100%;
+    justify-self: center;
+    max-inline-size: 14rem;
+
+    .fill {
+      fill: var(--loam-color-primary-soft);
+    }
+  }
+
+  /* Wide: the picture beside the words; narrow leaves it out, since a
+     decoration below a form is a reason to scroll, not a reason to sign
+     up. */
+  @container (inline-size < 40rem) {
+    svg.illustration {
+      display: none;
+    }
+  }
+
+  @container (inline-size >= 40rem) {
+    div.inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+  }
+
+  /* Forced colours: the tints go, so the block keeps an edge and the
+     drawing is its lines in the system text colour. */
+  @media (forced-colors: active) {
+    :scope {
+      border: 1px solid CanvasText;
+    }
+
+    svg.illustration {
+      color: CanvasText;
+
+      .fill {
+        fill: Canvas;
+      }
+    }
+  }
+}

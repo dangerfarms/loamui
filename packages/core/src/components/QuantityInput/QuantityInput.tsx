@@ -98,7 +98,7 @@ export function QuantityInput({
   ref,
   ...rest
 }: QuantityInputProps) {
-  const field = useFieldControlProps();
+  const field = useFieldControlProps(ariaDescribedby);
   const { nativeInvalid, validationRef, checkOnInput, checkOnInvalid } =
     useUserInvalid<HTMLInputElement>();
   const ownRef = useRef<HTMLInputElement>(null);
@@ -190,7 +190,7 @@ export function QuantityInput({
         defaultValue={defaultValue}
         {...rest}
         aria-invalid={ariaInvalid ?? field["aria-invalid"] ?? (nativeInvalid || undefined)}
-        aria-describedby={ariaDescribedby ?? field["aria-describedby"]}
+        aria-describedby={field["aria-describedby"]}
         onInput={handleInput}
         onInvalid={(e) => {
           onInvalid?.(e);

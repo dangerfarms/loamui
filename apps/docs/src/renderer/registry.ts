@@ -15,6 +15,7 @@ import checkbox from "@/content/components/checkbox";
 import dateinput from "@/content/components/date-input";
 import errorsummary from "@/content/components/error-summary";
 import radio from "@/content/components/radio";
+import segmentedControl from "@/content/components/segmented-control";
 import switchDoc from "@/content/components/switch";
 import range from "@/content/components/range";
 import search from "@/content/components/search";
@@ -30,6 +31,8 @@ import time from "@/content/components/time";
 import card from "@/content/components/card";
 import avatar from "@/content/components/avatar";
 import table from "@/content/components/table";
+import carousel from "@/content/components/carousel";
+import stepper from "@/content/components/stepper";
 
 // Feedback
 import alert from "@/content/components/alert";
@@ -53,6 +56,7 @@ import signpostLink from "@/content/components/signpost-link";
 import skipLink from "@/content/components/skip-link";
 import breadcrumbs from "@/content/components/breadcrumbs";
 import pagination from "@/content/components/pagination";
+import nav from "@/content/components/nav";
 
 // Layout is not a component: compose native CSS layout modules with the space
 // tokens. See the Layout guide (/docs/layout).
@@ -71,6 +75,7 @@ const content: ComponentContent[] = [
   dateinput,
   errorsummary,
   radio,
+  segmentedControl,
   switchDoc,
   range,
   search,
@@ -84,6 +89,8 @@ const content: ComponentContent[] = [
   card,
   avatar,
   table,
+  carousel,
+  stepper,
   alert,
   progress,
   meter,
@@ -101,6 +108,7 @@ const content: ComponentContent[] = [
   skipLink,
   breadcrumbs,
   pagination,
+  nav,
 ];
 
 // Identity lives in the manifest (site/nav.ts), substance in the content

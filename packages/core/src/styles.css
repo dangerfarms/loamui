@@ -18,6 +18,7 @@
 @import url("./components/Breadcrumbs/Breadcrumbs.css") layer(loamui.components);
 @import url("./components/Button/Button.css") layer(loamui.components);
 @import url("./components/Card/Card.css") layer(loamui.components);
+@import url("./components/Carousel/Carousel.css") layer(loamui.components);
 @import url("./components/Checkbox/Checkbox.css") layer(loamui.components);
 @import url("./components/Combobox/Combobox.css") layer(loamui.components);
 @import url("./components/CopyButton/CopyButton.css") layer(loamui.components);
@@ -34,14 +35,17 @@
 @import url("./components/Meter/Meter.css") layer(loamui.components);
 @import url("./components/Modal/Modal.css") layer(loamui.components);
 @import url("./components/Pagination/Pagination.css") layer(loamui.components);
+@import url("./components/Nav/Nav.css") layer(loamui.components);
 @import url("./components/Popover/Popover.css") layer(loamui.components);
 @import url("./components/Price/Price.css") layer(loamui.components);
 @import url("./components/Progress/Progress.css") layer(loamui.components);
 @import url("./components/QuantityInput/QuantityInput.css") layer(loamui.components);
 @import url("./components/Radio/Radio.css") layer(loamui.components);
+@import url("./components/SegmentedControl/SegmentedControl.css") layer(loamui.components);
 @import url("./components/Select/Select.css") layer(loamui.components);
 @import url("./components/Separator/Separator.css") layer(loamui.components);
 @import url("./components/Skeleton/Skeleton.css") layer(loamui.components);
+@import url("./components/Stepper/Stepper.css") layer(loamui.components);
 @import url("./components/Range/Range.css") layer(loamui.components);
 @import url("./components/Rating/Rating.css") layer(loamui.components);
 @import url("./components/Search/Search.css") layer(loamui.components);

@@ -246,6 +246,9 @@
   data,
   time {
     font-variant-numeric: lining-nums tabular-nums;
+
+    /* A date keeps its own order inside right-to-left text. */
+    unicode-bidi: isolate;
   }
 
   /* ── Links ──────────────────────────────────────────────────────── */
@@ -290,17 +293,38 @@
   /* ── Code ───────────────────────────────────────────────────────── */
 
   code,
-  kbd,
   samp,
   pre {
     font-family: var(--loam-font-mono);
     font-size: 0.925em;
   }
 
-  :is(code, kbd, samp):not(pre *) {
+  :is(code, samp):not(pre *) {
     background: var(--loam-color-bg-subtle);
     border-radius: var(--loam-radius-sm);
     padding: 0.1em 0.35em;
+  }
+
+  /* A key reads as a key cap, not as code: an edge on a raised surface,
+     a step smaller so a sequence of keys sits inside the line. */
+  kbd {
+    font-family: var(--loam-font-mono);
+    font-size: 0.85em;
+
+    &:not(pre *) {
+      background: var(--loam-color-surface);
+      border: 1px solid var(--loam-color-line-strong);
+      border-radius: var(--loam-radius-sm);
+      padding: 0.1em 0.4em;
+    }
+
+    /* The surface is gone here; the edge is what says "key", so it takes
+       the control colour rather than the text one. */
+    @media (forced-colors: active) {
+      &:not(pre *) {
+        border-color: ButtonText;
+      }
+    }
   }
 
   pre {

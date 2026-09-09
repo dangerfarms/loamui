@@ -1,0 +1,49 @@
+/* The same bar as a warning. The root declares the context so any core
+   control dropped into it answers, and the bar's own surface and glyph
+   take the warning tokens directly, because the context remaps tokens
+   for the library's components, not for an element of the page's own.
+   Colour is never the only carrier: the glyph shows the status and the
+   hidden word in the message says it. */
+@scope (.banner-warning) to ([class*="loam-"]) {
+  :scope {
+    --loam-context: warning;
+
+    align-items: center;
+    background: var(--loam-color-warning-soft);
+    border-block-end: 1px solid var(--loam-color-line);
+    container-type: inline-size;
+    display: block flex;
+    flex-wrap: wrap;
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-sm) var(--loam-space-lg);
+    padding-block: var(--loam-space-sm);
+    padding-inline: var(--loam-space-lg);
+  }
+
+  /* The glyph is the strong token on the soft tint, the pair the audit
+     checks as a glyph, and sized on the text so it rides the scale. */
+  svg.icon {
+    block-size: auto;
+    color: var(--loam-color-warning-strong);
+    flex: none;
+    inline-size: 1.25em;
+  }
+
+  p {
+    flex: 1 1 24ch;
+    margin: 0;
+  }
+
+  a {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* Forced colours: the tint goes, so the bar keeps an edge on every side
+     and the glyph takes the system text colour through currentColor. */
+  @media (forced-colors: active) {
+    :scope {
+      border: 1px solid CanvasText;
+    }
+  }
+}

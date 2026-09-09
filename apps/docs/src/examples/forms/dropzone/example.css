@@ -1,0 +1,22 @@
+/* The root is the core Field, which stacks the label, the description,
+   the error and the box. The box, its dashed border, the drag state and
+   the file list are core's FileInput past the donut; the example's own
+   elements are the icon and the two lines of the invitation inside the
+   prompt, scoped at the FileInput so they can be reached, and they are
+   all it styles. */
+@scope (.dropzone .loam-FileInput) to ([class*="loam-"]) {
+  label {
+    svg {
+      block-size: auto;
+      display: block flow;
+      inline-size: 2rem;
+      margin-block-end: var(--loam-space-sm);
+      margin-inline: auto;
+    }
+
+    strong {
+      color: var(--loam-color-fg);
+      display: block flow;
+    }
+  }
+}

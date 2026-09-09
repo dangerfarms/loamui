@@ -1,0 +1,121 @@
+.wrap {
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-lg);
+  min-inline-size: 0;
+  overflow: clip;
+}
+
+/* Quiet and right-aligned: the frame is the subject, the controls a margin
+   note. The width presets read as one set; the rest sit beside them. */
+.toolbar {
+  align-items: center;
+  background: var(--loam-color-surface);
+  border-block-end: 1px solid var(--loam-color-line);
+  display: block flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  justify-content: flex-end;
+  padding: 0.4rem 0.5rem;
+}
+
+/* A segmented set: one bordered track, the pressed preset raised on it. */
+.presets {
+  background: var(--loam-color-bg-subtle);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-md);
+  display: block flex;
+  gap: 0.1rem;
+  margin-inline-end: 0.35rem;
+  padding: 0.15rem;
+}
+
+/* The core Button, quietened: no surface until pressed, and square because
+   it is named by hidden text beside its icon. */
+.control {
+  --loam-button-color: var(--loam-color-fg-muted);
+
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  display: inline grid;
+  padding: 0.4rem;
+  place-items: center;
+
+  &[aria-pressed="true"] {
+    --loam-button-color: var(--loam-color-primary-strong);
+
+    background: var(--loam-color-surface);
+    border-color: var(--loam-color-line-strong);
+    box-shadow: var(--loam-shadow-sm);
+
+    @media (forced-colors: active) {
+      background: SelectedItem;
+      color: SelectedItemText;
+    }
+  }
+}
+
+.open {
+  border: 1px solid transparent;
+  border-radius: var(--loam-radius-md);
+  color: var(--loam-color-fg-muted);
+  display: inline grid;
+  padding: 0.4rem;
+  place-items: center;
+
+  &:hover {
+    color: var(--loam-color-fg);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: color var(--loam-duration-md) var(--loam-ease);
+  }
+}
+
+/* The stage is the ground the frame sits on: a dotted subtle surface in
+   both schemes, so the frame's edge reads even where the frame and the
+   page share a colour. */
+.stage {
+  background-color: var(--loam-color-bg-subtle);
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    var(--loam-color-line-strong) 1px,
+    transparent 0
+  );
+  background-size: 1.25rem 1.25rem;
+  display: block grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  padding: clamp(0.75rem, 0.4rem + 1.5vi, 1.5rem);
+
+  &[data-width="narrow"] {
+    --_w: 24rem;
+  }
+
+  &[data-width="medium"] {
+    --_w: 40rem;
+  }
+
+  &[data-width="wide"] {
+    --_w: 64rem;
+  }
+}
+
+/* The frame is the example's page: its own background and text colour
+   resolve under its own color-scheme, and it is a container so the
+   example's queries and fluid tokens answer the frame's width. */
+.frame {
+  background: var(--loam-color-bg);
+  border-radius: var(--loam-radius-md);
+  box-shadow: var(--loam-shadow-sm);
+  color: var(--loam-color-fg);
+  container-type: inline-size;
+  inline-size: 100%;
+  max-inline-size: var(--_w, 100%);
+  outline: 1px solid var(--loam-color-line-strong);
+  padding: clamp(1rem, 0.5rem + 2cqi, 2.5rem);
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: max-inline-size var(--loam-duration-lg) var(--loam-ease);
+  }
+}

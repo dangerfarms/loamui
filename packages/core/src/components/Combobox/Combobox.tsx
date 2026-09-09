@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -173,7 +174,11 @@ function ComboboxRoot({
   defaultOpen = false,
   onOpenChange,
   name,
-  labels: { status = defaultStatus, empty = "No results", toggle = "Show options" } = NO_LABELS,
+  labels: {
+    status: statusLabel = defaultStatus,
+    empty = "No results",
+    toggle = "Show options",
+  } = NO_LABELS,
   className,
   children,
   onBlur,
@@ -187,7 +192,9 @@ function ComboboxRoot({
   );
   const [open, setOpen] = useControllable(openProp, defaultOpen, onOpenChange);
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
+  const countRef = useRef(0);
   const [count, setCount] = useState(0);
+  const [status, setStatus] = useState("");
 
   const autoId = useId();
   const listId = `${cssSafeId(autoId)}-listbox`;
@@ -269,8 +276,12 @@ function ComboboxRoot({
   }, []);
 
   const registerOption = useCallback(() => {
-    setCount((n) => n + 1);
-    return () => setCount((n) => n - 1);
+    countRef.current += 1;
+    setCount(countRef.current);
+    return () => {
+      countRef.current -= 1;
+      setCount(countRef.current);
+    };
   }, []);
 
   // Keep the highlighted option in view; the list scrolls, the page does not.
@@ -279,7 +290,17 @@ function ComboboxRoot({
     document.getElementById(highlightedId)?.scrollIntoView?.({ block: "nearest" });
   }, [open, highlightedId]);
 
-  const labels = useMemo(() => ({ status, empty, toggle }), [status, empty, toggle]);
+  const labels = useMemo(
+    () => ({ status: statusLabel, empty, toggle }),
+    [statusLabel, empty, toggle],
+  );
+
+  // Options register in layout effects, which run before this one, so the
+  // ref already holds the count of the committed list; `count` state is a
+  // render behind it and must never reach the live region.
+  useLayoutEffect(() => {
+    setStatus(open ? labels.status(countRef.current) : "");
+  }, [open, count, labels]);
 
   const ctx = useMemo<ComboboxContextValue>(
     () => ({
@@ -340,7 +361,7 @@ function ComboboxRoot({
         {children}
         {name !== undefined && <input type="hidden" name={name} value={value ?? ""} />}
         <span role="status" className="loam-VisuallyHidden">
-          {open ? labels.status(count) : ""}
+          {status}
         </span>
       </div>
     </ComboboxContext>
@@ -456,7 +477,8 @@ export interface ComboboxTriggerRenderProps {
   type: "button";
   /** Out of the Tab sequence: the box already reaches the list by keyboard. */
   tabIndex: -1;
-  "aria-label": string;
+  /** The name from `labels.toggle`, unless children name the button. */
+  "aria-label": string | undefined;
   "aria-expanded": boolean;
   "aria-controls": string;
   /** Styling hook — present while the list is open. */
@@ -474,14 +496,18 @@ export interface ComboboxTriggerProps extends Omit<ButtonProps, "render"> {
   render?: RenderProp<ComboboxTriggerRenderProps>;
 }
 
-/** A button that shows or hides the list, for pointer users. */
+/**
+ * A button that shows or hides the list, for pointer users. A chevron
+ * named by `labels.toggle` by default; children take the chevron's place
+ * and name the button instead.
+ */
 function ComboboxTrigger({ render, children, ...rest }: ComboboxTriggerProps) {
   const ctx = useComboboxContext("Combobox.Trigger");
 
   const triggerProps: ComboboxTriggerRenderProps = {
     type: "button",
     tabIndex: -1,
-    "aria-label": ctx.labels.toggle,
+    "aria-label": children == null ? ctx.labels.toggle : undefined,
     "aria-expanded": ctx.open,
     "aria-controls": ctx.listId,
     "data-popup-open": ctx.open ? "true" : undefined,
@@ -502,7 +528,7 @@ function ComboboxTrigger({ render, children, ...rest }: ComboboxTriggerProps) {
       {renderWithProps(
         <Button {...rest}>
           {children ?? (
-            <svg viewBox="0 0 16 16" width="16" height="16" fill="none" aria-hidden>
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden>
               <path
                 d="M4 6l4 4 4-4"
                 stroke="currentColor"
@@ -592,7 +618,9 @@ function ComboboxOption({
   const highlighted = ctx.highlightedId === id;
 
   const { registerOption, releaseHighlight, adoptLabel } = ctx;
-  useEffect(() => {
+  // A layout effect, so the Root's status reads the settled count in the
+  // same commit the options appear in.
+  useLayoutEffect(() => {
     const unregister = registerOption();
     return () => {
       unregister();

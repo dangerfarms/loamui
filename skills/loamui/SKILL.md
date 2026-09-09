@@ -74,13 +74,13 @@ metadata:
 
 ## Components
 
-| Category     | Components                                                                                                                                                                               |
-| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Inputs       | Field, Fieldset, ErrorSummary, Button, Input, Textarea, Select, DateInput, Checkbox, Radio, Switch, Range, Search, QuantityInput, Rating, FileInput, CopyButton, Combobox, PasswordInput |
-| Data display | Badge, Price, Time, Card, Avatar, Table, Separator                                                                                                                                       |
-| Feedback     | Alert, Progress, Meter, Skeleton, Loader, Toast                                                                                                                                          |
-| Disclosures  | Details, Tooltip, Modal, Drawer, Popover, Menu                                                                                                                                           |
-| Navigation   | Tabs, SignpostLink, SkipLink, Breadcrumbs, Pagination                                                                                                                                    |
+| Category     | Components                                                                                                                                                                                                 |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Inputs       | Field, Fieldset, ErrorSummary, Button, Input, Textarea, Select, DateInput, Checkbox, Radio, Switch, Range, Search, QuantityInput, Rating, FileInput, CopyButton, Combobox, PasswordInput, SegmentedControl |
+| Data display | Badge, Price, Time, Card, Avatar, Table, Separator, Carousel, Stepper                                                                                                                                      |
+| Feedback     | Alert, Progress, Meter, Skeleton, Loader, Toast                                                                                                                                                            |
+| Disclosures  | Details, Tooltip, Modal, Drawer, Popover, Menu                                                                                                                                                             |
+| Navigation   | Tabs, SignpostLink, SkipLink, Breadcrumbs, Pagination, Nav                                                                                                                                                 |
 
 No layout components (use native CSS modules with the space tokens), no
 `Heading`/`Text` (a semantic element plus a scoped rule), no `Accordion`

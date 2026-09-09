@@ -90,6 +90,50 @@ describe("Combobox", () => {
     expect(screen.getByRole("status")).toHaveTextContent("2 results available");
   });
 
+  it("announces the settled count on the commit the options mount in, never a stale one", async () => {
+    const user = userEvent.setup();
+    const status = vi.fn((n: number) => `${n} results available`);
+    // Options that exist only once there is text: they mount in the same
+    // commit that opens the list, when the registered count is still 0.
+    function Lazy() {
+      const [query, setQuery] = useState("");
+      const matches = query
+        ? FRUITS.filter((f) => f.toLowerCase().includes(query.toLowerCase()))
+        : [];
+      return (
+        <Combobox.Root inputValue={query} onInputValueChange={setQuery} labels={{ status }}>
+          <Combobox.Input aria-label="Fruit" />
+          <Combobox.List>
+            {matches.map((f) => (
+              <Combobox.Option key={f} value={f}>
+                {f}
+              </Combobox.Option>
+            ))}
+            <Combobox.Empty />
+          </Combobox.List>
+        </Combobox.Root>
+      );
+    }
+    render(<Lazy />);
+    expect(status).not.toHaveBeenCalled();
+    expect(screen.getByRole("status")).toHaveTextContent("");
+
+    // A click opens the still-empty list: zero is the real count here.
+    await user.click(screen.getByRole("combobox"));
+    expect(screen.getByRole("status")).toHaveTextContent("0 results available");
+    status.mockClear();
+
+    await user.keyboard("b");
+    expect(screen.getAllByRole("option")).toHaveLength(2);
+    expect(screen.getByRole("status")).toHaveTextContent("2 results available");
+    expect(status.mock.calls.map(([n]) => n)).toEqual(Array(status.mock.calls.length).fill(2));
+
+    status.mockClear();
+    await user.keyboard("l");
+    expect(screen.getByRole("status")).toHaveTextContent("1 results available");
+    expect(status.mock.calls.map(([n]) => n)).toEqual(Array(status.mock.calls.length).fill(1));
+  });
+
   it("commits the highlighted option with ArrowDown + Enter", async () => {
     const user = userEvent.setup();
     const onValueChange = vi.fn();
@@ -112,6 +156,30 @@ describe("Combobox", () => {
     expect(box).toHaveAttribute("aria-expanded", "false");
     expect(box).not.toHaveAttribute("aria-activedescendant");
     expect(box).toHaveFocus();
+  });
+
+  it("jumps to the ends of the open list with Home and End, and leaves the caret alone when closed", async () => {
+    const user = userEvent.setup();
+    render(<Fruits />);
+    const box = screen.getByRole("combobox");
+
+    await user.type(box, "a");
+    await user.keyboard("{End}");
+    expect(box).toHaveAttribute(
+      "aria-activedescendant",
+      screen.getByRole("option", { name: "Banana" }).id,
+    );
+    await user.keyboard("{Home}");
+    expect(box).toHaveAttribute(
+      "aria-activedescendant",
+      screen.getByRole("option", { name: "Apple" }).id,
+    );
+
+    await user.keyboard("{Escape}");
+    expect(box).toHaveAttribute("aria-expanded", "false");
+    await user.keyboard("{Home}");
+    expect(box).toHaveAttribute("aria-expanded", "false");
+    expect(box).not.toHaveAttribute("aria-activedescendant");
   });
 
   it("skips disabled options and never commits one", async () => {
@@ -200,6 +268,19 @@ describe("Combobox", () => {
 
     await user.click(trigger);
     expect(box).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("lets children name the Trigger in place of labels.toggle", () => {
+    render(
+      <Combobox.Root>
+        <Combobox.Input aria-label="Fruit" />
+        <Combobox.Trigger>Browse</Combobox.Trigger>
+        <Combobox.List />
+      </Combobox.Root>,
+    );
+    const trigger = screen.getByRole("button", { name: "Browse" });
+    expect(trigger).not.toHaveAttribute("aria-label");
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
   it("submits the committed value under name", async () => {

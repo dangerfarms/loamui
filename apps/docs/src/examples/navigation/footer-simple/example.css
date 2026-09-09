@@ -1,0 +1,74 @@
+/* One row where there is room: the brand at the start, the links in the
+   middle, the small print at the end. Everything is set in the muted
+   colour because a footer is reference, not the page's voice, and the row
+   wraps by the footer's own width. */
+@scope (.footer-simple) to ([class*="loam-"]) {
+  :scope {
+    align-items: center;
+    border-block-start: 1px solid var(--loam-color-line);
+    color: var(--loam-color-fg-muted);
+    container-type: inline-size;
+    display: block flex;
+    flex-wrap: wrap;
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-sm) var(--loam-space-lg);
+    padding-block: var(--loam-space-lg);
+  }
+
+  a.brand {
+    align-items: center;
+    color: var(--loam-color-fg-strong);
+    display: inline flex;
+    font-family: var(--loam-font-display);
+    font-size: var(--loam-text-lg);
+    font-weight: 700;
+    gap: var(--loam-space-xs);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+
+    svg {
+      block-size: 1.25em;
+      inline-size: 1.25em;
+    }
+  }
+
+  /* The nav sits between the brand and the small print; its markers go,
+     and inside a nav every browser keeps the list's semantics without
+     them. */
+  nav {
+    margin-inline: auto;
+
+    ul {
+      display: block flex;
+      flex-wrap: wrap;
+      gap: var(--loam-space-xs) var(--loam-space-md);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      margin: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+
+      @media (hover: hover) {
+        &:hover {
+          color: var(--loam-color-fg-strong);
+          text-decoration: underline;
+        }
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        transition: color var(--loam-duration-sm) var(--loam-ease);
+      }
+    }
+  }
+
+  small {
+    font-size: inherit;
+  }
+}

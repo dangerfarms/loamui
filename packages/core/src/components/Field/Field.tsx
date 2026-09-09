@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
 import { usePresence } from "../../use-presence";
-import { renderWithProps } from "../../render";
+import { idList, renderWithProps } from "../../render";
 import type { RenderProp } from "../../render";
 
 /**
@@ -69,18 +69,21 @@ function useFieldContext(part: string): FieldContextValue {
 /**
  * Read the accessibility props for a control from its surrounding Field.
  *
- * Returns `{}` when used outside a `Field.Root`, so a control can wire itself
- * to the Field when composed inside one
+ * Pass the control's own `aria-describedby` and the returned one is the
+ * Field's ids (description, then error) followed by the control's own, each
+ * id once, so a control inside a Field keeps any description it brings.
+ * Outside a `Field.Root` only that own value comes back, so a control can
+ * wire itself to the Field when composed inside one
  * (`<Field.Label><Checkbox.Control /> …</Field.Label>`) and fall back to its
  * own props when used standalone. The shape matches
  * {@link FieldControlRenderProps}.
  */
-export function useFieldControlProps(): Partial<FieldControlRenderProps> {
+export function useFieldControlProps(ariaDescribedby?: string): Partial<FieldControlRenderProps> {
   const ctx = useContext(FieldContext);
-  if (!ctx) return {};
+  if (!ctx) return { "aria-describedby": idList(ariaDescribedby) };
   return {
     id: ctx.fieldId,
-    "aria-describedby": ctx.describedBy,
+    "aria-describedby": idList(ctx.describedBy, ariaDescribedby),
     "aria-invalid": ctx.invalid || undefined,
   };
 }

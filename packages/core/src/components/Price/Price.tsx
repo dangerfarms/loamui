@@ -13,6 +13,13 @@ export interface PriceProps extends Omit<PartProps<"data">, "children"> {
    * value only so the server and the browser write the same text. @default "en"
    */
   locale?: string;
+  /**
+   * When the sign is written, as `Intl.NumberFormat` has it: `"auto"` marks
+   * negative amounts only; `"exceptZero"` marks every non-zero amount, so a
+   * summary reads +£2.00 against −£4.65; `"always"` and `"never"` do what
+   * they say. @default "auto"
+   */
+  signDisplay?: "auto" | "always" | "never" | "exceptZero" | "negative";
   /** What the amount covers ("per seat, per month"), written after it in small text. */
   children?: ReactNode;
 }
@@ -37,6 +44,7 @@ export function Price({
   value,
   currency,
   locale = "en",
+  signDisplay,
   className,
   children,
   ref,
@@ -45,6 +53,7 @@ export function Price({
   const amount = new Intl.NumberFormat(locale, {
     style: "currency",
     currency,
+    signDisplay,
     // Baseline 2023; not yet in the es2022 lib types this package compiles against.
     trailingZeroDisplay: "stripIfInteger",
   } as Intl.NumberFormatOptions).format(value);

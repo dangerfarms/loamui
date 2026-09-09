@@ -1,0 +1,184 @@
+---
+title: Order summary
+description: The money lines of a basket: subtotal, delivery with a note, a discount, a total set apart, and the way on to payment.
+---
+
+> LoamUI documentation, generated from the same source as the live page —
+> treat it as authoritative for `@loamui/core`.
+
+# Order summary
+
+The money lines of a basket: subtotal, delivery with a note, a discount, a total set apart, and the way on to payment.
+
+An example in **Commerce**: a component and a stylesheet built from `@loamui/core`, to copy into a project and change. Both files are below, exactly as the live preview renders them.
+
+- Uses: `Price`, `SignpostLink`
+- Tags: basket, checkout, receipt, money, commerce
+- Live: https://loamui.com/examples/commerce/order-summary
+
+## Built to the pillars
+
+- **Native CSS.** A description list under a heading that names it: each line is a term and its amount, the note is a second description of the delivery line, and the total is one more row rather than a different element.
+- **Modern CSS.** Every row is a subgrid of the list, so the amounts share a column and stack on their decimal; the total's weight and heavier rule are one nested rule on the row.
+- **Composition.** Each amount is a Price, a data element whose text is written for people and whose value is the number, so a script can read the total the page shows; the example only places it.
+- **Accessible & gatekept.** The total is named Total in words, not only by weight, the delivery note sits on the page rather than in a tooltip, and going on to payment is a link, because it goes somewhere.
+
+## Example.tsx
+
+```tsx
+import { Price, SignpostLink } from "@loamui/core";
+import "./example.css";
+
+export default function Example() {
+  return (
+    <section className="order-summary" aria-labelledby="order-summary-title">
+      <h2 id="order-summary-title">Your order</h2>
+      <dl>
+        <div className="row">
+          <dt>Subtotal</dt>
+          <dd className="value">
+            <Price value={46.5} currency="GBP" />
+          </dd>
+        </div>
+        <div className="row">
+          <dt>Delivery</dt>
+          <dd className="value">
+            <Price value={3.99} currency="GBP" />
+          </dd>
+          <dd className="note">Royal Mail 48, arriving Thursday 10 September. Free over £50.</dd>
+          <dd className="change">
+            <a href="/basket/delivery">
+              Change<span className="loam-VisuallyHidden"> delivery</span>
+            </a>
+          </dd>
+        </div>
+        <div className="row">
+          <dt>Member discount</dt>
+          <dd className="value">
+            <Price value={-4.65} currency="GBP" />
+          </dd>
+        </div>
+        <div className="row total">
+          <dt>Total</dt>
+          <dd className="value">
+            <Price value={45.84} currency="GBP" />
+          </dd>
+        </div>
+      </dl>
+      <div className="actions">
+        <SignpostLink href="/checkout/payment">Continue to payment</SignpostLink>
+        <a href="/basket">Back to your basket</a>
+      </div>
+    </section>
+  );
+}
+```
+
+## example.css
+
+```css
+/* Money lines: the label at the start, the amount at the end in tabular
+   figures, the change link after it. Each row is a subgrid of the list, so
+   the amounts share one column and line up down the list, and a row with
+   no link leaves the third column empty. A summary of money reads best
+   narrow, so the section stops at a readable width. */
+@scope (.order-summary) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-md);
+    max-inline-size: 36rem;
+  }
+
+  h2 {
+    font-size: var(--loam-text-xl);
+    margin: 0;
+  }
+
+  dl {
+    display: block grid;
+    grid-template-columns: 1fr auto auto;
+    margin: 0;
+  }
+
+  dt {
+    color: var(--loam-color-fg-strong);
+    font-weight: 600;
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  /* The amount: end-aligned so the figures stack on their decimal, in the
+     tabular numerals the Price already asks for. */
+  dd.value {
+    grid-column: 2;
+    text-align: end;
+  }
+
+  /* The note is an aside to the amount: small, muted and under the label,
+     on the page rather than in a tooltip, so it reads for every reader. */
+  dd.note {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    grid-column: 1 / -1;
+    margin-block-start: var(--loam-space-xs);
+  }
+
+  dd.change {
+    grid-column: 3;
+    grid-row: 1;
+    white-space: nowrap;
+  }
+
+  div.row {
+    border-block-end: 1px solid var(--loam-color-line);
+    column-gap: var(--loam-space-lg);
+    display: block grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    padding-block: var(--loam-space-sm);
+
+    /* The total: a heavier rule, a little air, and the pair in the strong
+       foreground at 700 so it reads as one weight. Its label still says
+       Total, so nothing is hidden that the page does not show; in forced
+       colours the rule keeps its 2px in CanvasText. */
+    &.total {
+      border-block-start: 2px solid var(--loam-color-line-strong);
+      margin-block-start: var(--loam-space-xs);
+
+      dt,
+      dd.value {
+        color: var(--loam-color-fg-strong);
+        font-size: var(--loam-text-lg);
+        font-weight: 700;
+      }
+    }
+  }
+
+  div.actions {
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-md) var(--loam-space-lg);
+    margin-block-start: var(--loam-space-xs);
+  }
+
+  /* Narrow: the link drops under the amount, still at the end where the
+     figure is. The query sits on the cells because a container query is
+     answered by an ancestor, never by the element that declares it. */
+  @container (inline-size < 24rem) {
+    dl {
+      grid-template-columns: 1fr auto;
+    }
+
+    dd.change {
+      grid-column: 2;
+      grid-row: auto;
+      text-align: end;
+    }
+  }
+}
+```
+

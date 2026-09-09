@@ -1,7 +1,9 @@
 .scroll {
   border: 1px solid var(--loam-color-line);
   border-radius: var(--loam-radius-lg);
-  overflow-inline: auto;
+
+  /* The shorthand: overflow-inline is not Baseline. */
+  overflow: auto;
 }
 
 .table {

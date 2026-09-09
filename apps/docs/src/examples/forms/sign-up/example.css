@@ -1,0 +1,44 @@
+/* The Card is the root: rendered as the example's own element, so its
+   surface, line, radius and padding are core's, and the scope reaches
+   the title, the form and the footer inside it. The Fields, the Checkbox
+   and the Button are core parts past the donut. The Card is capped at a
+   readable width and centred in whatever holds it, and declares the
+   container the fluid tokens answer: an explicit inline-size, because a
+   grid or flex parent would otherwise size a contained element to
+   nothing. */
+@scope (.sign-up) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    inline-size: 100%;
+    margin-inline: auto;
+    max-inline-size: 24rem;
+  }
+
+  h1 {
+    font-size: var(--loam-text-xl);
+    margin-block: 0 var(--loam-space-lg);
+  }
+
+  /* One column, filled top to bottom: side-by-side fields make the eye
+     and the tab order disagree. */
+  form {
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  /* A single-cell grid, so the Button stretches to the form's width, and
+     a primary region, so the one action takes the brand colour from
+     where it sits rather than from a prop. */
+  div.actions {
+    --loam-context: primary;
+
+    display: block grid;
+  }
+
+  p.footer {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    margin-block: var(--loam-space-lg) 0;
+    text-align: center;
+  }
+}

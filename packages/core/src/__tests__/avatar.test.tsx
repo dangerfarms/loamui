@@ -24,6 +24,25 @@ describe("Avatar initials", () => {
   });
 });
 
+describe("Avatar image", () => {
+  it("names the image after the person", () => {
+    render(<Avatar src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" name="Ada Lovelace" />);
+    expect(screen.getByRole("img")).toHaveAttribute("alt", "Ada Lovelace");
+  });
+
+  it("empties the alt when the avatar is decorative", async () => {
+    const { container } = render(
+      <p>
+        <Avatar src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" name="Ada Lovelace" aria-hidden />
+        Ada Lovelace
+      </p>,
+    );
+    expect(container.querySelector("img")).toHaveAttribute("alt", "");
+    expect(screen.queryByRole("img")).toBeNull();
+    expect(await axe(container, axeOptions)).toHaveNoViolations();
+  });
+});
+
 describe("Avatar.Group", () => {
   it("is a list of the avatars given, plus the overflow count", () => {
     render(

@@ -1,0 +1,65 @@
+/* The avatar beside a column of text. The avatar's size is Avatar's
+   public property, set here and inherited; the Avatar itself stays
+   behind the donut. */
+@scope (.user-info-with-icons) to ([class*="loam-"]) {
+  :scope {
+    --loam-avatar-size: 5.5rem;
+
+    align-items: start;
+    display: block flex;
+    gap: var(--loam-space-md);
+  }
+
+  div.text {
+    display: block grid;
+    gap: var(--loam-space-xs);
+    min-inline-size: 0;
+  }
+
+  h2 {
+    font-size: var(--loam-text-xl);
+    margin: 0;
+  }
+
+  /* The role is read after the name but shown above it, as a small
+     label: the markup keeps the name first, the grid moves the line. */
+  p.role {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    margin: 0;
+    order: -1;
+    text-transform: uppercase;
+  }
+
+  /* Each way to reach them is a term, read but not seen, and a value
+     with an icon before a real link; the icon is decoration and the
+     term says what the row is. */
+  dl {
+    display: block grid;
+    gap: var(--loam-space-xs);
+    margin-block: var(--loam-space-sm) 0;
+    margin-inline: 0;
+
+    dd {
+      align-items: center;
+      display: block flex;
+      font-size: var(--loam-text-sm);
+      gap: var(--loam-space-xs);
+      margin: 0;
+      min-inline-size: 0;
+    }
+
+    svg {
+      block-size: 1.125em;
+      color: var(--loam-color-fg-muted);
+      flex: none;
+      inline-size: 1.125em;
+    }
+
+    a {
+      overflow-wrap: anywhere;
+    }
+  }
+}

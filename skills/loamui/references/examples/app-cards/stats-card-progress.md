@@ -1,0 +1,111 @@
+---
+title: Stats card with progress
+description: One figure in a Card: the count of orders packed this week over the total, a thick Progress that says how far along it is, and what is left in words.
+---
+
+> LoamUI documentation, generated from the same source as the live page —
+> treat it as authoritative for `@loamui/core`.
+
+# Stats card with progress
+
+One figure in a Card: the count of orders packed this week over the total, a thick Progress that says how far along it is, and what is left in words.
+
+An example in **Application cards**: a component and a stylesheet built from `@loamui/core`, to copy into a project and change. Both files are below, exactly as the live preview renders them.
+
+- Uses: `Card`, `Progress`
+- Tags: progress, kpi, figure, dashboard, goal
+- Live: https://loamui.com/examples/app-cards/stats-card-progress
+
+## Built to the pillars
+
+- **Native CSS.** The bar is the native progress element with its label as its accessible name, and the count is text a reader can select and copy, not a number drawn into a canvas.
+- **Modern CSS.** The count is set in tabular lining numerals from the display face so it holds its width as it changes; the thick track is the Progress's own large size, the one size a track can carry.
+- **Composition.** Card and Progress are dropped in as they come; the example writes the figures around the bar and never reaches into it.
+- **Accessible & gatekept.** The bar speaks 70% packed through labels.value, and the count, the total and what is left are all written out, so the fill is never the only thing saying how far along the week is.
+
+## Example.tsx
+
+```tsx
+"use client";
+
+import { Card, Progress } from "@loamui/core";
+import "./example.css";
+
+export default function Example() {
+  return (
+    <Card
+      render={
+        <section className="stats-card-progress" aria-labelledby="stats-card-progress-title" />
+      }
+    >
+      <p className="lead">This week</p>
+      <h3 id="stats-card-progress-title">Orders packed</h3>
+      <p className="value">
+        1,120 <span>of 1,600 orders</span>
+      </p>
+      <Progress value={70} size="lg" labels={{ value: (n) => `${n}% packed` }}>
+        Packed so far
+      </Progress>
+      <p className="note">70% packed. 480 to go before Friday’s post.</p>
+    </Card>
+  );
+}
+```
+
+## example.css
+
+```css
+/* The Card is the section, so its element is this scope's root: core's
+   surface, line, radius and padding stay, and the column inside is the
+   example's own. The Progress keeps its label and bar behind the donut;
+   its thickness is its own size, the one size a track can carry. */
+@scope (.stats-card-progress) to ([class*="loam-"]) {
+  :scope {
+    display: block grid;
+    gap: var(--loam-space-sm);
+  }
+
+  p.lead {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    font-size: var(--loam-text-lg);
+    margin: 0;
+  }
+
+  /* The count leads, in tabular lining numerals from the display face;
+     the total it is measured against is running text beside it. */
+  p.value {
+    color: var(--loam-color-fg-strong);
+    font-family: var(--loam-font-display);
+    font-size: var(--loam-text-3xl);
+    font-variant-numeric: lining-nums tabular-nums;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0;
+
+    span {
+      color: var(--loam-color-fg-muted);
+      font-family: var(--loam-font);
+      font-size: var(--loam-text-sm);
+      font-weight: 400;
+      letter-spacing: 0;
+    }
+  }
+
+  p.note {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    font-variant-numeric: lining-nums tabular-nums;
+    margin: 0;
+  }
+}
+```
+

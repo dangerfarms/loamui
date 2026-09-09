@@ -165,7 +165,7 @@ function FileInputControl({
   ref,
   ...rest
 }: FileInputControlProps) {
-  const field = useFieldControlProps();
+  const field = useFieldControlProps(ariaDescribedby);
   const ctx = useContext(FileInputContext);
   const setFiles = ctx?.setFiles;
   const { nativeInvalid, validationRef, checkOnInput, checkOnInvalid } =
@@ -194,7 +194,7 @@ function FileInputControl({
       disabled={disabled}
       {...rest}
       aria-invalid={ariaInvalid ?? field["aria-invalid"] ?? (nativeInvalid || undefined)}
-      aria-describedby={ariaDescribedby ?? field["aria-describedby"]}
+      aria-describedby={field["aria-describedby"]}
       onChange={(e) => {
         onChange?.(e);
         setFiles?.(Array.from(e.currentTarget.files ?? []));

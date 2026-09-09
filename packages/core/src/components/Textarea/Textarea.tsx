@@ -41,7 +41,7 @@ export function Textarea({
   ref,
   ...rest
 }: TextareaProps) {
-  const field = useFieldControlProps();
+  const field = useFieldControlProps(ariaDescribedby);
   const { nativeInvalid, validationRef, checkOnInput, checkOnInvalid } =
     useUserInvalid<HTMLTextAreaElement>();
   const textareaRef = useMemo(() => composeRefs(ref, validationRef), [ref, validationRef]);
@@ -58,7 +58,7 @@ export function Textarea({
         id={id ?? field.id}
         {...rest}
         aria-invalid={ariaInvalid ?? field["aria-invalid"] ?? (nativeInvalid || undefined)}
-        aria-describedby={ariaDescribedby ?? field["aria-describedby"]}
+        aria-describedby={field["aria-describedby"]}
         onInput={(e) => {
           onInput?.(e);
           checkOnInput(e);

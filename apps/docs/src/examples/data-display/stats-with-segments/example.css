@@ -1,0 +1,53 @@
+/* The Table's own element is the scroll wrapper, so it is this scope's
+   root: the table and its cells are reachable, and the Meters inside are
+   fenced by the donut. The Table already rules the rows and the header;
+   this aligns the figures and lays the bar beside its percentage. */
+@scope (.stats-with-segments) to ([class*="loam-"]) {
+  th.number,
+  td.number {
+    text-align: end;
+  }
+
+  td.number {
+    font-variant-numeric: lining-nums tabular-nums;
+    white-space: nowrap;
+  }
+
+  /* A device is a name: it holds one line and the table scrolls, rather
+     than breaking mid-word to fit. */
+  tbody th,
+  tfoot th {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* The percentage first, at a fixed width so the bars start on one
+     line, then the bar taking the rest of the cell. */
+  th.share {
+    inline-size: 50%;
+  }
+
+  /* The bar keeps a width a share can be read from; narrower than that,
+     the table scrolls. */
+  td.share {
+    align-items: center;
+    display: block flex;
+    gap: var(--loam-space-sm);
+    min-inline-size: 10rem;
+  }
+
+  span.figure {
+    flex: none;
+    font-variant-numeric: lining-nums tabular-nums;
+    min-inline-size: 3.5ch;
+    text-align: end;
+  }
+
+  tfoot td,
+  tfoot th {
+    border-block-end: 0;
+    border-block-start: 1px solid var(--loam-color-line-strong);
+    color: var(--loam-color-fg-strong);
+    font-weight: 600;
+  }
+}

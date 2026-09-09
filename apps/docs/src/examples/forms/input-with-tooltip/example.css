@@ -1,0 +1,31 @@
+/* The root is the core Field; the box is core's Input with the Tooltip in
+   its end section, all past the donut. The trigger inside the Tooltip is
+   the example's own button: a core Button carries the control's padding
+   and would raise the box, so this one is a bare button dressed down to
+   its icon, scoped at the Tooltip that holds it. The hit area is grown
+   to 24px by a step of padding pulled back with an equal negative margin, so it meets the
+   target size without changing the box's derived height. */
+@scope (.input-with-tooltip .loam-Tooltip) to ([class*="loam-"]) {
+  button.hint {
+    background: none;
+    border: 0;
+    border-radius: var(--loam-radius-full);
+    box-shadow: none;
+    color: var(--loam-color-fg-muted);
+    display: inline flex;
+    margin: calc(-1 * var(--loam-space-xs));
+    padding: var(--loam-space-xs);
+
+    /* Sized here because the section's own icon rule stops at the
+       Tooltip's class. */
+    svg {
+      block-size: auto;
+      inline-size: 1.125em;
+    }
+
+    &:focus-visible,
+    &[data-popup-open] {
+      color: var(--loam-color-fg);
+    }
+  }
+}

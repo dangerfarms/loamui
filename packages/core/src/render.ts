@@ -12,7 +12,8 @@ import { cx } from "./utils";
  * - `className`: concatenated;
  * - `style`: shallow-merged, wiring wins on conflicts (wiring styles such as
  *   `anchorName` are load-bearing);
- * - `aria-describedby` / `aria-labelledby`: token-list concatenated;
+ * - `aria-describedby` / `aria-labelledby`: token-list concatenated, the
+ *   wiring's ids first, then the element's own, each id once;
  * - `ref`: composed — both receive the node;
  * - anything else: the element's own prop wins.
  */
@@ -39,6 +40,20 @@ export function composeRefs<T>(a: Ref<T> | undefined, b: Ref<T> | undefined): Re
 }
 
 const ARIA_LIST_KEYS = new Set(["aria-describedby", "aria-labelledby"]);
+
+/**
+ * Join id token-lists (`aria-describedby`, `aria-labelledby`) in the order
+ * given, each id once; `undefined` when nothing is left.
+ */
+export function idList(...lists: Array<string | undefined>): string | undefined {
+  const ids: string[] = [];
+  for (const list of lists) {
+    for (const id of list?.split(/\s+/) ?? []) {
+      if (id && !ids.includes(id)) ids.push(id);
+    }
+  }
+  return ids.length ? ids.join(" ") : undefined;
+}
 
 /** Merge wiring props with an element's own props (see contract above). */
 export function mergeProps<W extends object, O extends object>(wiring: W, own: O): W & O {
@@ -68,7 +83,7 @@ export function mergeProps<W extends object, O extends object>(wiring: W, own: O
     } else if (key === "style") {
       merged[key] = { ...(o as CSSProperties), ...(w as CSSProperties) };
     } else if (ARIA_LIST_KEYS.has(key)) {
-      merged[key] = cx(o as string, w as string);
+      merged[key] = idList(w as string, o as string);
     } else if (key === "ref") {
       merged[key] = composeRefs(w as Ref<unknown>, o as Ref<unknown>);
     } else merged[key] = o;

@@ -1,0 +1,86 @@
+/* The list is the grid: as many columns as 16rem cards fit, filled in
+   reading order, with the markers gone. Outside a nav a list without
+   markers loses its semantics in some browsers, so the markup restores
+   them with role="list". Each Card is core's and a limit for this scope;
+   its inside is arranged from a scope of its own below. */
+@scope (.users-grid) to ([class*="loam-"]) {
+  :scope {
+    display: block grid;
+    gap: var(--loam-space-md);
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    display: block grid;
+    margin: 0;
+  }
+}
+
+/* Inside a card: the avatar beside the name and role, then the facts,
+   then the action, on a grid of two columns. The Card's own surface,
+   line, radius and padding are left as they are. */
+@scope (.users-grid .loam-Card) to ([class*="loam-"]) {
+  :scope {
+    align-items: center;
+    display: block grid;
+    gap: var(--loam-space-sm) var(--loam-space-md);
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  div.text {
+    display: block grid;
+    gap: calc(var(--loam-space-xs) / 2);
+    min-inline-size: 0;
+  }
+
+  h2 {
+    font-size: var(--loam-text-md);
+    margin: 0;
+  }
+
+  p.role {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    margin: 0;
+  }
+
+  /* Two facts, each a term over its value, spanning both columns; the
+     rate is a Price and its qualifier is the Price's own. */
+  dl {
+    display: block grid;
+    gap: var(--loam-space-sm);
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-block: var(--loam-space-xs) 0;
+    margin-inline: 0;
+
+    div {
+      display: block grid;
+      gap: calc(var(--loam-space-xs) / 2);
+      min-inline-size: 0;
+    }
+
+    dt {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-xs);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    dd {
+      font-size: var(--loam-text-sm);
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  /* The action spans the card and sits at its start edge. */
+  a {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}

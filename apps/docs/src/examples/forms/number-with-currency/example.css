@@ -1,0 +1,13 @@
+/* The root is the core Field, which stacks the label, the description and
+   the row. The row is the example's: a grid whose first track takes the
+   width and whose second shrink-wraps the Select, so the box and the
+   select share the derived control height without a rule on either. Both
+   are core parts past the donut. */
+@scope (.number-with-currency) to ([class*="loam-"]) {
+  div.row {
+    align-items: end;
+    display: block grid;
+    gap: var(--loam-space-sm);
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}

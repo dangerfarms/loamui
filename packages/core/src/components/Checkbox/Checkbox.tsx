@@ -43,7 +43,7 @@ function CheckboxControl({
   ref,
   ...rest
 }: CheckboxControlProps) {
-  const field = useFieldControlProps();
+  const field = useFieldControlProps(ariaDescribedby);
   const innerRef = useRef<HTMLInputElement>(null);
   const { nativeInvalid, validationRef, checkOnInput, checkOnInvalid } =
     useUserInvalid<HTMLInputElement>();
@@ -60,7 +60,7 @@ function CheckboxControl({
 
   const resolvedAriaInvalid = ariaInvalid ?? field["aria-invalid"] ?? (nativeInvalid || undefined);
   const resolvedId = id ?? field.id;
-  const describedBy = ariaDescribedby ?? field["aria-describedby"];
+  const describedBy = field["aria-describedby"];
 
   return (
     <input
@@ -119,7 +119,7 @@ function CheckboxLabelled({
         <CheckboxControl
           ref={ref}
           id={fieldId}
-          aria-describedby={cx(descId, ariaDescribedby ?? field["aria-describedby"]) || undefined}
+          aria-describedby={cx(descId, ariaDescribedby) || undefined}
           {...control}
         />
         <span className="body">

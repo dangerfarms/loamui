@@ -1,0 +1,9 @@
+/* The root is core's Menu. It is declared a primary region, so the
+   trigger Button inside re-answers its colour as the page's action; the
+   Button, the popup and its items are core parts past the donut and keep
+   their own layout, icon sizing and forced-colours treatment. */
+@scope (.button-with-menu) to ([class*="loam-"]) {
+  :scope {
+    --loam-context: primary;
+  }
+}
