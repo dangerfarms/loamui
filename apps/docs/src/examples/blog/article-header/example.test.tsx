@@ -25,7 +25,7 @@ describe("article-header", () => {
     expect(screen.getByRole("link", { name: "Legumes" })).toHaveAttribute("href", "/tags/legumes");
     expect(screen.getByRole("figure")).toContainElement(
       screen.getByRole("img", {
-        name: "Rows of young broad bean plants in a raised bed, netted against pigeons",
+        name: "A crate of freshly picked beans on the packing bench",
       }),
     );
     expect(await axe(container, axeOptions)).toHaveNoViolations();

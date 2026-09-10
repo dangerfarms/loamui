@@ -1,23 +1,7 @@
-/* The column: the switch above the Nav. The donut leaves both on their
-   own styles; the switch is placed from a scope of its own below. */
 @scope (.side-nav-with-segmented-control) to ([class*="loam-"]) {
   :scope {
     display: block grid;
     gap: var(--loam-space-md);
     inline-size: min(100%, 18rem);
-  }
-}
-
-/* Core's SegmentedControl is an inline pill sized to its words; in a
-   column it spans the width and the two segments share it, so each is
-   half the pill and the chosen one reads as a tab across the top. The
-   legend is hidden, so it takes no room in the row. */
-@scope (.side-nav-with-segmented-control .loam-SegmentedControl) to ([class*="loam-"]) {
-  :scope {
-    display: block flex;
-  }
-
-  label.segment {
-    flex: 1;
   }
 }

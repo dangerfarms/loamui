@@ -9,7 +9,7 @@ const doc: ComponentContent = {
     {
       title: "In a site header",
       description:
-        "The header recipe: the search sits beside the brand, in the row a site's actions share (in @loamui/ui that row is Header.Actions). The label names the box for a screen reader without showing on screen; the button submits, and so does Enter in the box. Without an action the form submits to the current page as a GET with the query under q.",
+        "The header recipe: the search sits beside the brand, in the row a site's actions share; the Header with search example (/examples/navigation/header-with-search) builds the whole header. The label names the box for a screen reader without showing on screen; the button submits, and so does Enter in the box. Without an action the form submits to the current page as a GET with the query under q.",
       code: `<header>
   <strong>Loam</strong>
   <Search.Root>

@@ -1,11 +1,4 @@
-/* A row of icon-only links. Each target is floored at 24px whatever the
-   font makes the icon, with a gap so neighbouring targets stay apart, and
-   the icon follows the surrounding font size: small in a footer's small
-   print, larger under a heading. Nothing here paints a background, so
-   forced colours need no rule of their own. */
 @scope (.social-links) to ([class*="loam-"]) {
-  /* The markers go; inside a nav every browser keeps the list's semantics
-     without them. */
   ul {
     display: block flex;
     flex-wrap: wrap;
@@ -19,6 +12,7 @@
     margin: 0;
   }
 
+  /* A 24px floor: the smallest target a pointer hits reliably. */
   a {
     align-items: center;
     border-radius: var(--loam-radius-md);

@@ -8,31 +8,31 @@ const ARTICLES = [
     slug: "autumn-broad-beans",
     category: "Growing guide",
     title: "Sowing broad beans in autumn",
-    seed: "hedgerow-broad-beans",
+    seed: 627,
   },
   {
     slug: "curing-winter-squash",
     category: "Harvest",
     title: "Curing winter squash for storage",
-    seed: "hedgerow-squash-harvest",
+    seed: 729,
   },
   {
     slug: "saving-tomato-seed",
     category: "Seed saving",
     title: "Saving tomato seed without the smell",
-    seed: "hedgerow-tomato-seed",
+    seed: 400,
   },
   {
     slug: "lifting-dahlias",
     category: "Winter jobs",
     title: "Lifting and storing dahlia tubers",
-    seed: "hedgerow-dahlia-tubers",
+    seed: 976,
   },
   {
     slug: "green-manures",
     category: "Soil",
     title: "Green manures for a bed you will not touch till March",
-    seed: "hedgerow-green-manure",
+    seed: 542,
   },
 ];
 
@@ -68,7 +68,7 @@ export default function Example() {
             >
               <img
                 className="media"
-                src={`https://picsum.photos/seed/${article.seed}/640/400`}
+                src={`https://picsum.photos/id/${article.seed}/640/400`}
                 alt=""
                 width="640"
                 height="400"

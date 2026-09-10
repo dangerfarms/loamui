@@ -20,6 +20,8 @@ import { Field, Switch } from "@loamui/core";
 
 ### Basic usage
 
+A bare Switch named by aria-label, for a row where the words already sit beside it. Off by default: a setting the user has not turned on.
+
 ```tsx
 <Switch aria-label="Email notifications" />
 ```
@@ -38,14 +40,16 @@ labelPosition places the label after the toggle (default) or before it.
 
 ```tsx
 <Switch label="Enable notifications" />
-<Switch label="Label on the left" labelPosition="start" />
+<Switch label="Marketing emails" labelPosition="start" />
 ```
 
 ### Disabled
 
+disabled reaches the native input: the row is dimmed and skipped by Tab, and a switch that is on and disabled shows a setting that is on and not the user's to change here. Disabled is detected on the input, never declared on the row.
+
 ```tsx
-<Switch label="Off & disabled" disabled />
-<Switch label="On & disabled" defaultChecked disabled />
+<Switch label="Usage analytics" disabled />
+<Switch label="Security alerts" defaultChecked disabled />
 ```
 
 ### Composed inside a Field

@@ -90,7 +90,10 @@ The remap reaches LoamUI elements and their descendants; it does not restyle the
 own element. A page's own element that declares a context paints itself with the status
 tokens directly (`border-color: var(--loam-color-danger)` in its own rule), and the
 components inside it answer the context. Nor can a region answer its own style query: to
-mark the element itself, declare the context on its parent. And since the declaration must sit on an ancestor (see above), a single dangerous
+mark the element itself, declare the context on its parent. One more thing to expect: `primary`
+is the brand slot, and the default theme leaves it neutral (near-black in light, near-white in
+dark), so a Button in a primary region looks like any other until a theme remaps that one token;
+mark an action out with position or words, not with the context alone. And since the declaration must sit on an ancestor (see above), a single dangerous
 button is just a one-element region, a wrapper around the button:
 
 ```tsx

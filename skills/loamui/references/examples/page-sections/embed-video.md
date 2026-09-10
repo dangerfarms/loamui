@@ -37,7 +37,6 @@ export default function Example() {
         loading="lazy"
         referrerPolicy="strict-origin-when-cross-origin"
         allow="fullscreen; picture-in-picture"
-        allowFullScreen
       />
       <figcaption>
         Sowing broad beans in autumn and keeping the best pods back for next year&rsquo;s seed, the
@@ -52,9 +51,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* A hosted video in a figure. The frame is sized by ratio before it
-   loads, so the page never shifts when it does, and the subtle background
-   is its footprint in the meantime. */
 @scope (.embed-video) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -72,8 +68,8 @@ export default function Example() {
     display: block flow;
     inline-size: 100%;
 
-    /* Forced colours drop the background, so the footprint would vanish
-       until the frame loads; a border in the text colour keeps it. */
+    /* Forced colours drop the footprint; the border keeps it until the frame
+       loads. */
     @media (forced-colors: active) {
       border: 1px solid CanvasText;
     }

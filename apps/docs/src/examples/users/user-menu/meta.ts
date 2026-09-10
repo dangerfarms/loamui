@@ -10,7 +10,7 @@ export const meta: ExampleMeta = {
     native:
       'Sign out is a submit button in a method="post" form, because ending a session changes state on the server and a GET link would be followed by prefetchers and crawlers.',
     composition:
-      "Menu's trigger is substituted through render with a bare button around an Avatar, and the account block is plain text before the items with a Menu.Separator under it, so arrow keys skip it and it names the menu instead.",
+      "Menu's trigger is the Button core renders, holding an Avatar and hidden text and never restyled, and the account block is plain text before the items with a Menu.Separator under it, so arrow keys skip it and it names the menu instead.",
     accessible:
       "The button is named for the person by hidden text, Account menu for Imogen Hartley, with the Avatar hidden so the name is heard once; arrow keys, typeahead, Escape and focus return are Menu's own.",
   },

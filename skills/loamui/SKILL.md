@@ -28,10 +28,9 @@ metadata:
   accessibility contract live there, not here.
 - The references match the library at the same commit; check the installed
   version in `node_modules/@loamui/core/package.json` if behaviour differs.
-- **Compositions:** `@loamui/ui` (Hero, Carousel, Stat, ...) is built on
-  core the way any consumer would; its gallery, code and guidance are at
-  <https://loamui.com/ui/> and it ships its own `AGENTS.md`. This skill
-  covers core; read a composition's page there before using it.
+- **Examples:** the `/examples` section of the docs site shows 133 copy-paste
+  sections (heroes, headers, forms, tables, baskets) built from core alone; their
+  markdown twins are under `references/examples/`.
 
 ## The three primitives
 

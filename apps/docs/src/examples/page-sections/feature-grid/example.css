@@ -1,7 +1,3 @@
-/* A run of features under a section header. There is no card: features
-   are scanned, not compared, so each is an icon, a heading and a muted
-   line set apart by space, and the grid fits as many across as the
-   section's own width allows. */
 @scope (.feature-grid) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -37,8 +33,6 @@
     text-wrap: pretty;
   }
 
-  /* The list keeps its semantics through role="list" in the markup, since
-     list-style: none drops them in some browsers. */
   ul {
     display: block grid;
     gap: var(--loam-space-xl) var(--loam-space-lg);
@@ -61,9 +55,6 @@
     }
   }
 
-  /* The square is sized in em on the title's size, so it rides the fluid
-     scale with the text beside it. The glyph is the strong token on the
-     soft tint, the pair the audit checks as a glyph. */
   div.icon {
     align-items: center;
     background: var(--loam-color-primary-soft);
@@ -86,8 +77,7 @@
     margin: 0;
   }
 
-  /* Forced colours: the tint behind the glyph goes, so the square keeps
-     an edge and the glyph takes the system text colour. */
+  /* Forced colours drop the tint; the edge keeps the bounds. */
   @media (forced-colors: active) {
     div.icon {
       border: 1px solid CanvasText;

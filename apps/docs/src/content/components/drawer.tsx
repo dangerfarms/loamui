@@ -144,7 +144,7 @@ const doc: ComponentContent = {
       props: [
         {
           name: "render",
-          type: "RenderProp",
+          type: "element | (props) => node",
           description: "Substitute your own action element (an icon button); the wiring merges on.",
         },
         {
@@ -174,7 +174,14 @@ const doc: ComponentContent = {
     {
       name: "Drawer.Close",
       description:
-        "A LoamUI Button that closes the drawer; compose as many as you need (a footer action, a header ×). Supports render like the Trigger.",
+        "A LoamUI Button that closes the drawer; compose as many as you need (a footer action, a header ×). Native <button> props are forwarded.",
+      props: [
+        {
+          name: "render",
+          type: "element | (props) => node",
+          description: "Substitute your own element; it receives the close wiring.",
+        },
+      ],
     },
   ],
   cssProps: [

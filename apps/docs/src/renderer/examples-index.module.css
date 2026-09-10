@@ -123,10 +123,15 @@
 /* A card: the preview above, the title and its parts below. The whole
    card is the link's hit area (see .cardLink); hover lifts it, keyboard
    focus rings it. */
+
+/* Off-screen cards skip layout and paint; the intrinsic size keeps the
+   scrollbar honest before a card is first laid out. */
 .card {
   background: var(--loam-color-surface);
   border: 1px solid var(--loam-color-line);
   border-radius: var(--loam-radius-lg);
+  contain-intrinsic-block-size: auto 20rem;
+  content-visibility: auto;
   display: block grid;
   grid-template-rows: auto 1fr;
   margin: 0;
@@ -176,18 +181,6 @@
   position: absolute;
   scale: 0.4;
   transform-origin: 0 0;
-}
-
-/* A screenshot in place of the live render: the whole picture fits
-   inside the frame and sits in its middle, whatever its shape, on the
-   page-coloured ground the shot was taken against. */
-.thumbImage {
-  block-size: 100%;
-  display: block flow;
-  inline-size: 100%;
-  object-fit: contain;
-  object-position: center;
-  padding: var(--loam-space-md);
 }
 
 .cardBody {

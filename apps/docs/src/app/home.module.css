@@ -34,7 +34,7 @@
   gap: clamp(2rem, 1.429rem + 2.857vi, 4rem);
   grid-template-columns: 1.05fr 0.95fr;
 
-  @media (width <= 60rem) {
+  @container (width <= 60rem) {
     grid-template-columns: 1fr;
   }
 }
@@ -113,22 +113,12 @@
   color: var(--loam-color-fg-dim);
 }
 
+/* The core CopyButton, set small beside the command. */
 .installCopy {
-  background: var(--loam-color-surface);
-  border: 1px solid var(--loam-color-line);
-  border-radius: var(--loam-radius-sm);
-  box-shadow: none;
-  color: var(--loam-color-fg-muted);
-  cursor: pointer;
   font-family: var(--loam-font);
   font-size: var(--loam-text-xs);
-  font-weight: 600;
   margin-inline-start: 0.25rem;
-  padding: 0.3rem 0.55rem;
-
-  &:hover {
-    color: var(--loam-color-fg);
-  }
+  padding: 0.3rem 0.6rem;
 }
 
 /* ---------- Hero art (live showcase card) ---------- */
@@ -223,13 +213,15 @@
   grid-template-columns: repeat(4, 1fr);
   padding: 1.75rem;
 
-  @media (width <= 48rem) {
+  @container (width <= 48rem) {
     gap: 1.5rem;
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 .stat {
+  display: block grid;
+  gap: 0.15rem;
   text-align: center;
 }
 
@@ -250,11 +242,11 @@
   gap: 1.25rem;
   grid-template-columns: repeat(3, 1fr);
 
-  @media (width <= 62rem) {
+  @container (width <= 62rem) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (width <= 40rem) {
+  @container (width <= 40rem) {
     grid-template-columns: 1fr;
   }
 }
@@ -264,13 +256,19 @@
   border: 1px solid var(--loam-color-line);
   border-radius: var(--loam-radius-lg);
   padding: 1.5rem;
-  transition:
-    border-color var(--loam-duration-md) var(--loam-ease),
-    transform var(--loam-duration-md) var(--loam-ease);
 
   &:hover {
     border-color: var(--loam-color-line-strong);
-    transform: translateY(-2px);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition:
+      border-color var(--loam-duration-md) var(--loam-ease),
+      translate var(--loam-duration-md) var(--loam-ease);
+
+    &:hover {
+      translate: 0 -2px;
+    }
   }
 }
 
@@ -337,7 +335,7 @@
   gap: 1.25rem;
   grid-template-columns: 1fr 1fr;
 
-  @media (width <= 52rem) {
+  @container (width <= 52rem) {
     grid-template-columns: 1fr;
   }
 }
@@ -407,11 +405,11 @@
   margin: 0;
   padding: 0;
 
-  @media (width <= 62rem) {
+  @container (width <= 62rem) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (width <= 40rem) {
+  @container (width <= 40rem) {
     grid-template-columns: 1fr;
   }
 }
@@ -424,13 +422,19 @@
   flex-direction: column;
   gap: 0.6rem;
   padding: 1.25rem;
-  transition:
-    border-color var(--loam-duration-md) var(--loam-ease),
-    transform var(--loam-duration-md) var(--loam-ease);
 
   &:hover {
     border-color: var(--loam-color-primary);
-    transform: translateY(-2px);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition:
+      border-color var(--loam-duration-md) var(--loam-ease),
+      translate var(--loam-duration-md) var(--loam-ease);
+
+    &:hover {
+      translate: 0 -2px;
+    }
   }
 }
 
@@ -500,7 +504,7 @@
   gap: 2rem;
   grid-template-columns: 1fr 1fr;
 
-  @media (width <= 56rem) {
+  @container (width <= 56rem) {
     grid-template-columns: 1fr;
   }
 }
@@ -538,11 +542,11 @@
   gap: 1rem;
   grid-template-columns: repeat(3, 1fr);
 
-  @media (width <= 62rem) {
+  @container (width <= 62rem) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (width <= 40rem) {
+  @container (width <= 40rem) {
     grid-template-columns: 1fr;
   }
 }
@@ -553,13 +557,16 @@
   border-radius: var(--loam-radius-lg);
   display: block flow;
   padding: 1.4rem;
-  transition:
-    border-color var(--loam-duration-md) var(--loam-ease),
-    background var(--loam-duration-md) var(--loam-ease);
 
   &:hover {
     background: var(--loam-color-primary-soft);
     border-color: var(--loam-color-primary);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition:
+      border-color var(--loam-duration-md) var(--loam-ease),
+      background var(--loam-duration-md) var(--loam-ease);
   }
 }
 

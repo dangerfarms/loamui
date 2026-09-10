@@ -83,8 +83,8 @@ export default function Example() {
         </div>
         <img
           className="media"
-          src="https://picsum.photos/seed/hedgerow-bench/900/1000"
-          alt="A grower lifting a tray of bean seedlings from a nursery bench"
+          src="https://picsum.photos/id/90/900/1000"
+          alt="Bamboo canes capped with jam jars along a raised bed at the nursery"
           width="900"
           height="1000"
         />
@@ -97,17 +97,14 @@ export default function Example() {
 ## example.css
 
 ```css
-/* A hero that makes its case in three points before the one action. The
-   section is the container and the inner element the grid; the points
-   are a list whose markers are replaced by a tick in a soft circle, so
-   the markup keeps role="list" for the browsers that drop the semantics
-   with the marker. */
 @scope (.hero-with-bullets) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
     padding-block: var(--loam-space-xl);
   }
 
+  /* The inner element is the grid: an element cannot answer its own
+     container query. */
   div.inner {
     display: block grid;
     gap: var(--loam-space-xl);
@@ -160,9 +157,6 @@ export default function Example() {
     }
   }
 
-  /* The tick is sized in em on the point's type so it rides the fluid
-     scale, and the glyph is the strong token on the soft tint, the pair
-     the audit checks as a glyph. */
   span.check {
     align-items: center;
     background: var(--loam-color-primary-soft);
@@ -193,8 +187,6 @@ export default function Example() {
     object-fit: cover;
   }
 
-  /* Wide: words beside the picture, the picture in the smaller column
-     and as tall as the words it sits beside. */
   @container (inline-size >= 48rem) {
     div.inner {
       align-items: center;
@@ -202,8 +194,7 @@ export default function Example() {
     }
   }
 
-  /* Forced colours: the tint behind the tick goes, so the circle keeps
-     an edge and the tick takes the system text colour. */
+  /* Forced colours drop the tint; the edge keeps the bounds. */
   @media (forced-colors: active) {
     span.check {
       border: 1px solid CanvasText;

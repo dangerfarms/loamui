@@ -7,7 +7,7 @@ const doc: ComponentContent = {
   importLine: `import { Pagination } from "@loamui/core";`,
   demos: [
     {
-      title: "Basic",
+      title: "Basic usage",
       description:
         "Pagination.Pages renders Previous, the numbered window around the active page with its ellipses, and Next, from page and count. Every page has an href; intercept onNavigate only when a client router needs it.",
       code: `function Demo() {
@@ -200,6 +200,7 @@ const doc: ComponentContent = {
         {
           name: "labels",
           type: "{ previous?: string; next?: string; page?: (n: number) => string }",
+          default: `{ previous: "Previous page", next: "Next page", page: (n) => "Page n" }`,
           description:
             'The words the links speak: previous ("Previous page"), next ("Next page") and page(n) ("Page 7").',
         },

@@ -6,7 +6,7 @@
     "result result";
   grid-template-columns: minmax(18rem, 2fr) 3fr;
 
-  @media (width <= 56rem) {
+  @container (width <= 56rem) {
     grid-template-areas:
       "ask"
       "result"
@@ -40,12 +40,14 @@
   grid-area: code;
 }
 
+/* A panel heading set as a label, not at the h3 scale. */
 .step {
   color: var(--loam-color-primary);
   display: block flow;
   font-size: var(--loam-text-xs);
   font-weight: 700;
   letter-spacing: 0.05em;
+  line-height: 1.4;
   margin-block-end: 0.75rem;
   text-transform: uppercase;
 }
@@ -108,17 +110,12 @@
   }
 }
 
+/* The core CopyButton, set small. */
 .copy {
-  background: var(--loam-color-surface);
-  border: 1px solid var(--loam-color-line);
-  border-radius: var(--loam-radius-sm);
-  box-shadow: none;
-  color: var(--loam-color-fg-muted);
-  cursor: pointer;
   font-family: var(--loam-font);
   font-size: var(--loam-text-xs);
   justify-self: end;
-  padding: 0.25rem 0.55rem;
+  padding: 0.25rem 0.6rem;
 }
 
 /* The stage is a container so the generated component's own fluid tokens
@@ -161,6 +158,11 @@
     background: var(--loam-color-bg-subtle);
     border-color: var(--loam-color-line);
     color: var(--loam-color-fg);
+
+    @media (forced-colors: active) {
+      background: SelectedItem;
+      color: SelectedItemText;
+    }
   }
 }
 

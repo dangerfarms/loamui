@@ -27,15 +27,41 @@ function isEventHandlerKey(key: string): boolean {
   return /^on[A-Z]/.test(key);
 }
 
-/** Compose two refs so both receive the node. */
+/** Attach one ref to a node; returns what detaches it. */
+function attachRef<T>(ref: Ref<T>, node: T): () => void {
+  if (typeof ref === "function") {
+    // React 19: a ref callback may return its own cleanup, in which case it
+    // is never called with null.
+    const cleanup = ref(node);
+    return typeof cleanup === "function" ? cleanup : () => ref(null);
+  }
+  if (ref) ref.current = node;
+  return () => {
+    if (ref) ref.current = null;
+  };
+}
+
+/**
+ * Compose two refs so both receive the node. The composed ref is a React 19
+ * callback with cleanup, so a ref that subscribes on attach (a listener, an
+ * observer) is unsubscribed on detach through it.
+ */
 export function composeRefs<T>(a: Ref<T> | undefined, b: Ref<T> | undefined): Ref<T> | undefined {
   if (!a) return b;
   if (!b) return a;
   return (node: T | null) => {
-    for (const ref of [a, b]) {
-      if (typeof ref === "function") ref(node);
-      else if (ref) (ref as { current: T | null }).current = node;
+    if (node === null) {
+      // Only a caller outside React reaches here: React honours the cleanup.
+      attachRef(a, node);
+      attachRef(b, node);
+      return;
     }
+    const detachA = attachRef(a, node);
+    const detachB = attachRef(b, node);
+    return () => {
+      detachA();
+      detachB();
+    };
   };
 }
 

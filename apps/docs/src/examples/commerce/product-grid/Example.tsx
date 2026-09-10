@@ -3,10 +3,10 @@ import "./example.css";
 
 const PRODUCTS = [
   {
-    slug: "sweet-pea-cupani",
-    name: "Sweet pea ‘Cupani’ seeds",
-    alt: "Sweet pea flowers in deep maroon and violet on a hazel wigwam",
-    image: "hedgerow-sweet-pea",
+    slug: "climbing-bean-blue-lake",
+    name: "Climbing bean ‘Blue Lake’ seeds",
+    alt: "Freshly picked green pods heaped in a crate on the bench",
+    image: 627,
     rating: 4.5,
     reviews: 128,
     price: 2.8,
@@ -14,28 +14,28 @@ const PRODUCTS = [
     offer: "Save 20%",
   },
   {
-    slug: "copper-trowel",
-    name: "Copper hand trowel",
-    alt: "A copper trowel with an ash handle lying on a potting bench",
-    image: "hedgerow-trowel",
+    slug: "raspberry-autumn-bliss",
+    name: "Raspberry ‘Autumn Bliss’ canes, bundle of five",
+    alt: "A cup of freshly picked raspberries on the bench",
+    image: 429,
     rating: 5,
     reviews: 41,
     price: 24,
   },
   {
-    slug: "rhubarb-timperley-early",
-    name: "Rhubarb ‘Timperley Early’ crown",
-    alt: "A bare-root rhubarb crown with a pink bud, on damp newspaper",
-    image: "hedgerow-rhubarb",
+    slug: "strawberry-cambridge-favourite",
+    name: "Strawberry ‘Cambridge Favourite’ runners, pack of twelve",
+    alt: "Ripe strawberries on the plant, ready to pick",
+    image: 1080,
     rating: 4,
     reviews: 17,
     price: 8.5,
   },
   {
-    slug: "hazel-bean-poles",
-    name: "Hazel bean poles, bundle of ten",
-    alt: "A bundle of coppiced hazel poles tied with twine, leaning on a wall",
-    image: "hedgerow-hazel-poles",
+    slug: "bamboo-canes",
+    name: "Bamboo canes, bundle of ten",
+    alt: "Bamboo canes capped with jam jars along a raised bed",
+    image: 90,
     rating: 4.5,
     reviews: 63,
     price: 14,
@@ -54,7 +54,7 @@ export default function Example() {
           >
             <img
               className="media"
-              src={`https://picsum.photos/seed/${product.image}/600/600`}
+              src={`https://picsum.photos/id/${product.image}/600/600`}
               alt={product.alt}
               width="600"
               height="600"

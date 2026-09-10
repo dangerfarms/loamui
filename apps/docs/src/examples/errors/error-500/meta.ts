@@ -14,7 +14,7 @@ export const meta: ExampleMeta = {
     composition:
       "The illustration is an inline SVG in the markup, stroked in currentColor with two coloured parts, so a reader recolours or redraws it in place; Button is dropped in as it comes.",
     context:
-      "The row of ways out declares --loam-context: primary, so the Button is the main action without a prop; the plain link beside it is an element style and stays as it is.",
+      "The row of ways out declares --loam-context: primary, so the Button is the main action without a prop; primary is the brand slot, neutral until a theme fills it, and the Button is told from the plain link beside it by being a Button, not by its colour.",
     accessible:
       "The copy says it was not the reader's doing and that nothing is lost before it asks them to try again; the illustration is hidden because the words already say it.",
   },

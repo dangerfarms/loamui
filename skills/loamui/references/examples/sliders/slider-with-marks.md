@@ -19,7 +19,7 @@ An example in **Sliders**: a component and a stylesheet built from `@loamui/core
 ## Built to the pillars
 
 - **Native CSS.** A native <input type="range"> with a <datalist> of the marks: the platform snaps the thumb to them where it supports it, and the ticks under the track are a picture of that list, hidden from assistive technology so the slider is not followed by a phantom listbox.
-- **Modern CSS.** No stylesheet of its own: every mark's position is one custom property core sets on it, placed by the thumb's own geometry in em, so the labels stay under their values at every container width and text size.
+- **Modern CSS.** Nothing but a width in its stylesheet: every mark's position is one custom property core sets on it, placed by the thumb's own geometry in em, so the labels stay under their values at every container width and text size.
 - **Composition.** Field.Root, Label and Description name and explain the control, and Range takes the marks as data: the same five values feed the datalist and the labels, so they cannot disagree.
 - **Accessible & gatekept.** The slider is named by the Field's label and described by its text; the arrow keys move it by the step and Home and End go to the ends, all the platform's. In forced colours the thumb and track are repainted in system colours by core and the tick marks, being borders, keep their line.
 
@@ -53,10 +53,12 @@ export default function Example() {
 ## example.css
 
 ```css
-/* Nothing to add. The root is the core Field, and the ticks and their
-   labels under the track are core's own picture of the datalist the
-   marks become, placed by the thumb's geometry so each sits under the
-   value it names; the labels keep their colour in forced colours and the
-   ticks are borders, which survive them. */
+/* The ticks and labels are Range's own picture of the datalist, placed by
+   the thumb's geometry; only the width is set here. */
+@scope (.slider-with-marks) to ([class*="loam-"]) {
+  :scope {
+    max-inline-size: 32rem;
+  }
+}
 ```
 

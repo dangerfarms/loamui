@@ -18,6 +18,8 @@ const doc: ComponentContent = {
     },
     {
       title: "With description",
+      description:
+        "Field.Description is linked to the textarea through aria-describedby, so the hint is read with the field. State a length limit here, before the answer is written, rather than in an error after it.",
       code: `<Field.Root>
   <Field.Label>Bio</Field.Label>
   <Field.Description>

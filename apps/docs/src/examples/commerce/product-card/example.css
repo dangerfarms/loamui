@@ -1,18 +1,11 @@
-/* The Card is the article, rendered through its own render prop, so the
-   scope's root is the Card element: core's surface, line, radius and
-   padding stay as they are, and this scope arranges the column inside.
-   The donut keeps the Badge, the Rating, the Prices and the Button on
-   their own styles. Nothing here is painted: the strike is text and the
-   colours are the text tokens, so forced colours need no answer. */
 @scope (.product-card) to ([class*="loam-"]) {
   :scope {
     display: block flex;
     flex-direction: column;
     gap: var(--loam-space-sm);
+    max-inline-size: 22rem;
   }
 
-  /* Square whatever the file's shape, so a listing lines up; the crop
-     keeps the middle. */
   img.media {
     aspect-ratio: 1;
     block-size: auto;
@@ -21,38 +14,33 @@
     object-fit: cover;
   }
 
-  /* The offer is a success region: the Badge inside takes the colour. */
   p.meta {
     --loam-context: success;
 
     margin: 0;
   }
 
-  /* The name is the link. It keeps the heading's colour and drops the
-     underline at rest; the underline returns on hover and focus. */
+  /* Underlined at rest, lightly: a link is known by more than its place. */
   h3 {
     font-size: var(--loam-text-lg);
     margin: 0;
 
     a {
       color: inherit;
-      text-decoration: none;
+      text-decoration-color: var(--loam-color-line-strong);
 
       &:focus-visible {
-        text-decoration: underline;
+        text-decoration-color: currentcolor;
       }
 
       @media (hover: hover) {
         &:hover {
-          text-decoration: underline;
           text-decoration-color: var(--loam-color-primary);
         }
       }
     }
   }
 
-  /* The stars and the count on one line in the small muted text; the
-     Rating follows the type around it. */
   div.rating {
     align-items: center;
     color: var(--loam-color-fg-muted);
@@ -61,9 +49,6 @@
     gap: var(--loam-space-xs);
   }
 
-  /* The price is the figure the eye lands on. The old price steps back to
-     the muted colour and regular weight; the strike marks it and the
-     hidden words say it. */
   p.price {
     font-size: var(--loam-text-lg);
     font-weight: 700;
@@ -76,8 +61,6 @@
     }
   }
 
-  /* The action is a primary region at the foot, stretched to the card's
-     width by a one-cell grid: no width prop, no variant. */
   div.actions {
     --loam-context: primary;
 

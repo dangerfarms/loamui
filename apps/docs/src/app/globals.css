@@ -18,9 +18,12 @@
   }
 
   html {
-    scroll-behavior: smooth;
     scroll-padding-block-start: 5rem;
     text-size-adjust: 100%;
+
+    @media (prefers-reduced-motion: no-preference) {
+      scroll-behavior: smooth;
+    }
   }
 
   body {
@@ -40,13 +43,18 @@
     text-decoration: none;
   }
 
-  /* Headings and the site's short marketing measures never hyphenate: the
-     element styles hyphenate body copy, which is right for prose and wrong
-     for "accessi-ble" in a centred lead. */
+  /* Headings, navigation, controls and the site's short marketing measures
+     never hyphenate: the element styles hyphenate body copy, which is right
+     for prose and wrong for "accessi-ble" in a centred lead or "Segmented-
+     Control" in a sidebar. */
   h1,
   h2,
   h3,
   h4,
+  nav,
+  button,
+  th,
+  code,
   [data-no-hyphens] {
     hyphens: manual;
   }
@@ -80,6 +88,16 @@
     --site-nav-h: 4rem;
     --site-radius: var(--loam-radius-lg);
 
+    /* One column for every documentation page type (guides, component
+       pages, example pages) and one measure for running prose inside it. */
+    --site-column: 48rem;
+    --site-measure: 70ch;
+
+    /* The page-title scale, shared by guides, component pages and the
+       examples pages so titles balance across page types. Section headings
+       take the fluid text tokens. */
+    --site-h1: clamp(2rem, 1.829rem + 0.857vi, 2.6rem);
+
     /* The brand mark and gradient text derive from the LoamUI accent token, so
        the docs site consumes the same primitive it documents: change
        --loam-color-accent and the whole site's brand follows. Relative colour
@@ -90,6 +108,20 @@
       var(--loam-color-accent),
       oklch(from var(--loam-color-accent) l c calc(h - 35))
     );
+
+    /* The colour scheme in force, for style queries (the theme toggle's
+       glyph): the pinned scheme, else the system's. */
+    --site-scheme: light;
+
+    &[data-theme="dark"] {
+      --site-scheme: dark;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      &:not([data-theme]) {
+        --site-scheme: dark;
+      }
+    }
   }
 
   body {
@@ -109,6 +141,14 @@
   pre,
   kbd {
     font-family: var(--loam-font-mono);
+  }
+
+  /* A link inside running text is told apart by more than its colour. */
+  main :is(p, dd) a {
+    color: var(--loam-color-link);
+    text-decoration: underline;
+    text-decoration-thickness: from-font;
+    text-underline-offset: 0.15em;
   }
 }
 
@@ -148,8 +188,10 @@
   }
 }
 
-/* The skip target takes programmatic focus; the page itself is not an
-   interactive control, so no ring. */
-main:focus {
-  outline: none;
+@layer site.base {
+  /* The skip target takes programmatic focus; the page itself is not an
+     interactive control, so no ring. */
+  main:focus {
+    outline: none;
+  }
 }

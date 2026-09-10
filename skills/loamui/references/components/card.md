@@ -55,7 +55,7 @@ render substitutes the <div>: an <li> in a list of cards, a <label> when the who
 
 ### A surface, not a control
 
-Card is deliberately just a styled <div>: no role, no tabindex, no cursor. If the whole card should be clickable, the accessible pattern is one real <a> inside it (usually on the card's heading) stretched over the surface with an ::after covering the card. Keyboard users get one tab stop, screen readers get a real link with a real name, and right-click / open-in-new-tab keep working. A click handler on the div gives you none of that.
+Card is deliberately nothing more than a styled <div>: no role, no tabindex, no cursor. If the whole card should be clickable, the accessible pattern is one real <a> inside it (usually on the card's heading) stretched over the surface with an ::after covering the card. Keyboard users get one tab stop, screen readers get a real link with a real name, and right-click / open-in-new-tab keep working. A click handler on the div gives you none of that.
 
 ### Cards are skimmed by their headings
 
@@ -71,6 +71,6 @@ Screen-reader users navigate by heading; sighted users scan the same way. Start 
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `render` | `RenderProp` | — | Substitute the rendered element (render={<li />}, render={<label />}, render={<article />}); the Card's class and attributes merge onto it. |
+| `render` | `element \| (props) => node` | — | Substitute the rendered element (render={<li />}, render={<label />}, render={<article />}); the Card's class and attributes merge onto it. |
 | `...others` | `DivHTMLAttributes` | — | All native <div> props are forwarded. |
 

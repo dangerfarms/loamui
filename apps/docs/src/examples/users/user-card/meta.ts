@@ -14,7 +14,7 @@ export const meta: ExampleMeta = {
     composition:
       "Card is the surface, rendered as the article; the example arranges the column inside it and never touches the Card's own border, radius or padding.",
     context:
-      "The action row is a primary region, so the one Button takes the brand colour from where it sits, and the grid region stretches it to the card's width without a prop.",
+      "The action row is a primary region, so the one Button takes the brand colour from where it sits, and the grid region stretches it to the card's width without a prop; primary is the brand slot, neutral until a theme fills it.",
     accessible:
       "The Avatar is hidden because the name is printed beneath it, so a screen reader hears the person once; the figures carry their labels in the markup, not in a tooltip.",
   },

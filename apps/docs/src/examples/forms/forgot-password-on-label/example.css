@@ -1,9 +1,8 @@
-/* The root is the core Field. The label row is the example's own: the
-   Field's label at the start and the link at the end, on one line while
-   there is room and on two when there is not, the link keeping to the
-   end edge either way. The label and the password box are core parts
-   past the donut. */
 @scope (.forgot-password-on-label) to ([class*="loam-"]) {
+  :scope {
+    max-inline-size: 28rem;
+  }
+
   div.label-row {
     align-items: baseline;
     display: block flex;

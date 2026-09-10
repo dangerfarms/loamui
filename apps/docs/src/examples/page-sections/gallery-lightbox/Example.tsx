@@ -7,29 +7,28 @@ import "./example.css";
 
 const PHOTOS = [
   {
-    id: "beds",
-    alt: "Raised beds of young lettuce under fleece",
+    id: 955,
+    alt: "Rows of the trial beds seen from the bank above",
     caption: "The trial beds in April",
   },
-  { id: "tunnel", alt: "Tomato plants trained up strings inside a polytunnel" },
+  { id: 400, alt: "Flower buds forming on a shrub in the stock beds" },
   {
-    id: "drying",
-    alt: "Bunches of onions hung to dry from a barn rafter",
-    caption: "The drying barn",
+    id: 112,
+    alt: "Grass seed heads ripening in the meadow",
+    caption: "Seed left to ripen",
   },
-  { id: "packets", alt: "Hand-stamped seed packets laid out on a bench" },
-  { id: "beans", alt: "A trellis of crimson-flowered broad beans in bloom" },
+  { id: 627, alt: "Freshly picked green beans in a crate on the bench" },
+  { id: 1080, alt: "Strawberries in punnets on the open-day stall" },
   {
-    id: "openday",
-    alt: "Visitors walking between rows of squash on an open day",
+    id: 17,
+    alt: "Visitors on the meadow path on an open day",
     caption: "Open day, September",
   },
 ];
 
-const thumb = (id: string) => `https://picsum.photos/seed/hedgerow-${id}/600/600`;
-const full = (id: string) => `https://picsum.photos/seed/hedgerow-${id}/1600/1067`;
+const url = (id: number, size: string) => `https://picsum.photos/id/${id}/${size}`;
 
-/** What the lightbox shows. Kept after closing, so the dialog stays mounted and the image stays put while it leaves. */
+/** What the lightbox shows; kept after closing so the image stays put while the dialog leaves. */
 interface Opened {
   src: string;
   alt: string;
@@ -46,7 +45,11 @@ export default function Example() {
       return;
     }
     event.preventDefault();
-    setOpened({ src: full(photo.id), alt: photo.alt, name: photo.caption ?? photo.alt });
+    setOpened({
+      src: url(photo.id, "1600/1067"),
+      alt: photo.alt,
+      name: photo.caption ?? photo.alt,
+    });
     setOpen(true);
   }
 
@@ -56,9 +59,9 @@ export default function Example() {
         {PHOTOS.map((photo) => (
           <li key={photo.id}>
             <figure>
-              <a href={full(photo.id)} onClick={(event) => show(event, photo)}>
+              <a href={url(photo.id, "1600/1067")} onClick={(event) => show(event, photo)}>
                 <img
-                  src={thumb(photo.id)}
+                  src={url(photo.id, "600/600")}
                   alt={photo.alt}
                   width="600"
                   height="600"

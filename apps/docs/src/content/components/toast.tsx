@@ -100,7 +100,7 @@ const doc: ComponentContent = {
     },
   ],
   whenToUse: [
-    "To confirm the outcome of an action the user just took (saved, sent, archived) without interrupting their flow.",
+    "To confirm the outcome of an action the user has taken (saved, sent, archived) without interrupting their flow.",
     "For background events that complete while the user is elsewhere: an export finishing, a sync completing.",
   ],
   whenNotToUse: [
@@ -111,7 +111,7 @@ const doc: ComponentContent = {
   howItWorks: [
     {
       title: "Confirm outcomes; never ask questions",
-      body: "A toast states what just happened: saved, sent, restored. It disappears on its own, so a message that expects a decision has the wrong container: use Modal for questions, an Alert in the page for conditions that persist.",
+      body: "A toast states what has happened: saved, sent, restored. It disappears on its own, so a message that expects a decision has the wrong container: use Modal for questions, an Alert in the page for conditions that persist.",
     },
     {
       title: "Reserve high priority for failures",
@@ -123,7 +123,7 @@ const doc: ComponentContent = {
     },
     {
       title: "F6 reaches the viewport",
-      body: "The toast region is a labelled landmark, and F6 jumps focus into it from anywhere; that is how a keyboard user reaches an action before the timer ends. Keeping that path clear takes no effort: just don't wrap toasts in extra focusable chrome.",
+      body: "The toast region is a labelled landmark, and F6 jumps focus into it from anywhere; that is how a keyboard user reaches an action before the timer ends. Keeping that path clear takes no effort: don't wrap toasts in extra focusable chrome.",
     },
   ],
   accessibility: [
@@ -161,6 +161,7 @@ const doc: ComponentContent = {
         {
           name: "labels",
           type: "{ region?: string; dismiss?: string }",
+          default: `{ region: "Notifications", dismiss: "Dismiss notification" }`,
           description:
             'The words the viewport speaks: region names the landmark ("Notifications"), dismiss names each close button ("Dismiss notification").',
         },
@@ -174,7 +175,8 @@ const doc: ComponentContent = {
         {
           name: "labels",
           type: "{ region?: string }",
-          description: 'The landmark\'s accessible name; "Notifications" by default.',
+          default: `{ region: "Notifications" }`,
+          description: "The landmark's accessible name.",
         },
       ],
     },
@@ -238,6 +240,7 @@ const doc: ComponentContent = {
         {
           name: "labels",
           type: "{ dismiss?: string }",
+          default: `{ dismiss: "Dismiss notification" }`,
           description: "The button's accessible name.",
         },
         {

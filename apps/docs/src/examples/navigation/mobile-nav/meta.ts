@@ -12,7 +12,7 @@ export const meta: ExampleMeta = {
     modern:
       "The links take a 2.75rem line through Nav's public --loam-nav-link-size, set on the panel and inherited: the smallest target a thumb hits reliably, without touching Nav's own rules.",
     composition:
-      "Drawer and Nav are assembled in the markup, title and close button in the panel's first row, and the example holds the open state only so the trigger can say it.",
+      "Drawer and Nav are assembled in the markup, title and close button in the panel's first row; the Drawer holds its own open state and its trigger reports it, so the example keeps none.",
     accessible:
       "The button says Menu in words and reports the panel with aria-expanded; the panel is named by its title, the nav inside by Primary, the close button by hidden text beside its icon, and the current page by aria-current.",
   },

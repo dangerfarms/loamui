@@ -34,14 +34,16 @@ describe("mini-basket", () => {
 
     const lines = within(dialog).getAllByRole("article");
     expect(lines.map((a) => a.getAttribute("aria-labelledby"))).toEqual([
-      "mini-basket-sweet-pea-cupani-title",
-      "mini-basket-copper-trowel-title",
+      "mini-basket-climbing-bean-blue-lake-title",
+      "mini-basket-raspberry-autumn-bliss-title",
     ]);
     expect(
-      within(dialog).getByRole("spinbutton", { name: "Quantity of Copper hand trowel" }),
+      within(dialog).getByRole("spinbutton", {
+        name: "Quantity of Raspberry ‘Autumn Bliss’ canes",
+      }),
     ).toHaveValue(1);
     expect(
-      within(dialog).getByRole("button", { name: "Remove Copper hand trowel" }),
+      within(dialog).getByRole("button", { name: "Remove Raspberry ‘Autumn Bliss’ canes" }),
     ).toBeInTheDocument();
     expect(within(dialog).getByRole("link", { name: "Go to checkout" })).toHaveAttribute(
       "href",

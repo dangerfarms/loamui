@@ -21,6 +21,7 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - **Native CSS.** Each Field carries an explicit id so the summary's links are fragment links to real controls: activating one moves focus into the field, and the browser scrolls to it without a line of scripting.
 - **Modern CSS.** The Field's invalid state is detected, not declared: a rendered Field.Error is what marks the field, and the box's danger border follows the control's own aria-invalid.
 - **Composition.** ErrorSummary is the form's first child and Field.Error sits in each field; the same message in both places, so the two read identically out of context.
+- **Contextualism.** The actions row declares --loam-context: primary because the one Button is the form's action; primary is the brand slot, neutral until a theme fills it, so the declaration says where the action belongs, not that it stands out.
 - **Accessible & gatekept.** Errors are placed twice on purpose: the summary is where a screen reader starts after the submit, and the message under the field is what a sighted reader sees when they get there. Each says what to do in the words of the question, never "invalid" or "required", and nothing typed is cleared. The password is asked for again rather than guessed at, and the summary lists the email problem first because that is the order the form is read in.
 
 ## Example.tsx
@@ -83,17 +84,12 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Card is the root: rendered as the example's own element, so its
-   surface, line, radius and padding are core's, and the scope reaches
-   the title, the form and the footer inside it. The Fields, the Checkbox
-   and the Button are core parts past the donut. The Card is capped at a
-   readable width and centred in whatever holds it, and declares the
-   container the fluid tokens answer: an explicit inline-size, because a
-   grid or flex parent would otherwise size a contained element to
-   nothing. */
 @scope (.sign-in-with-errors) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
+
+    /* An explicit inline-size: a grid or flex parent would otherwise size a
+       contained element to nothing. */
     inline-size: 100%;
     margin-inline: auto;
     max-inline-size: 24rem;
@@ -104,16 +100,11 @@ export default function Example() {
     margin-block: 0 var(--loam-space-lg);
   }
 
-  /* One column, filled top to bottom: side-by-side fields make the eye
-     and the tab order disagree. */
   form {
     display: block grid;
     gap: var(--loam-space-lg);
   }
 
-  /* A single-cell grid, so the Button stretches to the form's width, and
-     a primary region, so the one action takes the brand colour from
-     where it sits rather than from a prop. */
   div.actions {
     --loam-context: primary;
 

@@ -20,17 +20,23 @@ import { Checkbox, Field } from "@loamui/core";
 
 ### Basic usage
 
+One self-contained opt-in. The label is a complete statement of what ticking the box does, and the box starts unticked so every tick is a deliberate act.
+
 ```tsx
 <Checkbox label="Subscribe to the newsletter" />
 ```
 
 ### Checked
 
+defaultChecked starts the box ticked for a form the browser owns; checked with onChange holds it yourself. A ticked start is for a setting that is already on, never for consent.
+
 ```tsx
-<Checkbox label="Auto-renew enabled" defaultChecked />
+<Checkbox label="Auto-renew" defaultChecked />
 ```
 
 ### With description
+
+description is helper text under the label, joined to the box through aria-describedby, so the consequence of ticking is read with the choice.
 
 ```tsx
 <Checkbox
@@ -41,9 +47,11 @@ import { Checkbox, Field } from "@loamui/core";
 
 ### Disabled
 
+disabled reaches the native input: the row is dimmed and skipped by Tab. A ticked, disabled box shows a setting that is on and not the user's to change here. Disabled is detected on the input (:has(input:disabled)), never declared on the row.
+
 ```tsx
-<Checkbox label="Unavailable option" disabled />
-<Checkbox label="Locked in" defaultChecked disabled />
+<Checkbox label="Email receipts" disabled />
+<Checkbox label="Two-factor authentication" defaultChecked disabled />
 ```
 
 ### Error state

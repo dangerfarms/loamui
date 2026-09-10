@@ -1,11 +1,12 @@
 "use client";
 
-import { createContext, useContext, useEffect, useMemo } from "react";
+import { createContext, useEffect, useMemo } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
+import { useRequiredContext } from "../../context";
 import { usePresence } from "../../use-presence";
-import { mergeProps, renderWithProps, composeRefs } from "../../render";
+import { composeRefs, idList, mergeProps, renderWithProps } from "../../render";
 import type { RenderProp } from "../../render";
 import { popupProps, popupTriggerProps, usePopup, usePopupRoot } from "../../use-popup";
 import type { PopupState, PopupTriggerRenderProps } from "../../use-popup";
@@ -46,11 +47,7 @@ interface PopoverContextValue extends PopupState {
 const PopoverContext = createContext<PopoverContextValue | null>(null);
 
 function usePopoverContext(part: string): PopoverContextValue {
-  const ctx = useContext(PopoverContext);
-  if (!ctx) {
-    throw new Error(`${part} must be rendered inside <Popover.Root>.`);
-  }
-  return ctx;
+  return useRequiredContext(PopoverContext, part, "Popover.Root");
 }
 
 export interface PopoverRootProps extends PartProps<"span"> {
@@ -134,24 +131,27 @@ function PopoverPopup({
   className,
   children,
   style,
+  "aria-labelledby": labelledBy,
+  "aria-describedby": describedBy,
   ref: refProp,
   ...rest
 }: PopoverPopupProps) {
   const ctx = usePopoverContext("Popover.Popup");
   const composedRef = useMemo(() => composeRefs(refProp, ctx.popupRef), [refProp, ctx.popupRef]);
-  usePopup(ctx, { rootClass: "loam-Popover" });
+  usePopup(ctx);
 
   return (
     // rest cannot override what follows: the popover/anchor wiring is
-    // what makes the panel a popover at all.
+    // what makes the panel a popover at all. The id lists follow the merge
+    // contract: the Title and Description first, then the consumer's.
     <div
       {...rest}
       {...popupProps(ctx, side, style)}
       ref={composedRef}
       role="dialog"
       tabIndex={-1}
-      aria-labelledby={ctx.hasTitle ? ctx.titleId : undefined}
-      aria-describedby={ctx.hasDescription ? ctx.descriptionId : undefined}
+      aria-labelledby={idList(ctx.hasTitle ? ctx.titleId : undefined, labelledBy)}
+      aria-describedby={idList(ctx.hasDescription ? ctx.descriptionId : undefined, describedBy)}
       className={cx("loam-Popover-popup", className)}
     >
       {children}

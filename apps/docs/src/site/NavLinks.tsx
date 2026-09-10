@@ -24,7 +24,7 @@ export function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
       <Link
         href={href}
         className={classes.link}
-        data-active={isActive(href) || undefined}
+        aria-current={isActive(href) ? "page" : undefined}
         onClick={onNavigate}
       >
         {name}

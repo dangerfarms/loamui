@@ -53,9 +53,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* One row that wraps: the avatar, the author, the dates and the reading
-   time. The donut keeps the Avatar and the Times on their own styles; the
-   spans around the Times are what this scope addresses. */
 @scope (.byline) to ([class*="loam-"]) {
   :scope {
     --loam-avatar-size: 2rem;
@@ -68,10 +65,6 @@ export default function Example() {
     gap: var(--loam-space-xs) var(--loam-space-sm);
   }
 
-  /* The author is the strongest piece. The address element is italic by
-     default in every browser; that reads as emphasis here, so it is set
-     upright. The link keeps its underline: the profile is the one thing
-     to click. */
   address {
     color: var(--loam-color-fg-strong);
     font-style: normal;
@@ -82,10 +75,7 @@ export default function Example() {
     }
   }
 
-  /* A middle dot before every part that follows the author, and never
-     before the author, drawn as generated content with an empty
-     alternative so it stays out of the accessibility tree. Generated
-     content, not a span, because only the CSS knows which part is first. */
+  /* The empty alternative keeps the dot out of the accessibility tree. */
   address ~ span::before {
     content: "·" / "";
     margin-inline-end: var(--loam-space-sm);

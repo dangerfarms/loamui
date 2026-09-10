@@ -16,7 +16,7 @@ export const meta: ExampleMeta = {
     context:
       "The remove action is a neutral Button on purpose: taking a packet out of a basket is not a destructive act, so it is not in a danger region.",
     accessible:
-      'The Field\'s label is real text hidden from view, so a screen reader hears "Quantity of Sweet pea ‘Cupani’ seeds" rather than "Quantity" three times in a basket, and the remove button names the product the same way; the thumbnail\'s alt is empty because the name is beside it.',
+      'The Field\'s label is real text hidden from view, so a screen reader hears "Quantity of Climbing bean ‘Blue Lake’ seeds" rather than "Quantity" three times in a basket, and the remove button names the product the same way; the thumbnail\'s alt is empty because the name is beside it.',
   },
   tags: ["basket", "cart", "quantity", "line item", "checkout"],
   order: 3,

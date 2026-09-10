@@ -10,4 +10,8 @@ export type {
   NavLinkRenderProps,
   NavGroupProps,
   NavGroupTitleProps,
+  NavDropdownProps,
+  NavDropdownTriggerProps,
+  NavDropdownTriggerRenderProps,
+  NavDropdownPanelProps,
 } from "./Nav";

@@ -132,7 +132,7 @@ const doc: ComponentContent = {
       body: 'The consumer marks the step reached with aria-current="step" and declares nothing else. The stylesheet reads the order from the list: a step with the current one somewhere after it is complete, a step after the current one is upcoming. The same selector chooses the word a screen reader hears: every Step carries both as hidden text, and the wrong one is kept out of the accessibility tree with display: none, so the server HTML already says the right thing and no script keeps a copy of the order. There is no status prop per step, because a step\'s state is not a fact about the step; it is where the step stands relative to the current one, and only the list knows that.',
     },
     {
-      title: "Announced, not just painted",
+      title: "Announced as well as painted",
       body: 'The check, the ring and the muted ink are for sighted readers. A screen reader hears the list itself ("2 of 4"), the title, the description and then the word: "Completed" after a complete step, "Current step" after the current one, both from labels. The marker is aria-hidden so its number is not read twice and its check never has to be described.',
     },
     {

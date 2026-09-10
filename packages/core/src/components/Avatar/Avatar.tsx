@@ -99,6 +99,12 @@ function AvatarBase({ src, alt, name, className, children, ref, ...rest }: Avata
   );
 }
 
+/** The words the Group speaks. */
+export interface AvatarGroupLabels {
+  /** Names the overflow avatar. @default `"${n} more"` */
+  more?: (n: number) => string;
+}
+
 export interface AvatarGroupProps extends PartProps<"ul"> {
   /**
    * How many more people there are than avatars shown. Rendered as a final
@@ -106,9 +112,7 @@ export interface AvatarGroupProps extends PartProps<"ul"> {
    */
   more?: number;
   /** The words the overflow avatar speaks: `more(n)` names it ("5 more"). */
-  labels?: {
-    more?: (n: number) => string;
-  };
+  labels?: AvatarGroupLabels;
   /** The avatars; each becomes a list item. */
   children?: ReactNode;
 }

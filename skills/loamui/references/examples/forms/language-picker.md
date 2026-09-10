@@ -85,13 +85,9 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Menu, its trigger Button and its popup are core's. The code glyph
-   is the example's own span, once in the trigger and once in every item,
-   so the scope is rooted at the glyph itself rather than at the picker:
-   one rule reaches both places, past the Button's and the popup's own
-   classes. Cut in currentcolor, it follows the trigger's text colour in
-   every context and the item's highlight colour when focused. */
 @scope (.language-picker .code) to ([class*="loam-"]) {
+  /* Rooted at the glyph: one rule reaches the trigger and every item, past
+     the Button's and the popup's own classes. */
   :scope {
     background: color-mix(in oklab, currentcolor 12%, transparent);
     border-radius: var(--loam-radius-sm);
@@ -103,8 +99,7 @@ export default function Example() {
     padding-block: 0.25em;
     padding-inline: 0.4em;
 
-    /* The tint is dropped with every background; an edge keeps the glyph
-       a glyph. */
+    /* Forced colours drop the tint; the edge keeps the glyph a glyph. */
     @media (forced-colors: active) {
       border: 1px solid;
     }

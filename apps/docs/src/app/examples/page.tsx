@@ -17,14 +17,13 @@ export default function ExamplesPage() {
       <header className={c.hero}>
         <span className="eyebrow">Examples</span>
         <h1 className={c.title}>
-          {EXAMPLES.length} {EXAMPLES.length === 1 ? "example" : "examples"}{" "}
-          built from the {COMPONENTS.length} components, to copy and change.
+          {EXAMPLES.length} {EXAMPLES.length === 1 ? "example" : "examples"} built from the{" "}
+          {COMPONENTS.length} components, to copy and change.
         </h1>
         <p className={c.lead}>
-          Each one is a component and a stylesheet, nothing else. Copy the two
-          files into your project, or point your agent at the markdown twin; the{" "}
-          <a href="/docs/composing">Composing guide</a> is the recipe they all
-          follow.
+          Each one is a component and a stylesheet, nothing else. Copy the two files into your
+          project, or point your agent at the markdown twin; the{" "}
+          <a href="/docs/composing">Composing guide</a> is the recipe they all follow.
         </p>
       </header>
       <div className={c.shell}>

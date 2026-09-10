@@ -84,12 +84,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* Dated events in order: an ol, so the order is the list's own, with a
-   drawn dot for each event and a hairline between them. The dot and the
-   line are pseudo-elements, decorative and never read; the date is a
-   time element with its machine-readable value. The list keeps its
-   semantics through role="list" in the markup, since list-style: none
-   drops them in some browsers. */
 @scope (.timeline) to ([class*="loam-"]) {
   :scope {
     --_dot: 0.875rem;
@@ -103,8 +97,6 @@ export default function Example() {
     padding: 0;
   }
 
-  /* One event: the dot in a column of its own, spanning the date, the
-     title and the description beside it. */
   li {
     display: block grid;
     gap: var(--loam-space-xs) var(--loam-space-md);
@@ -115,9 +107,7 @@ export default function Example() {
     grid-template-columns: var(--_dot) minmax(0, 1fr);
     margin: 0;
 
-    /* The dot, centred on the date's line: it takes the date's type so
-       1lh is that line. Strong fill with a ring of the page, so it
-       stands off the hairline that runs behind it. */
+    /* Takes the date's type, so 1lh is that line. */
     &::before {
       background: var(--loam-color-primary-strong);
       block-size: var(--_dot);
@@ -131,10 +121,7 @@ export default function Example() {
       z-index: 1;
     }
 
-    /* The connector: a hairline from this dot to the next. It shares the
-       dot's cell, centred on the column, and its negative end margin
-       runs it across the list's gap. The last event has nothing to
-       connect to. */
+    /* The negative end margin runs the hairline across the list's gap. */
     &::after {
       border-inline-start: 1px solid var(--loam-color-line-strong);
       content: "";
@@ -169,12 +156,11 @@ export default function Example() {
     text-wrap: pretty;
   }
 
-  /* Forced colours: the fill is background-painted and would vanish, so
-     the dot keeps an outline and the line keeps its ink. */
+  /* Forced colours drop the fill; the dot keeps an outline. */
   @media (forced-colors: active) {
     li {
       &::before {
-        border: 2px solid CanvasText;
+        border: 1px solid CanvasText;
       }
 
       &::after {

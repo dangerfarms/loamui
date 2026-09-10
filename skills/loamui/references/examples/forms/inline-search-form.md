@@ -58,12 +58,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The root is the core Search landmark, which lays out its own row: the
-   box grows, the button keeps its width. In a header the search takes a
-   set width rather than the whole bar, and that width is the one thing
-   the example adds: capped, and free to shrink where the header has
-   less room. The box and the button inside are core parts past the
-   donut. */
 @scope (.inline-search-form) to ([class*="loam-"]) {
   :scope {
     inline-size: min(100%, 22rem);

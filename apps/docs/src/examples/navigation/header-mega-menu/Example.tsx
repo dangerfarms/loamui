@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Nav, Popover, SignpostLink } from "@loamui/core";
+import { Nav, SignpostLink } from "@loamui/core";
 import "./example.css";
 
 const icon = {
@@ -106,31 +106,22 @@ export default function Example() {
             <Nav.Link href="/plants">Plants</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Popover.Root>
-              <Popover.Trigger render={<button type="button" className="trigger" />}>
-                Growing
-                <svg {...icon}>
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              </Popover.Trigger>
-              <Popover.Popup>
-                <Popover.Title>Growing with Hedgerow</Popover.Title>
-                <Popover.Description>
-                  Guides written by the co-op&rsquo;s growers, free to read.
-                </Popover.Description>
-                <ul className="guides" role="list">
+            <Nav.Dropdown>
+              <Nav.DropdownTrigger>Growing</Nav.DropdownTrigger>
+              <Nav.DropdownPanel>
+                <Nav.List className="guides">
                   {GUIDES.map((guide) => (
-                    <li key={guide.href}>
-                      <a href={guide.href}>
+                    <Nav.Item key={guide.href}>
+                      <Nav.Link href={guide.href}>
                         <svg {...icon}>{guide.glyph}</svg>
                         <span className="text">
                           <strong>{guide.title}</strong>
                           <span>{guide.text}</span>
                         </span>
-                      </a>
-                    </li>
+                      </Nav.Link>
+                    </Nav.Item>
                   ))}
-                </ul>
+                </Nav.List>
                 <div className="foot">
                   <p>
                     <strong>New to growing?</strong> The beginners&rsquo; course runs every spring
@@ -138,8 +129,8 @@ export default function Example() {
                   </p>
                   <SignpostLink href="/courses/beginners">See the course</SignpostLink>
                 </div>
-              </Popover.Popup>
-            </Popover.Root>
+              </Nav.DropdownPanel>
+            </Nav.Dropdown>
           </Nav.Item>
           <Nav.Item>
             <Nav.Link href="/events">Open days</Nav.Link>

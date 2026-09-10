@@ -1,9 +1,3 @@
-/* The Card is the root: it is rendered as the article, so the column
-   inside is in reach while the Card's surface, line, radius and padding
-   are left as they are, and the Avatar and the Button inside stay behind
-   the donut. The avatar's size is Avatar's public property, set here and
-   inherited. Width is the layout's; here the card takes 20rem or the
-   space available. */
 @scope (.user-card) to ([class*="loam-"]) {
   :scope {
     --loam-avatar-size: 5rem;
@@ -26,8 +20,6 @@
     margin: 0;
   }
 
-  /* Three pairs across; the figure leads each pair on screen while the
-     markup keeps term then description. */
   dl.stats {
     display: block grid;
     gap: var(--loam-space-sm);
@@ -57,8 +49,6 @@
     }
   }
 
-  /* The one action is the card's primary one, and a grid region
-     stretches the Button to the card's width natively. */
   div.actions {
     --loam-context: primary;
 

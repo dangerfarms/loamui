@@ -47,7 +47,9 @@ const doc: ComponentContent = {
       render: () => <InputContainersDemo />,
     },
     {
-      title: "Description & required",
+      title: "Description and required",
+      description:
+        "Field.Description is linked to the input through aria-describedby, so the hint is announced with the field. required lives on the control as the native attribute: it is never shown as an asterisk, and it drives validation after a submit attempt.",
       code: `<Field.Root>
   <Field.Label>Username</Field.Label>
   <Field.Description>This will be your public handle.</Field.Description>

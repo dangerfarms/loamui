@@ -38,7 +38,7 @@ export default function Example() {
     >
       <img
         className="media"
-        src="https://picsum.photos/seed/hedgerow-squash-harvest/800/450"
+        src="https://picsum.photos/id/729/800/450"
         alt=""
         width="800"
         height="450"
@@ -80,15 +80,12 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Card is the article, rendered through its own render prop, so the
-   scope's root is the Card element: core's surface, line, radius and
-   padding stay as they are, and this scope arranges the column inside.
-   The donut keeps the Badge, the Time and the Avatar on their own styles. */
 @scope (.article-card-footer) to ([class*="loam-"]) {
   :scope {
     display: block flex;
     flex-direction: column;
     gap: var(--loam-space-sm);
+    max-inline-size: 36rem;
   }
 
   img.media {
@@ -103,23 +100,21 @@ export default function Example() {
     margin: 0;
   }
 
-  /* The title is the link. It keeps the heading's colour and drops the
-     underline at rest; the underline returns on hover and focus. */
+  /* Underlined at rest, lightly: a link is known by more than its place. */
   h3 {
     font-size: var(--loam-text-lg);
     margin: 0;
 
     a {
       color: inherit;
-      text-decoration: none;
+      text-decoration-color: var(--loam-color-line-strong);
 
       &:focus-visible {
-        text-decoration: underline;
+        text-decoration-color: currentcolor;
       }
 
       @media (hover: hover) {
         &:hover {
-          text-decoration: underline;
           text-decoration-color: var(--loam-color-primary);
         }
       }
@@ -131,9 +126,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* The foot's auto margin takes the column's slack; a line above it
-     separates it from the body, and the author sits at the start with
-     the likes at the end. */
   footer {
     --loam-avatar-size: 2rem;
 
@@ -159,8 +151,6 @@ export default function Example() {
     font-size: var(--loam-text-xs);
   }
 
-  /* The address element is italic by default in every browser; upright
-     here, since that convention reads as emphasis in a byline. */
   address {
     font-size: var(--loam-text-sm);
     font-style: normal;

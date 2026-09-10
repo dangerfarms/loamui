@@ -1,16 +1,10 @@
-/* The root holds the trigger and sets the panel's width: the Drawer's
-   public property inherits into the dialog from here, top layer or not.
-   Everything inside the dialog sits behind the donut, so the basket's
-   own parts open a second scope rooted inside it. */
 @scope (.mini-basket) to ([class*="loam-"]) {
   :scope {
+    /* Inherits into the dialog from here, top layer or not. */
     --loam-drawer-size: 28rem;
   }
 }
 
-/* The panel's contents: a head, the lines, the summary and the actions,
-   in a column. The Drawer.Title is the Drawer's own h2; only its margin
-   is set, since the column's gap spaces it here. */
 @scope (.mini-basket div.basket) to ([class*="loam-"]) {
   :scope {
     display: block grid;
@@ -28,9 +22,6 @@
     }
   }
 
-  /* The lines are separated by borders, which forced colours keep. The
-     markers go; the markup keeps the list's role with role="list", since
-     list-style: none drops it in some browsers. */
   ul.lines {
     display: block grid;
     list-style: none;
@@ -48,9 +39,6 @@
     }
   }
 
-  /* One line: a small thumbnail, then the name and options with the
-     quantity under them, the total beside the name and the remove action
-     ending the last row. */
   article {
     align-items: start;
     column-gap: var(--loam-space-sm);
@@ -106,8 +94,6 @@
     place-self: end;
   }
 
-  /* The summary is a description list in two columns, the figures at the
-     end; the total is set apart by a rule and weight, not colour. */
   dl.summary {
     display: block grid;
     gap: var(--loam-space-xs);
@@ -135,8 +121,6 @@
     }
   }
 
-  /* The checkout signpost and the close each take the panel's width in a
-     one-column grid, going somewhere first. */
   div.actions {
     display: block grid;
     gap: var(--loam-space-sm);

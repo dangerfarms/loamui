@@ -8,7 +8,7 @@ export default function Example() {
     <Card render={<article className="card-with-stats" aria-labelledby="card-with-stats-title" />}>
       <img
         className="media"
-        src="https://picsum.photos/seed/hedgerow-seed-saving/800/450"
+        src="https://picsum.photos/id/112/800/450"
         alt=""
         width="800"
         height="450"

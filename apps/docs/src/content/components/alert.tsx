@@ -72,7 +72,8 @@ const doc: ComponentContent = {
     },
     {
       title: "With icon",
-      description: "Pass any node as the leading icon.",
+      description:
+        "Pass any node as the leading icon. It is rendered aria-hidden, so the title carries the meaning on its own.",
       code: `<div style={{ "--loam-context": "info" }}>
   <Alert icon={<span aria-hidden>ℹ</span>} title="Did you know?">
     An alert takes its status from the --loam-context of the region around it.
@@ -88,7 +89,8 @@ const doc: ComponentContent = {
     },
     {
       title: "Title only",
-      description: "Body content is optional.",
+      description:
+        "Body content is optional: a one-line message is the title alone, and the live region still announces it.",
       code: `<div style={{ "--loam-context": "success" }}>
   <Alert title="All systems operational." />
 </div>`,
@@ -115,14 +117,16 @@ const doc: ComponentContent = {
       title: "Composed from parts",
       description:
         "The parts in the anatomy the convenience form renders. Alert.Title takes render where the title belongs in the page outline; Alert.Close takes labels for its name.",
-      code: `<Alert.Root>
-  <Alert.Icon><span aria-hidden>⚠</span></Alert.Icon>
-  <Alert.Body>
-    <Alert.Title render={<h2 />}>Storage almost full</Alert.Title>
-    <Alert.Description>Free up space to keep syncing.</Alert.Description>
-  </Alert.Body>
-  <Alert.Close onClose={dismiss} labels={{ close: "Hide this warning" }} />
-</Alert.Root>`,
+      code: `<div style={{ "--loam-context": "warning" }}>
+  <Alert.Root>
+    <Alert.Icon><span aria-hidden>⚠</span></Alert.Icon>
+    <Alert.Body>
+      <Alert.Title render={<h2 />}>Storage almost full</Alert.Title>
+      <Alert.Description>Free up space to keep syncing.</Alert.Description>
+    </Alert.Body>
+    <Alert.Close onClose={dismiss} labels={{ close: "Hide this warning" }} />
+  </Alert.Root>
+</div>`,
       render: () => <AlertComposedDemo />,
     },
   ],
@@ -145,7 +149,7 @@ const doc: ComponentContent = {
     },
     {
       title: "Announcement happens at insertion",
-      body: 'A live region announces only when content enters it; an alert rendered with the rest of the page is simply read in document order. So render the alert conditionally when the condition becomes true, never hidden-then-shown, and the announcement arrives exactly when the event does. Give it role="alert" when that event must interrupt; the default role="status" waits its turn.',
+      body: 'A live region announces only when content enters it; an alert rendered with the rest of the page is read in document order. So render the alert conditionally when the condition becomes true, never hidden-then-shown, and the announcement arrives exactly when the event does. Give it role="alert" when that event must interrupt; the default role="status" waits its turn.',
     },
   ],
   accessibility: [
@@ -218,7 +222,7 @@ const doc: ComponentContent = {
       props: [
         {
           name: "render",
-          type: "RenderProp",
+          type: "element | (props) => node",
           description:
             "Substitute the element (render={<h2 />}) where the title belongs in the page outline; the class merges onto it.",
         },

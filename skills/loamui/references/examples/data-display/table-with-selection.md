@@ -123,8 +123,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The table and a status line under it. The Table is a limit of the
-   donut and keeps its own recipe; this scope reaches the status. */
 @scope (.table-with-selection) to ([class*="loam-"]) {
   :scope {
     display: block grid;
@@ -139,14 +137,11 @@ export default function Example() {
   }
 }
 
-/* The cells are inside the Table, so they are reached from a second
-   scope rooted at it. A selected row is detected from its own checked
-   box rather than declared with an attribute; the box is what says
-   selected in forced colours, so the tint needs no treatment there. */
 @scope (.table-with-selection div.orders) to ([class*="loam-"]) {
+  /* Zero shrinks the column to its box. */
   th.select,
   td.select {
-    inline-size: 1px;
+    inline-size: 0;
     padding-inline-end: 0;
   }
 
@@ -160,7 +155,6 @@ export default function Example() {
     white-space: nowrap;
   }
 
-  /* An order number holds one line, whatever the width. */
   tbody th {
     font-weight: 500;
     white-space: nowrap;

@@ -1,6 +1,6 @@
 "use client";
 
-import { DateInput } from "@loamui/core";
+import { DateInput, ErrorSummary } from "@loamui/core";
 
 export function DateInputDemo() {
   return (
@@ -56,5 +56,32 @@ export function DateInputMonthYearDemo() {
         <DateInput.Year />
       </DateInput.Fields>
     </DateInput.Root>
+  );
+}
+
+export function DateInputSummaryDemo() {
+  return (
+    <div style={{ display: "grid", gap: "var(--loam-space-md)", inlineSize: "100%" }}>
+      <ErrorSummary.Root autoFocus={false}>
+        <ErrorSummary.Title />
+        <ErrorSummary.List>
+          <ErrorSummary.Item href="#membership-start-year">
+            Membership start date must include a year
+          </ErrorSummary.Item>
+        </ErrorSummary.List>
+      </ErrorSummary.Root>
+      <DateInput.Root id="membership-start" name="membership-start">
+        <DateInput.Legend>When did your membership start?</DateInput.Legend>
+        <DateInput.Description>For example, 27 3 2019</DateInput.Description>
+        <DateInput.Error parts={["year"]}>
+          Membership start date must include a year
+        </DateInput.Error>
+        <DateInput.Fields>
+          <DateInput.Day defaultValue="27" />
+          <DateInput.Month defaultValue="3" />
+          <DateInput.Year />
+        </DateInput.Fields>
+      </DateInput.Root>
+    </div>
   );
 }

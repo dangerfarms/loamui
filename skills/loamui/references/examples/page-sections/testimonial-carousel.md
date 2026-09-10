@@ -109,10 +109,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Carousel's section is this scope's root: the heading and the row
-   of controls are the example's own, and the track, the items and the
-   Buttons keep the Carousel's recipe. The item width is the Carousel's
-   public knob, set here so three quotes read at a comfortable measure. */
 @scope (.testimonial-carousel) to ([class*="loam-"]) {
   :scope {
     --loam-carousel-item-size: 24rem;
@@ -123,7 +119,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* Previous, the dots, Next: one centred row. */
   div.controls {
     align-items: center;
     display: block flex;
@@ -137,10 +132,6 @@ export default function Example() {
   }
 }
 
-/* Each quote is a Card rendered as a figure inside a Carousel item, and
-   the Card is a limit of the donut above, so the figure's own parts are
-   reached from a second scope rooted at it. The Card's surface, line,
-   radius and padding are left as they are. */
 @scope (.testimonial-carousel figure.quote) to ([class*="loam-"]) {
   :scope {
     display: block grid;
@@ -148,8 +139,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* The quote is the main text, not an aside: it drops the element
-     style's rule and muted colour. */
   blockquote {
     border-inline-start: 0;
     color: var(--loam-color-fg);
@@ -163,8 +152,6 @@ export default function Example() {
     }
   }
 
-  /* The author sits at the foot whatever the quote's length, so a row of
-     Cards the track has stretched to one height lines its captions up. */
   figcaption {
     align-items: center;
     display: block flex;

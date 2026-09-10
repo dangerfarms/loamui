@@ -14,7 +14,7 @@ export const meta: ExampleMeta = {
     composition:
       "Card is rendered as each article through its render prop; the lead's larger type comes from a scope of its own on the lead's card, not a prop, and the Badge and SignpostLink are past the donut.",
     context:
-      "The lead's eyebrow declares --loam-context: primary, so the Badge takes the brand colour from the region rather than a prop.",
+      "The lead's eyebrow declares --loam-context: primary, so the Badge takes the brand colour from the region rather than a prop; primary is the brand slot, neutral until a theme fills it, and the lead is the lead by its span, its type and the Badge's words.",
     accessible:
       "Every card's action is a link at its foot, in the same place five times; the lead is the lead by its type and span, with the Badge's words saying so for anyone who cannot see either.",
   },

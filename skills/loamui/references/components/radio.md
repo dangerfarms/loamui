@@ -179,6 +179,10 @@ The group: a Fieldset.Root with role="radiogroup" that shares a name and the sel
 
 The group's name: Fieldset.Legend, so optional marks the group optional in words. Native <legend> props and ref are forwarded.
 
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `optional` | `boolean` | `false` | Appends labels.optional ("(optional)"); optional is marked in words, not with an asterisk. |
+
 ### RadioGroup.Description
 
 Helper text under the legend, joined to the group with aria-describedby. Native <p> props and ref are forwarded.

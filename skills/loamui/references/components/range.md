@@ -111,9 +111,11 @@ min, max and step are the platform's own; the output and the marks read them fro
 
 ### Disabled
 
+disabled reaches the native input: the track and thumb dim, the value stays readable, and the control leaves the Tab sequence.
+
 ```tsx
 <Field.Root>
-  <Field.Label>Locked</Field.Label>
+  <Field.Label>Alert volume</Field.Label>
   <Range defaultValue={50} disabled />
 </Field.Root>
 ```

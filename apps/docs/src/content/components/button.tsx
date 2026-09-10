@@ -77,12 +77,12 @@ const doc: ComponentContent = {
   <Button>Cancel</Button>
 </div>`,
       render: () => (
-        <div style={{ display: "grid", gap: "1.25rem" }}>
+        <div style={{ display: "grid", gap: "1.25rem", inlineSize: "100%" }}>
           <Example label="Container of 16rem or less: the button spans it">
             <div
               style={{
                 containerType: "inline-size",
-                inlineSize: "14rem",
+                inlineSize: "min(100%, 14rem)",
                 padding: "0.75rem",
                 border: "1px dashed var(--loam-color-line)",
                 borderRadius: "var(--loam-radius-md)",
@@ -95,8 +95,7 @@ const doc: ComponentContent = {
             <div
               style={{
                 containerType: "inline-size",
-                inlineSize: "24rem",
-                maxInlineSize: "100%",
+                inlineSize: "min(100%, 24rem)",
                 padding: "0.75rem",
                 border: "1px dashed var(--loam-color-line)",
                 borderRadius: "var(--loam-radius-md)",
@@ -247,7 +246,7 @@ const doc: ComponentContent = {
   accessibility: [
     "Always renders a real <button>, so keyboard focus, Enter/Space activation and the button role come from the platform for free.",
     'Write a specific label: the text should make sense out of context ("Save changes", not "OK"). Icon-only buttons need a name: aria-label, aria-labelledby, or hidden text in the loam-VisuallyHidden class beside the icon; any of the three also makes the button square.',
-    "For a loading state, add `disabled` and compose a <Loader/> (marked aria-hidden) into the children so it isn't announced as content.",
+    "For a loading state, add disabled and compose a Loader (marked aria-hidden) into the children so it isn't announced as content.",
     "Focus is shown with a :focus-visible ring (never removed without a replacement), and colour is never the only signal of state.",
   ],
   props: [
@@ -264,7 +263,7 @@ const doc: ComponentContent = {
     },
     {
       name: "render",
-      type: "RenderProp",
+      type: "element | (props) => node",
       description:
         "Substitute the rendered element; the Button's classes and wiring merge onto yours. Not for navigation: a call-to-action that goes somewhere is a SignpostLink.",
     },

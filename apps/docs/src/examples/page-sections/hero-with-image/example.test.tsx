@@ -16,7 +16,7 @@ describe("hero-with-image", () => {
       "/catalogue",
     );
     expect(screen.getByRole("button", { name: "Watch how we save seed" })).toBeInTheDocument();
-    expect(screen.getByRole("img").getAttribute("alt")).toMatch(/seedlings/);
+    expect(screen.getByRole("img").getAttribute("alt")).toMatch(/green shoots/);
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 });

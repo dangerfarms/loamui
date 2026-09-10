@@ -55,10 +55,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Card is the section, so its element is this scope's root: core's
-   surface, line, radius and padding stay, and the column inside is the
-   example's own. The Progress keeps its label and bar behind the donut;
-   its thickness is its own size, the one size a track can carry. */
 @scope (.stats-card-progress) to ([class*="loam-"]) {
   :scope {
     display: block grid;
@@ -79,8 +75,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* The count leads, in tabular lining numerals from the display face;
-     the total it is measured against is running text beside it. */
   p.value {
     color: var(--loam-color-fg-strong);
     font-family: var(--loam-font-display);

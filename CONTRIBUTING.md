@@ -26,11 +26,8 @@ pnpm dev        # runs the docs site
   component has several roots); parts inside the scope are type selectors or
   short classes (`label`, `p.description`). The encapsulation is `@scope`'s
   job, not the class name's.
-- `packages/ui`: the `@loamui/ui` compositions (Hero, Carousel, Stat, ...),
-  built from core the way any consumer would and held to the same pillars and
-  gates. Same file anatomy as core, in `@layer loamui.ui`; a composition never
-  changes a primitive, and never overrides a core part's own declarations.
-- `apps/ui`: the compositions gallery, deployed under `/ui` of the docs site.
+- `apps/docs/src/examples`: the copy-paste examples at `/examples`, one folder
+  each, built from core alone and gated by `check:examples`.
 - `apps/docs`: the Next.js marketing + documentation site. Every page of the
   docs site has a markdown twin at the same URL with `.md` appended, and
   `/llms.txt` indexes them; the export is generated from source by
@@ -196,20 +193,20 @@ Any JSX that uses compound parts (docs demos included) must live in a
 **State attributes**: the shared styling vocabulary, identical on every
 component (never invent synonyms):
 
-| Attribute                                          | Where                                                                    | Meaning                                                                                                |
-| -------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
-| `data-popup-open`                                  | trigger                                                                  | its popup/bubble is open                                                                               |
-| `data-open`                                        | popup/panel                                                              | open; uniform across enhanced & fallback                                                               |
-| `data-disabled`                                    | `Pagination.Link`                                                        | a paging link with nowhere to go; controls are detected via `:disabled`                                |
-| `data-current`                                     | nav item                                                                 | current page/location                                                                                  |
-| `data-size` / `data-side`                          | Badge, Loader, Progress, Meter; Drawer, Popover, Menu and Tooltip popups | instance styling hooks read by the stylesheet; form controls have no size hooks: their sizing is fluid |
-| `data-orientation`                                 | RadioGroup                                                               | display hook (see Sanctioned exceptions)                                                               |
-| `data-label-position`                              | Switch                                                                   | display hook (see Sanctioned exceptions)                                                               |
-| `data-striped` / `data-hover` / `data-col-borders` | Table                                                                    | display hooks (see Sanctioned exceptions)                                                              |
-| `data-striped` / `data-animated`                   | Progress (root)                                                          | display hooks (see Sanctioned exceptions)                                                              |
-| `data-show-label`                                  | Rating (and `@loamui/ui`'s SchemeToggle)                                 | display hook (see Sanctioned exceptions)                                                               |
-| `data-read-only`                                   | Rating                                                                   | display mode: a picture of the value, not inputs                                                       |
-| `data-dragging`                                    | `FileInput.Root`                                                         | a drag carrying files is over the box; detected from the drag events, never a prop                     |
+| Attribute                                                                 | Where                                                                    | Meaning                                                                                                |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `data-popup-open`                                                         | trigger                                                                  | its popup/bubble is open                                                                               |
+| `data-open`                                                               | popup/panel                                                              | open; uniform across enhanced & fallback                                                               |
+| `data-disabled`                                                           | `Pagination.Link`                                                        | a paging link with nowhere to go; controls are detected via `:disabled`                                |
+| `data-current`                                                            | nav item                                                                 | current page/location                                                                                  |
+| `data-size` / `data-side`                                                 | Badge, Loader, Progress, Meter; Drawer, Popover, Menu and Tooltip popups | instance styling hooks read by the stylesheet; form controls have no size hooks: their sizing is fluid |
+| `data-orientation`                                                        | RadioGroup                                                               | display hook (see Sanctioned exceptions)                                                               |
+| `data-label-position`                                                     | Switch                                                                   | display hook (see Sanctioned exceptions)                                                               |
+| `data-striped` / `data-hover` / `data-col-borders` / `data-sticky-header` | Table                                                                    | display hooks (see Sanctioned exceptions)                                                              |
+| `data-striped` / `data-animated`                                          | Progress (root)                                                          | display hooks (see Sanctioned exceptions)                                                              |
+| `data-show-label`                                                         | Rating (and the scheme-toggle example)                                   | display hook (see Sanctioned exceptions)                                                               |
+| `data-read-only`                                                          | Rating                                                                   | display mode: a picture of the value, not inputs                                                       |
+| `data-dragging`                                                           | `FileInput.Root`                                                         | a drag carrying files is over the box; detected from the drag events, never a prop                     |
 
 Components built on native state use the platform's hook instead (e.g.
 Details styles `details[open]`). **Prefer detection over declaration**:
@@ -272,15 +269,16 @@ a maintainer decides otherwise.
   icons in flow, so `:has()` detection cannot place them.
 - Alert `icon` and `onClose` on the convenience form: mirror the `Alert.Icon`
   and `Alert.Close` parts.
-- Table `striped` / `highlightOnHover` / `withColumnBorders`: display hooks,
-  emitted as the `data-striped` / `data-hover` / `data-col-borders`
-  attributes.
+- Table `striped` / `highlightOnHover` / `withColumnBorders` / `stickyHeader`:
+  display hooks, emitted as the `data-striped` / `data-hover` /
+  `data-col-borders` / `data-sticky-header` attributes. The scroller's height
+  cap is the public `--loam-table-block-size`, a custom property, not a prop.
 - Progress `striped` / `animated`: display hooks, emitted as the
   `data-striped` / `data-animated` attributes.
 - RadioGroup `orientation`: emits `data-orientation`; the layout of a set, not
   a control.
 - Switch `labelPosition`: emits `data-label-position`.
-- Rating `showLabel` (and `@loamui/ui`'s SchemeToggle): emits
+- Rating `showLabel` (and the scheme-toggle example): emits
   `data-show-label`; whether the
   group's name is painted as well as read. Rating `readOnly` emits
   `data-read-only` for display mode.
@@ -306,45 +304,45 @@ The essentials either way:
 3. Keep everything accessible: correct roles, keyboard support, focus-visible rings.
 4. Add or update the component's docs entry in `apps/docs/src/content/components/`.
 
-## Compositions (`@loamui/ui`)
+## Examples (`/examples`)
 
-Core holds primitives; `@loamui/ui` holds compositions built from them the
-way any consumer would. A composition is the library's judgment applied to a
-recurring piece of a page, and it earns its place only by carrying judgment
-a consumer would otherwise get wrong. Before adding one, test it against
-every line below; a composition that fails one is a recipe for the
-[Composing guide](https://loamui.com/docs/composing/), not a component.
+Core holds primitives; the docs site's examples section holds sections built
+from them the way any consumer would: a hero, a header with dropdowns, a
+sign-in form, a basket. An example is copied and changed, never installed, so
+it is written as the markup a reader will paste. Each lives in
+`apps/docs/src/examples/<category>/<slug>/` as four files, and
+`pnpm check:examples` refuses one that breaks the rules below.
 
-1. **It encodes a judgment, not a layout.** Semantics, ARIA, reading order,
-   keyboard behaviour, copy conventions: a header's landmark and current
-   page, a carousel that scrolls without JavaScript, a form's autocomplete
-   purposes and error placement. If what it adds is a grid and some type
-   sizes, it is a recipe.
-2. **The unit stands alone.** Every composition works as a single instance:
-   one stat tile, one article card, one testimonial. A `Root` that arranges
-   several may exist for the common case, but it is optional, never
-   required, and never assumes a count.
-3. **Arrangement belongs to the consumer.** No layout components (they were
-   built and removed twice; see the Layout guide). Repeating an item across a
-   page is one line of the consumer's own grid CSS.
-4. **Built the way any consumer would.** Core parts inside, never restyled:
-   a composition's own rules live on elements it renders, never on a core
-   part's root, and nothing in core changes for a composition. Same file
-   anatomy as core, in `@layer loamui.ui`, `@scope`d with the donut, tokens
-   only.
-5. **No configuration props.** Status from `--loam-context`, size from the
-   container, element substitution through core's `render`; the same
-   doctrine as core, without exception.
-6. **It passes the override test.** If a real project would need structural
-   overrides (spacing, DOM shape, layout) to use it, it does not ship.
-7. **It ships its reasoning and passes the gates.** When to use it, when not
-   to, and why its defaults are what they are, on the gallery page; the same
-   lint, type, contrast and test gates as core, with an axe check per
-   composition.
-8. **Every default string is overridable.** An `aria-label`, a "Copied"
-   status, an "Updated" caption: each is a prop or children with an English
-   default, never a hard-coded string, so a page in another language, or one
-   with its own words, replaces it without forking the composition.
+1. **It solves a real problem, honestly.** The title and description say
+   exactly what it does; the content is specific (one fictional organisation,
+   Hedgerow, throughout; never lorem); siblings in a category are told apart
+   at a glance. A near-duplicate is merged, not added.
+2. **The markup is the deliverable.** `Example.tsx` is one root element
+   carrying the slug as its class, core components used as they come, and
+   nothing that depends on the docs page. Literal markup over data arrays and
+   abstractions: a reader edits three cards, not a config object.
+3. **Built the way any consumer would.** Imports are `@loamui/core`, `react`
+   and `./example.css` only. Every rule in `example.css` sits inside
+   `@scope (.<slug>…) to ([class*="loam-"])`; a second scope may be rooted at
+   a core element to place it (grid area, flex basis, a public `--loam-*`
+   property), never to change how it looks. Tokens only; logical properties;
+   container queries, not media queries.
+4. **The pillars in the copy.** Real elements and the element styles for bare
+   markup; `:has()` detection over declared state; status through
+   `--loam-context`, remembering that `primary` is the brand slot and
+   neutral by default; forced colours wherever colour carries state; motion
+   opt-in; every icon-only control named by hidden text; `role="list"` on a
+   list whose markers are stripped.
+5. **Idiomatic, current React.** `"use client"` only where the module needs
+   it (compound parts, hooks, a function passed as a prop; the gate checks);
+   no effects deriving state; `useId` for ids on a unit that repeats on a
+   page; native form attributes over handlers.
+6. **It says why.** `meta.ts` carries one sentence per pillar that applies,
+   stating the specific judgment the example encodes, and a comment in the
+   stylesheet only where it names a trap, in three lines or fewer.
+7. **It proves one promise.** `example.test.tsx` renders, runs axe, and
+   asserts the one thing the example promises: a landmark's name, a current
+   link, a described-by association.
 
 ## Before opening a PR
 

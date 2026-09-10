@@ -8,13 +8,13 @@ export const meta: ExampleMeta = {
   uses: ["Nav", "SegmentedControl"],
   notes: {
     native:
-      "The switch is a native radio group in a fieldset, so the arrow keys move between Account and Shop as they do on any radios, and the chosen segment is drawn from the radio's own :checked.",
+      "The switch is a native radio group in a fieldset, so the arrow keys move between Account and Shop as they do on any radios, and the chosen segment is drawn from the radio's own :checked; the list not chosen is hidden with the hidden attribute.",
     modern:
-      "The pill is core's, stretched across the column by two declarations from the example's own scope; the chosen state moves to the system highlight under forced colours in SegmentedControl's stylesheet, not here.",
+      "The pill is core's at its natural width, and the chosen state moves to the system highlight under forced colours in SegmentedControl's stylesheet, not here; the example's stylesheet is a single rule for the column.",
     composition:
-      "SegmentedControl reports the choice through onValueChange and the example keeps it in state and maps it to a list of links; Nav renders whichever list it is given and knows nothing of the switch.",
+      "SegmentedControl reports the choice through onValueChange and the example keeps it in state; both lists are written out in the markup, each in its own Nav, and the one not chosen is hidden on an element of the example's own, so Nav knows nothing of the switch.",
     accessible:
-      "The radio group is named Section by a legend that is read but not seen, the nav is named for the section it shows so a landmark list says which, and the current page stays marked in the Account list where it lives.",
+      "The radio group is named Section by a legend that is read but not seen, each nav is named for its section so a landmark list says which is shown, and the current page stays marked in the Account list where it lives.",
   },
   tags: ["sidebar", "segmented control", "radio", "sections", "switch"],
   order: 14,

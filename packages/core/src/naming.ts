@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useId, useState } from "react";
+import { usePresence } from "./use-presence";
+import { useHydrated } from "./use-support";
 
 /**
  * Server-safe naming for a composition whose Root is named by one of its
@@ -6,8 +8,8 @@ import { useCallback, useEffect, useId, useState } from "react";
  *
  * The Root mints the id and points `aria-labelledby` at it in the first
  * render, so the server HTML already carries the name. The part renders
- * that id and registers on mount; if nothing registers, the reference is
- * removed after mount (a dangling `aria-labelledby` is an axe failure), and
+ * that id and registers on mount; once hydrated, only a registered part
+ * keeps the reference (a dangling `aria-labelledby` is an axe failure), and
  * the fallback label, when given, takes over. A consumer's own `aria-label`
  * or `aria-labelledby` always wins.
  */
@@ -16,18 +18,17 @@ export function useNamedRoot(
   fallbackLabel?: string,
 ) {
   const autoId = useId();
-  const [nameId, setNameId] = useState<string | null>(autoId);
   const [registeredId, setRegisteredId] = useState<string | null>(null);
+  const hydrated = useHydrated();
 
   const register = useCallback((id: string) => {
     setRegisteredId(id);
     return () => setRegisteredId((current) => (current === id ? null : current));
   }, []);
 
-  // After mount, the reference follows what actually registered.
-  useEffect(() => {
-    setNameId(registeredId);
-  }, [registeredId]);
+  // Optimistic until hydrated: the server HTML names the Root by the id its
+  // part will render. Afterwards the reference follows what registered.
+  const nameId = registeredId ?? (hydrated ? null : autoId);
 
   const consumerNamed = props["aria-label"] != null || props["aria-labelledby"] != null;
   const labelling: { "aria-label"?: string; "aria-labelledby"?: string } = consumerNamed
@@ -62,19 +63,13 @@ export function useNamePart(
 /**
  * Server-safe `aria-describedby` for a part that may or may not be present:
  * the owner mints the id and references it in the first render; the part
- * renders the id and registers; if nothing registers the reference is
- * dropped after mount.
+ * renders the id and registers; once hydrated, the reference stands only
+ * while a part is registered.
  */
 export function useOptionalSlot() {
   const id = useId();
-  const [present, setPresent] = useState(true);
-  const [registered, setRegistered] = useState(false);
-  const register = useCallback(() => {
-    setRegistered(true);
-    return () => setRegistered(false);
-  }, []);
-  useEffect(() => {
-    setPresent(registered);
-  }, [registered]);
+  const [registered, register] = usePresence();
+  const hydrated = useHydrated();
+  const present = registered || !hydrated;
   return { id, present, register, ref: present ? id : undefined };
 }

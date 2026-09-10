@@ -1,14 +1,11 @@
-/* Two rows: the brand and the account menu across the top, the tabs
-   beneath on the header's bottom line. The header declares Nav's public
-   --loam-nav-current-edge, so the current tab's marker runs under the
-   link rather than beside it; a style query is answered by ancestors, so
-   the declaration sits here, above the Nav, never on the link. The donut
-   leaves the Menu, the Avatar and the Nav on their own styles. */
 @scope (.header-with-tabs) to ([class*="loam-"]) {
   :scope {
+    /* A style query is answered by ancestors, so the edge is declared here,
+       never on the link. */
     --loam-nav-current-edge: block-end;
 
     border-block-end: 1px solid var(--loam-color-line);
+    container-type: inline-size;
     display: block grid;
     gap: var(--loam-space-sm);
     padding-block-start: var(--loam-space-sm);
@@ -32,7 +29,6 @@
     letter-spacing: -0.02em;
     text-decoration: none;
 
-    /* The top row never wraps, so the leaf is told not to give way. */
     svg {
       block-size: 1.25em;
       flex: none;
@@ -41,64 +37,39 @@
   }
 }
 
-/* The account control is a bare button, past the header's donut: the
-   elements layer's raised pill is set aside for a row of avatar, name
-   and chevron in ordinary text. The border stays, transparent, so forced
-   colours keep an edge; aria-expanded turns the chevron. */
-@scope (.header-with-tabs .loam-Menu) to ([class*="loam-"]) {
-  button.user {
-    align-items: center;
-    background: none;
-    border: 1px solid transparent;
-    border-radius: var(--loam-radius-full);
-    box-shadow: none;
-    color: var(--loam-color-fg);
-    display: inline flex;
-    font-size: var(--loam-text-sm);
-    font-weight: 500;
-    gap: var(--loam-space-sm);
-    padding-block: calc(var(--loam-space-xs) / 2);
-    padding-inline: calc(var(--loam-space-xs) / 2) var(--loam-space-sm);
+@scope (.header-with-tabs .loam-Button) to ([class*="loam-"]) {
+  svg {
+    color: var(--loam-color-fg-muted);
 
-    svg {
-      block-size: 1em;
-      color: var(--loam-color-fg-muted);
-      inline-size: 1em;
-
-      @media (prefers-reduced-motion: no-preference) {
-        transition: rotate var(--loam-duration-sm) var(--loam-ease);
-      }
-    }
-
-    &[aria-expanded="true"] {
-      background: var(--loam-color-bg-subtle);
-
-      svg {
-        rotate: 180deg;
-      }
-    }
-
-    @media (hover: hover) {
-      &:hover {
-        background: var(--loam-color-bg-subtle);
-      }
+    :scope[aria-expanded="true"] & {
+      rotate: 180deg;
     }
 
     @media (prefers-reduced-motion: no-preference) {
-      transition: background var(--loam-duration-sm) var(--loam-ease);
+      transition: rotate var(--loam-duration-sm) var(--loam-ease);
+    }
+  }
+
+  /* Hidden, not removed: the name stays in the button's accessible name. */
+  @container (inline-size < 30rem) {
+    span.name {
+      block-size: 1px;
+      clip-path: inset(50%);
+      inline-size: 1px;
+      overflow: hidden;
+      position: absolute;
+      white-space: nowrap;
     }
   }
 }
 
-/* Core's Nav as a row of tabs, placed from its own scope: a flex row on
-   the List, pulled down one pixel so each link's marker sits on the
-   header's line. The marker itself, its weight and its forced-colours
-   treatment are Nav's, answering the edge declared on the header. */
 @scope (.header-with-tabs .loam-Nav) to ([class*="loam-"]) {
   ul.tabs {
     display: block flex;
     flex-wrap: wrap;
     gap: var(--loam-space-xs);
+
+    /* One pixel down, so each link's marker sits on the header's line. */
     margin-block-end: -1px;
   }
 }

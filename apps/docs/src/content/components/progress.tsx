@@ -10,7 +10,7 @@ const doc: ComponentContent = {
   importLine: `import { Progress } from "@loamui/core";`,
   demos: [
     {
-      title: "Basic",
+      title: "Basic usage",
       description:
         "Set value 0 to 100. The children are the visible label beside the bar and its accessible name, so what is progressing is said once, to everyone. Without children, name it with aria-label or aria-labelledby.",
       code: `<Progress value={72}>Uploading photos</Progress>

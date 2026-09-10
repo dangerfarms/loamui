@@ -74,10 +74,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* An error page is a region: it declares its container so the fluid
-   tokens answer its own width, and it hosts a SignpostLink, hence the
-   donut. Narrow, the words then the picture in one column; wide, the
-   picture beside the words at the end. */
 @scope (.error-404-image) to ([class*="loam-"]) {
   :scope {
     align-items: center;
@@ -94,9 +90,6 @@ export default function Example() {
     justify-items: start;
   }
 
-  /* The code is set dim on purpose: it identifies the error for anyone
-     who needs it and stays behind the title, which is what the reader
-     needs. */
   p.code {
     color: var(--loam-color-fg-dim);
     font-family: var(--loam-font-display);
@@ -126,9 +119,6 @@ export default function Example() {
     margin-block-start: var(--loam-space-sm);
   }
 
-  /* The illustration is decoration, stroked in the dim foreground so it
-     sits behind the words; the leaves keep a little colour and the
-     wilted tip says what happened. */
   svg.illustration {
     block-size: auto;
     color: var(--loam-color-fg-dim);

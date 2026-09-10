@@ -21,6 +21,7 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - **Native CSS.** The details are an address holding a description list, so email, phone and place are terms with values rather than a list of icons; the form is a native form named by its own h3, with the email and message required.
 - **Modern CSS.** The section paints the subtle surface and is the container; at 44rem of its own width the inner element splits 2:3, and the Card is scoped from its own root so the section's rule never reaches inside it.
 - **Composition.** Card is rendered as the form through its render prop, so the surface and the form are one element; the Fields, Input, Textarea and Button inside are core parts past the donut, and the example adds only the heading and the actions row.
+- **Contextualism.** The actions row declares --loam-context: primary because the one Button is the form's action; primary is the brand slot, neutral until a theme fills it, so the declaration says where the action belongs, not that it stands out.
 - **Accessible & gatekept.** The glyphs sit inside the terms and are aria-hidden, so a screen reader hears Email, then the address; the tint behind the section gets a border in forced colours.
 
 ## Example.tsx
@@ -154,11 +155,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The ways to reach the nursery on one side and a short form on the
-   other. The section paints the subtle surface and is the container;
-   the inner element is the grid, because an element cannot answer its
-   own container query. The details are an address holding a description
-   list, each term led by a glyph, and the form is a Card past the donut. */
 @scope (.contact-us-with-details) to ([class*="loam-"]) {
   :scope {
     background: var(--loam-color-bg-subtle);
@@ -167,6 +163,8 @@ export default function Example() {
     padding: var(--loam-space-xl);
   }
 
+  /* The inner element is the grid: an element cannot answer its own
+     container query. */
   div.inner {
     display: block grid;
     gap: var(--loam-space-xl);
@@ -190,8 +188,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* Browsers set address in italic, a convention from letters that reads
-     as emphasis here, so it is set upright. */
   address {
     font-style: normal;
   }
@@ -207,8 +203,6 @@ export default function Example() {
     gap: var(--loam-space-xs);
   }
 
-  /* The term is a glyph and a word on one line; the glyph is the strong
-     token, sized in em so it rides the term's type. */
   dt {
     align-items: center;
     color: var(--loam-color-fg-muted);
@@ -223,13 +217,11 @@ export default function Example() {
     }
   }
 
-  /* A long email breaks rather than widening the column. */
   dd {
     margin: 0;
     overflow-wrap: anywhere;
   }
 
-  /* Wide: the details and the form side by side, the form the larger. */
   @container (inline-size >= 44rem) {
     div.inner {
       align-items: start;
@@ -237,7 +229,7 @@ export default function Example() {
     }
   }
 
-  /* Forced colours: the tint goes, so the block keeps an edge. */
+  /* Forced colours drop the tint; the edge keeps the bounds. */
   @media (forced-colors: active) {
     :scope {
       border: 1px solid CanvasText;
@@ -245,10 +237,6 @@ export default function Example() {
   }
 }
 
-/* The form is a Card rendered as the form, so the Card element is this
-   scope's root: the heading and the actions row inside are reachable,
-   the Fields and the Button are fenced by the donut, and the Card's own
-   surface, line, radius and padding are left alone. */
 @scope (.contact-us-with-details form.form) to ([class*="loam-"]) {
   :scope {
     display: block grid;
@@ -260,8 +248,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* A wrapping row, so the Button keeps its natural width, and a primary
-     region, so the one action takes the brand colour from where it sits. */
   div.actions {
     --loam-context: primary;
 

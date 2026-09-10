@@ -1,11 +1,6 @@
-/* The Table's own element is the scroll wrapper, so it is this scope's
-   root: the table and its cells are reachable, and the Ratings inside
-   are fenced by the donut. The Table already rules the rows and the
-   header; this aligns the figures and draws the split. */
 @scope (.table-reviews) to ([class*="loam-"]) {
-  /* The hidden words in the split cells are positioned, so the scroller
-     must be their containing block, or they would widen the page instead
-     of scrolling with the table. */
+  /* The hidden words in the split cells are positioned: the scroller must
+     be their containing block, or they widen the page. */
   :scope {
     position: relative;
   }
@@ -20,8 +15,6 @@
     white-space: nowrap;
   }
 
-  /* A variety is a name: it holds one line and the table scrolls, rather
-     than breaking mid-word to fit. */
   tbody th {
     font-weight: 500;
     white-space: nowrap;
@@ -31,18 +24,16 @@
     min-inline-size: 14rem;
   }
 
-  /* The share that would, the bar, the share that would not: the
-     figures at fixed widths so the bars line up down the column. */
   td.split {
     align-items: center;
-    display: block flex;
+    display: block grid;
     font-variant-numeric: lining-nums tabular-nums;
     gap: var(--loam-space-sm);
+    grid-template-columns: auto minmax(4rem, 1fr) auto;
   }
 
   span.yes,
   span.no {
-    flex: none;
     min-inline-size: 3.5ch;
   }
 
@@ -54,37 +45,5 @@
 
   span.no {
     color: var(--loam-color-danger-strong);
-  }
-
-  /* The bar is decoration for the two figures beside it: the track is
-     the would-not colour and the span over it the would colour, sized
-     by the row. */
-  div.bar {
-    background: var(--loam-color-danger-strong);
-    block-size: 0.5rem;
-    border-radius: var(--loam-radius-full);
-    display: block flex;
-    flex: 1;
-    min-inline-size: 4rem;
-    overflow: clip;
-
-    > span {
-      background: var(--loam-color-success-strong);
-      block-size: 100%;
-    }
-  }
-
-  /* Forced colours drop both fills, so the bar keeps an edge and the
-     would-share is painted in the text colour against the canvas. */
-  @media (forced-colors: active) {
-    div.bar {
-      background: Canvas;
-      border: 1px solid CanvasText;
-
-      > span {
-        background: CanvasText;
-        forced-color-adjust: none;
-      }
-    }
   }
 }

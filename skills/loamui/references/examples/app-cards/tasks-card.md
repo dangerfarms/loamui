@@ -32,10 +32,10 @@ import { Avatar, Card, Progress, Time } from "@loamui/core";
 import "./example.css";
 
 const TEAM = [
-  { name: "Nia Prosser", seed: "hedgerow-nia" },
-  { name: "Dafydd Rees", seed: "hedgerow-dafydd" },
-  { name: "Amara Okonkwo", seed: "hedgerow-amara" },
-  { name: "Tom Bradshaw", seed: "hedgerow-tom" },
+  { name: "Nia Prosser", photo: 65 },
+  { name: "Dafydd Rees", photo: 91 },
+  { name: "Amara Okonkwo", photo: 375 },
+  { name: "Tom Bradshaw", photo: 473 },
 ];
 
 export default function Example() {
@@ -63,7 +63,7 @@ export default function Example() {
             <Avatar
               key={member.name}
               name={member.name}
-              src={`https://picsum.photos/seed/${member.seed}/80/80`}
+              src={`https://picsum.photos/id/${member.photo}/80/80`}
             />
           ))}
         </Avatar.Group>
@@ -76,10 +76,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Card is the article, so its element is this scope's root: core's
-   surface, line, radius and padding stay, and the column inside is the
-   example's own. The Time, the Progress and the Avatar.Group keep their
-   recipes behind the donut. */
 @scope (.tasks-card) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -105,8 +101,6 @@ export default function Example() {
     text-wrap: pretty;
   }
 
-  /* The bar and the count under it, the count in tabular figures at the
-     end so it sits under the end of the fill. */
   div.progress {
     display: block grid;
     gap: var(--loam-space-xs);
@@ -127,8 +121,6 @@ export default function Example() {
     }
   }
 
-  /* The team sits at the foot whatever the description's length, so a
-     row of these cards lines its groups up. */
   div.foot {
     --loam-avatar-size: 2rem;
 

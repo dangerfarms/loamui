@@ -18,7 +18,7 @@ import { Pagination } from "@loamui/core";
 
 ## Usage
 
-### Basic
+### Basic usage
 
 Pagination.Pages renders Previous, the numbered window around the active page with its ellipses, and Next, from page and count. Every page has an href; intercept onNavigate only when a client router needs it.
 
@@ -184,5 +184,5 @@ The convenience: Previous, the numbered window with ellipses, and Next, rendered
 | `siblings` | `number` | `1` | Number of sibling pages shown on each side of the active page. |
 | `getHref` | `(page: number) => string` | — | Build the destination URL for each page (required). |
 | `onNavigate` | `(page: number, event: MouseEvent<HTMLAnchorElement>) => void` | — | Optionally intercept link activation for a client router. |
-| `labels` | `{ previous?: string; next?: string; page?: (n: number) => string }` | — | The words the links speak: previous ("Previous page"), next ("Next page") and page(n) ("Page 7"). |
+| `labels` | `{ previous?: string; next?: string; page?: (n: number) => string }` | `{ previous: "Previous page", next: "Next page", page: (n) => "Page n" }` | The words the links speak: previous ("Previous page"), next ("Next page") and page(n) ("Page 7"). |
 

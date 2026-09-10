@@ -21,6 +21,7 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - **Native CSS.** A native form named by its heading, with one email field carrying autoComplete="email" and inputMode="email" so a phone offers the keyboard with @ on it.
 - **Modern CSS.** One field, so the card is mostly type: the description between the title and the form takes over the title's gap, and the 24rem cap keeps that paragraph to two lines.
 - **Composition.** The account-form shape again with the fields cut to one: the description slots between the title and the form and takes over the title's gap.
+- **Contextualism.** The actions row declares --loam-context: primary because the one Button is the form's action; primary is the brand slot, neutral until a theme fills it, so the declaration says where the action belongs, not that it stands out.
 - **Accessible & gatekept.** The line before the field says what happens next, and says "if it has an account": the same words after submitting whether or not the address is known, because "no account with that address" tells a stranger which addresses are customers one guess at a time. The footer keeps a way back for the visitor who typed the wrong address.
 
 ## Example.tsx
@@ -59,24 +60,17 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Card is the root: rendered as the example's own element, so its
-   surface, line, radius and padding are core's, and the scope reaches
-   the title, the form and the footer inside it. The Field and the Button
-   are core parts past the donut. The Card is capped at a
-   readable width and centred in whatever holds it, and declares the
-   container the fluid tokens answer: an explicit inline-size, because a
-   grid or flex parent would otherwise size a contained element to
-   nothing. */
 @scope (.forgot-password) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
+
+    /* An explicit inline-size: a grid or flex parent would otherwise size a
+       contained element to nothing. */
     inline-size: 100%;
     margin-inline: auto;
     max-inline-size: 24rem;
   }
 
-  /* The title's end margin is the gap to the form; the description
-     between them takes that gap over. */
   h1 {
     font-size: var(--loam-text-xl);
     margin-block: 0 var(--loam-space-sm);
@@ -87,16 +81,11 @@ export default function Example() {
     margin-block: 0 var(--loam-space-lg);
   }
 
-  /* One column, filled top to bottom: side-by-side fields make the eye
-     and the tab order disagree. */
   form {
     display: block grid;
     gap: var(--loam-space-lg);
   }
 
-  /* A single-cell grid, so the Button stretches to the form's width, and
-     a primary region, so the one action takes the brand colour from
-     where it sits rather than from a prop. */
   div.actions {
     --loam-context: primary;
 

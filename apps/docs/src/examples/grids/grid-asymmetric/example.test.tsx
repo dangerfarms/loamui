@@ -19,7 +19,7 @@ describe("grid-asymmetric", () => {
       expect(article).toHaveClass("loam-Card");
       expect(article).toHaveAccessibleName();
     }
-    expect(screen.getByRole("img")).toHaveAccessibleName(/nursery bench in September/);
+    expect(screen.getByRole("img")).toHaveAccessibleName(/orchard in the September evening/);
     expect(items[0]).toContainElement(screen.getByRole("img"));
     expect(screen.getAllByRole("link")).toHaveLength(3);
     expect(await axe(container, axeOptions)).toHaveNoViolations();

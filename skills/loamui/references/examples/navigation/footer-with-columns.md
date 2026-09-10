@@ -68,6 +68,8 @@ export default function Example() {
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             aria-hidden="true"
           >
             <path d="M5 19c0-7 4-13 14-14-1 10-7 14-14 14z" />
@@ -121,9 +123,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The footer is the container: the brand shares a row with the columns
-   only where the footer's own width allows. Everything is set in the muted
-   colour because a footer is reference, not the page's voice. */
 @scope (.footer-with-columns) to ([class*="loam-"]) {
   :scope {
     border-block-start: 1px solid var(--loam-color-line);
@@ -135,7 +134,6 @@ export default function Example() {
     padding-block: var(--loam-space-xl);
   }
 
-  /* Links inherit the muted colour and light up on hover. */
   nav a {
     color: inherit;
     text-decoration: none;
@@ -187,9 +185,6 @@ export default function Example() {
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
   }
 
-  /* Each column is a nav named by its heading, and the legal links are a
-     fourth. The markers go: inside a nav, every browser keeps the list's
-     semantics without them. */
   nav {
     h3 {
       color: var(--loam-color-fg-strong);
@@ -213,8 +208,6 @@ export default function Example() {
     }
   }
 
-  /* The small print and the legal links share a row, ends apart, and
-     the links wrap beneath as one unit rather than one at a time. */
   div.bottom {
     align-items: center;
     border-block-start: 1px solid var(--loam-color-line);
@@ -236,9 +229,6 @@ export default function Example() {
     }
   }
 
-  /* Wide: the brand takes the first column and the links the second. The
-     query sits on the children: a container query is answered by an
-     ancestor, never by the element that declares it. */
   @container (inline-size > 48rem) {
     :scope {
       grid-template-columns: minmax(14rem, 1fr) 2fr;

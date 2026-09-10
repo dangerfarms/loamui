@@ -1,9 +1,10 @@
 "use client";
 
-import { createContext, useContext, useEffect, useId, useRef, useMemo } from "react";
+import { createContext, useEffect, useId, useRef, useMemo } from "react";
 import type { MouseEvent as ReactMouseEvent, ReactNode } from "react";
 import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
+import { useRequiredContext } from "../../context";
 import { composeRefs, renderWithProps } from "../../render";
 import type { RenderProp } from "../../render";
 
@@ -38,11 +39,7 @@ interface ErrorSummaryContextValue {
 const ErrorSummaryContext = createContext<ErrorSummaryContextValue | null>(null);
 
 function useErrorSummaryContext(part: string): ErrorSummaryContextValue {
-  const ctx = useContext(ErrorSummaryContext);
-  if (!ctx) {
-    throw new Error(`${part} must be rendered inside <ErrorSummary.Root>.`);
-  }
-  return ctx;
+  return useRequiredContext(ErrorSummaryContext, part, "ErrorSummary.Root");
 }
 
 export interface ErrorSummaryRootProps extends PartProps<"div"> {

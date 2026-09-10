@@ -7,4 +7,5 @@ export type {
   AlertTitleProps,
   AlertDescriptionProps,
   AlertCloseProps,
+  AlertCloseLabels,
 } from "./Alert";

@@ -21,7 +21,7 @@ An example in **Grids**: a component and a stylesheet built from `@loamui/core`,
 - **Native CSS.** A list of five articles, each named by its h3, in an order that reads as the layout does: the lead first, then the side note, then the three guides.
 - **Modern CSS.** The list is the container and the grid, and each width owns its layout outright: one column, two from 36rem with the lead across both, three from 56rem with the lead across two, so no rule of one width overrides another.
 - **Composition.** Card is rendered as each article through its render prop; the lead's larger type comes from a scope of its own on the lead's card, not a prop, and the Badge and SignpostLink are past the donut.
-- **Contextualism.** The lead's eyebrow declares --loam-context: primary, so the Badge takes the brand colour from the region rather than a prop.
+- **Contextualism.** The lead's eyebrow declares --loam-context: primary, so the Badge takes the brand colour from the region rather than a prop; primary is the brand slot, neutral until a theme fills it, and the lead is the lead by its span, its type and the Badge's words.
 - **Accessible & gatekept.** Every card's action is a link at its foot, in the same place five times; the lead is the lead by its type and span, with the Badge's words saying so for anyone who cannot see either.
 
 ## Example.tsx
@@ -97,12 +97,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* A three-column grid whose first item spans two columns: the lead sits
-   above a row of three with one narrower item beside it. The list is
-   the container and the grid; the markers go, and the markup keeps
-   role="list" for the browsers that drop the semantics with the marker.
-   Each width owns its layout: one column, then two with the lead
-   across both, then three. */
 @scope (.grid-leading-item) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -118,7 +112,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* Middling: two columns, the lead across both, the rest one each. */
   @container (inline-size >= 36rem) {
     :scope {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -129,8 +122,6 @@ export default function Example() {
     }
   }
 
-  /* Wide: three columns, the lead across two with the side item in the
-     third, and the three guides in a row beneath. */
   @container (inline-size >= 56rem) {
     :scope {
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -138,11 +129,6 @@ export default function Example() {
   }
 }
 
-/* Each card is a Card rendered as the article, so the Card element is
-   this scope's root: the column inside is reachable, the Badge and the
-   SignpostLink are fenced by the donut, and the Card's own surface, line,
-   radius and padding are left alone. The item is a grid with one cell,
-   so the Card stretches to the row without a height of its own. */
 @scope (.grid-leading-item article) to ([class*="loam-"]) {
   :scope {
     display: block flex;
@@ -150,8 +136,6 @@ export default function Example() {
     gap: var(--loam-space-sm);
   }
 
-  /* The eyebrow is a primary region: the Badge inside takes the brand
-     colour from the context, not from a prop. */
   p.eyebrow {
     --loam-context: primary;
 
@@ -161,35 +145,30 @@ export default function Example() {
   h3 {
     font-size: var(--loam-text-lg);
     margin: 0;
+
+    li.lead :scope & {
+      font-size: var(--loam-text-xl);
+      max-inline-size: 24ch;
+      text-wrap: balance;
+    }
   }
 
   p {
     color: var(--loam-color-fg-muted);
     margin: 0;
     text-wrap: pretty;
+
+    li.lead :scope & {
+      max-inline-size: var(--loam-measure);
+    }
   }
 
-  /* The action sits at the foot, however long the words above it. */
   div.actions {
     display: block flex;
     flex-wrap: wrap;
     gap: var(--loam-space-sm);
     margin-block-start: auto;
     padding-block-start: var(--loam-space-sm);
-  }
-}
-
-/* The lead has room for a longer measure and a larger heading, so it
-   reads as the lead by its type as well as its span. */
-@scope (.grid-leading-item li.lead article) to ([class*="loam-"]) {
-  h3 {
-    font-size: var(--loam-text-xl);
-    max-inline-size: 24ch;
-    text-wrap: balance;
-  }
-
-  p {
-    max-inline-size: var(--loam-measure);
   }
 }
 ```

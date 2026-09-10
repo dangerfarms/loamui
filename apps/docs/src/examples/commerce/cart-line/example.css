@@ -1,18 +1,12 @@
-/* One line of a basket: a thumbnail beside the name, options and
-   quantity, with the total, its unit price and the remove action in an
-   end column. The article is the container and the inner element is the
-   grid, because an element cannot answer its own container query. The
-   donut keeps the Field, the QuantityInput, the Prices and the Button on
-   their own styles. Every part has a named area, so a line written
-   without one of them leaves no hole. */
 @scope (.cart-line) to ([class*="loam-"]) {
   :scope {
-    /* The separator is a border, so forced colours keep it. */
     border-block-end: 1px solid var(--loam-color-line);
     container-type: inline-size;
     padding-block: var(--loam-space-md);
   }
 
+  /* The inner element is the grid: an element cannot answer its own
+     container query. */
   div.inner {
     align-items: start;
     column-gap: var(--loam-space-md);
@@ -33,8 +27,6 @@
     object-fit: cover;
   }
 
-  /* The name is the link and keeps its underline: the row holds a
-     control the link must read apart from. */
   h3 {
     font-size: var(--loam-text-md);
     grid-area: title;
@@ -57,8 +49,6 @@
     margin-block-start: var(--loam-space-sm);
   }
 
-  /* The total sits beside the name, at the end, with the unit price under
-     it in the small muted text, and the remove action ends the last row. */
   p.total {
     font-weight: 600;
     grid-area: total;
@@ -80,9 +70,6 @@
     margin-block-start: var(--loam-space-sm);
   }
 
-  /* Narrow: the end column folds under the text, the total and the unit
-     price back at the start, and the control shares the last row with
-     the remove action. The article answers; the inner grid changes. */
   @container (inline-size < 30rem) {
     div.inner {
       grid-template-areas:

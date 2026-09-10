@@ -55,8 +55,8 @@ export default function Example() {
         </div>
         <img
           className="media"
-          src="https://picsum.photos/seed/hedgerow-bench/900/1000"
-          alt="A grower lifting a tray of bean seedlings from a nursery bench"
+          src="https://picsum.photos/id/90/900/1000"
+          alt="Bamboo canes capped with jam jars along a raised bed at the nursery"
           width="900"
           height="1000"
         />

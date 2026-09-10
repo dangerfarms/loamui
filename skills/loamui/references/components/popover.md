@@ -102,7 +102,7 @@ A popover earns its place when it holds a handful of controls: a filter set, a q
 
 ## Accessibility
 
-- Where the popover attribute and anchor positioning are both supported, the browser provides top-layer rendering, light dismiss and Escape; other browsers get a wrapper-anchored fallback with the same behaviour re-implemented in a few lines of JS, a deliberate no-polyfill, progressive-enhancement trade-off (see the browser support policy at https://github.com/dangerfarms/loamui/blob/main/CONTRIBUTING.md#browser-support-policy).
+- Where the popover attribute and anchor positioning are both supported, the browser provides top-layer rendering, light dismiss and Escape; other browsers get a wrapper-anchored fallback with the same behaviour re-implemented in a few lines of JS, a deliberate no-polyfill, progressive-enhancement trade-off, per the browser support policy in CONTRIBUTING.
 - Dialog semantics match what aria-haspopup="dialog" promises screen-reader users: opening moves focus into the panel and closing returns it to the trigger.
 - Trigger is a real <button> with aria-expanded; Popover.Title and Popover.Description automatically label the dialog via aria-labelledby / aria-describedby.
 - Collision handling uses position-try flipping at viewport edges in supporting browsers; the fallback keeps the requested side.

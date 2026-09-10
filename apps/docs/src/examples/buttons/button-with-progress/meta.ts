@@ -13,6 +13,8 @@ export const meta: ExampleMeta = {
       "The stack is a one-cell inline grid: the Button fills it by auto-placement and the bar is placed into the same cell by grid-area and aligned to the end, so nothing is measured or absolutely positioned; a primary region colours both.",
     composition:
       "Button and Progress as core ships them, with the example's own timer standing in for the request's progress events; the words in the button change with the state, and the confirmation is a status paragraph under it.",
+    context:
+      "The stack declares --loam-context: primary because the Button and its bar are the one action; primary is the brand slot, neutral until a theme fills it, and a theme that does recolours both as one.",
     accessible:
       "The button's words say what is happening (Uploading 5 photos…) and the bar is named Upload progress with its value read as 40% uploaded; when the upload finishes, a polite status region says 5 photos uploaded, so a screen reader hears the end even though the disabled button could not keep focus. The bar keeps its border and Highlight fill in forced colours.",
   },

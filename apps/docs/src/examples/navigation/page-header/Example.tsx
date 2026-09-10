@@ -17,7 +17,7 @@ export default function Example() {
           An open-pollinated cherry tomato, sweet and heavy-cropping, saved on the Lower Field plot
           since 2019 and offered to members every spring.
         </p>
-        <ul className="meta">
+        <ul className="meta" role="list">
           <li className="status">
             <Badge>Accepted into the library</Badge>
           </li>

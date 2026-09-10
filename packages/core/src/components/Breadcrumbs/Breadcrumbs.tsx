@@ -23,9 +23,15 @@ import type { RenderProp } from "../../render";
  * property (a CSS string, `"/"` by default), not DOM.
  */
 
+/** The words the landmark speaks. */
+export interface BreadcrumbsLabels {
+  /** The landmark's accessible name. @default "Breadcrumbs" */
+  navigation?: string;
+}
+
 export interface BreadcrumbsRootProps extends PartProps<"nav"> {
   /** The words the landmark speaks: `navigation` is its accessible name. */
-  labels?: { navigation?: string };
+  labels?: BreadcrumbsLabels;
 }
 
 function BreadcrumbsRoot({ labels, className, children, ...rest }: BreadcrumbsRootProps) {

@@ -6,7 +6,7 @@ export default function Example() {
     <section className="hero-background-image" aria-labelledby="hero-background-image-title">
       <img
         className="media"
-        src="https://picsum.photos/seed/hedgerow-field/1600/900"
+        src="https://picsum.photos/id/206/1600/900"
         alt=""
         width="1600"
         height="900"

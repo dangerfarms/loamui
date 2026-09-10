@@ -26,6 +26,9 @@ An example in **Blog**: a component and a stylesheet built from `@loamui/core`, 
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Avatar, Button, Time } from "@loamui/core";
 import "./example.css";
 
@@ -34,11 +37,12 @@ import "./example.css";
 const NOW = "2026-09-08T09:00:00Z";
 
 export default function Example() {
+  const author = useId();
   return (
-    <article className="comment" aria-labelledby="comment-author">
+    <article className="comment" aria-labelledby={author}>
       <header>
         <Avatar name="Priya Natarajan" aria-hidden />
-        <a id="comment-author" className="author" href="/members/priya-natarajan">
+        <a id={author} className="author" href="/members/priya-natarajan">
           Priya Natarajan
         </a>
         <Time value="2026-09-05T14:30:00Z" locale="en-GB" relative={{ now: NOW }} />
@@ -66,10 +70,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* One comment: a byline over the body over a row of actions. The
-   article declares its own container so the fluid tokens answer its
-   width; the donut keeps the Avatar, the Time and the Buttons on their
-   own styles. */
 @scope (.comment) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -77,9 +77,6 @@ export default function Example() {
     gap: var(--loam-space-sm);
   }
 
-  /* The byline sets the small muted type and the Time takes it; the name
-     alone is set back to the body size, strong. A linked name keeps its
-     underline, so the affordance stays. */
   header {
     --loam-avatar-size: 2rem;
 
@@ -97,9 +94,6 @@ export default function Example() {
     font-weight: 600;
   }
 
-  /* The body is rich text held to the reading measure. Blocks carry only
-     a block-end margin, so the last one's goes and the grid gap spaces
-     what follows. */
   div.body {
     max-inline-size: var(--loam-measure);
 

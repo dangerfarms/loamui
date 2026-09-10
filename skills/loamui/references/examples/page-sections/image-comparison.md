@@ -39,29 +39,29 @@ export default function Example() {
     <figure className="image-comparison" style={{ "--_position": `${position}%` } as CSSProperties}>
       <div className="before">
         <img
-          src="https://picsum.photos/seed/hedgerow-bed-march/1200/675"
-          alt="A raised bed of bare, freshly dug soil in March"
+          src="https://picsum.photos/id/59/1200/675"
+          alt="The lower field in March, dry grass along the fence line"
           width="1200"
           height="675"
         />
       </div>
       <div className="after">
         <img
-          src="https://picsum.photos/seed/hedgerow-bed-july/1200/675"
-          alt="The same bed in July, full of chard, climbing beans and calendula"
+          src="https://picsum.photos/id/542/1200/675"
+          alt="The same field in July, green to the horizon under a summer storm"
           width="1200"
           height="675"
         />
       </div>
       <Range
-        aria-label="Reveal the bed in July"
+        aria-label="Reveal the field in July"
         min={0}
         max={100}
         value={position}
         onChange={(event) => setPosition(event.currentTarget.valueAsNumber)}
       />
       <figcaption>
-        One raised bed at the nursery, March and July of the same year. Move the slider to compare.
+        The lower field at the nursery, March and July of the same year. Move the slider to compare.
       </figcaption>
     </figure>
   );
@@ -71,15 +71,10 @@ export default function Example() {
 ## example.css
 
 ```css
-/* A before/after comparison: one frame, two images, the second clipped
-   at a position the reader moves with a real range input. The frame is
-   the first grid row: before, after and the divider all occupy it in
-   DOM order, so nothing is absolutely positioned and the row's height is
-   the images' shared ratio. The position is written onto the figure by
-   the script; the value here is the fallback, so a frame with no script
-   yet shows half of each image. */
 @scope (.image-comparison) to ([class*="loam-"]) {
   :scope {
+    /* The script writes the position onto the figure; 50% is the fallback
+       before it runs. */
     --_position: 50%;
     --_ratio: 16 / 9;
 
@@ -89,16 +84,14 @@ export default function Example() {
     grid-template-columns: minmax(0, 1fr);
     margin: 0;
 
-    /* The divider: a line at the position, on top of both images. On-strong
-       with a fg halo, so it reads on a light photograph and a dark one. */
     &::after {
       background: var(--loam-color-on-strong);
       box-shadow: 0 0 0 1px var(--loam-color-fg);
       content: "";
       grid-area: 1 / 1;
-      inline-size: 2px;
+      inline-size: var(--loam-ring-width);
       justify-self: start;
-      margin-inline-start: calc(var(--_position) - 1px);
+      margin-inline-start: calc(var(--_position) - var(--loam-ring-width) / 2);
       pointer-events: none;
 
       @media (forced-colors: active) {
@@ -108,9 +101,9 @@ export default function Example() {
     }
   }
 
-  /* Both slots share the frame's ratio; overflow hidden keeps a taller
-     image from growing the row past it. */
   div.before,
+  /* The inset is physical, so it flips under :dir(rtl), where the Range runs
+     the other way. */
   div.after {
     aspect-ratio: var(--_ratio);
     border-radius: var(--loam-radius-md);
@@ -126,9 +119,6 @@ export default function Example() {
     }
   }
 
-  /* The top image, clipped from the far edge back to the position. The
-     inset is physical, so it flips for right-to-left text, where the
-     Range runs the other way. */
   div.after {
     clip-path: inset(0 calc(100% - var(--_position)) 0 0);
 

@@ -76,7 +76,7 @@ export default function Example() {
         <Card render={<div className="figure" />}>
           <dt>Orders posted</dt>
           <dd className="value">
-            {day.posted} <span>of {CAPACITY.posted}</span>
+            {day.posted} <span className="of">of {CAPACITY.posted}</span>
           </dd>
           <dd className="bar">
             <Meter value={day.posted} max={CAPACITY.posted} label="Orders posted, of capacity" />
@@ -85,7 +85,8 @@ export default function Example() {
         <Card render={<div className="figure" />}>
           <dt>Packets picked</dt>
           <dd className="value">
-            {day.picked.toLocaleString("en")} <span>of {CAPACITY.picked.toLocaleString("en")}</span>
+            {day.picked.toLocaleString("en")}{" "}
+            <span className="of">of {CAPACITY.picked.toLocaleString("en")}</span>
           </dd>
           <dd className="bar">
             <Meter value={day.picked} max={CAPACITY.picked} label="Packets picked, of capacity" />
@@ -94,7 +95,7 @@ export default function Example() {
         <Card render={<div className="figure" />}>
           <dt>Deliveries out</dt>
           <dd className="value">
-            {day.deliveries} <span>of {CAPACITY.deliveries}</span>
+            {day.deliveries} <span className="of">of {CAPACITY.deliveries}</span>
           </dd>
           <dd className="bar">
             <Meter

@@ -1,10 +1,3 @@
-/* Three cards whose rows line up across the grid: every heading on one
-   line, every description starting on the next, every button on the
-   last, however long the words are. The list is the grid, and each card
-   spans three of its rows and adopts them with subgrid, so the tallest
-   description in the row sets the row for all three. The markers go,
-   and the markup keeps role="list" for the browsers that drop the
-   semantics with the marker. */
 @scope (.grid-subgrid) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -17,11 +10,6 @@
   }
 }
 
-/* Each card is a Card rendered as the list item, so the Card element is
-   the grid item and this scope's root. It spans three rows and takes
-   its rows from the list; the Card's own padding stays and becomes the
-   gutter at the top and bottom of its tracks, and the surface, line
-   and radius are left alone. */
 @scope (.grid-subgrid li.workshop) to ([class*="loam-"]) {
   :scope {
     display: block grid;
@@ -54,9 +42,6 @@
     text-wrap: pretty;
   }
 
-  /* The action is on the last shared row, so the three buttons sit on
-     one line without margin-block-start: auto; a grid with one cell
-     keeps the Button at its natural width. */
   div.actions {
     align-self: end;
     display: block flex;

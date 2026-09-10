@@ -14,7 +14,7 @@ export const meta: ExampleMeta = {
     composition:
       "Badge in the eyebrow and SignpostLink in the actions, as they come; nothing here is a Button, because both paths lead to a page.",
     context:
-      "The eyebrow declares --loam-context: primary, so the Badge takes the brand colour without a prop.",
+      "The eyebrow declares --loam-context: primary, so the Badge takes the brand colour without a prop; primary is the brand slot, neutral until a theme fills it, and the eyebrow reads as one by its place above the heading.",
     accessible:
       "The primary path is a SignpostLink and the alternative a plain link, both going somewhere; nothing here is a button pretending to be one.",
   },

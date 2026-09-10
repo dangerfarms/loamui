@@ -1,15 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { createContext, useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import type {
   KeyboardEvent as ReactKeyboardEvent,
   MouseEvent as ReactMouseEvent,
@@ -17,10 +8,12 @@ import type {
 } from "react";
 import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
+import { useRequiredContext } from "../../context";
 import { composeRefs, mergeProps, renderWithProps } from "../../render";
 import type { RenderProp } from "../../render";
 import { popupProps, popupTriggerProps, usePopup, usePopupRoot } from "../../use-popup";
 import type { PopupState, PopupTriggerRenderProps } from "../../use-popup";
+import { usePresence } from "../../use-presence";
 
 import { Button } from "../Button/Button";
 
@@ -66,11 +59,7 @@ interface MenuContextValue extends PopupState {
 const MenuContext = createContext<MenuContextValue | null>(null);
 
 function useMenuContext(part: string): MenuContextValue {
-  const ctx = useContext(MenuContext);
-  if (!ctx) {
-    throw new Error(`${part} must be rendered inside <Menu.Root>.`);
-  }
-  return ctx;
+  return useRequiredContext(MenuContext, part, "Menu.Root");
 }
 
 /** The focusable items of every kind, in DOM order; disabled items are skipped. */
@@ -186,7 +175,6 @@ function MenuPopup({
   // Focus the first/last item on open; return focus to the trigger on close
   // when it would otherwise be lost. Menus move focus; they never trap it.
   usePopup(ctx, {
-    rootClass: "loam-Menu",
     focusOnOpen: (el) => {
       const items = menuItems(el);
       const target = ctx.focusOnOpen.current === "last" ? items[items.length - 1] : items[0];
@@ -424,13 +412,9 @@ const MenuGroupContext = createContext<MenuGroupContextValue | null>(null);
 function useGroupLabel() {
   const autoId = useId();
   const labelId = `${autoId}-menugroup`;
-  const [labelCount, setLabelCount] = useState(0);
-  const registerLabel = useCallback(() => {
-    setLabelCount((n) => n + 1);
-    return () => setLabelCount((n) => n - 1);
-  }, []);
+  const [hasLabel, registerLabel] = usePresence();
   const value = useMemo(() => ({ labelId, registerLabel }), [labelId, registerLabel]);
-  return { value, labelledBy: labelCount > 0 ? labelId : undefined };
+  return { value, labelledBy: hasLabel ? labelId : undefined };
 }
 
 export interface MenuGroupProps extends PartProps<"div"> {}
@@ -502,10 +486,7 @@ export interface MenuRadioItemProps extends ItemBaseProps {
 
 /** One choice of a `Menu.RadioGroup` (`role="menuitemradio"`). */
 function MenuRadioItem({ value, onClick, closeOnClick = false, ...props }: MenuRadioItemProps) {
-  const group = useContext(MenuRadioGroupContext);
-  if (!group) {
-    throw new Error("Menu.RadioItem must be rendered inside <Menu.RadioGroup>.");
-  }
+  const group = useRequiredContext(MenuRadioGroupContext, "Menu.RadioItem", "Menu.RadioGroup");
   return (
     <ItemBase
       kind="menuitemradio"
@@ -523,10 +504,11 @@ function MenuRadioItem({ value, onClick, closeOnClick = false, ...props }: MenuR
 export interface MenuGroupLabelProps extends PartProps<"div"> {}
 
 function MenuGroupLabel({ className, children, ...rest }: MenuGroupLabelProps) {
-  const group = useContext(MenuGroupContext);
-  if (!group) {
-    throw new Error("Menu.GroupLabel must be rendered inside <Menu.Group> or <Menu.RadioGroup>.");
-  }
+  const group = useRequiredContext(
+    MenuGroupContext,
+    "Menu.GroupLabel",
+    "Menu.Group> or <Menu.RadioGroup",
+  );
   const { registerLabel } = group;
   useEffect(() => registerLabel(), [registerLabel]);
   return (

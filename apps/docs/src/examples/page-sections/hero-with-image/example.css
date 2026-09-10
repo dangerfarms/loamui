@@ -1,12 +1,11 @@
-/* The section is the container and the inner element is the grid: an
-   element cannot answer its own container query. The donut keeps the
-   Badge, the Button and the SignpostLink inside on their own styles. */
 @scope (.hero-with-image) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
     padding-block: var(--loam-space-xl);
   }
 
+  /* The inner element is the grid: an element cannot answer its own
+     container query. */
   div.inner {
     display: block grid;
     gap: var(--loam-space-xl);
@@ -17,8 +16,6 @@
     gap: var(--loam-space-lg);
   }
 
-  /* The eyebrow is a primary region: the Badge inside takes the brand
-     colour from the context, not from a prop. */
   p.eyebrow {
     --loam-context: primary;
 
@@ -58,8 +55,6 @@
     inline-size: 100%;
   }
 
-  /* Wide: text beside the image, each in its own column, centred on the
-     shared axis. Narrow keeps the single column above. */
   @container (inline-size >= 48rem) {
     div.inner {
       align-items: center;

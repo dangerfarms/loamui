@@ -106,6 +106,7 @@ One error: a real link to the field's fragment that focuses the target on activa
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `render` | `RenderProp` | — | Substitute the built-in <a>, e.g. a router link; the wiring (href, focus handling) merges onto it. |
+| `render` | `element \| (props) => node` | — | Substitute the built-in <a>, e.g. a router link; the wiring (href, focus handling) merges onto it. |
 | `href` | `string` | — | Fragment link to the field the error belongs to (required). |
+| `onClick` | `(event: MouseEvent<HTMLAnchorElement>) => void` | — | Runs on activation, before focus moves to the field. Prevent the default to keep the fragment out of the URL; the field is focused either way. |
 

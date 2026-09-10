@@ -93,13 +93,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The root is the core Fieldset, which keeps its own reset and legend;
-   the lines sit in an element of the example's own inside it, spaced as
-   a form spaces its fields, so the group sits in a column of other Fields
-   without a seam. Each line is a core Field past the donut, so labels,
-   descriptions and controls are all core's. The one rule beyond the gap
-   is the postcode's slot, capped short so the width of the box says what
-   length of answer fits. */
 @scope (.address-fields) to ([class*="loam-"]) {
   div.lines {
     display: block grid;

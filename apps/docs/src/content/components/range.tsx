@@ -105,8 +105,10 @@ const doc: ComponentContent = {
     },
     {
       title: "Disabled",
+      description:
+        "disabled reaches the native input: the track and thumb dim, the value stays readable, and the control leaves the Tab sequence.",
       code: `<Field.Root>
-  <Field.Label>Locked</Field.Label>
+  <Field.Label>Alert volume</Field.Label>
   <Range defaultValue={50} disabled />
 </Field.Root>`,
       render: () => <RangeDisabledDemo />,

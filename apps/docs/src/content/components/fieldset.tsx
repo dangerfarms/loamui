@@ -47,7 +47,7 @@ const doc: ComponentContent = {
   ],
   whenNotToUse: [
     "For a single labelled control: use Field (or a control's own label).",
-    "As a generic layout box: Fieldset carries grouping semantics, not just spacing.",
+    "As a generic layout box: Fieldset carries grouping semantics, not only spacing.",
   ],
   howItWorks: [
     {

@@ -49,7 +49,9 @@ There is no size prop. Padding and font are fluid container-relative tokens: the
 </div>
 ```
 
-### Description & required
+### Description and required
+
+Field.Description is linked to the input through aria-describedby, so the hint is announced with the field. required lives on the control as the native attribute: it is never shown as an asterisk, and it drives validation after a submit attempt.
 
 ```tsx
 <Field.Root>

@@ -13,6 +13,8 @@ export const meta: ExampleMeta = {
       "One declaration: the Menu is a primary region, so the button's colour is answered by context and no variant is passed; the icons are svg children that the Button and the items detect and size on their own text.",
     composition:
       "Menu.Root, Trigger, Popup and Item as core ships them, the icons ordinary children detected by the stylesheet; the trigger is the default core Button with a plus before its words and a chevron after.",
+    context:
+      "The Menu declares --loam-context: primary because its trigger is the area's action; primary is the brand slot, neutral until a theme fills it, so the declaration says where the action belongs rather than making it stand out.",
     accessible:
       "The button is named Create new with aria-haspopup, so a screen reader hears that a menu follows; ArrowDown opens it on the first item, the arrows move through, typing a letter jumps to an item, and choosing one closes the menu and follows the link. The icons are aria-hidden: the words name every item.",
   },

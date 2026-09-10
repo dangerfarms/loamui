@@ -117,10 +117,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The page is the container: the list sits above the article where the
-   page is narrow and beside it, sticky, where the page is wide. The
-   article keeps the element styles' own headings and paragraphs, capped
-   at a reading measure. */
 @scope (.table-of-contents) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -145,9 +141,6 @@ export default function Example() {
   }
 }
 
-/* Core's Nav, placed from its own scope. Wide, it takes the second column
-   and sticks as the reader scrolls; it stays first in the markup, so the
-   list is read before the article whatever the width. */
 @scope (.table-of-contents .loam-Nav) to ([class*="loam-"]) {
   @container (inline-size >= 48rem) {
     :scope {

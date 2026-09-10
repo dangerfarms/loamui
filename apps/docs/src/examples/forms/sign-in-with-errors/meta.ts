@@ -13,6 +13,8 @@ export const meta: ExampleMeta = {
       "The Field's invalid state is detected, not declared: a rendered Field.Error is what marks the field, and the box's danger border follows the control's own aria-invalid.",
     composition:
       "ErrorSummary is the form's first child and Field.Error sits in each field; the same message in both places, so the two read identically out of context.",
+    context:
+      "The actions row declares --loam-context: primary because the one Button is the form's action; primary is the brand slot, neutral until a theme fills it, so the declaration says where the action belongs, not that it stands out.",
     accessible:
       'Errors are placed twice on purpose: the summary is where a screen reader starts after the submit, and the message under the field is what a sighted reader sees when they get there. Each says what to do in the words of the question, never "invalid" or "required", and nothing typed is cleared. The password is asked for again rather than guessed at, and the summary lists the email problem first because that is the order the form is read in.',
   },

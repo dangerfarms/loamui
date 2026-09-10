@@ -1,12 +1,18 @@
 "use client";
 
-import { createContext, useContext, useEffect, useId, useMemo, useRef, useState } from "react";
+import { createContext, use, useEffect, useId, useMemo, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
 import { composeRefs } from "../../render";
 import { Button } from "../Button/Button";
 import type { ButtonProps } from "../Button/Button";
+
+/** The words the scroll region speaks. */
+export interface TableLabels {
+  /** The region's name when the table overflows and has no `<caption>`. @default "Scrollable table" */
+  scrollable?: string;
+}
 
 export interface TableProps extends PartProps<"div"> {
   /** Shade alternating body rows. */
@@ -15,13 +21,20 @@ export interface TableProps extends PartProps<"div"> {
   highlightOnHover?: boolean;
   /** Draw vertical borders between columns. */
   withColumnBorders?: boolean;
+  /**
+   * Keep the header row in view while the body scrolls beneath it. The
+   * scroller is the component's own element: cap it with the public
+   * `--loam-table-block-size` (or the layout around it) and the header
+   * sticks to its top.
+   */
+  stickyHeader?: boolean;
   /** Attributes for the `<table>` itself (`ref` included). */
   tableProps?: PartProps<"table">;
   /**
    * The words the scroll region speaks: `scrollable` names it when the
    * table overflows and has no `<caption>` to take the name from.
    */
-  labels?: { scrollable?: string };
+  labels?: TableLabels;
 }
 
 /**
@@ -33,7 +46,10 @@ export interface TableProps extends PartProps<"div"> {
  * adds no tab stops. The region takes its name from the table's own
  * `<caption>` when there is one. A `role`, `aria-label`, `aria-labelledby`
  * or `tabIndex` you pass always wins: the component fills in only what you
- * left out. The `<table>` inside takes `tableProps`.
+ * left out. The `<table>` inside takes `tableProps`. Cap the wrapper's
+ * height with the public `--loam-table-block-size` and a long table scrolls
+ * in place the same way; `stickyHeader` keeps the header row in view as it
+ * does.
  *
  * A sortable column is `Table.Th` with a `sort` and a `Table.SortButton`
  * inside it; the consumer sorts the rows, the parts announce and style:
@@ -52,6 +68,7 @@ function TableRoot({
   striped,
   highlightOnHover,
   withColumnBorders,
+  stickyHeader,
   tableProps,
   labels,
   className,
@@ -106,6 +123,7 @@ function TableRoot({
         data-striped={striped || undefined}
         data-hover={highlightOnHover || undefined}
         data-col-borders={withColumnBorders || undefined}
+        data-sticky-header={stickyHeader || undefined}
       >
         <table {...tableProps}>{children}</table>
       </div>
@@ -134,7 +152,7 @@ export interface TableThProps extends PartProps<"th"> {
  * stylesheet sets it.
  */
 function TableTh({ sort, scope = "col", className, children, ...rest }: TableThProps) {
-  if (!useContext(TableContext)) {
+  if (!use(TableContext)) {
     throw new Error("Table.Th must be rendered inside <Table>.");
   }
   return (
@@ -144,6 +162,15 @@ function TableTh({ sort, scope = "col", className, children, ...rest }: TableThP
       </th>
     </ThContext>
   );
+}
+
+/** The words the SortButton speaks. */
+export interface TableSortButtonLabels {
+  /**
+   * The hidden text after the column name that says what a press will do;
+   * `column` is the children when they are text. @default `" sort ${next}"`
+   */
+  sort?: (column: string, next: TableSortDirection) => string;
 }
 
 export interface TableSortButtonProps extends ButtonProps {
@@ -158,7 +185,7 @@ export interface TableSortButtonProps extends ButtonProps {
    * after the column name that says what a press will do (default
    * `" sort ascending"`; `column` is the children when they are text).
    */
-  labels?: { sort?: (column: string, next: TableSortDirection) => string };
+  labels?: TableSortButtonLabels;
 }
 
 /**
@@ -176,7 +203,7 @@ function TableSortButton({
   children,
   ...rest
 }: TableSortButtonProps) {
-  const sort = useContext(ThContext);
+  const sort = use(ThContext);
   if (sort === null) {
     throw new Error("Table.SortButton must be rendered inside a <Table.Th sort>.");
   }

@@ -54,7 +54,7 @@ export default function Example() {
     >
       <img
         className="media"
-        src="https://picsum.photos/seed/hedgerow-nursery-yard/800/500"
+        src="https://picsum.photos/id/17/800/500"
         alt=""
         width="800"
         height="500"
@@ -106,16 +106,13 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Card is the article, so its element is this scope's root: core's
-   surface, line, radius and padding stay, and the column inside is the
-   example's own. The Badges and the SignpostLink keep their recipes
-   behind the donut. */
 @scope (.card-with-badges) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
     display: block flex;
     flex-direction: column;
     gap: var(--loam-space-md);
+    max-inline-size: 36rem;
   }
 
   img.media {
@@ -164,8 +161,6 @@ export default function Example() {
     text-transform: uppercase;
   }
 
-  /* As many amenities to a row as fit; each is an icon and its name on
-     one line, the icon sized to the text beside it. */
   ul.amenities {
     display: block grid;
     font-size: var(--loam-text-sm);

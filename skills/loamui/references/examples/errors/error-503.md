@@ -21,7 +21,7 @@ An example in **Error pages**: a component and a stylesheet built from `@loamui/
 - **Native CSS.** A section named by its own h1; the way out is a button rather than a link, because refreshing is an action on this page and goes nowhere new.
 - **Modern CSS.** The page is a container so its type answers its own width, the title balances its lines and the description wraps prettily; nothing here is sized to a viewport.
 - **Composition.** Button is dropped in as it comes; the reload is the page's one line of behaviour, on the Button's own onClick.
-- **Contextualism.** The actions row is a primary region, so the Button takes the primary colour from where it sits rather than from a prop.
+- **Contextualism.** The actions row is a primary region, so the Button takes the primary colour from where it sits rather than from a prop; primary is the brand slot, neutral until a theme fills it, and the row declares where the one action belongs.
 - **Accessible & gatekept.** The copy says what is happening and that the basket is safe before it says what to do, and the button says what it does in full: Refresh the page, not Retry.
 
 ## Example.tsx
@@ -52,10 +52,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* An error page is a region: it declares its container so the fluid
-   tokens answer its own width, and it hosts a Button, hence the donut.
-   Everything centres on one axis: the code, the title, the line and the
-   one thing to do. */
 @scope (.error-503) to ([class*="loam-"]) {
   :scope {
     align-items: center;
@@ -69,9 +65,6 @@ export default function Example() {
     text-align: center;
   }
 
-  /* The code is set dim on purpose: it identifies the error for anyone
-     who needs it and stays behind the title, which is what the reader
-     needs. */
   p.code {
     color: var(--loam-color-fg-dim);
     font-family: var(--loam-font-display);
@@ -96,8 +89,6 @@ export default function Example() {
     text-wrap: pretty;
   }
 
-  /* The one action is the main one, so its region is primary and the
-     Button takes the colour from it. */
   div.actions {
     --loam-context: primary;
 

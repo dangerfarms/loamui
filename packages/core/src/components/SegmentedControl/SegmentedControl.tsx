@@ -1,9 +1,10 @@
 "use client";
 
-import { createContext, useCallback, useContext, useId, useMemo, useRef } from "react";
+import { createContext, useCallback, useId, useMemo, useRef } from "react";
 import type { ChangeEvent, ReactNode } from "react";
 import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
+import { useRequiredContext } from "../../context";
 
 /**
  * A set of mutually exclusive options drawn as one row of segments: a
@@ -36,11 +37,7 @@ interface SegmentedControlContextValue {
 const SegmentedControlContext = createContext<SegmentedControlContextValue | null>(null);
 
 function useSegmentedControl(part: string): SegmentedControlContextValue {
-  const ctx = useContext(SegmentedControlContext);
-  if (!ctx) {
-    throw new Error(`${part} must be rendered inside <SegmentedControl.Root>.`);
-  }
-  return ctx;
+  return useRequiredContext(SegmentedControlContext, part, "SegmentedControl.Root");
 }
 
 export interface SegmentedControlRootProps extends Omit<

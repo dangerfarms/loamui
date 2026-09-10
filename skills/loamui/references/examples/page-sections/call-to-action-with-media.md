@@ -48,8 +48,8 @@ export default function Example() {
         </div>
         <img
           className="media"
-          src="https://picsum.photos/seed/hedgerow-sowing/800/600"
-          alt="Hands pressing seeds into a tray of compost on a potting bench"
+          src="https://picsum.photos/id/803/800/600"
+          alt="Young plants growing on a bed of moss under the polytunnel lights"
           width="800"
           height="600"
         />
@@ -62,11 +62,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The closing block beside a photograph. The section carries the surface
-   and is the container; the inner element is the grid, because an
-   element cannot answer its own container query. Beside media the words
-   align start, since a centred column next to a picture reads as two
-   things rather than one. */
 @scope (.call-to-action-with-media) to ([class*="loam-"]) {
   :scope {
     background: var(--loam-color-bg-subtle);
@@ -75,6 +70,8 @@ export default function Example() {
     padding: var(--loam-space-xl);
   }
 
+  /* The inner element is the grid: an element cannot answer its own
+     container query. */
   div.inner {
     display: block grid;
     gap: var(--loam-space-lg);
@@ -113,8 +110,6 @@ export default function Example() {
     inline-size: 100%;
   }
 
-  /* Wide: the words and the picture side by side, centred on the shared
-     axis. Narrow keeps the single column above, picture last. */
   @container (inline-size >= 48rem) {
     div.inner {
       align-items: center;
@@ -122,7 +117,7 @@ export default function Example() {
     }
   }
 
-  /* Forced colours drop the tint, so the block keeps an edge. */
+  /* Forced colours drop the tint; the edge keeps the bounds. */
   @media (forced-colors: active) {
     :scope {
       border: 1px solid CanvasText;

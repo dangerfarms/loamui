@@ -88,7 +88,7 @@ Render only the parts the question needs: the naming, autofill and error wiring 
 ## When to use it
 
 - For dates the user knows or can look up: a date of birth, the issue or expiry date on a document.
-- When the answer must be an exact date submitted with a form: day, month and year, or just the parts the question needs.
+- When the answer must be an exact date submitted with a form: day, month and year, or only the parts the question needs.
 
 ## When not to
 
@@ -107,7 +107,7 @@ Give an example in the Description, and choose it so it can only be read one way
 
 ### Highlight only the wrong part
 
-If one field is empty or impossible, say so ("[Date] must include a year") and pass parts to the Error to mark just that field invalid. If you cannot tell which part is wrong, or the parts are individually fine but the date is not real, leave parts unset so the whole date is highlighted. Either way the user's correct entries are never cleared.
+If one field is empty or impossible, say so ("[Date] must include a year") and pass parts to the Error to mark only that field invalid. If you cannot tell which part is wrong, or the parts are individually fine but the date is not real, leave parts unset so the whole date is highlighted. Either way the user's correct entries are never cleared.
 
 ### Autofill for dates of birth
 
@@ -115,19 +115,29 @@ When the date is the user's own date of birth, pass autoComplete="bday" to the R
 
 ### Linking from an ErrorSummary
 
-Pass an id to the Root and the fields become {id}-day, {id}-month and {id}-year. Point the summary item at the first field in error (the year in the example below) so activating it lands the user exactly where the correction starts.
+Pass an id to the Root and the fields become {id}-day, {id}-month and {id}-year. Point the summary item at the first field in error (the year in the example below) so activating it lands the user exactly where the correction starts. The summary here has autoFocus off because it is rendered with the page rather than after a failed submit; leave the default on in a form.
 
 ```tsx
-<ErrorSummary.Item href="#membership-start-year">
-  Membership start date must include a year
-</ErrorSummary.Item>
+<ErrorSummary.Root autoFocus={false}>
+  <ErrorSummary.Title />
+  <ErrorSummary.List>
+    <ErrorSummary.Item href="#membership-start-year">
+      Membership start date must include a year
+    </ErrorSummary.Item>
+  </ErrorSummary.List>
+</ErrorSummary.Root>
 
-<DateInput.Root id="membership-start">
+<DateInput.Root id="membership-start" name="membership-start">
   <DateInput.Legend>When did your membership start?</DateInput.Legend>
+  <DateInput.Description>For example, 27 3 2019</DateInput.Description>
   <DateInput.Error parts={["year"]}>
     Membership start date must include a year
   </DateInput.Error>
-  …
+  <DateInput.Fields>
+    <DateInput.Day defaultValue="27" />
+    <DateInput.Month defaultValue="3" />
+    <DateInput.Year />
+  </DateInput.Fields>
 </DateInput.Root>
 ```
 
@@ -189,11 +199,27 @@ Error message announced via role="alert"; native <p> props are forwarded.
 
 Lays out the row of parts; native <div> props and ref are forwarded.
 
-### DateInput.Day / DateInput.Month / DateInput.Year
+### DateInput.Day
 
-One part: a core Field around a core Input with the right name, autocomplete, inputMode and size. All Input props are forwarded: value, onChange, maxLength, ref, wrapperProps.
+The day part: a core Field around a core Input with the right name, autocomplete, inputMode="numeric" and a size of two characters. All Input props are forwarded: value, onChange, maxLength, ref, wrapperProps.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `children` | `ReactNode` | `"Day" / "Month" / "Year"` | The visible field label. |
+| `children` | `ReactNode` | `"Day"` | The visible field label. |
+
+### DateInput.Month
+
+The month part, wired like DateInput.Day. It keeps the full keyboard so a name like Mar can be typed, and is sized to three characters.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `ReactNode` | `"Month"` | The visible field label. |
+
+### DateInput.Year
+
+The year part, wired like DateInput.Day: inputMode="numeric" and a size of four characters.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `ReactNode` | `"Year"` | The visible field label. |
 

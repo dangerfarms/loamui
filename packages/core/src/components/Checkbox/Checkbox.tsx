@@ -4,7 +4,7 @@ import { useEffect, useId, useMemo, useRef } from "react";
 import type { ReactNode } from "react";
 import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
-import { composeRefs } from "../../render";
+import { composeRefs, idList } from "../../render";
 import { useFieldControlProps } from "../Field/Field";
 import { useUserInvalid } from "../../use-user-invalid";
 
@@ -119,7 +119,7 @@ function CheckboxLabelled({
         <CheckboxControl
           ref={ref}
           id={fieldId}
-          aria-describedby={cx(descId, ariaDescribedby) || undefined}
+          aria-describedby={idList(descId, ariaDescribedby)}
           {...control}
         />
         <span className="body">

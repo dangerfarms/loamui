@@ -1,9 +1,12 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState } from "react";
+import { createContext, useCallback, useEffect, useId, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
+import { useRequiredContext } from "../../context";
+import { idList } from "../../render";
+import { usePresence } from "../../use-presence";
 import { Field } from "../Field/Field";
 import { Fieldset } from "../Fieldset/Fieldset";
 import type { FieldsetLabels } from "../Fieldset/Fieldset";
@@ -73,11 +76,7 @@ interface DateInputContextValue {
 const DateInputContext = createContext<DateInputContextValue | null>(null);
 
 function useDateInputContext(part: string): DateInputContextValue {
-  const ctx = useContext(DateInputContext);
-  if (!ctx) {
-    throw new Error(`${part} must be rendered inside <DateInput.Root>.`);
-  }
-  return ctx;
+  return useRequiredContext(DateInputContext, part, "DateInput.Root");
 }
 
 export interface DateInputRootProps extends Omit<PartProps<"fieldset">, "name"> {
@@ -104,16 +103,12 @@ function DateInputRoot({
   const descriptionId = `${baseId}-description`;
   const errorId = `${baseId}-error`;
   const errorPrefix = labels?.errorPrefix ?? DEFAULT_ERROR_PREFIX;
-  const [descriptionCount, setDescriptionCount] = useState(0);
+  const [hasDescription, registerDescription] = usePresence();
+  // An Error registers like a Description, plus the parts it names.
   const [errorInfo, setErrorInfo] = useState<{
     count: number;
     parts: DateInputPart[] | null;
   }>({ count: 0, parts: null });
-
-  const registerDescription = useCallback(() => {
-    setDescriptionCount((n) => n + 1);
-    return () => setDescriptionCount((n) => n - 1);
-  }, []);
   const registerError = useCallback((parts: DateInputPart[] | null) => {
     setErrorInfo((s) => ({ count: s.count + 1, parts }));
     return () =>
@@ -124,9 +119,10 @@ function DateInputRoot({
   }, []);
 
   const hasError = errorInfo.count > 0;
-  const describedBy =
-    cx(descriptionCount > 0 ? descriptionId : undefined, hasError ? errorId : undefined) ||
-    undefined;
+  const describedBy = idList(
+    hasDescription ? descriptionId : undefined,
+    hasError ? errorId : undefined,
+  );
 
   const value = useMemo<DateInputContextValue>(
     () => ({

@@ -4,6 +4,7 @@ import type { ComponentDoc } from "./types";
 import { Preview } from "./Preview";
 import { CodeBlock } from "./CodeBlock";
 import { PropsTable } from "./PropsTable";
+import { ScrollRegion } from "./ScrollRegion";
 import classes from "./DocPage.module.css";
 import tableClasses from "./PropsTable.module.css";
 
@@ -84,12 +85,12 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
           </h2>
           <div className={classes.guidance}>
             {(doc.whenToUse || doc.whenNotToUse) && (
-              <div className={`${classes.guidance} ${classes.guidanceCols}`}>
+              <div className={classes.guidanceCols}>
                 {doc.whenToUse && (
                   <div className={classes.guidanceCard}>
-                    <p className={`${classes.guidanceHeading} ${classes.guidanceYes}`}>
+                    <h3 className={`${classes.guidanceHeading} ${classes.guidanceYes}`}>
                       When to use it
-                    </p>
+                    </h3>
                     <ul className={classes.guidanceList}>
                       {doc.whenToUse.map((item) => (
                         <li key={item}>{item}</li>
@@ -99,9 +100,9 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
                 )}
                 {doc.whenNotToUse && (
                   <div className={classes.guidanceCard}>
-                    <p className={`${classes.guidanceHeading} ${classes.guidanceNo}`}>
+                    <h3 className={`${classes.guidanceHeading} ${classes.guidanceNo}`}>
                       When not to
-                    </p>
+                    </h3>
                     <ul className={classes.guidanceList}>
                       {doc.whenNotToUse.map((item) => (
                         <li key={item}>{item}</li>
@@ -113,7 +114,7 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
             )}
             {doc.accessibility && (
               <div className={classes.guidanceCard}>
-                <p className={classes.guidanceHeading}>Accessibility</p>
+                <h3 className={classes.guidanceHeading}>Accessibility</h3>
                 <ul className={classes.a11yList}>
                   {doc.accessibility.map((item) => (
                     <li key={item}>{item}</li>
@@ -162,12 +163,12 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
               </>
             )}
           </p>
-          <div className={tableClasses.scroll}>
+          <ScrollRegion className={tableClasses.scroll} label="Error messages table">
             <table className={tableClasses.table}>
               <thead>
                 <tr>
-                  <th>Situation</th>
-                  <th>Message</th>
+                  <th scope="col">Situation</th>
+                  <th scope="col">Message</th>
                 </tr>
               </thead>
               <tbody>
@@ -181,7 +182,7 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
                 ))}
               </tbody>
             </table>
-          </div>
+          </ScrollRegion>
         </section>
       )}
 
@@ -212,7 +213,9 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
                   <code className={tableClasses.name}>{part.name}</code>
                 </h3>
                 <p className={classes.demoDesc}>{part.description}</p>
-                {part.props && part.props.length > 0 && <PropsTable rows={part.props} />}
+                {part.props && part.props.length > 0 && (
+                  <PropsTable label={`${part.name} props table`} rows={part.props} />
+                )}
               </div>
             ))}
           </div>
@@ -227,6 +230,7 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
           <PropsTable
             nameLabel="Property"
             typeLabel="Syntax"
+            label="Custom properties table"
             rows={doc.cssProps.map((p) => ({
               name: p.name,
               type: p.syntax,
@@ -253,7 +257,11 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
                 {hook.options && (
                   <>
                     <p className={classes.demoDesc}>{hook.options.title}</p>
-                    <PropsTable nameLabel="Option" rows={hook.options.rows} />
+                    <PropsTable
+                      nameLabel="Option"
+                      label={`${hook.name} options table`}
+                      rows={hook.options.rows}
+                    />
                   </>
                 )}
               </div>

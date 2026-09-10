@@ -149,7 +149,7 @@ A LoamUI Button that opens the drawer.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `render` | `RenderProp` | — | Substitute your own action element (an icon button); the wiring merges on. |
+| `render` | `element \| (props) => node` | — | Substitute your own action element (an icon button); the wiring merges on. |
 | `...others` | `ButtonHTMLAttributes` | — | Forwarded to the button. |
 
 ### Drawer.Popup
@@ -166,7 +166,11 @@ Label and describe the dialog for assistive technology.
 
 ### Drawer.Close
 
-A LoamUI Button that closes the drawer; compose as many as you need (a footer action, a header ×). Supports render like the Trigger.
+A LoamUI Button that closes the drawer; compose as many as you need (a footer action, a header ×). Native <button> props are forwarded.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `render` | `element \| (props) => node` | — | Substitute your own element; it receives the close wiring. |
 
 ## Custom properties
 

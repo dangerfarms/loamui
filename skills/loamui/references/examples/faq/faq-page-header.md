@@ -125,11 +125,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* A help page: the header names the page and says how to reach a person,
-   then the questions follow as one exclusive set. The section is the
-   container; the header is a grid that puts the ways to reach us beside
-   the intro when it has room, and the contact block is an address, set
-   upright, on the subtle surface. */
 @scope (.faq-page-header) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -160,8 +155,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* Browsers set address in italic, a convention from letters that reads
-     as emphasis here, so it is set upright. */
   address.contact {
     align-content: start;
     background: var(--loam-color-bg-subtle);
@@ -172,9 +165,6 @@ export default function Example() {
     padding: var(--loam-space-lg);
   }
 
-  /* The markup keeps role="list" for the browsers that drop the
-     semantics with the marker. The glyph is the strong token, sized in
-     em so it rides the link's type. */
   ul {
     display: block grid;
     gap: var(--loam-space-xs);
@@ -209,8 +199,6 @@ export default function Example() {
     gap: var(--loam-space-sm);
   }
 
-  /* Wide: the intro takes the larger column and the contact block sits
-     beside it at its own width. */
   @container (inline-size >= 44rem) {
     header {
       align-items: start;
@@ -224,7 +212,7 @@ export default function Example() {
     }
   }
 
-  /* Forced colours: the tint goes, so the contact block keeps an edge. */
+  /* Forced colours drop the tint; the edge keeps the bounds. */
   @media (forced-colors: active) {
     address.contact {
       border: 1px solid CanvasText;

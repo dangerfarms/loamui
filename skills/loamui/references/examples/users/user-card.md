@@ -21,24 +21,24 @@ An example in **Users**: a component and a stylesheet built from `@loamui/core`,
 - **Native CSS.** The card is an article named by its heading, and the figures are a description list of three pairs, so the markup reads label then value while the screen shows value over label.
 - **Modern CSS.** The avatar's size is Avatar's public --loam-avatar-size, set on the card and inherited, and the figures are set in tabular lining numerals so the three line up.
 - **Composition.** Card is the surface, rendered as the article; the example arranges the column inside it and never touches the Card's own border, radius or padding.
-- **Contextualism.** The action row is a primary region, so the one Button takes the brand colour from where it sits, and the grid region stretches it to the card's width without a prop.
+- **Contextualism.** The action row is a primary region, so the one Button takes the brand colour from where it sits, and the grid region stretches it to the card's width without a prop; primary is the brand slot, neutral until a theme fills it.
 - **Accessible & gatekept.** The Avatar is hidden because the name is printed beneath it, so a screen reader hears the person once; the figures carry their labels in the markup, not in a tooltip.
 
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Avatar, Button, Card } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const name = useId();
   return (
-    <Card render={<article className="user-card" aria-labelledby="user-card-name" />}>
-      <Avatar
-        name="Imogen Hartley"
-        src="https://picsum.photos/seed/hedgerow-imogen/240/240"
-        aria-hidden
-      />
-      <h2 id="user-card-name">Imogen Hartley</h2>
+    <Card render={<article className="user-card" aria-labelledby={name} />}>
+      <Avatar name="Imogen Hartley" src="https://picsum.photos/id/823/240/240" aria-hidden />
+      <h2 id={name}>Imogen Hartley</h2>
       <p className="role">Steward, Lower Field plot</p>
       <dl className="stats">
         <div>
@@ -65,12 +65,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Card is the root: it is rendered as the article, so the column
-   inside is in reach while the Card's surface, line, radius and padding
-   are left as they are, and the Avatar and the Button inside stay behind
-   the donut. The avatar's size is Avatar's public property, set here and
-   inherited. Width is the layout's; here the card takes 20rem or the
-   space available. */
 @scope (.user-card) to ([class*="loam-"]) {
   :scope {
     --loam-avatar-size: 5rem;
@@ -93,8 +87,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* Three pairs across; the figure leads each pair on screen while the
-     markup keeps term then description. */
   dl.stats {
     display: block grid;
     gap: var(--loam-space-sm);
@@ -124,8 +116,6 @@ export default function Example() {
     }
   }
 
-  /* The one action is the card's primary one, and a grid region
-     stretches the Button to the card's width natively. */
   div.actions {
     --loam-context: primary;
 

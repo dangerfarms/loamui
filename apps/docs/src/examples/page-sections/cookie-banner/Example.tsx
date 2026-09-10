@@ -32,8 +32,6 @@ export default function Example() {
   const [hidden, setHidden] = useState(false);
   const banner = useRef<HTMLElement>(null);
   const confirmation = useRef<HTMLDivElement>(null);
-  // The button pressed, recorded on click so the submit knows the choice in every browser.
-  const pending = useRef<Choice | null>(null);
 
   // The button the reader pressed has gone with the banner, so focus moves to the one that replaced it.
   useEffect(() => {
@@ -43,12 +41,11 @@ export default function Example() {
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const submitter = (event.nativeEvent as SubmitEvent).submitter;
+    const { submitter } = event.nativeEvent as SubmitEvent;
     const value = submitter instanceof HTMLButtonElement ? submitter.value : "";
-    const next = value === "accept" || value === "reject" ? value : pending.current;
-    if (!next) return;
+    if (value !== "accept" && value !== "reject") return;
     // Persist the choice here: a cookie, or a request to your server.
-    setChoice(next);
+    setChoice(value);
   }
 
   function hide() {
@@ -73,20 +70,10 @@ export default function Example() {
             at, so we can decide what to grow and write next. Nothing is shared with advertisers.
           </p>
           <form method="post" action="/cookies" onSubmit={submit}>
-            <Button
-              type="submit"
-              name="cookies"
-              value="accept"
-              onClick={() => (pending.current = "accept")}
-            >
+            <Button type="submit" name="cookies" value="accept">
               Accept additional cookies
             </Button>
-            <Button
-              type="submit"
-              name="cookies"
-              value="reject"
-              onClick={() => (pending.current = "reject")}
-            >
+            <Button type="submit" name="cookies" value="reject">
               Reject additional cookies
             </Button>
             <a href="/cookies">Cookie settings</a>

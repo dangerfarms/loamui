@@ -10,6 +10,8 @@ const doc: ComponentContent = {
   demos: [
     {
       title: "Basic usage",
+      description:
+        "A bare Switch named by aria-label, for a row where the words already sit beside it. Off by default: a setting the user has not turned on.",
       code: `<Switch aria-label="Email notifications" />`,
       render: () => <Switch aria-label="Email notifications" />,
     },
@@ -23,26 +25,28 @@ const doc: ComponentContent = {
       title: "Label position",
       description: "labelPosition places the label after the toggle (default) or before it.",
       code: `<Switch label="Enable notifications" />
-<Switch label="Label on the left" labelPosition="start" />`,
+<Switch label="Marketing emails" labelPosition="start" />`,
       render: () => (
         <div style={{ display: "grid", gap: "0.75rem" }}>
           <Example label="Label at the end (default)">
             <Switch label="Enable notifications" />
           </Example>
           <Example label="Label at the start">
-            <Switch label="Label on the left" labelPosition="start" />
+            <Switch label="Marketing emails" labelPosition="start" />
           </Example>
         </div>
       ),
     },
     {
       title: "Disabled",
-      code: `<Switch label="Off & disabled" disabled />
-<Switch label="On & disabled" defaultChecked disabled />`,
+      description:
+        "disabled reaches the native input: the row is dimmed and skipped by Tab, and a switch that is on and disabled shows a setting that is on and not the user's to change here. Disabled is detected on the input, never declared on the row.",
+      code: `<Switch label="Usage analytics" disabled />
+<Switch label="Security alerts" defaultChecked disabled />`,
       render: () => (
         <div style={{ display: "grid", gap: "0.75rem" }}>
-          <Switch label="Off & disabled" disabled />
-          <Switch label="On & disabled" defaultChecked disabled />
+          <Switch label="Usage analytics" disabled />
+          <Switch label="Security alerts" defaultChecked disabled />
         </div>
       ),
     },

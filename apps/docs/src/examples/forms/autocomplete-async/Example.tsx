@@ -39,10 +39,9 @@ export default function Example() {
   const [matches, setMatches] = useState<string[] | null>(null);
   const [searching, setSearching] = useState(false);
 
-  // The seed list is the external system: every change of text starts a
-  // search and abandons the one before it, so a slow answer never lands
-  // on top of a newer question. Choosing an option writes its name into
-  // the box, which is not a new question.
+  // Every change of text starts a search and abandons the one before it, so
+  // a slow answer never lands on top of a newer question; choosing an option
+  // writes its name into the box, which is not a new question.
   useEffect(() => {
     const text = query.trim();
     if (text === "") {
@@ -85,14 +84,7 @@ export default function Example() {
         labels={{
           // Read from the answer, not the list's own count, which registers
           // a render after the options mount.
-          status: () =>
-            searching
-              ? "Searching the seed list"
-              : matches === null
-                ? ""
-                : matches.length === 1
-                  ? "1 variety matches"
-                  : `${matches.length} varieties match`,
+          status: () => status,
           empty: "No varieties match",
         }}
       >

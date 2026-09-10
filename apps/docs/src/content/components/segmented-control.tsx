@@ -12,29 +12,6 @@ const doc: ComponentContent = {
   importLine: `import { SegmentedControl } from "@loamui/core";`,
   demos: [
     {
-      title: "As a scheme picker",
-      description:
-        "Icon-only segments sit in circles, each with hidden text as its name, and the Legend is hidden the same way: the group is still named, just not painted. This one is live: choosing changes this site's colour scheme and remembers it, the way the site's own toggle does.",
-      code: `const [scheme, setScheme] = useState("system");
-
-<SegmentedControl.Root value={scheme} onValueChange={choose}>
-  <SegmentedControl.Legend className="loam-VisuallyHidden">Colour scheme</SegmentedControl.Legend>
-  <SegmentedControl.Item value="system">
-    <SystemIcon />
-    <span className="loam-VisuallyHidden">System</span>
-  </SegmentedControl.Item>
-  <SegmentedControl.Item value="light">
-    <LightIcon />
-    <span className="loam-VisuallyHidden">Light</span>
-  </SegmentedControl.Item>
-  <SegmentedControl.Item value="dark">
-    <DarkIcon />
-    <span className="loam-VisuallyHidden">Dark</span>
-  </SegmentedControl.Item>
-</SegmentedControl.Root>`,
-      render: () => <SegmentedControlSchemeDemo />,
-    },
-    {
       title: "As a view switcher",
       description:
         "Hold the value and let the view follow it. The Legend is painted inside the pill before the segments, so the row reads as a labelled control; an svg before a segment's text is its icon, sized on the text.",
@@ -68,6 +45,29 @@ const doc: ComponentContent = {
   <button type="submit">Apply</button>
 </form>`,
       render: () => <SegmentedControlFormDemo />,
+    },
+    {
+      title: "As a scheme picker",
+      description:
+        "Icon-only segments sit in circles, each with hidden text as its name, and the Legend is hidden the same way: the group is still named, not painted. This one is live: choosing changes this site's colour scheme and remembers it, the way the site's own toggle does.",
+      code: `const [scheme, setScheme] = useState("system");
+
+<SegmentedControl.Root value={scheme} onValueChange={choose}>
+  <SegmentedControl.Legend className="loam-VisuallyHidden">Colour scheme</SegmentedControl.Legend>
+  <SegmentedControl.Item value="system">
+    <SystemIcon />
+    <span className="loam-VisuallyHidden">System</span>
+  </SegmentedControl.Item>
+  <SegmentedControl.Item value="light">
+    <LightIcon />
+    <span className="loam-VisuallyHidden">Light</span>
+  </SegmentedControl.Item>
+  <SegmentedControl.Item value="dark">
+    <DarkIcon />
+    <span className="loam-VisuallyHidden">Dark</span>
+  </SegmentedControl.Item>
+</SegmentedControl.Root>`,
+      render: () => <SegmentedControlSchemeDemo />,
     },
     {
       title: "Disabled",

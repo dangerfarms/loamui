@@ -7,7 +7,7 @@ const doc: ComponentContent = {
   importLine: `import { Details } from "@loamui/core";`,
   demos: [
     {
-      title: "Basic",
+      title: "Basic usage",
       description:
         "Each Details is independent: a complete native disclosure widget that opens and closes on its own.",
       code: `<Details.Root>
@@ -50,7 +50,7 @@ const doc: ComponentContent = {
     "As an exclusive set (shared name) when the sections are alternatives and holding two open at once would only mislead.",
   ],
   whenNotToUse: [
-    "When most users need the content: content hidden by default may simply never be read. Collapsed sections routinely go unopened. Put it on the page under headings.",
+    "When most users need the content: content hidden by default may never be read. Collapsed sections routinely go unopened. Put it on the page under headings.",
     "For a long FAQ: a dozen questions or more, or one people arrive at by link, belongs under headings with a table of contents, because a closed disclosure hides the answer from find-in-page and from a link into the page wherever the browser does not open it automatically. A short set of questions reads well as an exclusive set. A long FAQ is usually a symptom that the page it answers for is unclear.",
     "For small amounts of content: the click cost of opening outweighs the space saved; plain prose is simpler.",
     "Nested inside another Details: stacked disclosure widgets make it unclear what is open, what is hidden, and how much content remains.",
@@ -62,7 +62,7 @@ const doc: ComponentContent = {
     },
     {
       title: "The browser closes the others",
-      body: "Exclusivity is the native HTML name attribute on <details>: give a set of Details the same name and the browser itself closes the others when one opens: no state, no JS, and it holds even when JavaScript fails. But that native closing can yank content away from someone mid-read: when users may want two sections open to compare them, simply omit name and each section stays independent.",
+      body: "Exclusivity is the native HTML name attribute on <details>: give a set of Details the same name and the browser itself closes the others when one opens: no state, no JS, and it holds even when JavaScript fails. But that native closing can yank content away from someone mid-read: when users may want two sections open to compare them, omit name and each section stays independent.",
     },
     {
       title: "No accordion component",

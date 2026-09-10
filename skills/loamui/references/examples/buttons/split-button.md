@@ -21,6 +21,7 @@ An example in **Buttons**: a component and a stylesheet built from `@loamui/core
 - **Native CSS.** One form: the main button submits it, and each menu item is a submit button with its own name and value, so the server learns which way was chosen and nothing needs JavaScript to post. The menu is a native popover with light dismiss and Escape.
 - **Modern CSS.** The shared edge is --loam-button-radius, the public hook Button reads, set on the group for the trigger and on the main cell for its button; :dir(rtl) swaps the two values because border-radius is physical, and a one-pixel negative margin lays the two borders on one line.
 - **Composition.** Button and Menu.Root, Trigger, Popup and Item as core ships them; the items substitute submit buttons through render, and the primary look comes from the form being a primary region, not from a prop on either button.
+- **Contextualism.** The form declares --loam-context: primary because both buttons belong to the one action; primary is the brand slot, neutral until a theme fills it, and a theme that does recolours the pair as one.
 - **Accessible & gatekept.** The main button is named for its action and the trigger for its purpose, More ways to add, by hidden words beside the chevron, with aria-haspopup so the menu is expected; the arrows open and move through the items, and choosing one submits. The two are separate tab stops, so a keyboard user can take the main action without opening the menu.
 
 ## Example.tsx
@@ -73,15 +74,9 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The form is the root and the group: a primary region, so both Buttons
-   answer the same colour, and a two-cell grid so they sit level. The
-   shared edge is the one public hook Button keeps, --loam-button-radius,
-   inherited by each half: the main button squares its end corners and
-   the menu's trigger squares its start ones. border-radius is physical,
-   so the halves swap under :dir(rtl). The main cell pulls back one pixel
-   so the two borders share a line. The Buttons, the Menu and its popup
-   are core parts past the donut. */
 @scope (.split-button) to ([class*="loam-"]) {
+  /* border-radius is physical, so the halves swap under :dir(rtl); the main
+     cell pulls back one pixel so the two borders share a line. */
   :scope {
     --loam-context: primary;
     --loam-button-radius: 0 var(--loam-radius-md) var(--loam-radius-md) 0;

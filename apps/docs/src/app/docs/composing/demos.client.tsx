@@ -12,7 +12,7 @@ export function HeroDemo() {
         <Badge>New</Badge>
       </div>
       <h2>Modern UI primitives for agent-assisted developers.</h2>
-      <p className="lede">
+      <p className="description">
         Three primitives your agent builds from, steeped in UX best practice and checked by
         deterministic gates.
       </p>

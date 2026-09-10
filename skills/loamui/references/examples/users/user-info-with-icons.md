@@ -29,24 +29,10 @@ An example in **Users**: a component and a stylesheet built from `@loamui/core`,
 import { Avatar } from "@loamui/core";
 import "./example.css";
 
-const icon = {
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: 2,
-  strokeLinecap: "round" as const,
-  strokeLinejoin: "round" as const,
-  "aria-hidden": true,
-};
-
 export default function Example() {
   return (
     <div className="user-info-with-icons">
-      <Avatar
-        name="Bryn Powell"
-        src="https://picsum.photos/seed/hedgerow-bryn/200/200"
-        aria-hidden
-      />
+      <Avatar name="Bryn Powell" src="https://picsum.photos/id/1005/200/200" aria-hidden />
       <div className="text">
         <h2>Bryn Powell</h2>
         <p className="role">Head grower</p>
@@ -54,7 +40,15 @@ export default function Example() {
           <div>
             <dt className="loam-VisuallyHidden">Email</dt>
             <dd>
-              <svg {...icon}>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
                 <rect x="3" y="5" width="18" height="14" rx="2" />
                 <path d="m3 7 9 6 9-6" />
               </svg>
@@ -64,7 +58,15 @@ export default function Example() {
           <div>
             <dt className="loam-VisuallyHidden">Phone</dt>
             <dd>
-              <svg {...icon}>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
                 <path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z" />
               </svg>
               <a href="tel:+441584870123">01584 870123</a>
@@ -80,9 +82,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The avatar beside a column of text. The avatar's size is Avatar's
-   public property, set here and inherited; the Avatar itself stays
-   behind the donut. */
 @scope (.user-info-with-icons) to ([class*="loam-"]) {
   :scope {
     --loam-avatar-size: 5.5rem;
@@ -103,8 +102,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* The role is read after the name but shown above it, as a small
-     label: the markup keeps the name first, the grid moves the line. */
   p.role {
     color: var(--loam-color-fg-muted);
     font-size: var(--loam-text-xs);
@@ -115,9 +112,6 @@ export default function Example() {
     text-transform: uppercase;
   }
 
-  /* Each way to reach them is a term, read but not seen, and a value
-     with an icon before a real link; the icon is decoration and the
-     term says what the row is. */
   dl {
     display: block grid;
     gap: var(--loam-space-xs);

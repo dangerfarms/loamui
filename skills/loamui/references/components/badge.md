@@ -33,6 +33,8 @@ Badges are neutral by default. There are no variant or colour props: declare --l
 
 ### Sizes
 
+size is one of three tokens, emitted as data-size: the type step, with the pill's geometry in em on it. It is the one size prop the library keeps for display components, because a pill is an intrinsic glyph that no container can size.
+
 ```tsx
 <Badge size="sm">Small</Badge>
 <Badge size="md">Medium</Badge>
@@ -117,7 +119,7 @@ Status is not a prop: it comes from the surrounding `--loam-context` region (see
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `size` | `"sm" \| "md" \| "lg"` | `"md"` | Control size: the type step, with the pill's geometry in em on it. |
-| `render` | `RenderProp` | — | Substitute the element (render={<a href=… />} for a tag that is a link); the Badge's class and attributes merge onto it. |
+| `render` | `element \| (props) => node` | — | Substitute the element (render={<a href=… />} for a tag that is a link); the Badge's class and attributes merge onto it. |
 | `children` | `ReactNode` | — | The badge content: label, and any composed icons. |
 | `...others` | `SpanHTMLAttributes` | — | All native <span> props are forwarded. |
 

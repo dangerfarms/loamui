@@ -63,12 +63,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* An empty state on a Card: a centred column of picture, title, a line
-   on why it is empty and one next step. The Card is rendered as a div,
-   because a section would be one landmark too many for a list that is
-   simply empty; it is the scope root, so its own surface, line, radius
-   and padding are left alone, and the SignpostLink inside stays behind
-   the donut. The Card decides the width and the fluid tokens answer it. */
 @scope (.empty-state) to ([class*="loam-"]) {
   :scope {
     align-content: center;
@@ -80,8 +74,6 @@ export default function Example() {
     text-align: center;
   }
 
-  /* The picture is decorative and set dim, so it sits behind the title
-     rather than competing with it. */
   svg {
     block-size: 4rem;
     color: var(--loam-color-fg-dim);

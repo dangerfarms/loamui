@@ -21,6 +21,7 @@ An example in **Buttons**: a component and a stylesheet built from `@loamui/core
 - **Native CSS.** The bar is a native <progress> with a value, not a div with a width: the browser paints the fill and exposes the percentage. It is a sibling of the button laid over its edge, because a <button> may hold only phrasing content, and the button is disabled with the attribute, so a second click cannot start a second upload.
 - **Modern CSS.** The stack is a one-cell inline grid: the Button fills it by auto-placement and the bar is placed into the same cell by grid-area and aligned to the end, so nothing is measured or absolutely positioned; a primary region colours both.
 - **Composition.** Button and Progress as core ships them, with the example's own timer standing in for the request's progress events; the words in the button change with the state, and the confirmation is a status paragraph under it.
+- **Contextualism.** The stack declares --loam-context: primary because the Button and its bar are the one action; primary is the brand slot, neutral until a theme fills it, and a theme that does recolours both as one.
 - **Accessible & gatekept.** The button's words say what is happening (Uploading 5 photos…) and the bar is named Upload progress with its value read as 40% uploaded; when the upload finishes, a polite status region says 5 photos uploaded, so a screen reader hears the end even though the disabled button could not keep focus. The bar keeps its border and Highlight fill in forced colours.
 
 ## Example.tsx
@@ -92,14 +93,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Button and the Progress are core parts past the donut, laid one
-   over the other by the example's stack: an inline grid with one cell,
-   which the Button fills by auto-placement and the bar is placed into by
-   name, sitting on the button's bottom edge inside its border. The bar is
-   a sibling, not a child, because a <button> may hold only phrasing
-   content and a progress bar is not; it is painted where it reads as
-   part of the button. The stack is a primary region, so the button and
-   the bar's fill answer the same colour. */
 @scope (.button-with-progress) to ([class*="loam-"]) {
   :scope {
     display: block grid;
@@ -113,6 +106,8 @@ export default function Example() {
     display: inline grid;
   }
 
+  /* A sibling, not a child: a <button> holds only phrasing content, and a
+     progress bar is not. */
   span.bar {
     align-self: end;
     grid-area: 1 / 1;
@@ -121,7 +116,6 @@ export default function Example() {
     pointer-events: none;
   }
 
-  /* The confirmation keeps its line while empty, so nothing below jumps. */
   p {
     color: var(--loam-color-fg-muted);
     font-size: var(--loam-text-sm);

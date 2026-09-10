@@ -67,10 +67,9 @@ export default function Example() {
   const [matches, setMatches] = useState<string[] | null>(null);
   const [searching, setSearching] = useState(false);
 
-  // The seed list is the external system: every change of text starts a
-  // search and abandons the one before it, so a slow answer never lands
-  // on top of a newer question. Choosing an option writes its name into
-  // the box, which is not a new question.
+  // Every change of text starts a search and abandons the one before it, so
+  // a slow answer never lands on top of a newer question; choosing an option
+  // writes its name into the box, which is not a new question.
   useEffect(() => {
     const text = query.trim();
     if (text === "") {
@@ -113,14 +112,7 @@ export default function Example() {
         labels={{
           // Read from the answer, not the list's own count, which registers
           // a render after the options mount.
-          status: () =>
-            searching
-              ? "Searching the seed list"
-              : matches === null
-                ? ""
-                : matches.length === 1
-                  ? "1 variety matches"
-                  : `${matches.length} varieties match`,
+          status: () => status,
           empty: "No varieties match",
         }}
       >
@@ -153,20 +145,14 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The root is the core Field, which stacks the label, the description, the
-   Combobox and the status line. The Combobox, its Input and the list are
-   core parts past the donut; the example reaches the status line and sets
-   the one hook the Loader inherits, so the spinner in the box's end
-   section is the size of an icon there and never stretches the derived
-   control height. */
 @scope (.autocomplete-async) to ([class*="loam-"]) {
   :scope {
     --loam-loader-size: calc(1.125 * var(--loam-text-sm));
+
+    max-inline-size: 28rem;
   }
 
-  /* Written for sighted users beside the box; the Combobox's own status
-     region says the same words, so this line is not a second live region.
-     It keeps its height while empty so the field does not jump. */
+  /* Plain text: the Combobox's own status region is the live one. */
   p.status {
     color: var(--loam-color-fg-muted);
     font-size: var(--loam-text-sm);

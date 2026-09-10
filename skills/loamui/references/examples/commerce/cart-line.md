@@ -22,35 +22,37 @@ An example in **Commerce**: a component and a stylesheet built from `@loamui/cor
 - **Modern CSS.** Named grid areas place every part, and a narrower line rearranges them by container query: the totals fold under the name and the control shares the last row with the remove action.
 - **Composition.** QuantityInput self-wires from the Field around it, so the label, id and any error reach the input without a prop; the line does no arithmetic, and the total is a Price the page computes.
 - **Contextualism.** The remove action is a neutral Button on purpose: taking a packet out of a basket is not a destructive act, so it is not in a danger region.
-- **Accessible & gatekept.** The Field's label is real text hidden from view, so a screen reader hears "Quantity of Sweet pea ‘Cupani’ seeds" rather than "Quantity" three times in a basket, and the remove button names the product the same way; the thumbnail's alt is empty because the name is beside it.
+- **Accessible & gatekept.** The Field's label is real text hidden from view, so a screen reader hears "Quantity of Climbing bean ‘Blue Lake’ seeds" rather than "Quantity" three times in a basket, and the remove button names the product the same way; the thumbnail's alt is empty because the name is beside it.
 
 ## Example.tsx
 
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Button, Field, Price, QuantityInput } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const title = useId();
   return (
-    <article className="cart-line" aria-labelledby="cart-line-title">
+    <article className="cart-line" aria-labelledby={title}>
       <div className="inner">
         <img
           className="media"
-          src="https://picsum.photos/seed/hedgerow-sweet-pea/300/300"
+          src="https://picsum.photos/id/627/300/300"
           alt=""
           width="300"
           height="300"
         />
-        <h3 id="cart-line-title">
-          <a href="/seeds/sweet-pea-cupani">Sweet pea ‘Cupani’ seeds</a>
+        <h3 id={title}>
+          <a href="/seeds/climbing-bean-blue-lake">Climbing bean ‘Blue Lake’ seeds</a>
         </h3>
         <p className="options">Packet of 25 seeds</p>
         <div className="control">
           <Field.Root>
             <Field.Label className="loam-VisuallyHidden">
-              Quantity of Sweet pea ‘Cupani’ seeds
+              Quantity of Climbing bean ‘Blue Lake’ seeds
             </Field.Label>
             <QuantityInput name="quantity" defaultValue={2} min={1} max={10} />
           </Field.Root>
@@ -65,7 +67,7 @@ export default function Example() {
         </p>
         <div className="actions">
           <Button>
-            Remove<span className="loam-VisuallyHidden"> Sweet pea ‘Cupani’ seeds</span>
+            Remove<span className="loam-VisuallyHidden"> Climbing bean ‘Blue Lake’ seeds</span>
           </Button>
         </div>
       </div>
@@ -77,21 +79,15 @@ export default function Example() {
 ## example.css
 
 ```css
-/* One line of a basket: a thumbnail beside the name, options and
-   quantity, with the total, its unit price and the remove action in an
-   end column. The article is the container and the inner element is the
-   grid, because an element cannot answer its own container query. The
-   donut keeps the Field, the QuantityInput, the Prices and the Button on
-   their own styles. Every part has a named area, so a line written
-   without one of them leaves no hole. */
 @scope (.cart-line) to ([class*="loam-"]) {
   :scope {
-    /* The separator is a border, so forced colours keep it. */
     border-block-end: 1px solid var(--loam-color-line);
     container-type: inline-size;
     padding-block: var(--loam-space-md);
   }
 
+  /* The inner element is the grid: an element cannot answer its own
+     container query. */
   div.inner {
     align-items: start;
     column-gap: var(--loam-space-md);
@@ -112,8 +108,6 @@ export default function Example() {
     object-fit: cover;
   }
 
-  /* The name is the link and keeps its underline: the row holds a
-     control the link must read apart from. */
   h3 {
     font-size: var(--loam-text-md);
     grid-area: title;
@@ -136,8 +130,6 @@ export default function Example() {
     margin-block-start: var(--loam-space-sm);
   }
 
-  /* The total sits beside the name, at the end, with the unit price under
-     it in the small muted text, and the remove action ends the last row. */
   p.total {
     font-weight: 600;
     grid-area: total;
@@ -159,9 +151,6 @@ export default function Example() {
     margin-block-start: var(--loam-space-sm);
   }
 
-  /* Narrow: the end column folds under the text, the total and the unit
-     price back at the start, and the control shares the last row with
-     the remove action. The article answers; the inner grid changes. */
   @container (inline-size < 30rem) {
     div.inner {
       grid-template-areas:

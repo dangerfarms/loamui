@@ -1,51 +1,71 @@
 "use client";
 
-import { Highlight, themes } from "prism-react-renderer";
-import { useState, useSyncExternalStore } from "react";
+import { Highlight, type PrismTheme } from "prism-react-renderer";
+import { CopyButton } from "@loamui/core";
+import { useScrollable } from "./scrollable";
 import classes from "./CodeBlock.module.css";
 
-// One store for every CodeBlock on the page: a single observer + media
-// query fan out to all subscribers, and the snapshot reads the data-theme
-// attribute (the site's only scheme override) rather than getComputedStyle,
-// which would force a style flush per block per render.
-const schemeListeners = new Set<() => void>();
-let teardownScheme: (() => void) | undefined;
+/**
+ * The highlighter's palette, drawn from the library's own tokens: every
+ * colour is a light-dark() pair the contrast audit already holds to 4.5:1
+ * as text on the surface, so one theme serves both schemes and a block
+ * re-colours with the page instead of swapping themes after hydration.
+ */
+const THEME: PrismTheme = {
+  plain: { color: "var(--loam-color-fg)", backgroundColor: "transparent" },
+  styles: [
+    {
+      types: ["comment", "prolog", "doctype", "cdata"],
+      style: { color: "var(--loam-color-fg-muted)", fontStyle: "italic" },
+    },
+    {
+      types: ["punctuation", "operator"],
+      style: { color: "var(--loam-color-fg-muted)" },
+    },
+    {
+      types: ["keyword", "atrule", "rule", "important", "tag", "deleted"],
+      style: { color: "var(--loam-color-danger-strong)" },
+    },
+    {
+      types: ["string", "attr-value", "char", "inserted", "url"],
+      style: { color: "var(--loam-color-success-strong)" },
+    },
+    {
+      types: ["function", "class-name", "maybe-class-name", "builtin"],
+      style: { color: "var(--loam-color-info-strong)" },
+    },
+    {
+      types: ["property", "selector", "attr-name", "unit"],
+      style: { color: "var(--loam-color-link)" },
+    },
+    {
+      types: ["number", "constant", "boolean", "symbol", "regex"],
+      style: { color: "var(--loam-color-warning-strong)" },
+    },
+    {
+      types: ["variable", "parameter"],
+      style: { color: "var(--loam-color-fg)" },
+    },
+  ],
+};
 
-function subscribeScheme(onChange: () => void) {
-  schemeListeners.add(onChange);
-  if (!teardownScheme) {
-    const notify = () => {
-      for (const l of schemeListeners) l();
-    };
-    const obs = new MutationObserver(notify);
-    obs.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-theme"],
-    });
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    mq.addEventListener("change", notify);
-    teardownScheme = () => {
-      obs.disconnect();
-      mq.removeEventListener("change", notify);
-      teardownScheme = undefined;
-    };
-  }
-  return () => {
-    schemeListeners.delete(onChange);
-    if (schemeListeners.size === 0) teardownScheme?.();
-  };
-}
+const LANGUAGE_NAMES: Record<string, string> = {
+  tsx: "TSX",
+  jsx: "JSX",
+  ts: "TypeScript",
+  js: "JavaScript",
+  css: "CSS",
+  bash: "shell",
+  sh: "shell",
+  html: "HTML",
+  json: "JSON",
+};
 
-function isDarkSnapshot(): boolean {
-  const pinned = document.documentElement.dataset.theme;
-  if (pinned === "dark" || pinned === "light") return pinned === "dark";
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
-}
-
-function useIsDark() {
-  return useSyncExternalStore(subscribeScheme, isDarkSnapshot, () => false);
-}
-
+/**
+ * A highlighted code listing with the library's own CopyButton (which
+ * announces the copy, and its failure). Long lines scroll inside the
+ * block; once they do, the block is a named region in the Tab order.
+ */
 export function CodeBlock({
   code,
   language = "tsx",
@@ -55,31 +75,17 @@ export function CodeBlock({
   language?: string;
   className?: string;
 }) {
-  const dark = useIsDark();
-  const [copied, setCopied] = useState(false);
-
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1600);
-    } catch {
-      /* ignore */
-    }
-  };
+  const name = LANGUAGE_NAMES[language] ?? language;
+  const scroll = useScrollable<HTMLPreElement>(`${name} code`);
 
   return (
     <div className={`${classes.wrap} ${className ?? ""}`}>
-      <button className={classes.copy} onClick={copy} type="button">
-        {copied ? "Copied" : "Copy"}
-      </button>
-      <Highlight
-        code={code.trim()}
-        language={language}
-        theme={dark ? themes.vsDark : themes.github}
-      >
+      <CopyButton className={classes.copy} value={code.trim()} aria-label={`Copy ${name} code`}>
+        Copy
+      </CopyButton>
+      <Highlight code={code.trim()} language={language} theme={THEME}>
         {({ tokens, getLineProps, getTokenProps }) => (
-          <pre className={classes.pre}>
+          <pre className={classes.pre} {...scroll}>
             {tokens.map((line, i) => (
               <span key={i} {...getLineProps({ line })} className={classes.line}>
                 {line.map((token, key) => (

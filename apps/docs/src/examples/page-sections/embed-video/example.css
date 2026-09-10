@@ -1,6 +1,3 @@
-/* A hosted video in a figure. The frame is sized by ratio before it
-   loads, so the page never shifts when it does, and the subtle background
-   is its footprint in the meantime. */
 @scope (.embed-video) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -18,8 +15,8 @@
     display: block flow;
     inline-size: 100%;
 
-    /* Forced colours drop the background, so the footprint would vanish
-       until the frame loads; a border in the text colour keeps it. */
+    /* Forced colours drop the footprint; the border keeps it until the frame
+       loads. */
     @media (forced-colors: active) {
       border: 1px solid CanvasText;
     }

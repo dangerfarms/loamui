@@ -1,8 +1,3 @@
-/* The section is the container and the list is the grid: three columns,
-   the labels a share of the width with a floor so they never crush, the
-   values the rest, the change links their own width. Each row is a subgrid
-   of the list, so the link column is one width down the whole list and a
-   row without a link leaves it empty; the values align on both sides. */
 @scope (.summary-list) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -19,9 +14,6 @@
     margin: 0;
   }
 
-  /* A rule between rows, not a box around them: the list reads as one
-     thing. The row spans every column and lays its cells on the list's
-     tracks. */
   div.row {
     border-block-end: 1px solid var(--loam-color-line);
     display: block grid;
@@ -36,41 +28,34 @@
     font-weight: 600;
   }
 
-  /* A long value (an email, a reference) breaks rather than widening its
-     column; nothing truncates. */
   dd {
     margin: 0;
     overflow-wrap: anywhere;
-  }
 
-  /* A value that is several things: one per line, no markers, no indent. */
-  dd.value {
-    ul {
-      display: block grid;
-      gap: var(--loam-space-xs);
-      list-style: none;
-      margin: 0;
-      padding: 0;
+    &.value {
+      ul {
+        display: block grid;
+        gap: var(--loam-space-xs);
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        margin: 0;
+      }
     }
 
-    li {
-      margin: 0;
+    &.change {
+      grid-column: 3;
+      grid-row: 1;
+      text-align: end;
+      white-space: nowrap;
     }
   }
 
-  /* The link sits at the end of the row's first line and never wraps
-     mid-word: its column is sized to it. */
-  dd.change {
-    grid-column: 3;
-    grid-row: 1;
-    text-align: end;
-    white-space: nowrap;
-  }
-
-  /* Narrow: one column, label over value over link, the link at the start
-     where the eye returns. The query sits on the rows because a container
-     query is answered by an ancestor, never by the element that declares
-     it. */
+  /* A container query is answered by an ancestor, never by the element that
+     declares it. */
   @container (inline-size < 36rem) {
     div.row {
       grid-template-columns: 1fr;

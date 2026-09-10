@@ -12,16 +12,16 @@ A site header where Growing opens a wide panel: a grid of six guides with an ico
 
 An example in **Navigation**: a component and a stylesheet built from `@loamui/core`, to copy into a project and change. Both files are below, exactly as the live preview renders them.
 
-- Uses: `Nav`, `Popover`, `SignpostLink`
-- Tags: site header, mega menu, popover, guides, navbar
+- Uses: `Nav`, `SignpostLink`
+- Tags: site header, mega menu, dropdown, guides, navbar
 - Live: https://loamui.com/examples/navigation/header-mega-menu
 
 ## Built to the pillars
 
-- **Native CSS.** The panel is a native popover in the top layer, so light dismiss and Escape are the browser's, and every guide inside is a plain anchor; the panel opens on a press, not on hover, so a keyboard and a touch screen open the same thing.
-- **Modern CSS.** The panel takes its width from Popover's public --loam-popover-size and the guides fill it with auto-fill columns, so two sit side by side where there is room and one where there is not; the foot strip spans edge to edge by giving the popup's padding back.
-- **Composition.** Popover.Trigger is substituted through render for a bare button dressed as the links beside it, and the panel is Title, Description and the example's own grid: the popup's surface, tether and dismissal stay Popover's.
-- **Accessible & gatekept.** The panel is a dialog named by its Title and described by its Description, its trigger reports aria-expanded and aria-haspopup, and each guide is named by its title and text together, so a screen reader hears what a link leads to before following it.
+- **Native CSS.** The panel is a native popover in the top layer, so light dismiss and Escape are the browser's, and every guide inside is an anchor in a list; the panel opens on a press, not on hover, so a keyboard and a touch screen open the same thing.
+- **Modern CSS.** The panel's width is Nav's public --loam-nav-dropdown-size, raised to 32rem on the Root where the panel reads it, and the guides fill it with auto-fill columns, so two sit side by side where there is room and one where there is not; the strip at the foot is a box with its own padding inside the panel's.
+- **Composition.** The wide panel is Nav's own disclosure: a Dropdown in an Item holds a DropdownTrigger, set like the links beside it, and a DropdownPanel holding a List of Links; each guide is a Nav.Link with the example's own icon and two lines of words inside, so the grid, the words and the foot are the example's and the lines, the surface, the tether and the dismissal stay Nav's.
+- **Accessible & gatekept.** A panel of pages is a disclosure, not a menu or a dialog: the trigger is a button reporting aria-expanded and aria-controls, and the panel holds plain links Tab walks like any others, with no menu roles to learn; it opens on click and never on hover, and each guide is named by its title and text together, so a screen reader hears what a link leads to before following it.
 
 ## Example.tsx
 
@@ -29,7 +29,7 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 "use client";
 
 import type { ReactNode } from "react";
-import { Nav, Popover, SignpostLink } from "@loamui/core";
+import { Nav, SignpostLink } from "@loamui/core";
 import "./example.css";
 
 const icon = {
@@ -134,31 +134,22 @@ export default function Example() {
             <Nav.Link href="/plants">Plants</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Popover.Root>
-              <Popover.Trigger render={<button type="button" className="trigger" />}>
-                Growing
-                <svg {...icon}>
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              </Popover.Trigger>
-              <Popover.Popup>
-                <Popover.Title>Growing with Hedgerow</Popover.Title>
-                <Popover.Description>
-                  Guides written by the co-op&rsquo;s growers, free to read.
-                </Popover.Description>
-                <ul className="guides" role="list">
+            <Nav.Dropdown>
+              <Nav.DropdownTrigger>Growing</Nav.DropdownTrigger>
+              <Nav.DropdownPanel>
+                <Nav.List className="guides">
                   {GUIDES.map((guide) => (
-                    <li key={guide.href}>
-                      <a href={guide.href}>
+                    <Nav.Item key={guide.href}>
+                      <Nav.Link href={guide.href}>
                         <svg {...icon}>{guide.glyph}</svg>
                         <span className="text">
                           <strong>{guide.title}</strong>
                           <span>{guide.text}</span>
                         </span>
-                      </a>
-                    </li>
+                      </Nav.Link>
+                    </Nav.Item>
                   ))}
-                </ul>
+                </Nav.List>
                 <div className="foot">
                   <p>
                     <strong>New to growing?</strong> The beginners&rsquo; course runs every spring
@@ -166,8 +157,8 @@ export default function Example() {
                   </p>
                   <SignpostLink href="/courses/beginners">See the course</SignpostLink>
                 </div>
-              </Popover.Popup>
-            </Popover.Root>
+              </Nav.DropdownPanel>
+            </Nav.Dropdown>
           </Nav.Item>
           <Nav.Item>
             <Nav.Link href="/events">Open days</Nav.Link>
@@ -186,10 +177,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The header is the container: the brand, the nav and the actions share
-   a row where it has room, and the nav takes a row of its own beneath the
-   other two where it has not. The donut leaves the Nav, the Popover and
-   the SignpostLinks on their own styles. */
 @scope (.header-mega-menu) to ([class*="loam-"]) {
   :scope {
     align-items: center;
@@ -224,24 +211,34 @@ export default function Example() {
     gap: var(--loam-space-md);
     margin-inline-start: auto;
 
+    /* Underlined at rest, lightly: a link is known by more than its place. */
     > a {
       color: var(--loam-color-fg);
       font-size: var(--loam-text-sm);
       font-weight: 500;
-      text-decoration: none;
+      text-decoration-color: var(--loam-color-line-strong);
+
+      &:focus-visible {
+        text-decoration-color: currentcolor;
+      }
 
       @media (hover: hover) {
         &:hover {
-          text-decoration: underline;
+          text-decoration-color: var(--loam-color-primary);
         }
       }
     }
   }
 }
 
-/* Core's Nav, placed from its own scope: a flex row on the List, and the
-   last row of the header where it is narrow. */
 @scope (.header-mega-menu .loam-Nav) to ([class*="loam-"]) {
+  :scope {
+    /* Both are read by descendants (a style query, the panel's width), so
+       they are declared here, never on a link or the panel. */
+    --loam-nav-current-edge: block-end;
+    --loam-nav-dropdown-size: 32rem;
+  }
+
   ul.row {
     align-items: center;
     display: block flex;
@@ -257,125 +254,27 @@ export default function Example() {
   }
 }
 
-/* The Popover's trigger is a bare button, past the Nav's donut, dressed
-   as the links beside it: the elements layer's raised pill is set aside
-   for the line the Nav gives a link, with a transparent border on the
-   start side where a link keeps its marker. aria-expanded turns the
-   chevron. */
-@scope (.header-mega-menu .loam-Popover) to ([class*="loam-"]) {
-  button.trigger {
-    align-items: center;
-    background: none;
-    border: 0;
-    border-inline-start: 2px solid transparent;
-    border-radius: var(--loam-radius-md);
-    box-shadow: none;
-    color: var(--loam-color-fg);
-    display: block flex;
-    font-size: var(--loam-text-md);
-    font-weight: 400;
-    gap: var(--loam-space-xs);
-    line-height: 1.4;
-    min-block-size: var(--loam-nav-link-size, 2.25rem);
-    padding-block: var(--loam-space-xs);
-    padding-inline: var(--loam-space-sm);
-
-    svg {
-      block-size: auto;
-      inline-size: 1em;
-
-      @media (prefers-reduced-motion: no-preference) {
-        transition: rotate var(--loam-duration-sm) var(--loam-ease);
-      }
-    }
-
-    &[aria-expanded="true"] {
-      background: var(--loam-color-bg-subtle);
-      color: var(--loam-color-fg-strong);
-
-      svg {
-        rotate: 180deg;
-      }
-    }
-
-    @media (hover: hover) {
-      &:hover {
-        background: var(--loam-color-bg-subtle);
-        color: var(--loam-color-fg-strong);
-      }
-    }
-
-    @media (prefers-reduced-motion: no-preference) {
-      transition:
-        background var(--loam-duration-sm) var(--loam-ease),
-        color var(--loam-duration-sm) var(--loam-ease);
-    }
-  }
-}
-
-/* The panel is core's popup and carries its own class, so its contents
-   have a scope of their own. It is widened through Popover's public
-   --loam-popover-size and given that width outright, rather than sized
-   to its content, so the grid of guides knows how many columns fit: two
-   at the full width, one where the viewport is too narrow for two. */
-@scope (.header-mega-menu .loam-Popover-popup) to ([class*="loam-"]) {
-  :scope {
-    --loam-popover-size: 38rem;
-
-    inline-size: min(var(--loam-popover-size), 90vi);
-  }
-
-  /* Each guide is one link: an icon in the brand colour beside a title
-     over a line of description, on a line that lights when hovered. */
+/* The panel is a loam- root of its own, so what the example lays inside
+   it has a scope of its own: the grid on the List, the words inside each
+   link, and the strip at the foot. The links themselves are Nav's lines. */
+@scope (.header-mega-menu .loam-Nav-dropdown) to ([class*="loam-"]) {
   ul.guides {
-    display: block grid;
     gap: var(--loam-space-xs);
-    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-    list-style: none;
-    margin-block: var(--loam-space-md) 0;
-    margin-inline: 0;
-    padding: 0;
-
-    li {
-      margin: 0;
-    }
-
-    a {
-      align-items: start;
-      border-radius: var(--loam-radius-md);
-      color: var(--loam-color-fg);
-      display: block flex;
-      gap: var(--loam-space-sm);
-      padding: var(--loam-space-sm);
-      text-decoration: none;
-
-      @media (hover: hover) {
-        &:hover {
-          background: var(--loam-color-bg-subtle);
-        }
-      }
-
-      @media (prefers-reduced-motion: no-preference) {
-        transition: background var(--loam-duration-sm) var(--loam-ease);
-      }
-    }
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
 
     svg {
-      block-size: 1.25em;
+      align-self: start;
       color: var(--loam-color-primary-strong);
-      flex: none;
-      inline-size: 1.25em;
-      margin-block-start: calc(var(--loam-space-xs) / 2);
     }
+  }
 
-    span.text {
-      display: block grid;
-      gap: calc(var(--loam-space-xs) / 2);
+  span.text {
+    display: block grid;
+    gap: calc(var(--loam-space-xs) / 2);
 
-      > span {
-        color: var(--loam-color-fg-muted);
-        font-size: var(--loam-text-xs);
-      }
+    > span {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-xs);
     }
 
     strong {
@@ -385,22 +284,17 @@ export default function Example() {
     }
   }
 
-  /* The strip at the foot spans the panel edge to edge, the way a
-     separator would: the popup's padding is given back on three sides
-     and the panel's radius is followed on the two bottom corners. */
   div.foot {
     align-items: center;
     background: var(--loam-color-bg-subtle);
-    border-block-start: 1px solid var(--loam-color-line);
-    border-end-end-radius: calc(var(--loam-radius-md) - 1px);
-    border-end-start-radius: calc(var(--loam-radius-md) - 1px);
+    border-radius: var(--loam-radius-sm);
     display: block flex;
     flex-wrap: wrap;
     gap: var(--loam-space-sm) var(--loam-space-md);
     justify-content: space-between;
-    margin-block: var(--loam-space-md) calc(-1 * var(--loam-space-md));
-    margin-inline: calc(-1 * var(--loam-space-md));
-    padding: var(--loam-space-md);
+    margin-block-start: var(--loam-space-xs);
+    padding-block: var(--loam-space-sm);
+    padding-inline: var(--loam-space-md);
 
     p {
       color: var(--loam-color-fg-muted);

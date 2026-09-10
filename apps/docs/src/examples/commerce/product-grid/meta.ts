@@ -14,7 +14,7 @@ export const meta: ExampleMeta = {
     composition:
       "The grid is the example's own CSS and the card inside is the Product Card example unchanged; the offer and the old price appear only on the product that has them.",
     context:
-      "Every card's action row is a primary region and its offer a success one, so four Buttons and a Badge are coloured by two declarations rather than five props.",
+      "Every card's action row is a primary region and its offer a success one, so four Buttons and a Badge are coloured by two declarations rather than five props; primary is the brand slot, neutral until a theme fills it, and a theme that does recolours all four at once.",
     accessible:
       'Four identical-looking buttons have four different names, each ending in its product, and each review count reads "reviews" to a screen reader while showing only the figure.',
   },

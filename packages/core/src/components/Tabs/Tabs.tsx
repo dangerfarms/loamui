@@ -1,18 +1,10 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { createContext, useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import type { KeyboardEvent, ReactNode } from "react";
 import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
+import { useRequiredContext } from "../../context";
 import { composeRefs } from "../../render";
 
 interface TabsContextValue {
@@ -26,11 +18,7 @@ interface TabsContextValue {
 const TabsContext = createContext<TabsContextValue | null>(null);
 
 function useTabsContext(part: string): TabsContextValue {
-  const ctx = useContext(TabsContext);
-  if (!ctx) {
-    throw new Error(`${part} must be rendered inside <Tabs.Root>.`);
-  }
-  return ctx;
+  return useRequiredContext(TabsContext, part, "Tabs.Root");
 }
 
 interface TabsRootCommonProps extends Omit<PartProps<"div">, "onChange" | "defaultValue"> {

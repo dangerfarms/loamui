@@ -21,6 +21,7 @@ An example in **Buttons**: a component and a stylesheet built from `@loamui/core
 - **Native CSS.** The items are links, because each creates something on its own page; the popup is a native popover in the top layer with light dismiss and Escape, anchored to the button where the browser has anchor positioning.
 - **Modern CSS.** One declaration: the Menu is a primary region, so the button's colour is answered by context and no variant is passed; the icons are svg children that the Button and the items detect and size on their own text.
 - **Composition.** Menu.Root, Trigger, Popup and Item as core ships them, the icons ordinary children detected by the stylesheet; the trigger is the default core Button with a plus before its words and a chevron after.
+- **Contextualism.** The Menu declares --loam-context: primary because its trigger is the area's action; primary is the brand slot, neutral until a theme fills it, so the declaration says where the action belongs rather than making it stand out.
 - **Accessible & gatekept.** The button is named Create new with aria-haspopup, so a screen reader hears that a menu follows; ArrowDown opens it on the first item, the arrows move through, typing a letter jumps to an item, and choosing one closes the menu and follows the link. The icons are aria-hidden: the words name every item.
 
 ## Example.tsx
@@ -107,10 +108,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The root is core's Menu. It is declared a primary region, so the
-   trigger Button inside re-answers its colour as the page's action; the
-   Button, the popup and its items are core parts past the donut and keep
-   their own layout, icon sizing and forced-colours treatment. */
 @scope (.button-with-menu) to ([class*="loam-"]) {
   :scope {
     --loam-context: primary;

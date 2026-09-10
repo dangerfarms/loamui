@@ -41,6 +41,8 @@ const doc: ComponentContent = {
     },
     {
       title: "Sizes",
+      description:
+        "size is one of three tokens, emitted as data-size: the type step, with the pill's geometry in em on it. It is the one size prop the library keeps for display components, because a pill is an intrinsic glyph that no container can size.",
       code: `<Badge size="sm">Small</Badge>
 <Badge size="md">Medium</Badge>
 <Badge size="lg">Large</Badge>`,
@@ -146,7 +148,7 @@ const doc: ComponentContent = {
     },
     {
       name: "render",
-      type: "RenderProp",
+      type: "element | (props) => node",
       description:
         "Substitute the element (render={<a href=… />} for a tag that is a link); the Badge's class and attributes merge onto it.",
     },

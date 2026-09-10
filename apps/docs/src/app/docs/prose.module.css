@@ -1,13 +1,14 @@
+/* The same column and title scale as a component page, so the two page
+   types line up when a reader moves between them. */
 .prose {
-  max-inline-size: 46rem;
-  padding-block-start: 0.5rem;
+  max-inline-size: var(--site-column);
 
   :is(h1, h2, h3) {
     text-wrap: balance;
   }
 
   h1 {
-    font-size: clamp(2rem, 1.829rem + 0.8571vi, 2.6rem);
+    font-size: var(--site-h1);
     font-weight: 800;
     margin-block-end: 0.75rem;
   }
@@ -15,7 +16,7 @@
   h2 {
     font-size: var(--loam-text-xl);
     font-weight: 700;
-    margin-block: 2.5rem 1rem;
+    margin-block: 3rem 1rem;
     scroll-margin-block-start: 5rem;
   }
 
@@ -23,6 +24,14 @@
     font-size: var(--loam-text-lg);
     font-weight: 650;
     margin-block: 1.75rem 0.6rem;
+  }
+
+  /* Running text keeps a reading measure; code, tables and demos take the
+     full column. */
+  p,
+  ul,
+  ol {
+    max-inline-size: var(--site-measure);
   }
 
   p {

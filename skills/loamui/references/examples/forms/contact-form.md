@@ -21,6 +21,7 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - **Native CSS.** A native form named by its heading, with a native select for the subject that starts on a disabled prompt so a skipped subject submits nothing rather than the first option, and required catches it.
 - **Modern CSS.** The form is its own container and its own grid, capped at a readable width; the fields answer the form's width, not the viewport's.
 - **Composition.** Every field is a core Field around a core control; the example adds only the opening, the rhythm between fields and the actions row.
+- **Contextualism.** The actions row declares --loam-context: primary because the one Button is the form's action; primary is the brand slot, neutral until a theme fills it, so the declaration says where the action belongs, not that it stands out.
 - **Accessible & gatekept.** One column, always: a form is filled top to bottom, and fields set side by side make the eye and the tab order disagree. The note says when to expect a reply before anyone starts typing, the email field says what it is for, and the Button says what happens.
 
 ## Example.tsx
@@ -83,11 +84,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The form itself is the root and the grid: one column with a large gap
-   between the fields, and the container the fluid tokens answer, capped
-   at a readable measure. The Fields and the Button are core parts past
-   the donut; the rules here reach only the form's own heading, note and
-   actions row. */
 @scope (.contact-form) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -97,8 +93,6 @@ export default function Example() {
     max-inline-size: 36rem;
   }
 
-  /* The heading and the note are one opening, closer to each other than
-     the fields are, so the intro has a gap of its own. */
   div.intro {
     display: block grid;
     gap: var(--loam-space-sm);
@@ -115,9 +109,6 @@ export default function Example() {
     }
   }
 
-  /* A wrapping row, so the Button keeps its natural width: one column of
-     fields ends in one action, not a bar. The row is a primary region,
-     so that action takes the brand colour from where it sits. */
   div.actions {
     --loam-context: primary;
 

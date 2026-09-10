@@ -7,7 +7,7 @@ const doc: ComponentContent = {
   importLine: `import { Tabs } from "@loamui/core";`,
   demos: [
     {
-      title: "Basic",
+      title: "Basic usage",
       description: "Uncontrolled via defaultValue. Arrow keys move between tabs.",
       code: `<Tabs.Root defaultValue="account">
   <Tabs.List>

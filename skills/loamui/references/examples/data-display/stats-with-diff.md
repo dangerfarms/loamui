@@ -27,51 +27,56 @@ An example in **Data display**: a component and a stylesheet built from `@loamui
 ## Example.tsx
 
 ```tsx
-import type { ReactNode } from "react";
 import { Card, Price } from "@loamui/core";
 import "./example.css";
 
-interface Stat {
-  label: string;
-  value: ReactNode;
-  /** The change on August, as a whole percentage; negative is down. */
-  change: number;
+/** The change on August as a whole percentage; negative is down. */
+function Change({ percent }: { percent: number }) {
+  const up = percent >= 0;
+  return (
+    <dd className="diff" data-direction={up ? "up" : "down"}>
+      <svg
+        viewBox="0 0 16 16"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d={up ? "M3 11l5-5 5 5" : "M3 5l5 5 5-5"} />
+      </svg>
+      <span className="loam-VisuallyHidden">{up ? "Up" : "Down"}</span>{" "}
+      <span className="change">{Math.abs(percent)}%</span> on August
+    </dd>
+  );
 }
-
-const STATS: Stat[] = [
-  { label: "Sales", value: <Price value={24145} currency="GBP" locale="en-GB" />, change: 9 },
-  { label: "Orders posted", value: "2,318", change: 12 },
-  { label: "New members", value: "186", change: -4 },
-  { label: "Seed swaps", value: "57", change: 31 },
-];
 
 export default function Example() {
   return (
     <div className="stats-with-diff" role="group" aria-label="September so far, against August">
-      {STATS.map((stat) => {
-        const up = stat.change >= 0;
-        return (
-          <Card key={stat.label} render={<dl className="stat" />}>
-            <dt>{stat.label}</dt>
-            <dd className="value">{stat.value}</dd>
-            <dd className="diff" data-direction={up ? "up" : "down"}>
-              <svg
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d={up ? "M3 11l5-5 5 5" : "M3 5l5 5 5-5"} />
-              </svg>
-              <span className="loam-VisuallyHidden">{up ? "Up" : "Down"}</span>{" "}
-              <span className="change">{Math.abs(stat.change)}%</span> on August
-            </dd>
-          </Card>
-        );
-      })}
+      <Card render={<dl className="stat" />}>
+        <dt>Sales</dt>
+        <dd className="value">
+          <Price value={24145} currency="GBP" locale="en-GB" />
+        </dd>
+        <Change percent={9} />
+      </Card>
+      <Card render={<dl className="stat" />}>
+        <dt>Orders posted</dt>
+        <dd className="value">2,318</dd>
+        <Change percent={12} />
+      </Card>
+      <Card render={<dl className="stat" />}>
+        <dt>New members</dt>
+        <dd className="value">186</dd>
+        <Change percent={-4} />
+      </Card>
+      <Card render={<dl className="stat" />}>
+        <dt>Seed swaps</dt>
+        <dd className="value">57</dd>
+        <Change percent={31} />
+      </Card>
     </div>
   );
 }
@@ -80,20 +85,15 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The row: a container that fits as many tiles across as it has room for. */
 @scope (.stats-with-diff) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
     display: block grid;
     gap: var(--loam-space-md);
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
   }
 }
 
-/* A tile is a Card hosting the example's own pairs, so the Card element
-   is this scope's root: the pairs are reachable, the Price inside is
-   still fenced by the donut, and the Card's surface, line, radius and
-   padding are left as they are. */
 @scope (.stats-with-diff dl.stat) to ([class*="loam-"]) {
   :scope {
     display: block grid;
@@ -117,9 +117,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* The change: a glyph and the figure in the direction's colour, the
-     comparison in muted text after them. The direction is also a word,
-     so the colour and the arrow are never the only things saying it. */
   dd.diff {
     align-items: center;
     color: var(--loam-color-fg-muted);

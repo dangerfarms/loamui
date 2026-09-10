@@ -1,27 +1,29 @@
 "use client";
 
+import { useId } from "react";
 import { Button, Field, Price, QuantityInput } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const title = useId();
   return (
-    <article className="cart-line" aria-labelledby="cart-line-title">
+    <article className="cart-line" aria-labelledby={title}>
       <div className="inner">
         <img
           className="media"
-          src="https://picsum.photos/seed/hedgerow-sweet-pea/300/300"
+          src="https://picsum.photos/id/627/300/300"
           alt=""
           width="300"
           height="300"
         />
-        <h3 id="cart-line-title">
-          <a href="/seeds/sweet-pea-cupani">Sweet pea ‘Cupani’ seeds</a>
+        <h3 id={title}>
+          <a href="/seeds/climbing-bean-blue-lake">Climbing bean ‘Blue Lake’ seeds</a>
         </h3>
         <p className="options">Packet of 25 seeds</p>
         <div className="control">
           <Field.Root>
             <Field.Label className="loam-VisuallyHidden">
-              Quantity of Sweet pea ‘Cupani’ seeds
+              Quantity of Climbing bean ‘Blue Lake’ seeds
             </Field.Label>
             <QuantityInput name="quantity" defaultValue={2} min={1} max={10} />
           </Field.Root>
@@ -36,7 +38,7 @@ export default function Example() {
         </p>
         <div className="actions">
           <Button>
-            Remove<span className="loam-VisuallyHidden"> Sweet pea ‘Cupani’ seeds</span>
+            Remove<span className="loam-VisuallyHidden"> Climbing bean ‘Blue Lake’ seeds</span>
           </Button>
         </div>
       </div>

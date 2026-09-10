@@ -1,10 +1,4 @@
-/* The Table's own element is the scroll wrapper, so it is this scope's
-   root: the table and its cells are reachable, and the Avatars and the
-   Menus inside are fenced by the donut. The Table already rules the rows
-   and the header; this shapes three cells. */
 @scope (.users-table) to ([class*="loam-"]) {
-  /* The member is the row's header: read as the row, not as a figure,
-     with the picture beside the name on one line. */
   tbody th {
     font-weight: 500;
     text-align: start;
@@ -17,19 +11,16 @@
     white-space: nowrap;
   }
 
-  /* A phone number is one token; it never breaks across lines. */
   td.phone {
     white-space: nowrap;
   }
 
-  /* The actions column is as narrow as its button and sits at the end
-     of the row; the Menu inside keeps its own styles. */
+  /* Zero shrinks the column to its box. */
   td.actions {
     inline-size: 0;
     text-align: end;
   }
 
-  /* The form is plumbing around the last item and has no box of its own. */
   form {
     margin: 0;
   }

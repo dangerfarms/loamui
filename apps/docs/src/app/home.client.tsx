@@ -2,27 +2,21 @@
 
 import { useState } from "react";
 import type { CSSProperties } from "react";
-import { Avatar, Badge, Button, Field, Input, Switch } from "@loamui/core";
+import { Avatar, Badge, Button, CopyButton, Field, Input, Switch } from "@loamui/core";
 import classes from "./home.module.css";
 
+const INSTALL = "pnpm add @loamui/core";
+
 export function InstallSnippet() {
-  const [copied, setCopied] = useState(false);
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText("pnpm add @loamui/core");
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    } catch {
-      /* ignore */
-    }
-  };
   return (
     <div className={classes.install}>
-      <span className={classes.installPrompt}>$</span>
-      <span>pnpm add @loamui/core</span>
-      <button className={classes.installCopy} onClick={copy} type="button">
-        {copied ? "Copied" : "Copy"}
-      </button>
+      <span className={classes.installPrompt} aria-hidden>
+        $
+      </span>
+      <code>{INSTALL}</code>
+      <CopyButton className={classes.installCopy} value={INSTALL} aria-label="Copy install command">
+        Copy
+      </CopyButton>
     </div>
   );
 }

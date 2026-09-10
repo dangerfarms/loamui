@@ -1,9 +1,3 @@
-/* A team under a section header: a grid that fits as many people across
-   as the section's width allows, each a centred column of avatar, name
-   and role. The Avatar is sized through its public knob and otherwise
-   keeps its own recipe behind the donut. The list keeps its semantics
-   through role="list" in the markup, since list-style: none drops them
-   in some browsers. */
 @scope (.person-grid) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;

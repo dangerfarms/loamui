@@ -1,9 +1,10 @@
-/* The root is the core Field, which stacks the label, the description
-   and the row. The row is the example's: the box takes the width and the
-   CopyButton keeps its own, level with it; both are core parts past the
-   donut, and the CopyButton's box is display: contents, so its Button is
-   the grid's second cell exactly as a bare Button would be. */
 @scope (.copy-to-clipboard) to ([class*="loam-"]) {
+  :scope {
+    max-inline-size: 32rem;
+  }
+
+  /* CopyButton's box is display: contents, so its Button is the grid's second
+     cell. */
   div.row {
     align-items: end;
     display: block grid;

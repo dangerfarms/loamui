@@ -1,10 +1,3 @@
-/* A row of marks under a small heading. A wrapping flex row rather than
-   a grid: the marks differ in width, and equal columns would leave the
-   narrow ones swimming. Every mark shares one height and its width
-   follows from its own aspect ratio, so a square mark and a wide
-   wordmark read as one set. The list keeps its semantics through
-   role="list" in the markup, since list-style: none drops them in some
-   browsers. */
 @scope (.logo-wall) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -39,10 +32,8 @@
     margin: 0;
   }
 
-  /* Placeholder marks in one ink: a real page puts an img with the
-     organisation's name as its alt here, in the brand's own colour. A
-     mark is a picture, so the letters in it keep their order under
-     right-to-left text, as the letters in an img would. */
+  /* A mark is a picture: its letters keep their order under right-to-left
+     text. */
   svg {
     block-size: 2.5rem;
     color: var(--loam-color-fg-muted);

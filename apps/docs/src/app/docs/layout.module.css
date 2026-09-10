@@ -25,7 +25,9 @@
   padding-block: 2.5rem 4rem;
 }
 
-@media (width <= 60rem) {
+/* Queried against main, the page's container: below it the sidebar
+   folds into the header's drawer. */
+@container (width <= 60rem) {
   .shell {
     grid-template-columns: 1fr;
   }

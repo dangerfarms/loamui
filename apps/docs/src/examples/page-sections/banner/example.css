@@ -1,7 +1,3 @@
-/* An announcement bar for the top of a page: a message that takes the
-   row's slack and a link that keeps its width and wraps beneath when the
-   bar is narrow. A div with no role: a bar in the page from the start is
-   content, not news. */
 @scope (.banner) to ([class*="loam-"]) {
   :scope {
     align-items: center;
@@ -26,8 +22,7 @@
     white-space: nowrap;
   }
 
-  /* Forced colours: the tint goes with every background, so the bar
-     keeps an edge on every side and reads as a strip apart from the page. */
+  /* Forced colours drop the tint; the edge keeps the bounds. */
   @media (forced-colors: active) {
     :scope {
       border: 1px solid CanvasText;

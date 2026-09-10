@@ -80,10 +80,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* Four questions as native disclosures that share a name, so the browser
-   closes one as another opens with no script. Each Details paints its
-   own surface and line; the example adds only the heading, a line under
-   it and the rhythm between the questions. */
 @scope (.faq-simple) to ([class*="loam-"]) {
   :scope {
     display: block grid;

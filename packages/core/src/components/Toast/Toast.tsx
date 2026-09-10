@@ -1,19 +1,13 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent, ReactNode } from "react";
 import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
+import { useRequiredContext } from "../../context";
 import { composeRefs, mergeProps, renderWithProps } from "../../render";
 import type { RenderProp } from "../../render";
+import { useSupports } from "../../use-support";
 
 import { Button } from "../Button/Button";
 
@@ -90,11 +84,7 @@ interface ToastContextValue {
 const ToastContext = createContext<ToastContextValue | null>(null);
 
 function useToastContext(part: string): ToastContextValue {
-  const ctx = useContext(ToastContext);
-  if (!ctx) {
-    throw new Error(`${part} must be rendered inside <Toast.Provider>.`);
-  }
-  return ctx;
+  return useRequiredContext(ToastContext, part, "Toast.Provider");
 }
 
 /** Fire and dismiss toasts from anywhere under a Toast.Provider. */
@@ -235,20 +225,27 @@ function ToastProvider({ timeout = 5000, limit = 3, children }: ToastProviderPro
   return <ToastContext value={value}>{children}</ToastContext>;
 }
 
+/** The words the Viewport speaks. */
+export interface ToastViewportLabels {
+  /** The landmark's accessible name. @default "Notifications" */
+  region?: string;
+}
+
 export interface ToastViewportProps extends PartProps<"div"> {
   /** The words the region speaks: `region` names the landmark. */
-  labels?: { region?: string };
+  labels?: ToastViewportLabels;
+}
+
+/** The popover API, probed on the element prototype. */
+function supportsPopover(): boolean {
+  return typeof HTMLElement !== "undefined" && "showPopover" in HTMLElement.prototype;
 }
 
 function ToastViewport({ labels, className, children, ref: refProp, ...rest }: ToastViewportProps) {
   const ctx = useToastContext("Toast.Viewport");
   const ref = useRef<HTMLDivElement>(null);
   const composedRef = useMemo(() => composeRefs(refProp, ref), [refProp]);
-  const [enhanced, setEnhanced] = useState(false);
-  useEffect(
-    () => setEnhanced(typeof HTMLElement !== "undefined" && "showPopover" in HTMLElement.prototype),
-    [],
-  );
+  const enhanced = useSupports(supportsPopover);
 
   // The viewport stays in the top layer permanently so toasts inserted into
   // it are announced by their live-region roles: a hidden container would
@@ -304,11 +301,7 @@ function ToastViewport({ labels, className, children, ref: refProp, ...rest }: T
 const ToastItemContext = createContext<ToastData | null>(null);
 
 function useToastItem(part: string): ToastData {
-  const toast = useContext(ToastItemContext);
-  if (!toast) {
-    throw new Error(`${part} must be rendered inside <Toast.Root>.`);
-  }
-  return toast;
+  return useRequiredContext(ToastItemContext, part, "Toast.Root");
 }
 
 export interface ToastRootProps extends PartProps<"div"> {
@@ -445,9 +438,15 @@ export interface ToastCloseRenderProps {
   onClick: (e: ReactMouseEvent<Element>) => void;
 }
 
+/** The words the Close part speaks. */
+export interface ToastCloseLabels {
+  /** The button's accessible name. @default "Dismiss notification" */
+  dismiss?: string;
+}
+
 export interface ToastCloseProps extends PartProps<"button"> {
   /** The words the button speaks: `dismiss` is its accessible name. */
-  labels?: { dismiss?: string };
+  labels?: ToastCloseLabels;
   /** Substitute your own element; defaults to a LoamUI Button. */
   render?: RenderProp<ToastCloseRenderProps>;
 }
@@ -476,12 +475,15 @@ function ToastClose({ labels, render, children, ...rest }: ToastCloseProps) {
   );
 }
 
+/** The words the ready-made viewport speaks: the landmark's, then each Close's. */
+export interface ToastsLabels extends ToastViewportLabels, ToastCloseLabels {}
+
 export interface ToastsProps {
   /**
    * The words the viewport speaks: `region` names the landmark, `dismiss`
    * names each toast's close button.
    */
-  labels?: { region?: string; dismiss?: string };
+  labels?: ToastsLabels;
 }
 
 /**

@@ -122,18 +122,14 @@ export default function Example() {
 ## example.css
 
 ```css
-/* A title and its argument on one side, the four points that back it on
-   the other. The section is the container and the inner element the
-   grid, because an element cannot answer its own container query. The
-   points are their own small grid, two across when the column allows
-   and one otherwise, and the markup keeps role="list" for the browsers
-   that drop the semantics with the marker. */
 @scope (.features-with-title) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
     padding-block: var(--loam-space-xl);
   }
 
+  /* The inner element is the grid: an element cannot answer its own
+     container query. */
   div.inner {
     display: block grid;
     gap: var(--loam-space-xl);
@@ -162,9 +158,6 @@ export default function Example() {
     }
   }
 
-  /* The square is sized in em on the title's size, so it rides the fluid
-     scale with the text beside it. The glyph is the strong token on the
-     soft tint, the pair the audit checks as a glyph. */
   div.icon {
     align-items: center;
     background: var(--loam-color-primary-soft);
@@ -214,16 +207,13 @@ export default function Example() {
     gap: var(--loam-space-sm);
   }
 
-  /* Wide: the argument in the smaller column and the points in the
-     larger one, where their own grid has room for two across. */
   @container (inline-size >= 48rem) {
     div.inner {
       grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
     }
   }
 
-  /* Forced colours: the tint behind the glyph goes, so the square keeps
-     an edge and the glyph takes the system text colour. */
+  /* Forced colours drop the tint; the edge keeps the bounds. */
   @media (forced-colors: active) {
     div.icon {
       border: 1px solid CanvasText;

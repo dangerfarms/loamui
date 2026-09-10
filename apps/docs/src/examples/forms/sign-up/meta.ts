@@ -13,6 +13,8 @@ export const meta: ExampleMeta = {
       "The same 24rem Card as Sign in; the one thing added is the consent line, a Checkbox whose label holds two links and wraps inside the card's width with no rule of its own.",
     composition:
       "The same root, form and footer as Sign In with different fields inside: the shape is the example's, the questions are the page's.",
+    context:
+      "The actions row declares --loam-context: primary because the one Button is the form's action; primary is the brand slot, neutral until a theme fills it, so the declaration says where the action belongs, not that it stands out.",
     accessible:
       "The password rules sit before the box as a Field.Description, read and announced before anyone types, so nobody meets a rule for the first time in an error; there is no confirm-password field, because seeing the value catches more mistakes than retyping it; consent is an unticked Checkbox with the terms linked inside its label.",
   },

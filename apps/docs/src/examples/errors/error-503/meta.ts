@@ -14,7 +14,7 @@ export const meta: ExampleMeta = {
     composition:
       "Button is dropped in as it comes; the reload is the page's one line of behaviour, on the Button's own onClick.",
     context:
-      "The actions row is a primary region, so the Button takes the primary colour from where it sits rather than from a prop.",
+      "The actions row is a primary region, so the Button takes the primary colour from where it sits rather than from a prop; primary is the brand slot, neutral until a theme fills it, and the row declares where the one action belongs.",
     accessible:
       "The copy says what is happening and that the basket is safe before it says what to do, and the button says what it does in full: Refresh the page, not Retry.",
   },

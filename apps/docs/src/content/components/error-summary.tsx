@@ -96,7 +96,7 @@ const doc: ComponentContent = {
       props: [
         {
           name: "render",
-          type: "RenderProp",
+          type: "element | (props) => node",
           description:
             "Substitute the built-in <a>, e.g. a router link; the wiring (href, focus handling) merges onto it.",
         },
@@ -104,6 +104,12 @@ const doc: ComponentContent = {
           name: "href",
           type: "string",
           description: "Fragment link to the field the error belongs to (required).",
+        },
+        {
+          name: "onClick",
+          type: "(event: MouseEvent<HTMLAnchorElement>) => void",
+          description:
+            "Runs on activation, before focus moves to the field. Prevent the default to keep the fragment out of the URL; the field is focused either way.",
         },
       ],
     },

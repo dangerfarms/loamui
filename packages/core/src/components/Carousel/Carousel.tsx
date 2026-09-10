@@ -1,15 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { createContext, useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import type {
   KeyboardEvent as ReactKeyboardEvent,
   MouseEvent as ReactMouseEvent,
@@ -19,6 +10,7 @@ import type {
 } from "react";
 import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
+import { useRequiredContext } from "../../context";
 import { composeRefs, mergeProps, renderWithProps } from "../../render";
 import type { RenderProp } from "../../render";
 import { Button } from "../Button/Button";
@@ -84,11 +76,7 @@ interface CarouselContextValue {
 const CarouselContext = createContext<CarouselContextValue | null>(null);
 
 function useCarouselContext(part: string): CarouselContextValue {
-  const ctx = useContext(CarouselContext);
-  if (!ctx) {
-    throw new Error(`${part} must be rendered inside <Carousel.Root>.`);
-  }
-  return ctx;
+  return useRequiredContext(CarouselContext, part, "Carousel.Root");
 }
 
 function defaultIndicator(index: number, count: number): string {
@@ -360,6 +348,9 @@ function CarouselItem({ render, className, children, ref, ...rest }: CarouselIte
   const itemRef = useMemo(() => composeRefs(ref, ownRef), [ref]);
   const { register } = ctx;
 
+  // An effect, not a ref callback: the observer's root is the Track, whose
+  // ref attaches after its items' refs, so registering on attach would
+  // find no root to observe in.
   useEffect(() => {
     const el = ownRef.current;
     if (!el) return;

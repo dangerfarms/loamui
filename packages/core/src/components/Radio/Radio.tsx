@@ -1,9 +1,10 @@
 "use client";
 
-import { useContext, useId } from "react";
+import { use, useId } from "react";
 import type { ChangeEvent, ReactNode } from "react";
 import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
+import { idList } from "../../render";
 import { useFieldControlProps } from "../Field/Field";
 import { RadioGroupContext } from "./group-context";
 
@@ -36,7 +37,7 @@ function RadioControl({
   ...rest
 }: RadioControlProps) {
   const field = useFieldControlProps(ariaDescribedby);
-  const group = useContext(RadioGroupContext);
+  const group = use(RadioGroupContext);
   // No aria-invalid here: ARIA allows it on the radiogroup, not the
   // individual radio, so the group's fieldset carries composed errors.
   const resolvedId = id ?? field.id;
@@ -109,7 +110,7 @@ function RadioLabelled({
       <RadioControl
         ref={ref}
         id={inputId}
-        aria-describedby={cx(descId, ariaDescribedby) || undefined}
+        aria-describedby={idList(descId, ariaDescribedby)}
         {...control}
       />
       <span className="body">

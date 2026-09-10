@@ -19,13 +19,8 @@ const STOCK = [
 export default function Example() {
   return (
     <div className="table-sticky-header">
-      <Table
-        className="stock"
-        role="region"
-        aria-labelledby="table-sticky-header-caption"
-        tabIndex={0}
-      >
-        <caption id="table-sticky-header-caption">
+      <Table stickyHeader className="stock">
+        <caption>
           Seed stock on 8 September 2026, all 12 lines: scroll the list and the header stays.
         </caption>
         <thead>

@@ -64,9 +64,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* One comment whose body is formatted text. The article declares its own
-   container so the fluid tokens answer its width; the donut keeps the
-   Avatar and the Time on their own styles. */
 @scope (.comment-html) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -74,9 +71,6 @@ export default function Example() {
     gap: var(--loam-space-sm);
   }
 
-  /* The byline sets the small muted type and the Time takes it; the name
-     alone is set back to the body size, strong. A linked name keeps its
-     underline, so the affordance stays. */
   header {
     --loam-avatar-size: 2rem;
 
@@ -94,10 +88,6 @@ export default function Example() {
     font-weight: 600;
   }
 
-  /* The body is rich text held to the reading measure. The element
-     styles already set the link, the strong text and the list; this
-     only spaces the blocks, and the last one's margin goes so the grid
-     gap spaces what follows. */
   div.body {
     max-inline-size: var(--loam-measure);
 

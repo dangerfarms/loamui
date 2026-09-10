@@ -14,9 +14,9 @@ export const meta: ExampleMeta = {
     composition:
       "Card, Rating, Price, Badge and Button are used as they come; the Rating takes the row's small type and the Prices take the paragraph's, since neither sizes itself.",
     context:
-      "The offer sits in a success region and the action in a primary one, so the Badge and the Button take their colours from where they are, not from a prop.",
+      "The offer sits in a success region and the action in a primary one, so the Badge and the Button take their colours from where they are, not from a prop; primary is the brand slot, neutral until a theme fills it, so the row says where the action belongs rather than making it stand out.",
     accessible:
-      'The name is the link and the card is not; the reduction is read as "Was £3.50 Now £2.80" through hidden words rather than left to the strike; the button\'s name is "Add Sweet pea ‘Cupani’ seeds to basket", so a listing of buttons tells them apart.',
+      'The name is the link and the card is not; the reduction is read as "Was £3.50 Now £2.80" through hidden words rather than left to the strike; the button\'s name is "Add Climbing bean ‘Blue Lake’ seeds to basket", so a listing of buttons tells them apart.',
   },
   tags: ["shop", "listing", "price", "sale", "add to basket"],
   order: 1,

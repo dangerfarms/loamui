@@ -8,8 +8,8 @@ export default function Example() {
         <Card render={<article aria-labelledby="grid-asymmetric-lead" />}>
           <img
             className="media"
-            src="https://picsum.photos/seed/hedgerow-september/1200/800"
-            alt="The nursery bench in September, stacked with trays of perennials for the sale"
+            src="https://picsum.photos/id/646/1200/800"
+            alt="A member walking through the orchard in the September evening light"
             width="1200"
             height="800"
           />

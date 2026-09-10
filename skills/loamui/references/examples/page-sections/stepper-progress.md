@@ -84,10 +84,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* An order's progress: a header naming the order, the Stepper reading
-   done, current and upcoming from the one aria-current the markup sets,
-   and a way back. The Stepper keeps its own recipe behind the donut; the
-   example only spaces the three. */
 @scope (.stepper-progress) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;

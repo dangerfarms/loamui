@@ -12,16 +12,16 @@ A narrow rail of icon-only links, each named by text that is read but not seen a
 
 An example in **Navigation**: a component and a stylesheet built from `@loamui/core`, to copy into a project and change. Both files are below, exactly as the live preview renders them.
 
-- Uses: `Tooltip`
+- Uses: `Nav`, `Tooltip`
 - Tags: sidebar, rail, icons, tooltip, compact
 - Live: https://loamui.com/examples/navigation/side-nav-rail
 
 ## Built to the pillars
 
-- **Native CSS.** Real anchors in a nav landmark, each named by hidden text beside its icon rather than a title attribute, so the name is there for a screen reader, a search and a touch screen where hover never happens.
-- **Modern CSS.** The bubble is a native popover tethered by anchor positioning; side="right" is written with logical insets in Tooltip's stylesheet, so the bubble sits at the inline end and moves to the other side under right-to-left.
-- **Composition.** Tooltip.Trigger is rendered as the anchor, so one element is the link, the trigger and the bubble's anchor at once, and Tooltip.Provider around the rail lets a neighbour's bubble open at once after the first. Nav is left out: Tooltip.Root wraps each link in an element of its own that Nav's donut stops at, so a Nav.Link inside a tooltip would get none of Nav's rules, and the rail draws its squares itself from the tokens Nav uses.
-- **Accessible & gatekept.** The tooltip opens on keyboard focus as well as hover, stays while hovered, and closes on Escape without moving focus; it describes the link, whose name is the hidden text, so nothing depends on the bubble; the current page carries aria-current.
+- **Native CSS.** Real anchors in a nav landmark named Nursery, each named by hidden text beside its icon rather than a title attribute, so the name is there for a screen reader, a search and a touch screen where hover never happens.
+- **Modern CSS.** The bubble is a native popover tethered by anchor positioning; side="right" is written with logical insets in Tooltip's stylesheet, so the bubble sits at the inline end and moves to the other side under right-to-left; the square is Nav's public --loam-nav-link-size, declared once on the rail and inherited by every line.
+- **Composition.** The rail is a Nav: Root, List and Items, with each Tooltip.Trigger rendered as a Nav.Link, so one anchor is the link, the trigger and the bubble's anchor at once. Nav sets its lines from the link itself rather than from the landmark, so a link inside the Tooltip's own wrapper is still one of Nav's lines, and the example draws nothing by hand: it sizes the square, sizes its icon and makes the wrapper a block.
+- **Accessible & gatekept.** The tooltip opens on keyboard focus as well as hover, stays while hovered, and closes on Escape without moving focus; it describes the link, whose name is the hidden text, so nothing depends on the bubble; the current page carries aria-current and Nav marks it by a line and weight as well as a background.
 
 ## Example.tsx
 
@@ -29,7 +29,7 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 "use client";
 
 import type { ReactNode } from "react";
-import { Tooltip } from "@loamui/core";
+import { Nav, Tooltip } from "@loamui/core";
 import "./example.css";
 
 const icon = {
@@ -130,14 +130,12 @@ export default function Example() {
         <span className="loam-VisuallyHidden">Hedgerow</span>
       </a>
       <Tooltip.Provider>
-        <nav aria-label="Nursery">
-          <ul role="list">
+        <Nav.Root aria-label="Nursery">
+          <Nav.List>
             {LINKS.map((link) => (
-              <li key={link.href}>
+              <Nav.Item key={link.href}>
                 <Tooltip.Root>
-                  <Tooltip.Trigger
-                    render={<a href={link.href} aria-current={link.current ? "page" : undefined} />}
-                  >
+                  <Tooltip.Trigger render={<Nav.Link href={link.href} current={link.current} />}>
                     <svg {...icon}>{link.glyph}</svg>
                     <span className="loam-VisuallyHidden">{link.label}</span>
                   </Tooltip.Trigger>
@@ -146,10 +144,10 @@ export default function Example() {
                     <Tooltip.Arrow />
                   </Tooltip.Popup>
                 </Tooltip.Root>
-              </li>
+              </Nav.Item>
             ))}
-          </ul>
-        </nav>
+          </Nav.List>
+        </Nav.Root>
       </Tooltip.Provider>
     </div>
   );
@@ -159,18 +157,11 @@ export default function Example() {
 ## example.css
 
 ```css
-/* A rail: one column as wide as its squares, the brand at the top and
-   the links beneath. There is no Nav here on purpose: Tooltip.Root wraps
-   each link in an element of its own, which is a limit of Nav's donut, so
-   a Nav.Link inside a tooltip would never receive Nav's rules. The links
-   are plain anchors in a plain nav, and the rail draws them itself from
-   the same tokens Nav uses: a 2.75rem square, the target a thumb or a
-   pointer hits reliably when there are no words to aim at, and the
-   current page marked by a line and weight as well as a background. The
-   Tooltips and their popups are core's, past the donut. */
 @scope (.side-nav-rail) to ([class*="loam-"]) {
   :scope {
-    --_square: 2.75rem;
+    /* Nav's public line height, inherited by every link: a square a thumb
+       hits reliably when there are no words to aim at. */
+    --loam-nav-link-size: 2.75rem;
 
     border-inline-end: 1px solid var(--loam-color-line);
     display: block grid;
@@ -181,15 +172,13 @@ export default function Example() {
     padding-inline: var(--loam-space-sm);
   }
 
-  /* The brand is the icon alone, named by hidden text, in a square the
-     size of the links below so the column lines up. */
   a.brand {
     align-items: center;
-    block-size: var(--_square);
+    block-size: var(--loam-nav-link-size);
     border-radius: var(--loam-radius-md);
     color: var(--loam-color-primary-strong);
     display: inline flex;
-    inline-size: var(--_square);
+    inline-size: var(--loam-nav-link-size);
     justify-content: center;
 
     svg {
@@ -197,74 +186,18 @@ export default function Example() {
       inline-size: 1.75rem;
     }
   }
-
-  /* The markers go; inside a nav every browser keeps the list's
-     semantics, and the markup keeps role="list" besides. */
-  ul {
-    display: block grid;
-    gap: var(--loam-space-xs);
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  li {
-    margin: 0;
-  }
 }
 
-/* Each link sits inside a Tooltip.Root, core's span and a limit of the
-   scope above, so the link is placed from the Tooltip's own scope: the
-   wrapper a block so the line has no descender gap, and the link a
-   square with the icon centred and a transparent start edge where the
-   marker will go. */
+/* Tooltip.Root is a span around each link; a block here, so the column is
+   the links alone with no line box under each. The icon is the example's
+   own, sized to fill the square. */
 @scope (.side-nav-rail .loam-Tooltip) to ([class*="loam-"]) {
   :scope {
     display: block flow;
   }
 
-  a {
-    align-items: center;
-    block-size: var(--_square);
-    border-inline-start: 2px solid transparent;
-    border-radius: var(--loam-radius-md);
-    color: var(--loam-color-fg);
-    display: block flex;
-    inline-size: var(--_square);
-    justify-content: center;
-
-    svg {
-      block-size: auto;
-      flex: none;
-      inline-size: 1.25rem;
-    }
-
-    /* The current page: a line in the strong token and a background, so
-       the state survives a flattened background; the line takes the
-       system highlight in forced colours. */
-    &[aria-current] {
-      background: var(--loam-color-bg-subtle);
-      border-color: var(--loam-color-primary-strong);
-      color: var(--loam-color-fg-strong);
-
-      @media (forced-colors: active) {
-        border-color: Highlight;
-      }
-    }
-
-    @media (hover: hover) {
-      &:hover {
-        background: var(--loam-color-bg-subtle);
-        color: var(--loam-color-fg-strong);
-      }
-    }
-
-    @media (prefers-reduced-motion: no-preference) {
-      transition:
-        background var(--loam-duration-sm) var(--loam-ease),
-        border-color var(--loam-duration-sm) var(--loam-ease),
-        color var(--loam-duration-sm) var(--loam-ease);
-    }
+  svg {
+    inline-size: 1.75rem;
   }
 }
 ```

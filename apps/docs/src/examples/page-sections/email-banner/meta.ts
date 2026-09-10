@@ -13,6 +13,8 @@ export const meta: ExampleMeta = {
       "The section paints the subtle surface and is the container: at 40rem of its own width the illustration takes a column beside the words, and below it is left out rather than pushed under the form.",
     composition:
       "Field, Input and Button as core ships them; the field and the button share one derived height, so aligning the row to its end puts the button level with the box under the label without a number.",
+    context:
+      "The action cell declares --loam-context: primary because the Button is the form's action; primary is the brand slot, neutral until a theme fills it, so the cell says where the action belongs rather than making it stand out.",
     accessible:
       "The box has a visible label, not a placeholder standing in for one; the illustration is aria-hidden; and the tint gets a border in forced colours with the drawing's fills going to Canvas.",
   },

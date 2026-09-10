@@ -12,7 +12,7 @@ describe("banner-with-image", () => {
     expect(
       screen.getByRole("region", { name: "Members take a fifth off fruit trees" }),
     ).toHaveClass("banner-with-image");
-    expect(screen.getByRole("img").getAttribute("alt")).toMatch(/apple trees/);
+    expect(screen.getByRole("img").getAttribute("alt")).toMatch(/raspberries/);
     expect(screen.getByText("Until 30 November")).toHaveClass("loam-Badge");
     expect(screen.getByRole("link", { name: "See the fruit list" })).toHaveAttribute(
       "href",

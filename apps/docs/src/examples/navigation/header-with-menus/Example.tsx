@@ -1,23 +1,7 @@
 "use client";
 
-import { Menu, Nav, SignpostLink } from "@loamui/core";
+import { Nav, SignpostLink } from "@loamui/core";
 import "./example.css";
-
-function Chevron() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  );
-}
 
 export default function Example() {
   return (
@@ -28,6 +12,8 @@ export default function Example() {
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           aria-hidden="true"
         >
           <path d="M5 19c0-7 4-13 14-14-1 10-7 14-14 14z" />
@@ -46,33 +32,46 @@ export default function Example() {
             <Nav.Link href="/plants">Plants</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Menu.Root>
-              <Menu.Trigger render={<button type="button" className="trigger" />}>
-                Learn
-                <Chevron />
-              </Menu.Trigger>
-              <Menu.Popup>
-                <Menu.Item href="/guides">Growing guides</Menu.Item>
-                <Menu.Item href="/guides/sowing-calendar">Sowing calendar</Menu.Item>
-                <Menu.Item href="/guides/seed-saving">Seed saving</Menu.Item>
-                <Menu.Item href="/courses">Courses</Menu.Item>
-              </Menu.Popup>
-            </Menu.Root>
+            <Nav.Dropdown>
+              <Nav.DropdownTrigger>Learn</Nav.DropdownTrigger>
+              <Nav.DropdownPanel>
+                <Nav.List>
+                  <Nav.Item>
+                    <Nav.Link href="/guides">Growing guides</Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link href="/guides/sowing-calendar">Sowing calendar</Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link href="/guides/seed-saving">Seed saving</Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link href="/courses">Courses</Nav.Link>
+                  </Nav.Item>
+                </Nav.List>
+              </Nav.DropdownPanel>
+            </Nav.Dropdown>
           </Nav.Item>
           <Nav.Item>
-            <Menu.Root>
-              <Menu.Trigger render={<button type="button" className="trigger" />}>
-                Support
-                <Chevron />
-              </Menu.Trigger>
-              <Menu.Popup>
-                <Menu.Item href="/help">Help centre</Menu.Item>
-                <Menu.Item href="/help/delivery">Delivery and returns</Menu.Item>
-                <Menu.Item href="/contact">Contact us</Menu.Item>
-                <Menu.Separator />
-                <Menu.Item href="/accessibility">Accessibility</Menu.Item>
-              </Menu.Popup>
-            </Menu.Root>
+            <Nav.Dropdown>
+              <Nav.DropdownTrigger>Support</Nav.DropdownTrigger>
+              <Nav.DropdownPanel>
+                <Nav.List>
+                  <Nav.Item>
+                    <Nav.Link href="/help">Help centre</Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link href="/help/delivery">Delivery and returns</Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link href="/contact">Contact us</Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link href="/accessibility">Accessibility</Nav.Link>
+                  </Nav.Item>
+                </Nav.List>
+              </Nav.DropdownPanel>
+            </Nav.Dropdown>
           </Nav.Item>
           <Nav.Item>
             <Nav.Link href="/events">Open days</Nav.Link>

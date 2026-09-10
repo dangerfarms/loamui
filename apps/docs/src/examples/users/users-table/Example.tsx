@@ -6,6 +6,7 @@ import "./example.css";
 const MEMBERS = [
   {
     id: "imogen",
+    photo: 823,
     name: "Imogen Hartley",
     role: "Steward, Lower Field",
     email: "imogen@hedgerow.example",
@@ -14,6 +15,7 @@ const MEMBERS = [
   },
   {
     id: "bryn",
+    photo: 1005,
     name: "Bryn Powell",
     role: "Head grower",
     email: "bryn@hedgerow.example",
@@ -22,6 +24,7 @@ const MEMBERS = [
   },
   {
     id: "sadia",
+    photo: 832,
     name: "Sadia Rahman",
     role: "Seed librarian",
     email: "sadia@hedgerow.example",
@@ -30,6 +33,7 @@ const MEMBERS = [
   },
   {
     id: "tomos",
+    photo: 669,
     name: "Tomos Ellis",
     role: "Open days coordinator",
     email: "tomos@hedgerow.example",
@@ -38,6 +42,7 @@ const MEMBERS = [
   },
   {
     id: "greta",
+    photo: 64,
     name: "Greta Lindqvist",
     role: "Treasurer",
     email: "greta@hedgerow.example",
@@ -68,7 +73,7 @@ export default function Example() {
               <span className="member">
                 <Avatar
                   name={member.name}
-                  src={`https://picsum.photos/seed/hedgerow-${member.id}/96/96`}
+                  src={`https://picsum.photos/id/${member.photo}/96/96`}
                   aria-hidden
                 />
                 {member.name}

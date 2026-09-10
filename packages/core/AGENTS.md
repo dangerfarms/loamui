@@ -90,17 +90,18 @@ alphabetical order; and put a blank line before every comment.
 
 ## Styling vocabulary you can rely on
 
-| Attribute         | Where                  | Meaning                                     |
-| ----------------- | ---------------------- | ------------------------------------------- |
-| `data-popup-open` | trigger                | its popup is open                           |
-| `data-open`       | popup or panel         | open                                        |
-| `data-disabled`   | `Pagination.Link`      | a paging link with nowhere to go            |
-| `data-current`    | nav item               | current page or location                    |
-| `data-dragging`   | `FileInput.Root`       | a drag carrying files is over the box       |
-| `data-show-label` | Rating                 | the group's name is painted as well as read |
-| `data-read-only`  | Rating                 | display mode: a picture, not inputs         |
-| `data-size`       | Badge, Progress, Meter | the `size` prop, for the stylesheet         |
-| `aria-invalid`    | control                | derived from a rendered error               |
+| Attribute                                                                 | Where                  | Meaning                                                                                                                                 |
+| ------------------------------------------------------------------------- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `data-popup-open`                                                         | trigger                | its popup is open                                                                                                                       |
+| `data-open`                                                               | popup or panel         | open                                                                                                                                    |
+| `data-disabled`                                                           | `Pagination.Link`      | a paging link with nowhere to go                                                                                                        |
+| `data-current`                                                            | nav item               | current page or location                                                                                                                |
+| `data-dragging`                                                           | `FileInput.Root`       | a drag carrying files is over the box                                                                                                   |
+| `data-show-label`                                                         | Rating                 | the group's name is painted as well as read                                                                                             |
+| `data-read-only`                                                          | Rating                 | display mode: a picture, not inputs                                                                                                     |
+| `data-size`                                                               | Badge, Progress, Meter | the `size` prop, for the stylesheet                                                                                                     |
+| `data-striped` / `data-hover` / `data-col-borders` / `data-sticky-header` | Table                  | the display props (`striped`, `highlightOnHover`, `withColumnBorders`, `stickyHeader`); cap the scroller with `--loam-table-block-size` |
+| `aria-invalid`                                                            | control                | derived from a rendered error                                                                                                           |
 
 Public custom properties are `--loam-*`; anything `--_*` is private.
 

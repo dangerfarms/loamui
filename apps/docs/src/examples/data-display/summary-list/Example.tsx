@@ -45,7 +45,7 @@ export default function Example() {
         <div className="row">
           <dt>Seed-swap interests</dt>
           <dd className="value">
-            <ul>
+            <ul role="list">
               <li>Vegetables</li>
               <li>Herbs</li>
               <li>Cut flowers</li>

@@ -47,17 +47,13 @@ export default {
   },
   overrides: [
     {
-      // The sites (docs, ui): CSS Modules use camelCase local names, and their
-      // own custom properties live in globals.css.
+      // The docs site: CSS Modules use camelCase local names, and its own
+      // custom properties live in globals.css.
       files: ["apps/*/**/*.css"],
       rules: {
         "selector-class-pattern": "^[a-z][a-zA-Z0-9-]*$",
       },
-      referenceFiles: [
-        "packages/core/src/tokens.css",
-        "apps/docs/src/app/globals.css",
-        "apps/ui/src/app/globals.css",
-      ],
+      referenceFiles: ["packages/core/src/tokens.css", "apps/docs/src/app/globals.css"],
     },
   ],
 };

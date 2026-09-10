@@ -26,7 +26,7 @@ export default function Example() {
     >
       <img
         className="media"
-        src="https://picsum.photos/seed/hedgerow-nursery-yard/800/500"
+        src="https://picsum.photos/id/17/800/500"
         alt=""
         width="800"
         height="500"

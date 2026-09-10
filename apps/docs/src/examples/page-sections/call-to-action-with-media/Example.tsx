@@ -20,8 +20,8 @@ export default function Example() {
         </div>
         <img
           className="media"
-          src="https://picsum.photos/seed/hedgerow-sowing/800/600"
-          alt="Hands pressing seeds into a tray of compost on a potting bench"
+          src="https://picsum.photos/id/803/800/600"
+          alt="Young plants growing on a bed of moss under the polytunnel lights"
           width="800"
           height="600"
         />

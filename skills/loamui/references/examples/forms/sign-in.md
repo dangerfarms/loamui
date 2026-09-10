@@ -21,6 +21,7 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - **Native CSS.** A native form named by the heading through aria-labelledby, so a screen reader lands on "Sign in, form", posting with method="post" so the password never rides in a URL; the email field takes autoComplete="email" and the password autoComplete="current-password", the two values a password manager fills without guessing.
 - **Modern CSS.** The Card is the container and caps itself at 24rem: the fluid tokens inside answer the card's width, not the viewport's.
 - **Composition.** Card is rendered as the example's own root, so the title, form and footer are reachable while the Fields, the Checkbox and the Button keep their own styles behind the donut; the actions row is a primary region, so the one Button is the form's action without a prop.
+- **Contextualism.** The actions row declares --loam-context: primary because the one Button is the form's action; primary is the brand slot, neutral until a theme fills it, so the declaration says where the action belongs, not that it stands out.
 - **Accessible & gatekept.** The password box has a Show password toggle so a long password is checked by reading rather than retyped; staying signed in is an unticked Checkbox, a choice the visitor makes; the Button says what happens, never Submit.
 
 ## Example.tsx
@@ -60,17 +61,12 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Card is the root: rendered as the example's own element, so its
-   surface, line, radius and padding are core's, and the scope reaches
-   the title, the form and the footer inside it. The Fields, the Checkbox
-   and the Button are core parts past the donut. The Card is capped at a
-   readable width and centred in whatever holds it, and declares the
-   container the fluid tokens answer: an explicit inline-size, because a
-   grid or flex parent would otherwise size a contained element to
-   nothing. */
 @scope (.sign-in) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
+
+    /* An explicit inline-size: a grid or flex parent would otherwise size a
+       contained element to nothing. */
     inline-size: 100%;
     margin-inline: auto;
     max-inline-size: 24rem;
@@ -81,16 +77,11 @@ export default function Example() {
     margin-block: 0 var(--loam-space-lg);
   }
 
-  /* One column, filled top to bottom: side-by-side fields make the eye
-     and the tab order disagree. */
   form {
     display: block grid;
     gap: var(--loam-space-lg);
   }
 
-  /* A single-cell grid, so the Button stretches to the form's width, and
-     a primary region, so the one action takes the brand colour from
-     where it sits rather than from a prop. */
   div.actions {
     --loam-context: primary;
 

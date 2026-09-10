@@ -21,6 +21,7 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - **Native CSS.** A native form that submits the email to its action: Enter in the box or the button sends it, with required and type=email catching a slip before anything is posted.
 - **Modern CSS.** The section paints the subtle surface and is the container: at 40rem of its own width the illustration takes a column beside the words, and below it is left out rather than pushed under the form.
 - **Composition.** Field, Input and Button as core ships them; the field and the button share one derived height, so aligning the row to its end puts the button level with the box under the label without a number.
+- **Contextualism.** The action cell declares --loam-context: primary because the Button is the form's action; primary is the brand slot, neutral until a theme fills it, so the cell says where the action belongs rather than making it stand out.
 - **Accessible & gatekept.** The box has a visible label, not a placeholder standing in for one; the illustration is aria-hidden; and the tint gets a border in forced colours with the drawing's fills going to Canvas.
 
 ## Example.tsx
@@ -79,10 +80,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* A newsletter bar: what the letter is, one field, one action, and a
-   picture that keeps it company where there is room. The section paints
-   the subtle surface and is the container; the inner element is the
-   grid, because an element cannot answer its own container query. */
 @scope (.email-banner) to ([class*="loam-"]) {
   :scope {
     background: var(--loam-color-bg-subtle);
@@ -91,6 +88,8 @@ export default function Example() {
     padding: var(--loam-space-xl);
   }
 
+  /* The inner element is the grid: an element cannot answer its own
+     container query. */
   div.inner {
     align-items: center;
     display: block grid;
@@ -114,11 +113,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* The field takes the slack and the Button keeps its width beside it,
-     level with the box: the Field is a core part past the donut, so a
-     wrapper of the example's own carries the flex. Inputs and buttons
-     share one derived height, so aligning to the end lines them up
-     under the label without a number. */
   form {
     align-items: end;
     display: block flex;
@@ -128,15 +122,12 @@ export default function Example() {
     max-inline-size: 30rem;
   }
 
-  /* The field grows a thousand times faster than the action, so on one
-     line the Button keeps its own width, and on a line of its own, once
-     the row has wrapped, it takes the whole line. */
+  /* Grows a thousand times faster than the action: on one line the Button
+     keeps its width; once wrapped, it takes the whole line. */
   div.grow {
     flex: 999 1 14rem;
   }
 
-  /* The one action is the form's primary one, so its cell is a primary
-     region and the Button takes the colour from where it sits. */
   span.action {
     --loam-context: primary;
 
@@ -156,9 +147,6 @@ export default function Example() {
     }
   }
 
-  /* Wide: the picture beside the words; narrow leaves it out, since a
-     decoration below a form is a reason to scroll, not a reason to sign
-     up. */
   @container (inline-size < 40rem) {
     svg.illustration {
       display: none;
@@ -171,8 +159,7 @@ export default function Example() {
     }
   }
 
-  /* Forced colours: the tints go, so the block keeps an edge and the
-     drawing is its lines in the system text colour. */
+  /* Forced colours drop the tint; the edge keeps the bounds. */
   @media (forced-colors: active) {
     :scope {
       border: 1px solid CanvasText;

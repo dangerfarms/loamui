@@ -37,6 +37,8 @@ export default function Example() {
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           aria-hidden="true"
         >
           <path d="M5 19c0-7 4-13 14-14-1 10-7 14-14 14z" />
@@ -69,10 +71,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* One row where there is room: the brand at the start, the links in the
-   middle, the small print at the end. Everything is set in the muted
-   colour because a footer is reference, not the page's voice, and the row
-   wraps by the footer's own width. */
 @scope (.footer-simple) to ([class*="loam-"]) {
   :scope {
     align-items: center;
@@ -103,9 +101,6 @@ export default function Example() {
     }
   }
 
-  /* The nav sits between the brand and the small print; its markers go,
-     and inside a nav every browser keeps the list's semantics without
-     them. */
   nav {
     margin-inline: auto;
 

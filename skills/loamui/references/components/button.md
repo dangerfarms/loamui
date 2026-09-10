@@ -145,7 +145,7 @@ Emphasis is a property of the region, not the button: wrap the section's single 
 
 - Always renders a real <button>, so keyboard focus, Enter/Space activation and the button role come from the platform for free.
 - Write a specific label: the text should make sense out of context ("Save changes", not "OK"). Icon-only buttons need a name: aria-label, aria-labelledby, or hidden text in the loam-VisuallyHidden class beside the icon; any of the three also makes the button square.
-- For a loading state, add `disabled` and compose a <Loader/> (marked aria-hidden) into the children so it isn't announced as content.
+- For a loading state, add disabled and compose a Loader (marked aria-hidden) into the children so it isn't announced as content.
 - Focus is shown with a :focus-visible ring (never removed without a replacement), and colour is never the only signal of state.
 
 ## Props
@@ -156,7 +156,7 @@ Status is not a prop: it comes from the surrounding `--loam-context` region (see
 | --- | --- | --- | --- |
 | `children` | `ReactNode` | — | The button content: label, and any composed icons/spinner. |
 | `type` | `"button" \| "submit" \| "reset"` | `"button"` | Unlike a native <button>, never a submit button unless you say so. |
-| `render` | `RenderProp` | — | Substitute the rendered element; the Button's classes and wiring merge onto yours. Not for navigation: a call-to-action that goes somewhere is a SignpostLink. |
+| `render` | `element \| (props) => node` | — | Substitute the rendered element; the Button's classes and wiring merge onto yours. Not for navigation: a call-to-action that goes somewhere is a SignpostLink. |
 | `...others` | `ButtonHTMLAttributes` | — | All native <button> props are forwarded. |
 
 ## Custom properties

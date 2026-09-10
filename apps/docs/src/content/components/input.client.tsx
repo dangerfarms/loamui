@@ -30,8 +30,7 @@ export function InputContainersDemo() {
       <div
         style={{
           containerType: "inline-size",
-          inlineSize: "16rem",
-          maxInlineSize: "100%",
+          inlineSize: "min(100%, 16rem)",
           padding: "0.75rem",
           border: "1px dashed var(--loam-color-line)",
           borderRadius: "var(--loam-radius-md)",
@@ -45,8 +44,7 @@ export function InputContainersDemo() {
       <div
         style={{
           containerType: "inline-size",
-          inlineSize: "30rem",
-          maxInlineSize: "100%",
+          inlineSize: "min(100%, 30rem)",
           padding: "0.75rem",
           border: "1px dashed var(--loam-color-line)",
           borderRadius: "var(--loam-radius-md)",

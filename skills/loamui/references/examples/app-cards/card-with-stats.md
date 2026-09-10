@@ -36,7 +36,7 @@ export default function Example() {
     <Card render={<article className="card-with-stats" aria-labelledby="card-with-stats-title" />}>
       <img
         className="media"
-        src="https://picsum.photos/seed/hedgerow-seed-saving/800/450"
+        src="https://picsum.photos/id/112/800/450"
         alt=""
         width="800"
         height="450"
@@ -77,14 +77,12 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Card is the article, so its element is this scope's root: core's
-   surface, line, radius and padding stay, and the column inside is the
-   example's own. The Progress keeps its label and bar behind the donut. */
 @scope (.card-with-stats) to ([class*="loam-"]) {
   :scope {
     display: block flex;
     flex-direction: column;
     gap: var(--loam-space-md);
+    max-inline-size: 36rem;
   }
 
   img.media {
@@ -111,8 +109,6 @@ export default function Example() {
     gap: var(--loam-space-xs);
   }
 
-  /* The count so far at the start, the target at the end, both in
-     tabular figures under the bar they describe. */
   p.figures {
     display: block flex;
     font-size: var(--loam-text-sm);
@@ -130,7 +126,6 @@ export default function Example() {
     }
   }
 
-  /* Three columns divided by lines; the figure leads each. */
   dl.stats {
     border-block-start: 1px solid var(--loam-color-line);
     display: block grid;

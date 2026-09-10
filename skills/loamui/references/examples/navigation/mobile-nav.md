@@ -20,7 +20,7 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 
 - **Native CSS.** The panel is a native dialog opened with showModal(), so the top layer, focus containment, Escape and focus returning to the Menu button on close are the browser's, not a script's.
 - **Modern CSS.** The links take a 2.75rem line through Nav's public --loam-nav-link-size, set on the panel and inherited: the smallest target a thumb hits reliably, without touching Nav's own rules.
-- **Composition.** Drawer and Nav are assembled in the markup, title and close button in the panel's first row, and the example holds the open state only so the trigger can say it.
+- **Composition.** Drawer and Nav are assembled in the markup, title and close button in the panel's first row; the Drawer holds its own open state and its trigger reports it, so the example keeps none.
 - **Accessible & gatekept.** The button says Menu in words and reports the panel with aria-expanded; the panel is named by its title, the nav inside by Primary, the close button by hidden text beside its icon, and the current page by aria-current.
 
 ## Example.tsx
@@ -28,12 +28,10 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 ```tsx
 "use client";
 
-import { useState } from "react";
 import { Drawer, Nav } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
-  const [open, setOpen] = useState(false);
   return (
     <header className="mobile-nav">
       <a className="brand" href="/">
@@ -42,6 +40,8 @@ export default function Example() {
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           aria-hidden="true"
         >
           <path d="M5 19c0-7 4-13 14-14-1 10-7 14-14 14z" />
@@ -49,8 +49,8 @@ export default function Example() {
         </svg>
         Hedgerow
       </a>
-      <Drawer.Root open={open} onOpenChange={setOpen}>
-        <Drawer.Trigger aria-expanded={open}>
+      <Drawer.Root>
+        <Drawer.Trigger>
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -109,9 +109,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* A narrow header: the brand at the start and the Menu button at the end.
-   The panel is core's Drawer, a native dialog in the top layer, so it
-   takes nothing from the header's layout. */
 @scope (.mobile-nav) to ([class*="loam-"]) {
   :scope {
     align-items: center;
@@ -140,10 +137,6 @@ export default function Example() {
   }
 }
 
-/* Inside the panel: the title and the close button share the first row,
-   and the Nav beneath is given a thumb's line height through its public
-   property, since a finger, not a pointer, is what opens this menu. The
-   dialog, the title and the two Buttons keep core's own styles. */
 @scope (.mobile-nav .loam-Drawer-popup) to ([class*="loam-"]) {
   :scope {
     --loam-nav-link-size: 2.75rem;

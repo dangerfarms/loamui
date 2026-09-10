@@ -8,7 +8,7 @@ description: Lists of links with the current one marked.
 
 # Nav
 
-Vertical navigation composed from parts: a landmark named by its title, lists of links with the current one marked by a line and weight, related links folded into native disclosures, and a hook that tells a table of contents which section the reader is in.
+Vertical navigation composed from parts: a landmark named by its title, lists of links with the current one marked by a line and weight, related links folded into native disclosures or dropped down from a header's line, and a hook that tells a table of contents which section the reader is in.
 
 ## Import
 
@@ -217,6 +217,126 @@ The primitive is vertical; a horizontal nav is your flex row on the List, and --
 </Nav.Root>
 ```
 
+### Header with dropdowns
+
+A Dropdown in an Item: the DropdownTrigger is a button set like the links beside it, with a chevron that turns, and the DropdownPanel is a native popover of ordinary links, anchored under the trigger and flipped by the browser at a viewport edge. Click opens it; Escape, a click outside or a Tab past the last link is the way out. Plants holds the current page, so its trigger takes the weight and, while closed, the marker. Learn is a wide panel: the same part, --loam-nav-dropdown-size raised on it and a grid of two Lists inside.
+
+```tsx
+/* header.css */
+.site-nav {
+  --loam-nav-current-edge: block-end;
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-xs);
+  }
+}
+
+.site-nav-learn {
+  --loam-nav-dropdown-size: 32rem;
+
+  .columns {
+    display: grid;
+    gap: var(--loam-space-md);
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  }
+}
+
+<Nav.Root className="site-nav" aria-label="Site">
+  <Nav.List>
+    <Nav.Item>
+      <Nav.Link href="/seeds">Seeds</Nav.Link>
+    </Nav.Item>
+    <Nav.Item>
+      <Nav.Dropdown>
+        <Nav.DropdownTrigger>Plants</Nav.DropdownTrigger>
+        <Nav.DropdownPanel>
+          <Nav.List>
+            <Nav.Item>
+              <Nav.Link href="/plants/vegetables" current>
+                Vegetables
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link href="/plants/herbs">Herbs</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link href="/plants/flowers">Flowers</Nav.Link>
+            </Nav.Item>
+          </Nav.List>
+        </Nav.DropdownPanel>
+      </Nav.Dropdown>
+    </Nav.Item>
+    <Nav.Item>
+      <Nav.Dropdown>
+        <Nav.DropdownTrigger>Learn</Nav.DropdownTrigger>
+        <Nav.DropdownPanel className="site-nav-learn">
+          <div className="columns">
+            <Nav.List>
+              <Nav.Item>
+                <Nav.Link href="/guides">Growing guides</Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link href="/guides/sowing-calendar">Sowing calendar</Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link href="/guides/seed-saving">Seed saving</Nav.Link>
+              </Nav.Item>
+            </Nav.List>
+            <Nav.List>
+              <Nav.Item>
+                <Nav.Link href="/courses">Courses</Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link href="/workshops">Workshops</Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link href="/events">Open days</Nav.Link>
+              </Nav.Item>
+            </Nav.List>
+          </div>
+        </Nav.DropdownPanel>
+      </Nav.Dropdown>
+    </Nav.Item>
+    <Nav.Item>
+      <Nav.Link href="/about">About</Nav.Link>
+    </Nav.Item>
+  </Nav.List>
+</Nav.Root>
+```
+
+### A line that opens a menu of actions
+
+Destinations drop down from a Dropdown; a line that opens actions (switch workspace, sign out) is a Menu, whose items are commands with menu semantics and arrow keys. It is a button, not a link, so the reader is not promised a page. Render the Link as one and make it the Menu's trigger: Nav.Link gives it the part's class, Menu.Trigger the popup wiring (aria-haspopup, aria-expanded, the arrow keys), and the stylesheet sets a button carrying the link class like the links beside it, with no box, border or shadow of its own, the line's font and padding, the same hover and the same focus ring. Nothing to reset by hand. The example's chevron is an svg child, sized on the text like any icon.
+
+```tsx
+<Nav.Root aria-label="Site" className="site-nav">
+  <Nav.List>
+    <Nav.Item>
+      <Nav.Link href="/seeds" current>
+        Seeds
+      </Nav.Link>
+    </Nav.Item>
+    <Nav.Item>
+      <Nav.Link href="/plants">Plants</Nav.Link>
+    </Nav.Item>
+    <Nav.Item>
+      <Menu.Root>
+        <Menu.Trigger render={<Nav.Link render={<button type="button" />} />}>
+          Account
+          <Chevron />
+        </Menu.Trigger>
+        <Menu.Popup>
+          <Menu.Item onClick={switchWorkspace}>Switch workspace</Menu.Item>
+          <Menu.Item onClick={signOut}>Sign out</Menu.Item>
+        </Menu.Popup>
+      </Menu.Root>
+    </Nav.Item>
+  </Nav.List>
+</Nav.Root>
+```
+
 ### A table of contents that follows the reader
 
 useScrollSpy takes the headings' ids and returns the one in view. Scroll the text and the marker moves. The link says current="location", not page: the reader is still on this page, at a place within it, which is what aria-current="location" means. The list is the same Nav; only the current word changes.
@@ -259,7 +379,7 @@ function TableOfContents() {
 - The path to the current page: that is Breadcrumbs, one link per ancestor.
 - Pages of one result set: that is Pagination, whose links are Buttons and whose window has ellipses.
 - Panels of content on one page switched in place: that is Tabs, which carries the tab and panel semantics.
-- A list of actions opened from a button: that is Menu. A nav holds destinations; an action that changes something is a button, not a link.
+- A list of actions opened from a button: that is Menu. A nav holds destinations; an action that changes something is a button, not a link. A dropdown of destinations is Nav.Dropdown, not a Menu.
 
 ## How it works
 
@@ -283,6 +403,14 @@ Related links fold into a native details with a summary as its title, so the fol
 
 The List is a column. A header's horizontal nav is display: flex on the List in your own CSS, and nothing else changes: not the landmark, not the icons. The current marker is the one thing a row changes, since a bar on the start edge reads as a column's: --loam-nav-current-edge: block-end on the Root draws it under the link instead. A custom property, not a prop, because the edge is a fact of the layout around the nav, declared once where that layout is.
 
+### A dropdown is a disclosure, not a menu
+
+A header's dropdown holds links, and a link is what a screen reader expects it to be: Tab reaches it, Enter follows it, the links list announces its count. A menu (role="menu", menuitem, aria-haspopup) promises something else: an application menu of commands, moved through with the arrow keys, where Tab leaves. Links wrapped in menu semantics lose their own and gain a keyboard model nobody asked for. So the DropdownTrigger is a button reporting aria-expanded and aria-controls, the DropdownPanel is a div with popover="auto" holding a List of ordinary Links, and the browser supplies the top layer, light dismiss and Escape. Menu remains the part for actions.
+
+### Click opens it; hover never does
+
+A panel that opens on hover opens by accident: on the way to the link beside it, on the way across the header, and never for a keyboard, a touch screen or a switch. It closes the moment the pointer strays across the gap, and the code that mitigates that (delays, hit triangles) is guessing at intent. A click is a statement of it, from every input. The trigger opens the panel declaratively where the browser has commands (commandfor with command="toggle-popover"), through popovertarget where it has only that, and by its own click handler where it has neither; in all three, aria-expanded follows the panel's toggle event, so it says what the panel does. The panel is anchored under the trigger's start edge with CSS anchor positioning, flipped up or across when it would leave the viewport; without anchor positioning it is an absolutely positioned box under the Item, dismissed by the component. Focus stays on the trigger when the panel opens (Tab reaches the first link) and returns to it when the panel closes.
+
 ### Page or location
 
 current={true} says aria-current="page": the reader is on that page. A table of contents marks a place within the page, so it says current="location" instead; a wizard's steps say "step". The attribute is announced, and the stylesheet marks every value the same way, so choose the word that is true.
@@ -293,6 +421,7 @@ current={true} says aria-current="page": the reader is on that page. A table of 
 - Lists are real <ul> and <li> elements, nested where the navigation nests, so a screen reader reports levels and counts.
 - The current destination carries aria-current ("page", "location" or another token), and the stylesheet draws its line, weight and background from that same attribute; under forced colours the marker is drawn in Highlight.
 - A Group is a native <details>/<summary>: Enter and Space toggle it, and a closed group holding the current page shows the marker on its title.
+- A Dropdown is a disclosure: a <button> with aria-expanded and aria-controls over a popover of ordinary links, never role="menu". Click, Enter or Space opens it; Tab walks the links; Escape and a click outside close it and focus returns to the button. A closed dropdown holding the current page shows the marker on its trigger.
 - Icons are svg children, sized on the text; keep them aria-hidden so each link is named by its words alone.
 
 ## Parts
@@ -323,7 +452,7 @@ An <li> holding a Link or a Group, then an optional nested List. Native <li> pro
 
 ### Nav.Link
 
-A destination: an <a href> by default, with an svg child as its icon. Native <a> props (href, target, onClick) and ref are forwarded.
+A destination: an <a href> by default, with an svg child as its icon. Native <a> props (href, target, onClick) and ref are forwarded. Rendered as a <button> (a menu or popover's trigger among the links), it is set like the links beside it.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -344,12 +473,35 @@ A fold of related links: a native <details>. Native <details> props (name) and r
 
 The group's always-visible line, a <summary> set like the links around it with a chevron at its end. Native <summary> props and ref are forwarded.
 
+### Nav.Dropdown
+
+A dropdown of links opened from a line: context for a DropdownTrigger then a DropdownPanel, side by side inside an Item. Renders no element of its own.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | `boolean` | — | Controlled open state. Pair with onOpenChange. |
+| `defaultOpen` | `boolean` | — | Open at first render, for uncontrolled usage. |
+| `onOpenChange` | `(open: boolean) => void` | — | Fires with the new state, from the panel's own toggle event where the browser opens it and from the component where it does. |
+
+### Nav.DropdownTrigger
+
+The line that opens the panel: a <button> carrying the link class, so it is set like the links beside it, with a chevron at its end that turns while the panel is open. It carries aria-expanded, aria-controls, popovertarget and commandfor with command="toggle-popover". Native <button> props and ref are forwarded.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `render` | `element \| (props) => node` | — | Substitute the element; it receives the wiring (the part's classes, aria-expanded, the popover invocation) and the Trigger's other props. |
+
+### Nav.DropdownPanel
+
+A <div popover="auto"> anchored under the trigger, holding a List of Items and Links; a wide panel is your own grid of Lists inside it. Its width is --loam-nav-dropdown-size. Native <div> props and ref are forwarded.
+
 ## Custom properties
 
 | Property | Syntax | Default | Description |
 | --- | --- | --- | --- |
 | `--loam-nav-indent` | `CSS length` | `var(--loam-space-md)` | How far a nested List indents, whether it sits in an Item or in a Group. Set it on the Root or any ancestor. |
 | `--loam-nav-current-edge` | `inline-start \| block-end` | `inline-start` | Which edge the current marker's bar is drawn on: the start edge for a column, block-end (under the link) for a horizontal row. Read by a style query, so set it on the Root or an ancestor, never on the link. |
+| `--loam-nav-dropdown-size` | `CSS length` | `16rem` | A DropdownPanel's width, capped to 90% of the viewport. Raise it on the panel (or an ancestor) for a wide panel with a grid of lists inside. |
 | `--loam-nav-link-size` | `CSS length` | `2.25rem` | The minimum height of each line (a Link or a GroupTitle). Raise it to 2.75rem where a thumb is the pointer, as in a mobile menu. |
 
 ## Hooks

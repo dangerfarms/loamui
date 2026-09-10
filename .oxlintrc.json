@@ -43,10 +43,9 @@
   "overrides": [
     // list-style: none drops list semantics in some browsers (WebKit); every
     // component that strips markers restores them with role="list", so the
-    // rule is off for both packages and the examples rather than per file.
+    // rule is off for core and the examples rather than per file.
     {
       "files": [
-        "**/packages/ui/src/components/**/*.tsx",
         "**/packages/core/src/components/**/*.tsx",
         "**/apps/docs/src/examples/**/Example.tsx"
       ],

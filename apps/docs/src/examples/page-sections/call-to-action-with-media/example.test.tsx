@@ -13,7 +13,7 @@ describe("call-to-action-with-media", () => {
     expect(region).toHaveClass("call-to-action-with-media");
     const link = screen.getByRole("link", { name: "Open the sowing calendar" });
     const img = screen.getByRole("img");
-    expect(img.getAttribute("alt")).toMatch(/seeds/);
+    expect(img.getAttribute("alt")).toMatch(/polytunnel/);
     expect(link.compareDocumentPosition(img) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });

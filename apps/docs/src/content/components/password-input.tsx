@@ -66,7 +66,7 @@ const doc: ComponentContent = {
   ],
   whenNotToUse: [
     "For a one-time code or a PIN sent to the user: it is not a secret they chose, so use Input with inputMode numeric and autoComplete one-time-code.",
-    "For the whole of a sign-up form's password step, with a strength reading and a list of rules ticked as they are met: that is the PasswordField composition in @loamui/ui, built on this control.",
+    "For the whole of a sign-up form's password step, with a strength reading and a list of rules ticked as they are met: that is the Password strength example (/examples/forms/password-strength), built on this control.",
   ],
   howItWorks: [
     {

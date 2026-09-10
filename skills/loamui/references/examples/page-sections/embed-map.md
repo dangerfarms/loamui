@@ -53,9 +53,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* A map in a figure. A map reads better squarer than a video, so the
-   frame is 4 / 3; it is sized before it loads so the page never shifts,
-   and the subtle background is its footprint in the meantime. */
 @scope (.embed-map) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -73,8 +70,8 @@ export default function Example() {
     display: block flow;
     inline-size: 100%;
 
-    /* Forced colours drop the background, so the footprint would vanish
-       until the frame loads; a border in the text colour keeps it. */
+    /* Forced colours drop the footprint; the border keeps it until the frame
+       loads. */
     @media (forced-colors: active) {
       border: 1px solid CanvasText;
     }

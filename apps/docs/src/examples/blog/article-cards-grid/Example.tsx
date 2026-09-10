@@ -10,7 +10,7 @@ const ARTICLES = [
     description:
       "Hawthorn, blackthorn, hazel and dog rose as bare-root whips from November: how many to the metre, why a double staggered row, and the cutting back that makes it thick in the first two winters.",
     author: { name: "Dafydd Rees", slug: "dafydd-rees" },
-    image: "hedgerow-native-hedge",
+    image: 19,
   },
   {
     slug: "tomato-seed-from-one-fruit",
@@ -20,7 +20,7 @@ const ARTICLES = [
     description:
       "Ferment the pulp for three days, rinse, dry on a plate and you have enough seed for a decade.",
     author: { name: "Tom Okafor", slug: "tom-okafor" },
-    image: "hedgerow-tomato",
+    image: 400,
   },
   {
     slug: "september-plant-sale",
@@ -30,7 +30,7 @@ const ARTICLES = [
     description:
       "Member-grown perennials, bare-root fruit and the last of the summer seed, on the nursery bench from nine.",
     author: { name: "Rhiannon Vaughan", slug: "rhiannon-vaughan" },
-    image: "hedgerow-plant-sale",
+    image: 696,
   },
 ];
 
@@ -46,7 +46,7 @@ export default function Example() {
           >
             <img
               className="media"
-              src={`https://picsum.photos/seed/${article.image}/800/450`}
+              src={`https://picsum.photos/id/${article.image}/800/450`}
               alt=""
               width="800"
               height="450"

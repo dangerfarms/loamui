@@ -19,7 +19,7 @@ export function ExampleCode({ source }: { source: ExampleSource }) {
   return (
     <Tabs.Root defaultValue="tsx" className={classes.tabs}>
       <div className={classes.bar}>
-        <Tabs.List aria-label="Example files" className={classes.list}>
+        <Tabs.List aria-label="Example files">
           <Tabs.Tab value="tsx">Example.tsx</Tabs.Tab>
           <Tabs.Tab value="css">example.css</Tabs.Tab>
         </Tabs.List>

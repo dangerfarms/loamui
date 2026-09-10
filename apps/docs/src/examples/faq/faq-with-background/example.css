@@ -1,8 +1,3 @@
-/* The same four disclosures on a subtle surface with room around them:
-   a block that stands apart from the page rather than a list in it. The
-   section paints the surface and is the container; the inner element
-   is capped at a reading width and centred, and the padding grows with
-   the section's own width rather than the viewport's. */
 @scope (.faq-with-background) to ([class*="loam-"]) {
   :scope {
     background: var(--loam-color-bg-subtle);
@@ -44,15 +39,13 @@
     gap: var(--loam-space-sm);
   }
 
-  /* Wide: more room on every side, so the block reads as a place of its
-     own on a page with a lot around it. */
   @container (inline-size >= 48rem) {
     :scope {
       padding: calc(var(--loam-space-xl) * 2) var(--loam-space-xl);
     }
   }
 
-  /* Forced colours: the tint goes, so the block keeps an edge. */
+  /* Forced colours drop the tint; the edge keeps the bounds. */
   @media (forced-colors: active) {
     :scope {
       border: 1px solid CanvasText;

@@ -6,7 +6,7 @@ import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
 import { useFieldControlProps } from "../Field/Field";
 import { useUserInvalid } from "../../use-user-invalid";
-import { composeRefs } from "../../render";
+import { composeRefs, idList } from "../../render";
 
 /** The bare toggle (input + track), minus any label. */
 export interface SwitchControlProps extends Omit<PartProps<"input">, "size" | "type"> {
@@ -130,7 +130,7 @@ function SwitchLabelled({
       <SwitchControl
         ref={ref}
         id={inputId}
-        aria-describedby={cx(descId, ariaDescribedby) || undefined}
+        aria-describedby={idList(descId, ariaDescribedby)}
         {...control}
       />
       <span className="label">{label}</span>

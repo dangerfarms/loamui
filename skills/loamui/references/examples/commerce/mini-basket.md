@@ -33,18 +33,18 @@ import "./example.css";
 
 const LINES = [
   {
-    slug: "sweet-pea-cupani",
-    name: "Sweet pea ‘Cupani’ seeds",
+    slug: "climbing-bean-blue-lake",
+    name: "Climbing bean ‘Blue Lake’ seeds",
     options: "Packet of 25 seeds",
-    image: "hedgerow-sweet-pea",
+    image: 627,
     each: 2.8,
     quantity: 2,
   },
   {
-    slug: "copper-trowel",
-    name: "Copper hand trowel",
-    options: "Ash handle",
-    image: "hedgerow-trowel",
+    slug: "raspberry-autumn-bliss",
+    name: "Raspberry ‘Autumn Bliss’ canes",
+    options: "Bundle of five",
+    image: 429,
     each: 24,
     quantity: 1,
   },
@@ -100,7 +100,7 @@ export default function Example() {
                   <article aria-labelledby={`mini-basket-${line.slug}-title`}>
                     <img
                       className="media"
-                      src={`https://picsum.photos/seed/${line.image}/240/240`}
+                      src={`https://picsum.photos/id/${line.image}/240/240`}
                       alt=""
                       width="240"
                       height="240"
@@ -169,19 +169,13 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The root holds the trigger and sets the panel's width: the Drawer's
-   public property inherits into the dialog from here, top layer or not.
-   Everything inside the dialog sits behind the donut, so the basket's
-   own parts open a second scope rooted inside it. */
 @scope (.mini-basket) to ([class*="loam-"]) {
   :scope {
+    /* Inherits into the dialog from here, top layer or not. */
     --loam-drawer-size: 28rem;
   }
 }
 
-/* The panel's contents: a head, the lines, the summary and the actions,
-   in a column. The Drawer.Title is the Drawer's own h2; only its margin
-   is set, since the column's gap spaces it here. */
 @scope (.mini-basket div.basket) to ([class*="loam-"]) {
   :scope {
     display: block grid;
@@ -199,9 +193,6 @@ export default function Example() {
     }
   }
 
-  /* The lines are separated by borders, which forced colours keep. The
-     markers go; the markup keeps the list's role with role="list", since
-     list-style: none drops it in some browsers. */
   ul.lines {
     display: block grid;
     list-style: none;
@@ -219,9 +210,6 @@ export default function Example() {
     }
   }
 
-  /* One line: a small thumbnail, then the name and options with the
-     quantity under them, the total beside the name and the remove action
-     ending the last row. */
   article {
     align-items: start;
     column-gap: var(--loam-space-sm);
@@ -277,8 +265,6 @@ export default function Example() {
     place-self: end;
   }
 
-  /* The summary is a description list in two columns, the figures at the
-     end; the total is set apart by a rule and weight, not colour. */
   dl.summary {
     display: block grid;
     gap: var(--loam-space-xs);
@@ -306,8 +292,6 @@ export default function Example() {
     }
   }
 
-  /* The checkout signpost and the close each take the panel's width in a
-     one-column grid, going somewhere first. */
   div.actions {
     display: block grid;
     gap: var(--loam-space-sm);

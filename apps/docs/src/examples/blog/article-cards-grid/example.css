@@ -1,7 +1,3 @@
-/* The list is the grid and each item is a container: a card cannot
-   answer its own container query, so it asks the item around it. The
-   markers go; the markup keeps the list's role with role="list", since
-   list-style: none drops it in some browsers. */
 @scope (.article-cards-grid) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -12,13 +8,12 @@
     padding: 0;
   }
 
+  /* A card cannot answer its own container query; the item around it does. */
   li {
     container-type: inline-size;
     margin: 0;
   }
 
-  /* Wide: two columns, and the first card takes both, so it is the one
-     that reads as the lead. */
   @container (inline-size >= 40rem) {
     :scope {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -30,14 +25,9 @@
   }
 }
 
-/* Each card is a Card rendered as the article, so the Card element is
-   this scope's root: the column inside is reachable, the Badge, Time and
-   Avatar are fenced by the donut, and the Card's own surface, line,
-   radius and padding are left alone. */
 @scope (.article-cards-grid article.article) to ([class*="loam-"]) {
   :scope {
-    /* A percentage, so it resolves against the item the grid stretched:
-       every card in a row is the row's height. */
+    /* A percentage: it resolves against the item the grid stretched. */
     block-size: 100%;
     display: block flex;
     flex-direction: column;
@@ -62,21 +52,21 @@
     margin: 0;
   }
 
+  /* Underlined at rest, lightly: a link is known by more than its place. */
   h3 {
     font-size: var(--loam-text-lg);
     margin: 0;
 
     a {
       color: inherit;
-      text-decoration: none;
+      text-decoration-color: var(--loam-color-line-strong);
 
       &:focus-visible {
-        text-decoration: underline;
+        text-decoration-color: currentcolor;
       }
 
       @media (hover: hover) {
         &:hover {
-          text-decoration: underline;
           text-decoration-color: var(--loam-color-primary);
         }
       }
@@ -112,10 +102,6 @@
     }
   }
 
-  /* A card wide enough (the lead, once it spans the row) lays its picture
-     beside the text: the image takes a column down every row, the rest
-     flow into the second, and the foot keeps the last row. The query is
-     answered by the item, not the card. */
   @container (inline-size >= 36rem) {
     :scope {
       column-gap: var(--loam-space-lg);

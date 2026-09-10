@@ -1,21 +1,22 @@
+import { COMPONENTS } from "@/site/nav";
 import prose from "../prose.module.css";
 import { HeroDemo, PlanDemo } from "./demos.client";
 
 export const metadata = {
   title: "Composing components",
   description:
-    "How to build your own components (a hero, a pricing card, a carousel) from the three primitives, the way the @loamui/ui compositions are built.",
+    "How to build your own components (a hero, a pricing card, a carousel) from the three primitives, the way the examples are built.",
 };
 
 # Composing components
 
-LoamUI's core ships 47 low-level components and no more. A hero, a pricing table, a carousel or a testimonial wall is a composition: built from the three primitives the way any consumer would, in your own codebase or, for the ones worth sharing, in [`@loamui/ui`](https://loamui.com/ui/). This page is the recipe, for you and for your agent; the compositions gallery is the same recipe applied forty times.
+LoamUI's core ships {COMPONENTS.length} low-level components and no more. A hero, a pricing table, a carousel or a testimonial wall is a composition: built from the three primitives the way any consumer would, in your own codebase. This page is the recipe, for you and for your agent; the [examples](/examples) are the same recipe applied a hundred times, to copy and change.
 
 ## The recipe
 
 1. **Write the markup as native HTML.** A `section` with an `h2` and a `p` is already styled by the [element styles](/docs/element-styles): type scale, leading, margins, links. Reach for a LoamUI component only where the element needs structure it does not have (a button, a field, a badge, a disclosure).
-2. **Give the root a class and a scoped rule.** `@scope (.hero)` keeps the rule inside the component, so parts can be plain type selectors (`h2`, `p.lede`) with no naming scheme. Use only `--loam-*` tokens for colour, space, type and radius; never a raw value.
-3. **Compose LoamUI parts inside it.** `Button`, `Badge`, `SignpostLink`, `Card`. Do not restyle their internals. If a part needs structural overrides to fit, the thing you are building is a composition (yours, or one in `@loamui/ui`), never a change to core.
+2. **Give the root a class and a scoped rule.** `@scope (.hero)` keeps the rule inside the component, so parts can be plain type selectors (`h2`, `p.description`) with no naming scheme. Use only `--loam-*` tokens for colour, space, type and radius; never a raw value.
+3. **Compose LoamUI parts inside it.** `Button`, `Badge`, `SignpostLink`, `Card`. Do not restyle their internals. If a part needs structural overrides to fit, the thing you are building is a composition (yours, or one of the [examples](/examples)), never a change to core.
 4. **Declare context and size on the region.** `--loam-context: primary` on the root recolours everything inside; `container-type: inline-size` lets the fluid tokens respond to the component's own width instead of the viewport.
 
 ## A hero
@@ -34,7 +35,7 @@ export function Hero() {
         <Badge>New</Badge>
       </div>
       <h2>Modern UI primitives for agent-assisted developers.</h2>
-      <p className="lede">Three primitives your agent builds from.</p>
+      <p className="description">Three primitives your agent builds from.</p>
       <div className="actions">
         <SignpostLink href="/docs">Get started</SignpostLink>
         <a href="https://github.com/dangerfarms/loamui">Star on GitHub</a>
@@ -62,7 +63,7 @@ export function Hero() {
     max-inline-size: 18ch;
   }
 
-  p.lede {
+  p.description {
     color: var(--loam-color-fg-muted);
     font-size: var(--loam-text-lg);
     margin: 0;
@@ -77,7 +78,7 @@ export function Hero() {
 }
 ```
 
-Nothing in the library changed. The heading and the lede come from the element styles and the type scale; the badge and the signpost link come from the components; the box is yours.
+Nothing in the library changed. The heading and the description come from the element styles and the type scale; the badge and the signpost link come from the components; the box is yours.
 
 ## A pricing card
 

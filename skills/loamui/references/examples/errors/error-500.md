@@ -21,7 +21,7 @@ An example in **Error pages**: a component and a stylesheet built from `@loamui/
 - **Native CSS.** A section named by its own h1, because the error is the page; trying again is a button, because it does something, and telling someone is a link, because it goes somewhere.
 - **Modern CSS.** The page is a container so its type answers its own width, the title balances its lines and the description wraps prettily; nothing here is sized to a viewport.
 - **Composition.** The illustration is an inline SVG in the markup, stroked in currentColor with two coloured parts, so a reader recolours or redraws it in place; Button is dropped in as it comes.
-- **Contextualism.** The row of ways out declares --loam-context: primary, so the Button is the main action without a prop; the plain link beside it is an element style and stays as it is.
+- **Contextualism.** The row of ways out declares --loam-context: primary, so the Button is the main action without a prop; primary is the brand slot, neutral until a theme fills it, and the Button is told from the plain link beside it by being a Button, not by its colour.
 - **Accessible & gatekept.** The copy says it was not the reader's doing and that nothing is lost before it asks them to try again; the illustration is hidden because the words already say it.
 
 ## Example.tsx
@@ -72,10 +72,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* An error page is a region: it declares its container so the fluid
-   tokens answer its own width, and it hosts a Button, hence the donut.
-   Everything centres on one axis: the illustration, the code, the title,
-   the line and the ways out. */
 @scope (.error-500) to ([class*="loam-"]) {
   :scope {
     align-items: center;
@@ -89,9 +85,6 @@ export default function Example() {
     text-align: center;
   }
 
-  /* The illustration is decoration, stroked in the dim foreground so it
-     sits behind the words; the leaf and the spilled seeds keep a little
-     colour. */
   svg.illustration {
     block-size: auto;
     color: var(--loam-color-fg-dim);
@@ -108,9 +101,6 @@ export default function Example() {
     }
   }
 
-  /* The code is set dim on purpose: it identifies the error for anyone
-     who needs it and stays behind the title, which is what the reader
-     needs. */
   p.code {
     color: var(--loam-color-fg-dim);
     font-family: var(--loam-font-display);
@@ -135,9 +125,6 @@ export default function Example() {
     text-wrap: pretty;
   }
 
-  /* The ways out are a primary region: the Button takes the brand colour
-     as the main action, and the plain link beside it is an element style,
-     which no region recolours. */
   div.actions {
     --loam-context: primary;
 

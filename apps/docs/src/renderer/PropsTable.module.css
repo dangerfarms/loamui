@@ -4,6 +4,12 @@
 
   /* The shorthand: overflow-inline is not Baseline. */
   overflow: auto;
+
+  /* Only a table that scrolls is focusable (see useScrollable). */
+  &:focus-visible {
+    outline: var(--loam-ring-width) solid var(--loam-color-ring);
+    outline-offset: 2px;
+  }
 }
 
 .table {
@@ -17,6 +23,12 @@
     padding: 0.7rem 1rem;
     text-align: start;
     vertical-align: top;
+  }
+
+  /* Identifiers never break mid-word: the table scrolls instead. */
+  code {
+    hyphens: manual;
+    overflow-wrap: normal;
   }
 
   td:last-child {
@@ -41,6 +53,7 @@
   font-family: var(--loam-font-mono);
   font-size: var(--loam-text-sm);
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .type {
@@ -56,6 +69,7 @@
   color: var(--loam-color-fg-muted);
   font-family: var(--loam-font-mono);
   font-size: var(--loam-text-xs);
+  white-space: nowrap;
 }
 
 .dim {

@@ -12,6 +12,8 @@ export default function Example() {
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           aria-hidden="true"
         >
           <path d="M5 19c0-7 4-13 14-14-1 10-7 14-14 14z" />
@@ -43,6 +45,7 @@ export default function Example() {
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
+            strokeLinecap="round"
             aria-hidden="true"
           >
             <circle cx="11" cy="11" r="7" />
@@ -52,11 +55,7 @@ export default function Example() {
         </Search.Button>
       </Search.Root>
       <a className="account" href="/account">
-        <Avatar
-          name="Imogen Hartley"
-          src="https://picsum.photos/seed/hedgerow-imogen/96/96"
-          aria-hidden
-        />
+        <Avatar name="Imogen Hartley" src="https://picsum.photos/id/823/96/96" aria-hidden />
         <span className="loam-VisuallyHidden">Your account</span>
       </a>
     </header>

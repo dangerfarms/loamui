@@ -36,8 +36,8 @@ export default function Example() {
         <Card render={<article aria-labelledby="grid-asymmetric-lead" />}>
           <img
             className="media"
-            src="https://picsum.photos/seed/hedgerow-september/1200/800"
-            alt="The nursery bench in September, stacked with trays of perennials for the sale"
+            src="https://picsum.photos/id/646/1200/800"
+            alt="A member walking through the orchard in the September evening light"
             width="1200"
             height="800"
           />
@@ -84,11 +84,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* A 2:1 grid: the lead card takes the wide column and both rows, and the
-   two small cards stack beside it. The list is the container and the
-   grid; the markers go, and the markup keeps role="list" for the
-   browsers that drop the semantics with the marker. Narrow is one
-   column in source order, so the lead still comes first. */
 @scope (.grid-asymmetric) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -104,8 +99,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* Wide: two columns at 2:1 and the lead spanning both rows, so the
-     small cards' combined height is the lead's height. */
   @container (inline-size >= 44rem) {
     :scope {
       grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
@@ -117,11 +110,6 @@ export default function Example() {
   }
 }
 
-/* Each card is a Card rendered as the article, so the Card element is
-   this scope's root: the column inside is reachable, the SignpostLink
-   is fenced by the donut, and the Card's own surface, line, radius and
-   padding are left alone. The item is a grid with one cell, so the
-   Card stretches to the row without a height of its own. */
 @scope (.grid-asymmetric article) to ([class*="loam-"]) {
   :scope {
     display: block flex;
@@ -149,7 +137,6 @@ export default function Example() {
     text-wrap: pretty;
   }
 
-  /* The action sits at the foot, however long the words above it. */
   div.actions {
     display: block flex;
     flex-wrap: wrap;

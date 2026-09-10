@@ -39,7 +39,7 @@ export default function Example() {
     >
       <img
         className="media"
-        src="https://picsum.photos/seed/hedgerow-walled-garden-dusk/900/600"
+        src="https://picsum.photos/id/33/900/600"
         alt=""
         width="900"
         height="600"
@@ -68,15 +68,9 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Card is the article, so its element is this scope's root: core's
-   surface, line, radius and padding stay as they are. The photo is laid
-   under the padding box and a scrim over it, and the words sit in the
-   Card's own padding above both. The Card declares its colour scheme
-   dark whatever the page's, so every token inside resolves to its dark
-   answer: light words, a dark scrim, and the contrast the pair is
-   audited for. The Badge and the SignpostLink keep their recipes behind
-   the donut and take the same scheme. */
 @scope (.card-background-image) to ([class*="loam-"]) {
+  /* color-scheme: dark re-resolves every light-dark() token inside, so the
+     words and the scrim are the audited dark pair whatever the page's scheme. */
   :scope {
     align-content: end;
     color: var(--loam-color-fg);
@@ -87,7 +81,6 @@ export default function Example() {
     overflow: clip;
     position: relative;
 
-    /* The scrim: heavier at the foot, where the words are. */
     &::after {
       background: linear-gradient(
         to top,
@@ -109,8 +102,6 @@ export default function Example() {
     position: absolute;
   }
 
-  /* Positioned and after the scrim in the stacking, so the words paint
-     over it. */
   div.text {
     display: block grid;
     gap: var(--loam-space-sm);
@@ -140,9 +131,7 @@ export default function Example() {
     margin-block-start: var(--loam-space-xs);
   }
 
-  /* Forced colours keep photographs but drop every painted background,
-     so the scrim would go and the words would sit on the picture: the
-     picture goes too, and the words sit on the canvas. */
+  /* Forced colours drop the scrim, so the picture goes too. */
   @media (forced-colors: active) {
     :scope::after {
       display: none;

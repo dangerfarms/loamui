@@ -1,15 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { createContext, use, useCallback, useEffect, useId, useMemo, useRef } from "react";
 import type {
   RefObject,
   CSSProperties,
@@ -20,9 +11,11 @@ import type {
 import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
 import { cssSafeId, supportsAnchoredPopover } from "../../anchor";
-import { mergeProps, renderWithProps, composeRefs } from "../../render";
+import { useRequiredContext } from "../../context";
+import { composeRefs, mergeProps, renderWithProps } from "../../render";
 import type { RenderProp } from "../../render";
 import { useOpenState, usePopoverReconcile } from "../../use-popup";
+import { useSupports } from "../../use-support";
 
 import { Button } from "../Button/Button";
 
@@ -96,24 +89,20 @@ interface TooltipContextValue {
 const TooltipContext = createContext<TooltipContextValue | null>(null);
 
 function useTooltipContext(part: string): TooltipContextValue {
-  const ctx = useContext(TooltipContext);
-  if (!ctx) {
-    throw new Error(`${part} must be rendered inside <Tooltip.Root>.`);
-  }
-  return ctx;
+  return useRequiredContext(TooltipContext, part, "Tooltip.Root");
 }
 
 /* Same coupling as Popover: top layer without anchor positioning would leave
    the bubble centred in the viewport, so both are required to enhance. */
 /* popover="hint" is narrower than the popover API itself; an unknown value
    silently becomes "manual", so detect via IDL reflection and be explicit. */
-function detectPopoverKind(): "hint" | "manual" {
+function supportsHintPopover(): boolean {
   try {
     const probe = document.createElement("span");
     probe.popover = "hint";
-    return probe.popover === "hint" ? "hint" : "manual";
+    return probe.popover === "hint";
   } catch {
-    return "manual";
+    return false;
   }
 }
 
@@ -148,7 +137,7 @@ function TooltipRoot({
   children,
   ...rest
 }: TooltipRootProps) {
-  const provider = useContext(TooltipProviderContext);
+  const provider = use(TooltipProviderContext);
   const delay = delayProp ?? provider?.delay ?? 600;
   const lastVisibleAt = provider?.lastVisibleAt;
 
@@ -164,12 +153,8 @@ function TooltipRoot({
   const [open, setOpen] = useOpenState({ open: openProp, defaultOpen, onOpenChange: onChange });
   const openRef = useRef(open);
   openRef.current = open;
-  const [enhanced, setEnhanced] = useState(false);
-  const [popoverKind, setPopoverKind] = useState<"hint" | "manual">("manual");
-  useEffect(() => {
-    setEnhanced(supportsAnchoredPopover());
-    setPopoverKind(detectPopoverKind());
-  }, []);
+  const enhanced = useSupports(supportsAnchoredPopover);
+  const popoverKind = useSupports(supportsHintPopover) ? "hint" : "manual";
 
   const autoId = useId();
   const bubbleId = `${cssSafeId(autoId)}-tooltip`;

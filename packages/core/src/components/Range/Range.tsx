@@ -2,8 +2,8 @@
 
 import {
   createContext,
+  use,
   useCallback,
-  useContext,
   useEffect,
   useId,
   useMemo,
@@ -13,6 +13,7 @@ import {
 import type { ChangeEvent, CSSProperties } from "react";
 import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
+import { useRequiredContext } from "../../context";
 import { composeRefs } from "../../render";
 import { useFieldControlProps } from "../Field/Field";
 
@@ -49,11 +50,7 @@ interface RangeContextValue {
 const RangeContext = createContext<RangeContextValue | null>(null);
 
 function useRangeContext(part: string): RangeContextValue {
-  const ctx = useContext(RangeContext);
-  if (!ctx) {
-    throw new Error(`${part} must be rendered inside <Range.Root>.`);
-  }
-  return ctx;
+  return useRequiredContext(RangeContext, part, "Range.Root");
 }
 
 function toNumber(value: string | number | readonly string[] | undefined, fallback: number) {
@@ -84,7 +81,7 @@ function RangeInput({
   ...rest
 }: RangeProps) {
   const field = useFieldControlProps(ariaDescribedby);
-  const root = useContext(RangeContext);
+  const root = use(RangeContext);
   const listId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
   const composedRef = useMemo(() => composeRefs(refProp, inputRef), [refProp]);
@@ -206,12 +203,18 @@ function RangeRoot({ className, style, children, ...rest }: RangeRootProps) {
   );
 }
 
+/** The words the Output shows. */
+export interface RangeOutputLabels {
+  /** Formats the current value. @default the number in the page's locale */
+  value?: (value: number) => string;
+}
+
 export interface RangeOutputProps extends PartProps<"output"> {
   /**
    * The words the output shows: `value(n)` formats the current value
    * (default: the number in the page's locale).
    */
-  labels?: { value?: (value: number) => string };
+  labels?: RangeOutputLabels;
 }
 
 /**

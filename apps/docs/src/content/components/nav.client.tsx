@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { CSSProperties } from "react";
-import { Nav, useScrollSpy } from "@loamui/core";
+import { Menu, Nav, useScrollSpy } from "@loamui/core";
 import Link from "next/link";
 
 const rail: CSSProperties = { inlineSize: "100%", maxInlineSize: "16rem" };
@@ -229,6 +229,135 @@ export function NavInlineDemo() {
         </Nav.Item>
         <Nav.Item>
           <Nav.Link href="#about">About</Nav.Link>
+        </Nav.Item>
+      </Nav.List>
+    </Nav.Root>
+  );
+}
+
+function Chevron() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+
+const row: CSSProperties = { display: "flex", flexWrap: "wrap", gap: "var(--loam-space-xs)" };
+
+/**
+ * A header with two dropdowns of links: a column of them, and a wide panel
+ * with a grid of two columns inside. The page's own stylesheet would carry
+ * the row and the grid; here they are inline so the demo is self-contained.
+ */
+export function NavDropdownDemo() {
+  return (
+    <Nav.Root aria-label="Site" style={{ "--loam-nav-current-edge": "block-end" } as CSSProperties}>
+      <Nav.List style={row}>
+        <Nav.Item>
+          <Nav.Link href="#seeds">Seeds</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Dropdown>
+            <Nav.DropdownTrigger>Plants</Nav.DropdownTrigger>
+            <Nav.DropdownPanel>
+              <Nav.List>
+                <Nav.Item>
+                  <Nav.Link href="#vegetables" current>
+                    Vegetables
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link href="#herbs">Herbs</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link href="#flowers">Flowers</Nav.Link>
+                </Nav.Item>
+              </Nav.List>
+            </Nav.DropdownPanel>
+          </Nav.Dropdown>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Dropdown>
+            <Nav.DropdownTrigger>Learn</Nav.DropdownTrigger>
+            <Nav.DropdownPanel style={{ "--loam-nav-dropdown-size": "32rem" } as CSSProperties}>
+              <div
+                style={{
+                  display: "grid",
+                  gap: "var(--loam-space-md)",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(12rem, 1fr))",
+                }}
+              >
+                <Nav.List>
+                  <Nav.Item>
+                    <Nav.Link href="#guides">Growing guides</Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link href="#sowing-calendar">Sowing calendar</Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link href="#seed-saving">Seed saving</Nav.Link>
+                  </Nav.Item>
+                </Nav.List>
+                <Nav.List>
+                  <Nav.Item>
+                    <Nav.Link href="#courses">Courses</Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link href="#workshops">Workshops</Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link href="#open-days">Open days</Nav.Link>
+                  </Nav.Item>
+                </Nav.List>
+              </div>
+            </Nav.DropdownPanel>
+          </Nav.Dropdown>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link href="#about">About</Nav.Link>
+        </Nav.Item>
+      </Nav.List>
+    </Nav.Root>
+  );
+}
+
+/**
+ * A line of the nav that opens a menu of actions: the Menu's trigger is a
+ * Nav.Link rendered as a button, so it is set like the links beside it and
+ * wired like a menu button.
+ */
+export function NavMenuDemo() {
+  return (
+    <Nav.Root aria-label="Site" style={{ "--loam-nav-current-edge": "block-end" } as CSSProperties}>
+      <Nav.List style={row}>
+        <Nav.Item>
+          <Nav.Link href="#seeds" current>
+            Seeds
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link href="#plants">Plants</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Menu.Root>
+            <Menu.Trigger render={<Nav.Link render={<button type="button" />} />}>
+              Account
+              <Chevron />
+            </Menu.Trigger>
+            <Menu.Popup>
+              <Menu.Item>Switch workspace</Menu.Item>
+              <Menu.Item>Sign out</Menu.Item>
+            </Menu.Popup>
+          </Menu.Root>
         </Nav.Item>
       </Nav.List>
     </Nav.Root>

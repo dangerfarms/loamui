@@ -39,6 +39,8 @@ export default function Example() {
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               aria-hidden="true"
             >
               <path d="M5 19c0-7 4-13 14-14-1 10-7 14-14 14z" />
@@ -112,11 +114,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* Two rows under a line. The first holds the brand and its tagline at the
-   start and the social links at the end; the second, the small print and
-   the legal links, separated by a lighter line. Both rows wrap by the
-   footer's own width. Set in the muted colour because a footer is
-   reference, not the page's voice. */
 @scope (.footer-with-social) to ([class*="loam-"]) {
   :scope {
     border-block-start: 1px solid var(--loam-color-line);
@@ -169,8 +166,6 @@ export default function Example() {
     }
   }
 
-  /* The markers go in both navs; inside a nav every browser keeps the
-     list's semantics without them. */
   nav {
     ul {
       display: block flex;
@@ -202,9 +197,7 @@ export default function Example() {
     }
   }
 
-  /* The social links are icons alone: each target is floored at 24px
-     whatever the font makes the glyph, with a gap so neighbours stay
-     apart; the icon follows the footer's small type. */
+  /* A 24px floor: the smallest target a pointer hits reliably. */
   nav[aria-label="Social"] {
     ul {
       gap: var(--loam-space-sm);

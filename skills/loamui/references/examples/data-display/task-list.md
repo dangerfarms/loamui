@@ -94,10 +94,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The section is the container, so the rows can restack below a narrow
-   width. The list carries no marker, since a task list is read by status,
-   not by position, and the markup restores the list role that some
-   browsers drop with the markers. */
 @scope (.task-list) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -120,11 +116,8 @@ export default function Example() {
     padding: 0;
   }
 
-  /* One row: the title and its description in the first column, the
-     status in the second, spanning both rows so it sits level with the
-     title whether or not a description follows. The row gap is zero because
-     the span leaves an empty second row in a task with no description; the
-     description carries its own top margin instead. */
+  /* Zero row gap: the status spans both rows, and a task with no
+     description leaves the second one empty. */
   li {
     align-items: start;
     border-block-end: 1px solid var(--loam-color-line);
@@ -135,9 +128,6 @@ export default function Example() {
     padding-block: var(--loam-space-sm);
   }
 
-  /* The title. A link keeps the page's link styling; plain text, the title
-     of a task that cannot be started, is muted so the row reads as
-     unavailable before the status is read. */
   .title {
     font-weight: 600;
 
@@ -154,9 +144,6 @@ export default function Example() {
     margin-block-start: var(--loam-space-xs);
   }
 
-  /* The status hosts the Badge and declares what the task's state means:
-     a completed task is a success region, one under way an info region,
-     and one not yet begun no region at all, so its Badge stays neutral. */
   div.status {
     grid-column: 2;
     grid-row: 1 / span 2;
@@ -170,9 +157,8 @@ export default function Example() {
     }
   }
 
-  /* Narrow: one column, the status under the title and description. The
-     query sits on the rows because a container query is answered by an
-     ancestor, never by the element that declares it. */
+  /* A container query is answered by an ancestor, never by the element that
+     declares it. */
   @container (inline-size < 24rem) {
     li {
       grid-template-columns: 1fr;

@@ -17,6 +17,7 @@ describe("header-with-tabs", () => {
 
     const trigger = screen.getByRole("button", { name: "Account menu for Imogen Hartley" });
     expect(trigger).toHaveAttribute("aria-haspopup", "menu");
+    expect(trigger).toHaveClass("loam-Button");
     expect(trigger.querySelector(".loam-Avatar")).toHaveAttribute("aria-hidden", "true");
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
     expect(await axe(container, axeOptions)).toHaveNoViolations();

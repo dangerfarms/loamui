@@ -1,6 +1,3 @@
-/* A narrow header: the brand at the start and the Menu button at the end.
-   The panel is core's Drawer, a native dialog in the top layer, so it
-   takes nothing from the header's layout. */
 @scope (.mobile-nav) to ([class*="loam-"]) {
   :scope {
     align-items: center;
@@ -29,10 +26,6 @@
   }
 }
 
-/* Inside the panel: the title and the close button share the first row,
-   and the Nav beneath is given a thumb's line height through its public
-   property, since a finger, not a pointer, is what opens this menu. The
-   dialog, the title and the two Buttons keep core's own styles. */
 @scope (.mobile-nav .loam-Drawer-popup) to ([class*="loam-"]) {
   :scope {
     --loam-nav-link-size: 2.75rem;

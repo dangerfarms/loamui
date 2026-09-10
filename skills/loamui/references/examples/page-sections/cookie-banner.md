@@ -60,8 +60,6 @@ export default function Example() {
   const [hidden, setHidden] = useState(false);
   const banner = useRef<HTMLElement>(null);
   const confirmation = useRef<HTMLDivElement>(null);
-  // The button pressed, recorded on click so the submit knows the choice in every browser.
-  const pending = useRef<Choice | null>(null);
 
   // The button the reader pressed has gone with the banner, so focus moves to the one that replaced it.
   useEffect(() => {
@@ -71,12 +69,11 @@ export default function Example() {
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const submitter = (event.nativeEvent as SubmitEvent).submitter;
+    const { submitter } = event.nativeEvent as SubmitEvent;
     const value = submitter instanceof HTMLButtonElement ? submitter.value : "";
-    const next = value === "accept" || value === "reject" ? value : pending.current;
-    if (!next) return;
+    if (value !== "accept" && value !== "reject") return;
     // Persist the choice here: a cookie, or a request to your server.
-    setChoice(next);
+    setChoice(value);
   }
 
   function hide() {
@@ -101,20 +98,10 @@ export default function Example() {
             at, so we can decide what to grow and write next. Nothing is shared with advertisers.
           </p>
           <form method="post" action="/cookies" onSubmit={submit}>
-            <Button
-              type="submit"
-              name="cookies"
-              value="accept"
-              onClick={() => (pending.current = "accept")}
-            >
+            <Button type="submit" name="cookies" value="accept">
               Accept additional cookies
             </Button>
-            <Button
-              type="submit"
-              name="cookies"
-              value="reject"
-              onClick={() => (pending.current = "reject")}
-            >
+            <Button type="submit" name="cookies" value="reject">
               Reject additional cookies
             </Button>
             <a href="/cookies">Cookie settings</a>
@@ -140,14 +127,9 @@ export default function Example() {
 ## example.css
 
 ```css
-/* A cookie banner is a region at the start of the document, in the flow
-   of the page and never over it: no sticky or fixed position and no
-   stacking, so nothing is covered while the choice is open. The
-   confirmation sits beside the banner as a live region that is empty
-   until the choice, so it takes no room and no gap while the banner
-   shows. In forced colours the background goes but the line beneath
-   keeps the banner's edge. */
 @scope (.cookie-banner) to ([class*="loam-"]) {
+  /* In flow, never fixed over the page: nothing is covered while the choice
+     is open. */
   :scope {
     background: var(--loam-color-bg-subtle);
     border-block-end: 1px solid var(--loam-color-line);
@@ -165,16 +147,12 @@ export default function Example() {
     margin: 0;
   }
 
-  /* The paragraphs keep to a readable measure; the grid gap spaces them,
-     so the element margin goes. */
   p {
     margin: 0;
     max-inline-size: var(--loam-measure);
     text-wrap: pretty;
   }
 
-  /* The choices: a wrapping row. The Buttons and the link keep their own
-     widths and wrap when the banner is narrow. */
   form {
     align-items: center;
     display: block flex;
@@ -183,11 +161,8 @@ export default function Example() {
     margin-block-start: var(--loam-space-sm);
   }
 
-  /* The confirmation: the sentence, then the Hide button shrink-wrapped
-     beneath it. A grid with no children has no height, which keeps the
-     empty live region out of the way. It takes focus only when it has no
-     button to hand it to, and a ring on a region of prose would mark
-     nothing the reader can act on, so it draws none. */
+  /* No ring: it takes focus only when it has no button to hand it to, and a
+     ring on prose marks nothing to act on. */
   div.confirmation {
     display: block grid;
     gap: var(--loam-space-sm);

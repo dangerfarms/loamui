@@ -4,6 +4,11 @@
     border-radius: var(--loam-radius-md);
     inline-size: 100%;
 
+    /* A cap on the scroller's height is the public --loam-table-block-size:
+       set it and long tables scroll in place, the wrapper becoming a named
+       region as it does for width. Unset, the table is as tall as its rows. */
+    max-block-size: var(--loam-table-block-size, none);
+
     /* overflow (shorthand), not the logical overflow-inline: the latter is
        not yet Baseline (see elements.css `pre`), so wide tables would not
        scroll in some browsers. */
@@ -57,6 +62,30 @@
      cell gives some of its own back so the row stays near header height. */
   thead th[aria-sort] {
     padding-block: var(--loam-space-xs);
+  }
+
+  /* A sticky header: the column names stay at the top of the scroller (the
+     wrapper, capped by --loam-table-block-size or the layout around it)
+     while the rows pass beneath. The cells are painted an opaque surface
+     so rows do not show through, and raised above the positioned hidden
+     text a cell may hold. Collapsed borders belong to the table, not the
+     cell, so the header's bottom line would stay behind as it sticks; the
+     table separates them (at zero spacing, so nothing else moves) and each
+     cell carries its own edge, which travels with it. A border rather than
+     a shadow so forced colours, which drop shadows and flatten the
+     background to Canvas, keep the line and the cover. */
+  :scope[data-sticky-header] {
+    table {
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    thead th {
+      background: var(--loam-color-surface);
+      inset-block-start: 0;
+      position: sticky;
+      z-index: 1;
+    }
   }
 
   :scope[data-col-borders] th:not(:last-child),

@@ -72,13 +72,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* An address element holding a description list. Browsers set address in
-   italic, a convention from letters that reads as emphasis here, so the
-   root sets upright type. Each width owns its layout outright: the two
-   columns live in the wide query and the stacked pairs in the narrow one,
-   so neither overrides a rule the other set. The queries sit on the
-   children because a container query is answered by an ancestor, never by
-   the element that declares it. */
 @scope (.contact-details) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -95,17 +88,13 @@ export default function Example() {
     font-size: var(--loam-text-sm);
   }
 
-  /* A long email or URL breaks rather than widening the column. */
   dd {
     margin: 0;
     overflow-wrap: anywhere;
   }
 
-  /* Wide: two columns, the labels at their widest width, the values the
-     rest. Each pair is a div so its cells stay together in the markup; the
-     grid sees through it to place them as siblings, and every description
-     is pinned to the second column so a term with two of them keeps both
-     beside it. */
+  /* A container query is answered by an ancestor, never by the element that
+     declares it. */
   @container (inline-size >= 22rem) {
     dl {
       gap: var(--loam-space-sm) var(--loam-space-lg);
@@ -121,9 +110,6 @@ export default function Example() {
     }
   }
 
-  /* Narrow: one column, each label above its values. The pair is a real
-     box so the label sits close to its value and the pairs keep a larger
-     gap between them. */
   @container (inline-size < 22rem) {
     dl {
       gap: var(--loam-space-md);

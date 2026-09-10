@@ -1,15 +1,11 @@
-/* Questions beside a picture. The section is the container and the
-   inner element the grid, because an element cannot answer its own
-   container query. Narrow is one column with the picture last, so the
-   questions come first for anyone scrolling; wide puts the picture in
-   the start column, pinned to the top of the questions. The drawing is
-   lines in the current colour with fills in the soft tint. */
 @scope (.faq-with-image) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
     padding-block: var(--loam-space-xl);
   }
 
+  /* The inner element is the grid: an element cannot answer its own
+     container query. */
   div.inner {
     display: block grid;
     gap: var(--loam-space-xl);
@@ -21,7 +17,6 @@
     inline-size: 100%;
     justify-self: center;
     max-inline-size: 16rem;
-    order: 1;
 
     .fill {
       fill: var(--loam-color-primary-soft);
@@ -51,8 +46,13 @@
     margin-block-start: var(--loam-space-sm);
   }
 
-  /* Wide: the picture in its own column on the start side, in source
-     order again, and held to the top while the questions open. */
+  /* Below the questions it is decoration in the way; it waits for a column. */
+  @container (inline-size < 48rem) {
+    svg.illustration {
+      display: none;
+    }
+  }
+
   @container (inline-size >= 48rem) {
     div.inner {
       align-items: start;
@@ -62,13 +62,11 @@
     svg.illustration {
       inset-block-start: var(--loam-space-lg);
       max-inline-size: 20rem;
-      order: 0;
       position: sticky;
     }
   }
 
-  /* Forced colours: the tint goes; the drawing is its lines in the
-     system text colour. */
+  /* Forced colours drop the tint; the drawing is its lines in CanvasText. */
   @media (forced-colors: active) {
     svg.illustration {
       color: CanvasText;

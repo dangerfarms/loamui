@@ -3,7 +3,6 @@
 import {
   createContext,
   useCallback,
-  useContext,
   useEffect,
   useId,
   useLayoutEffect,
@@ -24,8 +23,10 @@ import type {
 import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
 import { cssSafeId } from "../../anchor";
+import { useRequiredContext } from "../../context";
 import { composeRefs, mergeProps, renderWithProps } from "../../render";
 import type { RenderProp } from "../../render";
+import { useControllable } from "../../use-controllable";
 import { Button } from "../Button/Button";
 import type { ButtonProps } from "../Button/Button";
 import { Input } from "../Input/Input";
@@ -94,11 +95,7 @@ interface ComboboxContextValue {
 const ComboboxContext = createContext<ComboboxContextValue | null>(null);
 
 function useComboboxContext(part: string): ComboboxContextValue {
-  const ctx = useContext(ComboboxContext);
-  if (!ctx) {
-    throw new Error(`${part} must be rendered inside <Combobox.Root>.`);
-  }
-  return ctx;
+  return useRequiredContext(ComboboxContext, part, "Combobox.Root");
 }
 
 function defaultStatus(count: number): string {
@@ -106,29 +103,6 @@ function defaultStatus(count: number): string {
 }
 
 const NO_LABELS: ComboboxLabels = {};
-
-/** Controlled-or-uncontrolled state: the prop owns it when defined. */
-function useControllable<T>(
-  prop: T | undefined,
-  fallback: T,
-  onChange?: (next: T) => void,
-): [T, (next: T) => void] {
-  const [own, setOwn] = useState(fallback);
-  const value = prop === undefined ? own : prop;
-  const valueRef = useRef(value);
-  valueRef.current = value;
-  const controlledRef = useRef(false);
-  controlledRef.current = prop !== undefined;
-  const set = useCallback(
-    (next: T) => {
-      if (Object.is(next, valueRef.current)) return;
-      if (!controlledRef.current) setOwn(next);
-      onChange?.(next);
-    },
-    [onChange],
-  );
-  return [value, set];
-}
 
 /** The selectable options in DOM order; disabled ones are skipped. */
 function enabledOptions(list: HTMLElement | null): HTMLElement[] {

@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
 import { CommandMenu } from "./CommandMenu";
 import { MobileNav } from "./MobileNav";
+import { HeaderNav } from "./HeaderNav";
 import { GitHubIcon } from "./Icons";
 import classes from "./Header.module.css";
 
@@ -15,18 +15,11 @@ export function Header() {
         <div className={classes.left}>
           <MobileNav />
           <Logo />
-          <nav className={classes.nav} aria-label="Primary">
-            <Link href="/docs/tokens">Tokens</Link>
-            <Link href="/docs/element-styles">Element styles</Link>
-            <Link href="/docs/components">Components</Link>
-            <Link href="/examples">Examples</Link>
-          </nav>
+          <HeaderNav />
         </div>
 
         <div className={classes.right}>
-          <div className={classes.search}>
-            <CommandMenu />
-          </div>
+          <CommandMenu />
           <a
             className={classes.stars}
             href={GITHUB_URL}

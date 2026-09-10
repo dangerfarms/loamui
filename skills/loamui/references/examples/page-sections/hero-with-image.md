@@ -21,7 +21,7 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - **Native CSS.** A section named by its own heading, an h1 because a hero opens the page; the type is the element styles' own.
 - **Modern CSS.** The hero is a container: two columns where it has room, one where it has not, decided by its own width rather than the viewport.
 - **Composition.** Three components, three jobs: Badge marks the season, SignpostLink goes to the catalogue and Button starts the video, with the play glyph a child the Button detects and sizes.
-- **Contextualism.** The eyebrow declares --loam-context: primary, so the Badge inside takes the brand colour without a prop.
+- **Contextualism.** The eyebrow declares --loam-context: primary, so the Badge inside takes the brand colour without a prop; primary is the brand slot, neutral until a theme fills it, and the eyebrow reads as one by its place above the heading.
 - **Accessible & gatekept.** Going somewhere is a SignpostLink and doing something is a Button; the photograph carries real alt text.
 
 ## Example.tsx
@@ -56,8 +56,8 @@ export default function Example() {
         </div>
         <img
           className="media"
-          src="https://picsum.photos/seed/hedgerow-hero/1200/900"
-          alt="Trays of lettuce seedlings on a nursery bench in morning light"
+          src="https://picsum.photos/id/785/1200/900"
+          alt="A grower's cupped hands holding a bundle of green shoots"
           width="1200"
           height="900"
         />
@@ -70,15 +70,14 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The section is the container and the inner element is the grid: an
-   element cannot answer its own container query. The donut keeps the
-   Badge, the Button and the SignpostLink inside on their own styles. */
 @scope (.hero-with-image) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
     padding-block: var(--loam-space-xl);
   }
 
+  /* The inner element is the grid: an element cannot answer its own
+     container query. */
   div.inner {
     display: block grid;
     gap: var(--loam-space-xl);
@@ -89,8 +88,6 @@ export default function Example() {
     gap: var(--loam-space-lg);
   }
 
-  /* The eyebrow is a primary region: the Badge inside takes the brand
-     colour from the context, not from a prop. */
   p.eyebrow {
     --loam-context: primary;
 
@@ -130,8 +127,6 @@ export default function Example() {
     inline-size: 100%;
   }
 
-  /* Wide: text beside the image, each in its own column, centred on the
-     shared axis. Narrow keeps the single column above. */
   @container (inline-size >= 48rem) {
     div.inner {
       align-items: center;

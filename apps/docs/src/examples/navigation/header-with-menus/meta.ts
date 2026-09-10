@@ -1,21 +1,21 @@
 import type { ExampleMeta } from "@/examples/types";
 
 export const meta: ExampleMeta = {
-  title: "Header with menus",
+  title: "Header with dropdowns",
   description:
-    "A site header whose primary row mixes plain links with two menus, Learn and Support, that drop down lists of pages; a sign-in link and a signpost to join sit at the end.",
+    "A site header whose primary row mixes plain links with two dropdowns, Learn and Support, that open lists of pages; a sign-in link and a signpost to join sit at the end.",
   category: "navigation",
-  uses: ["Menu", "Nav", "SignpostLink"],
+  uses: ["Nav", "SignpostLink"],
   notes: {
     native:
-      "Every item in the two menus is an anchor with an href, and a menu opens on click, Enter or an arrow key rather than on hover alone, so a keyboard, a touch screen and a pointer all reach the same pages; going somewhere is a link or a SignpostLink, never a Button.",
+      "Every page in the two dropdowns is an anchor with an href in a list, and each panel is a native popover, so the top layer, light dismiss and Escape are the browser's; going somewhere is a link or a SignpostLink, never a Button.",
     modern:
-      "One flex row that reflows by the header's own width, the nav dropping to a row of its own where the header is narrow; each popup tethers to its trigger by anchor positioning in the top layer where the browser has it.",
+      "One flex row that reflows by the header's own width, the nav dropping to a row of its own where the header is narrow; each panel tethers to its trigger by anchor positioning where the browser has it, and the marker's edge is set on the Root as a style query the links answer.",
     composition:
-      "Each Menu sits in a Nav.Item with its trigger substituted through render for a bare button dressed as the links beside it, so the row reads as one nav while the popups, their keys and their dismissal stay Menu's.",
+      "The dropdowns are Nav's own disclosure: a Dropdown in an Item holds a DropdownTrigger, set like the links beside it, and a DropdownPanel holding a List of Links, so the example writes the row on the List and nothing else; there is no Menu here, and nothing is reached into.",
     accessible:
-      "A trigger reports its state with aria-expanded and the chevron turns from that same attribute; inside a menu, arrow keys, typeahead, Escape and focus return are Menu's own, and the current page carries aria-current on its link.",
+      "A dropdown of pages is a disclosure, not a menu: the trigger is a button reporting aria-expanded and aria-controls, and the panel holds plain links Tab walks like any others, with no menu roles or arrow-key model to learn; it opens on click and never on hover, so a keyboard and a touch screen open the same thing, and the current page carries aria-current on its link.",
   },
-  tags: ["site header", "dropdown", "menu", "navbar", "primary nav"],
+  tags: ["site header", "dropdown", "disclosure", "navbar", "primary nav"],
   order: 15,
 };

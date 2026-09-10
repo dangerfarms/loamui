@@ -18,7 +18,7 @@ import { SignpostLink } from "@loamui/core";
 
 ## Usage
 
-### Basic
+### Basic usage
 
 A real <a> with a circled arrow. Use it where a page hands over to a task: the start of an application, a checkout, a service.
 
@@ -79,6 +79,6 @@ Status is not a prop: it comes from the surrounding `--loam-context` region (see
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `render` | `RenderProp` | — | Substitute the built-in <a>, e.g. a router link: render={<Link href=… />}. The label stays as SignpostLink's children. |
+| `render` | `element \| (props) => node` | — | Substitute the built-in <a>, e.g. a router link: render={<Link href=… />}. The label stays as SignpostLink's children. |
 | `...others` | `AnchorHTMLAttributes<HTMLAnchorElement>` | — | All native <a> props are forwarded (href, target, …). |
 

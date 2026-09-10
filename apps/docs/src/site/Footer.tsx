@@ -1,37 +1,38 @@
 import Link from "next/link";
 import { Logo } from "./Logo";
 import { GitHubIcon } from "./Icons";
+import { EXAMPLE_CATEGORIES } from "../examples/categories";
 import classes from "./Footer.module.css";
+
+const GITHUB_URL = "https://github.com/dangerfarms/loamui";
 
 const COLUMNS = [
   {
-    title: "Docs",
+    title: "Getting started",
     links: [
       { label: "Introduction", href: "/docs" },
       { label: "Installation", href: "/docs/installation" },
+      { label: "Contextualism", href: "/docs/contextualism" },
+      { label: "Composing components", href: "/docs/composing" },
+      { label: "Accessibility", href: "/docs/accessibility" },
+    ],
+  },
+  {
+    title: "Primitives",
+    links: [
       { label: "Tokens", href: "/docs/tokens" },
       { label: "Element styles", href: "/docs/element-styles" },
       { label: "Components", href: "/docs/components" },
     ],
   },
   {
-    title: "Components",
+    title: "Examples",
     links: [
-      { label: "Button", href: "/docs/components/button" },
-      { label: "Input", href: "/docs/components/input" },
-      { label: "Modal", href: "/docs/components/modal" },
-      { label: "Tabs", href: "/docs/components/tabs" },
-      { label: "Compositions", href: "https://loamui.com/ui/" },
-    ],
-  },
-  {
-    title: "Community",
-    links: [
-      { label: "GitHub", href: "https://github.com/dangerfarms/loamui" },
-      {
-        label: "Changelog",
-        href: "https://github.com/dangerfarms/loamui/releases",
-      },
+      { label: "All examples", href: "/examples" },
+      ...EXAMPLE_CATEGORIES.slice(0, 4).map((c) => ({
+        label: c.title,
+        href: `/examples/${c.slug}`,
+      })),
     ],
   },
   {
@@ -39,13 +40,30 @@ const COLUMNS = [
     links: [
       { label: "llms.txt", href: "/llms.txt" },
       { label: "Composing components", href: "/docs/composing" },
-      {
-        label: "Contributor skills",
-        href: "https://github.com/dangerfarms/loamui/tree/main/.agents/skills",
-      },
+      { label: "Contributor skills", href: `${GITHUB_URL}/tree/main/.agents/skills` },
+    ],
+  },
+  {
+    title: "Project",
+    links: [
+      { label: "GitHub", href: GITHUB_URL },
+      { label: "Changelog", href: `${GITHUB_URL}/releases` },
+      { label: "MIT licence", href: `${GITHUB_URL}/blob/main/LICENSE` },
     ],
   },
 ];
+
+/** Site links go through the router; external ones are plain anchors. */
+function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
+  if (href.startsWith("http")) {
+    return (
+      <a href={href} target="_blank" rel="noreferrer">
+        {children}
+      </a>
+    );
+  }
+  return <Link href={href}>{children}</Link>;
+}
 
 export function Footer() {
   return (
@@ -56,34 +74,31 @@ export function Footer() {
           <p className={classes.tagline}>
             Modern UI primitives for agent-assisted developers. Open source and MIT-licensed.
           </p>
-          <a
-            className={classes.gh}
-            href="https://github.com/dangerfarms/loamui"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a className={classes.gh} href={GITHUB_URL} target="_blank" rel="noreferrer">
             <GitHubIcon width={16} height={16} /> Star on GitHub
           </a>
         </div>
 
-        <div className={classes.cols}>
+        <nav className={classes.cols} aria-label="Site map">
           {COLUMNS.map((col) => (
             <div key={col.title} className={classes.col}>
-              <h3 className={classes.colTitle}>{col.title}</h3>
+              <h2 className={classes.colTitle}>{col.title}</h2>
               <ul>
                 {col.links.map((l) => (
                   <li key={l.label}>
-                    <Link href={l.href}>{l.label}</Link>
+                    <FooterLink href={l.href}>{l.label}</FooterLink>
                   </li>
                 ))}
               </ul>
             </div>
           ))}
-        </div>
+        </nav>
       </div>
       <div className={`container ${classes.bottom}`}>
         <span>© {new Date().getFullYear()} LoamUI. Built by Danger Farms.</span>
-        <span>Built with modern CSS.</span>
+        <span>
+          Every page has a markdown twin: add <code>.md</code> to its address.
+        </span>
       </div>
     </footer>
   );

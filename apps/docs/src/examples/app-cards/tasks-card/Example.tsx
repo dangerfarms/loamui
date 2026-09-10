@@ -4,10 +4,10 @@ import { Avatar, Card, Progress, Time } from "@loamui/core";
 import "./example.css";
 
 const TEAM = [
-  { name: "Nia Prosser", seed: "hedgerow-nia" },
-  { name: "Dafydd Rees", seed: "hedgerow-dafydd" },
-  { name: "Amara Okonkwo", seed: "hedgerow-amara" },
-  { name: "Tom Bradshaw", seed: "hedgerow-tom" },
+  { name: "Nia Prosser", photo: 65 },
+  { name: "Dafydd Rees", photo: 91 },
+  { name: "Amara Okonkwo", photo: 375 },
+  { name: "Tom Bradshaw", photo: 473 },
 ];
 
 export default function Example() {
@@ -35,7 +35,7 @@ export default function Example() {
             <Avatar
               key={member.name}
               name={member.name}
-              src={`https://picsum.photos/seed/${member.seed}/80/80`}
+              src={`https://picsum.photos/id/${member.photo}/80/80`}
             />
           ))}
         </Avatar.Group>

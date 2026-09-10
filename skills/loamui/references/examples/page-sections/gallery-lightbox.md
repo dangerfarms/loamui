@@ -35,29 +35,28 @@ import "./example.css";
 
 const PHOTOS = [
   {
-    id: "beds",
-    alt: "Raised beds of young lettuce under fleece",
+    id: 955,
+    alt: "Rows of the trial beds seen from the bank above",
     caption: "The trial beds in April",
   },
-  { id: "tunnel", alt: "Tomato plants trained up strings inside a polytunnel" },
+  { id: 400, alt: "Flower buds forming on a shrub in the stock beds" },
   {
-    id: "drying",
-    alt: "Bunches of onions hung to dry from a barn rafter",
-    caption: "The drying barn",
+    id: 112,
+    alt: "Grass seed heads ripening in the meadow",
+    caption: "Seed left to ripen",
   },
-  { id: "packets", alt: "Hand-stamped seed packets laid out on a bench" },
-  { id: "beans", alt: "A trellis of crimson-flowered broad beans in bloom" },
+  { id: 627, alt: "Freshly picked green beans in a crate on the bench" },
+  { id: 1080, alt: "Strawberries in punnets on the open-day stall" },
   {
-    id: "openday",
-    alt: "Visitors walking between rows of squash on an open day",
+    id: 17,
+    alt: "Visitors on the meadow path on an open day",
     caption: "Open day, September",
   },
 ];
 
-const thumb = (id: string) => `https://picsum.photos/seed/hedgerow-${id}/600/600`;
-const full = (id: string) => `https://picsum.photos/seed/hedgerow-${id}/1600/1067`;
+const url = (id: number, size: string) => `https://picsum.photos/id/${id}/${size}`;
 
-/** What the lightbox shows. Kept after closing, so the dialog stays mounted and the image stays put while it leaves. */
+/** What the lightbox shows; kept after closing so the image stays put while the dialog leaves. */
 interface Opened {
   src: string;
   alt: string;
@@ -74,7 +73,11 @@ export default function Example() {
       return;
     }
     event.preventDefault();
-    setOpened({ src: full(photo.id), alt: photo.alt, name: photo.caption ?? photo.alt });
+    setOpened({
+      src: url(photo.id, "1600/1067"),
+      alt: photo.alt,
+      name: photo.caption ?? photo.alt,
+    });
     setOpen(true);
   }
 
@@ -84,9 +87,9 @@ export default function Example() {
         {PHOTOS.map((photo) => (
           <li key={photo.id}>
             <figure>
-              <a href={full(photo.id)} onClick={(event) => show(event, photo)}>
+              <a href={url(photo.id, "1600/1067")} onClick={(event) => show(event, photo)}>
                 <img
-                  src={thumb(photo.id)}
+                  src={url(photo.id, "600/600")}
                   alt={photo.alt}
                   width="600"
                   height="600"
@@ -116,13 +119,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* A grid of figures, each a real link to the full-size file, so every
-   thumbnail works before JavaScript; once hydrated a click opens the
-   file in a Modal instead. The list keeps its semantics through
-   role="list" in the markup, since list-style: none drops them in some
-   browsers. The Modal's width is its public knob, set here and inherited
-   by the dialog: as wide as the viewport allows, capped so a large image
-   is still one glance. */
 @scope (.gallery-lightbox) to ([class*="loam-"]) {
   :scope {
     --loam-modal-size: min(100% - 2 * var(--loam-space-lg), 72rem);
@@ -133,7 +129,7 @@ export default function Example() {
   ul {
     display: block grid;
     gap: var(--loam-space-md);
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 12rem), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
     list-style: none;
     margin: 0;
     padding: 0;
@@ -149,9 +145,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* The link is a block the size of its image, with the image's radius so
-     the focus ring follows the corners. It lifts on hover only where a
-     pointer can hover and motion is welcome. */
   a {
     border-radius: var(--loam-radius-md);
     display: block flow;
@@ -165,8 +158,6 @@ export default function Example() {
     }
   }
 
-  /* Square thumbnails, cropped rather than squashed, so a grid of mixed
-     photographs reads as one grid. */
   img {
     aspect-ratio: 1;
     block-size: auto;
@@ -183,13 +174,6 @@ export default function Example() {
   }
 }
 
-/* The lightbox's contents sit inside the Modal's Popup, which the donut
-   above fences off, so they are reached from a second scope rooted at
-   the example's own element in it. The Modal's look is untouched; this
-   arranges the large image and the Close within it. The image keeps its
-   own ratio and is capped at most of the viewport's block size, leaving
-   room for the dialog's padding and the Close, so the dialog never
-   scrolls to show the whole picture. */
 @scope (.gallery-lightbox div.lightbox) to ([class*="loam-"]) {
   :scope {
     display: block grid;
@@ -201,6 +185,9 @@ export default function Example() {
     block-size: auto;
     border-radius: var(--loam-radius-md);
     inline-size: auto;
+
+    /* Short of the viewport, leaving room for the dialog's padding and the
+       Close, so the dialog never scrolls. */
     max-block-size: 80dvb;
     max-inline-size: 100%;
   }

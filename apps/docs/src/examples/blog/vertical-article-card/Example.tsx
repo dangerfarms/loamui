@@ -10,7 +10,7 @@ export default function Example() {
     >
       <img
         className="media"
-        src="https://picsum.photos/seed/hedgerow-dahlia-tubers/600/750"
+        src="https://picsum.photos/id/152/600/750"
         alt=""
         width="600"
         height="750"

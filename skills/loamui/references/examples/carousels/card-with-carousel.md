@@ -33,16 +33,16 @@ import "./example.css";
 
 const PHOTOS = [
   {
-    seed: "hedgerow-cabin-outside",
-    alt: "A timber cabin under apple trees at the edge of the orchard",
+    seed: 206,
+    alt: "The cabin at the edge of the orchard in evening light",
   },
   {
-    seed: "hedgerow-cabin-inside",
-    alt: "The cabin’s main room, with a wood stove and a table set for four",
+    seed: 225,
+    alt: "A pot of tea and a cup on the cabin’s kitchen table",
   },
   {
-    seed: "hedgerow-cabin-garden",
-    alt: "The walled garden at dusk, seen from the cabin’s porch",
+    seed: 33,
+    alt: "The meadow beside the cabin at dusk, seen from the porch",
   },
 ];
 
@@ -65,7 +65,7 @@ export default function Example() {
           {PHOTOS.map((photo) => (
             <Carousel.Item key={photo.seed}>
               <img
-                src={`https://picsum.photos/seed/${photo.seed}/640/400`}
+                src={`https://picsum.photos/id/${photo.seed}/640/400`}
                 alt={photo.alt}
                 width="640"
                 height="400"
@@ -106,17 +106,13 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Card is the article, so its element is this scope's root: core's
-   surface, line, radius and padding stay, and the column inside is the
-   example's own. The item width is the Carousel's public knob; it
-   inherits, so it is set here on the Card and each photo fills the
-   track. The Carousel, the Rating and the Price are fenced by the donut. */
 @scope (.card-with-carousel) to ([class*="loam-"]) {
   :scope {
     --loam-carousel-item-size: 100%;
 
     display: block grid;
     gap: var(--loam-space-sm);
+    max-inline-size: 36rem;
   }
 
   div.head {
@@ -148,8 +144,6 @@ export default function Example() {
     text-wrap: pretty;
   }
 
-  /* The amount leads in the display face; the qualifier is the Price's
-     own small text after it. */
   p.price {
     color: var(--loam-color-fg-strong);
     font-family: var(--loam-font-display);
@@ -159,9 +153,6 @@ export default function Example() {
   }
 }
 
-/* The Carousel is a limit of the donut above, so its photos and the
-   row of controls are reached from a second scope rooted at it. The
-   track, the items, the Buttons and the dots keep the Carousel's recipe. */
 @scope (.card-with-carousel section.photos) to ([class*="loam-"]) {
   img {
     aspect-ratio: 16 / 10;
@@ -171,7 +162,6 @@ export default function Example() {
     object-fit: cover;
   }
 
-  /* Previous, the dots, Next: one centred row. */
   div.controls {
     align-items: center;
     display: block flex;

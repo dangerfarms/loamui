@@ -8,6 +8,7 @@ export default function Example() {
         <li>
           <form action="/auth/google" method="post">
             <Button type="submit">
+              {/* Google's mark keeps its own brand colours: a mark is exempt from the token rule. */}
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path
                   fill="#4285F4"

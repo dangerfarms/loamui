@@ -146,9 +146,7 @@ export default function Example() {
 ## example.css
 
 ```css
-/* Nothing to add. The pill, its icon segments, the chosen state and the
-   forced-colours treatment are core's SegmentedControl as it ships; the
-   choice does its work on the root element's data-theme, not on the
-   control, and every light-dark() token on the page follows. */
+/* Nothing to add: the choice works on the root element's data-theme, not
+   on the control, and every light-dark() token follows. */
 ```
 

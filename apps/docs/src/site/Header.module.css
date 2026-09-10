@@ -1,7 +1,10 @@
+/* The header is its own container: the nav and the search trigger answer
+   its width, so the chrome collapses by the room it has. */
 .header {
   backdrop-filter: blur(12px) saturate(1.4);
   background: color-mix(in oklch, var(--loam-color-bg) 82%, transparent);
   border-block-end: 1px solid var(--loam-color-line);
+  container-type: inline-size;
   inset-block-start: 0;
   position: sticky;
   z-index: 50;
@@ -24,6 +27,10 @@
   gap: 1.25rem;
 }
 
+.right {
+  gap: 0.75rem;
+}
+
 .nav {
   color: var(--loam-color-fg-muted);
   display: block flex;
@@ -32,13 +39,30 @@
   gap: 1.25rem;
 
   a {
+    border-block-end: 2px solid transparent;
     color: inherit;
+    padding-block: 0.25rem 0.15rem;
     text-decoration: none;
-    transition: color var(--loam-duration-md) var(--loam-ease);
 
     &:hover {
       color: var(--loam-color-fg);
     }
+
+    /* The current section: the reader's place in the site, marked by an
+       underline that holds in forced colours as well as by weight. */
+    &[aria-current="page"] {
+      border-block-end-color: var(--loam-color-primary);
+      color: var(--loam-color-fg-strong);
+      font-weight: 650;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition: color var(--loam-duration-md) var(--loam-ease);
+    }
+  }
+
+  @container (width <= 62rem) {
+    display: none;
   }
 }
 
@@ -51,26 +75,17 @@
   display: block grid;
   inline-size: 2.25rem;
   place-items: center;
-  transition:
-    color var(--loam-duration-md) var(--loam-ease),
-    border-color var(--loam-duration-md) var(--loam-ease),
-    background var(--loam-duration-md) var(--loam-ease);
 
   &:hover {
     background: var(--loam-color-surface-hover);
     border-color: var(--loam-color-line-strong);
     color: var(--loam-color-fg);
   }
-}
 
-@media (width <= 62rem) {
-  .nav {
-    display: none;
-  }
-}
-
-@media (width <= 48rem) {
-  .search {
-    display: none;
+  @media (prefers-reduced-motion: no-preference) {
+    transition:
+      color var(--loam-duration-md) var(--loam-ease),
+      border-color var(--loam-duration-md) var(--loam-ease),
+      background var(--loam-duration-md) var(--loam-ease);
   }
 }

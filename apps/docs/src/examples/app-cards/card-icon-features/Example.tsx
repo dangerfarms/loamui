@@ -25,8 +25,8 @@ export default function Example() {
     >
       <img
         className="media"
-        src="https://picsum.photos/seed/hedgerow-tomato-plants/800/500"
-        alt="Tomato plants in terracotta pots on a greenhouse bench"
+        src="https://picsum.photos/id/530/800/500"
+        alt="Succulents and young plants in a glass propagation case on the greenhouse bench"
         width="800"
         height="500"
       />

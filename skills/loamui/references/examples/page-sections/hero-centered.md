@@ -21,7 +21,7 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - **Native CSS.** A section named by its own h1, so it is a region in a screen reader's landmark list; the type is the element styles' own, at the top of the fluid scale.
 - **Modern CSS.** One grid column with justify-items and text-align centring every part; the headline is balanced and the lede capped at the measure token so neither runs long.
 - **Composition.** Badge in the eyebrow and SignpostLink in the actions, as they come; nothing here is a Button, because both paths lead to a page.
-- **Contextualism.** The eyebrow declares --loam-context: primary, so the Badge takes the brand colour without a prop.
+- **Contextualism.** The eyebrow declares --loam-context: primary, so the Badge takes the brand colour without a prop; primary is the brand slot, neutral until a theme fills it, and the eyebrow reads as one by its place above the heading.
 - **Accessible & gatekept.** The primary path is a SignpostLink and the alternative a plain link, both going somewhere; nothing here is a button pretending to be one.
 
 ## Example.tsx
@@ -54,10 +54,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* A centred hero: one column of eyebrow, headline, lede and actions,
-   each capped at its own measure so the lines stay short. The section
-   declares its container so the fluid tokens answer its width, and the
-   donut keeps the Badge and the SignpostLink inside on their own styles. */
 @scope (.hero-centered) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -68,8 +64,6 @@ export default function Example() {
     text-align: center;
   }
 
-  /* The eyebrow is a primary region: the Badge inside takes the brand
-     colour from the context, not from a prop. */
   p.eyebrow {
     --loam-context: primary;
 

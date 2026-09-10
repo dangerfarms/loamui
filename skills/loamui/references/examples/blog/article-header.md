@@ -70,13 +70,13 @@ export default function Example() {
         </ul>
         <figure>
           <img
-            src="https://picsum.photos/seed/hedgerow-broad-beans-lead/1200/675"
-            alt="Rows of young broad bean plants in a raised bed, netted against pigeons"
+            src="https://picsum.photos/id/627/1200/675"
+            alt="A crate of freshly picked beans on the packing bench"
             width="1200"
             height="675"
           />
           <figcaption>
-            Autumn-sown ‘Aquadulce Claudia’ on the Ludlow plot in February. Photograph: Nia Prosser
+            The first picking from the autumn-sown row on the Ludlow plot. Photograph: Nia Prosser
           </figcaption>
         </figure>
       </header>
@@ -88,9 +88,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The article is the container, so the fluid type answers the article's
-   column rather than the page; the header inside it is the grid. The
-   donut keeps the Avatar, the Times and the Badges on their own styles. */
 @scope (.article-header) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -101,8 +98,6 @@ export default function Example() {
     gap: var(--loam-space-md);
   }
 
-  /* The category, small and strong above the title: a link, in the page's
-     link colour, which is the affordance. */
   p.eyebrow {
     font-size: var(--loam-text-sm);
     font-weight: 600;
@@ -125,7 +120,6 @@ export default function Example() {
     max-inline-size: var(--loam-measure);
   }
 
-  /* Who wrote it and when, on one line that wraps: the Byline example. */
   div.byline {
     --loam-avatar-size: 2rem;
 
@@ -146,18 +140,13 @@ export default function Example() {
       }
     }
 
-    /* A middle dot before every part after the author, drawn as generated
-       content with an empty alternative so it stays out of the
-       accessibility tree. */
+    /* The empty alternative keeps the dot out of the accessibility tree. */
     address ~ span::before {
       content: "·" / "";
       margin-inline-end: var(--loam-space-sm);
     }
   }
 
-  /* The tags: the Tag List example. The markers go; the markup keeps the
-     list's role with role="list", since list-style: none drops it in some
-     browsers. */
   ul.tags {
     display: block flex;
     flex-wrap: wrap;
@@ -172,8 +161,6 @@ export default function Example() {
     }
   }
 
-  /* The lead image takes the header's width and keeps its own ratio; the
-     caption is the element styles' figcaption. */
   figure {
     margin-block: var(--loam-space-sm) 0;
     margin-inline: 0;
@@ -185,8 +172,7 @@ export default function Example() {
     }
   }
 
-  /* Forced colours drop the pills' tint, so each item draws an edge round
-     its tag; the link inside keeps LinkText. */
+  /* Forced colours drop the pills' tint; the edge keeps each tag. */
   @media (forced-colors: active) {
     ul.tags li {
       border: 1px solid CanvasText;

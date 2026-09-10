@@ -98,12 +98,12 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The root is the core Field, which stacks the label, the description,
-   the error and the box. The box, its dashed border, the drag state and
-   the file list are core's FileInput past the donut; the example's own
-   elements are the icon and the two lines of the invitation inside the
-   prompt, scoped at the FileInput so they can be reached, and they are
-   all it styles. */
+@scope (.dropzone) to ([class*="loam-"]) {
+  :scope {
+    max-inline-size: 36rem;
+  }
+}
+
 @scope (.dropzone .loam-FileInput) to ([class*="loam-"]) {
   label {
     svg {

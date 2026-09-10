@@ -11,7 +11,7 @@ const doc: ComponentContent = {
   importLine: `import { Breadcrumbs } from "@loamui/core";`,
   demos: [
     {
-      title: "Basic",
+      title: "Basic usage",
       description:
         "Items are links via href; mark the current page explicitly with current. Separators are drawn by CSS, not the DOM.",
       code: `<Breadcrumbs.Root>
@@ -61,7 +61,7 @@ const doc: ComponentContent = {
     },
     {
       title: "A trail needs a real hierarchy",
-      body: "Breadcrumbs earn their space only when the page sits at least two levels deep in a structure users can climb. One level up is a single destination: a plain 'Back to projects' link says the same thing more simply. Nor are breadcrumbs primary navigation: they show where you are, not where you can go, so they supplement the main nav rather than replace it.",
+      body: "Breadcrumbs earn their space only when the page sits at least two levels deep in a structure users can climb. One level up is a single destination: a plain 'Back to projects' link says the same thing in fewer words. Nor are breadcrumbs primary navigation: they show where you are, not where you can go, so they supplement the main nav rather than replace it.",
     },
     {
       title: "Truncate or omit before wrapping",

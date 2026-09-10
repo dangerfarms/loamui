@@ -7,18 +7,23 @@ afterEach(cleanup);
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };
 
 describe("input-with-tooltip", () => {
-  it("labels the box by the Field and describes the named icon button by the tooltip", async () => {
+  it("labels the box by the Field and describes the icon Button beside it by the tooltip", async () => {
     const { container } = render(<Example />);
-    expect(screen.getByRole("textbox", { name: "Plot reference" })).toHaveAttribute("name", "plot");
+    const box = screen.getByRole("textbox", { name: "Plot reference" });
+    expect(box).toHaveAttribute("name", "plot");
     const hint = screen.getByRole("button", { name: "About the plot reference" });
-    expect(hint).toHaveClass("hint");
-    expect(hint).not.toHaveClass("loam-Button");
+    expect(hint).toHaveClass("loam-Button");
+    expect(hint).toHaveAttribute("type", "button");
+    // Beside the box in the example's row, not inside the Input's field.
+    expect(container.querySelector(".loam-Input-field")).not.toContainElement(hint);
+    const row = container.querySelector("div.row")!;
+    expect(row).toContainElement(box);
+    expect(row).toContainElement(hint);
     const tooltip = document.getElementById(hint.getAttribute("aria-describedby")!)!;
     expect(tooltip).toHaveAttribute("role", "tooltip");
     expect(tooltip).toHaveTextContent(
       "Printed on your gate tag and your membership card, like B-14.",
     );
-    expect(container.querySelector(".loam-Input-field")).toContainElement(hint);
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 });

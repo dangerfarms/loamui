@@ -26,15 +26,19 @@ An example in **Blog**: a component and a stylesheet built from `@loamui/core`, 
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Avatar, Badge, Card, Time } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const title = useId();
   return (
-    <Card render={<article className="article-card" aria-labelledby="article-card-title" />}>
+    <Card render={<article className="article-card" aria-labelledby={title} />}>
       <img
         className="media"
-        src="https://picsum.photos/seed/hedgerow-onion-sets/800/450"
+        src="https://picsum.photos/id/292/800/450"
         alt=""
         width="800"
         height="450"
@@ -43,7 +47,7 @@ export default function Example() {
         <Badge>Growing guide</Badge>
         <Time value="2026-09-01" locale="en-GB" dateStyle="long" />
       </p>
-      <h3 id="article-card-title">
+      <h3 id={title}>
         <a href="/guides/overwintering-onions">Overwintering onions from sets</a>
       </h3>
       <p className="description">
@@ -67,19 +71,14 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Card is the article, rendered through its own render prop, so the
-   scope's root is the Card element: core's surface, line, radius and
-   padding stay as they are, and this scope arranges the column inside.
-   The donut keeps the Badge, the Time and the Avatar on their own styles. */
 @scope (.article-card) to ([class*="loam-"]) {
   :scope {
     display: block flex;
     flex-direction: column;
     gap: var(--loam-space-sm);
+    max-inline-size: 36rem;
   }
 
-  /* The picture fills the card at one ratio, so a row of cards lines up
-     whatever shape the files are. */
   img.media {
     aspect-ratio: 16 / 9;
     block-size: auto;
@@ -98,31 +97,27 @@ export default function Example() {
     margin: 0;
   }
 
-  /* The title is the link. It keeps the heading's colour and drops the
-     underline at rest; the underline returns on hover and focus. */
+  /* Underlined at rest, lightly: a link is known by more than its place. */
   h3 {
     font-size: var(--loam-text-lg);
     margin: 0;
 
     a {
       color: inherit;
-      text-decoration: none;
+      text-decoration-color: var(--loam-color-line-strong);
 
       &:focus-visible {
-        text-decoration: underline;
+        text-decoration-color: currentcolor;
       }
 
       @media (hover: hover) {
         &:hover {
-          text-decoration: underline;
           text-decoration-color: var(--loam-color-primary);
         }
       }
     }
   }
 
-  /* Clamped only where the standalone property exists; elsewhere the
-     description runs its full length rather than half-applying a clamp. */
   p.description {
     color: var(--loam-color-fg-muted);
     margin: 0;
@@ -132,9 +127,6 @@ export default function Example() {
     }
   }
 
-  /* The foot's auto margin takes the column's slack, so in a row of cards
-     the byline sits at the foot of each whatever the description's
-     length. */
   div.foot {
     --loam-avatar-size: 2rem;
 
@@ -145,8 +137,6 @@ export default function Example() {
     padding-block-start: var(--loam-space-sm);
   }
 
-  /* The address element is italic by default in every browser; upright
-     here, since that convention reads as emphasis in a byline. */
   address {
     font-size: var(--loam-text-sm);
     font-style: normal;

@@ -60,7 +60,7 @@ export default function Example() {
         />
         <span aria-live="polite">{word}</span>
       </div>
-      <ul className="rules" id="new-password-rules">
+      <ul className="rules" id="new-password-rules" role="list">
         {RULES.map((rule) => {
           const met = rule.test(value);
           return (

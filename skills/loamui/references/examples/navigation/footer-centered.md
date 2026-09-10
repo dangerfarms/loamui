@@ -37,6 +37,8 @@ export default function Example() {
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           aria-hidden="true"
         >
           <path d="M5 19c0-7 4-13 14-14-1 10-7 14-14 14z" />
@@ -75,9 +77,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* One column, everything on the centre line: the brand, then the links
-   in a row that wraps around the middle, then the small print. Set in
-   the muted colour because a footer is reference, not the page's voice. */
 @scope (.footer-centered) to ([class*="loam-"]) {
   :scope {
     border-block-start: 1px solid var(--loam-color-line);
@@ -107,8 +106,6 @@ export default function Example() {
     }
   }
 
-  /* The markers go; inside a nav every browser keeps the list's
-     semantics without them. The row wraps from the middle out. */
   nav {
     ul {
       display: block flex;

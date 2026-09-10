@@ -1,7 +1,3 @@
-/* The header is the container: the brand, the nav and the actions share
-   a row where it has room, and the nav takes a row of its own beneath the
-   other two where it has not. The donut leaves the Nav, the Menus and the
-   SignpostLink on their own styles. */
 @scope (.header-with-menus) to ([class*="loam-"]) {
   :scope {
     align-items: center;
@@ -36,26 +32,33 @@
     gap: var(--loam-space-md);
     margin-inline-start: auto;
 
-    /* Sign in is a plain link set in the page's text colour: it sits
-       beside the signpost, and the row reads as two ways in. */
+    /* Underlined at rest, lightly: a link is known by more than its place. */
     > a {
       color: var(--loam-color-fg);
       font-size: var(--loam-text-sm);
       font-weight: 500;
-      text-decoration: none;
+      text-decoration-color: var(--loam-color-line-strong);
+
+      &:focus-visible {
+        text-decoration-color: currentcolor;
+      }
 
       @media (hover: hover) {
         &:hover {
-          text-decoration: underline;
+          text-decoration-color: var(--loam-color-primary);
         }
       }
     }
   }
 }
 
-/* Core's Nav, placed from its own scope: a flex row on the List, and the
-   last row of the header where it is narrow. */
 @scope (.header-with-menus .loam-Nav) to ([class*="loam-"]) {
+  :scope {
+    /* A style query is answered by ancestors, so the edge is declared here,
+       never on the link. */
+    --loam-nav-current-edge: block-end;
+  }
+
   ul.row {
     align-items: center;
     display: block flex;
@@ -67,63 +70,6 @@
     :scope {
       flex-basis: 100%;
       order: 1;
-    }
-  }
-}
-
-/* Each Menu's trigger is a bare button, past the Nav's donut, dressed as
-   the links beside it: the elements layer's raised pill is set aside for
-   the line the Nav gives a link, with the same line height through Nav's public --loam-nav-link-size, type and radius,
-   and a transparent border on the start side where a link keeps its
-   marker, so the row lines up. An open menu is said by aria-expanded,
-   which the chevron turns on; the popup keeps Menu's own styles. */
-@scope (.header-with-menus .loam-Menu) to ([class*="loam-"]) {
-  button.trigger {
-    align-items: center;
-    background: none;
-    border: 0;
-    border-inline-start: 2px solid transparent;
-    border-radius: var(--loam-radius-md);
-    box-shadow: none;
-    color: var(--loam-color-fg);
-    display: block flex;
-    font-size: var(--loam-text-md);
-    font-weight: 400;
-    gap: var(--loam-space-xs);
-    line-height: 1.4;
-    min-block-size: var(--loam-nav-link-size, 2.25rem);
-    padding-block: var(--loam-space-xs);
-    padding-inline: var(--loam-space-sm);
-
-    svg {
-      block-size: auto;
-      inline-size: 1em;
-
-      @media (prefers-reduced-motion: no-preference) {
-        transition: rotate var(--loam-duration-sm) var(--loam-ease);
-      }
-    }
-
-    &[aria-expanded="true"] {
-      background: var(--loam-color-bg-subtle);
-      color: var(--loam-color-fg-strong);
-
-      svg {
-        rotate: 180deg;
-      }
-    }
-
-    @media (hover: hover) {
-      &:hover {
-        background: var(--loam-color-bg-subtle);
-        color: var(--loam-color-fg-strong);
-      }
-    }
-
-    @media (prefers-reduced-motion: no-preference) {
-      transition:
-        background var(--loam-duration-sm) var(--loam-ease),
-        color var(--loam-duration-sm) var(--loam-ease);
     }
   }
 }

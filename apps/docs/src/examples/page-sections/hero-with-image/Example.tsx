@@ -27,8 +27,8 @@ export default function Example() {
         </div>
         <img
           className="media"
-          src="https://picsum.photos/seed/hedgerow-hero/1200/900"
-          alt="Trays of lettuce seedlings on a nursery bench in morning light"
+          src="https://picsum.photos/id/785/1200/900"
+          alt="A grower's cupped hands holding a bundle of green shoots"
           width="1200"
           height="900"
         />

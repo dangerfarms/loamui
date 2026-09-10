@@ -98,19 +98,12 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Card is the surface and the Fieldset inside it is core's, so the
-   Card's own scope reaches nothing: it only declares the container the
-   rows answer. */
 @scope (.card-with-switches) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
   }
 }
 
-/* The Fieldset is a limit of the donut above, so the rows inside it are
-   reached from a second scope rooted at it. The Fieldset keeps its own
-   reset and legend; this scope lays out the description and the rows,
-   and each Switch.Control past the donut keeps its track and thumb. */
 @scope (.card-with-switches fieldset.preferences) to ([class*="loam-"]) {
   p.description {
     color: var(--loam-color-fg-muted);
@@ -122,8 +115,6 @@ export default function Example() {
     display: block grid;
   }
 
-  /* The words in the first column, the toggle in the second, centred on
-     them; a line under each row separates it from the next. */
   div.row {
     align-items: center;
     border-block-start: 1px solid var(--loam-color-line);

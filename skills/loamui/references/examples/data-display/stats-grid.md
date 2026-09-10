@@ -53,7 +53,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The row: a container that fits as many tiles across as it has room for. */
 @scope (.stats-grid) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -63,9 +62,6 @@ export default function Example() {
   }
 }
 
-/* A tile is a Card hosting the example's own pair, so the Card element is
-   this scope's root: the pair inside is reachable, and the Card's surface,
-   line, radius and padding are left as they are. */
 @scope (.stats-grid dl.stat) to ([class*="loam-"]) {
   :scope {
     display: block grid;
@@ -73,7 +69,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* Term first in the markup, last on screen: the figure leads the tile. */
   dt {
     color: var(--loam-color-fg-muted);
     font-size: var(--loam-text-sm);

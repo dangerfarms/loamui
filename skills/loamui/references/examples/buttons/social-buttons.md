@@ -36,6 +36,7 @@ export default function Example() {
         <li>
           <form action="/auth/google" method="post">
             <Button type="submit">
+              {/* Google's mark keeps its own brand colours: a mark is exempt from the token rule. */}
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path
                   fill="#4285F4"
@@ -87,13 +88,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The root is the container the list answers: three buttons in a row
-   where there is room for their words, stacked where there is not. Each
-   form is a one-cell grid, so its Button takes the cell's width; the
-   Buttons are core parts past the donut and size their marks themselves.
-   The Google mark keeps its brand colours by attribute in the svg; the
-   other two are cut in currentColor and follow the button's text in
-   both schemes and in forced colours. */
 @scope (.social-buttons) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;

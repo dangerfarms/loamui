@@ -63,10 +63,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* One Card holding three figures, each with a sentence and a comparison.
-   The Card is the section, so its element is this scope's root: core's
-   surface, line, radius and padding stay; the Card is the container and
-   the list inside answers it. The Price keeps its recipe behind the donut. */
 @scope (.grouped-stats) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -79,7 +75,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* Stacked with a line between each; wide, a row divided by lines. */
   dl.groups {
     display: block grid;
     margin: 0;
@@ -132,8 +127,6 @@ export default function Example() {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
-    /* The sentence's row takes the slack, so the three comparisons sit on
-       one line at the foot however long the sentences above them run. */
     div.group {
       border-block-start: 0;
       grid-template-rows: auto auto 1fr auto;

@@ -1,8 +1,9 @@
 "use client";
 
-import { createContext, useContext, useId, useMemo } from "react";
+import { createContext, useId, useMemo } from "react";
 import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
+import { useRequiredContext } from "../../context";
 import { useFieldControlProps } from "../Field/Field";
 import { Button } from "../Button/Button";
 import type { ButtonProps } from "../Button/Button";
@@ -42,11 +43,7 @@ interface SearchContextValue {
 const SearchContext = createContext<SearchContextValue | null>(null);
 
 function useSearchContext(part: string): SearchContextValue {
-  const ctx = useContext(SearchContext);
-  if (!ctx) {
-    throw new Error(`${part} must be rendered inside <Search.Root>.`);
-  }
-  return ctx;
+  return useRequiredContext(SearchContext, part, "Search.Root");
 }
 
 export interface SearchRootProps extends PartProps<"form"> {

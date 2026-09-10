@@ -20,8 +20,8 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 
 - **Native CSS.** The tabs are links in a nav, not a tablist: each goes to a page, so it is an anchor with an href and the current one carries aria-current; Sign out is a submit button in a method="post" form.
 - **Modern CSS.** The underline is Nav's own marker moved from the link's start edge to its block end by one declaration, the public --loam-nav-current-edge on the header, which the Nav answers through a style query; the row sits on the header's line by a one-pixel overlap.
-- **Composition.** Menu's trigger is substituted through render for a bare button around an Avatar and the name; Nav's List is given a class and a flex row; neither component is restyled, and no rule reaches a link.
-- **Accessible & gatekept.** The account button is named Account menu for Imogen Hartley by hidden words before the visible name, with the Avatar hidden so the name is heard once; the current tab is a line and weight, not colour alone, and Nav names the line in the system highlight under forced colours.
+- **Composition.** Menu's trigger is the Button core renders, holding an Avatar, the name and a chevron the Button detects and lays out; Nav's List is given a class and a flex row; neither component is restyled, and no rule reaches a link or the Button.
+- **Accessible & gatekept.** The account Button is named Account menu for Imogen Hartley by hidden words before the visible name, with the Avatar hidden so the name is heard once, and it brings its own focus ring and forced-colours edge; the current tab is a line and weight, not colour alone, and Nav names the line in the system highlight under forced colours.
 
 ## Example.tsx
 
@@ -49,12 +49,8 @@ export default function Example() {
           Hedgerow
         </a>
         <Menu.Root>
-          <Menu.Trigger render={<button type="button" className="user" />}>
-            <Avatar
-              name="Imogen Hartley"
-              src="https://picsum.photos/seed/hedgerow-imogen/96/96"
-              aria-hidden
-            />
+          <Menu.Trigger>
+            <Avatar name="Imogen Hartley" src="https://picsum.photos/id/823/96/96" aria-hidden />
             <span className="loam-VisuallyHidden">Account menu for </span>
             <span className="name">Imogen Hartley</span>
             <svg
@@ -112,17 +108,14 @@ export default function Example() {
 ## example.css
 
 ```css
-/* Two rows: the brand and the account menu across the top, the tabs
-   beneath on the header's bottom line. The header declares Nav's public
-   --loam-nav-current-edge, so the current tab's marker runs under the
-   link rather than beside it; a style query is answered by ancestors, so
-   the declaration sits here, above the Nav, never on the link. The donut
-   leaves the Menu, the Avatar and the Nav on their own styles. */
 @scope (.header-with-tabs) to ([class*="loam-"]) {
   :scope {
+    /* A style query is answered by ancestors, so the edge is declared here,
+       never on the link. */
     --loam-nav-current-edge: block-end;
 
     border-block-end: 1px solid var(--loam-color-line);
+    container-type: inline-size;
     display: block grid;
     gap: var(--loam-space-sm);
     padding-block-start: var(--loam-space-sm);
@@ -146,7 +139,6 @@ export default function Example() {
     letter-spacing: -0.02em;
     text-decoration: none;
 
-    /* The top row never wraps, so the leaf is told not to give way. */
     svg {
       block-size: 1.25em;
       flex: none;
@@ -155,64 +147,39 @@ export default function Example() {
   }
 }
 
-/* The account control is a bare button, past the header's donut: the
-   elements layer's raised pill is set aside for a row of avatar, name
-   and chevron in ordinary text. The border stays, transparent, so forced
-   colours keep an edge; aria-expanded turns the chevron. */
-@scope (.header-with-tabs .loam-Menu) to ([class*="loam-"]) {
-  button.user {
-    align-items: center;
-    background: none;
-    border: 1px solid transparent;
-    border-radius: var(--loam-radius-full);
-    box-shadow: none;
-    color: var(--loam-color-fg);
-    display: inline flex;
-    font-size: var(--loam-text-sm);
-    font-weight: 500;
-    gap: var(--loam-space-sm);
-    padding-block: calc(var(--loam-space-xs) / 2);
-    padding-inline: calc(var(--loam-space-xs) / 2) var(--loam-space-sm);
+@scope (.header-with-tabs .loam-Button) to ([class*="loam-"]) {
+  svg {
+    color: var(--loam-color-fg-muted);
 
-    svg {
-      block-size: 1em;
-      color: var(--loam-color-fg-muted);
-      inline-size: 1em;
-
-      @media (prefers-reduced-motion: no-preference) {
-        transition: rotate var(--loam-duration-sm) var(--loam-ease);
-      }
-    }
-
-    &[aria-expanded="true"] {
-      background: var(--loam-color-bg-subtle);
-
-      svg {
-        rotate: 180deg;
-      }
-    }
-
-    @media (hover: hover) {
-      &:hover {
-        background: var(--loam-color-bg-subtle);
-      }
+    :scope[aria-expanded="true"] & {
+      rotate: 180deg;
     }
 
     @media (prefers-reduced-motion: no-preference) {
-      transition: background var(--loam-duration-sm) var(--loam-ease);
+      transition: rotate var(--loam-duration-sm) var(--loam-ease);
+    }
+  }
+
+  /* Hidden, not removed: the name stays in the button's accessible name. */
+  @container (inline-size < 30rem) {
+    span.name {
+      block-size: 1px;
+      clip-path: inset(50%);
+      inline-size: 1px;
+      overflow: hidden;
+      position: absolute;
+      white-space: nowrap;
     }
   }
 }
 
-/* Core's Nav as a row of tabs, placed from its own scope: a flex row on
-   the List, pulled down one pixel so each link's marker sits on the
-   header's line. The marker itself, its weight and its forced-colours
-   treatment are Nav's, answering the edge declared on the header. */
 @scope (.header-with-tabs .loam-Nav) to ([class*="loam-"]) {
   ul.tabs {
     display: block flex;
     flex-wrap: wrap;
     gap: var(--loam-space-xs);
+
+    /* One pixel down, so each link's marker sits on the header's line. */
     margin-block-end: -1px;
   }
 }

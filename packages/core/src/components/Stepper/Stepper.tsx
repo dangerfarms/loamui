@@ -1,9 +1,10 @@
 "use client";
 
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useMemo } from "react";
 import type { ReactNode } from "react";
 import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
+import { useRequiredContext } from "../../context";
 import { renderWithProps } from "../../render";
 import type { RenderProp } from "../../render";
 
@@ -54,11 +55,7 @@ interface StepperContextValue {
 const StepperContext = createContext<StepperContextValue | null>(null);
 
 function useStepperContext(part: string): StepperContextValue {
-  const ctx = useContext(StepperContext);
-  if (!ctx) {
-    throw new Error(`${part} must be rendered inside <Stepper.Root>.`);
-  }
-  return ctx;
+  return useRequiredContext(StepperContext, part, "Stepper.Root");
 }
 
 const NO_LABELS: StepperLabels = {};

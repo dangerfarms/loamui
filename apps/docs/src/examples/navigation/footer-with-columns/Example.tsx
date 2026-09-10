@@ -40,6 +40,8 @@ export default function Example() {
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             aria-hidden="true"
           >
             <path d="M5 19c0-7 4-13 14-14-1 10-7 14-14 14z" />

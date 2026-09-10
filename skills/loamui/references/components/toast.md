@@ -116,7 +116,7 @@ function ExportButton() {
 
 ## When to use it
 
-- To confirm the outcome of an action the user just took (saved, sent, archived) without interrupting their flow.
+- To confirm the outcome of an action the user has taken (saved, sent, archived) without interrupting their flow.
 - For background events that complete while the user is elsewhere: an export finishing, a sync completing.
 
 ## When not to
@@ -129,7 +129,7 @@ function ExportButton() {
 
 ### Confirm outcomes; never ask questions
 
-A toast states what just happened: saved, sent, restored. It disappears on its own, so a message that expects a decision has the wrong container: use Modal for questions, an Alert in the page for conditions that persist.
+A toast states what has happened: saved, sent, restored. It disappears on its own, so a message that expects a decision has the wrong container: use Modal for questions, an Alert in the page for conditions that persist.
 
 ### Reserve high priority for failures
 
@@ -141,7 +141,7 @@ Undo in a toast is a courtesy, not the mechanism. Timers pause while the pointer
 
 ### F6 reaches the viewport
 
-The toast region is a labelled landmark, and F6 jumps focus into it from anywhere; that is how a keyboard user reaches an action before the timer ends. Keeping that path clear takes no effort: just don't wrap toasts in extra focusable chrome.
+The toast region is a labelled landmark, and F6 jumps focus into it from anywhere; that is how a keyboard user reaches an action before the timer ends. Keeping that path clear takes no effort: don't wrap toasts in extra focusable chrome.
 
 ## Accessibility
 
@@ -169,7 +169,7 @@ The ready-made viewport: renders every active toast with title, description, act
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `labels` | `{ region?: string; dismiss?: string }` | — | The words the viewport speaks: region names the landmark ("Notifications"), dismiss names each close button ("Dismiss notification"). |
+| `labels` | `{ region?: string; dismiss?: string }` | `{ region: "Notifications", dismiss: "Dismiss notification" }` | The words the viewport speaks: region names the landmark ("Notifications"), dismiss names each close button ("Dismiss notification"). |
 
 ### Toast.Viewport
 
@@ -177,7 +177,7 @@ The top-layer notifications region for a custom layout; all native <div> props a
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `labels` | `{ region?: string }` | — | The landmark's accessible name; "Notifications" by default. |
+| `labels` | `{ region?: string }` | `{ region: "Notifications" }` | The landmark's accessible name. |
 
 ### Toast.Root
 
@@ -218,7 +218,7 @@ A LoamUI Button that dismisses its toast, labelled "Dismiss notification" with a
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `labels` | `{ dismiss?: string }` | — | The button's accessible name. |
+| `labels` | `{ dismiss?: string }` | `{ dismiss: "Dismiss notification" }` | The button's accessible name. |
 | `render` | `element \| (props) => node` | — | Substitute your own element; it receives the close wiring. |
 
 ## Custom properties

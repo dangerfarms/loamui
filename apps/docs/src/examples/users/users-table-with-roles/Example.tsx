@@ -3,32 +3,36 @@
 import { Avatar, Badge, Button, Select, Table, Time } from "@loamui/core";
 import "./example.css";
 
-/* The moment the page was rendered, supplied rather than read from the
-   clock, so the server and the browser write the same words. */
+// The moment the page was rendered, supplied rather than read from the
+// clock, so the server and the browser write the same words.
 const NOW = "2026-09-08T09:00:00Z";
 
 const ROLES = [
-  ["admin", "Administrator"],
-  ["editor", "Editor"],
-  ["viewer", "Viewer"],
-] as const;
+  { value: "admin", label: "Administrator" },
+  { value: "editor", label: "Editor" },
+  { value: "viewer", label: "Viewer" },
+];
 
-const STATUS = {
+const STATUS: Record<string, string> = {
   active: "Active",
   invited: "Invited",
   suspended: "Suspended",
-} as const;
+};
 
-const MEMBERS: Array<{
+interface Member {
   id: string;
   name: string;
   email: string;
-  role: (typeof ROLES)[number][0];
+  role: string;
   lastActive?: string;
-  status: keyof typeof STATUS;
-}> = [
+  status: string;
+  photo: number;
+}
+
+const MEMBERS: Member[] = [
   {
     id: "imogen",
+    photo: 823,
     name: "Imogen Hartley",
     email: "imogen@hedgerow.example",
     role: "admin",
@@ -37,6 +41,7 @@ const MEMBERS: Array<{
   },
   {
     id: "bryn",
+    photo: 1005,
     name: "Bryn Powell",
     email: "bryn@hedgerow.example",
     role: "editor",
@@ -45,6 +50,7 @@ const MEMBERS: Array<{
   },
   {
     id: "sadia",
+    photo: 832,
     name: "Sadia Rahman",
     email: "sadia@hedgerow.example",
     role: "editor",
@@ -53,6 +59,7 @@ const MEMBERS: Array<{
   },
   {
     id: "tomos",
+    photo: 669,
     name: "Tomos Ellis",
     email: "tomos@hedgerow.example",
     role: "viewer",
@@ -60,6 +67,7 @@ const MEMBERS: Array<{
   },
   {
     id: "greta",
+    photo: 64,
     name: "Greta Lindqvist",
     email: "greta@hedgerow.example",
     role: "viewer",
@@ -88,7 +96,7 @@ export default function Example() {
                 <span className="member">
                   <Avatar
                     name={member.name}
-                    src={`https://picsum.photos/seed/hedgerow-${member.id}/96/96`}
+                    src={`https://picsum.photos/id/${member.photo}/96/96`}
                     aria-hidden
                   />
                   <span className="text">
@@ -106,9 +114,9 @@ export default function Example() {
                   name={`role[${member.id}]`}
                   defaultValue={member.role}
                 >
-                  {ROLES.map(([value, label]) => (
-                    <option key={value} value={value}>
-                      {label}
+                  {ROLES.map((role) => (
+                    <option key={role.value} value={role.value}>
+                      {role.label}
                     </option>
                   ))}
                 </Select>

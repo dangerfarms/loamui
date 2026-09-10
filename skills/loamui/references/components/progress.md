@@ -18,7 +18,7 @@ import { Progress } from "@loamui/core";
 
 ## Usage
 
-### Basic
+### Basic usage
 
 Set value 0 to 100. The children are the visible label beside the bar and its accessible name, so what is progressing is said once, to everyone. Without children, name it with aria-label or aria-labelledby.
 

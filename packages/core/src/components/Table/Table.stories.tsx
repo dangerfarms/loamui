@@ -70,11 +70,13 @@ const meta = {
     striped: false,
     highlightOnHover: false,
     withColumnBorders: false,
+    stickyHeader: false,
   },
   argTypes: {
     striped: { control: "boolean" },
     highlightOnHover: { control: "boolean" },
     withColumnBorders: { control: "boolean" },
+    stickyHeader: { control: "boolean" },
   },
   render: (args) => <FieldTable {...args} />,
 } satisfies Meta<typeof Table>;
@@ -90,6 +92,42 @@ export const HighlightOnHover: Story = { args: { highlightOnHover: true } };
 
 export const WithColumnBorders: Story = {
   args: { withColumnBorders: true, striped: true },
+};
+
+/**
+ * A capped scroller keeps its header row in view: the cap is the public
+ * `--loam-table-block-size` on the component's own element, and
+ * `stickyHeader` pins the column names to its top.
+ */
+export const StickyHeader: Story = {
+  args: { stickyHeader: true },
+  render: (args) => (
+    <Table {...args} style={{ "--loam-table-block-size": "12rem" } as React.CSSProperties}>
+      <caption>Field register — every season on record</caption>
+      <thead>
+        <tr>
+          <th scope="col">Field</th>
+          <th scope="col">Crop</th>
+          <th scope="col">Area</th>
+          <th scope="col">Yield</th>
+        </tr>
+      </thead>
+      <tbody>
+        {[2020, 2021, 2022, 2023, 2024, 2025, 2026].flatMap((year) =>
+          fields.map((field) => (
+            <tr key={`${year}-${field.name}`}>
+              <th scope="row">
+                {field.name} ({year})
+              </th>
+              <td>{field.crop}</td>
+              <td>{field.area}</td>
+              <td>{field.yield}</td>
+            </tr>
+          )),
+        )}
+      </tbody>
+    </Table>
+  ),
 };
 
 /**

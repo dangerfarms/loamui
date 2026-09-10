@@ -13,6 +13,8 @@ export const meta: ExampleMeta = {
       "The form is its own container and its own grid, capped at a readable width; the fields answer the form's width, not the viewport's.",
     composition:
       "Every field is a core Field around a core control; the example adds only the opening, the rhythm between fields and the actions row.",
+    context:
+      "The actions row declares --loam-context: primary because the one Button is the form's action; primary is the brand slot, neutral until a theme fills it, so the declaration says where the action belongs, not that it stands out.",
     accessible:
       "One column, always: a form is filled top to bottom, and fields set side by side make the eye and the tab order disagree. The note says when to expect a reply before anyone starts typing, the email field says what it is for, and the Button says what happens.",
   },

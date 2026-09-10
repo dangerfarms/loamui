@@ -61,7 +61,7 @@ const doc: ComponentContent = {
   howItWorks: [
     {
       title: "A surface, not a control",
-      body: "Card is deliberately just a styled <div>: no role, no tabindex, no cursor. If the whole card should be clickable, the accessible pattern is one real <a> inside it (usually on the card's heading) stretched over the surface with an ::after covering the card. Keyboard users get one tab stop, screen readers get a real link with a real name, and right-click / open-in-new-tab keep working. A click handler on the div gives you none of that.",
+      body: "Card is deliberately nothing more than a styled <div>: no role, no tabindex, no cursor. If the whole card should be clickable, the accessible pattern is one real <a> inside it (usually on the card's heading) stretched over the surface with an ::after covering the card. Keyboard users get one tab stop, screen readers get a real link with a real name, and right-click / open-in-new-tab keep working. A click handler on the div gives you none of that.",
     },
     {
       title: "Cards are skimmed by their headings",
@@ -76,7 +76,7 @@ const doc: ComponentContent = {
   props: [
     {
       name: "render",
-      type: "RenderProp",
+      type: "element | (props) => node",
       description:
         "Substitute the rendered element (render={<li />}, render={<label />}, render={<article />}); the Card's class and attributes merge onto it.",
     },

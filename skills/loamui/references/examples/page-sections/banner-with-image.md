@@ -35,8 +35,8 @@ export default function Example() {
     <section className="banner-with-image" aria-labelledby="banner-with-image-title">
       <img
         className="media"
-        src="https://picsum.photos/seed/hedgerow-apples/800/600"
-        alt="Bare-root apple trees bundled and labelled on the nursery bench"
+        src="https://picsum.photos/id/429/800/600"
+        alt="A cup of freshly picked raspberries on the nursery bench"
         width="800"
         height="600"
       />
@@ -62,11 +62,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* A promotional banner: the photograph fills one side and the offer
-   sits on the other. No Card, because a Card pads every side and the
-   picture here runs to the edge, so the section paints its own surface
-   and line from the same tokens. The section is both the container and
-   the grid; the picture is placed by the query, not by the markup. */
 @scope (.banner-with-image) to ([class*="loam-"]) {
   :scope {
     background: var(--loam-color-surface);
@@ -91,9 +86,6 @@ export default function Example() {
     padding: var(--loam-space-xl);
   }
 
-  /* The eyebrow is a warning region: the Badge inside takes the warning
-     colour from the context, because a closing date is a deadline, not a
-     brand mark. */
   p.eyebrow {
     --loam-context: warning;
 
@@ -126,8 +118,6 @@ export default function Example() {
     gap: var(--loam-space-md);
   }
 
-  /* Wide: the picture takes the smaller column and grows to the height
-     of the words beside it, cropped rather than letterboxed. */
   @container (inline-size >= 44rem) {
     :scope {
       grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);

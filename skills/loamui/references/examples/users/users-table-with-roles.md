@@ -21,7 +21,7 @@ An example in **Users**: a component and a stylesheet built from `@loamui/core`,
 - **Native CSS.** Each role is a native select named by a label that is read but not seen, and the table sits in a method="post" form with one submit button, so a change is a form submission the browser can make with no script.
 - **Modern CSS.** The form is the root and the Table a scope of its own past the donut; the role column is floored at a width that fits its longest option, so nothing shifts as a choice changes.
 - **Composition.** Table, Select, Time and Badge are dropped into the cells as they are; Time is handed a fixed now so the server and the browser write the same words, and a member with no visit yet is plain text rather than an empty cell.
-- **Contextualism.** Each status wraps its Badge in a region of its own kind, success, info or danger, so the pill takes its colour from where it sits, not from a prop; the save row is a primary region for the same reason.
+- **Contextualism.** Each status wraps its Badge in a region of its own kind, success, info or danger, so the pill takes its colour from where it sits, not from a prop; the save row is a primary region for the same reason, and primary is the brand slot, neutral until a theme fills it, so the row says where the form's action belongs rather than making it stand out.
 - **Accessible & gatekept.** Every Select is named Role for Imogen Hartley, so a screen reader moving down the column knows whose role it is changing; each status says its state in words beside a dot that is decoration, and last active is a time element whose machine-readable value is the full moment.
 
 ## Example.tsx
@@ -32,32 +32,36 @@ An example in **Users**: a component and a stylesheet built from `@loamui/core`,
 import { Avatar, Badge, Button, Select, Table, Time } from "@loamui/core";
 import "./example.css";
 
-/* The moment the page was rendered, supplied rather than read from the
-   clock, so the server and the browser write the same words. */
+// The moment the page was rendered, supplied rather than read from the
+// clock, so the server and the browser write the same words.
 const NOW = "2026-09-08T09:00:00Z";
 
 const ROLES = [
-  ["admin", "Administrator"],
-  ["editor", "Editor"],
-  ["viewer", "Viewer"],
-] as const;
+  { value: "admin", label: "Administrator" },
+  { value: "editor", label: "Editor" },
+  { value: "viewer", label: "Viewer" },
+];
 
-const STATUS = {
+const STATUS: Record<string, string> = {
   active: "Active",
   invited: "Invited",
   suspended: "Suspended",
-} as const;
+};
 
-const MEMBERS: Array<{
+interface Member {
   id: string;
   name: string;
   email: string;
-  role: (typeof ROLES)[number][0];
+  role: string;
   lastActive?: string;
-  status: keyof typeof STATUS;
-}> = [
+  status: string;
+  photo: number;
+}
+
+const MEMBERS: Member[] = [
   {
     id: "imogen",
+    photo: 823,
     name: "Imogen Hartley",
     email: "imogen@hedgerow.example",
     role: "admin",
@@ -66,6 +70,7 @@ const MEMBERS: Array<{
   },
   {
     id: "bryn",
+    photo: 1005,
     name: "Bryn Powell",
     email: "bryn@hedgerow.example",
     role: "editor",
@@ -74,6 +79,7 @@ const MEMBERS: Array<{
   },
   {
     id: "sadia",
+    photo: 832,
     name: "Sadia Rahman",
     email: "sadia@hedgerow.example",
     role: "editor",
@@ -82,6 +88,7 @@ const MEMBERS: Array<{
   },
   {
     id: "tomos",
+    photo: 669,
     name: "Tomos Ellis",
     email: "tomos@hedgerow.example",
     role: "viewer",
@@ -89,6 +96,7 @@ const MEMBERS: Array<{
   },
   {
     id: "greta",
+    photo: 64,
     name: "Greta Lindqvist",
     email: "greta@hedgerow.example",
     role: "viewer",
@@ -117,7 +125,7 @@ export default function Example() {
                 <span className="member">
                   <Avatar
                     name={member.name}
-                    src={`https://picsum.photos/seed/hedgerow-${member.id}/96/96`}
+                    src={`https://picsum.photos/id/${member.photo}/96/96`}
                     aria-hidden
                   />
                   <span className="text">
@@ -135,9 +143,9 @@ export default function Example() {
                   name={`role[${member.id}]`}
                   defaultValue={member.role}
                 >
-                  {ROLES.map(([value, label]) => (
-                    <option key={value} value={value}>
-                      {label}
+                  {ROLES.map((role) => (
+                    <option key={role.value} value={role.value}>
+                      {role.label}
                     </option>
                   ))}
                 </Select>
@@ -172,9 +180,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The form is the root: the Table and the save button are its two rows.
-   The one action is the form's primary one, so its row is a primary
-   region and the Button takes the colour from where it sits. */
 @scope (.users-table-with-roles) to ([class*="loam-"]) {
   :scope {
     display: block grid;
@@ -190,12 +195,7 @@ export default function Example() {
   }
 }
 
-/* Core's Table is a limit for the form's scope, so its cells are shaped
-   from a scope of its own; the Avatars, Selects, Times and Badges inside
-   stay behind the donut. */
 @scope (.users-table-with-roles .loam-Table) to ([class*="loam-"]) {
-  /* The member is the row's header: the picture beside the name over
-     the email, read as the row rather than as a figure. */
   tbody th {
     font-weight: 400;
     text-align: start;
@@ -223,8 +223,6 @@ export default function Example() {
     }
   }
 
-  /* The role cell is wide enough for its longest option, so the column
-     does not resize as a choice changes. */
   td.role {
     min-inline-size: 12rem;
   }
@@ -233,9 +231,6 @@ export default function Example() {
     color: var(--loam-color-fg-muted);
   }
 
-  /* Each status is a region of its own kind, so the Badge inside takes
-     the colour from where it sits and says the state in words; the dot
-     is a swatch and survives forced colours as an outline. */
   span.active {
     --loam-context: success;
   }

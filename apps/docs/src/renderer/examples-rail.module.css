@@ -22,9 +22,6 @@
   gap: 0.75rem;
   justify-content: space-between;
   padding: 0.35rem 0.6rem;
-  transition:
-    color var(--loam-duration-md) var(--loam-ease),
-    background var(--loam-duration-md) var(--loam-ease);
   white-space: nowrap;
 
   &:hover {
@@ -36,6 +33,17 @@
     background: color-mix(in oklab, var(--loam-color-accent) 14%, transparent);
     color: var(--loam-color-accent);
     font-weight: 600;
+
+    @media (forced-colors: active) {
+      background: SelectedItem;
+      color: SelectedItemText;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition:
+      color var(--loam-duration-md) var(--loam-ease),
+      background var(--loam-duration-md) var(--loam-ease);
   }
 }
 
@@ -44,6 +52,12 @@
   font-size: var(--loam-text-xs);
   font-variant-numeric: tabular-nums;
   font-weight: 500;
+
+  /* On the tinted current item the dim grey drops below 4.5:1: the count
+     takes the link's own colour there. */
+  [aria-current="page"] & {
+    color: inherit;
+  }
 }
 
 /* Narrow: a horizontal scroller, each category a pill. The page's shell

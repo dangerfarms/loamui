@@ -4,6 +4,7 @@ export type {
   ToastData,
   ToastProviderProps,
   ToastViewportProps,
+  ToastViewportLabels,
   ToastRootProps,
   ToastTitleProps,
   ToastDescriptionProps,
@@ -12,5 +13,7 @@ export type {
   ToastActionRenderProps,
   ToastCloseProps,
   ToastCloseRenderProps,
+  ToastCloseLabels,
   ToastsProps,
+  ToastsLabels,
 } from "./Toast";

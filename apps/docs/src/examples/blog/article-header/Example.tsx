@@ -42,13 +42,13 @@ export default function Example() {
         </ul>
         <figure>
           <img
-            src="https://picsum.photos/seed/hedgerow-broad-beans-lead/1200/675"
-            alt="Rows of young broad bean plants in a raised bed, netted against pigeons"
+            src="https://picsum.photos/id/627/1200/675"
+            alt="A crate of freshly picked beans on the packing bench"
             width="1200"
             height="675"
           />
           <figcaption>
-            Autumn-sown ‘Aquadulce Claudia’ on the Ludlow plot in February. Photograph: Nia Prosser
+            The first picking from the autumn-sown row on the Ludlow plot. Photograph: Nia Prosser
           </figcaption>
         </figure>
       </header>

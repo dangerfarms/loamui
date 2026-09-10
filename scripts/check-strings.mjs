@@ -2,7 +2,7 @@
 //
 // CONTRIBUTING's rule is that every default string a component shows or
 // announces is overridable through a `labels` prop or through children.
-// This scans the component sources of both packages (not stories, tests or
+// This scans the core component sources (not stories, tests or
 // docs) and fails on:
 //   1. literal text between JSX tags that starts with a capital letter
 //      (`<span>Weak</span>`, `>Show password<`), and
@@ -15,7 +15,7 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 
 const ROOT = new URL("..", import.meta.url).pathname;
-const ROOTS = ["packages/core/src/components", "packages/ui/src/components"].map((p) => join(ROOT, p));
+const ROOTS = ["packages/core/src/components"].map((p) => join(ROOT, p));
 
 function walk(dir, out = []) {
   for (const entry of readdirSync(dir)) {

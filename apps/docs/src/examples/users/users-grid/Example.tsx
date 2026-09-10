@@ -4,6 +4,7 @@ import "./example.css";
 const GROWERS = [
   {
     id: "imogen",
+    photo: 823,
     name: "Imogen Hartley",
     role: "Steward, Lower Field",
     email: "imogen@hedgerow.example",
@@ -11,6 +12,7 @@ const GROWERS = [
   },
   {
     id: "bryn",
+    photo: 1005,
     name: "Bryn Powell",
     role: "Head grower",
     email: "bryn@hedgerow.example",
@@ -18,6 +20,7 @@ const GROWERS = [
   },
   {
     id: "sadia",
+    photo: 832,
     name: "Sadia Rahman",
     role: "Seed librarian",
     email: "sadia@hedgerow.example",
@@ -25,6 +28,7 @@ const GROWERS = [
   },
   {
     id: "tomos",
+    photo: 669,
     name: "Tomos Ellis",
     role: "Open days coordinator",
     email: "tomos@hedgerow.example",
@@ -40,7 +44,7 @@ export default function Example() {
           <Card render={<article aria-labelledby={`users-grid-${grower.id}`} />}>
             <Avatar
               name={grower.name}
-              src={`https://picsum.photos/seed/hedgerow-${grower.id}/120/120`}
+              src={`https://picsum.photos/id/${grower.photo}/120/120`}
               aria-hidden
             />
             <div className="text">

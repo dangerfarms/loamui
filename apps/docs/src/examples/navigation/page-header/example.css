@@ -1,9 +1,3 @@
-/* The header is a container and a grid of two columns. The breadcrumbs
-   are placed by the grid's own flow into the first row; the text is
-   pinned to the first column, so the actions land beside it, in the
-   second, where the header is wide, and beneath it where it is narrow.
-   The donut leaves the Breadcrumbs, the Badge, the Time and the Buttons
-   on their own styles. */
 @scope (.page-header) to ([class*="loam-"]) {
   :scope {
     border-block-end: 1px solid var(--loam-color-line);
@@ -32,7 +26,6 @@
     max-inline-size: var(--loam-measure);
   }
 
-  /* A row of facts, not headings and not actions, with the markers gone. */
   ul.meta {
     align-items: center;
     color: var(--loam-color-fg-muted);
@@ -50,14 +43,10 @@
     }
   }
 
-  /* The status is a success region: the Badge inside takes the colour
-     from where it sits, not from a prop. */
   li.status {
     --loam-context: success;
   }
 
-  /* The actions, last in the reading order; the one that matters most
-     sits in its own primary region. */
   div.actions {
     align-items: center;
     display: block flex;

@@ -1,7 +1,3 @@
-/* A comment and its replies: the root article is the parent comment, the
-   replies are a list of articles inside it, and every comment at either
-   level is the Comment example. The donut keeps the Avatars, Badge, Times
-   and Buttons on their own styles. */
 @scope (.comment-thread) to ([class*="loam-"]) {
   :scope,
   article {
@@ -44,12 +40,8 @@
     gap: var(--loam-space-sm);
   }
 
-  /* The replies step in once, marked by a rule. The rule is a border, so
-     forced colours keep it in a system colour rather than dropping it.
-     The markers go; the markup keeps the list's role with role="list",
-     since list-style: none drops it in some browsers. */
   ul.replies {
-    border-inline-start: 2px solid var(--loam-color-line);
+    border-inline-start: 1px solid var(--loam-color-line);
     display: block grid;
     gap: var(--loam-space-lg);
     list-style: none;

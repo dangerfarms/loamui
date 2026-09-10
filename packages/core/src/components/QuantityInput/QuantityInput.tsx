@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { FormEvent, ReactNode } from "react";
 import { Button } from "../Button/Button";
 import { useFieldControlProps } from "../Field/Field";
+import { useFormReset } from "../../use-form-reset";
 import { useUserInvalid } from "../../use-user-invalid";
 import { composeRefs } from "../../render";
 import { cx } from "../../utils";
@@ -102,10 +103,6 @@ export function QuantityInput({
   const { nativeInvalid, validationRef, checkOnInput, checkOnInvalid } =
     useUserInvalid<HTMLInputElement>();
   const ownRef = useRef<HTMLInputElement>(null);
-  const inputRef = useMemo(
-    () => composeRefs(composeRefs(ref, validationRef), ownRef),
-    [ref, validationRef],
-  );
   const decrementLabel = labels?.decrement ?? DEFAULT_LABELS.decrement;
   const incrementLabel = labels?.increment ?? DEFAULT_LABELS.increment;
   const { className: wrapperClassName, ...wrapper } = wrapperProps ?? {};
@@ -119,16 +116,17 @@ export function QuantityInput({
   const controlled = value !== undefined;
   const { atMin, atMax } = controlled ? edges(value, min, max) : uncontrolledEdges;
 
-  useEffect(() => {
-    const form = ownRef.current?.form;
-    if (!form || controlled) return;
-    const onReset = () => {
-      const input = ownRef.current;
-      if (input) setUncontrolledEdges(edges(input.defaultValue, min, max));
-    };
-    form.addEventListener("reset", onReset);
-    return () => form.removeEventListener("reset", onReset);
-  }, [controlled, min, max]);
+  const onReset = useCallback(
+    (input: HTMLInputElement) => {
+      if (!controlled) setUncontrolledEdges(edges(input.defaultValue, min, max));
+    },
+    [controlled, min, max],
+  );
+  const resetRef = useFormReset<HTMLInputElement>(onReset);
+  const inputRef = useMemo(
+    () => composeRefs(composeRefs(composeRefs(ref, validationRef), resetRef), ownRef),
+    [ref, validationRef, resetRef],
+  );
 
   // A count with no name is a count a screen reader cannot ask about. The
   // input's own `labels` sees a Field.Label and any other <label for>.

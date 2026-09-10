@@ -5,6 +5,14 @@ import type { MouseEvent as ReactMouseEvent, ReactNode } from "react";
 import { Button } from "../Button/Button";
 import type { ButtonProps } from "../Button/Button";
 
+/** The words the button says. */
+export interface CopyButtonLabels {
+  /** Shown, and announced, after a successful copy. @default "Copied" */
+  copied?: ReactNode;
+  /** Announced when the clipboard refuses. @default "Copy failed: select the text and copy it yourself" */
+  failed?: ReactNode;
+}
+
 export interface CopyButtonProps extends Omit<ButtonProps, "onCopy"> {
   /** The text written to the clipboard. */
   value: string;
@@ -17,10 +25,7 @@ export interface CopyButtonProps extends Omit<ButtonProps, "onCopy"> {
    * document without focus; default "Copy failed: select the text and copy
    * it yourself").
    */
-  labels?: {
-    copied?: ReactNode;
-    failed?: ReactNode;
-  };
+  labels?: CopyButtonLabels;
   /** How long the copied label and announcement stand, in ms. @default 1500 */
   timeout?: number;
   /**

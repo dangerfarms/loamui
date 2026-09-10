@@ -17,7 +17,7 @@ describe("hero-with-bullets", () => {
       expect(item.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
     }
     expect(screen.getAllByRole("button")).toHaveLength(1);
-    expect(screen.getByRole("img").getAttribute("alt")).toMatch(/seedlings/);
+    expect(screen.getByRole("img").getAttribute("alt")).toMatch(/raised bed/);
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 });

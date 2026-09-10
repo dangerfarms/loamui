@@ -78,11 +78,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The tile is a Card rendered as a description list of one term and three
-   descriptions, so the Card is this scope's root: the pair inside is
-   reachable, the Badge is fenced by the donut, and the Card's own surface,
-   line, radius and padding are left as they are. A tile fills the cell a
-   grid gives it and stops at a readable width on its own. */
 @scope (.stat-with-trend) to ([class*="loam-"]) {
   :scope {
     display: block grid;
@@ -91,7 +86,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* Term first in the markup, second on screen: the figure leads. */
   dt {
     color: var(--loam-color-fg-muted);
     font-size: var(--loam-text-sm);
@@ -109,10 +103,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* The trend row is a success region: the Badge takes the status colour
-     from where it is, and so does the sparkline, whose colour is the
-     primary token the region re-answers. Change the region to danger and
-     the same rules draw a falling line in red. */
   dd.trend {
     --loam-context: success;
 
@@ -124,8 +114,7 @@ export default function Example() {
     order: 2;
   }
 
-  /* The line is stroked in currentColor, so it survives forced colours as
-     text does; the words in the Badge and the title carry the meaning. */
+  /* Stroked in currentColor, so it survives forced colours as text does. */
   svg.sparkline {
     block-size: 1.5rem;
     color: var(--loam-color-primary-strong);

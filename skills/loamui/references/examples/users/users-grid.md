@@ -32,6 +32,7 @@ import "./example.css";
 const GROWERS = [
   {
     id: "imogen",
+    photo: 823,
     name: "Imogen Hartley",
     role: "Steward, Lower Field",
     email: "imogen@hedgerow.example",
@@ -39,6 +40,7 @@ const GROWERS = [
   },
   {
     id: "bryn",
+    photo: 1005,
     name: "Bryn Powell",
     role: "Head grower",
     email: "bryn@hedgerow.example",
@@ -46,6 +48,7 @@ const GROWERS = [
   },
   {
     id: "sadia",
+    photo: 832,
     name: "Sadia Rahman",
     role: "Seed librarian",
     email: "sadia@hedgerow.example",
@@ -53,6 +56,7 @@ const GROWERS = [
   },
   {
     id: "tomos",
+    photo: 669,
     name: "Tomos Ellis",
     role: "Open days coordinator",
     email: "tomos@hedgerow.example",
@@ -68,7 +72,7 @@ export default function Example() {
           <Card render={<article aria-labelledby={`users-grid-${grower.id}`} />}>
             <Avatar
               name={grower.name}
-              src={`https://picsum.photos/seed/hedgerow-${grower.id}/120/120`}
+              src={`https://picsum.photos/id/${grower.photo}/120/120`}
               aria-hidden
             />
             <div className="text">
@@ -103,11 +107,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The list is the grid: as many columns as 16rem cards fit, filled in
-   reading order, with the markers gone. Outside a nav a list without
-   markers loses its semantics in some browsers, so the markup restores
-   them with role="list". Each Card is core's and a limit for this scope;
-   its inside is arranged from a scope of its own below. */
 @scope (.users-grid) to ([class*="loam-"]) {
   :scope {
     display: block grid;
@@ -124,9 +123,6 @@ export default function Example() {
   }
 }
 
-/* Inside a card: the avatar beside the name and role, then the facts,
-   then the action, on a grid of two columns. The Card's own surface,
-   line, radius and padding are left as they are. */
 @scope (.users-grid .loam-Card) to ([class*="loam-"]) {
   :scope {
     align-items: center;
@@ -152,8 +148,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* Two facts, each a term over its value, spanning both columns; the
-     rate is a Price and its qualifier is the Price's own. */
   dl {
     display: block grid;
     gap: var(--loam-space-sm);
@@ -182,9 +176,11 @@ export default function Example() {
       overflow-wrap: anywhere;
     }
   }
+}
 
-  /* The action spans the card and sits at its start edge. */
-  a {
+/* The link is a loam- root, past the donut: it is placed from its own scope. */
+@scope (.users-grid .loam-SignpostLink) to ([class*="loam-"]) {
+  :scope {
     grid-column: 1 / -1;
     justify-self: start;
   }

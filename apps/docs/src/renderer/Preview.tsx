@@ -63,7 +63,6 @@ export function Preview({
             aria-controls={`${baseId}-panel-${t}`}
             tabIndex={tab === t ? 0 : -1}
             className={classes.tab}
-            data-active={tab === t || undefined}
             onClick={() => setTab(t)}
             type="button"
           >

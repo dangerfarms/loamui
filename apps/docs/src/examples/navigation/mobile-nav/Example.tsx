@@ -1,11 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import { Drawer, Nav } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
-  const [open, setOpen] = useState(false);
   return (
     <header className="mobile-nav">
       <a className="brand" href="/">
@@ -14,6 +12,8 @@ export default function Example() {
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           aria-hidden="true"
         >
           <path d="M5 19c0-7 4-13 14-14-1 10-7 14-14 14z" />
@@ -21,8 +21,8 @@ export default function Example() {
         </svg>
         Hedgerow
       </a>
-      <Drawer.Root open={open} onOpenChange={setOpen}>
-        <Drawer.Trigger aria-expanded={open}>
+      <Drawer.Root>
+        <Drawer.Trigger>
           <svg
             viewBox="0 0 24 24"
             fill="none"

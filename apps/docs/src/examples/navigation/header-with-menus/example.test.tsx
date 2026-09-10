@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from "vitest";
-import { render, screen, cleanup, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, cleanup, fireEvent } from "@testing-library/react";
 import { axe } from "vitest-axe";
 import Example from "./Example";
 
@@ -7,7 +7,7 @@ afterEach(cleanup);
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };
 
 describe("header-with-menus", () => {
-  it("holds a named nav whose menus open on a press to lists of links, with the current page marked", async () => {
+  it("holds a named nav whose dropdowns disclose lists of links on a click, with the current page marked", async () => {
     const { container } = render(<Example />);
     expect(screen.getByRole("banner")).toHaveClass("header-with-menus");
     const nav = screen.getByRole("navigation", { name: "Primary" });
@@ -17,23 +17,34 @@ describe("header-with-menus", () => {
     const support = screen.getByRole("button", { name: "Support" });
     for (const trigger of [learn, support]) {
       expect(nav.contains(trigger)).toBe(true);
-      expect(trigger).toHaveAttribute("aria-haspopup", "menu");
+      expect(trigger).toHaveClass("link");
+      expect(trigger).not.toHaveClass("loam-Button");
+      expect(trigger).toHaveAttribute("type", "button");
       expect(trigger).toHaveAttribute("aria-expanded", "false");
+      expect(trigger).not.toHaveAttribute("aria-haspopup");
+      const panel = document.getElementById(trigger.getAttribute("aria-controls")!)!;
+      expect(panel).toHaveClass("loam-Nav-dropdown");
+      expect(nav.contains(panel)).toBe(true);
+      expect(panel).not.toBeVisible();
     }
-    expect(screen.queryByRole("menu")).not.toBeInTheDocument();
+    expect(container.querySelector("[role='menu'], [role='menuitem']")).toBeNull();
     expect(await axe(container, axeOptions)).toHaveNoViolations();
 
     fireEvent.click(learn);
     expect(learn).toHaveAttribute("aria-expanded", "true");
-    const items = screen.getAllByRole("menuitem");
-    expect(items.map((item) => item.textContent)).toEqual([
+    const panel = document.getElementById(learn.getAttribute("aria-controls")!)!;
+    expect(panel).toBeVisible();
+    const links = panel.querySelectorAll("a");
+    expect([...links].map((link) => link.textContent)).toEqual([
       "Growing guides",
       "Sowing calendar",
       "Seed saving",
       "Courses",
     ]);
-    for (const item of items) expect(item).toHaveAttribute("href");
-    await waitFor(() => expect(items[0]).toHaveFocus());
+    for (const link of links) {
+      expect(link).toHaveClass("link");
+      expect(link).toHaveAttribute("href");
+    }
     expect(screen.getByRole("link", { name: "Sign in" })).toHaveAttribute("href", "/sign-in");
     expect(screen.getByRole("link", { name: "Join the co-op" })).toHaveClass("loam-SignpostLink");
     expect(await axe(container, axeOptions)).toHaveNoViolations();

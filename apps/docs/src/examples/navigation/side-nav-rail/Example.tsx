@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Tooltip } from "@loamui/core";
+import { Nav, Tooltip } from "@loamui/core";
 import "./example.css";
 
 const icon = {
@@ -102,14 +102,12 @@ export default function Example() {
         <span className="loam-VisuallyHidden">Hedgerow</span>
       </a>
       <Tooltip.Provider>
-        <nav aria-label="Nursery">
-          <ul role="list">
+        <Nav.Root aria-label="Nursery">
+          <Nav.List>
             {LINKS.map((link) => (
-              <li key={link.href}>
+              <Nav.Item key={link.href}>
                 <Tooltip.Root>
-                  <Tooltip.Trigger
-                    render={<a href={link.href} aria-current={link.current ? "page" : undefined} />}
-                  >
+                  <Tooltip.Trigger render={<Nav.Link href={link.href} current={link.current} />}>
                     <svg {...icon}>{link.glyph}</svg>
                     <span className="loam-VisuallyHidden">{link.label}</span>
                   </Tooltip.Trigger>
@@ -118,10 +116,10 @@ export default function Example() {
                     <Tooltip.Arrow />
                   </Tooltip.Popup>
                 </Tooltip.Root>
-              </li>
+              </Nav.Item>
             ))}
-          </ul>
-        </nav>
+          </Nav.List>
+        </Nav.Root>
       </Tooltip.Provider>
     </div>
   );

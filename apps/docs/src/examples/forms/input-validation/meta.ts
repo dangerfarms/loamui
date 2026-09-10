@@ -10,7 +10,7 @@ export const meta: ExampleMeta = {
     native:
       'The judgment is the platform\'s ValidityState on a type="email" input with required: valueMissing and typeMismatch are read, never re-implemented with a pattern, so the browser and the message agree. The Field.Error is a rendered element, and the Field marks the box aria-invalid because it is there.',
     modern:
-      "No stylesheet of its own: the danger border, the ring and the forced-colours outline are core's, detected from aria-invalid; the example writes no invalid class.",
+      "Nothing but a width in its stylesheet: the danger border, the ring and the forced-colours outline are core's, detected from aria-invalid; the example writes no invalid class.",
     composition:
       "Field.Root, Label, Description, Error and Input as core ships them; the example's whole contribution is one function from validity to words and the moment to show them.",
     accessible:

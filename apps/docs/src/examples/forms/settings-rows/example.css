@@ -1,7 +1,3 @@
-/* The root is the core Fieldset, which keeps its own reset and legend.
-   The rows sit in an element of the example's own, stacked with no gap so
-   each row's line separates it from the next. Each row is a core Field
-   past the donut, so this scope reaches only the stack. */
 @scope (.settings-rows) to ([class*="loam-"]) {
   div.rows {
     container-type: inline-size;
@@ -9,19 +5,9 @@
   }
 }
 
-/* The row lives inside the Field that wires it, so it is this scope's
-   root: a two-column grid with the words in the first column and the
-   control in the second, centred on them. An error, when there is one,
-   auto-places into the next free cell: the second row, under the words.
-   The label, description and error keep the look core gives them; the
-   control slot hosts a core Switch.Control, Select or Checkbox.Control,
-   hence the donut. */
 @scope (.settings-rows div.row) to ([class*="loam-"]) {
   :scope {
     align-items: center;
-
-    /* The colour is forced to a system colour in forced-colours mode; the
-       line itself survives, so rows stay separated. */
     border-block-end: 1px solid var(--loam-color-line);
     display: block grid;
     gap: var(--loam-space-xs) var(--loam-space-lg);
@@ -42,8 +28,6 @@
     justify-content: end;
   }
 
-  /* Narrow: the control drops under the words, at the start, so a wide
-     Select is not squeezed beside a long description. */
   @container (inline-size < 24rem) {
     :scope {
       grid-template-columns: minmax(0, 1fr);

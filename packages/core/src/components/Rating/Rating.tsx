@@ -6,6 +6,14 @@ import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
 import { Fieldset } from "../Fieldset/Fieldset";
 
+/** The words the stars speak. */
+export interface RatingLabels {
+  /** Names each input. @default `"${n} stars"` */
+  star?: (n: number) => string;
+  /** Names the picture in display mode. @default `"${value} out of ${max}"` */
+  value?: (value: number, max: number) => string;
+}
+
 export interface RatingProps extends Omit<PartProps<"fieldset">, "defaultValue" | "onChange"> {
   /**
    * What is being rated ("Rate this recipe", "Average rating"). Names the
@@ -33,10 +41,7 @@ export interface RatingProps extends Omit<PartProps<"fieldset">, "defaultValue" 
    * `star(n)` names each input ("3 stars"), `value(v, max)` names the
    * picture in display mode ("3.5 out of 5").
    */
-  labels?: {
-    star?: (n: number) => string;
-    value?: (value: number, max: number) => string;
-  };
+  labels?: RatingLabels;
   /** Fires with the number of stars chosen. */
   onChange?: (value: number) => void;
   /**

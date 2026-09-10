@@ -1,7 +1,3 @@
-/* A wrapping row of Badges that are links. The pill is core's Badge, a
-   scope limit, drawn as core draws it; this scope owns the list and the
-   item round each pill. The markers go; the markup keeps the list's role
-   with role="list", since list-style: none drops it in some browsers. */
 @scope (.tag-list) to ([class*="loam-"]) {
   :scope {
     display: block flex;
@@ -12,24 +8,18 @@
     padding: 0;
   }
 
-  /* The item hugs its pill, so a mark drawn on the item reads as drawn on
-     the pill. */
   li {
     border-radius: var(--loam-radius-full);
     margin: 0;
   }
 
-  /* The current tag, on its own page, is ringed in the running colour:
-     told apart by shape, never by colour alone, and a ring survives
-     forced colours as CanvasText. */
+  /* Ringed, so the current tag is told apart by shape, not colour alone. */
   li:has(> [aria-current="page"]) {
-    outline: 2px solid currentcolor;
+    outline: var(--loam-ring-width) solid currentcolor;
     outline-offset: 2px;
   }
 
-  /* Forced colours drop the pill's tint, so the item draws an edge round
-     it; the link inside keeps LinkText, which is what marks it as a
-     link. */
+  /* Forced colours drop the pill's tint; the edge keeps it. */
   @media (forced-colors: active) {
     li {
       border: 1px solid CanvasText;

@@ -1,11 +1,13 @@
 "use client";
 
-import { createContext, useContext, useEffect, useId, useMemo, useRef, useState } from "react";
+import { createContext, use, useCallback, useId, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
+import { useRequiredContext } from "../../context";
 import { composeRefs } from "../../render";
 import { useFieldControlProps } from "../Field/Field";
+import { useFormReset } from "../../use-form-reset";
 import { useUserInvalid } from "../../use-user-invalid";
 
 /**
@@ -39,11 +41,7 @@ interface FileInputContextValue {
 const FileInputContext = createContext<FileInputContextValue | null>(null);
 
 function useFileInputContext(part: string): FileInputContextValue {
-  const ctx = useContext(FileInputContext);
-  if (!ctx) {
-    throw new Error(`${part} must be rendered inside <FileInput.Root>.`);
-  }
-  return ctx;
+  return useRequiredContext(FileInputContext, part, "FileInput.Root");
 }
 
 /**
@@ -166,24 +164,17 @@ function FileInputControl({
   ...rest
 }: FileInputControlProps) {
   const field = useFieldControlProps(ariaDescribedby);
-  const ctx = useContext(FileInputContext);
+  const ctx = use(FileInputContext);
   const setFiles = ctx?.setFiles;
   const { nativeInvalid, validationRef, checkOnInput, checkOnInvalid } =
     useUserInvalid<HTMLInputElement>();
-  const [node, setNode] = useState<HTMLInputElement | null>(null);
-  const inputRef = useMemo(
-    () => composeRefs(composeRefs<HTMLInputElement>(ref, setNode), validationRef),
-    [ref, validationRef],
-  );
-
   // A form reset empties the control natively; the list follows it.
-  useEffect(() => {
-    const form = node?.form;
-    if (!form || !setFiles) return;
-    const clear = () => setFiles([]);
-    form.addEventListener("reset", clear);
-    return () => form.removeEventListener("reset", clear);
-  }, [node, setFiles]);
+  const clearFiles = useCallback(() => setFiles?.([]), [setFiles]);
+  const resetRef = useFormReset<HTMLInputElement>(clearFiles);
+  const inputRef = useMemo(
+    () => composeRefs(composeRefs(ref, resetRef), validationRef),
+    [ref, resetRef, validationRef],
+  );
 
   return (
     <input

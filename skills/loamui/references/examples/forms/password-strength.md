@@ -88,7 +88,7 @@ export default function Example() {
         />
         <span aria-live="polite">{word}</span>
       </div>
-      <ul className="rules" id="new-password-rules">
+      <ul className="rules" id="new-password-rules" role="list">
         {RULES.map((rule) => {
           const met = rule.test(value);
           return (
@@ -128,14 +128,11 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The root is the core Field, which keeps its own stack: label,
-   description, the PasswordInput (the box and its toggle), then the
-   example's own strength row and rules list. The label, description and
-   input are core parts past the donut, as is the Meter in its slot; the
-   rules here reach only the row and the list. */
 @scope (.password-strength) to ([class*="loam-"]) {
-  /* The Meter's slot takes the width and the word sits beside it; the
-     Meter itself is never restyled. */
+  :scope {
+    max-inline-size: 28rem;
+  }
+
   div.strength {
     align-items: center;
     display: block grid;
@@ -155,9 +152,6 @@ export default function Example() {
     padding: 0;
   }
 
-  /* The state is data-met, set by the component; the hidden words after
-     the sentence say the same to a screen reader, so it is never colour
-     alone. */
   li {
     align-items: center;
     display: block flex;
@@ -168,10 +162,6 @@ export default function Example() {
       color: var(--loam-color-fg);
     }
 
-    /* The mark is drawn in currentColor: the ring in the text's colour,
-       the tick in success. In forced colours both follow the forced text
-       colour, so the tick stays visible where a painted background would
-       not. */
     svg {
       block-size: 1em;
       flex: none;

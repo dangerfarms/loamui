@@ -210,6 +210,15 @@ const doc: ComponentContent = {
       name: "RadioGroup.Legend",
       description:
         "The group's name: Fieldset.Legend, so optional marks the group optional in words. Native <legend> props and ref are forwarded.",
+      props: [
+        {
+          name: "optional",
+          type: "boolean",
+          default: "false",
+          description:
+            'Appends labels.optional ("(optional)"); optional is marked in words, not with an asterisk.',
+        },
+      ],
     },
     {
       name: "RadioGroup.Description",

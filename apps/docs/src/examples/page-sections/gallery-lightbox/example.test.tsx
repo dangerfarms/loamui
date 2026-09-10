@@ -25,7 +25,9 @@ describe("gallery-lightbox", () => {
   it("links every thumbnail to the full file and opens it in a dialog named by the caption", async () => {
     const { container } = render(<Example />);
     expect(screen.getAllByRole("listitem")).toHaveLength(6);
-    const link = screen.getByRole("link", { name: "Raised beds of young lettuce under fleece" });
+    const link = screen.getByRole("link", {
+      name: "Rows of the trial beds seen from the bank above",
+    });
     expect(link).toHaveAttribute("href", expect.stringContaining("/1600/1067"));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     fireEvent.click(link);

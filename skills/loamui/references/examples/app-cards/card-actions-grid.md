@@ -95,16 +95,13 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Card is the section, so its element is this scope's root: the head
-   and the grid inside are the example's own, and each Button in the grid
-   keeps its recipe behind the donut. The Card is the container and the
-   inner element the column, because an element cannot answer its own
-   container query. */
 @scope (.card-actions-grid) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
   }
 
+  /* The inner element is the grid: an element cannot answer its own
+     container query. */
   div.inner {
     display: block grid;
     gap: var(--loam-space-md);
@@ -127,9 +124,6 @@ export default function Example() {
     font-size: var(--loam-text-sm);
   }
 
-  /* As many tiles across as fit at a readable width; every cell is a
-     grid, so the Button stretches to the column and the tiles line up
-     whatever the length of their names. */
   ul.actions {
     display: block grid;
     gap: var(--loam-space-sm);

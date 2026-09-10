@@ -1,21 +1,16 @@
-/* The root is the core Field. The label is the example's own element (a
-   Field.Label cannot be placed, and this one moves), pointed at the
-   Input by the id the Field is given. At rest it sits where the typed
-   text will go: the box's border and padding in from the field's edge,
-   in the box's own type. With focus, or once there is a value, it rises
-   into the room the field keeps above the box, so it is read and seen
-   in both states. The box itself is a core part past the donut. */
+/* Field.Label cannot be placed, so the label is the example's own element,
+   pointed at the Input by the Field's id. */
 @scope (.floating-label) to ([class*="loam-"]) {
   :scope {
     --_float: calc(1.2 * var(--loam-text-xs));
 
+    max-inline-size: 28rem;
     padding-block-start: calc(var(--_float) + var(--loam-space-xs));
     position: relative;
   }
 
   /* No pointer-events rule: a click on the label focuses the input, as a
-     label's does, so the words are the box's hit area while they sit
-     in it. */
+     label's does. */
   label {
     color: var(--loam-color-fg-muted);
     font-size: var(--loam-text-sm);

@@ -156,7 +156,7 @@ The ⋯ trigger reads as "menu" to a sighted user and as nothing to anyone else.
 - Escape closes and returns focus to the trigger, as does activating an item; Tab closes the menu and lets focus continue naturally: the menu moves focus, it never traps it.
 - The trigger is a real <button> with aria-haspopup="menu" and aria-expanded; the popup is role="menu" with role="menuitem" children, and Menu.Separator is a real <hr>: the platform's separator role, no ARIA needed.
 - Disabled items use aria-disabled rather than disabled, so they remain visible to assistive technology while roving focus skips them.
-- Where the popover attribute and anchor positioning are both supported, the browser provides top-layer rendering, light dismiss and Escape; other browsers get a wrapper-anchored fallback with the same behaviour re-implemented, the deliberate no-polyfill trade-off (see the browser support policy at https://github.com/dangerfarms/loamui/blob/main/CONTRIBUTING.md#browser-support-policy).
+- Where the popover attribute and anchor positioning are both supported, the browser provides top-layer rendering, light dismiss and Escape; other browsers get a wrapper-anchored fallback with the same behaviour re-implemented, the deliberate no-polyfill trade-off, per the browser support policy in CONTRIBUTING.
 
 ## Parts
 

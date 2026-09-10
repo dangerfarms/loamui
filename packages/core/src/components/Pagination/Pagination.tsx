@@ -29,9 +29,15 @@ import type { ButtonProps } from "../Button/Button";
  * ellipses, and Next. Edge links (first, last) are your own Items around it.
  */
 
+/** The words the landmark speaks. */
+export interface PaginationLabels {
+  /** The landmark's accessible name. @default "Pagination" */
+  navigation?: string;
+}
+
 export interface PaginationRootProps extends PartProps<"nav"> {
   /** The words the landmark speaks: `navigation` is its accessible name. */
-  labels?: { navigation?: string };
+  labels?: PaginationLabels;
 }
 
 function PaginationRoot({ labels, className, children, ...rest }: PaginationRootProps) {
@@ -182,6 +188,16 @@ function ChevronIcon({ dir }: { dir: "previous" | "next" }) {
   );
 }
 
+/** The words the page links speak. */
+export interface PaginationPagesLabels {
+  /** The Previous arrow's name. @default "Previous page" */
+  previous?: string;
+  /** The Next arrow's name. @default "Next page" */
+  next?: string;
+  /** Names each page link. @default `"Page ${n}"` */
+  page?: (page: number) => string;
+}
+
 export interface PaginationPagesProps {
   /** The active page (1-based). */
   page: number;
@@ -197,11 +213,7 @@ export interface PaginationPagesProps {
    * The words the links speak, for another language or a different noun:
    * `previous` and `next` name the arrows, `page(n)` names each page link.
    */
-  labels?: {
-    previous?: string;
-    next?: string;
-    page?: (page: number) => string;
-  };
+  labels?: PaginationPagesLabels;
 }
 
 /**

@@ -1,4 +1,5 @@
 import { SignpostLink } from "@loamui/core";
+import type { CSSProperties } from "react";
 import type { ComponentContent } from "@/renderer/types";
 
 const doc: ComponentContent = {
@@ -8,7 +9,7 @@ const doc: ComponentContent = {
   contextual: true,
   demos: [
     {
-      title: "Basic",
+      title: "Basic usage",
       description:
         "A real <a> with a circled arrow. Use it where a page hands over to a task: the start of an application, a checkout, a service.",
       code: `<SignpostLink href="#apply">Start your application</SignpostLink>`,
@@ -22,7 +23,7 @@ const doc: ComponentContent = {
   <SignpostLink href="#appeal">Appeal this decision</SignpostLink>
 </div>`,
       render: () => (
-        <div style={{ "--loam-context": "danger" } as React.CSSProperties}>
+        <div style={{ "--loam-context": "danger" } as CSSProperties}>
           <SignpostLink href="#appeal">Appeal this decision</SignpostLink>
         </div>
       ),
@@ -66,7 +67,7 @@ const doc: ComponentContent = {
   props: [
     {
       name: "render",
-      type: "RenderProp",
+      type: "element | (props) => node",
       description:
         "Substitute the built-in <a>, e.g. a router link: render={<Link href=… />}. The label stays as SignpostLink's children.",
     },

@@ -6,8 +6,8 @@ export default function Example() {
     <section className="banner-with-image" aria-labelledby="banner-with-image-title">
       <img
         className="media"
-        src="https://picsum.photos/seed/hedgerow-apples/800/600"
-        alt="Bare-root apple trees bundled and labelled on the nursery bench"
+        src="https://picsum.photos/id/429/800/600"
+        alt="A cup of freshly picked raspberries on the nursery bench"
         width="800"
         height="600"
       />

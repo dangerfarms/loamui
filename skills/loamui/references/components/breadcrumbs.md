@@ -18,7 +18,7 @@ import { Breadcrumbs } from "@loamui/core";
 
 ## Usage
 
-### Basic
+### Basic usage
 
 Items are links via href; mark the current page explicitly with current. Separators are drawn by CSS, not the DOM.
 
@@ -74,7 +74,7 @@ The last crumb is the page the user is on: mark it current and give it no href. 
 
 ### A trail needs a real hierarchy
 
-Breadcrumbs earn their space only when the page sits at least two levels deep in a structure users can climb. One level up is a single destination: a plain 'Back to projects' link says the same thing more simply. Nor are breadcrumbs primary navigation: they show where you are, not where you can go, so they supplement the main nav rather than replace it.
+Breadcrumbs earn their space only when the page sits at least two levels deep in a structure users can climb. One level up is a single destination: a plain 'Back to projects' link says the same thing in fewer words. Nor are breadcrumbs primary navigation: they show where you are, not where you can go, so they supplement the main nav rather than replace it.
 
 ### Truncate or omit before wrapping
 

@@ -1,9 +1,3 @@
-/* The Table's own element is the scroller, so the height is capped on
-   it: a sticky header sticks to the nearest scrollport, and a wrapper
-   with a height of its own around the Table would leave the header
-   sticking to a box that scrolls away with the rows. The example's own
-   div draws the edge round the scroller, and sizing the Table is
-   placement, not a change to its recipe. */
 @scope (.table-sticky-header) to ([class*="loam-"]) {
   :scope {
     border: 1px solid var(--loam-color-line);
@@ -11,21 +5,9 @@
   }
 }
 
-/* The Table is a limit of the donut above, so its height and the header
-   cells are reached from a second scope rooted at it. Sticky needs a
-   background, since the rows pass under it, and its rule is a shadow: a
-   collapsed border does not travel with a sticky cell. */
-@scope (.table-sticky-header div.stock) to ([class*="loam-"]) {
+@scope (.table-sticky-header .loam-Table) to ([class*="loam-"]) {
   :scope {
-    max-block-size: 20rem;
-    overscroll-behavior: contain;
-  }
-
-  thead th {
-    background: var(--loam-color-bg);
-    box-shadow: 0 1px 0 var(--loam-color-line-strong);
-    inset-block-start: 0;
-    position: sticky;
+    --loam-table-block-size: 20rem;
   }
 
   th.number,
@@ -38,8 +20,6 @@
     white-space: nowrap;
   }
 
-  /* A variety is a name: it holds one line and the table scrolls, rather
-     than breaking mid-word to fit. */
   tbody th {
     font-weight: 500;
     white-space: nowrap;

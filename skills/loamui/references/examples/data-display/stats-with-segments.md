@@ -81,10 +81,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Table's own element is the scroll wrapper, so it is this scope's
-   root: the table and its cells are reachable, and the Meters inside are
-   fenced by the donut. The Table already rules the rows and the header;
-   this aligns the figures and lays the bar beside its percentage. */
 @scope (.stats-with-segments) to ([class*="loam-"]) {
   th.number,
   td.number {
@@ -96,22 +92,16 @@ export default function Example() {
     white-space: nowrap;
   }
 
-  /* A device is a name: it holds one line and the table scrolls, rather
-     than breaking mid-word to fit. */
   tbody th,
   tfoot th {
     font-weight: 500;
     white-space: nowrap;
   }
 
-  /* The percentage first, at a fixed width so the bars start on one
-     line, then the bar taking the rest of the cell. */
   th.share {
     inline-size: 50%;
   }
 
-  /* The bar keeps a width a share can be read from; narrower than that,
-     the table scrolls. */
   td.share {
     align-items: center;
     display: block flex;

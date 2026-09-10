@@ -52,7 +52,7 @@ Alert has no colour or variant props. Declare --loam-context on a one-element wr
 
 ### With icon
 
-Pass any node as the leading icon.
+Pass any node as the leading icon. It is rendered aria-hidden, so the title carries the meaning on its own.
 
 ```tsx
 <div style={{ "--loam-context": "info" }}>
@@ -64,7 +64,7 @@ Pass any node as the leading icon.
 
 ### Title only
 
-Body content is optional.
+Body content is optional: a one-line message is the title alone, and the live region still announces it.
 
 ```tsx
 <div style={{ "--loam-context": "success" }}>
@@ -91,14 +91,16 @@ const [open, setOpen] = useState(true);
 The parts in the anatomy the convenience form renders. Alert.Title takes render where the title belongs in the page outline; Alert.Close takes labels for its name.
 
 ```tsx
-<Alert.Root>
-  <Alert.Icon><span aria-hidden>⚠</span></Alert.Icon>
-  <Alert.Body>
-    <Alert.Title render={<h2 />}>Storage almost full</Alert.Title>
-    <Alert.Description>Free up space to keep syncing.</Alert.Description>
-  </Alert.Body>
-  <Alert.Close onClose={dismiss} labels={{ close: "Hide this warning" }} />
-</Alert.Root>
+<div style={{ "--loam-context": "warning" }}>
+  <Alert.Root>
+    <Alert.Icon><span aria-hidden>⚠</span></Alert.Icon>
+    <Alert.Body>
+      <Alert.Title render={<h2 />}>Storage almost full</Alert.Title>
+      <Alert.Description>Free up space to keep syncing.</Alert.Description>
+    </Alert.Body>
+    <Alert.Close onClose={dismiss} labels={{ close: "Hide this warning" }} />
+  </Alert.Root>
+</div>
 ```
 
 ## When to use it
@@ -123,7 +125,7 @@ There is no auto-dismiss: an alert exists exactly as long as the condition it re
 
 ### Announcement happens at insertion
 
-A live region announces only when content enters it; an alert rendered with the rest of the page is simply read in document order. So render the alert conditionally when the condition becomes true, never hidden-then-shown, and the announcement arrives exactly when the event does. Give it role="alert" when that event must interrupt; the default role="status" waits its turn.
+A live region announces only when content enters it; an alert rendered with the rest of the page is read in document order. So render the alert conditionally when the condition becomes true, never hidden-then-shown, and the announcement arrives exactly when the event does. Give it role="alert" when that event must interrupt; the default role="status" waits its turn.
 
 ## Accessibility
 
@@ -168,7 +170,7 @@ The bold heading, in the channel's hue mixed for contrast. A <div> by default.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `render` | `RenderProp` | — | Substitute the element (render={<h2 />}) where the title belongs in the page outline; the class merges onto it. |
+| `render` | `element \| (props) => node` | — | Substitute the element (render={<h2 />}) where the title belongs in the page outline; the class merges onto it. |
 
 ### Alert.Description
 

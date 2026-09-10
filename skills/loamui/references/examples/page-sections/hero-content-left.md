@@ -75,18 +75,14 @@ export default function Example() {
 ## example.css
 
 ```css
-/* Words on the start side, a picture on the end side. The section is the
-   container and the inner element the grid, because an element cannot
-   answer its own container query. Narrow is one column with the picture
-   last; wide is two columns centred on the shared axis. The picture is a
-   line drawing in the current colour, with its fills in the soft primary
-   tint, so it takes the scheme and the region's context like the text. */
 @scope (.hero-content-left) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
     padding-block: var(--loam-space-xl);
   }
 
+  /* The inner element is the grid: an element cannot answer its own
+     container query. */
   div.inner {
     display: block grid;
     gap: var(--loam-space-xl);
@@ -131,8 +127,6 @@ export default function Example() {
     }
   }
 
-  /* Wide: the words take the larger share and the picture the rest,
-     which is what keeps the headline short enough to balance. */
   @container (inline-size >= 48rem) {
     div.inner {
       align-items: center;
@@ -144,8 +138,7 @@ export default function Example() {
     }
   }
 
-  /* Forced colours: the tint goes; the drawing is its lines, in the
-     system text colour, which is all it ever needed. */
+  /* Forced colours drop the tint; the drawing is its lines in CanvasText. */
   @media (forced-colors: active) {
     svg.illustration {
       color: CanvasText;

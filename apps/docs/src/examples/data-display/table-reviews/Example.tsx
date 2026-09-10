@@ -1,4 +1,4 @@
-import { Rating, Table } from "@loamui/core";
+import { Meter, Rating, Table } from "@loamui/core";
 import "./example.css";
 
 const VARIETIES = [
@@ -45,9 +45,7 @@ export default function Example() {
               <span className="yes">
                 {row.again}%<span className="loam-VisuallyHidden"> would</span>
               </span>
-              <div className="bar" aria-hidden="true">
-                <span style={{ inlineSize: `${row.again}%` }} />
-              </div>
+              <Meter value={row.again} max={100} label="Would grow again" />
               <span className="no">
                 {100 - row.again}%<span className="loam-VisuallyHidden"> would not</span>
               </span>

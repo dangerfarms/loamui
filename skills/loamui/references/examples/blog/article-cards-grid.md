@@ -38,7 +38,7 @@ const ARTICLES = [
     description:
       "Hawthorn, blackthorn, hazel and dog rose as bare-root whips from November: how many to the metre, why a double staggered row, and the cutting back that makes it thick in the first two winters.",
     author: { name: "Dafydd Rees", slug: "dafydd-rees" },
-    image: "hedgerow-native-hedge",
+    image: 19,
   },
   {
     slug: "tomato-seed-from-one-fruit",
@@ -48,7 +48,7 @@ const ARTICLES = [
     description:
       "Ferment the pulp for three days, rinse, dry on a plate and you have enough seed for a decade.",
     author: { name: "Tom Okafor", slug: "tom-okafor" },
-    image: "hedgerow-tomato",
+    image: 400,
   },
   {
     slug: "september-plant-sale",
@@ -58,7 +58,7 @@ const ARTICLES = [
     description:
       "Member-grown perennials, bare-root fruit and the last of the summer seed, on the nursery bench from nine.",
     author: { name: "Rhiannon Vaughan", slug: "rhiannon-vaughan" },
-    image: "hedgerow-plant-sale",
+    image: 696,
   },
 ];
 
@@ -74,7 +74,7 @@ export default function Example() {
           >
             <img
               className="media"
-              src={`https://picsum.photos/seed/${article.image}/800/450`}
+              src={`https://picsum.photos/id/${article.image}/800/450`}
               alt=""
               width="800"
               height="450"
@@ -106,10 +106,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The list is the grid and each item is a container: a card cannot
-   answer its own container query, so it asks the item around it. The
-   markers go; the markup keeps the list's role with role="list", since
-   list-style: none drops it in some browsers. */
 @scope (.article-cards-grid) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -120,13 +116,12 @@ export default function Example() {
     padding: 0;
   }
 
+  /* A card cannot answer its own container query; the item around it does. */
   li {
     container-type: inline-size;
     margin: 0;
   }
 
-  /* Wide: two columns, and the first card takes both, so it is the one
-     that reads as the lead. */
   @container (inline-size >= 40rem) {
     :scope {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -138,14 +133,9 @@ export default function Example() {
   }
 }
 
-/* Each card is a Card rendered as the article, so the Card element is
-   this scope's root: the column inside is reachable, the Badge, Time and
-   Avatar are fenced by the donut, and the Card's own surface, line,
-   radius and padding are left alone. */
 @scope (.article-cards-grid article.article) to ([class*="loam-"]) {
   :scope {
-    /* A percentage, so it resolves against the item the grid stretched:
-       every card in a row is the row's height. */
+    /* A percentage: it resolves against the item the grid stretched. */
     block-size: 100%;
     display: block flex;
     flex-direction: column;
@@ -170,21 +160,21 @@ export default function Example() {
     margin: 0;
   }
 
+  /* Underlined at rest, lightly: a link is known by more than its place. */
   h3 {
     font-size: var(--loam-text-lg);
     margin: 0;
 
     a {
       color: inherit;
-      text-decoration: none;
+      text-decoration-color: var(--loam-color-line-strong);
 
       &:focus-visible {
-        text-decoration: underline;
+        text-decoration-color: currentcolor;
       }
 
       @media (hover: hover) {
         &:hover {
-          text-decoration: underline;
           text-decoration-color: var(--loam-color-primary);
         }
       }
@@ -220,10 +210,6 @@ export default function Example() {
     }
   }
 
-  /* A card wide enough (the lead, once it spans the row) lays its picture
-     beside the text: the image takes a column down every row, the rest
-     flow into the second, and the foot keeps the last row. The query is
-     answered by the item, not the card. */
   @container (inline-size >= 36rem) {
     :scope {
       column-gap: var(--loam-space-lg);

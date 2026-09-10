@@ -1,10 +1,4 @@
-/* The Table's own element is the scroll wrapper, so it is this scope's
-   root: the table and its cells are reachable, and the sort Buttons, the
-   Prices and the Badge inside are fenced by the donut. The Table already
-   rules the rows and the header; this only aligns the figures. */
 @scope (.table-sortable) to ([class*="loam-"]) {
-  /* Figures end-aligned so they stack on their last digit, in tabular
-     numerals; the header above them aligns the same way. */
   th.number,
   td.number {
     text-align: end;
@@ -15,16 +9,11 @@
     white-space: nowrap;
   }
 
-  /* The variety is the row's header: read as the row, not as the figure,
-     and a name holds one line so the table scrolls rather than breaking
-     it mid-word. */
   tbody th {
     font-weight: 500;
     white-space: nowrap;
   }
 
-  /* A short stock line is a warning region beside its figure: the Badge
-     takes the colour from it, and says Low in words. */
   span.low {
     --loam-context: warning;
 

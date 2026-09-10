@@ -19,7 +19,7 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 ## Built to the pillars
 
 - **Native CSS.** The judgment is the platform's ValidityState on a type="email" input with required: valueMissing and typeMismatch are read, never re-implemented with a pattern, so the browser and the message agree. The Field.Error is a rendered element, and the Field marks the box aria-invalid because it is there.
-- **Modern CSS.** No stylesheet of its own: the danger border, the ring and the forced-colours outline are core's, detected from aria-invalid; the example writes no invalid class.
+- **Modern CSS.** Nothing but a width in its stylesheet: the danger border, the ring and the forced-colours outline are core's, detected from aria-invalid; the example writes no invalid class.
 - **Composition.** Field.Root, Label, Description, Error and Input as core ships them; the example's whole contribution is one function from validity to words and the moment to show them.
 - **Accessible & gatekept.** Nothing is said until the field has been left once: an error while the first character is typed is noise. From then on the message follows every edit, as an alert joined to the box by aria-describedby, and clears when the address is right, so the box stops being invalid rather than turning green. The words say what to do (Enter an email address with an @), never invalid or required.
 
@@ -68,9 +68,13 @@ export default function Example() {
 ## example.css
 
 ```css
-/* Nothing to add. The root is the core Field: its error message, the
-   danger border and ring on the box, and the forced-colours outline are
-   core's, keyed off the Field.Error the example renders; the words are
-   the example's, read from the input's own validity. */
+/* The error message, the danger border and ring, and the forced-colours
+   outline are the Field's, keyed off the rendered Field.Error; only the
+   width is set here. */
+@scope (.input-validation) to ([class*="loam-"]) {
+  :scope {
+    max-inline-size: 28rem;
+  }
+}
 ```
 

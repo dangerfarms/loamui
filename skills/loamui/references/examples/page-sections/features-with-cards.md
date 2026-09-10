@@ -145,11 +145,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* Features on cards: each one is a surface of its own because these are
-   things a visitor picks between, not a list to scan. The section is the
-   container; the list is the grid, fitting as many cards across as the
-   section's own width allows, and the markup keeps role="list" for the
-   browsers that drop the semantics with the marker. */
 @scope (.features-with-cards) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -197,9 +192,6 @@ export default function Example() {
   }
 }
 
-/* Each card is a Card rendered as the list item, so the Card element is
-   this scope's root: the icon, heading and line inside are reachable,
-   and the Card's own surface, line, radius and padding are left alone. */
 @scope (.features-with-cards li.feature) to ([class*="loam-"]) {
   :scope {
     align-content: start;
@@ -208,9 +200,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* The square is sized in em on the title's size, so it rides the fluid
-     scale with the text beside it. The glyph is the strong token on the
-     soft tint, the pair the audit checks as a glyph. */
   div.icon {
     align-items: center;
     background: var(--loam-color-primary-soft);
@@ -240,8 +229,7 @@ export default function Example() {
     text-wrap: pretty;
   }
 
-  /* Forced colours: the tint behind the glyph goes, so the square keeps
-     an edge and the glyph takes the system text colour. */
+  /* Forced colours drop the tint; the edge keeps the bounds. */
   @media (forced-colors: active) {
     div.icon {
       border: 1px solid CanvasText;

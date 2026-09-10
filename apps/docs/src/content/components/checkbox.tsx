@@ -9,16 +9,22 @@ const doc: ComponentContent = {
   demos: [
     {
       title: "Basic usage",
+      description:
+        "One self-contained opt-in. The label is a complete statement of what ticking the box does, and the box starts unticked so every tick is a deliberate act.",
       code: `<Checkbox label="Subscribe to the newsletter" />`,
       render: () => <Checkbox label="Subscribe to the newsletter" />,
     },
     {
       title: "Checked",
-      code: `<Checkbox label="Auto-renew enabled" defaultChecked />`,
-      render: () => <Checkbox label="Auto-renew enabled" defaultChecked />,
+      description:
+        "defaultChecked starts the box ticked for a form the browser owns; checked with onChange holds it yourself. A ticked start is for a setting that is already on, never for consent.",
+      code: `<Checkbox label="Auto-renew" defaultChecked />`,
+      render: () => <Checkbox label="Auto-renew" defaultChecked />,
     },
     {
       title: "With description",
+      description:
+        "description is helper text under the label, joined to the box through aria-describedby, so the consequence of ticking is read with the choice.",
       code: `<Checkbox
   label="Share anonymised usage data"
   description="Helps us improve the product. You can opt out anytime."
@@ -34,12 +40,14 @@ const doc: ComponentContent = {
     },
     {
       title: "Disabled",
-      code: `<Checkbox label="Unavailable option" disabled />
-<Checkbox label="Locked in" defaultChecked disabled />`,
+      description:
+        "disabled reaches the native input: the row is dimmed and skipped by Tab. A ticked, disabled box shows a setting that is on and not the user's to change here. Disabled is detected on the input (:has(input:disabled)), never declared on the row.",
+      code: `<Checkbox label="Email receipts" disabled />
+<Checkbox label="Two-factor authentication" defaultChecked disabled />`,
       render: () => (
         <div style={{ display: "grid", gap: "0.75rem" }}>
-          <Checkbox label="Unavailable option" disabled />
-          <Checkbox label="Locked in" defaultChecked disabled />
+          <Checkbox label="Email receipts" disabled />
+          <Checkbox label="Two-factor authentication" defaultChecked disabled />
         </div>
       ),
     },

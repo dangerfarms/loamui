@@ -13,6 +13,8 @@ export const meta: ExampleMeta = {
       "The section paints the subtle surface and is the container; at 44rem of its own width the inner element splits 2:3, and the Card is scoped from its own root so the section's rule never reaches inside it.",
     composition:
       "Card is rendered as the form through its render prop, so the surface and the form are one element; the Fields, Input, Textarea and Button inside are core parts past the donut, and the example adds only the heading and the actions row.",
+    context:
+      "The actions row declares --loam-context: primary because the one Button is the form's action; primary is the brand slot, neutral until a theme fills it, so the declaration says where the action belongs, not that it stands out.",
     accessible:
       "The glyphs sit inside the terms and are aria-hidden, so a screen reader hears Email, then the address; the tint behind the section gets a border in forced colours.",
   },

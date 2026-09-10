@@ -6,7 +6,7 @@
 // neither `.loam-X-item { … }` nor a bare `li { … }` when the component
 // renders `<li className="loam-X-item">`. Breadcrumbs shipped exactly that
 // and nothing noticed. This scanner walks every component stylesheet in both
-// packages, finds rules nested (at any depth) in a donut, and fails when the
+// packages and the examples, finds rules nested (at any depth) in a donut, and fails when the
 // rule's subject compound either names a `.loam-` class or is a bare element
 // that the component's TSX gives a `loam-` class.
 // Run: node scripts/check-scope.mjs
@@ -15,7 +15,7 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { basename, dirname, join, relative } from "node:path";
 
 const ROOT = new URL("..", import.meta.url).pathname;
-const ROOTS = ["packages/core/src/components", "packages/ui/src/components"].map((p) => join(ROOT, p));
+const ROOTS = ["packages/core/src/components", "apps/docs/src/examples"].map((p) => join(ROOT, p));
 const DONUT = /to \(\[class\*="loam-"\]\)/;
 
 function walk(dir, out = []) {
@@ -138,4 +138,4 @@ if (findings.length) {
   console.error(`\nMove the rule into that element's own @scope block (e.g. @scope (.loam-${"X-part"})).`);
   process.exit(1);
 }
-console.log(`check-scope: no dead donut rules (${basename(ROOTS[0])} and ui scanned).`);
+console.log(`check-scope: no dead donut rules (${basename(ROOTS[0])} and the examples scanned).`);

@@ -1,11 +1,9 @@
-/* The Card is the article, so its element is this scope's root: core's
-   surface, line, radius and padding stay, and the column inside is the
-   example's own. The Progress keeps its label and bar behind the donut. */
 @scope (.card-with-stats) to ([class*="loam-"]) {
   :scope {
     display: block flex;
     flex-direction: column;
     gap: var(--loam-space-md);
+    max-inline-size: 36rem;
   }
 
   img.media {
@@ -32,8 +30,6 @@
     gap: var(--loam-space-xs);
   }
 
-  /* The count so far at the start, the target at the end, both in
-     tabular figures under the bar they describe. */
   p.figures {
     display: block flex;
     font-size: var(--loam-text-sm);
@@ -51,7 +47,6 @@
     }
   }
 
-  /* Three columns divided by lines; the figure leads each. */
   dl.stats {
     border-block-start: 1px solid var(--loam-color-line);
     display: block grid;

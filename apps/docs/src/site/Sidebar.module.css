@@ -91,19 +91,30 @@
   color: var(--loam-color-fg-muted);
   display: block flow;
   font-size: var(--loam-text-sm);
+  overflow-wrap: anywhere;
   padding: 0.35rem 0.6rem;
-  transition:
-    color var(--loam-duration-md) var(--loam-ease),
-    background var(--loam-duration-md) var(--loam-ease);
 
   &:hover {
     background: var(--loam-color-surface-hover);
     color: var(--loam-color-fg);
   }
 
-  &[data-active] {
+  /* The current page: tinted, and edged so it holds in forced colours. */
+  &[aria-current="page"] {
     background: color-mix(in oklab, var(--loam-color-accent) 14%, transparent);
+    border-inline-start-color: var(--loam-color-accent);
     color: var(--loam-color-accent);
     font-weight: 600;
+
+    @media (forced-colors: active) {
+      background: SelectedItem;
+      color: SelectedItemText;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition:
+      color var(--loam-duration-md) var(--loam-ease),
+      background var(--loam-duration-md) var(--loam-ease);
   }
 }

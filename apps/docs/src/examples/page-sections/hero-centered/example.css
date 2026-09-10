@@ -1,7 +1,3 @@
-/* A centred hero: one column of eyebrow, headline, lede and actions,
-   each capped at its own measure so the lines stay short. The section
-   declares its container so the fluid tokens answer its width, and the
-   donut keeps the Badge and the SignpostLink inside on their own styles. */
 @scope (.hero-centered) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -12,8 +8,6 @@
     text-align: center;
   }
 
-  /* The eyebrow is a primary region: the Badge inside takes the brand
-     colour from the context, not from a prop. */
   p.eyebrow {
     --loam-context: primary;
 

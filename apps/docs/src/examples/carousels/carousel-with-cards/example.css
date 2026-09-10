@@ -1,21 +1,15 @@
-/* The Carousel's section is this scope's root: the head with its title
-   and the paging Buttons is the example's own, and the track, the items,
-   the Buttons and the dots keep the Carousel's recipe. The item width is
-   the Carousel's public knob, set here so a card reads as a card. */
 @scope (.carousel-with-cards) to ([class*="loam-"]) {
   :scope {
     --loam-carousel-item-size: 18rem;
   }
 
-  /* Each link ends in hidden text, which is positioned, so the track must
-     be its containing block: without this the hidden words of the items
-     off to the end would widen the page instead of scrolling with the
-     track. Placement only; the track's own recipe is untouched. */
+  /* Each link ends in positioned hidden text: without this containing block
+     the words of the items off to the end widen the page instead of
+     scrolling with the track. */
   ul.track {
     position: relative;
   }
 
-  /* The title at the start, Previous and Next at the end of the line. */
   div.head {
     align-items: center;
     display: block flex;
@@ -35,10 +29,6 @@
   }
 }
 
-/* Each article is a Card inside a Carousel item, and the Card is a limit
-   of the donut above, so its parts are reached from a second scope
-   rooted at it. The Card's surface, line, radius and padding are left as
-   they are; the Badge and the SignpostLink are fenced again. */
 @scope (.carousel-with-cards article.article) to ([class*="loam-"]) {
   :scope {
     display: block flex;
@@ -64,8 +54,6 @@
     text-wrap: balance;
   }
 
-  /* The link sits at the foot whatever the title's length, so the row
-     of Cards the track has stretched to one height lines its links up. */
   div.foot {
     display: block flex;
     margin-block-start: auto;

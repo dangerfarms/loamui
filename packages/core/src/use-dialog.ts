@@ -1,11 +1,13 @@
 "use client";
 
-import { createContext, useContext, useEffect, useId, useMemo, useRef, useState } from "react";
+import { createContext, useEffect, useId, useMemo, useRef } from "react";
 import type { MouseEvent as ReactMouseEvent, Ref, RefObject } from "react";
+import { useRequiredContext } from "./context";
 import { composeRefs, idList } from "./render";
 import { usePresence } from "./use-presence";
 import { useOpenState } from "./use-popup";
 import type { OpenStateOptions } from "./use-popup";
+import { useSupports } from "./use-support";
 
 /**
  * The dialog engine behind Modal and Drawer. The Popup is a native
@@ -37,11 +39,19 @@ export interface DialogState {
 
 export const DialogContext = createContext<DialogState | null>(null);
 
+/** The Invoker Commands API (`commandfor` / `command`), probed on the element prototype. */
+function supportsInvokerCommands(): boolean {
+  return (
+    typeof HTMLButtonElement !== "undefined" && "commandForElement" in HTMLButtonElement.prototype
+  );
+}
+
 /** Reads the dialog state, throwing when the part is under the wrong Root. */
 export function useDialogContext(component: string, part: string): DialogState {
-  const ctx = useContext(DialogContext);
-  if (!ctx || ctx.component !== component) {
-    throw new Error(`${component}.${part} must be rendered inside <${component}.Root>.`);
+  const root = `${component}.Root`;
+  const ctx = useRequiredContext(DialogContext, `${component}.${part}`, root);
+  if (ctx.component !== component) {
+    throw new Error(`${component}.${part} must be rendered inside <${root}>.`);
   }
   return ctx;
 }
@@ -51,9 +61,7 @@ export function useDialogRoot(component: string, options: OpenStateOptions): Dia
   const [open, setOpen] = useOpenState(options);
   const [hasTitle, registerTitle] = usePresence();
   const [hasDescription, registerDescription] = usePresence();
-  // Feature-probe the element prototype, never window/document.
-  const [invokers, setInvokers] = useState(false);
-  useEffect(() => setInvokers("commandForElement" in HTMLButtonElement.prototype), []);
+  const invokers = useSupports(supportsInvokerCommands);
 
   const autoId = useId();
   const dialogId = `${autoId}-${component.toLowerCase()}`;

@@ -1,7 +1,3 @@
-/* The Card is the article, so its element is this scope's root: core's
-   surface, line, radius and padding stay, and the column inside is the
-   example's own. The Time, the Progress and the Avatar.Group keep their
-   recipes behind the donut. */
 @scope (.tasks-card) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -27,8 +23,6 @@
     text-wrap: pretty;
   }
 
-  /* The bar and the count under it, the count in tabular figures at the
-     end so it sits under the end of the fill. */
   div.progress {
     display: block grid;
     gap: var(--loam-space-xs);
@@ -49,8 +43,6 @@
     }
   }
 
-  /* The team sits at the foot whatever the description's length, so a
-     row of these cards lines its groups up. */
   div.foot {
     --loam-avatar-size: 2rem;
 

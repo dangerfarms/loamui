@@ -20,7 +20,7 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 
 - **Native CSS.** Search renders the search landmark around a real form, so Enter, the button and a GET to /search are the browser's; the account is a link because it goes somewhere.
 - **Modern CSS.** One flex row that reflows by the header's own width: the search grows between the nav and the account where there is room, and each takes a row of its own where there is not.
-- **Composition.** Nav, Search and Avatar come as they are; the header places the two landmarks from scopes of their own and never reaches inside them.
+- **Composition.** Nav, Search and Avatar come as they are; the header places the two landmarks from scopes of their own, moves Nav's current marker under the link by its public --loam-nav-current-edge, and never reaches inside them.
 - **Accessible & gatekept.** The search box is named by a label that is read but not seen, the search button by hidden text beside its icon, and the account link the same way with the Avatar hidden, so nothing is announced twice.
 
 ## Example.tsx
@@ -40,6 +40,8 @@ export default function Example() {
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           aria-hidden="true"
         >
           <path d="M5 19c0-7 4-13 14-14-1 10-7 14-14 14z" />
@@ -71,6 +73,7 @@ export default function Example() {
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
+            strokeLinecap="round"
             aria-hidden="true"
           >
             <circle cx="11" cy="11" r="7" />
@@ -80,11 +83,7 @@ export default function Example() {
         </Search.Button>
       </Search.Root>
       <a className="account" href="/account">
-        <Avatar
-          name="Imogen Hartley"
-          src="https://picsum.photos/seed/hedgerow-imogen/96/96"
-          aria-hidden
-        />
+        <Avatar name="Imogen Hartley" src="https://picsum.photos/id/823/96/96" aria-hidden />
         <span className="loam-VisuallyHidden">Your account</span>
       </a>
     </header>
@@ -95,11 +94,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The header is the container. Wide, it is one row: brand, nav, the
-   search growing between them and the account, and the account link at
-   the end. Narrow, the brand and the account keep the first row and the
-   search and the nav each take a row beneath. The donut leaves the Nav,
-   the Search and the Avatar on their own styles. */
 @scope (.header-with-search) to ([class*="loam-"]) {
   :scope {
     align-items: center;
@@ -128,8 +122,6 @@ export default function Example() {
     }
   }
 
-  /* The account link is the avatar and nothing else: a round box so the
-     focus ring follows the circle, and named by hidden text. */
   a.account {
     border-radius: var(--loam-radius-full);
     display: inline flex;
@@ -137,17 +129,17 @@ export default function Example() {
   }
 }
 
-/* Core's Nav, placed from its own scope: a flex row on the List, and the
-   last row of the header where it is narrow. */
 @scope (.header-with-search .loam-Nav) to ([class*="loam-"]) {
+  :scope {
+    /* A style query is answered by ancestors, so the edge is declared here,
+       never on the link. */
+    --loam-nav-current-edge: block-end;
+  }
+
   ul.row {
     display: block flex;
     flex-wrap: wrap;
     gap: var(--loam-space-xs);
-  }
-
-  a.link {
-    border: none;
   }
 
   @container (inline-size < 48rem) {
@@ -158,8 +150,6 @@ export default function Example() {
   }
 }
 
-/* Core's Search, placed the same way: it grows to a comfortable width
-   beside the nav, and takes a row of its own where the header is narrow. */
 @scope (.header-with-search .loam-Search) to ([class*="loam-"]) {
   :scope {
     flex: 1 1 14rem;

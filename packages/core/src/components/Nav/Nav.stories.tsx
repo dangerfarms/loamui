@@ -244,6 +244,33 @@ export const CustomElement: Story = {
   ),
 };
 
+/**
+ * A Link rendered as a button (a menu or popover's trigger among the links)
+ * is set like the links beside it: the elements layer's button dressing is
+ * shed by the stylesheet, so nothing is reset by hand.
+ */
+export const LinkAsButton: Story = {
+  render: (args) => (
+    <div style={{ maxInlineSize: "16rem" }}>
+      <Nav.Root {...args}>
+        <Nav.List>
+          <Nav.Item>
+            <Nav.Link href="#dashboard" current>
+              Dashboard
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link render={<button type="button" />}>
+              <FolderIcon />
+              Switch workspace
+            </Nav.Link>
+          </Nav.Item>
+        </Nav.List>
+      </Nav.Root>
+    </div>
+  ),
+};
+
 /** The group is a native details: it folds without JavaScript and reports through onOpenChange. */
 export const GroupFolds: Story = {
   play: async ({ canvasElement }) => {

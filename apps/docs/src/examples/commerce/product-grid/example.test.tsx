@@ -15,13 +15,15 @@ describe("product-grid", () => {
     expect(
       screen.getAllByRole("button").map((b) => b.getAttribute("aria-label") ?? b.textContent),
     ).toEqual([
-      "Add Sweet pea ‘Cupani’ seeds to basket",
-      "Add Copper hand trowel to basket",
-      "Add Rhubarb ‘Timperley Early’ crown to basket",
-      "Add Hazel bean poles, bundle of ten to basket",
+      "Add Climbing bean ‘Blue Lake’ seeds to basket",
+      "Add Raspberry ‘Autumn Bliss’ canes, bundle of five to basket",
+      "Add Strawberry ‘Cambridge Favourite’ runners, pack of twelve to basket",
+      "Add Bamboo canes, bundle of ten to basket",
     ]);
     expect(
-      screen.getByRole("button", { name: "Add Copper hand trowel to basket" }),
+      screen.getByRole("button", {
+        name: "Add Raspberry ‘Autumn Bliss’ canes, bundle of five to basket",
+      }),
     ).toBeInTheDocument();
     expect(container.querySelectorAll("s")).toHaveLength(1);
     expect(await axe(container, axeOptions)).toHaveNoViolations();

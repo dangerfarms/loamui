@@ -1,15 +1,15 @@
+"use client";
+
+import { useId } from "react";
 import { Avatar, Button, Card } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const name = useId();
   return (
-    <Card render={<article className="user-card" aria-labelledby="user-card-name" />}>
-      <Avatar
-        name="Imogen Hartley"
-        src="https://picsum.photos/seed/hedgerow-imogen/240/240"
-        aria-hidden
-      />
-      <h2 id="user-card-name">Imogen Hartley</h2>
+    <Card render={<article className="user-card" aria-labelledby={name} />}>
+      <Avatar name="Imogen Hartley" src="https://picsum.photos/id/823/240/240" aria-hidden />
+      <h2 id={name}>Imogen Hartley</h2>
       <p className="role">Steward, Lower Field plot</p>
       <dl className="stats">
         <div>

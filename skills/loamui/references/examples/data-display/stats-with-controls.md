@@ -104,7 +104,7 @@ export default function Example() {
         <Card render={<div className="figure" />}>
           <dt>Orders posted</dt>
           <dd className="value">
-            {day.posted} <span>of {CAPACITY.posted}</span>
+            {day.posted} <span className="of">of {CAPACITY.posted}</span>
           </dd>
           <dd className="bar">
             <Meter value={day.posted} max={CAPACITY.posted} label="Orders posted, of capacity" />
@@ -113,7 +113,8 @@ export default function Example() {
         <Card render={<div className="figure" />}>
           <dt>Packets picked</dt>
           <dd className="value">
-            {day.picked.toLocaleString("en")} <span>of {CAPACITY.picked.toLocaleString("en")}</span>
+            {day.picked.toLocaleString("en")}{" "}
+            <span className="of">of {CAPACITY.picked.toLocaleString("en")}</span>
           </dd>
           <dd className="bar">
             <Meter value={day.picked} max={CAPACITY.picked} label="Packets picked, of capacity" />
@@ -122,7 +123,7 @@ export default function Example() {
         <Card render={<div className="figure" />}>
           <dt>Deliveries out</dt>
           <dd className="value">
-            {day.deliveries} <span>of {CAPACITY.deliveries}</span>
+            {day.deliveries} <span className="of">of {CAPACITY.deliveries}</span>
           </dd>
           <dd className="bar">
             <Meter
@@ -141,9 +142,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* A day's figures under a row that picks the day. The section is the
-   container the tiles answer; the Buttons, the Time and the Card tiles
-   keep their recipes behind the donut. */
 @scope (.stats-with-controls) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -151,8 +149,6 @@ export default function Example() {
     gap: var(--loam-space-md);
   }
 
-  /* Previous, the date, Next: the date takes the middle and the buttons
-     stay at the ends however long the date is. */
   div.controls {
     align-items: center;
     display: block grid;
@@ -166,8 +162,6 @@ export default function Example() {
     text-align: center;
   }
 
-  /* As many tiles across as fit; each is a Card holding a figure over
-     its bar. */
   dl.figures {
     display: block grid;
     gap: var(--loam-space-md);
@@ -176,12 +170,6 @@ export default function Example() {
   }
 }
 
-/* A tile is a Card hosting the example's own group, so the Card element
-   is this scope's root: the term, the figure and the bar inside are
-   reachable, the Meter is still fenced by the donut, and the Card's
-   surface, line, radius and padding are left as they are. The Meter's
-   track is the subtle background, so it needs the Card's surface under
-   it to show. */
 @scope (.stats-with-controls div.figure) to ([class*="loam-"]) {
   :scope {
     display: block grid;
@@ -193,8 +181,6 @@ export default function Example() {
     font-size: var(--loam-text-sm);
   }
 
-  /* The figure in tabular lining numerals, so it holds its width as
-     the day changes; the capacity is running text beside it. */
   dd.value {
     color: var(--loam-color-fg-strong);
     font-family: var(--loam-font-display);
@@ -205,7 +191,7 @@ export default function Example() {
     line-height: 1.1;
     margin: 0;
 
-    span {
+    span.of {
       color: var(--loam-color-fg-muted);
       font-family: var(--loam-font);
       font-size: var(--loam-text-sm);

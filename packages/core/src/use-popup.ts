@@ -1,8 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef } from "react";
 import type { CSSProperties, MouseEvent as ReactMouseEvent, Ref, RefObject } from "react";
 import { cssSafeId, supportsAnchoredPopover } from "./anchor";
+import { useControllable } from "./use-controllable";
+import { useSupports } from "./use-support";
 
 /**
  * The open/close engine behind the anchored popups (Popover, Menu) and the
@@ -31,21 +33,7 @@ export function useOpenState({
   defaultOpen = false,
   onOpenChange,
 }: OpenStateOptions): [open: boolean, setOpen: (open: boolean) => void] {
-  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
-  const open = openProp ?? uncontrolledOpen;
-  const openRef = useRef(open);
-  openRef.current = open;
-  const controlledRef = useRef(false);
-  controlledRef.current = openProp !== undefined;
-  const setOpen = useCallback(
-    (next: boolean) => {
-      if (next === openRef.current) return;
-      if (!controlledRef.current) setUncontrolledOpen(next);
-      onOpenChange?.(next);
-    },
-    [onOpenChange],
-  );
-  return [open, setOpen];
+  return useControllable(openProp, defaultOpen, onOpenChange);
 }
 
 export interface PopupState {
@@ -71,8 +59,7 @@ export function usePopupRoot(suffix: string, options: OpenStateOptions): PopupSt
   // Adopt popover + anchor positioning together: a top-layer popup ignores
   // its wrapper's positioning context, so promoting it without anchor
   // positioning would leave it centred in the viewport.
-  const [enhanced, setEnhanced] = useState(false);
-  useEffect(() => setEnhanced(supportsAnchoredPopover()), []);
+  const enhanced = useSupports(supportsAnchoredPopover);
 
   const autoId = useId();
   const popupId = `${cssSafeId(autoId)}-${suffix}`;
@@ -140,22 +127,24 @@ export function usePopoverReconcile(
 }
 
 export interface PopupOptions {
-  /** The Root's class, so the fallback's outside-click test knows the bounds. */
-  rootClass: string;
-  /** Where focus lands when the popup opens. @default the popup itself */
-  focusOnOpen?: (popup: HTMLElement) => void;
+  /**
+   * Where focus lands when the popup opens; `false` leaves it where it is
+   * (a disclosure keeps focus on its button). @default the popup itself
+   */
+  focusOnOpen?: ((popup: HTMLElement) => void) | false;
   /** What Escape does in the fallback path. @default close */
   onEscape?: () => void;
 }
 
 /**
  * The Popup's behaviour: native reconcile + toggle sync when enhanced,
- * document-level dismiss handling in the fallback, and focus management on
- * both paths (into the popup on open; back to the trigger on close when it
- * would otherwise be lost). Skipped when the popup mounts already open, so a
- * defaultOpen popup doesn't steal page focus.
+ * document-level dismiss handling in the fallback (a press outside both the
+ * trigger and the popup closes), and focus management on both paths (into
+ * the popup on open; back to the trigger on close when it would otherwise be
+ * lost). Skipped when the popup mounts already open, so a defaultOpen popup
+ * doesn't steal page focus.
  */
-export function usePopup(state: PopupState, { rootClass, focusOnOpen, onEscape }: PopupOptions) {
+export function usePopup(state: PopupState, { focusOnOpen, onEscape }: PopupOptions = {}) {
   const { open, setOpen, enhanced, popupRef: ref, triggerRef } = state;
 
   usePopoverReconcile(ref, open, enhanced);
@@ -179,7 +168,9 @@ export function usePopup(state: PopupState, { rootClass, focusOnOpen, onEscape }
     prevOpenRef.current = open;
     if (!el || was === open) return;
     if (open) {
-      if (focusOnOpenRef.current) focusOnOpenRef.current(el);
+      const focus = focusOnOpenRef.current;
+      if (focus === false) return;
+      if (focus) focus(el);
       else el.focus({ preventScroll: true });
     } else if (el.contains(document.activeElement) || document.activeElement === document.body) {
       triggerRef.current?.focus({ preventScroll: true });
@@ -191,8 +182,9 @@ export function usePopup(state: PopupState, { rootClass, focusOnOpen, onEscape }
   useEffect(() => {
     if (enhanced || !open) return;
     const onPointer = (e: MouseEvent) => {
-      const root = ref.current?.closest(`.${rootClass}`);
-      if (root && !root.contains(e.target as Node)) setOpen(false);
+      const target = e.target as Node;
+      if (triggerRef.current?.contains(target) || ref.current?.contains(target)) return;
+      setOpen(false);
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
@@ -205,7 +197,7 @@ export function usePopup(state: PopupState, { rootClass, focusOnOpen, onEscape }
       document.removeEventListener("mousedown", onPointer);
       document.removeEventListener("keydown", onKey);
     };
-  }, [enhanced, open, setOpen, ref, rootClass]);
+  }, [enhanced, open, setOpen, ref, triggerRef]);
 }
 
 /** The attributes that make the Popup a popup; rest must never override them. */

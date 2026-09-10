@@ -1,6 +1,6 @@
 ---
 title: Table of reviews
-description: The most-grown varieties as a Table: a Rating and the review count per row, and a two-colour bar of how many would grow it again, with both shares written either side of it.
+description: The most-grown varieties as a Table: a Rating and the review count per row, and a Meter of how many would grow it again, with both shares written either side of it.
 ---
 
 > LoamUI documentation, generated from the same source as the live page —
@@ -8,25 +8,25 @@ description: The most-grown varieties as a Table: a Rating and the review count 
 
 # Table of reviews
 
-The most-grown varieties as a Table: a Rating and the review count per row, and a two-colour bar of how many would grow it again, with both shares written either side of it.
+The most-grown varieties as a Table: a Rating and the review count per row, and a Meter of how many would grow it again, with both shares written either side of it.
 
 An example in **Data display**: a component and a stylesheet built from `@loamui/core`, to copy into a project and change. Both files are below, exactly as the live preview renders them.
 
-- Uses: `Rating`, `Table`
-- Tags: reviews, ratings, table, distribution, split bar, would grow again
+- Uses: `Meter`, `Rating`, `Table`
+- Tags: reviews, ratings, table, distribution, meter, would grow again
 - Live: https://loamui.com/examples/data-display/table-reviews
 
 ## Built to the pillars
 
-- **Native CSS.** A real table with a caption, column headers and a row header per variety; each rating is a Rating in display mode, one named picture of the value rather than five decorative stars.
-- **Modern CSS.** The split cell is a flex row with both figures at fixed widths in tabular numerals, so the bars line up down the column; the bar's fill is sized by the row in an inline style, the one number that is data.
-- **Composition.** Table rules the rows and the header and Rating draws the stars; the example adds only the split cell, and reaches into neither.
-- **Accessible & gatekept.** The bar is hidden and the two shares are text that finishes in hidden words, so a reader hears 91% would, 9% would not; in forced colours the bar keeps an edge and its fill is painted in the text colour.
+- **Native CSS.** A real table with a caption, column headers and a row header per variety; each rating is a Rating in display mode, one named picture of the value rather than five decorative stars, and each share is a native meter.
+- **Modern CSS.** The split cell is a three-column grid with both figures at fixed widths in tabular numerals and the Meter filling the middle track, so the bars line up down the column without a rule on the Meter.
+- **Composition.** Table rules the rows and the header, Rating draws the stars and Meter draws the share; the example adds only the split cell's grid, and reaches into none of them.
+- **Accessible & gatekept.** The Meter is named Would grow again and carries the value, and the two shares are text that finishes in hidden words, so a reader hears 91% would, 9% would not; forced colours are the Meter's own concern.
 
 ## Example.tsx
 
 ```tsx
-import { Rating, Table } from "@loamui/core";
+import { Meter, Rating, Table } from "@loamui/core";
 import "./example.css";
 
 const VARIETIES = [
@@ -73,9 +73,7 @@ export default function Example() {
               <span className="yes">
                 {row.again}%<span className="loam-VisuallyHidden"> would</span>
               </span>
-              <div className="bar" aria-hidden="true">
-                <span style={{ inlineSize: `${row.again}%` }} />
-              </div>
+              <Meter value={row.again} max={100} label="Would grow again" />
               <span className="no">
                 {100 - row.again}%<span className="loam-VisuallyHidden"> would not</span>
               </span>
@@ -91,14 +89,9 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Table's own element is the scroll wrapper, so it is this scope's
-   root: the table and its cells are reachable, and the Ratings inside
-   are fenced by the donut. The Table already rules the rows and the
-   header; this aligns the figures and draws the split. */
 @scope (.table-reviews) to ([class*="loam-"]) {
-  /* The hidden words in the split cells are positioned, so the scroller
-     must be their containing block, or they would widen the page instead
-     of scrolling with the table. */
+  /* The hidden words in the split cells are positioned: the scroller must
+     be their containing block, or they widen the page. */
   :scope {
     position: relative;
   }
@@ -113,8 +106,6 @@ export default function Example() {
     white-space: nowrap;
   }
 
-  /* A variety is a name: it holds one line and the table scrolls, rather
-     than breaking mid-word to fit. */
   tbody th {
     font-weight: 500;
     white-space: nowrap;
@@ -124,18 +115,16 @@ export default function Example() {
     min-inline-size: 14rem;
   }
 
-  /* The share that would, the bar, the share that would not: the
-     figures at fixed widths so the bars line up down the column. */
   td.split {
     align-items: center;
-    display: block flex;
+    display: block grid;
     font-variant-numeric: lining-nums tabular-nums;
     gap: var(--loam-space-sm);
+    grid-template-columns: auto minmax(4rem, 1fr) auto;
   }
 
   span.yes,
   span.no {
-    flex: none;
     min-inline-size: 3.5ch;
   }
 
@@ -147,38 +136,6 @@ export default function Example() {
 
   span.no {
     color: var(--loam-color-danger-strong);
-  }
-
-  /* The bar is decoration for the two figures beside it: the track is
-     the would-not colour and the span over it the would colour, sized
-     by the row. */
-  div.bar {
-    background: var(--loam-color-danger-strong);
-    block-size: 0.5rem;
-    border-radius: var(--loam-radius-full);
-    display: block flex;
-    flex: 1;
-    min-inline-size: 4rem;
-    overflow: clip;
-
-    > span {
-      background: var(--loam-color-success-strong);
-      block-size: 100%;
-    }
-  }
-
-  /* Forced colours drop both fills, so the bar keeps an edge and the
-     would-share is painted in the text colour against the canvas. */
-  @media (forced-colors: active) {
-    div.bar {
-      background: Canvas;
-      border: 1px solid CanvasText;
-
-      > span {
-        background: CanvasText;
-        forced-color-adjust: none;
-      }
-    }
   }
 }
 ```

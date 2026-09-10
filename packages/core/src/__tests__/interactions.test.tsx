@@ -879,6 +879,26 @@ describe("Popover", () => {
     await waitFor(() => expect(screen.getByText("Popover body")).not.toBeVisible());
   });
 
+  it("lists the Title's id before a consumer's aria-labelledby, each id once", () => {
+    render(
+      <>
+        <p id="notice">Notice</p>
+        <Popover.Root defaultOpen>
+          <Popover.Trigger>Open</Popover.Trigger>
+          <Popover.Popup aria-labelledby="notice" aria-describedby="notice notice">
+            <Popover.Title>Filters</Popover.Title>
+            <Popover.Description>Narrow the list.</Popover.Description>
+          </Popover.Popup>
+        </Popover.Root>
+      </>,
+    );
+    const dialog = screen.getByRole("dialog");
+    const titleId = screen.getByText("Filters").id;
+    const descriptionId = screen.getByText("Narrow the list.").id;
+    expect(dialog).toHaveAttribute("aria-labelledby", `${titleId} notice`);
+    expect(dialog).toHaveAttribute("aria-describedby", `${descriptionId} notice`);
+  });
+
   it("opens via a render-composed trigger and keeps focus restoration", async () => {
     const user = userEvent.setup();
     render(

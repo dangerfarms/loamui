@@ -36,31 +36,31 @@ const ARTICLES = [
     slug: "autumn-broad-beans",
     category: "Growing guide",
     title: "Sowing broad beans in autumn",
-    seed: "hedgerow-broad-beans",
+    seed: 627,
   },
   {
     slug: "curing-winter-squash",
     category: "Harvest",
     title: "Curing winter squash for storage",
-    seed: "hedgerow-squash-harvest",
+    seed: 729,
   },
   {
     slug: "saving-tomato-seed",
     category: "Seed saving",
     title: "Saving tomato seed without the smell",
-    seed: "hedgerow-tomato-seed",
+    seed: 400,
   },
   {
     slug: "lifting-dahlias",
     category: "Winter jobs",
     title: "Lifting and storing dahlia tubers",
-    seed: "hedgerow-dahlia-tubers",
+    seed: 976,
   },
   {
     slug: "green-manures",
     category: "Soil",
     title: "Green manures for a bed you will not touch till March",
-    seed: "hedgerow-green-manure",
+    seed: 542,
   },
 ];
 
@@ -96,7 +96,7 @@ export default function Example() {
             >
               <img
                 className="media"
-                src={`https://picsum.photos/seed/${article.seed}/640/400`}
+                src={`https://picsum.photos/id/${article.seed}/640/400`}
                 alt=""
                 width="640"
                 height="400"
@@ -124,24 +124,18 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Carousel's section is this scope's root: the head with its title
-   and the paging Buttons is the example's own, and the track, the items,
-   the Buttons and the dots keep the Carousel's recipe. The item width is
-   the Carousel's public knob, set here so a card reads as a card. */
 @scope (.carousel-with-cards) to ([class*="loam-"]) {
   :scope {
     --loam-carousel-item-size: 18rem;
   }
 
-  /* Each link ends in hidden text, which is positioned, so the track must
-     be its containing block: without this the hidden words of the items
-     off to the end would widen the page instead of scrolling with the
-     track. Placement only; the track's own recipe is untouched. */
+  /* Each link ends in positioned hidden text: without this containing block
+     the words of the items off to the end widen the page instead of
+     scrolling with the track. */
   ul.track {
     position: relative;
   }
 
-  /* The title at the start, Previous and Next at the end of the line. */
   div.head {
     align-items: center;
     display: block flex;
@@ -161,10 +155,6 @@ export default function Example() {
   }
 }
 
-/* Each article is a Card inside a Carousel item, and the Card is a limit
-   of the donut above, so its parts are reached from a second scope
-   rooted at it. The Card's surface, line, radius and padding are left as
-   they are; the Badge and the SignpostLink are fenced again. */
 @scope (.carousel-with-cards article.article) to ([class*="loam-"]) {
   :scope {
     display: block flex;
@@ -190,8 +180,6 @@ export default function Example() {
     text-wrap: balance;
   }
 
-  /* The link sits at the foot whatever the title's length, so the row
-     of Cards the track has stretched to one height lines its links up. */
   div.foot {
     display: block flex;
     margin-block-start: auto;

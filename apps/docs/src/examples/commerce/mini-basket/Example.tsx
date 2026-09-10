@@ -5,18 +5,18 @@ import "./example.css";
 
 const LINES = [
   {
-    slug: "sweet-pea-cupani",
-    name: "Sweet pea ‘Cupani’ seeds",
+    slug: "climbing-bean-blue-lake",
+    name: "Climbing bean ‘Blue Lake’ seeds",
     options: "Packet of 25 seeds",
-    image: "hedgerow-sweet-pea",
+    image: 627,
     each: 2.8,
     quantity: 2,
   },
   {
-    slug: "copper-trowel",
-    name: "Copper hand trowel",
-    options: "Ash handle",
-    image: "hedgerow-trowel",
+    slug: "raspberry-autumn-bliss",
+    name: "Raspberry ‘Autumn Bliss’ canes",
+    options: "Bundle of five",
+    image: 429,
     each: 24,
     quantity: 1,
   },
@@ -72,7 +72,7 @@ export default function Example() {
                   <article aria-labelledby={`mini-basket-${line.slug}-title`}>
                     <img
                       className="media"
-                      src={`https://picsum.photos/seed/${line.image}/240/240`}
+                      src={`https://picsum.photos/id/${line.image}/240/240`}
                       alt=""
                       width="240"
                       height="240"

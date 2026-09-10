@@ -1,4 +1,8 @@
-/* Nothing to add. The root is the core Field: its error message, the
-   danger border and ring on the box, and the forced-colours outline are
-   core's, keyed off the Field.Error the example renders; the words are
-   the example's, read from the input's own validity. */
+/* The error message, the danger border and ring, and the forced-colours
+   outline are the Field's, keyed off the rendered Field.Error; only the
+   width is set here. */
+@scope (.input-validation) to ([class*="loam-"]) {
+  :scope {
+    max-inline-size: 28rem;
+  }
+}

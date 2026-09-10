@@ -50,10 +50,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* An error page is a region: it declares its container so the fluid
-   tokens answer its own width, and it hosts a SignpostLink, hence the
-   donut. Everything centres on one axis: the code, the title, the line
-   and the ways out. No picture: the words are the page. */
 @scope (.error-404) to ([class*="loam-"]) {
   :scope {
     align-items: center;
@@ -67,9 +63,6 @@ export default function Example() {
     text-align: center;
   }
 
-  /* The code is set dim on purpose: it identifies the error for anyone
-     who needs it and stays behind the title, which is what the reader
-     needs. */
   p.code {
     color: var(--loam-color-fg-dim);
     font-family: var(--loam-font-display);

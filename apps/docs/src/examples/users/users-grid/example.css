@@ -1,8 +1,3 @@
-/* The list is the grid: as many columns as 16rem cards fit, filled in
-   reading order, with the markers gone. Outside a nav a list without
-   markers loses its semantics in some browsers, so the markup restores
-   them with role="list". Each Card is core's and a limit for this scope;
-   its inside is arranged from a scope of its own below. */
 @scope (.users-grid) to ([class*="loam-"]) {
   :scope {
     display: block grid;
@@ -19,9 +14,6 @@
   }
 }
 
-/* Inside a card: the avatar beside the name and role, then the facts,
-   then the action, on a grid of two columns. The Card's own surface,
-   line, radius and padding are left as they are. */
 @scope (.users-grid .loam-Card) to ([class*="loam-"]) {
   :scope {
     align-items: center;
@@ -47,8 +39,6 @@
     margin: 0;
   }
 
-  /* Two facts, each a term over its value, spanning both columns; the
-     rate is a Price and its qualifier is the Price's own. */
   dl {
     display: block grid;
     gap: var(--loam-space-sm);
@@ -77,9 +67,11 @@
       overflow-wrap: anywhere;
     }
   }
+}
 
-  /* The action spans the card and sits at its start edge. */
-  a {
+/* The link is a loam- root, past the donut: it is placed from its own scope. */
+@scope (.users-grid .loam-SignpostLink) to ([class*="loam-"]) {
+  :scope {
     grid-column: 1 / -1;
     justify-self: start;
   }

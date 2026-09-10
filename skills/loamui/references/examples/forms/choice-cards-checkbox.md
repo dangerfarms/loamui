@@ -90,9 +90,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The root is the core Fieldset, which keeps its own reset, legend and
-   column. The cards sit in a grid of the example's own that fits as many
-   across as the group has room for. */
 @scope (.choice-cards-checkbox) to ([class*="loam-"]) {
   div.cards {
     container-type: inline-size;
@@ -102,34 +99,23 @@ export default function Example() {
   }
 }
 
-/* Each card is a core Card rendered as the label, so it is this scope's
-   root: the checked edge is an outline drawn in the Card's own line's
-   place, and the focus ring and the pointer sit on the same root; the
-   Card's surface, padding and radius are left as they are. The checkbox
-   inside is a core control past the donut. */
 @scope (.choice-cards-checkbox label.card) to ([class*="loam-"]) {
   :scope {
     align-content: start;
     align-items: start;
-
-    /* The whole surface is the label, so the cursor says so everywhere
-       on it, padding included. */
     cursor: pointer;
     display: block grid;
     gap: var(--loam-space-xs) var(--loam-space-md);
     grid-template-columns: auto minmax(0, 1fr);
 
-    /* Checked is the control's own tick plus this edge: never colour
-       alone. Inset by the Card's 1px line, so it takes the line's place
-       rather than sitting outside it. */
+    /* Inset by the Card's 1px line, so the edge takes the line's place. */
     &:has(input:checked) {
-      outline: 2px solid var(--loam-color-primary-strong);
+      outline: var(--loam-ring-width) solid var(--loam-color-primary-strong);
       outline-offset: -1px;
     }
 
-    /* The ring the elements layer gives the control, repeated around the
-       card so a keyboard user sees which card holds focus: a shadow, since
-       the outline is the checked edge and a checked card can hold focus. */
+    /* A shadow, since the outline is the checked edge and a checked card can
+       hold focus. */
     &:has(input:focus-visible) {
       box-shadow: 0 0 0 var(--loam-ring-width) var(--loam-color-ring);
     }
@@ -143,7 +129,7 @@ export default function Example() {
     display: block flex;
     grid-column: 1;
 
-    /* Centre the control on the title's first line. */
+    /* Centres the control on the title's first line. */
     padding-block-start: 0.2lh;
   }
 
@@ -159,16 +145,12 @@ export default function Example() {
     grid-column: 2;
   }
 
-  /* Only the words fade with a disabled control; the Card keeps its line
-     so the option still reads as one of the set. */
   :scope:has(input:disabled) :is(span.title, span.description) {
     opacity: var(--loam-disabled-opacity);
   }
 
-  /* Forced colours: the edge keeps its state in the system highlight; the
-     shadow is dropped there, so the ring becomes an outline too, offset
-     so both read when the checked card has focus. A disabled option's
-     flattened opacity is replaced by the system's own disabled text. */
+  /* Forced colours drop the shadow, so the ring becomes an outline, offset
+     so both read on a checked card. */
   @media (forced-colors: active) {
     :scope:has(input:checked) {
       outline-color: Highlight;

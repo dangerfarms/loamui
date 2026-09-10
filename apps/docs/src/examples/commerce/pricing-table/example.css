@@ -1,7 +1,3 @@
-/* The table is a list that declares its container and fits as many tiers
-   across as it has room for; the tiers stretch to one height. The
-   recommended tier is a primary region declared on its list item, which
-   is the Card's ancestor, so everything inside the Card answers it. */
 @scope (.pricing-table) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
@@ -16,25 +12,17 @@
   li {
     display: block grid;
     margin: 0;
-  }
 
-  /* The recommended tier is a primary region, and it is ringed on the
-     item around its Card, so it is told apart by shape as well as colour
-     and the ring survives forced colours; the radius matches the Card's
-     so the ring hugs it. */
-  li.recommended {
-    --loam-context: primary;
+    &.recommended {
+      --loam-context: primary;
 
-    border-radius: var(--loam-radius-lg);
-    outline: 2px solid var(--loam-color-primary-strong);
-    outline-offset: 3px;
+      border-radius: var(--loam-radius-lg);
+      outline: var(--loam-ring-width) solid var(--loam-color-primary-strong);
+      outline-offset: 3px;
+    }
   }
 }
 
-/* One tier: the same column as the Plan example. The Card is this scope's
-   root, so the parts inside are reachable while the Badge, the Price and
-   the Button are fenced by the donut; the Card's own surface, line, radius
-   and padding are left as they are. */
 @scope (.pricing-table article.plan) to ([class*="loam-"]) {
   :scope {
     display: block flex;
@@ -64,9 +52,6 @@
     margin: 0;
   }
 
-  /* The features: markers replaced by a tick and a dash drawn as generated
-     content with an empty alt, so they stay out of the accessibility tree;
-     the words, and the exclusion's hidden prefix, carry the meaning. */
   ul.features {
     display: block grid;
     gap: var(--loam-space-xs);
@@ -100,17 +85,13 @@
     }
   }
 
-  /* The action sits at the foot of every tier, level across the row
-     because the tiers share a height, and fills the width. */
   div.actions {
     display: block grid;
     margin-block-start: auto;
     padding-block-start: var(--loam-space-sm);
   }
 
-  /* In the recommended tier the name and the figure take the brand colour;
-     the query is answered by the list item, an ancestor of both. The Badge
-     says Most popular in words, so the choice survives forced colours. */
+  /* Answered by the list item, an ancestor of both. */
   @container (style(--loam-context: primary)) {
     h3,
     p.price {

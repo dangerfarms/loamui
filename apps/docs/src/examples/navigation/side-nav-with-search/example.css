@@ -1,9 +1,3 @@
-/* The column: the search in the first row, the Nav stretched through the
-   second, and the account link in the third, so it sits at the foot
-   however tall the column is. In an app shell the column is as tall as
-   the viewport; here it is given a height so the pinning shows. The
-   donut leaves the Search, the Nav, the Badges and the Avatar on their
-   own styles. */
 @scope (.side-nav-with-search) to ([class*="loam-"]) {
   :scope {
     display: block grid;
@@ -13,9 +7,6 @@
     min-block-size: 32rem;
   }
 
-  /* The signed-in person, as a link to their account: a row of avatar,
-     name and email over a line, with the email clipping rather than
-     wrapping the row. */
   a.account {
     align-items: center;
     border-block-start: 1px solid var(--loam-color-line);
@@ -47,7 +38,7 @@
       color: var(--loam-color-fg-strong);
     }
 
-    > span {
+    > span.email {
       color: var(--loam-color-fg-muted);
       font-size: var(--loam-text-xs);
       overflow: hidden;
@@ -57,9 +48,11 @@
   }
 }
 
-/* Core's Nav, placed from its own scope: the words of each link grow to
-   fill the line, which pushes the count Badge after them to the end. */
 @scope (.side-nav-with-search .loam-Nav) to ([class*="loam-"]) {
+  :scope {
+    align-self: start;
+  }
+
   .link {
     span.label {
       flex: 1;

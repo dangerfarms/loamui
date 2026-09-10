@@ -21,12 +21,8 @@ export default function Example() {
           Hedgerow
         </a>
         <Menu.Root>
-          <Menu.Trigger render={<button type="button" className="user" />}>
-            <Avatar
-              name="Imogen Hartley"
-              src="https://picsum.photos/seed/hedgerow-imogen/96/96"
-              aria-hidden
-            />
+          <Menu.Trigger>
+            <Avatar name="Imogen Hartley" src="https://picsum.photos/id/823/96/96" aria-hidden />
             <span className="loam-VisuallyHidden">Account menu for </span>
             <span className="name">Imogen Hartley</span>
             <svg

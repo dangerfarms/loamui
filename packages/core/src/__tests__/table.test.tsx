@@ -2,7 +2,10 @@ import { describe, it, expect, afterEach, vi } from "vitest";
 import { render, screen, cleanup, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "vitest-axe";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { useState } from "react";
+import type { CSSProperties } from "react";
 
 import { Table } from "../components/Table/index";
 import type { TableProps, TableSortDirection } from "../components/Table/index";
@@ -123,6 +126,36 @@ describe("Table scroll region", () => {
     expect(screen.queryByRole("region")).not.toBeInTheDocument();
   });
 
+  it("is a region when --loam-table-block-size caps it and the rows overflow", () => {
+    vi.stubGlobal("ResizeObserver", FakeResizeObserver);
+    const { container } = render(
+      <Table stickyHeader style={{ "--loam-table-block-size": "12rem" } as CSSProperties}>
+        <caption>People</caption>
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Ada</td>
+          </tr>
+        </tbody>
+      </Table>,
+    );
+    const wrapper = container.firstElementChild as HTMLElement;
+    expect(wrapper.style.getPropertyValue("--loam-table-block-size")).toBe("12rem");
+    expect(wrapper).not.toHaveAttribute("role");
+
+    overflow(wrapper, { block: [900, 192] });
+    const region = screen.getByRole("region", { name: "People" });
+    expect(region).toBe(wrapper);
+    expect(region).toHaveAttribute("tabindex", "0");
+
+    const css = readFileSync(resolve(__dirname, "../components/Table/Table.css"), "utf8");
+    expect(css).toMatch(/:scope\s*{[^}]*max-block-size: var\(--loam-table-block-size, none\)/);
+  });
+
   it("keeps the consumer's name, role and tab stop, overflowing or not", () => {
     vi.stubGlobal("ResizeObserver", FakeResizeObserver);
     const { container } = render(<People aria-label="Team" role="group" tabIndex={-1} />);
@@ -150,6 +183,40 @@ describe("Table scroll region", () => {
     overflow(wrapper, { inline: [800, 400] });
     expect(screen.getByRole("region", { name: "Team" })).toBe(wrapper);
     expect(wrapper).not.toHaveAttribute("aria-label");
+  });
+});
+
+describe("Table display hooks", () => {
+  it("emits each display prop as its data attribute, and nothing when unset", () => {
+    const { container, rerender } = render(<People />);
+    const wrapper = container.firstElementChild!;
+    for (const attribute of [
+      "data-striped",
+      "data-hover",
+      "data-col-borders",
+      "data-sticky-header",
+    ]) {
+      expect(wrapper).not.toHaveAttribute(attribute);
+    }
+
+    rerender(<People striped highlightOnHover withColumnBorders stickyHeader />);
+    expect(wrapper).toHaveAttribute("data-striped", "true");
+    expect(wrapper).toHaveAttribute("data-hover", "true");
+    expect(wrapper).toHaveAttribute("data-col-borders", "true");
+    expect(wrapper).toHaveAttribute("data-sticky-header", "true");
+
+    rerender(<People stickyHeader={false} />);
+    expect(wrapper).not.toHaveAttribute("data-sticky-header");
+  });
+
+  it("sticks the header row under data-sticky-header, with its own edge and an opaque surface", () => {
+    const css = readFileSync(resolve(__dirname, "../components/Table/Table.css"), "utf8");
+    const sticky = css.slice(css.indexOf(":scope[data-sticky-header]"));
+    expect(sticky).toMatch(/table\s*{[^}]*border-collapse: separate/);
+    expect(sticky).toMatch(/table\s*{[^}]*border-spacing: 0/);
+    expect(sticky).toMatch(
+      /thead th\s*{[^}]*background: var\(--loam-color-surface\)[^}]*inset-block-start: 0[^}]*position: sticky[^}]*z-index: 1/,
+    );
   });
 });
 

@@ -1,10 +1,3 @@
-/* The root is the container the list answers: three buttons in a row
-   where there is room for their words, stacked where there is not. Each
-   form is a one-cell grid, so its Button takes the cell's width; the
-   Buttons are core parts past the donut and size their marks themselves.
-   The Google mark keeps its brand colours by attribute in the svg; the
-   other two are cut in currentColor and follow the button's text in
-   both schemes and in forced colours. */
 @scope (.social-buttons) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;

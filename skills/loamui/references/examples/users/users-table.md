@@ -34,6 +34,7 @@ import "./example.css";
 const MEMBERS = [
   {
     id: "imogen",
+    photo: 823,
     name: "Imogen Hartley",
     role: "Steward, Lower Field",
     email: "imogen@hedgerow.example",
@@ -42,6 +43,7 @@ const MEMBERS = [
   },
   {
     id: "bryn",
+    photo: 1005,
     name: "Bryn Powell",
     role: "Head grower",
     email: "bryn@hedgerow.example",
@@ -50,6 +52,7 @@ const MEMBERS = [
   },
   {
     id: "sadia",
+    photo: 832,
     name: "Sadia Rahman",
     role: "Seed librarian",
     email: "sadia@hedgerow.example",
@@ -58,6 +61,7 @@ const MEMBERS = [
   },
   {
     id: "tomos",
+    photo: 669,
     name: "Tomos Ellis",
     role: "Open days coordinator",
     email: "tomos@hedgerow.example",
@@ -66,6 +70,7 @@ const MEMBERS = [
   },
   {
     id: "greta",
+    photo: 64,
     name: "Greta Lindqvist",
     role: "Treasurer",
     email: "greta@hedgerow.example",
@@ -96,7 +101,7 @@ export default function Example() {
               <span className="member">
                 <Avatar
                   name={member.name}
-                  src={`https://picsum.photos/seed/hedgerow-${member.id}/96/96`}
+                  src={`https://picsum.photos/id/${member.photo}/96/96`}
                   aria-hidden
                 />
                 {member.name}
@@ -145,13 +150,7 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Table's own element is the scroll wrapper, so it is this scope's
-   root: the table and its cells are reachable, and the Avatars and the
-   Menus inside are fenced by the donut. The Table already rules the rows
-   and the header; this shapes three cells. */
 @scope (.users-table) to ([class*="loam-"]) {
-  /* The member is the row's header: read as the row, not as a figure,
-     with the picture beside the name on one line. */
   tbody th {
     font-weight: 500;
     text-align: start;
@@ -164,19 +163,16 @@ export default function Example() {
     white-space: nowrap;
   }
 
-  /* A phone number is one token; it never breaks across lines. */
   td.phone {
     white-space: nowrap;
   }
 
-  /* The actions column is as narrow as its button and sits at the end
-     of the row; the Menu inside keeps its own styles. */
+  /* Zero shrinks the column to its box. */
   td.actions {
     inline-size: 0;
     text-align: end;
   }
 
-  /* The form is plumbing around the last item and has no box of its own. */
   form {
     margin: 0;
   }

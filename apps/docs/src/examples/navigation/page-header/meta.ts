@@ -14,7 +14,7 @@ export const meta: ExampleMeta = {
     composition:
       "Breadcrumbs, Badge, Time and Button are dropped in as they come, and the grid places the Breadcrumbs by flow rather than by reaching into their root.",
     context:
-      "The status fact is a success region and the main action a primary one, so the Badge and the Button take their colours from where they sit without a prop between them.",
+      "The status fact is a success region and Request seed sits in a primary one, so the Badge and the Button take their colours from where they sit without a prop between them; primary is the brand slot, neutral until a theme fills it, so the main action is told by its place, last in the row, not by colour.",
     accessible:
       "Breadcrumbs come first because where the page sits is read before what it is; the facts are a list, not headings; the actions come last, beside the title only visually.",
   },

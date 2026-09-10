@@ -49,10 +49,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The closing block: a subtle surface with a large radius, so it reads as
-   the page's last word without a border or a colour of its own. The words
-   are centred and capped at their measures; the donut keeps the
-   SignpostLink on its own styles. */
 @scope (.call-to-action) to ([class*="loam-"]) {
   :scope {
     background: var(--loam-color-bg-subtle);
@@ -88,8 +84,7 @@ export default function Example() {
     justify-content: center;
   }
 
-  /* Forced colours drop the tint, so the block keeps an edge that says
-     where it starts and ends. */
+  /* Forced colours drop the tint; the edge keeps the bounds. */
   @media (forced-colors: active) {
     :scope {
       border: 1px solid CanvasText;

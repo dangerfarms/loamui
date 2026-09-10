@@ -5,16 +5,16 @@ import "./example.css";
 
 const PHOTOS = [
   {
-    seed: "hedgerow-cabin-outside",
-    alt: "A timber cabin under apple trees at the edge of the orchard",
+    seed: 206,
+    alt: "The cabin at the edge of the orchard in evening light",
   },
   {
-    seed: "hedgerow-cabin-inside",
-    alt: "The cabin’s main room, with a wood stove and a table set for four",
+    seed: 225,
+    alt: "A pot of tea and a cup on the cabin’s kitchen table",
   },
   {
-    seed: "hedgerow-cabin-garden",
-    alt: "The walled garden at dusk, seen from the cabin’s porch",
+    seed: 33,
+    alt: "The meadow beside the cabin at dusk, seen from the porch",
   },
 ];
 
@@ -37,7 +37,7 @@ export default function Example() {
           {PHOTOS.map((photo) => (
             <Carousel.Item key={photo.seed}>
               <img
-                src={`https://picsum.photos/seed/${photo.seed}/640/400`}
+                src={`https://picsum.photos/id/${photo.seed}/640/400`}
                 alt={photo.alt}
                 width="640"
                 height="400"

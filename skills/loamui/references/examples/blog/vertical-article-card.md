@@ -38,7 +38,7 @@ export default function Example() {
     >
       <img
         className="media"
-        src="https://picsum.photos/seed/hedgerow-dahlia-tubers/600/750"
+        src="https://picsum.photos/id/152/600/750"
         alt=""
         width="600"
         height="750"
@@ -68,12 +68,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* A narrow card: the Card is the article, rendered through its own
-   render prop, so the scope's root is the Card element and core's
-   surface, line, radius and padding stay as they are. The width is
-   capped here, so the card keeps its column in a wide parent; a grid of
-   them sets its own. The donut keeps the Badge, the Time and the Avatar
-   on their own styles. */
 @scope (.vertical-article-card) to ([class*="loam-"]) {
   :scope {
     display: block flex;
@@ -82,7 +76,6 @@ export default function Example() {
     max-inline-size: 18rem;
   }
 
-  /* A portrait picture: the column is tall, so the picture is too. */
   img.media {
     aspect-ratio: 4 / 5;
     block-size: auto;
@@ -95,8 +88,7 @@ export default function Example() {
     margin: 0;
   }
 
-  /* The title is the link. It keeps the heading's colour and drops the
-     underline at rest; the underline returns on hover and focus. */
+  /* Underlined at rest, lightly: a link is known by more than its place. */
   h3 {
     font-size: var(--loam-text-lg);
     margin: 0;
@@ -104,23 +96,20 @@ export default function Example() {
 
     a {
       color: inherit;
-      text-decoration: none;
+      text-decoration-color: var(--loam-color-line-strong);
 
       &:focus-visible {
-        text-decoration: underline;
+        text-decoration-color: currentcolor;
       }
 
       @media (hover: hover) {
         &:hover {
-          text-decoration: underline;
           text-decoration-color: var(--loam-color-primary);
         }
       }
     }
   }
 
-  /* The author row sits at the foot whatever the title's length, so a
-     row of these cards lines its bylines up. */
   div.author {
     --loam-avatar-size: 2rem;
 
@@ -137,8 +126,6 @@ export default function Example() {
     font-size: var(--loam-text-xs);
   }
 
-  /* The address element is italic by default in every browser; upright
-     here, since that convention reads as emphasis in a byline. */
   address {
     font-size: var(--loam-text-sm);
     font-style: normal;

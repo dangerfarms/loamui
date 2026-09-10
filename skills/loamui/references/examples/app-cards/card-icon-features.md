@@ -54,8 +54,8 @@ export default function Example() {
     >
       <img
         className="media"
-        src="https://picsum.photos/seed/hedgerow-tomato-plants/800/500"
-        alt="Tomato plants in terracotta pots on a greenhouse bench"
+        src="https://picsum.photos/id/530/800/500"
+        alt="Succulents and young plants in a glass propagation case on the greenhouse bench"
         width="800"
         height="500"
       />
@@ -108,16 +108,13 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The Card is the article, so its element is this scope's root: core's
-   surface, line, radius and padding stay, and the column inside is the
-   example's own. The Badge, the Prices and the Button keep their recipes
-   behind the donut. */
 @scope (.card-icon-features) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
     display: block flex;
     flex-direction: column;
     gap: var(--loam-space-md);
+    max-inline-size: 36rem;
   }
 
   img.media {
@@ -143,7 +140,6 @@ export default function Example() {
     text-wrap: balance;
   }
 
-  /* The flag is an info region: the Badge inside takes the colour. */
   p.flag {
     --loam-context: info;
 
@@ -179,8 +175,6 @@ export default function Example() {
     }
   }
 
-  /* The price and the action on one line where there is room, the price
-     leading; a narrow Card stacks them and the Button goes full width. */
   div.foot {
     align-items: center;
     border-block-start: 1px solid var(--loam-color-line);
@@ -192,8 +186,6 @@ export default function Example() {
     padding-block-start: var(--loam-space-md);
   }
 
-  /* The amount leads in the display face; the qualifier is the Price's
-     own small text after it. */
   p.price {
     color: var(--loam-color-fg-strong);
     font-family: var(--loam-font-display);

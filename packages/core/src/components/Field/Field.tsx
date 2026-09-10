@@ -1,9 +1,10 @@
 "use client";
 
-import { createContext, useContext, useEffect, useId, useMemo } from "react";
+import { createContext, use, useEffect, useId, useMemo } from "react";
 import type { ReactNode } from "react";
 import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
+import { useRequiredContext } from "../../context";
 import { usePresence } from "../../use-presence";
 import { idList, renderWithProps } from "../../render";
 import type { RenderProp } from "../../render";
@@ -59,11 +60,7 @@ interface FieldContextValue {
 const FieldContext = createContext<FieldContextValue | null>(null);
 
 function useFieldContext(part: string): FieldContextValue {
-  const ctx = useContext(FieldContext);
-  if (!ctx) {
-    throw new Error(`${part} must be rendered inside <Field.Root>.`);
-  }
-  return ctx;
+  return useRequiredContext(FieldContext, part, "Field.Root");
 }
 
 /**
@@ -79,7 +76,7 @@ function useFieldContext(part: string): FieldContextValue {
  * {@link FieldControlRenderProps}.
  */
 export function useFieldControlProps(ariaDescribedby?: string): Partial<FieldControlRenderProps> {
-  const ctx = useContext(FieldContext);
+  const ctx = use(FieldContext);
   if (!ctx) return { "aria-describedby": idList(ariaDescribedby) };
   return {
     id: ctx.fieldId,
@@ -109,8 +106,10 @@ function FieldRoot({ id, labels, className, children, ref, ...rest }: FieldRootP
   const invalid = hasError;
   const descriptionId = `${fieldId}-description`;
   const errorId = `${fieldId}-error`;
-  const describedBy =
-    cx(hasDescription ? descriptionId : undefined, hasError ? errorId : undefined) || undefined;
+  const describedBy = idList(
+    hasDescription ? descriptionId : undefined,
+    hasError ? errorId : undefined,
+  );
 
   const value = useMemo<FieldContextValue>(
     () => ({

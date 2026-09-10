@@ -1,21 +1,25 @@
+"use client";
+
+import { useId } from "react";
 import { Badge, Button, Card, Price, Rating } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const title = useId();
   return (
-    <Card render={<article className="product-card" aria-labelledby="product-card-title" />}>
+    <Card render={<article className="product-card" aria-labelledby={title} />}>
       <img
         className="media"
-        src="https://picsum.photos/seed/hedgerow-sweet-pea/600/600"
-        alt="Sweet pea flowers in deep maroon and violet on a hazel wigwam"
+        src="https://picsum.photos/id/627/600/600"
+        alt="Freshly picked green pods heaped in a crate on the bench"
         width="600"
         height="600"
       />
       <p className="meta">
         <Badge>Save 20%</Badge>
       </p>
-      <h3 id="product-card-title">
-        <a href="/seeds/sweet-pea-cupani">Sweet pea ‘Cupani’ seeds</a>
+      <h3 id={title}>
+        <a href="/seeds/climbing-bean-blue-lake">Climbing bean ‘Blue Lake’ seeds</a>
       </h3>
       <div className="rating">
         <Rating readOnly label="Average rating" value={4.5} />
@@ -33,7 +37,7 @@ export default function Example() {
       </p>
       <div className="actions">
         <Button>
-          Add<span className="loam-VisuallyHidden"> Sweet pea ‘Cupani’ seeds</span> to basket
+          Add<span className="loam-VisuallyHidden"> Climbing bean ‘Blue Lake’ seeds</span> to basket
         </Button>
       </div>
     </Card>

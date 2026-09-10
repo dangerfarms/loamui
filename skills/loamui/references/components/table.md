@@ -18,7 +18,9 @@ import { Table } from "@loamui/core";
 
 ## Usage
 
-### Basic
+### Basic usage
+
+Native table markup inside Table: a caption names it, th scope="col" marks the header cells, and the component styles what you write. Nothing is re-implemented.
 
 ```tsx
 <Table>
@@ -123,6 +125,27 @@ The table scrolls in place instead of stretching the page. Only once it actually
 </Table>
 ```
 
+### Sticky header
+
+A long table capped in height scrolls in place, and stickyHeader keeps the column names at the top of the scroller while the rows pass beneath. The cap is --loam-table-block-size on the component's own element, so no wrapper is needed; once the rows overflow it, the wrapper becomes the same focusable region as a wide table does, named by the caption. The header cells take an opaque surface and their own bottom edge, which travels with them.
+
+```tsx
+<Table stickyHeader style={{ "--loam-table-block-size": "14rem" }}>
+  <caption>Invoices</caption>
+  <thead>
+    <tr>
+      <th scope="col">Invoice</th>
+      <th scope="col">Status</th>
+      <th scope="col">Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>INV-1024</td><td>Paid</td><td>$1,240.00</td></tr>
+    …
+  </tbody>
+</Table>
+```
+
 ### Caption below the table
 
 Caption placement is the platform's own caption-side property, set on the <table> through tableProps (or a class of your own).
@@ -153,9 +176,9 @@ Table styles native thead/tbody/tr/th/td and re-implements nothing, so whatever 
 
 ### Wide tables scroll in place
 
-The component's own element is a scroll wrapper (overflow: auto), so an overflowing table scrolls horizontally within its own container instead of stretching the page; only when it actually overflows does the wrapper become a focusable, labelled region, so a page of narrow tables adds no tab stops. className, ref and the rest land on that wrapper; the <table> takes tableProps. Whether a table should instead reflow into cards or lists on small screens is your layout call. The component keeps the table a table and makes overflow survivable.
+The component's own element is a scroll wrapper (overflow: auto), so an overflowing table scrolls horizontally within its own container instead of stretching the page; only when it actually overflows does the wrapper become a focusable, labelled region, so a page of narrow tables adds no tab stops. The same wrapper scrolls vertically once --loam-table-block-size caps it, and stickyHeader keeps the header row at the top of that scroll. className, ref and the rest land on that wrapper; the <table> takes tableProps. Whether a table should instead reflow into cards or lists on small screens is your layout call. The component keeps the table a table and makes overflow survivable.
 
-### Sorting is announced, not just drawn
+### Sorting is announced as well as drawn
 
 A sortable column is Table.Th with sort and a Table.SortButton inside it. The cell carries aria-sort, which is what assistive technology reads as the column's state, and the button's hidden text says what a press will do ("Name sort descending"), so the control is understood before it is pressed. The arrow is drawn by the stylesheet from that same aria-sort, so state is declared once. The component never sorts the data: onSortChange asks for ascending or descending, you sort the rows and pass the result back, and a column that is sortable but not sorted says so with sort="none".
 
@@ -180,6 +203,7 @@ A <caption> names the table in its own words: it is what screen readers announce
 | `striped` | `boolean` | — | Shade alternating body rows. |
 | `highlightOnHover` | `boolean` | — | Highlight the row under the pointer. |
 | `withColumnBorders` | `boolean` | — | Draw vertical borders between columns. |
+| `stickyHeader` | `boolean` | — | Keep the header row in view while the body scrolls beneath it. The scroller is the component's own element: cap it with --loam-table-block-size (or the layout around it). |
 | `tableProps` | `TableHTMLAttributes & { ref }` | — | Attributes for the <table> itself (caption-side, ref, id). |
 | `labels` | `{ scrollable?: string }` | `{ scrollable: "Scrollable table" }` | The scroll region's name when the table overflows and has no <caption>. |
 | `...others` | `HTMLAttributes<HTMLDivElement> & { ref }` | — | All native <div> props land on the scroll wrapper, the component's own element. |
@@ -202,4 +226,10 @@ The control in a sortable header: a LoamUI Button that toggles the column's sort
 | --- | --- | --- | --- |
 | `onSortChange` | `(next: "ascending" \| "descending") => void` | — | Called with the sort a press asks for: ascending from none or descending, descending from ascending. Sort the rows and pass the result back as the Th's sort. |
 | `labels` | `{ sort?: (column: string, next: SortDirection) => string }` | `{ sort: (column, next) => ` sort ${next}` }` | The hidden text after the column name that says what a press will do; column is the children when they are text. |
+
+## Custom properties
+
+| Property | Syntax | Default | Description |
+| --- | --- | --- | --- |
+| `--loam-table-block-size` | `CSS length \| none` | `none` | The most the scroll wrapper may grow to, as its max-block-size. Set it and a longer table scrolls in place, the wrapper becoming a focusable region named by the caption once the rows overflow; pair it with stickyHeader to keep the column names in view. |
 

@@ -53,11 +53,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* One testimonial: a Card rendered as a figure, whose quote is a
-   blockquote and whose author is the figcaption, so the attribution is
-   tied to the quote by the platform. The Card element is the scope root,
-   so its surface, line, radius and padding are left as they are; the
-   Avatar inside is fenced by the donut. */
 @scope (.testimonial) to ([class*="loam-"]) {
   :scope {
     display: block grid;
@@ -65,8 +60,6 @@ export default function Example() {
     margin: 0;
   }
 
-  /* The quote is the main text, not an aside: it drops the element
-     style's rule and muted colour. */
   blockquote {
     border-inline-start: 0;
     color: var(--loam-color-fg);
@@ -80,8 +73,6 @@ export default function Example() {
     }
   }
 
-  /* The attribution: the Avatar beside a column of name over role. The
-     figure's gap spaces it, so the element style's top margin goes. */
   figcaption {
     align-items: center;
     display: block flex;

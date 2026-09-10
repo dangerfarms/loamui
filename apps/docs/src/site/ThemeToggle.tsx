@@ -62,7 +62,14 @@ export function ThemeToggle() {
       aria-label={theme === "dark" ? "Switch to light" : "Switch to dark"}
       title={theme === "dark" ? "Switch to light" : "Switch to dark"}
     >
-      {theme === "dark" ? <MoonIcon /> : <SunIcon />}
+      {/* Both icons ship; the stylesheet shows the one for the scheme in
+          force, so the first paint is right before hydration. */}
+      <span className={classes.sun}>
+        <SunIcon />
+      </span>
+      <span className={classes.moon}>
+        <MoonIcon />
+      </span>
     </button>
   );
 }

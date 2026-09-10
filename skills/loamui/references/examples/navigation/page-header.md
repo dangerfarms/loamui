@@ -21,7 +21,7 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 - **Native CSS.** A header named by the page's one h1 through aria-labelledby, so a landmark list says which page's header it is; the date is a time element with a machine-readable dateTime.
 - **Modern CSS.** A two-column grid answered by the header's own width: the text is pinned to the first column and the actions flow beside it where there is room, beneath it where there is not.
 - **Composition.** Breadcrumbs, Badge, Time and Button are dropped in as they come, and the grid places the Breadcrumbs by flow rather than by reaching into their root.
-- **Contextualism.** The status fact is a success region and the main action a primary one, so the Badge and the Button take their colours from where they sit without a prop between them.
+- **Contextualism.** The status fact is a success region and Request seed sits in a primary one, so the Badge and the Button take their colours from where they sit without a prop between them; primary is the brand slot, neutral until a theme fills it, so the main action is told by its place, last in the row, not by colour.
 - **Accessible & gatekept.** Breadcrumbs come first because where the page sits is read before what it is; the facts are a list, not headings; the actions come last, beside the title only visually.
 
 ## Example.tsx
@@ -46,7 +46,7 @@ export default function Example() {
           An open-pollinated cherry tomato, sweet and heavy-cropping, saved on the Lower Field plot
           since 2019 and offered to members every spring.
         </p>
-        <ul className="meta">
+        <ul className="meta" role="list">
           <li className="status">
             <Badge>Accepted into the library</Badge>
           </li>
@@ -70,12 +70,6 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The header is a container and a grid of two columns. The breadcrumbs
-   are placed by the grid's own flow into the first row; the text is
-   pinned to the first column, so the actions land beside it, in the
-   second, where the header is wide, and beneath it where it is narrow.
-   The donut leaves the Breadcrumbs, the Badge, the Time and the Buttons
-   on their own styles. */
 @scope (.page-header) to ([class*="loam-"]) {
   :scope {
     border-block-end: 1px solid var(--loam-color-line);
@@ -104,7 +98,6 @@ export default function Example() {
     max-inline-size: var(--loam-measure);
   }
 
-  /* A row of facts, not headings and not actions, with the markers gone. */
   ul.meta {
     align-items: center;
     color: var(--loam-color-fg-muted);
@@ -122,14 +115,10 @@ export default function Example() {
     }
   }
 
-  /* The status is a success region: the Badge inside takes the colour
-     from where it sits, not from a prop. */
   li.status {
     --loam-context: success;
   }
 
-  /* The actions, last in the reading order; the one that matters most
-     sits in its own primary region. */
   div.actions {
     align-items: center;
     display: block flex;

@@ -51,22 +51,18 @@ export default function Example() {
 ## example.css
 
 ```css
-/* The intro at the top of a section you write: the heading carries an id
-   for your section's aria-labelledby. The root is only the container and
-   the inner element is the grid, because an element cannot answer its
-   own container query. Narrow stacks the actions beneath the words; wide
-   puts them beside, in a column of their own, centred against the text. */
 @scope (.section-header) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
   }
 
+  /* The inner element is the grid: an element cannot answer its own
+     container query. */
   div.inner {
     display: block grid;
     gap: var(--loam-space-sm);
   }
 
-  /* Small and strong, in the strong token so it holds as text. */
   p.eyebrow {
     color: var(--loam-color-primary-strong);
     font-size: var(--loam-text-sm);
@@ -97,9 +93,6 @@ export default function Example() {
     gap: var(--loam-space-sm);
   }
 
-  /* Wide: each text part has a named row in the first column and the
-     actions span them all in the second. Rows are named rather than
-     counted, so a part left out leaves no hole. */
   @container (inline-size >= 40rem) {
     div.inner {
       align-items: center;

@@ -1,0 +1,29 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { SignpostLink } from "@loamui/core";
+import c from "./not-found.module.css";
+
+export const metadata: Metadata = {
+  title: "Page not found",
+  description: "There is no page at this address.",
+};
+
+/** The 404: what is missing, and the two ways on. */
+export default function NotFound() {
+  return (
+    <section className={`container ${c.page}`} data-no-hyphens>
+      <p className="eyebrow">404</p>
+      <h1 className={c.title}>There is no page at this address.</h1>
+      <p className={c.lead}>
+        The link may be out of date, or the address mistyped. The documentation starts at the
+        introduction, and every component and example is listed in the search (⌘K or Ctrl+K).
+      </p>
+      <div className={c.actions}>
+        <SignpostLink render={<Link href="/docs" />}>Read the docs</SignpostLink>
+        <Link href="/examples" className={c.plainLink}>
+          Browse the examples
+        </Link>
+      </div>
+    </section>
+  );
+}

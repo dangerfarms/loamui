@@ -148,6 +148,7 @@ const doc: ComponentContent = {
     {
       name: "labels",
       type: "{ star?: (n: number) => string; value?: (value: number, max: number) => string }",
+      default: `{ star: (n) => "n stars", value: (v, max) => "v out of max" }`,
       description:
         'The words the stars speak, for another language or a different noun: star names each input ("3 stars"), value names the picture in display mode ("3.5 out of 5").',
     },

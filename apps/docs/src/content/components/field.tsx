@@ -99,7 +99,7 @@ const doc: ComponentContent = {
     },
     {
       title: "When validation runs",
-      body: "Two paths, one timing rule. Native constraints (required, type, minlength) open the error state only after a submit attempt. Once open, the error remains while the value is invalid and clears as soon as the correction is valid. The render path is explicit: a field is invalid exactly while a Field.Error with content is rendered, so server or async validation is just rendering that message after submission. Neither path validates on blur or complains mid-word.",
+      body: "Two paths, one timing rule. Native constraints (required, type, minlength) open the error state only after a submit attempt. Once open, the error remains while the value is invalid and clears as soon as the correction is valid. The render path is explicit: a field is invalid exactly while a Field.Error with content is rendered, so server or async validation is rendering that message after submission. Neither path validates on blur or complains mid-word.",
     },
     {
       title: "Styling state from outside",

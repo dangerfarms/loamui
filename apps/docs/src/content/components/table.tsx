@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { Table } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
 import { TableSortDemo } from "./table.client";
@@ -39,13 +40,30 @@ const quarters = [
   },
 ];
 
+const ledger = [
+  { invoice: "INV-1024", status: "Paid", amount: "$1,240.00" },
+  { invoice: "INV-1025", status: "Pending", amount: "$820.00" },
+  { invoice: "INV-1026", status: "Paid", amount: "$2,010.00" },
+  { invoice: "INV-1027", status: "Overdue", amount: "$640.00" },
+  { invoice: "INV-1028", status: "Paid", amount: "$1,575.00" },
+  { invoice: "INV-1029", status: "Pending", amount: "$390.00" },
+  { invoice: "INV-1030", status: "Paid", amount: "$2,860.00" },
+  { invoice: "INV-1031", status: "Paid", amount: "$710.00" },
+  { invoice: "INV-1032", status: "Overdue", amount: "$1,120.00" },
+  { invoice: "INV-1033", status: "Pending", amount: "$455.00" },
+  { invoice: "INV-1034", status: "Paid", amount: "$3,300.00" },
+  { invoice: "INV-1035", status: "Paid", amount: "$980.00" },
+];
+
 const doc: ComponentContent = {
   slug: "table",
   lead: "A styled data table composed from native thead/tbody/tr/th/td markup.",
   importLine: `import { Table } from "@loamui/core";`,
   demos: [
     {
-      title: "Basic",
+      title: "Basic usage",
+      description:
+        'Native table markup inside Table: a caption names it, th scope="col" marks the header cells, and the component styles what you write. Nothing is re-implemented.',
       code: `<Table>
   <caption>Invoices</caption>
   <thead>
@@ -262,6 +280,48 @@ const doc: ComponentContent = {
       ),
     },
     {
+      title: "Sticky header",
+      description:
+        "A long table capped in height scrolls in place, and stickyHeader keeps the column names at the top of the scroller while the rows pass beneath. The cap is --loam-table-block-size on the component's own element, so no wrapper is needed; once the rows overflow it, the wrapper becomes the same focusable region as a wide table does, named by the caption. The header cells take an opaque surface and their own bottom edge, which travels with them.",
+      code: `<Table stickyHeader style={{ "--loam-table-block-size": "14rem" }}>
+  <caption>Invoices</caption>
+  <thead>
+    <tr>
+      <th scope="col">Invoice</th>
+      <th scope="col">Status</th>
+      <th scope="col">Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>INV-1024</td><td>Paid</td><td>$1,240.00</td></tr>
+    …
+  </tbody>
+</Table>`,
+      render: () => (
+        <div style={{ inlineSize: "100%", maxInlineSize: "32rem" }}>
+          <Table stickyHeader style={{ "--loam-table-block-size": "14rem" } as CSSProperties}>
+            <caption>Invoices</caption>
+            <thead>
+              <tr>
+                <th scope="col">Invoice</th>
+                <th scope="col">Status</th>
+                <th scope="col">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ledger.map((r) => (
+                <tr key={r.invoice}>
+                  <td>{r.invoice}</td>
+                  <td>{r.status}</td>
+                  <td>{r.amount}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
+      ),
+    },
+    {
       title: "Caption below the table",
       description:
         "Caption placement is the platform's own caption-side property, set on the <table> through tableProps (or a class of your own).",
@@ -310,10 +370,10 @@ const doc: ComponentContent = {
     },
     {
       title: "Wide tables scroll in place",
-      body: "The component's own element is a scroll wrapper (overflow: auto), so an overflowing table scrolls horizontally within its own container instead of stretching the page; only when it actually overflows does the wrapper become a focusable, labelled region, so a page of narrow tables adds no tab stops. className, ref and the rest land on that wrapper; the <table> takes tableProps. Whether a table should instead reflow into cards or lists on small screens is your layout call. The component keeps the table a table and makes overflow survivable.",
+      body: "The component's own element is a scroll wrapper (overflow: auto), so an overflowing table scrolls horizontally within its own container instead of stretching the page; only when it actually overflows does the wrapper become a focusable, labelled region, so a page of narrow tables adds no tab stops. The same wrapper scrolls vertically once --loam-table-block-size caps it, and stickyHeader keeps the header row at the top of that scroll. className, ref and the rest land on that wrapper; the <table> takes tableProps. Whether a table should instead reflow into cards or lists on small screens is your layout call. The component keeps the table a table and makes overflow survivable.",
     },
     {
-      title: "Sorting is announced, not just drawn",
+      title: "Sorting is announced as well as drawn",
       body: 'A sortable column is Table.Th with sort and a Table.SortButton inside it. The cell carries aria-sort, which is what assistive technology reads as the column\'s state, and the button\'s hidden text says what a press will do ("Name sort descending"), so the control is understood before it is pressed. The arrow is drawn by the stylesheet from that same aria-sort, so state is declared once. The component never sorts the data: onSortChange asks for ascending or descending, you sort the rows and pass the result back, and a column that is sortable but not sorted says so with sort="none".',
     },
     {
@@ -347,6 +407,12 @@ const doc: ComponentContent = {
       description: "Draw vertical borders between columns.",
     },
     {
+      name: "stickyHeader",
+      type: "boolean",
+      description:
+        "Keep the header row in view while the body scrolls beneath it. The scroller is the component's own element: cap it with --loam-table-block-size (or the layout around it).",
+    },
+    {
       name: "tableProps",
       type: "TableHTMLAttributes & { ref }",
       description: "Attributes for the <table> itself (caption-side, ref, id).",
@@ -362,6 +428,15 @@ const doc: ComponentContent = {
       type: "HTMLAttributes<HTMLDivElement> & { ref }",
       description:
         "All native <div> props land on the scroll wrapper, the component's own element.",
+    },
+  ],
+  cssProps: [
+    {
+      name: "--loam-table-block-size",
+      syntax: "CSS length | none",
+      default: "none",
+      description:
+        "The most the scroll wrapper may grow to, as its max-block-size. Set it and a longer table scrolls in place, the wrapper becoming a focusable region named by the caption once the rows overflow; pair it with stickyHeader to keep the column names in view.",
     },
   ],
   parts: [

@@ -1,5 +1,6 @@
 export { Pagination } from "./Pagination";
 export type {
+  PaginationLabels,
   PaginationRootProps,
   PaginationListProps,
   PaginationItemProps,
@@ -7,4 +8,5 @@ export type {
   PaginationLinkRenderProps,
   PaginationEllipsisProps,
   PaginationPagesProps,
+  PaginationPagesLabels,
 } from "./Pagination";

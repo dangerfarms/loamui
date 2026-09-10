@@ -9,7 +9,6 @@ export default function Example() {
         loading="lazy"
         referrerPolicy="strict-origin-when-cross-origin"
         allow="fullscreen; picture-in-picture"
-        allowFullScreen
       />
       <figcaption>
         Sowing broad beans in autumn and keeping the best pods back for next year&rsquo;s seed, the

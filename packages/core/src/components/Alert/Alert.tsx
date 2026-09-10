@@ -67,6 +67,12 @@ function AlertDescription({ className, children, ref, ...rest }: AlertDescriptio
   );
 }
 
+/** The words the Close button speaks. */
+export interface AlertCloseLabels {
+  /** The button's name when it has no children of its own. @default "Dismiss" */
+  close?: string;
+}
+
 export interface AlertCloseProps extends ButtonProps {
   /** Called when the button is activated; the consumer stops rendering the alert. */
   onClose?: () => void;
@@ -74,9 +80,7 @@ export interface AlertCloseProps extends ButtonProps {
    * The button's name when it has no children of its own (an icon-only
    * close). @default { close: "Dismiss" }
    */
-  labels?: {
-    close?: string;
-  };
+  labels?: AlertCloseLabels;
 }
 
 /**
@@ -118,7 +122,7 @@ export interface AlertProps extends Omit<AlertRootProps, "title"> {
   /** Renders an `Alert.Close` that calls this when activated. */
   onClose?: () => void;
   /** The close button's name, when `onClose` renders one. @default { close: "Dismiss" } */
-  labels?: AlertCloseProps["labels"];
+  labels?: AlertCloseLabels;
   /** Alert body. */
   children?: ReactNode;
 }

@@ -18,7 +18,7 @@ import { Tabs } from "@loamui/core";
 
 ## Usage
 
-### Basic
+### Basic usage
 
 Uncontrolled via defaultValue. Arrow keys move between tabs.
 

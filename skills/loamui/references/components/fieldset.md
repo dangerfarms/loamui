@@ -64,7 +64,7 @@ RadioGroup.Root is a Fieldset.Root, so RadioGroup.Legend labels the set of radio
 ## When not to
 
 - For a single labelled control: use Field (or a control's own label).
-- As a generic layout box: Fieldset carries grouping semantics, not just spacing.
+- As a generic layout box: Fieldset carries grouping semantics, not only spacing.
 
 ## How it works
 

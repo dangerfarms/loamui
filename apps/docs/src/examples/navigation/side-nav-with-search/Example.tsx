@@ -3,16 +3,6 @@
 import { Avatar, Badge, Nav, Search } from "@loamui/core";
 import "./example.css";
 
-const icon = {
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: 2,
-  strokeLinecap: "round" as const,
-  strokeLinejoin: "round" as const,
-  "aria-hidden": true,
-};
-
 export default function Example() {
   return (
     <div className="side-nav-with-search">
@@ -25,7 +15,15 @@ export default function Example() {
         <Nav.List>
           <Nav.Item>
             <Nav.Link href="/nursery">
-              <svg {...icon}>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
                 <rect x="3" y="3" width="7" height="7" rx="1" />
                 <rect x="14" y="3" width="7" height="7" rx="1" />
                 <rect x="3" y="14" width="7" height="7" rx="1" />
@@ -36,7 +34,15 @@ export default function Example() {
           </Nav.Item>
           <Nav.Item>
             <Nav.Link href="/nursery/orders" current>
-              <svg {...icon}>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
                 <path d="m3 8 9-5 9 5v8l-9 5-9-5z" />
                 <path d="m3 8 9 5 9-5M12 13v8" />
               </svg>
@@ -48,7 +54,15 @@ export default function Example() {
           </Nav.Item>
           <Nav.Item>
             <Nav.Link href="/nursery/messages">
-              <svg {...icon}>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
                 <rect x="3" y="5" width="18" height="14" rx="2" />
                 <path d="m3 7 9 6 9-6" />
               </svg>
@@ -60,7 +74,15 @@ export default function Example() {
           </Nav.Item>
           <Nav.Item>
             <Nav.Link href="/nursery/stock">
-              <svg {...icon}>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
                 <path d="M12 21v-8" />
                 <path d="M12 13c0-4 3-7 8-7-1 5-4 7-8 7z" />
                 <path d="M12 13c0-3-2-5-6-5 1 4 3 5 6 5z" />
@@ -70,7 +92,15 @@ export default function Example() {
           </Nav.Item>
           <Nav.Item>
             <Nav.Link href="/nursery/growers">
-              <svg {...icon}>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
                 <circle cx="9" cy="8" r="3.5" />
                 <path d="M2.5 20a6.5 6.5 0 0 1 13 0" />
                 <path d="M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4.5-6.2" />
@@ -80,7 +110,15 @@ export default function Example() {
           </Nav.Item>
           <Nav.Item>
             <Nav.Link href="/nursery/open-days">
-              <svg {...icon}>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
                 <rect x="3" y="5" width="18" height="16" rx="2" />
                 <path d="M3 10h18M8 3v4M16 3v4" />
               </svg>
@@ -90,14 +128,10 @@ export default function Example() {
         </Nav.List>
       </Nav.Root>
       <a className="account" href="/account">
-        <Avatar
-          name="Imogen Hartley"
-          src="https://picsum.photos/seed/hedgerow-imogen/96/96"
-          aria-hidden
-        />
+        <Avatar name="Imogen Hartley" src="https://picsum.photos/id/823/96/96" aria-hidden />
         <span className="text">
           <strong>Imogen Hartley</strong>
-          <span>imogen@hedgerow.example</span>
+          <span className="email">imogen@hedgerow.example</span>
         </span>
       </a>
     </div>

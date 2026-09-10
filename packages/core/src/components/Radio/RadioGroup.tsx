@@ -1,10 +1,12 @@
 "use client";
 
-import { createContext, useContext, useEffect, useId, useMemo, useRef, useState } from "react";
+import { createContext, useCallback, useEffect, useId, useMemo, useState } from "react";
 import type { FormEvent, ReactNode } from "react";
 import { cx } from "../../utils";
 import type { PartProps } from "../../utils";
-import { composeRefs } from "../../render";
+import { useRequiredContext } from "../../context";
+import { composeRefs, idList } from "../../render";
+import { useFormReset } from "../../use-form-reset";
 import { usePresence } from "../../use-presence";
 import { Fieldset } from "../Fieldset/Fieldset";
 import type { FieldsetLabels, FieldsetLegendProps } from "../Fieldset/Fieldset";
@@ -55,11 +57,7 @@ interface RadioGroupPartsContextValue {
 const RadioGroupPartsContext = createContext<RadioGroupPartsContextValue | null>(null);
 
 function useRadioGroupParts(part: string): RadioGroupPartsContextValue {
-  const ctx = useContext(RadioGroupPartsContext);
-  if (!ctx) {
-    throw new Error(`${part} must be rendered inside <RadioGroup.Root>.`);
-  }
-  return ctx;
+  return useRequiredContext(RadioGroupPartsContext, part, "RadioGroup.Root");
 }
 
 export interface RadioGroupRootProps extends Omit<
@@ -108,18 +106,11 @@ function RadioGroupRoot({
   const [hasDescription, registerDescription] = usePresence();
   const [hasError, registerError] = usePresence();
   const errorPrefix = labels?.errorPrefix ?? DEFAULT_ERROR_PREFIX;
-  const fieldsetRef = useRef<HTMLFieldSetElement>(null);
-  const rootRef = useMemo(() => composeRefs(ref, fieldsetRef), [ref]);
   const [nativeInvalid, setNativeInvalid] = useState(false);
   const invalid = hasError || nativeInvalid;
-
-  useEffect(() => {
-    const form = fieldsetRef.current?.form;
-    if (!form) return;
-    const clear = () => setNativeInvalid(false);
-    form.addEventListener("reset", clear);
-    return () => form.removeEventListener("reset", clear);
-  }, []);
+  const clearNativeInvalid = useCallback(() => setNativeInvalid(false), []);
+  const resetRef = useFormReset<HTMLFieldSetElement>(clearNativeInvalid);
+  const rootRef = useMemo(() => composeRefs(ref, resetRef), [ref, resetRef]);
 
   const checkOnInput = (event: FormEvent<HTMLFieldSetElement>) => {
     if (!nativeInvalid) return;
@@ -153,13 +144,11 @@ function RadioGroupRoot({
           className={cx("loam-RadioGroup", className)}
           data-orientation={orientation}
           labels={labels}
-          aria-describedby={
-            cx(
-              hasDescription ? descriptionId : undefined,
-              hasError ? errorId : undefined,
-              ariaDescribedby,
-            ) || undefined
-          }
+          aria-describedby={idList(
+            hasDescription ? descriptionId : undefined,
+            hasError ? errorId : undefined,
+            ariaDescribedby,
+          )}
           aria-invalid={ariaInvalid ?? (invalid || undefined)}
           onInvalid={(event) => {
             onInvalid?.(event);

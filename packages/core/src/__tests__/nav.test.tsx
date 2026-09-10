@@ -1,5 +1,5 @@
-import { describe, it, expect, afterEach, vi } from "vitest";
-import { render, screen, cleanup, act } from "@testing-library/react";
+import { describe, it, expect, afterEach, afterAll, beforeAll, vi } from "vitest";
+import { render, screen, cleanup, act, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "vitest-axe";
 import { readFileSync } from "node:fs";
@@ -169,6 +169,39 @@ describe("Nav", () => {
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
+  it("renders a Link as a button that keeps the link class and sheds the button dressing", () => {
+    const onClick = vi.fn();
+    render(
+      <Nav.Root>
+        <Nav.List>
+          <Nav.Item>
+            <Nav.Link render={<button type="button" onClick={onClick} />}>Learn</Nav.Link>
+          </Nav.Item>
+        </Nav.List>
+      </Nav.Root>,
+    );
+    const button = screen.getByRole("button", { name: "Learn" });
+    expect(button).toHaveClass("link");
+    expect(button).toHaveAttribute("type", "button");
+    expect(button).not.toHaveAttribute("href");
+    button.click();
+    expect(onClick).toHaveBeenCalledTimes(1);
+
+    // The line's rules are rooted at the line, not the nav, so a trigger
+    // inside a Menu or Popover wrapper (which the nav's donut fences out)
+    // is still set as a line; and they shed the elements layer's button box.
+    const css = readFileSync(resolve(__dirname, "../components/Nav/Nav.css"), "utf8");
+    expect(css).toContain(
+      '@scope (.loam-Nav :is(.link, summary.group-title)) to ([class*="loam-"])',
+    );
+    const line = css.slice(css.indexOf("@scope (.loam-Nav :is("));
+    expect(line).toMatch(/:scope\s*{[^}]*background: none/);
+    expect(line).toMatch(/:scope\s*{[^}]*border: 0/);
+    expect(line).toMatch(/:scope\s*{[^}]*box-shadow: none/);
+    expect(line).toMatch(/:scope\s*{[^}]*text-align: start/);
+    expect(line).toMatch(/:scope\s*{[^}]*white-space: normal/);
+  });
+
   it("folds a Group natively and reports the change", async () => {
     const user = userEvent.setup();
     const onOpenChange = vi.fn();
@@ -270,7 +303,318 @@ describe("Nav", () => {
   it("names the current marker in system colours under forced colours", () => {
     const css = readFileSync(resolve(__dirname, "../components/Nav/Nav.css"), "utf8");
     const forced = css.slice(css.indexOf("@media (forced-colors: active)"));
-    expect(forced).toMatch(/\.link\[aria-current\]\s*{[^}]*border-color: Highlight/);
-    expect(forced).toMatch(/summary\.group-title\s*{[^}]*border-color: Highlight/);
+    expect(forced).toMatch(/&\[aria-current\]\s*{[^}]*border-color: Highlight/);
+    expect(forced).toMatch(
+      /details\.group:not\(\[open\]\):has\(\.link\[aria-current\]\) > &\s*{[^}]*border-color: Highlight/,
+    );
+  });
+});
+
+function HeaderNav(props: {
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (o: boolean) => void;
+  currentInside?: boolean;
+}) {
+  return (
+    <>
+      <Nav.Root aria-label="Site">
+        <Nav.List>
+          <Nav.Item>
+            <Nav.Link href="/seeds" current={!props.currentInside}>
+              Seeds
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Dropdown
+              open={props.open}
+              defaultOpen={props.defaultOpen}
+              onOpenChange={props.onOpenChange}
+            >
+              <Nav.DropdownTrigger>Plants</Nav.DropdownTrigger>
+              <Nav.DropdownPanel>
+                <Nav.List>
+                  <Nav.Item>
+                    <Nav.Link href="/plants/vegetables" current={props.currentInside}>
+                      Vegetables
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link href="/plants/herbs">Herbs</Nav.Link>
+                  </Nav.Item>
+                </Nav.List>
+              </Nav.DropdownPanel>
+            </Nav.Dropdown>
+          </Nav.Item>
+        </Nav.List>
+      </Nav.Root>
+      <button type="button">Outside</button>
+    </>
+  );
+}
+
+const navCss = () => readFileSync(resolve(__dirname, "../components/Nav/Nav.css"), "utf8");
+
+describe("Nav.Dropdown", () => {
+  it("is a disclosure: a button reporting aria-expanded over a panel of plain links", () => {
+    const { container } = render(<HeaderNav />);
+    const trigger = screen.getByRole("button", { name: "Plants" });
+    const panel = container.querySelector(".loam-Nav-dropdown") as HTMLElement;
+    expect(trigger).toHaveAttribute("type", "button");
+    expect(trigger).toHaveClass("link", "dropdown-trigger");
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+    expect(trigger).toHaveAttribute("aria-controls", panel.id);
+    expect(trigger).toHaveAttribute("popovertarget", panel.id);
+    expect(trigger).toHaveAttribute("commandfor", panel.id);
+    expect(trigger).toHaveAttribute("command", "toggle-popover");
+    expect(trigger).not.toHaveAttribute("aria-haspopup");
+    expect(container.querySelector("[role='menu'], [role='menuitem']")).toBeNull();
+  });
+
+  it("toggles on click, closes on Escape and outside click, and returns focus", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    const { container } = render(<HeaderNav onOpenChange={onOpenChange} />);
+    const trigger = screen.getByRole("button", { name: "Plants" });
+    const panel = container.querySelector(".loam-Nav-dropdown") as HTMLElement;
+    expect(panel).not.toBeVisible();
+
+    await user.click(trigger);
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+    expect(trigger).toHaveAttribute("data-popup-open", "true");
+    expect(panel).toBeVisible();
+    expect(panel).toHaveAttribute("data-open");
+    expect(onOpenChange).toHaveBeenLastCalledWith(true);
+    // A disclosure leaves focus on its button; Tab reaches the first link.
+    expect(trigger).toHaveFocus();
+    await user.tab();
+    expect(screen.getByRole("link", { name: "Vegetables" })).toHaveFocus();
+
+    await user.keyboard("{Escape}");
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+    expect(panel).not.toBeVisible();
+    expect(trigger).toHaveFocus();
+    expect(onOpenChange).toHaveBeenLastCalledWith(false);
+
+    await user.click(trigger);
+    expect(panel).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Outside" }));
+    expect(panel).not.toBeVisible();
+
+    await user.click(trigger);
+    expect(panel).toBeVisible();
+    await user.click(trigger);
+    expect(panel).not.toBeVisible();
+    expect(onOpenChange).toHaveBeenCalledTimes(6);
+  });
+
+  it("holds a controlled open to its prop and follows it when it changes", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    const { rerender } = render(<HeaderNav open={false} onOpenChange={onOpenChange} />);
+    const trigger = screen.getByRole("button", { name: "Plants" });
+    await user.click(trigger);
+    expect(onOpenChange).toHaveBeenCalledWith(true);
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+
+    rerender(<HeaderNav open onOpenChange={onOpenChange} />);
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByRole("link", { name: "Herbs" })).toBeVisible();
+    expect(onOpenChange).toHaveBeenCalledTimes(1);
+  });
+
+  it("sets the links inside as lines of the nav, from the panel's own scope", () => {
+    const { container } = render(<HeaderNav defaultOpen />);
+    const panel = container.querySelector(".loam-Nav-dropdown") as HTMLElement;
+    const links = within(panel).getAllByRole("link");
+    expect(links).toHaveLength(2);
+    // The line scope is rooted at the line, so it reaches a link inside the
+    // panel although the nav's own donut stops at the panel (a loam- root).
+    for (const link of links) {
+      expect(link).toHaveClass("link");
+      expect(link.matches(".loam-Nav :is(.link, summary.group-title)")).toBe(true);
+      expect(link.matches(".loam-Nav-dropdown .link")).toBe(true);
+    }
+    const css = navCss();
+    const scope = css.slice(css.indexOf('@scope (.loam-Nav-dropdown) to ([class*="loam-"])'));
+    expect(scope).toMatch(/ul\s*{[^}]*list-style: none/);
+    expect(scope).toMatch(/--_size: var\(--loam-nav-dropdown-size, 16rem\)/);
+    expect(scope).toMatch(/inline-size: min\(var\(--_size\), 90vi\)/);
+    expect(scope).toMatch(/--loam-nav-current-edge: inline-start/);
+    expect(scope).toMatch(/position-area: block-end span-inline-end/);
+    expect(scope).toMatch(/position-try-fallbacks: flip-block, flip-inline/);
+    expect(scope).toMatch(/@supports not \(anchor-name: --loam-probe\)\s*{[^}]*position: absolute/);
+    expect(scope).toMatch(/z-index: var\(--loam-z-popup\)/);
+    expect(scope).toMatch(/@media \(forced-colors: active\)\s*{[^}]*border-color: CanvasText/);
+  });
+
+  it("gives the trigger the weight and marker when the panel holds the current page", () => {
+    const css = navCss();
+    expect(css).toMatch(
+      /&\.dropdown-trigger:has\(\+ \* \.link\[aria-current\]\)\s*{[^}]*font-weight: 600/,
+    );
+    expect(css).toMatch(
+      /&\.dropdown-trigger\[aria-expanded="false"\]:has\(\+ \* \.link\[aria-current\]\)\s*{[^}]*border-color: var\(--loam-color-primary-strong\)/,
+    );
+    expect(css).toMatch(
+      /&\.dropdown-trigger\[aria-expanded="true"\]::after\s*{[^}]*rotate: -135deg/,
+    );
+    const forced = css.slice(css.indexOf("@media (forced-colors: active)"));
+    expect(forced).toMatch(
+      /&\.dropdown-trigger\[aria-expanded="false"\]:has\(\+ \* \.link\[aria-current\]\)\s*{[^}]*border-color: Highlight/,
+    );
+  });
+
+  it("substitutes the trigger through render and merges the wiring on", async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+    render(
+      <Nav.Root aria-label="Site">
+        <Nav.List>
+          <Nav.Item>
+            <Nav.Dropdown>
+              <Nav.DropdownTrigger render={<button data-mine onClick={onClick} />} className="x">
+                More
+              </Nav.DropdownTrigger>
+              <Nav.DropdownPanel>
+                <Nav.List>
+                  <Nav.Item>
+                    <Nav.Link href="/a">A</Nav.Link>
+                  </Nav.Item>
+                </Nav.List>
+              </Nav.DropdownPanel>
+            </Nav.Dropdown>
+          </Nav.Item>
+        </Nav.List>
+      </Nav.Root>,
+    );
+    const trigger = screen.getByRole("button", { name: "More" });
+    expect(trigger).toHaveAttribute("data-mine");
+    expect(trigger).toHaveClass("link", "dropdown-trigger", "x");
+    expect(trigger).toHaveAttribute("commandfor");
+    await user.click(trigger);
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+  });
+
+  it("has no axe violations closed and open, with the current page inside", async () => {
+    const closed = render(<HeaderNav />);
+    expect(await axe(closed.container, axeOptions)).toHaveNoViolations();
+    closed.unmount();
+    const open = render(<HeaderNav defaultOpen currentInside />);
+    expect(await axe(open.container, axeOptions)).toHaveNoViolations();
+  });
+
+  it("throws outside Nav.Item, and its parts outside Nav.Dropdown", () => {
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    expect(() =>
+      render(
+        <Nav.Root>
+          <Nav.Dropdown>
+            <Nav.DropdownTrigger>X</Nav.DropdownTrigger>
+          </Nav.Dropdown>
+        </Nav.Root>,
+      ),
+    ).toThrow(/inside <Nav.Item>/);
+    expect(() =>
+      render(
+        <Nav.Root>
+          <Nav.List>
+            <Nav.Item>
+              <Nav.DropdownTrigger>X</Nav.DropdownTrigger>
+            </Nav.Item>
+          </Nav.List>
+        </Nav.Root>,
+      ),
+    ).toThrow(/inside <Nav.Dropdown>/);
+    expect(() =>
+      render(
+        <Nav.Root>
+          <Nav.List>
+            <Nav.Item>
+              <Nav.DropdownPanel />
+            </Nav.Item>
+          </Nav.List>
+        </Nav.Root>,
+      ),
+    ).toThrow(/inside <Nav.Dropdown>/);
+    error.mockRestore();
+  });
+
+  describe("with the popover API and anchor positioning", () => {
+    // jsdom has neither; shim enough of the popover API for the enhanced
+    // path: the open state, `:popover-open`, and the toggle event.
+    const OPEN = "data-shim-popover-open";
+    let restore: () => void;
+    beforeAll(() => {
+      const proto = HTMLElement.prototype as HTMLElement & Record<string, unknown>;
+      const hadCSS = "CSS" in globalThis;
+      const prevCSS = (globalThis as { CSS?: unknown }).CSS;
+      (globalThis as { CSS?: unknown }).CSS = { supports: () => true };
+      const matches = Element.prototype.matches;
+      Element.prototype.matches = function (this: Element, selector: string) {
+        if (selector === ":popover-open") return this.hasAttribute(OPEN);
+        return matches.call(this, selector);
+      };
+      const fire = (el: HTMLElement, open: boolean) => {
+        const event = new Event("toggle");
+        Object.assign(event, {
+          oldState: open ? "closed" : "open",
+          newState: open ? "open" : "closed",
+        });
+        el.dispatchEvent(event);
+      };
+      proto.showPopover = function (this: HTMLElement) {
+        if (this.hasAttribute(OPEN)) return;
+        this.setAttribute(OPEN, "");
+        fire(this, true);
+      };
+      proto.hidePopover = function (this: HTMLElement) {
+        if (!this.hasAttribute(OPEN)) return;
+        this.removeAttribute(OPEN);
+        fire(this, false);
+      };
+      restore = () => {
+        delete (proto as Record<string, unknown>).showPopover;
+        delete (proto as Record<string, unknown>).hidePopover;
+        Element.prototype.matches = matches;
+        if (hadCSS) (globalThis as { CSS?: unknown }).CSS = prevCSS;
+        else delete (globalThis as { CSS?: unknown }).CSS;
+      };
+    });
+    afterAll(() => restore());
+
+    it("is a native popover whose toggle event drives aria-expanded", async () => {
+      const onOpenChange = vi.fn();
+      const { container } = render(<HeaderNav onOpenChange={onOpenChange} />);
+      const trigger = screen.getByRole("button", { name: "Plants" });
+      const panel = container.querySelector(".loam-Nav-dropdown") as HTMLElement;
+      expect(panel).toHaveAttribute("popover", "auto");
+      expect(panel).not.toHaveAttribute("hidden");
+      expect(trigger).toHaveAttribute("aria-expanded", "false");
+
+      // What the browser does for commandfor / popovertarget.
+      await act(async () => panel.showPopover());
+      expect(trigger).toHaveAttribute("aria-expanded", "true");
+      expect(panel).toHaveAttribute("data-open");
+      expect(onOpenChange).toHaveBeenLastCalledWith(true);
+
+      await act(async () => panel.hidePopover());
+      expect(trigger).toHaveAttribute("aria-expanded", "false");
+      expect(onOpenChange).toHaveBeenLastCalledWith(false);
+      // The click handler defers to the browser here: no double toggle.
+      await act(async () => trigger.click());
+      expect(trigger).toHaveAttribute("aria-expanded", "false");
+    });
+
+    it("reconciles a controlled open into the native state", () => {
+      const { container, rerender } = render(<HeaderNav open={false} />);
+      const panel = container.querySelector(".loam-Nav-dropdown") as HTMLElement;
+      expect(panel.matches(":popover-open")).toBe(false);
+      rerender(<HeaderNav open />);
+      expect(panel.matches(":popover-open")).toBe(true);
+      rerender(<HeaderNav open={false} />);
+      expect(panel.matches(":popover-open")).toBe(false);
+    });
   });
 });

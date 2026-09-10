@@ -35,7 +35,7 @@ export default function Example() {
     <section className="hero-background-image" aria-labelledby="hero-background-image-title">
       <img
         className="media"
-        src="https://picsum.photos/seed/hedgerow-field/1600/900"
+        src="https://picsum.photos/id/206/1600/900"
         alt=""
         width="1600"
         height="900"
@@ -64,14 +64,9 @@ export default function Example() {
 ## example.css
 
 ```css
-/* Words over a photograph. The section is a dark region in both schemes:
-   color-scheme: dark re-resolves every light-dark() token inside it, so
-   the text is the dark scheme's foreground and the scrim is the dark
-   scheme's background, faded. The pair is the one the audit already
-   checks; the photograph beneath only ever makes the scrim darker. The
-   picture and the scrim are painted behind the words with a stacking
-   context of their own, so nothing outside the section can slip between. */
 @scope (.hero-background-image) to ([class*="loam-"]) {
+  /* color-scheme: dark re-resolves every light-dark() token inside, so the
+     words and the scrim are the audited dark pair whatever the page's scheme. */
   :scope {
     align-content: end;
     border-radius: var(--loam-radius-xl);
@@ -95,8 +90,6 @@ export default function Example() {
     z-index: -2;
   }
 
-  /* The scrim: the background token, faded, strongest where the words
-     sit. Two stops from one token, not a guess at a grey. */
   :scope::before {
     background: linear-gradient(
       to top,
@@ -137,8 +130,6 @@ export default function Example() {
     gap: var(--loam-space-md);
   }
 
-  /* Wide: taller, with the words at their own measure in the lower start
-     corner rather than spread across the full width. */
   @container (inline-size >= 48rem) {
     :scope {
       min-block-size: 34rem;
@@ -146,8 +137,7 @@ export default function Example() {
     }
   }
 
-  /* Forced colours: no scrim survives, so the photograph goes too and the
-     words stand on Canvas inside an edge. */
+  /* Forced colours drop the scrim, so the picture goes too. */
   @media (forced-colors: active) {
     :scope {
       border: 1px solid CanvasText;

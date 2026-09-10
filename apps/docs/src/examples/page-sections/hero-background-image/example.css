@@ -1,11 +1,6 @@
-/* Words over a photograph. The section is a dark region in both schemes:
-   color-scheme: dark re-resolves every light-dark() token inside it, so
-   the text is the dark scheme's foreground and the scrim is the dark
-   scheme's background, faded. The pair is the one the audit already
-   checks; the photograph beneath only ever makes the scrim darker. The
-   picture and the scrim are painted behind the words with a stacking
-   context of their own, so nothing outside the section can slip between. */
 @scope (.hero-background-image) to ([class*="loam-"]) {
+  /* color-scheme: dark re-resolves every light-dark() token inside, so the
+     words and the scrim are the audited dark pair whatever the page's scheme. */
   :scope {
     align-content: end;
     border-radius: var(--loam-radius-xl);
@@ -29,8 +24,6 @@
     z-index: -2;
   }
 
-  /* The scrim: the background token, faded, strongest where the words
-     sit. Two stops from one token, not a guess at a grey. */
   :scope::before {
     background: linear-gradient(
       to top,
@@ -71,8 +64,6 @@
     gap: var(--loam-space-md);
   }
 
-  /* Wide: taller, with the words at their own measure in the lower start
-     corner rather than spread across the full width. */
   @container (inline-size >= 48rem) {
     :scope {
       min-block-size: 34rem;
@@ -80,8 +71,7 @@
     }
   }
 
-  /* Forced colours: no scrim survives, so the photograph goes too and the
-     words stand on Canvas inside an edge. */
+  /* Forced colours drop the scrim, so the picture goes too. */
   @media (forced-colors: active) {
     :scope {
       border: 1px solid CanvasText;
