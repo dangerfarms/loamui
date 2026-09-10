@@ -20,7 +20,7 @@ import { Field, Textarea } from "@loamui/core";
 
 ### Basic usage
 
-Wrap the control in Field.Root and add a Field.Label: the textarea reads its id from the field, so the label is wired without any props.
+Inside Field.Root the textarea reads its id from the field, so Field.Label is wired without any props.
 
 ```tsx
 <Field.Root>
@@ -43,7 +43,7 @@ Wrap the control in Field.Root and add a Field.Label: the textarea reads its id 
 
 ### Error state
 
-A Field.Error after the control marks the field invalid and is announced: the message's presence is the state.
+A Field.Error before the control marks the field invalid and is announced: the message's presence is the state.
 
 ```tsx
 <Field.Root>

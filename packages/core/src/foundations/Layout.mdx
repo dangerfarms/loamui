@@ -21,9 +21,9 @@ module to the content, not to a breakpoint.
 block its block-end margin, so tune the rhythm with a space-token `gap` on the
 container rather than per-element margins.
 
-**Grid** is two-dimensional. Prefer intrinsic fluid tracks over media queries —
+**Grid** is two-dimensional. Prefer intrinsic fluid tracks over media queries:
 `repeat(auto-fit, minmax(min(16rem, 100%), 1fr))` lays out as many equal columns
-as fit and reflows with no breakpoints — and use `grid-template-rows: subgrid` to
+as fit and reflows with no breakpoints. Use `grid-template-rows: subgrid` to
 align sibling cards' internal rows.
 
 ```css
@@ -36,7 +36,7 @@ align sibling cards' internal rows.
 }
 ```
 
-**Flex** is one-dimensional — a button group, a toolbar, a label beside a
+**Flex** is one-dimensional: a button group, a toolbar, a label beside a
 control. Let it wrap, and align `safe` so a focused item is never clipped.
 
 ```css
@@ -50,7 +50,7 @@ control. Let it wrap, and align `safe` so a focused item is never clipped.
 }
 ```
 
-**Multi-column** flows one text stream across balanced columns — set a width and
+**Multi-column** flows one text stream across balanced columns: set a width and
 let the browser decide the count.
 
 ```css
@@ -64,7 +64,7 @@ let the browser decide the count.
 
 ## Space with tokens, not numbers
 
-The space scale is fluid — each step grows on wide containers and tightens on
+The space scale is fluid. Each step grows on wide containers and tightens on
 narrow, with no media query:
 
 | Token | Min → Max |

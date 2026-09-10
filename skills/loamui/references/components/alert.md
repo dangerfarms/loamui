@@ -13,14 +13,14 @@ A prominent message box whose status comes from its context.
 ## Import
 
 ```tsx
-import { Alert } from "@loamui/core";
+import { Alert, Button } from "@loamui/core";
 ```
 
 ## Usage
 
 ### Contexts
 
-Alert has no color or variant props. Declare --loam-context on a one-element wrapper region (a style query is answered by ancestors, never by the element that declares the property) and the status colours follow. See the Contextualism guide.
+Alert has no colour or variant props. Declare --loam-context on a one-element wrapper region (a style query is answered by ancestors, never by the element that declares the property) and the status colours follow. See the Contextualism guide.
 
 ```tsx
 <div style={{ "--loam-context": "info" }}>
@@ -39,11 +39,14 @@ Alert has no color or variant props. Declare --loam-context on a one-element wra
 
 ### Inherited from a region
 
---loam-context inherits, so an alert inside a region that already declares its meaning needs nothing of its own: the nearest ancestor that sets the property wins.
+--loam-context inherits, so an alert inside a region that already means something needs nothing of its own. Here the region declares danger once: the Alert and the Button beside it both answer it, and neither carries a prop.
 
 ```tsx
-<div style={{ "--loam-context": "warning" }}>
-  <Alert title="Scheduled maintenance tonight." />
+<div style={{ "--loam-context": "danger" }}>
+  <Alert title="This workspace will be deleted">
+    Everything in it is removed for every member.
+  </Alert>
+  <Button>Delete workspace</Button>
 </div>
 ```
 
@@ -54,7 +57,7 @@ Pass any node as the leading icon.
 ```tsx
 <div style={{ "--loam-context": "info" }}>
   <Alert icon={<span aria-hidden>ℹ</span>} title="Did you know?">
-    You can theme every alert with a single CSS variable.
+    An alert takes its status from the --loam-context of the region around it.
   </Alert>
 </div>
 ```
@@ -91,13 +94,13 @@ There is no auto-dismiss and no built-in close button: an alert exists exactly a
 
 ### Announcement happens at insertion
 
-role="alert" only interrupts when the element enters the DOM; an alert rendered with the rest of the page is simply read in document order. So render the alert conditionally when the condition becomes true, never hidden-then-shown, and the announcement arrives exactly when the event does.
+A live region announces only when content enters it; an alert rendered with the rest of the page is simply read in document order. So render the alert conditionally when the condition becomes true, never hidden-then-shown, and the announcement arrives exactly when the event does. Give it role="alert" when that event must interrupt; the default role="status" waits its turn.
 
 ## Accessibility
 
-- A banner already present at page load announces nothing (role=alert only fires on insertion): for a post-redirect confirmation, either move keyboard focus to the alert on load, or treat it as a landmark instead: a wrapper with role=region and aria-labelledby pointing at the title.
-- Renders role="alert" (an assertive live region), so an alert inserted in response to an event is announced immediately by screen readers, ahead of whatever else was queued.
-- For dynamic messages that are not urgent, pass role="status": forwarded props are spread after the default, so your role wins and the announcement becomes polite instead of interrupting.
+- Renders role="status" by default: a polite live region, which suits a message that is on the page when it loads or that reports a condition rather than an event.
+- Pass role="alert" for a message that appears in response to an action and must interrupt: forwarded props are spread after the default, so your role wins and the announcement becomes assertive, read ahead of whatever else was queued.
+- A banner already present at page load announces nothing (a live region only fires on insertion): for a post-redirect confirmation, either move keyboard focus to the alert on load, or treat it as a landmark instead: a wrapper with role=region and aria-labelledby pointing at the title.
 - The status colour is never announced: write the title so the meaning survives in words (“Deploy failed”, not “Error” on a red tint); the border and tint are visual-only.
 - The icon slot is rendered aria-hidden. Icons are decoration here, so any meaning they carry must also be in the text.
 - Title text is not the raw status colour: it is mixed toward black (light scheme) or white (dark) so it keeps AA contrast on the tint even for light channels like warning; only the decorative icon carries the raw channel (the border is a softer tint of it).
@@ -111,5 +114,6 @@ Status is not a prop: it comes from the surrounding `--loam-context` region (see
 | `title` | `ReactNode` | — | Bold heading rendered above the body. |
 | `icon` | `ReactNode` | — | Icon rendered to the inline-start of the content. |
 | `children` | `ReactNode` | — | Alert body content. |
+| `role` | `string` | `"status"` | Live-region role. The polite default announces without interrupting; pass "alert" for a message that appears in response to an action and must interrupt. |
 | `...others` | `HTMLAttributes<HTMLDivElement>` | — | All native <div> props are forwarded. |
 

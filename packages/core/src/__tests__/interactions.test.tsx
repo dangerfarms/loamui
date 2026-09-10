@@ -25,6 +25,12 @@ import {
   SignpostLink,
   Pagination,
   DateInput,
+  Breadcrumbs,
+  Card,
+  Table,
+  SkipLink,
+  Textarea,
+  Field,
 } from "../index";
 import type { ToastOptions } from "../index";
 
@@ -290,7 +296,7 @@ describe("Drawer", () => {
     await user.click(trigger);
     expect(dialog.open).toBe(true);
     expect(trigger).toHaveAttribute("data-popup-open", "true");
-    expect(dialog).toHaveAttribute("data-side", "end");
+    expect(dialog).toHaveAttribute("data-position", "end");
     expect(dialog).toHaveAccessibleName("Filters");
     expect(dialog).toHaveAccessibleDescription("Drawer body");
 
@@ -977,5 +983,126 @@ describe("DateInput", () => {
     );
     expect(screen.getByLabelText("Day")).toHaveAttribute("autocomplete", "bday-day");
     expect(screen.getByLabelText("Year")).toHaveAttribute("autocomplete", "bday-year");
+  });
+});
+
+describe("Breadcrumbs", () => {
+  it("marks the current item and keeps the others as links", async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn((e: ReactMouseEvent) => e.preventDefault());
+    render(
+      <Breadcrumbs.Root>
+        <Breadcrumbs.Item href="/" onClick={onClick}>
+          Home
+        </Breadcrumbs.Item>
+        <Breadcrumbs.Item current>Billing</Breadcrumbs.Item>
+      </Breadcrumbs.Root>,
+    );
+    const home = screen.getByRole("link", { name: "Home" });
+    await user.tab();
+    expect(home).toHaveFocus();
+    await user.keyboard("{Enter}");
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(screen.getByText("Billing")).toHaveAttribute("aria-current", "page");
+    expect(screen.queryByRole("link", { name: "Billing" })).toBeNull();
+  });
+});
+
+describe("Card", () => {
+  it("forwards its ref and merges the consumer's attributes onto the surface", () => {
+    const ref = { current: null as HTMLDivElement | null };
+    render(
+      <Card ref={ref} aria-label="Invoice" className="mine">
+        Body
+      </Card>,
+    );
+    const card = screen.getByText("Body");
+    expect(card).toHaveClass("loam-Card", "mine");
+    expect(card).toHaveAttribute("aria-label", "Invoice");
+    expect(ref.current).toBe(card);
+  });
+});
+
+describe("Table", () => {
+  const table = (
+    <Table>
+      <caption>Invoices</caption>
+      <thead>
+        <tr>
+          <th>Invoice</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>INV-1</td>
+        </tr>
+      </tbody>
+    </Table>
+  );
+
+  it("adds no tab stop while the table fits its container", async () => {
+    const user = userEvent.setup();
+    render(
+      <>
+        {table}
+        <button>After</button>
+      </>,
+    );
+    expect(screen.queryByRole("region")).toBeNull();
+    await user.tab();
+    expect(screen.getByRole("button", { name: "After" })).toHaveFocus();
+  });
+
+  it("becomes a focusable region named by its caption when it overflows", async () => {
+    const user = userEvent.setup();
+    // jsdom has no layout: report an overflowing scroll box for this test.
+    const scrollWidth = vi.spyOn(HTMLElement.prototype, "scrollWidth", "get").mockReturnValue(800);
+    const clientWidth = vi.spyOn(HTMLElement.prototype, "clientWidth", "get").mockReturnValue(400);
+    try {
+      render(table);
+      const region = await screen.findByRole("region", { name: "Invoices" });
+      expect(region).toHaveAttribute("tabindex", "0");
+      await user.tab();
+      expect(region).toHaveFocus();
+    } finally {
+      scrollWidth.mockRestore();
+      clientWidth.mockRestore();
+    }
+  });
+});
+
+describe("SkipLink", () => {
+  it("is the first tab stop and moves focus to the target", async () => {
+    const user = userEvent.setup();
+    render(
+      <>
+        <SkipLink href="#content" />
+        <a href="/">Home</a>
+        <main id="content" tabIndex={-1}>
+          Main
+        </main>
+      </>,
+    );
+    await user.tab();
+    const skip = screen.getByRole("link", { name: "Skip to main content" });
+    expect(skip).toHaveFocus();
+    expect(skip).toHaveAttribute("href", "#content");
+  });
+});
+
+describe("Textarea", () => {
+  it("self-wires from Field and accepts typed input", async () => {
+    const user = userEvent.setup();
+    render(
+      <Field.Root>
+        <Field.Label>Message</Field.Label>
+        <Field.Description>Keep it short.</Field.Description>
+        <Textarea />
+      </Field.Root>,
+    );
+    const area = screen.getByRole("textbox", { name: "Message" }) as HTMLTextAreaElement;
+    expect(area).toHaveAccessibleDescription("Keep it short.");
+    await user.type(area, "Hello");
+    expect(area.value).toBe("Hello");
   });
 });

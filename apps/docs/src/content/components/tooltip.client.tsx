@@ -2,12 +2,19 @@
 
 import { Tooltip } from "@loamui/core";
 
+const positions = [
+  ["Top", "top"],
+  ["Bottom", "bottom"],
+  ["Left", "left"],
+  ["Right", "right"],
+] as const;
+
 export function TooltipPositions() {
   return (
     <>
-      {(["top", "bottom", "left", "right"] as const).map((position) => (
+      {positions.map(([label, position]) => (
         <Tooltip.Root key={position}>
-          <Tooltip.Trigger style={{ textTransform: "capitalize" }}>{position}</Tooltip.Trigger>
+          <Tooltip.Trigger>{label}</Tooltip.Trigger>
           <Tooltip.Popup position={position}>On the {position}</Tooltip.Popup>
         </Tooltip.Root>
       ))}

@@ -16,7 +16,7 @@ const doc: ComponentContent = {
         <div style={{ display: "grid", gap: "0.75rem", inlineSize: "100%" }}>
           <p style={{ margin: 0 }}>Account settings</p>
           <Separator />
-          <p style={{ margin: 0 }}>Danger zone</p>
+          <p>Danger zone</p>
         </div>
       ),
     },

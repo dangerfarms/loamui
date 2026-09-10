@@ -27,6 +27,18 @@ Place the bubble on any side of its target with the Popup's position prop. It op
   <Tooltip.Trigger>Top</Tooltip.Trigger>
   <Tooltip.Popup position="top">On the top</Tooltip.Popup>
 </Tooltip.Root>
+<Tooltip.Root>
+  <Tooltip.Trigger>Bottom</Tooltip.Trigger>
+  <Tooltip.Popup position="bottom">On the bottom</Tooltip.Popup>
+</Tooltip.Root>
+<Tooltip.Root>
+  <Tooltip.Trigger>Left</Tooltip.Trigger>
+  <Tooltip.Popup position="left">On the left</Tooltip.Popup>
+</Tooltip.Root>
+<Tooltip.Root>
+  <Tooltip.Trigger>Right</Tooltip.Trigger>
+  <Tooltip.Popup position="right">On the right</Tooltip.Popup>
+</Tooltip.Root>
 ```
 
 ### With arrow
@@ -54,7 +66,18 @@ Tooltip.Provider shares the hover delay across a group: after the first bubble o
       Cut the selection <Tooltip.Arrow />
     </Tooltip.Popup>
   </Tooltip.Root>
-  {/* …adjacent tooltips share the delay… */}
+  <Tooltip.Root>
+    <Tooltip.Trigger>Copy</Tooltip.Trigger>
+    <Tooltip.Popup>
+      Copy the selection <Tooltip.Arrow />
+    </Tooltip.Popup>
+  </Tooltip.Root>
+  <Tooltip.Root>
+    <Tooltip.Trigger>Paste</Tooltip.Trigger>
+    <Tooltip.Popup>
+      Paste the selection <Tooltip.Arrow />
+    </Tooltip.Popup>
+  </Tooltip.Root>
 </Tooltip.Provider>
 ```
 

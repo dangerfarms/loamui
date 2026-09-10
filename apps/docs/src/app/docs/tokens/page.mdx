@@ -54,11 +54,11 @@ CSS and differ only in where the token is set:
 ```
 
 <div className={prose.block}>
-  <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+  <div style={{ display: "flex", gap: "var(--loam-space-md)", flexWrap: "wrap" }}>
     <div
       style={{
         "--loam-context": "primary",
-        padding: "1.5rem",
+        padding: "var(--loam-space-xl)",
         border: "1px solid var(--loam-color-line)",
         borderRadius: "var(--loam-radius-lg)",
       }}
@@ -69,7 +69,7 @@ CSS and differ only in where the token is set:
       style={{
         "--loam-color-primary": "light-dark(oklch(0.62 0.2 275), oklch(0.72 0.17 275))",
         "--loam-context": "primary",
-        padding: "1.5rem",
+        padding: "var(--loam-space-xl)",
         border: "1px solid var(--loam-color-line)",
         borderRadius: "var(--loam-radius-lg)",
       }}
@@ -125,7 +125,7 @@ with everything on this page:
     style={{
       "--loam-context": "danger",
       display: "grid",
-      gap: "0.75rem",
+      gap: "var(--loam-space-md)",
       padding: "1.25rem",
       border: "1px solid var(--loam-color-line)",
       borderRadius: "var(--loam-radius-lg)",
@@ -134,7 +134,7 @@ with everything on this page:
   >
     <strong>Delete workspace</strong>
     <Checkbox label="I understand this is permanent" />
-    <div style={{ display: "flex", gap: "0.75rem" }}>
+    <div style={{ display: "flex", gap: "var(--loam-space-md)" }}>
       <Button>Delete</Button>
       <Button>Cancel</Button>
     </div>

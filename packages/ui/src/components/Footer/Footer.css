@@ -1,0 +1,109 @@
+/* A footer is a region: it declares its container so the brand sits
+   beside the columns only where there is room, and it hosts consumer
+   content, hence the donut. */
+@scope (.loam-Footer) to ([class*="loam-"]) {
+  :scope {
+    border-block-start: 1px solid var(--loam-color-line);
+    color: var(--loam-color-fg-muted);
+    container-type: inline-size;
+    display: block grid;
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-xl) var(--loam-space-lg);
+    grid-template-columns: minmax(14rem, 1fr) 2fr;
+    padding-block: var(--loam-space-xl);
+  }
+
+  div.brand {
+    align-content: start;
+    display: block grid;
+    gap: var(--loam-space-xs);
+
+    a {
+      color: var(--loam-color-fg-strong);
+      font-family: var(--loam-font-display);
+      font-size: var(--loam-text-lg);
+      font-weight: 700;
+      inline-size: fit-content;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+    }
+
+    p {
+      margin: 0;
+      max-inline-size: var(--loam-measure);
+    }
+  }
+
+  div.columns {
+    display: block grid;
+    gap: var(--loam-space-lg);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+  }
+
+  div.column {
+    h3.title {
+      color: var(--loam-color-fg-strong);
+      font-family: var(--loam-font);
+      font-size: var(--loam-text-sm);
+      font-weight: 600;
+      letter-spacing: 0;
+      margin-block: 0 var(--loam-space-sm);
+    }
+
+    ul {
+      display: block grid;
+      gap: var(--loam-space-xs);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      margin: 0;
+    }
+  }
+
+  div.bottom {
+    align-items: center;
+    border-block-start: 1px solid var(--loam-color-line);
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm) var(--loam-space-lg);
+    grid-column: 1 / -1;
+    padding-block-start: var(--loam-space-lg);
+
+    small {
+      font-size: inherit;
+      margin-inline-end: auto;
+    }
+  }
+
+  /* Links inherit the muted colour and light up on hover; the current
+     colour scheme decides how far. */
+  div.column a,
+  div.bottom a {
+    color: inherit;
+    text-decoration: none;
+
+    @media (hover: hover) {
+      &:hover {
+        color: var(--loam-color-fg-strong);
+        text-decoration: underline;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition: color var(--loam-duration-sm) var(--loam-ease);
+    }
+  }
+
+  /* Narrow: the brand and the link columns stack instead of sharing a
+     row. The query lives on the children because a container query is
+     answered by an ancestor, never by the root that declares it. */
+  @container (width <= 48rem) {
+    div.brand,
+    div.columns {
+      grid-column: 1 / -1;
+    }
+  }
+}

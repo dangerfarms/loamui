@@ -4,7 +4,7 @@ import { ErrorSummaryDemo } from "./error-summary.client";
 const doc: ComponentContent = {
   slug: "error-summary",
   lead: "A box at the top of a form listing every error as a link to its field.",
-  importLine: `import { ErrorSummary, Field, Input } from "@loamui/core";`,
+  importLine: `import { Button, ErrorSummary, Field, Input } from "@loamui/core";`,
   demos: [
     {
       title: "After a failed submit",
@@ -15,13 +15,13 @@ const doc: ComponentContent = {
     <ErrorSummary.Root>
       <ErrorSummary.Title />
       <ErrorSummary.List>
-        <ErrorSummary.Item href="#email">
+        <ErrorSummary.Item href="#demo-email">
           Enter your email address
         </ErrorSummary.Item>
       </ErrorSummary.List>
     </ErrorSummary.Root>
   )}
-  <Field.Root id="email">
+  <Field.Root id="demo-email">
     <Field.Label>Email address</Field.Label>
     <Field.Error>{emailError}</Field.Error>
     <Input />

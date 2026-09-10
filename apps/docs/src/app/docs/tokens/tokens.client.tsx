@@ -45,12 +45,23 @@ const GROUPS: TokenGroup[] = [
   },
   {
     title: "Derived",
-    note: "Recipes, not decisions: soft tints, solid fills and rings computed from the hues. Rebrand --loam-color-primary and these follow.",
+    note: "Recipes, not decisions: every hue derives the same soft tint, solid fill and focus ring. Rebrand a hue and its family follows.",
     tokens: [
       "--loam-color-primary-soft",
       "--loam-color-primary-strong",
+      "--loam-color-primary-ring",
+      "--loam-color-success-soft",
+      "--loam-color-success-strong",
+      "--loam-color-success-ring",
       "--loam-color-danger-soft",
       "--loam-color-danger-strong",
+      "--loam-color-danger-ring",
+      "--loam-color-warning-soft",
+      "--loam-color-warning-strong",
+      "--loam-color-warning-ring",
+      "--loam-color-info-soft",
+      "--loam-color-info-strong",
+      "--loam-color-info-ring",
       "--loam-color-surface-hover",
       "--loam-color-ring",
     ],
@@ -145,7 +156,7 @@ export function ComputedTokens() {
               <div
                 key={t}
                 style={{
-                  alignItems: "center",
+                  alignItems: "baseline",
                   borderBlockStart: i > 0 ? "1px solid var(--loam-color-line)" : undefined,
                   display: "flex",
                   fontFamily: "var(--loam-font-mono)",
@@ -186,13 +197,12 @@ export function ComputedTokens() {
                 <span
                   style={{
                     color: "var(--loam-color-fg-muted)",
+                    fontSize: "var(--loam-text-xs)",
                     marginInlineStart: "auto",
                     minInlineSize: 0,
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
+                    overflowWrap: "anywhere",
+                    textAlign: "end",
                   }}
-                  title={values?.[t]}
                 >
                   {values?.[t] ?? "…"}
                 </span>

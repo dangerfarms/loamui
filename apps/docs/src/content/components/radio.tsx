@@ -95,7 +95,7 @@ const doc: ComponentContent = {
     },
   ],
   whenToUse: [
-    "For choosing exactly one option from a small, visible set (roughly 2–5).",
+    "For choosing exactly one option from a small, visible set (roughly 2 to 5).",
     "Always inside a RadioGroup, which shares a name and labels the set with a <fieldset>/<legend>.",
   ],
   whenNotToUse: [

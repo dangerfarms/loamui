@@ -1,0 +1,72 @@
+/* A stats row is a region: it declares its container so the tiles fit by
+   width, and it hosts consumer content, hence the donut. */
+@scope (.loam-Stats) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-md);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+    margin: 0;
+  }
+
+  div.item {
+    background: var(--loam-color-surface);
+    border: 1px solid var(--loam-color-line);
+    border-radius: var(--loam-radius-lg);
+    display: block flex;
+    flex-direction: column;
+    gap: var(--loam-space-xs);
+    padding-block: var(--loam-space-lg);
+    padding-inline: var(--loam-space-lg);
+  }
+
+  /* The label is first in the markup (term, then definition) and last on
+     screen; the value leads the tile visually. */
+  dt.label {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    order: 1;
+  }
+
+  dd.value {
+    color: var(--loam-color-fg-strong);
+    font-family: var(--loam-font-display);
+    font-size: var(--loam-text-2xl);
+    font-variant-numeric: lining-nums tabular-nums;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0;
+  }
+
+  /* Context: a status region on the item tints its value. */
+  @container (style(--loam-context: primary)) {
+    dd.value {
+      color: var(--loam-color-primary);
+    }
+  }
+
+  @container (style(--loam-context: success)) {
+    dd.value {
+      color: var(--loam-color-success);
+    }
+  }
+
+  @container (style(--loam-context: warning)) {
+    dd.value {
+      color: var(--loam-color-warning);
+    }
+  }
+
+  @container (style(--loam-context: info)) {
+    dd.value {
+      color: var(--loam-color-info);
+    }
+  }
+
+  @container (style(--loam-context: danger)) {
+    dd.value {
+      color: var(--loam-color-danger);
+    }
+  }
+}

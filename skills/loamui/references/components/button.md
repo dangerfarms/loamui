@@ -20,13 +20,17 @@ import { Button } from "@loamui/core";
 
 ### Contexts
 
-Buttons are neutral by default. Declare --loam-context on a region and the buttons inside re-answer their colour; there are no variant props. See the Contextualism guide.
+Buttons are neutral by default. Declare --loam-context on a region and the buttons inside re-answer their colour; there are no variant props. Primary is the neutral near-black in the white-label default, so a primary region reads as the same quiet button until a theme sets --loam-color-primary; danger shows the remap. See the Contextualism guide.
 
 ```tsx
 <Button>Neutral</Button>
 
 <div style={{ "--loam-context": "primary" }}>
   <Button>Save changes</Button>
+</div>
+
+<div style={{ "--loam-context": "danger" }}>
+  <Button>Delete</Button>
 </div>
 ```
 
@@ -55,7 +59,7 @@ There are no size or fullWidth props. Padding and font are fluid (container-rela
   <Button>Save changes</Button>
 </div>
 
-<div style={{ display: "grid", gap: "0.75rem", inlineSize: "18rem" }}>
+<div style={{ display: "grid", gap: "0.75rem", inlineSize: "min(100%, 18rem)" }}>
   <Button>Save changes</Button>
   <Button>Cancel</Button>
 </div>
@@ -81,7 +85,7 @@ There are no leftSection or rightSection props. An svg child is detected via :ha
 
 ### Loading state
 
-There is no loading prop. For a genuine busy state, add disabled and compose a Loader (marked aria-hidden so it isn't announced) into the children — it is detected and sized like an icon. This is the one sanctioned use of a disabled button; see “Avoid disabled buttons” below.
+There is no loading prop. For a genuine busy state, add disabled and compose a Loader (marked aria-hidden so it isn't announced) into the children; it is detected and sized like an icon. This is the one sanctioned use of a disabled button; see “Avoid disabled buttons” below.
 
 ```tsx
 <Button disabled>

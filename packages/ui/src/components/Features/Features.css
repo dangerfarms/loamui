@@ -1,0 +1,56 @@
+/* A features section is a region: it declares its container so the fluid
+   tokens answer the section's width, and it hosts consumer content, hence
+   the donut. */
+@scope (.loam-Features) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  /* Tiles are separated by space, not surfaces: a wider row gap than
+     column gap keeps each tile reading as one unit. */
+  ul.grid {
+    display: block grid;
+    gap: var(--loam-space-xl) var(--loam-space-lg);
+    grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    > li {
+      align-content: start;
+      display: block grid;
+      gap: var(--loam-space-sm);
+    }
+  }
+
+  /* The square is sized in em on the title's size, so it rides the fluid
+     scale with the text beside it. */
+  div.icon {
+    align-items: center;
+    background: var(--loam-color-primary-soft);
+    block-size: 2.25em;
+    border-radius: var(--loam-radius-md);
+    color: var(--loam-color-primary);
+    display: block flex;
+    font-size: var(--loam-text-lg);
+    inline-size: 2.25em;
+    justify-content: center;
+
+    svg {
+      block-size: auto;
+      inline-size: 1em;
+    }
+  }
+
+  h3.title {
+    font-size: var(--loam-text-lg);
+    margin: 0;
+  }
+
+  p.body {
+    color: var(--loam-color-fg-muted);
+    margin: 0;
+  }
+}

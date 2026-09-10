@@ -1,0 +1,78 @@
+{
+  "name": "@loamui/ui",
+  "version": "0.1.0",
+  "description": "Ready-made compositions built from @loamui/core primitives: hero, header, footer, pricing, testimonials and more.",
+  "keywords": [
+    "loamui",
+    "components",
+    "compositions",
+    "react",
+    "modern-css",
+    "agent-assisted"
+  ],
+  "homepage": "https://loamui.com/ui/",
+  "bugs": {
+    "url": "https://github.com/dangerfarms/loamui/issues"
+  },
+  "license": "MIT",
+  "author": "Danger Farms",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dangerfarms/loamui.git",
+    "directory": "packages/ui"
+  },
+  "files": [
+    "dist",
+    "AGENTS.md"
+  ],
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup && node scripts/build-css.mjs",
+    "dev": "node scripts/build-css.mjs --watch & tsup --watch",
+    "check-types": "tsc --noEmit",
+    "lint": "oxlint --config ../../.oxlintrc.json src && stylelint \"src/**/*.css\"",
+    "lint:fix": "oxlint --config ../../.oxlintrc.json --fix src && stylelint \"src/**/*.css\" --fix",
+    "clean": "rm -rf dist",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@loamui/core": "workspace:*",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "jsdom": "^25.0.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tsup": "^8.5.0",
+    "typescript": "5.9.2",
+    "vite": "^6.0.0",
+    "vitest": "^3.0.0",
+    "vitest-axe": "^0.1.0"
+  },
+  "peerDependencies": {
+    "@loamui/core": ">=1",
+    "react": ">=19",
+    "react-dom": ">=19"
+  }
+}

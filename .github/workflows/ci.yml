@@ -22,7 +22,10 @@ jobs:
       - run: pnpm lint:md
       - run: pnpm format:check
       - run: pnpm --filter @loamui/core exec tsc --noEmit
+      - run: pnpm --filter @loamui/ui exec tsc --noEmit
       - run: npx tsc --noEmit
         working-directory: apps/docs
+      - run: npx tsc --noEmit
+        working-directory: apps/ui
       - run: pnpm --filter @loamui/core audit:contrast
       - run: pnpm --filter @loamui/core test

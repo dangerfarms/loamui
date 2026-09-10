@@ -80,7 +80,7 @@ const doc: ComponentContent = {
   accessibility: [
     'Renders a native checkbox exposed with role="switch", so it is operable by keyboard and announced as on/off.',
     "The label is tied to the control; the whole row is clickable.",
-    "In the rare case a switch needs an error message, wrap it in a Field.Root and add a Field.Error after the control: the message marks it invalid and is announced.",
+    "In the rare case a switch needs an error message, wrap it in a Field.Root and add a Field.Error before the control: the message marks it invalid and is announced.",
     "State is conveyed by more than colour (the thumb position), so it remains clear in forced-colors and for colour-blind users.",
   ],
   props: [

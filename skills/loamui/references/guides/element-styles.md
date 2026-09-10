@@ -23,6 +23,8 @@ heading comes from an adjacent-sibling rule, so nothing needs unsetting at the t
 Tables collapse their borders and start-align their headers; inline `code`, `kbd` and `samp` all
 get the same chip.
 
+</div>
+
 ## Forms without components
 
 Native controls wear the component recipes: buttons get the Button anatomy on the neutral

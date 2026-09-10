@@ -6,7 +6,7 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 The second primitive: enhanced default styles for native elements themselves,
 applied page-wide by the `loamui.elements` layer. Importing the stylesheet opts
-you in, so plain HTML is styled before any component appears — most of a new
+you in, so plain HTML is styled before any component appears; most of a new
 component's CSS is already written before its stylesheet exists.
 
 Everything below is bare markup, no classes.
@@ -14,7 +14,7 @@ Everything below is bare markup, no classes.
 ## Typography
 
 Headings use `--loam-font-display` at the fluid type scale, with balanced
-wrapping and the strong text tier (`--loam-color-fg-strong`) — a step darker
+wrapping and the strong text tier (`--loam-color-fg-strong`), a step darker
 than body in light, brighter in dark. Body copy rides the same fluid scale
 (`--loam-text-md`). Line-height is derived per element from its own size:
 
@@ -24,7 +24,7 @@ line-height: calc(0.5rem + 2ex);
 
 Running text gets common ligatures and old-style figures; headings get lining
 figures; punctuation hangs, and long words hyphenate automatically. Margins are
-additive — blocks carry only a block-end margin, and extra space before a
+additive: blocks carry only a block-end margin, and extra space before a
 heading comes from an adjacent-sibling rule, so nothing needs unsetting at a
 container's top edge.
 
@@ -32,10 +32,10 @@ container's top edge.
 
 Native form controls wear the component recipes automatically: bare `<button>`
 elements get the Button anatomy on the neutral text channel (raised at rest,
-settling when pressed — raised means pressable); textual inputs get the Input
-field look; checkboxes, radios, ranges and progress bars are native
+settling when pressed, because raised means pressable); textual inputs get the
+Input field look; checkboxes, radios, ranges and progress bars are native
 `accent-color` controls driven by the neutral primary. The React components
-remain the upgrade path — fluid sizing, context adaptation, and field wiring —
+remain the upgrade path (fluid sizing, context adaptation, and field wiring),
 but a plain form is styled and usable on its own.
 
 ## Focus, selection and details

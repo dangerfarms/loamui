@@ -9,7 +9,7 @@ import {
 
 const doc: ComponentContent = {
   slug: "menu",
-  lead: "A list of actions opened from a trigger: the APG menu-button pattern on top of the browser's top layer and anchor positioning.",
+  lead: "A list of actions opened from a trigger: the ARIA Authoring Practices Guide (APG) menu-button pattern on top of the browser's top layer and anchor positioning.",
   importLine: `import { Menu } from "@loamui/core";`,
   demos: [
     {
@@ -79,7 +79,7 @@ const doc: ComponentContent = {
     {
       title: "Disabled items",
       description:
-        "Disabled items use aria-disabled, so they stay visible to assistive technology but are skipped by roving focus and cannot be activated.",
+        "Disabled items use aria-disabled, so they stay visible to assistive technology but are skipped by roving focus (one tab stop, arrow keys move between items) and cannot be activated.",
       code: `<Menu.Root>
   <Menu.Trigger>Document</Menu.Trigger>
   <Menu.Popup>
@@ -123,7 +123,7 @@ const doc: ComponentContent = {
     "Escape closes and returns focus to the trigger, as does activating an item; Tab closes the menu and lets focus continue naturally: the menu moves focus, it never traps it.",
     'The trigger is a real <button> with aria-haspopup="menu" and aria-expanded; the popup is role="menu" with role="menuitem" children, and Menu.Separator is a real <hr>: the platform\'s separator role, no ARIA needed.',
     "Disabled items use aria-disabled rather than disabled, so they remain visible to assistive technology while roving focus skips them.",
-    "Where the popover attribute and anchor positioning are both supported, the browser provides top-layer rendering, light dismiss and Escape; other browsers get a wrapper-anchored fallback with the same behavior re-implemented, the deliberate no-polyfill trade-off (see the browser support policy in CONTRIBUTING).",
+    "Where the popover attribute and anchor positioning are both supported, the browser provides top-layer rendering, light dismiss and Escape; other browsers get a wrapper-anchored fallback with the same behaviour re-implemented, the deliberate no-polyfill trade-off (see the browser support policy at https://github.com/dangerfarms/loamui/blob/main/CONTRIBUTING.md#browser-support-policy).",
   ],
   parts: [
     {

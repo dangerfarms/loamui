@@ -1,0 +1,36 @@
+/* A sign-in card is a region: it declares its container so the fluid
+   tokens answer the card's width, and it hosts core Fields, a Checkbox
+   and a Button, hence the donut. The surface is a core Card, so this is
+   a second scope on the same element: the Card's own look (surface, line,
+   radius, padding) is untouched; this scope sizes and arranges it. */
+@scope (.loam-SignIn) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-lg);
+    margin-inline: auto;
+    max-inline-size: 24rem;
+  }
+
+  .title {
+    font-size: var(--loam-text-xl);
+    margin: 0;
+  }
+
+  form.form {
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  /* A grid wrapper, so the Button inside stretches to the card's width. */
+  div.actions {
+    display: block grid;
+  }
+
+  p.footer {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    margin: 0;
+    text-align: center;
+  }
+}

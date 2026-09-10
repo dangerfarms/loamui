@@ -5,9 +5,9 @@
     --_track-h: 0.4167em;
     --_thumb: 1.25em;
 
-    /* accent-color paints the filled portion + thumb robustly cross-browser.
-       -strong (not raw primary) so a --loam-context region's fill stays 3:1. */
-    accent-color: var(--loam-color-primary-strong);
+    /* appearance: none opts out of native painting, so the track and thumb
+       below carry the colour. -strong (not raw primary) so a --loam-context
+       region's fill stays 3:1 against the on-strong thumb border. */
     appearance: none;
     background: transparent;
     cursor: pointer;
@@ -16,7 +16,7 @@
     margin: 0;
 
     &[aria-invalid="true"] {
-      accent-color: var(--loam-color-danger);
+      --loam-color-ring: var(--loam-color-danger-ring);
     }
 
     &[data-disabled] {
@@ -43,7 +43,7 @@
 
   /* Firefox paints the filled portion explicitly. */
   :scope::-moz-range-progress {
-    background: var(--loam-color-primary);
+    background: var(--loam-color-primary-strong);
     block-size: var(--_track-h);
     border-radius: var(--loam-radius-full);
   }
@@ -51,7 +51,7 @@
   /* ---- Thumb ---- */
   :scope::-webkit-slider-thumb {
     appearance: none;
-    background: var(--loam-color-primary);
+    background: var(--loam-color-primary-strong);
     block-size: var(--_thumb);
     border: 2px solid var(--loam-color-on-strong);
     border-radius: var(--loam-radius-full);
@@ -70,7 +70,7 @@
   }
 
   :scope::-moz-range-thumb {
-    background: var(--loam-color-primary);
+    background: var(--loam-color-primary-strong);
     block-size: var(--_thumb);
     border: 2px solid var(--loam-color-on-strong);
     border-radius: var(--loam-radius-full);
@@ -85,6 +85,15 @@
         scale var(--loam-duration-md) var(--loam-ease),
         box-shadow var(--loam-duration-md) var(--loam-ease);
     }
+  }
+
+  /* Invalid is carried on the thumb, the one part every browser paints. */
+  :scope[aria-invalid="true"]::-webkit-slider-thumb {
+    background: var(--loam-color-danger-strong);
+  }
+
+  :scope[aria-invalid="true"]::-moz-range-thumb {
+    background: var(--loam-color-danger-strong);
   }
 
   /* The ring belongs on the thumb (pseudo-element, box-shadow — outline is
@@ -105,9 +114,7 @@
     :scope:hover:not(:disabled)::-webkit-slider-thumb {
       scale: 1.08;
     }
-  }
 
-  @media (hover: hover) {
     :scope:hover:not(:disabled)::-moz-range-thumb {
       scale: 1.08;
     }
@@ -116,6 +123,18 @@
   /* Forced colors: the custom track and thumb are background-painted and
      would vanish (appearance: none opts out of native painting). */
   @media (forced-colors: active) {
+    /* The thumb's box-shadow ring is dropped here, so focus and invalid come
+       back as outlines on the input itself. */
+    :scope:focus-visible {
+      outline: var(--loam-ring-width) solid Highlight;
+      outline-offset: 2px;
+    }
+
+    :scope[aria-invalid="true"] {
+      outline: 2px solid LinkText;
+      outline-offset: 1px;
+    }
+
     :scope::-webkit-slider-runnable-track {
       background: ButtonText;
       forced-color-adjust: none;

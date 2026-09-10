@@ -21,7 +21,7 @@ export function PopoverLinkTriggerDemo() {
     <Popover.Root>
       <Popover.Trigger
         render={
-          <button type="button" aria-label="Filters" style={{ padding: "0.5rem 0.75rem" }}>
+          <button type="button" aria-label="Filters">
             ⚙
           </button>
         }

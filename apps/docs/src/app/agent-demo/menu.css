@@ -1,0 +1,62 @@
+@scope (.menu) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-lg);
+    grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+  }
+
+  h2 {
+    grid-column: 1 / -1;
+    margin: 0;
+  }
+}
+
+@scope (.menu-card) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-md);
+
+    /* The card's status is a fact about the region: the Badge and the
+       Button inside read it, nothing is passed to them as a prop */
+    &.vegetarian {
+      --loam-context: success;
+    }
+
+    &.sold-out {
+      --loam-context: danger;
+    }
+  }
+
+  h3 {
+    align-items: baseline;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm);
+    margin: 0;
+  }
+
+  dl {
+    display: block grid;
+    gap: var(--loam-space-sm);
+    margin: 0;
+  }
+
+  dt {
+    display: block flex;
+    font-weight: 600;
+    gap: var(--loam-space-sm);
+    justify-content: space-between;
+  }
+
+  dd {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    margin: 0;
+  }
+
+  data {
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+}

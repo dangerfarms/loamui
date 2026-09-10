@@ -35,6 +35,10 @@ export function SignIn() {
 Full documentation and live examples:
 **[LoamUI documentation](https://loamui.com/)**
 
+Working with an agent? Point it at [llms.txt](https://loamui.com/llms.txt)
+(every docs page has a markdown twin) and at `AGENTS.md` in this package, a
+one-page summary of the conventions.
+
 ## License
 
 [MIT](./LICENSE) © Danger Farms

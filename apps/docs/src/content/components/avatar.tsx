@@ -14,13 +14,13 @@ const doc: ComponentContent = {
     {
       title: "Image",
       description: "Pass a src to render a cover-fit image.",
-      code: `<Avatar src="/user.jpg" name="Ada Lovelace" />`,
+      code: `<Avatar src="${IMG}" name="Ada Lovelace" />`,
       render: () => <Avatar src={IMG} name="Ada Lovelace" />,
     },
     {
       title: "Initials",
       description:
-        "With no image, initials are derived from name. There is no color prop: the initials background answers the surrounding --loam-context region (a style query is answered by ancestors, never by the declaring element itself), exactly like Badge. Wrap a single avatar in a one-element span, or let it inherit from a larger region. See the Contextualism guide.",
+        "With no image, initials are derived from name. There is no colour prop: declare --loam-context on a one-element wrapper region (see the Contextualism guide) and the status colours follow, exactly like Badge; or let it inherit from a larger region.",
       code: `<Avatar name="Jane Doe" />
 <span style={{ "--loam-context": "info" }}><Avatar name="Amara Okafor" /></span>
 <span style={{ "--loam-context": "success" }}><Avatar name="Sam Reed" /></span>`,
@@ -51,7 +51,7 @@ const doc: ComponentContent = {
     },
     {
       title: "Group",
-      description: "AvatarGroup overlaps children with a surface-colored ring.",
+      description: "AvatarGroup overlaps children with a surface-coloured ring.",
       code: `<AvatarGroup>
   <Avatar name="Jane Doe" />
   <Avatar name="Sam Reed" />

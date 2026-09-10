@@ -20,7 +20,7 @@ import { Field, Input } from "@loamui/core";
 
 ### Basic usage
 
-Wrap the control in Field.Root and add a Field.Label: the input reads its id from the field, so the label is wired without any props.
+Inside Field.Root the input reads its id from the field, so Field.Label is wired without any props.
 
 ```tsx
 <Field.Root>

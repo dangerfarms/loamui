@@ -18,8 +18,8 @@ pnpm add @loamui/core
 
 ## 2. Import the styles
 
-Import the token stylesheet **once** at the root of your app. It defines the `--loam-*` design
-tokens and the base layer that every component builds on.
+Import the stylesheet **once** at the root of your app. It carries all three primitives: the
+`--loam-*` tokens, the element styles, and the component styles.
 
 ```tsx
 // Next.js App Router: app/layout.tsx

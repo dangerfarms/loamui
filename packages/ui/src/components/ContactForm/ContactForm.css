@@ -1,0 +1,36 @@
+/* A contact form is a region: it declares its container so a row of fields
+   splits by the form's own width, and it hosts core Fields and a Button,
+   hence the donut. */
+@scope (.loam-ContactForm) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  div.fields {
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  /* One column by default; the split below adds the second. */
+  div.row {
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  div.actions {
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-md);
+  }
+
+  /* The query lives on the row because a container query is answered by
+     an ancestor, never by the root that declares it. */
+  @container (width > 36rem) {
+    div.row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+}

@@ -4,7 +4,7 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 # Typography
 
-How the type scale, rhythm and figures work — and how to build your own
+How the type scale, rhythm and figures work, and how to build your own
 domain-specific typography on the two primitives. Tokens supply a fluid scale;
 element styles apply it to native headings and text.
 
@@ -17,7 +17,7 @@ ratio** (a major third). Because it responds to container width rather than the
 viewport, a heading in a sidebar and the same heading in the main column each
 pick their own rhythm.
 
-Leading is derived from each element's own size — `calc(0.5rem + 2ex)` — so
+Leading is derived from each element's own size, `calc(0.5rem + 2ex)`, so
 larger type gets a proportionally tighter line-height with no lookup table.
 Vertical spacing is additive: every block carries a block-end margin, and extra
 room before a heading comes from an adjacent-sibling rule.
@@ -25,7 +25,7 @@ room before a heading comes from an adjacent-sibling rule.
 ## Two families, and considered figures
 
 Body copy uses `--loam-font`; headings use `--loam-font-display`. Pin two
-typefaces and the whole system follows — no component touched. Figures are
+typefaces and the whole system follows, with no component touched. Figures are
 chosen per context: old-style proportional figures in prose, lining figures in
 headings, common ligatures and hanging punctuation throughout, and tabular
 figures available where a column of numbers needs to align.
@@ -33,8 +33,8 @@ figures available where a column of numbers needs to align.
 ## Typography components are yours to name
 
 There is no `Heading` or `Text` component. Meaningful typography is
-domain-specific — headline, byline, lede for an article; page-title, callout for
-an app — and those names belong to your product, not the library. Build one from
+domain-specific (headline, byline, lede for an article; page-title, callout for
+an app), and those names belong to your product, not the library. Build one from
 the two primitives: a semantic element plus a scoped rule.
 
 ```css

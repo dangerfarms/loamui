@@ -20,11 +20,14 @@ import { SkipLink } from "@loamui/core";
 
 ### Basic
 
-Click into the preview and press Tab: the link appears fixed at the top corner of the viewport. This site's own skip link is this component.
+Click into the preview and press Tab: the link appears fixed at the top corner of the viewport, and following it moves focus to the target. This site's own skip link is this component, pointing at its <main>; the demo points at a section of its own so the two do not collide.
 
 ```tsx
-<SkipLink href="#content" />
-<main id="content" tabIndex={-1}>…</main>
+<SkipLink href="#demo-content" />
+<p>Press Tab here to reveal the skip link.</p>
+<section id="demo-content" tabIndex={-1}>
+  Focus lands here after following the link.
+</section>
 ```
 
 ## When to use it

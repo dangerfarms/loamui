@@ -30,6 +30,11 @@
     text-align: center;
     white-space: normal;
 
+    /* Shadows vanish in forced colors; a border keeps the bubble's edge. */
+    @media (forced-colors: active) {
+      border: 1px solid;
+    }
+
     /* Enhanced: top layer + anchor positioning. position-anchor /
        anchor-name are set from inline styles with a per-instance name
        shared by Trigger and Popup. */

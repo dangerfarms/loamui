@@ -24,10 +24,8 @@ A padded surface holding a heading, text, and an action.
 
 ```tsx
 <Card>
-  <h3 style={{ margin: "0 0 0.5rem" }}>Weekly summary</h3>
-  <p style={{ margin: "0 0 1rem", color: "var(--loam-color-fg-muted)" }}>
-    Your team shipped 12 tasks this week. Review activity and plan the next sprint.
-  </p>
+  <h3>Weekly summary</h3>
+  <p>Your team shipped 12 tasks this week. Review activity and plan the next sprint.</p>
   <Button>View report</Button>
 </Card>
 ```

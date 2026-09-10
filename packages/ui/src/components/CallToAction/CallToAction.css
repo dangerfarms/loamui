@@ -1,0 +1,36 @@
+/* A call to action is a region: it declares its container so the fluid
+   tokens answer the section's width, and it hosts consumer content (a
+   SignpostLink, a Button, a link), hence the donut. */
+@scope (.loam-CallToAction) to ([class*="loam-"]) {
+  :scope {
+    background: var(--loam-color-bg-subtle);
+    border-radius: var(--loam-radius-xl);
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-lg);
+    justify-items: center;
+    padding: var(--loam-space-xl);
+    text-align: center;
+  }
+
+  .title {
+    font-size: var(--loam-text-2xl);
+    margin: 0;
+    max-inline-size: 22ch;
+  }
+
+  p.body {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-lg);
+    margin: 0;
+    max-inline-size: var(--loam-measure);
+  }
+
+  div.actions {
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-lg);
+    justify-content: center;
+  }
+}

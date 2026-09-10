@@ -9,7 +9,7 @@ const doc: ComponentContent = {
     {
       title: "Basic usage",
       description:
-        "Wrap the control in Field.Root and add a Field.Label: the textarea reads its id from the field, so the label is wired without any props.",
+        "Inside Field.Root the textarea reads its id from the field, so Field.Label is wired without any props.",
       code: `<Field.Root>
   <Field.Label>Notes</Field.Label>
   <Textarea />
@@ -30,7 +30,7 @@ const doc: ComponentContent = {
     {
       title: "Error state",
       description:
-        "A Field.Error after the control marks the field invalid and is announced: the message's presence is the state.",
+        "A Field.Error before the control marks the field invalid and is announced: the message's presence is the state.",
       code: `<Field.Root>
   <Field.Label>Message</Field.Label>
   <Field.Error>Message must be 20 characters or more</Field.Error>

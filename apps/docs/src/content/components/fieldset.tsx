@@ -65,7 +65,7 @@ const doc: ComponentContent = {
   accessibility: [
     "Renders a native <fieldset> + <legend>: the legend is announced as the group's name when a control inside receives focus.",
     'This is preferred over a <div role="group"> with aria-labelledby: the native semantics are better supported.',
-    "The browser's default fieldset border, margin and padding are reset so it composes cleanly with LoamUI's layout.",
+    "The browser's default fieldset border, margin and padding are reset so it composes with any native CSS layout.",
   ],
   parts: [
     {

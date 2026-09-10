@@ -10,7 +10,7 @@ const doc: ComponentContent = {
   demos: [
     {
       title: "Basic",
-      description: "Set value 0–100. Add label to show the percentage inside the bar.",
+      description: "Set value 0 to 100. Add label to show the percentage inside the bar.",
       code: `<Progress value={72} />
 <Progress value={72} label />`,
       render: () => (
@@ -47,7 +47,7 @@ const doc: ComponentContent = {
     {
       title: "Contexts",
       description:
-        "There is no color prop. Declare --loam-context on a one-element wrapper region (a style query is answered by ancestors, never by the declaring element itself), or let it inherit from a region that already means something. See the Contextualism guide.",
+        "There is no colour prop. Declare --loam-context on a one-element wrapper region (see the Contextualism guide) and the status colours follow, or let it inherit from a region that already means something.",
       code: `<Progress value={50} />
 <div style={{ "--loam-context": "warning" }}>
   <Progress value={88} />
@@ -92,7 +92,7 @@ const doc: ComponentContent = {
     },
   ],
   whenToUse: [
-    "When completion is genuinely measurable (bytes uploaded, records processed, steps finished) and you can supply a truthful 0–100 value.",
+    "When completion is genuinely measurable (bytes uploaded, records processed, steps finished) and you can supply a truthful 0 to 100 value.",
     "To show position in a multi-step flow, deriving value from the step count so the bar moves exactly when the user does.",
   ],
   whenNotToUse: [
@@ -110,14 +110,14 @@ const doc: ComponentContent = {
     },
     {
       title: "Stripes are decoration",
-      body: "striped and animated add texture, not information, and the stripe animation is removed entirely under prefers-reduced-motion: reduce. Anything the stripes were saying must therefore also be said by the value and the surrounding text.",
+      body: "striped and animated add texture, not information, and the stripe animation exists only inside prefers-reduced-motion: no-preference. Anything the stripes were saying must therefore also be said by the value and the surrounding text.",
     },
   ],
   accessibility: [
     'Renders role="progressbar" with aria-valuenow (rounded), aria-valuemin={0} and aria-valuemax={100}; the value is clamped, so an out-of-range number can never produce an invalid ARIA state.',
     "No accessible name is wired for you: pass aria-label or aria-labelledby naming the task; both are forwarded to the root element.",
-    "The stripe animation and the fill transition are collapsed under prefers-reduced-motion: reduce by the library-wide reset, so motion never carries information.",
-    "Under forced colors (Windows High Contrast) the fill paints with Highlight via forced-color-adjust: none and the track gains a CanvasText border, so the bar stays visible where background paint is normally stripped.",
+    "The stripe animation and the fill transition exist only inside prefers-reduced-motion: no-preference; with reduced motion the bar is static and the value is still exposed through aria-valuenow, so motion never carries information.",
+    "Under forced colours (Windows High Contrast) the fill paints with Highlight via forced-color-adjust: none and the track gains a CanvasText border, so the bar stays visible where background paint is normally stripped.",
     "The inline label only renders once the value reaches 8%, so the text never overflows a nearly-empty bar; if the number must always be readable, render it as text outside the bar as well.",
   ],
   props: [
@@ -125,7 +125,7 @@ const doc: ComponentContent = {
       name: "value",
       type: "number",
       default: "0",
-      description: "Fill amount, 0–100 (clamped).",
+      description: "Fill amount, 0 to 100 (clamped).",
     },
     {
       name: "size",

@@ -1,0 +1,71 @@
+/* Demo stylesheet for the Composing components guide. Everything here is
+   what a consumer would write: semantic roots, scoped rules, tokens only. */
+
+@scope (.demo-hero) {
+  :scope {
+    background: var(--loam-color-bg-subtle);
+    border: 1px solid var(--loam-color-line);
+    border-radius: var(--loam-radius-xl);
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-lg);
+    padding: var(--loam-space-xl);
+  }
+
+  h2 {
+    font-size: var(--loam-text-3xl);
+    margin: 0;
+    max-inline-size: 18ch;
+  }
+
+  p.lede {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-lg);
+    margin: 0;
+    max-inline-size: var(--loam-measure);
+  }
+
+  div.actions {
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-lg);
+  }
+}
+
+@scope (.demo-plan) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-md);
+    inline-size: min(100%, 22rem);
+  }
+
+  h3 {
+    align-items: center;
+    display: block flex;
+    font-size: var(--loam-text-lg);
+    gap: var(--loam-space-sm);
+    justify-content: space-between;
+    margin: 0;
+  }
+
+  p.price {
+    font-size: var(--loam-text-2xl);
+    font-variant-numeric: lining-nums tabular-nums;
+    font-weight: 700;
+    margin: 0;
+
+    small {
+      color: var(--loam-color-fg-muted);
+      font-weight: 400;
+    }
+  }
+
+  ul {
+    display: block grid;
+    gap: var(--loam-space-xs);
+    margin: 0;
+    padding-inline-start: var(--loam-space-lg);
+  }
+}

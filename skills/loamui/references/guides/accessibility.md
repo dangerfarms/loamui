@@ -16,7 +16,7 @@ LoamUI's accessibility comes from the platform first: real elements with built-i
   Escape, and focus restore are the browser's), accordions are `<details>`/`<summary>` with native
   exclusivity via `name`, separators are `<hr>`, grouped controls use `<fieldset>`/`<legend>`.
 - Every styled form control wraps a real native input: checkboxes, radios, switches (a checkbox
-  with `role="switch"`), sliders (`<input type="range">`). So keyboard operation, form
+  with `role="switch"`), ranges (`<input type="range">`). So keyboard operation, form
   participation, and assistive-technology reporting come from the platform.
 - Toasts are native live regions: `role="status"` announces politely; `priority: "high"` renders
   `role="alert"` and interrupts. Field errors are `role="alert"` and joined to their control via
@@ -28,7 +28,7 @@ LoamUI's accessibility comes from the platform first: real elements with built-i
 
 ## Keyboard patterns
 
-- **Menu** implements the APG menu-button pattern: ArrowDown/ArrowUp on the trigger open and focus
+- **Menu** implements the menu-button pattern from the ARIA Authoring Practices Guide (APG): ArrowDown/ArrowUp on the trigger open and focus
   the first/last item; inside, arrow keys rove real focus (looping), Home/End jump, typing jumps
   to the next matching item, and Escape or activation returns focus to the trigger. Focus moves;
   it is never trapped.
@@ -98,10 +98,11 @@ button that navigates breaks right-click, middle-click and open-in-new-tab.
 - An axe audit runs over a representative render of every component in the unit suite, and
   keyboard behaviour (roving focus, looping, typeahead, focus return, dismissal) is asserted by
   interaction tests.
-- Storybook runs the a11y addon and interaction tests in a real browser, covering what jsdom
-  cannot (native dialog focus, popovers, computed styles).
-- Colour contrast is verified two ways: a CI audit computes the WCAG ratio of every token pair the
-  components actually use (text, placeholders, fills, borders, focus rings, both schemes) and
-  fails the build on regression, and Storybook's a11y addon checks rendered output; forced-colors
-  rendering is verified with emulation; and no automated tool replaces testing with actual screen
-  readers. Treat this page as the contract, not a substitute for testing your composed product.
+- Storybook carries the a11y addon and play functions for the interactive components; run it
+  locally to check what jsdom cannot (native dialog focus, popovers, computed styles). It is a
+  workbench, not a CI gate.
+- Colour contrast is verified two ways. A CI audit computes the WCAG ratio of the token pairs
+  the components use for text, fills, borders and focus rings, in both schemes, and fails the
+  build on regression; Storybook's a11y addon checks rendered output. Forced-colours rendering is
+  verified with emulation. No automated tool replaces testing with actual screen readers, so
+  treat this page as the contract, not a substitute for testing your composed product.

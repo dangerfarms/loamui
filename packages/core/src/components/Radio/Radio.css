@@ -23,6 +23,20 @@
 
     box-shadow: 0 0 0 2px var(--loam-color-danger);
   }
+
+  /* Forced colors drop box-shadow, so the invalid affordance moves to an
+     outline in a system colour; focus keeps its own, further-out ring. */
+  @media (forced-colors: active) {
+    .loam-Radio {
+      outline: 2px solid LinkText;
+      outline-offset: 1px;
+
+      &:focus-visible {
+        outline: var(--loam-ring-width) solid Highlight;
+        outline-offset: 2px;
+      }
+    }
+  }
 }
 
 /* ---- Single radio (labelled row) ---- */
