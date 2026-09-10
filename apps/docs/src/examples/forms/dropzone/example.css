@@ -1,0 +1,22 @@
+@scope (.dropzone) to ([class*="loam-"]) {
+  :scope {
+    max-inline-size: 36rem;
+  }
+}
+
+@scope (.dropzone .loam-FileInput) to ([class*="loam-"]) {
+  label {
+    svg {
+      block-size: auto;
+      display: block flow;
+      inline-size: 2rem;
+      margin-block-end: var(--loam-space-sm);
+      margin-inline: auto;
+    }
+
+    strong {
+      color: var(--loam-color-fg);
+      display: block flow;
+    }
+  }
+}

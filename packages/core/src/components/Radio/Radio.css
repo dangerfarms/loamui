@@ -2,7 +2,7 @@
    accent-color (the neutral primary's audited -strong, so a --loam-context
    region keeps 3:1 under the dot). The component adds size, the invalid
    affordance, the label row and the group layout. */
-@scope (.loam-Radio) {
+@scope (.loam-Radio) to ([class*="loam-"]) {
   :scope {
     accent-color: var(--loam-color-primary-strong);
     block-size: 1.15em;
@@ -10,15 +10,13 @@
     inline-size: 1.15em;
     margin: 0;
   }
-}
 
-/* A group with a detected error marks every radio inside (ARIA carries the
-   invalid state on the group, not the radios, so there is no per-radio
-   aria-invalid rule). The danger ring is a box-shadow so it stacks with rather
-   than replaces the elements-layer :focus-visible ring; the focus ring itself
-   turns danger-coloured. Mirrors Switch. */
-@scope (.loam-Radio-group[aria-invalid="true"]) {
-  .loam-Radio {
+  /* ARIA carries the invalid state on the group, not the radios, so a
+     radio answers its group's aria-invalid rather than its own. The danger
+     ring is a box-shadow so it stacks with rather than replaces the
+     elements-layer :focus-visible ring; the focus ring itself turns
+     danger-coloured. Mirrors Switch. */
+  .loam-RadioGroup[aria-invalid="true"] :scope {
     --loam-color-ring: var(--loam-color-danger-ring);
 
     box-shadow: 0 0 0 2px var(--loam-color-danger);
@@ -27,7 +25,7 @@
   /* Forced colors drop box-shadow, so the invalid affordance moves to an
      outline in a system colour; focus keeps its own, further-out ring. */
   @media (forced-colors: active) {
-    .loam-Radio {
+    .loam-RadioGroup[aria-invalid="true"] :scope {
       outline: 2px solid LinkText;
       outline-offset: 1px;
 
@@ -49,9 +47,6 @@
 
     &:has(input:disabled) {
       cursor: not-allowed;
-    }
-
-    &[data-disabled] {
       opacity: var(--loam-disabled-opacity);
     }
   }
@@ -59,8 +54,7 @@
   span.body {
     display: block flex;
     flex-direction: column;
-    gap: 0.1rem;
-    line-height: 1.35;
+    gap: 0.125em;
   }
 
   span.label {
@@ -74,32 +68,29 @@
   }
 }
 
-/* ---- Group ---- (a Fieldset — reset/legend come from the Fieldset layer) */
-@scope (.loam-Radio-group) to ([class*="loam-"]) {
-  :scope {
-    gap: var(--loam-space-xs);
-  }
-
-  span.description {
-    color: var(--loam-color-fg-muted);
-    font-size: var(--loam-text-xs);
-  }
-
-  [data-orientation] {
-    display: block flex;
-    flex-direction: column;
-    gap: var(--loam-space-sm);
-    margin-block-start: var(--loam-space-xs);
-  }
-
-  [data-orientation="horizontal"] {
+/* ---- Group ---- a Fieldset (reset and legend come from that layer) whose
+   direct children are the legend, the description, the error and the
+   Radios. The fieldset's column is the vertical layout; horizontal turns
+   it into a wrapping row and gives the text parts a row of their own. */
+@scope (.loam-RadioGroup) to ([class*="loam-"]) {
+  :scope[data-orientation="horizontal"] {
+    column-gap: var(--loam-space-lg);
     flex-flow: row wrap;
-    gap: var(--loam-space-lg);
   }
 
-  span.error {
+  p.description {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    margin: 0;
+  }
+
+  p.error {
     color: var(--loam-color-danger);
-    font-size: var(--loam-text-xs);
-    margin-block-start: var(--loam-space-xs);
+    font-size: var(--loam-text-sm);
+    margin: 0;
+  }
+
+  :scope[data-orientation="horizontal"] > :is(p.description, p.error) {
+    flex-basis: 100%;
   }
 }

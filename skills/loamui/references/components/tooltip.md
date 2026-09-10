@@ -18,26 +18,26 @@ import { Tooltip } from "@loamui/core";
 
 ## Usage
 
-### Positions
+### Sides
 
-Place the bubble on any side of its target with the Popup's position prop. It opens after a short delay on hover, immediately on keyboard focus.
+Place the bubble on any side of its target with the Popup's side prop. It opens after a short delay on hover, immediately on keyboard focus.
 
 ```tsx
 <Tooltip.Root>
   <Tooltip.Trigger>Top</Tooltip.Trigger>
-  <Tooltip.Popup position="top">On the top</Tooltip.Popup>
+  <Tooltip.Popup side="top">On the top</Tooltip.Popup>
 </Tooltip.Root>
 <Tooltip.Root>
   <Tooltip.Trigger>Bottom</Tooltip.Trigger>
-  <Tooltip.Popup position="bottom">On the bottom</Tooltip.Popup>
+  <Tooltip.Popup side="bottom">On the bottom</Tooltip.Popup>
 </Tooltip.Root>
 <Tooltip.Root>
   <Tooltip.Trigger>Left</Tooltip.Trigger>
-  <Tooltip.Popup position="left">On the left</Tooltip.Popup>
+  <Tooltip.Popup side="left">On the left</Tooltip.Popup>
 </Tooltip.Root>
 <Tooltip.Root>
   <Tooltip.Trigger>Right</Tooltip.Trigger>
-  <Tooltip.Popup position="right">On the right</Tooltip.Popup>
+  <Tooltip.Popup side="right">On the right</Tooltip.Popup>
 </Tooltip.Root>
 ```
 
@@ -149,9 +149,15 @@ The bubble (role="tooltip"); native <span> props are forwarded.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `position` | `"top" \| "bottom" \| "left" \| "right"` | `"top"` | Which side of the trigger the bubble appears on. |
+| `side` | `"top" \| "bottom" \| "left" \| "right"` | `"top"` | Which side of the trigger the bubble appears on. |
 
 ### Tooltip.Arrow
 
 Optional pointer arrow toward the trigger; native <span> props are forwarded.
+
+## Custom properties
+
+| Property | Syntax | Default | Description |
+| --- | --- | --- | --- |
+| `--loam-tooltip-size` | `CSS length` | `16rem` | The bubble's widest extent; shorter text shrink-wraps. |
 

@@ -4,6 +4,7 @@
 // and command menu can import it without pulling in demo code.
 
 import type { Category } from "@/renderer/types";
+import { EXAMPLE_CATEGORIES } from "../examples/categories";
 
 export interface NavItem {
   name: string;
@@ -31,6 +32,15 @@ export const PRIMITIVES: { name: string; href: string }[] = [
   { name: "Tokens", href: "/docs/tokens" },
   { name: "Element styles", href: "/docs/element-styles" },
   { name: "Components", href: "/docs/components" },
+];
+
+// The examples, for the command menu: the index, then one entry per
+// category. Derived from the examples' own category list, so search cannot
+// offer a category the site does not have. Deliberately absent from the
+// docs sidebar, which lists the library, not the gallery built from it.
+export const EXAMPLES_NAV: { name: string; href: string }[] = [
+  { name: "All examples", href: "/examples" },
+  ...EXAMPLE_CATEGORIES.map((c) => ({ name: c.title, href: `/examples/${c.slug}` })),
 ];
 
 export const CATEGORY_ORDER = [
@@ -74,6 +84,12 @@ export const COMPONENTS: NavItem[] = [
     description: "A labelled text field.",
   },
   {
+    name: "PasswordInput",
+    slug: "password-input",
+    category: "Inputs",
+    description: "A password box with a show toggle.",
+  },
+  {
     name: "Textarea",
     slug: "textarea",
     category: "Inputs",
@@ -84,6 +100,12 @@ export const COMPONENTS: NavItem[] = [
     slug: "select",
     category: "Inputs",
     description: "Choose one option from a list.",
+  },
+  {
+    name: "Combobox",
+    slug: "combobox",
+    category: "Inputs",
+    description: "A text box with a list of suggestions under it.",
   },
   {
     name: "DateInput",
@@ -104,6 +126,12 @@ export const COMPONENTS: NavItem[] = [
     description: "Choose one option from a set.",
   },
   {
+    name: "SegmentedControl",
+    slug: "segmented-control",
+    category: "Inputs",
+    description: "Choose one option from a row of segments.",
+  },
+  {
     name: "Switch",
     slug: "switch",
     category: "Inputs",
@@ -115,12 +143,54 @@ export const COMPONENTS: NavItem[] = [
     category: "Inputs",
     description: "Pick a numeric value from a range.",
   },
+  {
+    name: "Search",
+    slug: "search",
+    category: "Inputs",
+    description: "The page's search, as a landmark.",
+  },
+  {
+    name: "QuantityInput",
+    slug: "quantity-input",
+    category: "Inputs",
+    description: "A count adjusted one at a time.",
+  },
+  {
+    name: "Rating",
+    slug: "rating",
+    category: "Inputs",
+    description: "Stars as real inputs, or as a picture of a score.",
+  },
+  {
+    name: "FileInput",
+    slug: "file-input",
+    category: "Inputs",
+    description: "Choose a file, or drop it.",
+  },
+  {
+    name: "CopyButton",
+    slug: "copy-button",
+    category: "Inputs",
+    description: "Copy a value and say so.",
+  },
   // Data display
   {
     name: "Badge",
     slug: "badge",
     category: "Data display",
     description: "Compact status or label pill.",
+  },
+  {
+    name: "Price",
+    slug: "price",
+    category: "Data display",
+    description: "A monetary amount, written for people.",
+  },
+  {
+    name: "Time",
+    slug: "time",
+    category: "Data display",
+    description: "A date or time, written for people.",
   },
   {
     name: "Card",
@@ -146,6 +216,18 @@ export const COMPONENTS: NavItem[] = [
     category: "Data display",
     description: "A rule between groups of content.",
   },
+  {
+    name: "Carousel",
+    slug: "carousel",
+    category: "Data display",
+    description: "A scroll-snap track of items, paged and announced.",
+  },
+  {
+    name: "Stepper",
+    slug: "stepper",
+    category: "Data display",
+    description: "Where a sequence has got to, detected from the current step.",
+  },
   // Feedback
   {
     name: "Alert",
@@ -158,6 +240,12 @@ export const COMPONENTS: NavItem[] = [
     slug: "progress",
     category: "Feedback",
     description: "Show completion of a task.",
+  },
+  {
+    name: "Meter",
+    slug: "meter",
+    category: "Feedback",
+    description: "A measurement within a known range.",
   },
   {
     name: "Skeleton",
@@ -244,6 +332,12 @@ export const COMPONENTS: NavItem[] = [
     slug: "pagination",
     category: "Navigation",
     description: "Navigate between pages of content.",
+  },
+  {
+    name: "Nav",
+    slug: "nav",
+    category: "Navigation",
+    description: "Lists of links with the current one marked.",
   },
 ];
 

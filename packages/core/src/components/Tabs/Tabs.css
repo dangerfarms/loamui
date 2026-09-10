@@ -1,5 +1,4 @@
-/* Tab and Panel can only render inside <Tabs> (their context throws outside).
-   Donut: panels host consumer content. */
+/* Donut: panels host consumer content. */
 @scope (.loam-Tabs) to ([class*="loam-"]) {
   :scope {
     display: block flex;
@@ -13,7 +12,8 @@
     background: transparent;
     border: none;
     border-block-end: 2px solid transparent;
-    border-radius: var(--loam-radius-sm) var(--loam-radius-sm) 0 0;
+    border-start-end-radius: var(--loam-radius-sm);
+    border-start-start-radius: var(--loam-radius-sm);
     box-shadow: none;
     color: var(--loam-color-fg-muted);
     display: inline flex;
@@ -26,10 +26,6 @@
     padding-block: var(--loam-space-md);
     padding-inline: var(--loam-space-lg);
     position: relative;
-
-    &:focus-visible {
-      border-radius: var(--loam-radius-sm) var(--loam-radius-sm) 0 0;
-    }
 
     &[aria-disabled="true"] {
       cursor: default;
@@ -71,13 +67,10 @@
     }
   }
 
-  div.panel {
-    font-size: var(--loam-text-md);
-    line-height: 1.55;
-
-    &:focus-visible {
-      border-radius: var(--loam-radius-sm);
-    }
+  /* The panel inherits the page's type: consumer content keeps the
+     elements layer's size and leading. */
+  div.panel:focus-visible {
+    border-radius: var(--loam-radius-sm);
   }
 
   /* Boolean hidden only — [hidden="until-found"] must keep the UA's
@@ -100,10 +93,8 @@
   }
 }
 
-/*
- * The list is scoped to its own root: Tabs.List renders without the
- * .loam-Tabs class on it (and, unlike Tab/Panel, is not context-guarded).
- */
+/* The list carries its own root class, which the donut above excludes, so
+   it takes its own scope. */
 @scope (.loam-Tabs-list) {
   :scope {
     border-block-end: 1px solid var(--loam-color-line);

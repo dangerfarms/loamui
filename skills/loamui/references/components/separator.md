@@ -8,7 +8,7 @@ description: A rule between groups of content.
 
 # Separator
 
-A native <hr> for boundaries that mean something: announced as a separator, not just drawn as a line.
+A native <hr> for boundaries that mean something: announced as a separator, not only drawn as a line.
 
 ## Import
 

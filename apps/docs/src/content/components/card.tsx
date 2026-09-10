@@ -3,7 +3,7 @@ import type { ComponentContent } from "@/renderer/types";
 
 const doc: ComponentContent = {
   slug: "card",
-  lead: "A surface container that groups related content.",
+  lead: "A surface container that groups related content: the one surface primitive, which compositions such as a product card or a testimonial are built on rather than restyling.",
   importLine: `import { Card } from "@loamui/core";`,
   demos: [
     {
@@ -24,6 +24,31 @@ const doc: ComponentContent = {
         </div>
       ),
     },
+    {
+      title: "Another element",
+      description:
+        "render substitutes the <div>: an <li> in a list of cards, a <label> when the whole surface is a control's label, an <article> for a self-contained piece. The class and attributes merge onto the element.",
+      code: `<ul>
+  <Card render={<li />}>North Field</Card>
+  <Card render={<li />}>South Field</Card>
+</ul>`,
+      render: () => (
+        <ul
+          style={{
+            display: "grid",
+            gap: "0.75rem",
+            listStyle: "none",
+            margin: 0,
+            padding: 0,
+            inlineSize: "100%",
+            maxInlineSize: "22rem",
+          }}
+        >
+          <Card render={<li />}>North Field</Card>
+          <Card render={<li />}>South Field</Card>
+        </ul>
+      ),
+    },
   ],
   whenToUse: [
     "To group related content (a heading, supporting text, an action) onto one surface so it reads as a single unit.",
@@ -36,7 +61,7 @@ const doc: ComponentContent = {
   howItWorks: [
     {
       title: "A surface, not a control",
-      body: "Card is deliberately just a styled <div>: no role, no tabindex, no cursor. If the whole card should be clickable, the accessible pattern is one real <a> inside it (usually on the card's heading) stretched over the surface with an ::after covering the card. Keyboard users get one tab stop, screen readers get a real link with a real name, and right-click / open-in-new-tab keep working. A click handler on the div gives you none of that.",
+      body: "Card is deliberately nothing more than a styled <div>: no role, no tabindex, no cursor. If the whole card should be clickable, the accessible pattern is one real <a> inside it (usually on the card's heading) stretched over the surface with an ::after covering the card. Keyboard users get one tab stop, screen readers get a real link with a real name, and right-click / open-in-new-tab keep working. A click handler on the div gives you none of that.",
     },
     {
       title: "Cards are skimmed by their headings",
@@ -49,6 +74,12 @@ const doc: ComponentContent = {
     "Border and shadow are purely visual grouping, invisible to assistive tech, so the content must also read as a unit in document order alone.",
   ],
   props: [
+    {
+      name: "render",
+      type: "element | (props) => node",
+      description:
+        "Substitute the rendered element (render={<li />}, render={<label />}, render={<article />}); the Card's class and attributes merge onto it.",
+    },
     {
       name: "...others",
       type: "DivHTMLAttributes",

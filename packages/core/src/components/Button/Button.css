@@ -99,9 +99,15 @@
   }
 
   /* Icon-only is detected from the accessible name, not DOM shape: an
-     icon-only button MUST carry an aria-label, and `svg:only-child` can't
-     tell "icon + bare text" from "icon alone" (text nodes aren't elements). */
-  :scope[aria-label]:has(svg, .loam-Loader) {
+     icon-only button MUST be named — aria-label, aria-labelledby, or hidden
+     text beside the icon — and `svg:only-child` can't tell "icon + bare
+     text" from "icon alone" (text nodes aren't elements). */
+  :scope:has(svg, .loam-Loader):is(
+      [aria-label],
+      [aria-labelledby],
+      :has(> :is(svg, .loam-Loader):first-child + .loam-VisuallyHidden:last-child),
+      :has(> .loam-VisuallyHidden:first-child + :is(svg, .loam-Loader):last-child)
+    ) {
     padding-inline: var(--loam-space-sm);
   }
 

@@ -18,6 +18,7 @@ import {
   Switch,
   Range,
   Badge,
+  Price,
   Card,
   Avatar,
   Table,
@@ -35,9 +36,6 @@ import {
   Popover,
   Toast,
   Tabs,
-  TabsList,
-  TabsTab,
-  TabsPanel,
   Details,
   Breadcrumbs,
   Pagination,
@@ -81,9 +79,9 @@ const cases: Array<[string, ReactElement]> = [
       <DateInput.Legend>Date of birth</DateInput.Legend>
       <DateInput.Description>For example, 27 3 2007</DateInput.Description>
       <DateInput.Fields>
-        <DateInput.Field part="day" />
-        <DateInput.Field part="month" />
-        <DateInput.Field part="year" />
+        <DateInput.Day />
+        <DateInput.Month />
+        <DateInput.Year />
       </DateInput.Fields>
     </DateInput.Root>,
   ],
@@ -93,18 +91,19 @@ const cases: Array<[string, ReactElement]> = [
       <DateInput.Legend>When did your membership start?</DateInput.Legend>
       <DateInput.Error parts={["year"]}>Membership start date must include a year</DateInput.Error>
       <DateInput.Fields>
-        <DateInput.Field part="day" />
-        <DateInput.Field part="month" />
-        <DateInput.Field part="year" />
+        <DateInput.Day />
+        <DateInput.Month />
+        <DateInput.Year />
       </DateInput.Fields>
     </DateInput.Root>,
   ],
   [
     "RadioGroup",
-    <RadioGroup label="Plan" defaultValue="pro">
+    <RadioGroup.Root defaultValue="pro">
+      <RadioGroup.Legend>Plan</RadioGroup.Legend>
       <Radio value="free" label="free" />
       <Radio value="pro" label="pro" />
-    </RadioGroup>,
+    </RadioGroup.Root>,
   ],
   ["Switch", <Switch label="Email notifications" />],
   [
@@ -117,6 +116,14 @@ const cases: Array<[string, ReactElement]> = [
   ["Badge", <Badge>New</Badge>],
   ["Card", <Card>Card content</Card>],
   ["Avatar", <Avatar name="Ada Lovelace" />],
+  [
+    "Price",
+    <p>
+      <Price value={24} currency="GBP">
+        per seat, per month
+      </Price>
+    </p>,
+  ],
   [
     "Fieldset",
     <Fieldset.Root>
@@ -155,7 +162,7 @@ const cases: Array<[string, ReactElement]> = [
       <Alert.Root>
         <Alert.Body>
           <Alert.Title>Storage almost full</Alert.Title>
-          <Alert.Message>Free up space to keep syncing.</Alert.Message>
+          <Alert.Description>Free up space to keep syncing.</Alert.Description>
         </Alert.Body>
       </Alert.Root>
     </div>,
@@ -189,6 +196,12 @@ const cases: Array<[string, ReactElement]> = [
         <Menu.Item>Rename</Menu.Item>
         <Menu.Item href="/export">Export</Menu.Item>
         <Menu.Separator />
+        <Menu.CheckboxItem defaultChecked>Show hidden files</Menu.CheckboxItem>
+        <Menu.RadioGroup defaultValue="name">
+          <Menu.GroupLabel>Sort by</Menu.GroupLabel>
+          <Menu.RadioItem value="name">Name</Menu.RadioItem>
+          <Menu.RadioItem value="date">Date</Menu.RadioItem>
+        </Menu.RadioGroup>
         <Menu.Group>
           <Menu.GroupLabel>Danger zone</Menu.GroupLabel>
           <Menu.Item>Delete</Menu.Item>
@@ -203,12 +216,12 @@ const cases: Array<[string, ReactElement]> = [
         <Toast.Root toast={{ id: "t1" }}>
           <Toast.Title>Saved</Toast.Title>
           <Toast.Description>Your changes are live.</Toast.Description>
-          <Toast.Close toastId="t1" />
+          <Toast.Close />
         </Toast.Root>
       </Toast.Viewport>
     </Toast.Provider>,
   ],
-  ["Skeleton", <Skeleton width={200} height={16} />],
+  ["Skeleton", <Skeleton />],
   ["Loader", <Loader />],
   [
     "Tooltip",
@@ -232,14 +245,14 @@ const cases: Array<[string, ReactElement]> = [
   ],
   [
     "Tabs",
-    <Tabs defaultValue="a">
-      <TabsList>
-        <TabsTab value="a">Account</TabsTab>
-        <TabsTab value="b">Security</TabsTab>
-      </TabsList>
-      <TabsPanel value="a">Account panel</TabsPanel>
-      <TabsPanel value="b">Security panel</TabsPanel>
-    </Tabs>,
+    <Tabs.Root defaultValue="a">
+      <Tabs.List>
+        <Tabs.Tab value="a">Account</Tabs.Tab>
+        <Tabs.Tab value="b">Security</Tabs.Tab>
+      </Tabs.List>
+      <Tabs.Panel value="a">Account panel</Tabs.Panel>
+      <Tabs.Panel value="b">Security panel</Tabs.Panel>
+    </Tabs.Root>,
   ],
   [
     "Details",
@@ -256,7 +269,14 @@ const cases: Array<[string, ReactElement]> = [
       <Breadcrumbs.Item current>Billing</Breadcrumbs.Item>
     </Breadcrumbs.Root>,
   ],
-  ["Pagination", <Pagination total={5} value={1} getHref={(page) => `?page=${page}`} />],
+  [
+    "Pagination",
+    <Pagination.Root>
+      <Pagination.List>
+        <Pagination.Pages page={1} count={5} getHref={(page) => `?page=${page}`} />
+      </Pagination.List>
+    </Pagination.Root>,
+  ],
 ];
 
 // Colour-contrast needs a real browser to compute styles (jsdom can't), so we
@@ -287,11 +307,11 @@ describe("accessibility (axe)", () => {
     render(
       <Drawer.Root defaultOpen>
         <Drawer.Trigger>Menu</Drawer.Trigger>
-        <Drawer.Panel side="start">
+        <Drawer.Popup side="start">
           <Drawer.Title>Navigation</Drawer.Title>
           <Drawer.Description>Jump to a section.</Drawer.Description>
           <Drawer.Close>Close</Drawer.Close>
-        </Drawer.Panel>
+        </Drawer.Popup>
       </Drawer.Root>,
     );
     expect(await axe(document.body, axeOptions)).toHaveNoViolations();
@@ -320,9 +340,9 @@ describe("Avatar naming", () => {
 describe("DateInput wiring", () => {
   const threeFields = (
     <DateInput.Fields>
-      <DateInput.Field part="day" />
-      <DateInput.Field part="month" />
-      <DateInput.Field part="year" />
+      <DateInput.Day />
+      <DateInput.Month />
+      <DateInput.Year />
     </DateInput.Fields>
   );
 
@@ -347,6 +367,12 @@ describe("DateInput wiring", () => {
       }
       expect(field).toHaveAttribute("name", `date-of-birth-${part}`);
       expect(field).toHaveAttribute("autocomplete", `bday-${part}`);
+      // Width is the native size attribute: the answer's length, a
+      // character more for a month written as a name.
+      expect(field).toHaveAttribute("size", { day: "2", month: "3", year: "4" }[part]);
+      // Each part is a core Field around a core Input, so its label is a
+      // Field.Label pointing at the input.
+      expect(field.closest(".loam-Field")).not.toBeNull();
     }
   });
 
@@ -386,11 +412,11 @@ describe("DateInput wiring", () => {
       <DateInput.Root name="dob">
         <DateInput.Legend>Date de naissance</DateInput.Legend>
         <DateInput.Fields>
-          <DateInput.Field part="day">Jour</DateInput.Field>
-          <DateInput.Field part="month">Mois</DateInput.Field>
-          <DateInput.Field part="year" maxLength={4} name="year-of-birth">
+          <DateInput.Day>Jour</DateInput.Day>
+          <DateInput.Month>Mois</DateInput.Month>
+          <DateInput.Year maxLength={4} name="year-of-birth">
             Année
-          </DateInput.Field>
+          </DateInput.Year>
         </DateInput.Fields>
       </DateInput.Root>,
     );

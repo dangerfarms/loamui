@@ -7,7 +7,7 @@ const doc: ComponentContent = {
   importLine: `import { SkipLink } from "@loamui/core";`,
   demos: [
     {
-      title: "Basic",
+      title: "Basic usage",
       description:
         "Click into the preview and press Tab: the link appears fixed at the top corner of the viewport, and following it moves focus to the target. This site's own skip link is this component, pointing at its <main>; the demo points at a section of its own so the two do not collide.",
       code: `<SkipLink href="#demo-content" />

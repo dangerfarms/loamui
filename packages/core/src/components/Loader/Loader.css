@@ -16,18 +16,20 @@
     inline-size: var(--_size);
     justify-content: center;
     vertical-align: middle;
-  }
 
-  span.sr-only {
-    block-size: 1px;
-    border: 0;
-    clip-path: inset(50%);
-    inline-size: 1px;
-    margin: -1px;
-    overflow: clip;
-    padding: 0;
-    position: absolute;
-    white-space: nowrap;
+    /* An explicit size out-ranks the inherited hook: the attribute is only
+       emitted when the consumer asked for one. */
+    &[data-size="sm"] {
+      --_size: 1rem;
+    }
+
+    &[data-size="md"] {
+      --_size: 1.5rem;
+    }
+
+    &[data-size="lg"] {
+      --_size: 2.25rem;
+    }
   }
 
   /* Spinner — rotating ring */
@@ -40,7 +42,7 @@
     inline-size: 100%;
 
     @media (prefers-reduced-motion: no-preference) {
-      animation: loam-loader-spin 0.65s linear infinite;
+      animation: loam-loader-spin calc(var(--loam-duration-lg) * 2) linear infinite;
     }
 
     /* Forced colors flatten the 25% ring and the solid edge to one colour,

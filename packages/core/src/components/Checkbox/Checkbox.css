@@ -2,7 +2,7 @@
    accent-color (the neutral primary's audited -strong, so a --loam-context
    region keeps 3:1 under the tick). The component adds only a comfortable
    size, the invalid affordance, and the label row. */
-@scope (.loam-Checkbox) {
+@scope (.loam-Checkbox) to ([class*="loam-"]) {
   :scope {
     accent-color: var(--loam-color-primary-strong);
     block-size: 1.15em;
@@ -10,9 +10,9 @@
     inline-size: 1.15em;
     margin: 0;
 
-    /* Invalid is a box-shadow, not an outline, so it stacks with rather than
-       replaces the elements-layer :focus-visible ring; the focus ring itself
-       turns danger-coloured. Mirrors Switch. */
+    /* Invalid is a box-shadow, not an outline, so it stacks with rather
+       than replaces the elements-layer :focus-visible ring; the focus ring
+       itself turns danger-coloured. Mirrors Switch. */
     &[aria-invalid="true"] {
       --loam-color-ring: var(--loam-color-danger-ring);
 
@@ -44,7 +44,7 @@
     flex-direction: column;
     gap: var(--loam-space-xs);
 
-    &[data-disabled] {
+    &:has(input:disabled) {
       opacity: var(--loam-disabled-opacity);
     }
   }
@@ -63,13 +63,12 @@
   span.body {
     display: block flex;
     flex-direction: column;
-    gap: 0.1rem;
+    gap: 0.125em;
   }
 
   span.label {
     font-size: var(--loam-text-sm);
     font-weight: 500;
-    line-height: 1.35;
   }
 
   span.description {

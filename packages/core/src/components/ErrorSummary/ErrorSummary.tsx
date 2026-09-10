@@ -1,14 +1,10 @@
 "use client";
 
-import { createContext, useContext, useEffect, useId, useRef, useMemo } from "react";
-import type {
-  AnchorHTMLAttributes,
-  HTMLAttributes,
-  MouseEvent as ReactMouseEvent,
-  ReactNode,
-  Ref,
-} from "react";
+import { createContext, useEffect, useId, useRef, useMemo } from "react";
+import type { MouseEvent as ReactMouseEvent, ReactNode } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
+import { useRequiredContext } from "../../context";
 import { composeRefs, renderWithProps } from "../../render";
 import type { RenderProp } from "../../render";
 
@@ -43,15 +39,10 @@ interface ErrorSummaryContextValue {
 const ErrorSummaryContext = createContext<ErrorSummaryContextValue | null>(null);
 
 function useErrorSummaryContext(part: string): ErrorSummaryContextValue {
-  const ctx = useContext(ErrorSummaryContext);
-  if (!ctx) {
-    throw new Error(`${part} must be rendered inside <ErrorSummary.Root>.`);
-  }
-  return ctx;
+  return useRequiredContext(ErrorSummaryContext, part, "ErrorSummary.Root");
 }
 
-export interface ErrorSummaryRootProps extends HTMLAttributes<HTMLDivElement> {
-  ref?: Ref<HTMLDivElement>;
+export interface ErrorSummaryRootProps extends PartProps<"div"> {
   /**
    * Move keyboard focus to the summary when it appears. @default true
    */
@@ -95,7 +86,7 @@ function ErrorSummaryRoot({
   );
 }
 
-export interface ErrorSummaryTitleProps extends HTMLAttributes<HTMLHeadingElement> {}
+export interface ErrorSummaryTitleProps extends PartProps<"h2"> {}
 
 function ErrorSummaryTitle({ className, children, ...rest }: ErrorSummaryTitleProps) {
   const ctx = useErrorSummaryContext("ErrorSummary.Title");
@@ -106,7 +97,7 @@ function ErrorSummaryTitle({ className, children, ...rest }: ErrorSummaryTitlePr
   );
 }
 
-export interface ErrorSummaryListProps extends HTMLAttributes<HTMLUListElement> {
+export interface ErrorSummaryListProps extends PartProps<"ul"> {
   children?: ReactNode;
 }
 
@@ -126,10 +117,7 @@ export interface ErrorSummaryItemRenderProps {
   className?: string;
 }
 
-export interface ErrorSummaryItemProps extends Omit<
-  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href">,
-  "onClick"
-> {
+export interface ErrorSummaryItemProps extends Omit<PartProps<"a">, "href" | "onClick"> {
   /**
    * Substitute the built-in <a> — e.g. a router link; the wiring
    * (href, focus handling, children) merges onto it.

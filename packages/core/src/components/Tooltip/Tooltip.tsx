@@ -1,29 +1,21 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { createContext, use, useCallback, useEffect, useId, useMemo, useRef } from "react";
 import type {
   RefObject,
-  ButtonHTMLAttributes,
   CSSProperties,
   FocusEvent,
-  HTMLAttributes,
   PointerEvent as ReactPointerEvent,
   ReactNode,
-  Ref,
 } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 import { cssSafeId, supportsAnchoredPopover } from "../../anchor";
-import { mergeProps, renderWithProps, composeRefs } from "../../render";
+import { useRequiredContext } from "../../context";
+import { composeRefs, mergeProps, renderWithProps } from "../../render";
 import type { RenderProp } from "../../render";
+import { useOpenState, usePopoverReconcile } from "../../use-popup";
+import { useSupports } from "../../use-support";
 
 import { Button } from "../Button/Button";
 
@@ -97,24 +89,20 @@ interface TooltipContextValue {
 const TooltipContext = createContext<TooltipContextValue | null>(null);
 
 function useTooltipContext(part: string): TooltipContextValue {
-  const ctx = useContext(TooltipContext);
-  if (!ctx) {
-    throw new Error(`${part} must be rendered inside <Tooltip.Root>.`);
-  }
-  return ctx;
+  return useRequiredContext(TooltipContext, part, "Tooltip.Root");
 }
 
 /* Same coupling as Popover: top layer without anchor positioning would leave
    the bubble centred in the viewport, so both are required to enhance. */
 /* popover="hint" is narrower than the popover API itself; an unknown value
    silently becomes "manual", so detect via IDL reflection and be explicit. */
-function detectPopoverKind(): "hint" | "manual" {
+function supportsHintPopover(): boolean {
   try {
     const probe = document.createElement("span");
     probe.popover = "hint";
-    return probe.popover === "hint" ? "hint" : "manual";
+    return probe.popover === "hint";
   } catch {
-    return "manual";
+    return false;
   }
 }
 
@@ -129,7 +117,7 @@ function isFocusVisible(el: Element): boolean {
   }
 }
 
-export interface TooltipRootProps extends HTMLAttributes<HTMLSpanElement> {
+export interface TooltipRootProps extends PartProps<"span"> {
   /** Hover delay in ms; overrides the Provider. @default 600 */
   delay?: number;
   /** Controlled open state. */
@@ -143,42 +131,34 @@ export interface TooltipRootProps extends HTMLAttributes<HTMLSpanElement> {
 function TooltipRoot({
   delay: delayProp,
   open: openProp,
-  defaultOpen = false,
+  defaultOpen,
   onOpenChange,
   className,
   children,
   ...rest
 }: TooltipRootProps) {
-  const provider = useContext(TooltipProviderContext);
+  const provider = use(TooltipProviderContext);
   const delay = delayProp ?? provider?.delay ?? 600;
   const lastVisibleAt = provider?.lastVisibleAt;
 
-  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
-  const open = openProp ?? uncontrolledOpen;
-  const [enhanced, setEnhanced] = useState(false);
-  const [popoverKind, setPopoverKind] = useState<"hint" | "manual">("manual");
-  useEffect(() => {
-    setEnhanced(supportsAnchoredPopover());
-    setPopoverKind(detectPopoverKind());
-  }, []);
-
-  const autoId = useId();
-  const bubbleId = `${cssSafeId(autoId)}-tooltip`;
-  const anchorName = `--loam-anchor-${bubbleId}`;
-
-  const openRef = useRef(open);
-  openRef.current = open;
-  const controlledRef = useRef(false);
-  controlledRef.current = openProp !== undefined;
-  const setOpen = useCallback(
+  // Every change stamps the shared activity clock, so an adjacent tooltip
+  // opened within the skip window shows with no delay.
+  const onChange = useCallback(
     (next: boolean) => {
-      if (next === openRef.current) return;
       if (lastVisibleAt) lastVisibleAt.current = Date.now();
-      if (!controlledRef.current) setUncontrolledOpen(next);
       onOpenChange?.(next);
     },
     [lastVisibleAt, onOpenChange],
   );
+  const [open, setOpen] = useOpenState({ open: openProp, defaultOpen, onOpenChange: onChange });
+  const openRef = useRef(open);
+  openRef.current = open;
+  const enhanced = useSupports(supportsAnchoredPopover);
+  const popoverKind = useSupports(supportsHintPopover) ? "hint" : "manual";
+
+  const autoId = useId();
+  const bubbleId = `${cssSafeId(autoId)}-tooltip`;
+  const anchorName = `--loam-anchor-${bubbleId}`;
 
   // Why the bubble is open. Hover and focus are independent: the bubble only
   // hides once *both* are gone, so a pointer passing over a focused trigger
@@ -320,7 +300,7 @@ export interface TooltipTriggerRenderProps {
   style: CSSProperties;
 }
 
-export interface TooltipTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface TooltipTriggerProps extends PartProps<"button"> {
   /**
    * Substitute your own interactive element as the trigger
    * (`render={<IconButton />}`) or pass a function receiving the wiring
@@ -349,14 +329,13 @@ function TooltipTrigger({ render, children, ...rest }: TooltipTriggerProps) {
   );
 }
 
-export interface TooltipPopupProps extends HTMLAttributes<HTMLSpanElement> {
-  ref?: Ref<HTMLSpanElement>;
+export interface TooltipPopupProps extends PartProps<"span"> {
   /** Which side of the trigger the bubble appears on. @default "top" */
-  position?: "top" | "bottom" | "left" | "right";
+  side?: "top" | "bottom" | "left" | "right";
 }
 
 function TooltipPopup({
-  position = "top",
+  side = "top",
   className,
   children,
   style,
@@ -370,15 +349,7 @@ function TooltipPopup({
   const ref = useRef<HTMLSpanElement>(null);
   const composedRef = useMemo(() => composeRefs(refProp, ref), [refProp]);
 
-  // No dependency array — see Popover.Popup: a controlled parent may reject a
-  // toggle-reported change, and only an every-render reconcile converges.
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || !enhanced) return;
-    const nativeOpen = el.matches(":popover-open");
-    if (open && !nativeOpen) el.showPopover();
-    else if (!open && nativeOpen) el.hidePopover();
-  });
+  usePopoverReconcile(ref, open, enhanced);
 
   // A hint popover can be closed natively (another hint opening, light
   // dismiss); mirror that back into state.
@@ -404,7 +375,7 @@ function TooltipPopup({
       popover={enhanced ? ctx.popoverKind : undefined}
       hidden={enhanced || open ? undefined : true}
       className={cx("loam-Tooltip-popup", className)}
-      data-position={position}
+      data-side={side}
       data-open={open || undefined}
       style={{ ...style, positionAnchor: ctx.anchorName } as CSSProperties}
       // The bubble must stay open while hovered (WCAG 1.4.13 hoverable).
@@ -422,7 +393,7 @@ function TooltipPopup({
   );
 }
 
-export interface TooltipArrowProps extends HTMLAttributes<HTMLSpanElement> {}
+export interface TooltipArrowProps extends PartProps<"span"> {}
 
 function TooltipArrow({ className, ...rest }: TooltipArrowProps) {
   useTooltipContext("Tooltip.Arrow");

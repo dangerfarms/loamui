@@ -1,0 +1,52 @@
+@scope (.grid-subgrid) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-md);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@scope (.grid-subgrid li.workshop) to ([class*="loam-"]) {
+  :scope {
+    display: block grid;
+    grid-row: span 3;
+    grid-template-rows: subgrid;
+    margin: 0;
+    row-gap: var(--loam-space-sm);
+  }
+
+  div.head {
+    display: block grid;
+    gap: var(--loam-space-xs);
+  }
+
+  h3 {
+    font-size: var(--loam-text-lg);
+    margin: 0;
+  }
+
+  p.when {
+    color: var(--loam-color-primary-strong);
+    font-size: var(--loam-text-sm);
+    font-weight: 600;
+    margin: 0;
+  }
+
+  p.description {
+    color: var(--loam-color-fg-muted);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  div.actions {
+    align-self: end;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm);
+    padding-block-start: var(--loam-space-xs);
+  }
+}

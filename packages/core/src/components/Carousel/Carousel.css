@@ -1,0 +1,149 @@
+/* A carousel is a region: it declares its container so the fluid tokens
+   answer the carousel's width, and every item hosts consumer content (a
+   Card, an image, a quote), hence the donut. Previous and Next are Buttons
+   and keep their own recipe behind it. */
+@scope (.loam-Carousel) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-md);
+  }
+
+  /* A column grid inside a scrollport. Every item snaps to the start, and
+     a page is one clientWidth, which is what Previous, Next and the arrow
+     keys scroll by. Items share one width, the public
+     --loam-carousel-item-size, never wider than the track, so a narrow
+     container still shows one whole item. The track is in the tab order,
+     so the global focus ring marks it; the padding keeps that ring and an
+     item's own inside the scrollport. */
+  ul.track {
+    display: block grid;
+    gap: var(--loam-space-md);
+    grid-auto-columns: min(100%, var(--loam-carousel-item-size, 20rem));
+    grid-auto-flow: column;
+    list-style: none;
+    margin: 0;
+
+    /* overflow (shorthand), not overflow-inline: the logical property is
+       not yet Baseline, and the track would not scroll in some browsers. */
+    overflow: auto;
+    overscroll-behavior-inline: contain;
+    padding: var(--loam-space-xs);
+
+    /* A containing block for hidden text inside an item, so it cannot
+       escape the scroller and widen the page. */
+    position: relative;
+    scroll-padding-inline: var(--loam-space-xs);
+    scroll-snap-type: inline mandatory;
+
+    /* A grid, so a Card or an image stretches to the row's height. */
+    > li {
+      display: block grid;
+      margin: 0;
+      scroll-snap-align: start;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      scroll-behavior: smooth;
+    }
+  }
+
+  /* One dot per item: a glyph control, so its geometry is em on the
+     text-sm basis like Radio's and Range's. A 1.75em target (at least
+     24px at every container width) around a 0.6em mark, so the pointer
+     has something to hit. The current dot is the ARIA state, detected
+     rather than duplicated. */
+  ul.indicators {
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-xs);
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    > li {
+      margin: 0;
+    }
+
+    button {
+      background: transparent;
+      block-size: 1.75em;
+      border: none;
+      border-radius: var(--loam-radius-full);
+      box-shadow: none;
+      display: block grid;
+      font-size: var(--loam-text-sm);
+      inline-size: 1.75em;
+      padding: 0;
+      place-items: center;
+
+      &::before {
+        background: var(--loam-color-line-strong);
+        block-size: 0.6em;
+        border-radius: var(--loam-radius-full);
+        content: "";
+        inline-size: 0.6em;
+      }
+
+      &[aria-current]::before {
+        background: var(--loam-color-primary-strong);
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        &::before {
+          transition:
+            background var(--loam-duration-sm) var(--loam-ease),
+            scale var(--loam-duration-sm) var(--loam-ease);
+        }
+      }
+
+      @media (hover: hover) {
+        &:hover::before {
+          scale: 1.25;
+        }
+      }
+    }
+  }
+
+  /* Forced colours: a dot is a painted background and would vanish, so
+     each keeps a border, and the current one an outline. */
+  @media (forced-colors: active) {
+    ul.indicators button {
+      &::before {
+        border: 1px solid ButtonText;
+      }
+
+      &[aria-current]::before {
+        outline: 2px solid ButtonText;
+        outline-offset: 2px;
+      }
+    }
+  }
+}
+
+/* Previous and Next are core Buttons, past the carousel's donut: this
+   scope adds the chevron's direction and the unavailable state. The glyph
+   is drawn for LTR, where Previous points left, and mirrored where the
+   start is on the right, so it points toward the start in both
+   directions. At an end the button carries aria-disabled, which Button's
+   own :disabled rule cannot see, so the same paint is applied here. */
+@scope (.loam-Carousel-control) {
+  :scope[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: var(--loam-disabled-opacity);
+  }
+
+  svg:dir(rtl) {
+    scale: -1 1;
+  }
+
+  /* Forced colours flatten opacity, so the unavailable button is named in
+     GrayText, as a native disabled button is. */
+  @media (forced-colors: active) {
+    :scope[aria-disabled="true"] {
+      border-color: GrayText;
+      color: GrayText;
+    }
+  }
+}

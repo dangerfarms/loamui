@@ -1,0 +1,62 @@
+@scope (.image-comparison) to ([class*="loam-"]) {
+  :scope {
+    /* The script writes the position onto the figure; 50% is the fallback
+       before it runs. */
+    --_position: 50%;
+    --_ratio: 16 / 9;
+
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-sm);
+    grid-template-columns: minmax(0, 1fr);
+    margin: 0;
+
+    &::after {
+      background: var(--loam-color-on-strong);
+      box-shadow: 0 0 0 1px var(--loam-color-fg);
+      content: "";
+      grid-area: 1 / 1;
+      inline-size: var(--loam-ring-width);
+      justify-self: start;
+      margin-inline-start: calc(var(--_position) - var(--loam-ring-width) / 2);
+      pointer-events: none;
+
+      @media (forced-colors: active) {
+        background: CanvasText;
+        forced-color-adjust: none;
+      }
+    }
+  }
+
+  div.before,
+  /* The inset is physical, so it flips under :dir(rtl), where the Range runs
+     the other way. */
+  div.after {
+    aspect-ratio: var(--_ratio);
+    border-radius: var(--loam-radius-md);
+    grid-area: 1 / 1;
+    inline-size: 100%;
+    overflow: hidden;
+
+    img {
+      block-size: 100%;
+      display: block flow;
+      inline-size: 100%;
+      object-fit: cover;
+    }
+  }
+
+  div.after {
+    clip-path: inset(0 calc(100% - var(--_position)) 0 0);
+
+    &:dir(rtl) {
+      clip-path: inset(0 0 0 calc(100% - var(--_position)));
+    }
+  }
+
+  figcaption {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    margin: 0;
+  }
+}

@@ -1,32 +1,53 @@
 // LoamUI — public API barrel.
 
 export { cx } from "./utils";
-export type { LoamUISize } from "./utils";
+export type { LoamUISize, PartProps } from "./utils";
+
+// Composition plumbing: the `render` contract every compound part honours,
+// exported so a composition built on core can offer the same prop.
+export { renderWithProps } from "./render";
+export type { RenderProp } from "./render";
+// Server-safe naming: a Root named by one of its parts emits the reference
+// in the first render, so landmarks are named before hydration.
+export { useNamedRoot, useNamePart, useOptionalSlot } from "./naming";
 
 // Inputs
 export * from "./components/Field/index";
 export * from "./components/Fieldset/index";
 export * from "./components/Button/index";
 export * from "./components/Input/index";
+export * from "./components/PasswordInput/index";
 export * from "./components/Textarea/index";
 export * from "./components/Select/index";
 export * from "./components/Checkbox/index";
+export * from "./components/Combobox/index";
 export * from "./components/DateInput/index";
 export * from "./components/ErrorSummary/index";
 export * from "./components/Radio/index";
+export * from "./components/SegmentedControl/index";
 export * from "./components/Switch/index";
 export * from "./components/Range/index";
+export * from "./components/Search/index";
+export * from "./components/QuantityInput/index";
+export * from "./components/FileInput/index";
+export * from "./components/Rating/index";
+export * from "./components/CopyButton/index";
 
 // Data display
 export * from "./components/Badge/index";
 export * from "./components/Separator/index";
 export * from "./components/Card/index";
 export * from "./components/Avatar/index";
+export * from "./components/Price/index";
+export * from "./components/Time/index";
 export * from "./components/Table/index";
+export * from "./components/Carousel/index";
+export * from "./components/Stepper/index";
 
 // Feedback
 export * from "./components/Alert/index";
 export * from "./components/Progress/index";
+export * from "./components/Meter/index";
 export * from "./components/Skeleton/index";
 export * from "./components/Loader/index";
 export * from "./components/Toast/index";
@@ -45,6 +66,9 @@ export * from "./components/SignpostLink/index";
 export * from "./components/SkipLink/index";
 export * from "./components/Breadcrumbs/index";
 export * from "./components/Pagination/index";
+export * from "./components/Nav/index";
+export { useScrollSpy } from "./use-scroll-spy";
+export type { UseScrollSpyOptions } from "./use-scroll-spy";
 
 // Layout is not a LoamUI concern: compose native CSS layout modules (flow,
 // grid, flex, multicol) with the space tokens inside your own components.

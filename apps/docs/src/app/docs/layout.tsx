@@ -5,7 +5,7 @@ import classes from "./layout.module.css";
 export default function DocsLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className={classes.shell}>
-      <aside className={classes.aside}>
+      <aside className={classes.aside} aria-label="Sidebar">
         <div className={classes.asideInner}>
           <Sidebar />
         </div>

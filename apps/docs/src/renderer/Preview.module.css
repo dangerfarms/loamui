@@ -23,18 +23,26 @@
   font-size: var(--loam-text-sm);
   font-weight: 550;
   padding: 0.3rem 0.75rem;
-  transition:
-    background var(--loam-duration-md) var(--loam-ease),
-    color var(--loam-duration-md) var(--loam-ease);
 
   &:hover {
     color: var(--loam-color-fg);
   }
 
-  &[data-active] {
+  &[aria-selected="true"] {
     background: var(--loam-color-surface);
     box-shadow: var(--loam-shadow-sm);
     color: var(--loam-color-fg);
+
+    @media (forced-colors: active) {
+      background: SelectedItem;
+      color: SelectedItemText;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition:
+      background var(--loam-duration-md) var(--loam-ease),
+      color var(--loam-duration-md) var(--loam-ease);
   }
 }
 

@@ -36,6 +36,22 @@
 }
 
 @layer loamui.elements {
+  /* Text for assistive technology only: "Error: " before a message, the
+     name of an icon-only control, a label a design hides. One class, usable
+     inside any component (a Button, a Field) and by any consumer, because a
+     scoped recipe cannot reach past another component's root. */
+  .loam-VisuallyHidden {
+    block-size: 1px;
+    border: 0;
+    clip-path: inset(50%);
+    inline-size: 1px;
+    margin: -1px;
+    overflow: clip;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+  }
+
   *,
   *::before,
   *::after {
@@ -223,6 +239,18 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /* An amount or a date sizes nothing (it takes the type around it) and
+     fixes only its figures: lining, so it sits with display type, and
+     tabular, so a column stays straight. Price and Time render these
+     elements and add nothing to this rule. */
+  data,
+  time {
+    font-variant-numeric: lining-nums tabular-nums;
+
+    /* A date keeps its own order inside right-to-left text. */
+    unicode-bidi: isolate;
+  }
+
   /* ── Links ──────────────────────────────────────────────────────── */
 
   /* Links default to the accessible blue, with the classic visited (toward
@@ -265,17 +293,38 @@
   /* ── Code ───────────────────────────────────────────────────────── */
 
   code,
-  kbd,
   samp,
   pre {
     font-family: var(--loam-font-mono);
     font-size: 0.925em;
   }
 
-  :is(code, kbd, samp):not(pre *) {
+  :is(code, samp):not(pre *) {
     background: var(--loam-color-bg-subtle);
     border-radius: var(--loam-radius-sm);
     padding: 0.1em 0.35em;
+  }
+
+  /* A key reads as a key cap, not as code: an edge on a raised surface,
+     a step smaller so a sequence of keys sits inside the line. */
+  kbd {
+    font-family: var(--loam-font-mono);
+    font-size: 0.85em;
+
+    &:not(pre *) {
+      background: var(--loam-color-surface);
+      border: 1px solid var(--loam-color-line-strong);
+      border-radius: var(--loam-radius-sm);
+      padding: 0.1em 0.4em;
+    }
+
+    /* The surface is gone here; the edge is what says "key", so it takes
+       the control colour rather than the text one. */
+    @media (forced-colors: active) {
+      &:not(pre *) {
+        border-color: ButtonText;
+      }
+    }
   }
 
   pre {
@@ -327,10 +376,12 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* Native buttons wear the Button component's own base look (the same
-     derivation recipe, on the neutral text channel — the contrast audit
-     reads these weights and asserts they match Button.css). Real actions
-     should still use <Button/>, which adds context adaptation. */
+  /* Native buttons wear the Button component's own base look: the same
+     derivation recipe on the neutral text channel, restated rather than
+     derived (a component file cannot be imported here). The pair is policed
+     by scripts/contrast-audit.mjs, whose tintWeights/labelWeights read both
+     files and fail when the weights drift. Real actions should still use
+     <Button/>, which adds context adaptation. */
   button,
   input:is([type="button"], [type="reset"], [type="submit"]),
   ::file-selector-button {

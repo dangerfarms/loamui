@@ -13,12 +13,14 @@ An on/off toggle for a single setting that takes effect immediately.
 ## Import
 
 ```tsx
-import { Field, Switch, SwitchControl } from "@loamui/core";
+import { Field, Switch } from "@loamui/core";
 ```
 
 ## Usage
 
 ### Basic usage
+
+A bare Switch named by aria-label, for a row where the words already sit beside it. Off by default: a setting the user has not turned on.
 
 ```tsx
 <Switch aria-label="Email notifications" />
@@ -38,24 +40,26 @@ labelPosition places the label after the toggle (default) or before it.
 
 ```tsx
 <Switch label="Enable notifications" />
-<Switch label="Label on the left" labelPosition="start" />
+<Switch label="Marketing emails" labelPosition="start" />
 ```
 
 ### Disabled
 
+disabled reaches the native input: the row is dimmed and skipped by Tab, and a switch that is on and disabled shows a setting that is on and not the user's to change here. Disabled is detected on the input, never declared on the row.
+
 ```tsx
-<Switch label="Off & disabled" disabled />
-<Switch label="On & disabled" defaultChecked disabled />
+<Switch label="Usage analytics" disabled />
+<Switch label="Security alerts" defaultChecked disabled />
 ```
 
 ### Composed inside a Field
 
-The bare SwitchControl self-wires from Field context: label association and description linking come from the Field, the same composition contract every form control shares.
+The bare Switch.Control self-wires from Field context: label association and description linking come from the Field, the same composition contract every form control shares.
 
 ```tsx
 <Field.Root>
   <Field.Label>
-    <SwitchControl defaultChecked /> Email notifications
+    <Switch.Control defaultChecked /> Email notifications
   </Field.Label>
   <Field.Description>Sent at most once a day.</Field.Description>
 </Field.Root>
@@ -87,6 +91,7 @@ The label names the thing that is on when the switch is on: “Email notificatio
 - The label is tied to the control; the whole row is clickable.
 - In the rare case a switch needs an error message, wrap it in a Field.Root and add a Field.Error before the control: the message marks it invalid and is announced.
 - State is conveyed by more than colour (the thumb position), so it remains clear in forced-colors and for colour-blind users.
+- Disabled is detected on the native input (:has(input:disabled) on the row, input:disabled on the track), never declared on a wrapper.
 
 ## Props
 
@@ -95,12 +100,12 @@ The label names the thing that is on when the switch is on: “Email notificatio
 | `label` | `ReactNode` | — | Label rendered beside the toggle. |
 | `description` | `ReactNode` | — | Helper text rendered below the label row. |
 | `labelPosition` | `"start" \| "end"` | `"end"` | Which side of the toggle the label sits on. |
-| `wrapperClassName` | `string` | — | Class for the label-row wrapper element (the input keeps className). |
-| `...others` | `InputHTMLAttributes` | — | All native <input type="checkbox"> props (except type and size) are forwarded. |
+| `wrapperProps` | `PartProps<"label">` | — | Props for the labelled row (the <label> around the toggle and its words). className, style, ref and every other prop land on the <input> itself. |
+| `...others` | `InputHTMLAttributes` | — | All native <input type="checkbox"> props (except type and size), and ref, are forwarded to the <input>. |
 
 ## Parts
 
-### SwitchControl
+### Switch.Control
 
-The bare toggle without a label, for composing inside a Field where the label lives on Field.Label. It reads its wiring (id, aria-describedby, aria-invalid) from the field context, and takes the same props as Switch minus label, description, labelPosition and wrapperClassName.
+The bare toggle without a label, for composing inside a Field where the label lives on Field.Label. It reads its wiring (id, aria-describedby, aria-invalid) from the field context, and takes the same props as Switch minus label, description and labelPosition; its wrapperProps reach the span around the input and track.
 

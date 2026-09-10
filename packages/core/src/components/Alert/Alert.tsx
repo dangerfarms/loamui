@@ -1,9 +1,12 @@
-import type { HTMLAttributes, ReactNode, Ref } from "react";
+import type { ReactNode } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
+import { renderWithProps } from "../../render";
+import type { RenderProp } from "../../render";
+import { Button } from "../Button/Button";
+import type { ButtonProps } from "../Button/Button";
 
-export interface AlertRootProps extends Omit<HTMLAttributes<HTMLDivElement>, "color"> {
-  ref?: Ref<HTMLDivElement>;
-}
+export interface AlertRootProps extends Omit<PartProps<"div">, "color"> {}
 
 /**
  * Polite by default: `role="status"` announces without interrupting, which
@@ -18,37 +21,96 @@ function AlertRoot({ className, children, ref, ...rest }: AlertRootProps) {
   );
 }
 
-export interface AlertPartProps extends HTMLAttributes<HTMLElement> {}
+export interface AlertIconProps extends PartProps<"span"> {}
 
-function AlertIcon({ className, children, ...rest }: AlertPartProps) {
+function AlertIcon({ className, children, ref, ...rest }: AlertIconProps) {
   return (
-    <span className={cx("icon", className)} aria-hidden {...rest}>
+    <span ref={ref} className={cx("icon", className)} aria-hidden {...rest}>
       {children}
     </span>
   );
 }
 
-function AlertBody({ className, children, ...rest }: AlertPartProps) {
+export interface AlertBodyProps extends PartProps<"div"> {}
+
+function AlertBody({ className, children, ref, ...rest }: AlertBodyProps) {
   return (
-    <div className={cx("body", className)} {...rest}>
+    <div ref={ref} className={cx("body", className)} {...rest}>
       {children}
     </div>
   );
 }
 
-function AlertTitle({ className, children, ...rest }: AlertPartProps) {
+export interface AlertTitleProps extends PartProps<"div"> {
+  /**
+   * Render as a different element: `render={<h2 />}` where the alert's title
+   * belongs in the page outline. The class merges onto the element it renders.
+   */
+  render?: RenderProp<Record<string, unknown>>;
+}
+
+function AlertTitle({ render, className, children, ref, ...rest }: AlertTitleProps) {
+  const wiring = { ref, className: cx("title", className), children, ...rest };
+  if (render) {
+    return <>{renderWithProps(render, wiring)}</>;
+  }
+  return <div {...wiring} />;
+}
+
+export interface AlertDescriptionProps extends PartProps<"div"> {}
+
+function AlertDescription({ className, children, ref, ...rest }: AlertDescriptionProps) {
   return (
-    <div className={cx("title", className)} {...rest}>
+    <div ref={ref} className={cx("description", className)} {...rest}>
       {children}
     </div>
   );
 }
 
-function AlertMessage({ className, children, ...rest }: AlertPartProps) {
+/** The words the Close button speaks. */
+export interface AlertCloseLabels {
+  /** The button's name when it has no children of its own. @default "Dismiss" */
+  close?: string;
+}
+
+export interface AlertCloseProps extends ButtonProps {
+  /** Called when the button is activated; the consumer stops rendering the alert. */
+  onClose?: () => void;
+  /**
+   * The button's name when it has no children of its own (an icon-only
+   * close). @default { close: "Dismiss" }
+   */
+  labels?: AlertCloseLabels;
+}
+
+/**
+ * A close button: a LoamUI Button that reports the dismissal through
+ * `onClose`. The alert itself does not vanish; the consumer removes it,
+ * because an alert exists exactly as long as the condition it reports and
+ * only the consumer knows when acknowledging it ends that condition.
+ */
+function AlertClose({ onClose, onClick, labels, children, ...rest }: AlertCloseProps) {
+  const close = labels?.close ?? "Dismiss";
   return (
-    <div className={cx("message", className)} {...rest}>
-      {children}
-    </div>
+    <Button
+      aria-label={children ? undefined : close}
+      onClick={(e) => {
+        onClick?.(e);
+        if (!e.defaultPrevented) onClose?.();
+      }}
+      {...rest}
+    >
+      {children ?? (
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden>
+          <path
+            d="M4 4l8 8m0-8l-8 8"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+        </svg>
+      )}
+    </Button>
   );
 }
 
@@ -57,6 +119,10 @@ export interface AlertProps extends Omit<AlertRootProps, "title"> {
   title?: ReactNode;
   /** Icon rendered to the inline-start of the content. */
   icon?: ReactNode;
+  /** Renders an `Alert.Close` that calls this when activated. */
+  onClose?: () => void;
+  /** The close button's name, when `onClose` renders one. @default { close: "Dismiss" } */
+  labels?: AlertCloseLabels;
   /** Alert body. */
   children?: ReactNode;
 }
@@ -75,27 +141,29 @@ export interface AlertProps extends Omit<AlertRootProps, "title"> {
  * </div>
  * ```
  *
- * Compose it from parts, or use the `title`/`icon` convenience props which
- * render the same structure:
+ * Compose it from parts, or use the `title`/`icon`/`onClose` convenience
+ * props which render the same structure:
  *
  * ```tsx
  * <Alert.Root>
  *   <Alert.Icon>…</Alert.Icon>
  *   <Alert.Body>
  *     <Alert.Title>Heads up</Alert.Title>
- *     <Alert.Message>A new version is available.</Alert.Message>
+ *     <Alert.Description>A new version is available.</Alert.Description>
  *   </Alert.Body>
+ *   <Alert.Close onClose={dismiss} />
  * </Alert.Root>
  * ```
  */
-function AlertBase({ title, icon, children, ref, ...rest }: AlertProps) {
+function AlertBase({ title, icon, onClose, labels, children, ref, ...rest }: AlertProps) {
   return (
     <AlertRoot ref={ref} {...rest}>
       {icon && <AlertIcon>{icon}</AlertIcon>}
       <AlertBody>
         {title && <AlertTitle>{title}</AlertTitle>}
-        {children && <AlertMessage>{children}</AlertMessage>}
+        {children && <AlertDescription>{children}</AlertDescription>}
       </AlertBody>
+      {onClose && <AlertClose onClose={onClose} labels={labels} />}
     </AlertRoot>
   );
 }
@@ -105,5 +173,6 @@ export const Alert = Object.assign(AlertBase, {
   Icon: AlertIcon,
   Body: AlertBody,
   Title: AlertTitle,
-  Message: AlertMessage,
+  Description: AlertDescription,
+  Close: AlertClose,
 });

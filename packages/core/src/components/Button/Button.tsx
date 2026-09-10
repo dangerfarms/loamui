@@ -1,9 +1,10 @@
-import type { ButtonHTMLAttributes, ReactNode, Ref } from "react";
+import type { ReactNode } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 import { renderWithProps } from "../../render";
 import type { RenderProp } from "../../render";
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends PartProps<"button"> {
   children?: ReactNode;
   /**
    * Render as a different element. The Button's classes and attributes
@@ -11,7 +12,6 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
    * call-to-action that goes somewhere is a `SignpostLink`.
    */
   render?: RenderProp<Record<string, unknown>>;
-  ref?: Ref<HTMLButtonElement>;
 }
 
 /**
@@ -36,7 +36,9 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
  * natively, a row shrink-wraps them. Icons are
  * detected (`:has(svg)`) — compose them as children, no slot props. An
  * icon-only button is detected from its accessible name: give it an
- * `aria-label` (required for accessibility anyway) and it becomes square.
+ * `aria-label` or `aria-labelledby` (required for accessibility anyway), or
+ * name it with hidden text (`<span className="loam-VisuallyHidden">`)
+ * beside the icon, and it becomes square.
  * For a one-off colour set the public `--loam-button-color` property; for a
  * house style, wrap it (the SecondaryButton pattern).
  */

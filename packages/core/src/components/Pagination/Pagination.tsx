@@ -1,26 +1,140 @@
 "use client";
 
-import type { HTMLAttributes, MouseEvent, ReactNode } from "react";
+import type { MouseEvent as ReactMouseEvent, ReactNode } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
+import type { RenderProp } from "../../render";
 
-export interface PaginationProps extends Omit<HTMLAttributes<HTMLElement>, "onChange"> {
-  /** Total number of pages. */
-  total: number;
-  /** The active page (1-based). */
-  value: number;
-  /** Build the destination URL for a page. */
-  getHref: (page: number) => string;
-  /** Optionally intercept navigation for a client router. */
-  onNavigate?: (page: number, event: MouseEvent<HTMLAnchorElement>) => void;
+import { Button } from "../Button/Button";
+import type { ButtonProps } from "../Button/Button";
+
+/**
+ * Link-first page navigation, composed from parts.
+ *
+ * Every destination is a real link (a LoamUI Button rendered as an `<a>`),
+ * so a page is linkable, survives reloads and works before JavaScript runs;
+ * client routers substitute their own link through `render` or intercept
+ * `onNavigate`. The current page carries `aria-current="page"` and the
+ * stylesheet keys off that same attribute.
+ *
+ * ```tsx
+ * <Pagination.Root>
+ *   <Pagination.List>
+ *     <Pagination.Pages page={page} count={20} getHref={(n) => `?page=${n}`} />
+ *   </Pagination.List>
+ * </Pagination.Root>
+ * ```
+ *
+ * `Pagination.Pages` renders Previous, the numbered window with its
+ * ellipses, and Next. Edge links (first, last) are your own Items around it.
+ */
+
+/** The words the landmark speaks. */
+export interface PaginationLabels {
+  /** The landmark's accessible name. @default "Pagination" */
+  navigation?: string;
+}
+
+export interface PaginationRootProps extends PartProps<"nav"> {
+  /** The words the landmark speaks: `navigation` is its accessible name. */
+  labels?: PaginationLabels;
+}
+
+function PaginationRoot({ labels, className, children, ...rest }: PaginationRootProps) {
+  const navigationLabel = labels?.navigation ?? "Pagination";
+  return (
+    <nav aria-label={navigationLabel} {...rest} className={cx("loam-Pagination", className)}>
+      {children}
+    </nav>
+  );
+}
+
+export interface PaginationListProps extends PartProps<"ul"> {}
+
+function PaginationList({ className, children, ...rest }: PaginationListProps) {
+  return (
+    <ul {...rest} className={className}>
+      {children}
+    </ul>
+  );
+}
+
+export interface PaginationItemProps extends PartProps<"li"> {}
+
+function PaginationItem({ className, children, ...rest }: PaginationItemProps) {
+  return (
+    <li {...rest} className={className}>
+      {children}
+    </li>
+  );
+}
+
+/** Wiring the Link attaches to whatever it renders. */
+export interface PaginationLinkRenderProps {
+  /** The current page, detected by the stylesheet as well. */
+  "aria-current": "page" | undefined;
+  /** An unavailable direction: a placeholder outside the tab and reading order. */
+  "aria-hidden": true | undefined;
+  "data-disabled": true | undefined;
+  tabIndex: -1 | undefined;
+}
+
+export interface PaginationLinkProps extends PartProps<"a"> {
+  /** Marks the current page (`aria-current="page"`). */
+  current?: boolean;
   /**
-   * Number of sibling pages shown on each side of the active page.
-   * @default 1
+   * An unavailable destination (Previous on the first page). The built-in
+   * link drops its `href` and leaves the tab and accessibility order, so
+   * the layout stays stable without an inert stop.
    */
-  siblings?: number;
-  /** Show first/last page buttons at the edges. */
-  withEdges?: boolean;
-  /** Accessible label for the navigation region. @default "Pagination" */
-  "aria-label"?: string;
+  disabled?: boolean;
+  /**
+   * Substitute your own link (`render={<Link href="…" />}`); it receives the
+   * Button's class and the pagination wiring. Defaults to an `<a>`.
+   */
+  render?: RenderProp<PaginationLinkRenderProps & Record<string, unknown>>;
+}
+
+/** A page destination: a LoamUI Button rendered as a link. */
+function PaginationLink({
+  current,
+  disabled,
+  render,
+  href,
+  children,
+  ...rest
+}: PaginationLinkProps) {
+  const wiring: PaginationLinkRenderProps = {
+    "aria-current": current ? "page" : undefined,
+    "aria-hidden": disabled || undefined,
+    "data-disabled": disabled || undefined,
+    tabIndex: disabled ? -1 : undefined,
+  };
+  // The anchor's attributes ride through Button's render path untouched;
+  // the cast only reconciles the two elements' prop types.
+  return (
+    <Button
+      {...(rest as ButtonProps)}
+      {...wiring}
+      render={
+        (render as ButtonProps["render"]) ?? <a href={disabled ? undefined : href}>{children}</a>
+      }
+    >
+      {children}
+    </Button>
+  );
+}
+
+export interface PaginationEllipsisProps extends PartProps<"li"> {}
+
+/** A gap in the page list; visual shorthand, hidden from assistive technology. */
+function PaginationEllipsis({ className, children, ...rest }: PaginationEllipsisProps) {
+  const glyph = children ?? "…";
+  return (
+    <li aria-hidden="true" {...rest} className={cx("ellipsis", className)}>
+      {glyph}
+    </li>
+  );
 }
 
 const DOTS = "dots" as const;
@@ -33,37 +147,35 @@ function range(start: number, end: number): number[] {
 }
 
 /** Build the list of page numbers with ellipsis gaps. */
-function getPaginationItems(total: number, active: number, siblings: number): PageItem[] {
+function getPaginationItems(count: number, active: number, siblings: number): PageItem[] {
   // Pages we always show plus the sibling window; if that's most of them,
   // just render every page.
   const totalToShow = siblings * 2 + 5; // first, last, active, 2 dots
-  if (totalToShow >= total) return range(1, total);
+  if (totalToShow >= count) return range(1, count);
 
   const leftSibling = Math.max(active - siblings, 1);
-  const rightSibling = Math.min(active + siblings, total);
+  const rightSibling = Math.min(active + siblings, count);
 
   const showLeftDots = leftSibling > 2;
-  const showRightDots = rightSibling < total - 1;
+  const showRightDots = rightSibling < count - 1;
 
   if (!showLeftDots && showRightDots) {
     const leftCount = siblings * 2 + 3;
-    return [...range(1, leftCount), DOTS, total];
+    return [...range(1, leftCount), DOTS, count];
   }
 
   if (showLeftDots && !showRightDots) {
     const rightCount = siblings * 2 + 3;
-    return [1, DOTS, ...range(total - rightCount + 1, total)];
+    return [1, DOTS, ...range(count - rightCount + 1, count)];
   }
 
-  return [1, DOTS, ...range(leftSibling, rightSibling), DOTS, total];
+  return [1, DOTS, ...range(leftSibling, rightSibling), DOTS, count];
 }
 
-function ChevronIcon({ dir }: { dir: "left" | "right" }) {
+function ChevronIcon({ dir }: { dir: "previous" | "next" }) {
   return (
     <svg
       viewBox="0 0 24 24"
-      width="18"
-      height="18"
       fill="none"
       stroke="currentColor"
       strokeWidth="2"
@@ -71,125 +183,100 @@ function ChevronIcon({ dir }: { dir: "left" | "right" }) {
       strokeLinejoin="round"
       aria-hidden
     >
-      <polyline points={dir === "left" ? "15 18 9 12 15 6" : "9 18 15 12 9 6"} />
+      <polyline points={dir === "previous" ? "15 18 9 12 15 6" : "9 18 15 12 9 6"} />
     </svg>
   );
 }
 
-function EdgeIcon({ dir }: { dir: "first" | "last" }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="18"
-      height="18"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      {dir === "first" ? (
-        <>
-          <polyline points="17 18 11 12 17 6" />
-          <line x1="7" y1="6" x2="7" y2="18" />
-        </>
-      ) : (
-        <>
-          <polyline points="7 18 13 12 7 6" />
-          <line x1="17" y1="6" x2="17" y2="18" />
-        </>
-      )}
-    </svg>
-  );
+/** The words the page links speak. */
+export interface PaginationPagesLabels {
+  /** The Previous arrow's name. @default "Previous page" */
+  previous?: string;
+  /** The Next arrow's name. @default "Next page" */
+  next?: string;
+  /** Names each page link. @default `"Page ${n}"` */
+  page?: (page: number) => string;
+}
+
+export interface PaginationPagesProps {
+  /** The active page (1-based). */
+  page: number;
+  /** Total number of pages. */
+  count: number;
+  /** Sibling pages shown on each side of the active page. @default 1 */
+  siblings?: number;
+  /** Build the destination URL for a page. */
+  getHref: (page: number) => string;
+  /** Optionally intercept navigation for a client router. */
+  onNavigate?: (page: number, event: ReactMouseEvent<HTMLAnchorElement>) => void;
+  /**
+   * The words the links speak, for another language or a different noun:
+   * `previous` and `next` name the arrows, `page(n)` names each page link.
+   */
+  labels?: PaginationPagesLabels;
 }
 
 /**
- * Link-first page navigator.
- *
- * Every available destination is a real link. Client routers can intercept
- * `onNavigate`; without JavaScript the href still works. The active page
- * carries `aria-current="page"`.
+ * The sequential core of a pager: Previous, the numbered window around the
+ * active page with ellipsis gaps, and Next, built from the parts. Renders
+ * Items, so it belongs inside `Pagination.List`; edge links are your own
+ * Items around it.
  */
-export function Pagination({
-  total,
-  value,
+function PaginationPages({
+  page,
+  count,
+  siblings = 1,
   getHref,
   onNavigate,
-  siblings = 1,
-  withEdges = false,
-  className,
-  "aria-label": ariaLabel = "Pagination",
-  ...rest
-}: PaginationProps) {
-  const active = Math.min(Math.max(value, 1), Math.max(total, 1));
-  const items = getPaginationItems(total, active, siblings);
-  const atStart = active <= 1;
-  const atEnd = active >= total;
+  labels,
+}: PaginationPagesProps) {
+  const previousLabel = labels?.previous ?? "Previous page";
+  const nextLabel = labels?.next ?? "Next page";
+  const pageLabel = labels?.page ?? ((n: number) => `Page ${n}`);
+  const active = Math.min(Math.max(page, 1), Math.max(count, 1));
+  const items = getPaginationItems(count, active, siblings);
 
-  const pageLink = (
-    page: number,
-    label: string,
-    children: ReactNode,
-    options: { active?: boolean; disabled?: boolean; rel?: "prev" | "next" } = {},
-  ) => {
-    const clamped = Math.min(Math.max(page, 1), total);
-    if (options.disabled) {
-      return (
-        <span className="control" data-disabled aria-hidden="true">
-          {children}
-        </span>
-      );
-    }
+  const link = (target: number, label: string, children: ReactNode, rel?: "prev" | "next") => {
+    const clamped = Math.min(Math.max(target, 1), count);
     return (
-      <a
-        className="control"
+      <PaginationLink
         href={getHref(clamped)}
-        rel={options.rel}
-        aria-current={options.active ? "page" : undefined}
+        rel={rel}
         aria-label={label}
+        current={clamped === active && rel === undefined}
+        disabled={rel !== undefined && clamped === active}
         onClick={(event) => onNavigate?.(clamped, event)}
       >
         {children}
-      </a>
+      </PaginationLink>
     );
   };
 
+  let dots = 0;
   return (
-    <nav aria-label={ariaLabel} className={cx("loam-Pagination", className)} {...rest}>
-      <ul>
-        {withEdges && (
-          <li>{pageLink(1, "First page", <EdgeIcon dir="first" />, { disabled: atStart })}</li>
-        )}
-        <li>
-          {pageLink(active - 1, "Previous page", <ChevronIcon dir="left" />, {
-            disabled: atStart,
-            rel: "prev",
-          })}
-        </li>
-
-        {items.map((item, index) => {
-          if (item === DOTS) {
-            return (
-              <li key={`dots-${index}`} aria-hidden="true">
-                <span className="dots">…</span>
-              </li>
-            );
-          }
-          const isActive = item === active;
-          return <li key={item}>{pageLink(item, `Page ${item}`, item, { active: isActive })}</li>;
-        })}
-
-        <li>
-          {pageLink(active + 1, "Next page", <ChevronIcon dir="right" />, {
-            disabled: atEnd,
-            rel: "next",
-          })}
-        </li>
-        {withEdges && (
-          <li>{pageLink(total, "Last page", <EdgeIcon dir="last" />, { disabled: atEnd })}</li>
-        )}
-      </ul>
-    </nav>
+    <>
+      <PaginationItem>
+        {link(active - 1, previousLabel, <ChevronIcon dir="previous" />, "prev")}
+      </PaginationItem>
+      {items.map((item) =>
+        item === DOTS ? (
+          <PaginationEllipsis key={`dots-${++dots}`} />
+        ) : (
+          <PaginationItem key={item}>{link(item, pageLabel(item), item)}</PaginationItem>
+        ),
+      )}
+      <PaginationItem>
+        {link(active + 1, nextLabel, <ChevronIcon dir="next" />, "next")}
+      </PaginationItem>
+    </>
   );
 }
+
+export const Pagination = {
+  Root: PaginationRoot,
+  List: PaginationList,
+  Item: PaginationItem,
+  Link: PaginationLink,
+  Ellipsis: PaginationEllipsis,
+  Pages: PaginationPages,
+};

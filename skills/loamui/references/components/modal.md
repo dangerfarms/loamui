@@ -135,12 +135,13 @@ If the content scrolls, needs sections, or asks more than one question, it has o
 
 ### Always render a Title
 
-Modal.Title labels the dialog via aria-labelledby; it is what screen readers announce on open. A dialog without one is announced as, at best, "dialog": the user hears that something opened but not what it wants.
+Modal.Title labels the dialog via aria-labelledby; it is what screen readers announce on open. A dialog without one is announced as, at best, "dialog": the user hears that something opened but not what it wants. A Popup with neither a Title nor an aria-label is reported in development.
 
 ## Accessibility
 
 - Built on the native <dialog> opened with showModal(): the browser provides the top layer, ::backdrop, real focus containment, Escape handling, and restores focus to the trigger on close. None of it re-implemented in JavaScript.
 - Modal.Title and Modal.Description automatically label and describe the dialog via aria-labelledby / aria-describedby.
+- Modal.Trigger carries aria-haspopup="dialog" and aria-expanded, which follows the open state, so a screen reader says what the button opens and whether it is open.
 - Light dismiss (clicking the backdrop) uses the closedby attribute where supported, with a small feature-detected coordinate-check fallback elsewhere: no polyfills, per the browser support policy.
 - Body scroll is locked while open.
 

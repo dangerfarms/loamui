@@ -11,7 +11,7 @@ const doc: ComponentContent = {
   importLine: `import { Breadcrumbs } from "@loamui/core";`,
   demos: [
     {
-      title: "Basic",
+      title: "Basic usage",
       description:
         "Items are links via href; mark the current page explicitly with current. Separators are drawn by CSS, not the DOM.",
       code: `<Breadcrumbs.Root>
@@ -23,8 +23,9 @@ const doc: ComponentContent = {
     },
     {
       title: "Custom separator",
-      description: "Set any glyph once on the Root; CSS draws it between items.",
-      code: `<Breadcrumbs.Root separator="→">
+      description:
+        "Set the public --loam-breadcrumbs-separator property (a CSS string) where the trail is used; CSS draws it between items.",
+      code: `<Breadcrumbs.Root style={{ "--loam-breadcrumbs-separator": '"→"' }}>
   <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
   <Breadcrumbs.Item href="/projects">Projects</Breadcrumbs.Item>
   <Breadcrumbs.Item current>Website Redesign</Breadcrumbs.Item>
@@ -60,7 +61,7 @@ const doc: ComponentContent = {
     },
     {
       title: "A trail needs a real hierarchy",
-      body: "Breadcrumbs earn their space only when the page sits at least two levels deep in a structure users can climb. One level up is a single destination: a plain 'Back to projects' link says the same thing more simply. Nor are breadcrumbs primary navigation: they show where you are, not where you can go, so they supplement the main nav rather than replace it.",
+      body: "Breadcrumbs earn their space only when the page sits at least two levels deep in a structure users can climb. One level up is a single destination: a plain 'Back to projects' link says the same thing in fewer words. Nor are breadcrumbs primary navigation: they show where you are, not where you can go, so they supplement the main nav rather than replace it.",
     },
     {
       title: "Truncate or omit before wrapping",
@@ -78,17 +79,17 @@ const doc: ComponentContent = {
       description: "The <nav> + list wrapper; native <nav> props are forwarded.",
       props: [
         {
-          name: "separator",
-          type: "string",
-          default: `"/"`,
-          description: "The CSS-drawn glyph between items.",
+          name: "labels",
+          type: "{ navigation?: string }",
+          default: `{ navigation: "Breadcrumbs" }`,
+          description: "The landmark's accessible name.",
         },
       ],
     },
     {
       name: "Breadcrumbs.Item",
       description:
-        "One crumb: an <a> when href is given, plain text otherwise. Native <a> props are forwarded to the link it renders.",
+        "One crumb: an <a> when href is given, plain text otherwise. className, ref and the rest land on the <li>, which carries the part's class; attributes for the link itself go on the element passed to render.",
       props: [
         { name: "href", type: "string", description: "Renders the crumb as a link." },
         {
@@ -102,6 +103,15 @@ const doc: ComponentContent = {
           description: "Substitute the element (e.g. render={<Link href=…/>}).",
         },
       ],
+    },
+  ],
+  cssProps: [
+    {
+      name: "--loam-breadcrumbs-separator",
+      syntax: "CSS string",
+      default: `"/"`,
+      description:
+        "The glyph drawn between items, as a CSS string (quotes included: '\"→\"'). Set it on the Root or any ancestor.",
     },
   ],
 };

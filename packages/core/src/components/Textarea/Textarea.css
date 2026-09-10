@@ -1,4 +1,4 @@
-@scope (.loam-Textarea-field) {
+@scope (.loam-Textarea-field) to ([class*="loam-"]) {
   :scope {
     background: var(--loam-color-surface);
     border: 1px solid var(--loam-color-line-strong);
@@ -41,21 +41,19 @@
     border-color: var(--loam-color-danger);
   }
 
-  :scope[data-disabled] {
+  :scope:has(textarea:disabled) {
     background: var(--loam-color-bg-subtle);
     opacity: var(--loam-disabled-opacity);
   }
 
+  /* The height is the rows attribute's, as the platform sizes it; nothing
+     here declares a floor of its own. */
   textarea {
     background: transparent;
     border: none;
     color: inherit;
     flex: 1;
     font: inherit;
-
-    /* Floor in lh so it rides the fluid font; `rows` in the markup is the
-       semantic fallback where lh is unsupported. */
-    min-block-size: 3.5lh;
     min-inline-size: 0;
     outline: none;
     padding: 0;
@@ -83,12 +81,30 @@
     resize: none;
   }
 
-  /* Native auto-grow where the platform provides it; the floor above still
-     applies. */
+  /* Native auto-grow where the platform provides it. field-sizing ignores
+     the rows attribute, so the component mirrors it into --_rows (the
+     fallback is the attribute's own default): the field starts at that
+     many lines and grows to ten, or to its rows when asked for more. */
   @supports (field-sizing: content) {
     textarea {
       field-sizing: content;
-      max-block-size: 10lh;
+      max-block-size: max(10lh, calc(var(--_rows, 3) * 1lh));
+      min-block-size: calc(var(--_rows, 3) * 1lh);
+    }
+  }
+
+  /* Forced colours drop the danger border colour, so the invalid state
+     moves to an outline in a system colour; the focus ring is offset
+     further out and still reads as its own ring. Mirrors Input. */
+  @media (forced-colors: active) {
+    :scope:has(textarea[aria-invalid="true"]) {
+      outline: 2px solid LinkText;
+      outline-offset: 1px;
+
+      &:focus-within {
+        outline: var(--loam-ring-width) solid Highlight;
+        outline-offset: 2px;
+      }
     }
   }
 }

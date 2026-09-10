@@ -18,7 +18,7 @@ import { Breadcrumbs } from "@loamui/core";
 
 ## Usage
 
-### Basic
+### Basic usage
 
 Items are links via href; mark the current page explicitly with current. Separators are drawn by CSS, not the DOM.
 
@@ -32,10 +32,10 @@ Items are links via href; mark the current page explicitly with current. Separat
 
 ### Custom separator
 
-Set any glyph once on the Root; CSS draws it between items.
+Set the public --loam-breadcrumbs-separator property (a CSS string) where the trail is used; CSS draws it between items.
 
 ```tsx
-<Breadcrumbs.Root separator="→">
+<Breadcrumbs.Root style={{ "--loam-breadcrumbs-separator": '"→"' }}>
   <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
   <Breadcrumbs.Item href="/projects">Projects</Breadcrumbs.Item>
   <Breadcrumbs.Item current>Website Redesign</Breadcrumbs.Item>
@@ -74,7 +74,7 @@ The last crumb is the page the user is on: mark it current and give it no href. 
 
 ### A trail needs a real hierarchy
 
-Breadcrumbs earn their space only when the page sits at least two levels deep in a structure users can climb. One level up is a single destination: a plain 'Back to projects' link says the same thing more simply. Nor are breadcrumbs primary navigation: they show where you are, not where you can go, so they supplement the main nav rather than replace it.
+Breadcrumbs earn their space only when the page sits at least two levels deep in a structure users can climb. One level up is a single destination: a plain 'Back to projects' link says the same thing in fewer words. Nor are breadcrumbs primary navigation: they show where you are, not where you can go, so they supplement the main nav rather than replace it.
 
 ### Truncate or omit before wrapping
 
@@ -94,15 +94,21 @@ The <nav> + list wrapper; native <nav> props are forwarded.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `separator` | `string` | `"/"` | The CSS-drawn glyph between items. |
+| `labels` | `{ navigation?: string }` | `{ navigation: "Breadcrumbs" }` | The landmark's accessible name. |
 
 ### Breadcrumbs.Item
 
-One crumb: an <a> when href is given, plain text otherwise. Native <a> props are forwarded to the link it renders.
+One crumb: an <a> when href is given, plain text otherwise. className, ref and the rest land on the <li>, which carries the part's class; attributes for the link itself go on the element passed to render.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `href` | `string` | — | Renders the crumb as a link. |
 | `current` | `boolean` | — | Marks the current page (aria-current). |
 | `render` | `element \| (props) => node` | — | Substitute the element (e.g. render={<Link href=…/>}). |
+
+## Custom properties
+
+| Property | Syntax | Default | Description |
+| --- | --- | --- | --- |
+| `--loam-breadcrumbs-separator` | `CSS string` | `"/"` | The glyph drawn between items, as a CSS string (quotes included: '"→"'). Set it on the Root or any ancestor. |
 

@@ -1,24 +1,28 @@
 import type { PropRow } from "./types";
+import { ScrollRegion } from "./ScrollRegion";
 import classes from "./PropsTable.module.css";
 
 export function PropsTable({
   rows,
   nameLabel = "Prop",
   typeLabel = "Type",
+  label,
 }: {
   rows: PropRow[];
   nameLabel?: string;
   typeLabel?: string;
+  /** Names the table's scroller once it scrolls. @default "<nameLabel> table" */
+  label?: string;
 }) {
   return (
-    <div className={classes.scroll}>
+    <ScrollRegion className={classes.scroll} label={label ?? `${nameLabel} table`}>
       <table className={classes.table}>
         <thead>
           <tr>
-            <th>{nameLabel}</th>
-            <th>{typeLabel}</th>
-            <th>Default</th>
-            <th>Description</th>
+            <th scope="col">{nameLabel}</th>
+            <th scope="col">{typeLabel}</th>
+            <th scope="col">Default</th>
+            <th scope="col">Description</th>
           </tr>
         </thead>
         <tbody>
@@ -34,7 +38,9 @@ export function PropsTable({
                 {r.default ? (
                   <code className={classes.default}>{r.default}</code>
                 ) : (
-                  <span className={classes.dim}>—</span>
+                  <span className={classes.dim} aria-label="none">
+                    —
+                  </span>
                 )}
               </td>
               <td>{r.description}</td>
@@ -42,6 +48,6 @@ export function PropsTable({
           ))}
         </tbody>
       </table>
-    </div>
+    </ScrollRegion>
   );
 }

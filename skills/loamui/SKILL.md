@@ -28,6 +28,9 @@ metadata:
   accessibility contract live there, not here.
 - The references match the library at the same commit; check the installed
   version in `node_modules/@loamui/core/package.json` if behaviour differs.
+- **Examples:** the `/examples` section of the docs site shows 133 copy-paste
+  sections (heroes, headers, forms, tables, baskets) built from core alone; their
+  markdown twins are under `references/examples/`.
 
 ## The three primitives
 
@@ -70,13 +73,13 @@ metadata:
 
 ## Components
 
-| Category     | Components                                                                                                |
-| ------------ | --------------------------------------------------------------------------------------------------------- |
-| Inputs       | Field, Fieldset, ErrorSummary, Button, Input, Textarea, Select, DateInput, Checkbox, Radio, Switch, Range |
-| Data display | Badge, Card, Avatar, Table, Separator                                                                     |
-| Feedback     | Alert, Progress, Skeleton, Loader, Toast                                                                  |
-| Disclosures  | Details, Tooltip, Modal, Drawer, Popover, Menu                                                            |
-| Navigation   | Tabs, SignpostLink, SkipLink, Breadcrumbs, Pagination                                                     |
+| Category     | Components                                                                                                                                                                                                 |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Inputs       | Field, Fieldset, ErrorSummary, Button, Input, Textarea, Select, DateInput, Checkbox, Radio, Switch, Range, Search, QuantityInput, Rating, FileInput, CopyButton, Combobox, PasswordInput, SegmentedControl |
+| Data display | Badge, Price, Time, Card, Avatar, Table, Separator, Carousel, Stepper                                                                                                                                      |
+| Feedback     | Alert, Progress, Meter, Skeleton, Loader, Toast                                                                                                                                                            |
+| Disclosures  | Details, Tooltip, Modal, Drawer, Popover, Menu                                                                                                                                                             |
+| Navigation   | Tabs, SignpostLink, SkipLink, Breadcrumbs, Pagination, Nav                                                                                                                                                 |
 
 No layout components (use native CSS modules with the space tokens), no
 `Heading`/`Text` (a semantic element plus a scoped rule), no `Accordion`
@@ -90,9 +93,10 @@ No layout components (use native CSS modules with the space tokens), no
    it as a static file instead (see `references/guides/installation.md`).
 2. **Read the reference** for each component you will use.
 3. **Compose.** Parts inside a `Root`; bare form controls (`Input`, `Select`,
-   `Textarea`, `Range`) inside `Field.Root` wire their label, description,
-   error, and `aria-*` automatically. `Checkbox`, `Radio`, `Switch` take an
-   inline `label`; errors still go through `Field.Error`.
+   `Textarea`, `Range`, `QuantityInput`, `FileInput.Control`, `Search.Input`)
+   inside `Field.Root` wire their label, description, error, and `aria-*`
+   automatically. `Checkbox`, `Radio`, `Switch` take an inline `label`;
+   errors still go through `Field.Error`.
 4. **Declare context, don't configure.** Wrap a region:
    `<div style={{ "--loam-context": "danger" }}>…</div>` — buttons, inputs,
    badges and checkboxes inside all adapt. Only reach for identity when it is
@@ -138,7 +142,12 @@ Each of these has been seen in real migrations. Check your output against them.
 
 - **Looking for `size` / `variant` / `color` props.** They do not exist. Colour
   is a context region; size is the container; width is the parent's layout.
-  Modal and Drawer width: `--loam-modal-size` / `--loam-drawer-size`.
+  Modal and Drawer width: `--loam-modal-size` / `--loam-drawer-size`. The
+  exceptions are a glyph or track (`Badge`, `Loader`, `Progress`, `Meter`
+  keep `size`) and the platform's own numbers (`Meter` bounds,
+  `QuantityInput` `min`/`max`/`step`), which are semantics, not sizing.
+- **`type="number"` for a count.** A count nudged by one is `QuantityInput`;
+  any other number is `Input` with `inputMode="numeric"` or `"decimal"`.
 - **Borrowing `loam-*` classes on raw elements** (`<a class="loam-Button">`,
   `<details class="loam-Details">`). Class names are not API. Use the
   component; it carries wiring and tests the class does not.
@@ -153,7 +162,7 @@ Each of these has been seen in real migrations. Check your output against them.
   Say what happened and how to fix it, in the words of the question:
   "Enter your email address", "Select a country". No "please", "invalid",
   "required", or error codes.
-- **Expecting slot props** (`icon=`, `leftSection=`). Put the icon in as a
+- **Expecting slot props** (`icon=`, `startSection=`). Put the icon in as a
   child; the component detects it.
 - **Reset-then-restyle.** Do not add a CSS reset or zero every margin — the
   element styles are the baseline. Build on them.

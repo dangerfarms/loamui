@@ -25,10 +25,11 @@ export function FieldsetOptionalDemo() {
 
 export function FieldsetRadioDemo() {
   return (
-    <RadioGroup label="Plan" name="plan" defaultValue="pro">
+    <RadioGroup.Root name="plan" defaultValue="pro">
+      <RadioGroup.Legend>Plan</RadioGroup.Legend>
       <Radio value="free" label="Free" />
       <Radio value="pro" label="Pro" />
       <Radio value="team" label="Team" />
-    </RadioGroup>
+    </RadioGroup.Root>
   );
 }

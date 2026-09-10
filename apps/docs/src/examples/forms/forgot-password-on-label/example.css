@@ -1,0 +1,18 @@
+@scope (.forgot-password-on-label) to ([class*="loam-"]) {
+  :scope {
+    max-inline-size: 28rem;
+  }
+
+  div.label-row {
+    align-items: baseline;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-xs) var(--loam-space-md);
+    justify-content: space-between;
+
+    a {
+      font-size: var(--loam-text-sm);
+      margin-inline-start: auto;
+    }
+  }
+}

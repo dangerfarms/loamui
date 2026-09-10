@@ -2,7 +2,7 @@
   color: var(--loam-color-fg-muted);
   display: inline flow-root;
   font-size: var(--loam-text-xs);
-  margin-block-end: 1rem;
+  margin-block-end: 1.5rem;
   text-decoration: underline;
   text-decoration-color: color-mix(in oklab, currentcolor 40%, transparent);
   text-underline-offset: 2px;

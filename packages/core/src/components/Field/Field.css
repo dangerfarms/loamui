@@ -12,8 +12,17 @@
     gap: var(--loam-space-xs);
     inline-size: 100%;
   }
+}
 
-  label {
+/*
+ * The parts carry their own roots, so a label, description or error keeps
+ * its look wherever a composition places it: a composition's loam- class
+ * is a scoping limit for the field's scope, and without these a Field
+ * inside a SettingRow or PasswordField would lose its type. The field's
+ * scope above keeps only the stack.
+ */
+@scope (.loam-Field-label) {
+  :scope {
     align-items: center;
     display: block flex;
     font-size: var(--loam-text-sm);
@@ -25,33 +34,20 @@
     color: var(--loam-color-fg-muted);
     font-weight: 400;
   }
+}
 
-  p.description {
+@scope (.loam-Field-description) {
+  :scope {
     color: var(--loam-color-fg-muted);
-    font-size: var(--loam-text-sm);
-    margin: 0;
-  }
-
-  p.error {
-    color: var(--loam-color-danger);
     font-size: var(--loam-text-sm);
     margin: 0;
   }
 }
 
-/* The screen-reader-only "Error: " prefix inside error messages:
-   role="alert" announces the text, and the prefix makes it unmistakable
-   out of context. Self-scoped; shared by every error renderer. */
-@scope (.loam-Error-prefix) {
+@scope (.loam-Field-error) {
   :scope {
-    block-size: 1px;
-    border: 0;
-    clip-path: inset(50%);
-    inline-size: 1px;
-    margin: -1px;
-    overflow: clip;
-    padding: 0;
-    position: absolute;
-    white-space: nowrap;
+    color: var(--loam-color-danger);
+    font-size: var(--loam-text-sm);
+    margin: 0;
   }
 }

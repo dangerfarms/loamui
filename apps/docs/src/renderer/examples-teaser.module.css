@@ -1,0 +1,91 @@
+.grid {
+  display: block grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  @container (width <= 62rem) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @container (width <= 40rem) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* The index's card, in short: preview above, title below, the whole card
+   the link's hit area. */
+.card {
+  background: var(--loam-color-surface);
+  border: 1px solid var(--loam-color-line);
+  border-radius: var(--loam-radius-lg);
+  display: block grid;
+  grid-template-rows: auto 1fr;
+  margin: 0;
+  overflow: clip;
+  position: relative;
+
+  &:has(.link:hover) {
+    border-color: var(--loam-color-line-strong);
+    box-shadow: var(--loam-shadow-md);
+    translate: 0 -2px;
+  }
+
+  &:has(.link:focus-visible) {
+    outline: var(--loam-ring-width) solid var(--loam-color-ring);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition:
+      border-color var(--loam-duration-md) var(--loam-ease),
+      box-shadow var(--loam-duration-md) var(--loam-ease),
+      translate var(--loam-duration-md) var(--loam-ease);
+  }
+}
+
+.thumb {
+  aspect-ratio: 16 / 10;
+  background: var(--loam-color-bg);
+  border-block-end: 1px solid var(--loam-color-line);
+  overflow: clip;
+  pointer-events: none;
+  position: relative;
+}
+
+.thumbInner {
+  align-content: safe center;
+  block-size: 250%;
+  container-type: inline-size;
+  display: block grid;
+  inline-size: 250%;
+  inset: 0;
+  padding: var(--loam-space-xl);
+  position: absolute;
+  scale: 0.4;
+  transform-origin: 0 0;
+}
+
+.link {
+  color: var(--loam-color-fg-strong);
+  font-weight: 600;
+  padding: 0.9rem 1.1rem 1rem;
+
+  &::after {
+    content: "";
+    inset: 0;
+    position: absolute;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.cta {
+  display: block flex;
+  justify-content: center;
+  margin-block-start: 2rem;
+}

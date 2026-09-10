@@ -1,27 +1,26 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Skeleton } from "../../index";
+import type { CSSProperties } from "react";
+import { Avatar, Skeleton } from "../../index";
 
 const meta = {
   title: "Feedback/Skeleton",
   component: Skeleton,
   tags: ["autodocs"],
   args: {
-    width: "100%",
-    circle: false,
     visible: true,
   },
   argTypes: {
-    circle: { control: "boolean" },
     visible: { control: "boolean" },
   },
   parameters: {
     docs: {
       description: {
         component:
-          "An animated placeholder shown while content loads. Wrapped " +
-          "children size the box so it mirrors the coming layout; " +
-          "`width`/`height` are for bare placeholders, and all sizing " +
-          "policy lives in the stylesheet.",
+          "A placeholder shown while content loads. Wrapped children size " +
+          "the box so it mirrors the coming layout; a bare placeholder is " +
+          "one text line, sized from CSS through the public " +
+          "`--loam-skeleton-inline-size` / `--loam-skeleton-block-size` " +
+          "properties. There are no size props.",
       },
     },
   },
@@ -38,6 +37,7 @@ export const Playground: Story = {
   ),
 };
 
+/** Bare lines are one text line tall; the inline size is a CSS decision. */
 export const TextLines: Story = {
   render: (args) => (
     <div
@@ -48,15 +48,20 @@ export const TextLines: Story = {
         maxInlineSize: "20rem",
       }}
     >
-      <Skeleton {...args} height="1rem" width="100%" />
-      <Skeleton {...args} height="1rem" width="90%" />
-      <Skeleton {...args} height="1rem" width="75%" />
+      <Skeleton {...args} />
+      <Skeleton {...args} style={{ "--loam-skeleton-inline-size": "90%" } as CSSProperties} />
+      <Skeleton {...args} style={{ "--loam-skeleton-inline-size": "75%" } as CSSProperties} />
     </div>
   ),
 };
 
+/** A circle is a wrapped Avatar: the child sizes and shapes the placeholder. */
 export const Circle: Story = {
-  args: { circle: true, width: "3rem" },
+  render: (args) => (
+    <Skeleton {...args}>
+      <Avatar name="Ada Lovelace" />
+    </Skeleton>
+  ),
 };
 
 export const Card: Story = {
@@ -69,7 +74,9 @@ export const Card: Story = {
         maxInlineSize: "20rem",
       }}
     >
-      <Skeleton {...args} circle width="3rem" />
+      <Skeleton {...args}>
+        <Avatar name="Ada Lovelace" />
+      </Skeleton>
       <div
         style={{
           display: "flex",
@@ -78,10 +85,26 @@ export const Card: Story = {
           flex: 1,
         }}
       >
-        <Skeleton {...args} height="0.875rem" width="60%" />
-        <Skeleton {...args} height="0.875rem" width="100%" />
+        <Skeleton {...args} style={{ "--loam-skeleton-inline-size": "60%" } as CSSProperties} />
+        <Skeleton {...args} />
       </div>
     </div>
+  ),
+};
+
+/** A thumbnail: both sizes from CSS, the shape from `--loam-skeleton-radius`. */
+export const Thumbnail: Story = {
+  render: (args) => (
+    <Skeleton
+      {...args}
+      style={
+        {
+          "--loam-skeleton-inline-size": "8rem",
+          "--loam-skeleton-block-size": "8rem",
+          "--loam-skeleton-radius": "var(--loam-radius-lg)",
+        } as CSSProperties
+      }
+    />
   ),
 };
 

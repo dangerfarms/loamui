@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Avatar, AvatarGroup } from "../../index";
+import { Avatar } from "../../index";
 
 const meta = {
   title: "Data display/Avatar",
@@ -68,14 +68,28 @@ export const Fallback: Story = {
   args: { name: undefined, alt: "Unknown user" },
 };
 
+/** Set the public `--loam-avatar-size` per instance or on a region. */
+export const Sizes: Story = {
+  render: (args) => (
+    <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+      <Avatar {...args} style={{ "--loam-avatar-size": "1.5rem" } as CSSProperties} />
+      <Avatar {...args} />
+      <Avatar {...args} style={{ "--loam-avatar-size": "4rem" } as CSSProperties} />
+    </div>
+  ),
+};
+
+/**
+ * `Avatar.Group` is a list: each child is an item, overlapped and ringed in
+ * the surface colour. `more` adds the overflow count, named by `labels.more`.
+ */
 export const Group: Story = {
   render: (args) => (
-    <AvatarGroup>
+    <Avatar.Group more={3} labels={{ more: (n) => `${n} more people` }}>
       <Avatar {...args} name="Ada Lovelace" />
       <Avatar {...args} name="Grace Hopper" />
       <Avatar {...args} name="Alan Turing" />
       <Avatar {...args} name="Katherine Johnson" />
-      <Avatar {...args} name="+3 more" />
-    </AvatarGroup>
+    </Avatar.Group>
   ),
 };

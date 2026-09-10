@@ -11,16 +11,34 @@
   gap: 0.5rem;
   min-inline-size: 12rem;
   padding: 0.4rem 0.6rem;
-  transition: border-color var(--loam-duration-md) var(--loam-ease);
 
   &:hover {
     border-color: var(--loam-color-line-strong);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: border-color var(--loam-duration-md) var(--loam-ease);
+  }
+
+  /* A narrow header keeps the search as an icon button the size of its
+     neighbours (the GitHub link and the theme toggle). */
+  @container (width <= 48rem) {
+    background: transparent;
+    block-size: 2.25rem;
+    inline-size: 2.25rem;
+    justify-content: center;
+    min-inline-size: 0;
+    padding: 0;
   }
 }
 
 .triggerLabel {
   flex: 1;
   text-align: start;
+
+  @container (width <= 48rem) {
+    display: none;
+  }
 }
 
 .kbd {
@@ -30,6 +48,10 @@
   font-family: var(--loam-font);
   font-size: var(--loam-text-xs);
   padding: 0.1rem 0.35rem;
+
+  @container (width <= 48rem) {
+    display: none;
+  }
 }
 
 .panel {
@@ -42,16 +64,16 @@
   margin-inline: auto;
   overflow: hidden;
   padding: 0;
-}
 
-.panel::backdrop {
-  backdrop-filter: blur(3px);
-  background: oklch(0% 0 0deg / 40%);
-}
+  &::backdrop {
+    backdrop-filter: blur(3px);
+    background: oklch(0% 0 0deg / 40%);
+  }
 
-@media (prefers-reduced-motion: no-preference) {
-  .panel[open] {
-    animation: pop 120ms ease;
+  @media (prefers-reduced-motion: no-preference) {
+    &[open] {
+      animation: pop var(--loam-duration-md) var(--loam-ease);
+    }
   }
 }
 
@@ -78,6 +100,7 @@
   flex: 1;
   font: inherit;
   font-size: var(--loam-text-md);
+  min-inline-size: 0;
   outline: none;
 }
 
@@ -91,29 +114,30 @@
 
 .result {
   align-items: center;
-  background: transparent;
-  border: none;
   border-radius: var(--loam-radius-sm);
-  box-shadow: none;
   color: var(--loam-color-fg);
   cursor: pointer;
   display: block flex;
   font-size: var(--loam-text-sm);
-  font-weight: 400;
-  inline-size: 100%;
+  gap: 1rem;
   justify-content: space-between;
   padding: 0.55rem 0.7rem;
-  text-align: start;
 
-  &[data-active] {
+  &[aria-selected="true"] {
     background: color-mix(in oklab, var(--loam-color-accent) 14%, transparent);
     color: var(--loam-color-accent);
+
+    @media (forced-colors: active) {
+      background: SelectedItem;
+      color: SelectedItemText;
+    }
   }
 }
 
 .hint {
   color: var(--loam-color-fg-dim);
   font-size: var(--loam-text-xs);
+  white-space: nowrap;
 }
 
 .empty {

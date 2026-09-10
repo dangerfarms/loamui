@@ -1,0 +1,101 @@
+@scope (.contact-us-with-details) to ([class*="loam-"]) {
+  :scope {
+    background: var(--loam-color-bg-subtle);
+    border-radius: var(--loam-radius-xl);
+    container-type: inline-size;
+    padding: var(--loam-space-xl);
+  }
+
+  /* The inner element is the grid: an element cannot answer its own
+     container query. */
+  div.inner {
+    display: block grid;
+    gap: var(--loam-space-xl);
+  }
+
+  div.details {
+    align-content: start;
+    display: block grid;
+    gap: var(--loam-space-md);
+
+    > p {
+      color: var(--loam-color-fg-muted);
+      margin: 0;
+      max-inline-size: var(--loam-measure);
+      text-wrap: pretty;
+    }
+  }
+
+  h2 {
+    font-size: var(--loam-text-2xl);
+    margin: 0;
+  }
+
+  address {
+    font-style: normal;
+  }
+
+  dl {
+    display: block grid;
+    gap: var(--loam-space-md);
+    margin: 0;
+  }
+
+  div.pair {
+    display: block grid;
+    gap: var(--loam-space-xs);
+  }
+
+  dt {
+    align-items: center;
+    color: var(--loam-color-fg-muted);
+    display: block flex;
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-xs);
+
+    svg {
+      block-size: 1.125em;
+      color: var(--loam-color-primary-strong);
+      inline-size: 1.125em;
+    }
+  }
+
+  dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  @container (inline-size >= 44rem) {
+    div.inner {
+      align-items: start;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    }
+  }
+
+  /* Forced colours drop the tint; the edge keeps the bounds. */
+  @media (forced-colors: active) {
+    :scope {
+      border: 1px solid CanvasText;
+    }
+  }
+}
+
+@scope (.contact-us-with-details form.form) to ([class*="loam-"]) {
+  :scope {
+    display: block grid;
+    gap: var(--loam-space-lg);
+  }
+
+  h3 {
+    font-size: var(--loam-text-lg);
+    margin: 0;
+  }
+
+  div.actions {
+    --loam-context: primary;
+
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-md);
+  }
+}

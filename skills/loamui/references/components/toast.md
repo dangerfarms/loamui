@@ -116,7 +116,7 @@ function ExportButton() {
 
 ## When to use it
 
-- To confirm the outcome of an action the user just took (saved, sent, archived) without interrupting their flow.
+- To confirm the outcome of an action the user has taken (saved, sent, archived) without interrupting their flow.
 - For background events that complete while the user is elsewhere: an export finishing, a sync completing.
 
 ## When not to
@@ -129,7 +129,7 @@ function ExportButton() {
 
 ### Confirm outcomes; never ask questions
 
-A toast states what just happened: saved, sent, restored. It disappears on its own, so a message that expects a decision has the wrong container: use Modal for questions, an Alert in the page for conditions that persist.
+A toast states what has happened: saved, sent, restored. It disappears on its own, so a message that expects a decision has the wrong container: use Modal for questions, an Alert in the page for conditions that persist.
 
 ### Reserve high priority for failures
 
@@ -141,7 +141,7 @@ Undo in a toast is a courtesy, not the mechanism. Timers pause while the pointer
 
 ### F6 reaches the viewport
 
-The toast region is a labelled landmark, and F6 jumps focus into it from anywhere; that is how a keyboard user reaches an action before the timer ends. Keeping that path clear takes no effort: just don't wrap toasts in extra focusable chrome.
+The toast region is a labelled landmark, and F6 jumps focus into it from anywhere; that is how a keyboard user reaches an action before the timer ends. Keeping that path clear takes no effort: don't wrap toasts in extra focusable chrome.
 
 ## Accessibility
 
@@ -149,7 +149,8 @@ The toast region is a labelled landmark, and F6 jumps focus into it from anywher
 - The notifications region is role="region", labelled "Notifications", and never traps focus.
 - Auto-dismiss timers pause while the pointer or keyboard focus is inside the viewport and resume with the remaining time (WCAG 2.2.1 Timing Adjustable).
 - The viewport renders with popover="manual": the browser's top layer places it above every dialog and popover with no z-index war, and nothing can light-dismiss it.
-- The default dismiss button carries an explicit aria-label ("Dismiss notification").
+- The default dismiss button is a LoamUI Button with an explicit aria-label ("Dismiss notification"); labels replaces it and the region's name for another language.
+- Every default string is overridable: labels on <Toasts /> (or on Toast.Viewport and Toast.Close) names the region and the dismiss button.
 
 ## Parts
 
@@ -166,13 +167,21 @@ Owns the toast queue; mount once near the app root.
 
 The ready-made viewport: renders every active toast with title, description, action and a dismiss button. Compose the parts below yourself only when this layout doesn't fit.
 
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `labels` | `{ region?: string; dismiss?: string }` | `{ region: "Notifications", dismiss: "Dismiss notification" }` | The words the viewport speaks: region names the landmark ("Notifications"), dismiss names each close button ("Dismiss notification"). |
+
 ### Toast.Viewport
 
 The top-layer notifications region for a custom layout; all native <div> props are forwarded.
 
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `labels` | `{ region?: string }` | `{ region: "Notifications" }` | The landmark's accessible name. |
+
 ### Toast.Root
 
-Renders one toast; its live-region role comes from the toast's priority. Native <div> props are forwarded.
+Renders one toast; its live-region role comes from the toast's priority, and the parts inside read the toast from it. Native <div> props are forwarded.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -182,9 +191,17 @@ Renders one toast; its live-region role comes from the toast's priority. Native 
 
 The toast's heading; native <div> props are forwarded.
 
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `render` | `element \| (props) => node` | — | Substitute the element (render={<strong />}); it receives the part's class. |
+
 ### Toast.Description
 
 The toast's message body; native <div> props are forwarded.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `render` | `element \| (props) => node` | — | Substitute the element (render={<p />}); it receives the part's class. |
 
 ### Toast.Action
 
@@ -192,17 +209,23 @@ A LoamUI Button inside a toast; activating it runs onAction and dismisses that t
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `toastId` | `string` | — | Which toast the action belongs to. |
 | `onAction` | `() => void` | — | Runs before the toast dismisses. |
 | `render` | `element \| (props) => node` | — | Substitute your own element; it receives the action wiring. |
 
 ### Toast.Close
 
-A labelled dismiss button ("Dismiss notification") with a default × icon. Native <button> props are forwarded.
+A LoamUI Button that dismisses its toast, labelled "Dismiss notification" with a default × icon (children replace the icon). Native <button> props are forwarded.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `toastId` | `string` | — | Which toast to dismiss. |
+| `labels` | `{ dismiss?: string }` | `{ dismiss: "Dismiss notification" }` | The button's accessible name. |
+| `render` | `element \| (props) => node` | — | Substitute your own element; it receives the close wiring. |
+
+## Custom properties
+
+| Property | Syntax | Default | Description |
+| --- | --- | --- | --- |
+| `--loam-toast-size` | `CSS length` | `22rem` | The viewport's width; never wider than the viewport minus its margins. |
 
 ## Hooks
 

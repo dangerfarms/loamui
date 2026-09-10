@@ -1,0 +1,21 @@
+import type { ExampleMeta } from "@/examples/types";
+
+export const meta: ExampleMeta = {
+  title: "Dropzone",
+  description:
+    "A box for plot photos that takes a drop or a click, says which types and sizes it accepts in words, lists what was chosen, and refuses a choice it cannot post, naming the file.",
+  category: "forms",
+  uses: ["Field", "FileInput"],
+  notes: {
+    native:
+      'The control is a native <input type="file"> with accept and multiple: a dropped file lands in the same input, so the form posts it like a picked one, and the accept list filters the picker. A refused choice is cleared from the input, so the form cannot post what the message said no to.',
+    modern:
+      "The drag state is core's data-dragging on the box, painted in the -strong border that holds 3:1 in every context; the example styles only the icon and the two lines it puts inside the prompt.",
+    composition:
+      "Field.Root with FileInput.Root, Control, Prompt and Files as core ships them; the prompt's children are the example's, and the size and count limits are one function from the chosen files to words, rendered as the Field's error.",
+    accessible:
+      "The limits are in the description, joined to the input by aria-describedby, before any choice is made; a refused choice is an alert that names the file and its size and says what to do. The list of chosen files is a polite live region core keeps in the page from the start, so the choice is announced as well as shown, and the input stays focusable inside the box the prompt draws.",
+  },
+  tags: ["file", "upload", "dropzone", "drag and drop", "photos", "size limit"],
+  order: 22,
+};

@@ -1,4 +1,5 @@
 import { SignpostLink } from "@loamui/core";
+import type { CSSProperties } from "react";
 import type { ComponentContent } from "@/renderer/types";
 
 const doc: ComponentContent = {
@@ -8,7 +9,7 @@ const doc: ComponentContent = {
   contextual: true,
   demos: [
     {
-      title: "Basic",
+      title: "Basic usage",
       description:
         "A real <a> with a circled arrow. Use it where a page hands over to a task: the start of an application, a checkout, a service.",
       code: `<SignpostLink href="#apply">Start your application</SignpostLink>`,
@@ -22,7 +23,7 @@ const doc: ComponentContent = {
   <SignpostLink href="#appeal">Appeal this decision</SignpostLink>
 </div>`,
       render: () => (
-        <div style={{ "--loam-context": "danger" } as React.CSSProperties}>
+        <div style={{ "--loam-context": "danger" } as CSSProperties}>
           <SignpostLink href="#appeal">Appeal this decision</SignpostLink>
         </div>
       ),
@@ -30,9 +31,11 @@ const doc: ComponentContent = {
     {
       title: "Router link",
       description:
-        "Substitute the element with render to keep client-side navigation. The label may live on either element, and the arrow anatomy wraps it. The visual is identical to Basic; the point is the swapped element (a framework router link), visible in the Code tab.",
-      code: `<SignpostLink render={<Link href="/apply">Start your application</Link>} />`,
-      render: () => <SignpostLink render={<a href="#apply">Start your application</a>} />,
+        "Substitute the element with render to keep client-side navigation. The label stays on SignpostLink and the arrow anatomy becomes the element's children; an element that brings children of its own keeps them, as the merge contract says, and so skips the arrow. The visual is identical to Basic; the point is the swapped element (a framework router link), visible in the Code tab.",
+      code: `<SignpostLink render={<Link href="/apply" />}>Start your application</SignpostLink>`,
+      render: () => (
+        <SignpostLink render={<a href="#apply" />}>Start your application</SignpostLink>
+      ),
     },
   ],
   whenToUse: [
@@ -52,7 +55,7 @@ const doc: ComponentContent = {
     },
     {
       title: "The arrow is decoration",
-      body: "The circled arrow is aria-hidden: assistive technology hears only the label and the link role. It rides the font size in em, so the whole signpost rescales as one piece if a consumer changes font-size. No size prop.",
+      body: "The circled arrow is aria-hidden: assistive technology hears only the label and the link role. The signpost inherits its font size from where it sits, and the arrow rides it in em, so the whole thing rescales as one piece in a heading, a card or a paragraph. No size prop.",
     },
   ],
   accessibility: [
@@ -64,8 +67,9 @@ const doc: ComponentContent = {
   props: [
     {
       name: "render",
-      type: "RenderProp",
-      description: "Substitute the built-in <a>, e.g. a router link: render={<Link href=… />}.",
+      type: "element | (props) => node",
+      description:
+        "Substitute the built-in <a>, e.g. a router link: render={<Link href=… />}. The label stays as SignpostLink's children.",
     },
     {
       name: "...others",

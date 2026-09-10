@@ -1,0 +1,142 @@
+---
+title: QuantityInput
+description: A count adjusted one at a time.
+---
+
+> LoamUI documentation, generated from the same source as the live page —
+> treat it as authoritative for `@loamui/core`.
+
+# QuantityInput
+
+A count a person adjusts by one: items in a cart, guests, seats. Compose it inside a Field for its label, description and error.
+
+## Import
+
+```tsx
+import { Field, QuantityInput } from "@loamui/core";
+```
+
+## Usage
+
+### In a cart line
+
+The input is a native number field with a name, so the form posts the count like any other value. The buttons step it and the row takes the type and height of the controls around it.
+
+```tsx
+<Field.Root>
+  <Field.Label>Quantity</Field.Label>
+  <QuantityInput name="quantity" defaultValue={1} min={1} />
+</Field.Root>
+```
+
+### With bounds
+
+Fewer disables at min and More at max, so the ends are visible before they are reached. A value typed past a bound is not clamped: it is left invalid for the field to report after a submit attempt.
+
+```tsx
+<Field.Root>
+  <Field.Label>Seats</Field.Label>
+  <Field.Description>Between 1 and 5.</Field.Description>
+  <QuantityInput defaultValue={1} min={1} max={5} />
+</Field.Root>
+```
+
+### Step and button names
+
+step is how much one press changes the count, and the arrow keys follow it. Fewer and More are the buttons' accessible names; labels replaces them when the page's own words say more, or when the page is not in English.
+
+```tsx
+<Field.Root>
+  <Field.Label>Copies</Field.Label>
+  <Field.Description>Sold in packs of 10.</Field.Description>
+  <QuantityInput
+    defaultValue={10}
+    min={10}
+    step={10}
+    labels={{ decrement: "One pack fewer", increment: "One pack more" }}
+  />
+</Field.Root>
+```
+
+### Disabled
+
+disabled reaches the input and both buttons, so nothing in the row can be pressed or typed into, and the description says why.
+
+```tsx
+<Field.Root>
+  <Field.Label>Quantity</Field.Label>
+  <Field.Description>Out of stock.</Field.Description>
+  <QuantityInput defaultValue={1} min={1} disabled />
+</Field.Root>
+```
+
+### Controlled
+
+Drive it with value and onChange. A press of either button arrives through onChange like a typed change, so the live count can be shown wherever it helps.
+
+```tsx
+const [guests, setGuests] = useState(2);
+
+<Field.Root>
+  <Field.Label>Guests: {guests}</Field.Label>
+  <QuantityInput
+    value={guests}
+    min={1}
+    max={8}
+    onChange={(e) => setGuests(e.target.valueAsNumber)}
+  />
+</Field.Root>
+```
+
+## When to use it
+
+- For a small whole count the user nudges rather than composes: items in a cart, guests at a table, seats, copies. The usual move is one more or one fewer, and a press is faster than selecting the figure and retyping it.
+- Where the bounds are part of the question (at least one, at most what is in stock): the buttons show the ends by disabling, before an error has to say so.
+
+## When not to
+
+- For a large or arbitrary number the user already knows, such as an account number, a weight or a year. Pressing a button forty times is not entry; use Input with inputMode="numeric".
+- For a value chosen by feel along a visible scale, such as volume or brightness. Use Range, where the position is the point and the exact figure is not.
+
+## How it works
+
+### The input is the value of record
+
+Nothing is held in React: the count lives in the native input, so a form posts it under its name, a reset restores its default, and value with onChange controls it exactly as they control an Input. The buttons are conveniences on the side of that input, not a second source of truth.
+
+### The buttons step the native value
+
+Fewer and More call the input's own stepDown() and stepUp() and then fire the input and change events a browser fires for its spinner. Arrow keys still step the focused input, the step prop governs both, and the native spinner is hidden because it would duplicate the buttons in a corner of the box. This is the one place the library reaches for a number input: elsewhere a number is typed, and Input's guidance stands.
+
+### Bounds disable and announce
+
+At min, Fewer disables; at max, More disables. A disabled button is announced as unavailable, so a screen-reader user hears the end where a sighted one sees it. A count typed past a bound is deliberately not clamped: silently changing what someone typed hides the mistake, so the input stays invalid and the field reports it after a submit attempt, in words that say the allowed range.
+
+## Accessibility
+
+- Inside a Field.Root the input reads its id from the field, so Field.Label is a real <label> tied to it; outside one, pass aria-label or aria-labelledby. In development a count with no name at all is reported to the console. The buttons carry their own names, Fewer and More, which labels replaces when the words of the page differ.
+- Renders a native <input type="number"> with inputMode="numeric": arrow keys step the focused value, touch devices raise a number pad, and constraint validation reports a value outside min and max through the Field, announced with aria-invalid after a submit attempt.
+- The buttons are native <button>s with disabled at the bounds and aria-hidden glyphs, so their state and names come from the platform. Focus stays on the button after a press, so repeated presses need no re-navigation.
+
+## Error messages
+
+| Situation | Message |
+| --- | --- |
+| The count is out of range | `[Label] must be between [min] and [max]` |
+| The field is empty | `Enter [how many of whatever the label asks for]` |
+
+## Props
+
+Status is not a prop: it comes from the surrounding `--loam-context` region (see the Contextualism guide).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `min` | `number` | `0` | The smallest count allowed; Fewer disables here. |
+| `max` | `number` | — | The largest count allowed; More disables here. |
+| `step` | `number` | `1` | How much one press changes the count. |
+| `defaultValue` | `number` | — | Initial count for uncontrolled usage. |
+| `value` | `number` | — | The count, when controlled; pair it with onChange. |
+| `labels` | `{ decrement?: string; increment?: string }` | `{ decrement: "Fewer", increment: "More" }` | The buttons' accessible names, for another language or the page's own words. |
+| `wrapperProps` | `PartProps<"div">` | — | Props for the row that holds the buttons. className, style, ref and every other prop land on the <input> itself. |
+| `...others` | `InputHTMLAttributes` | — | All native <input type="number"> props, and ref, are forwarded to the <input>, including name, disabled, required and onChange. |
+

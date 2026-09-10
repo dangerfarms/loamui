@@ -1,0 +1,61 @@
+@scope (.grid-asymmetric) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-md);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    display: block grid;
+    margin: 0;
+  }
+
+  @container (inline-size >= 44rem) {
+    :scope {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    }
+
+    li.lead {
+      grid-row: span 2;
+    }
+  }
+}
+
+@scope (.grid-asymmetric article) to ([class*="loam-"]) {
+  :scope {
+    display: block flex;
+    flex-direction: column;
+    gap: var(--loam-space-sm);
+  }
+
+  img.media {
+    aspect-ratio: 3 / 2;
+    block-size: auto;
+    border-radius: var(--loam-radius-md);
+    inline-size: 100%;
+    margin-block-end: var(--loam-space-xs);
+    object-fit: cover;
+  }
+
+  h3 {
+    font-size: var(--loam-text-lg);
+    margin: 0;
+  }
+
+  p {
+    color: var(--loam-color-fg-muted);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  div.actions {
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-sm);
+    margin-block-start: auto;
+    padding-block-start: var(--loam-space-sm);
+  }
+}

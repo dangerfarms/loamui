@@ -89,9 +89,12 @@ the authority for everything it covers: run it and believe it.
   container-relative tokens and container queries, status colour from a
   `--loam-context` region, width from the parent's layout. A prop would
   re-encode a decision the surrounding design already made. (Display components
-  that size an intrinsic glyph (Loader, Badge, Progress) keep `size`; Modal
-  sizes to its content, with `--loam-modal-size` as the public override, and
-  Drawer's panel width is the public `--loam-drawer-size` property.) A
+  that size an intrinsic glyph or track (Loader, Badge, Progress, Meter) keep
+  `size`; Modal sizes to its content, with `--loam-modal-size` as the public
+  override, and Drawer's panel width is the public `--loam-drawer-size`
+  property. Numeric bounds are not size props: Meter's
+  `min`/`max`/`low`/`high`/`optimum` and QuantityInput's `min`/`max`/`step` are
+  the platform's own semantics, forwarded as attributes.) A
   component is named for the HTML element it's built on, not a design-system
   alias: `Range` (`<input type="range">`), not `Slider`; `Details`
   (`<details>`), not `Accordion`.
@@ -99,12 +102,14 @@ the authority for everything it covers: run it and believe it.
   per-project structural overrides to be reused is a downstream recipe, not a
   core primitive. Token overrides are the sanctioned theming surface; overriding
   spacing, layout or structure is the smell that says a component is too
-  specific to live here.
+  specific to live here. Larger sections live as copy-paste examples on the
+  docs site: built on core the way any consumer would, held to the same
+  pillars and gates, and never a reason to change a primitive.
 - **Composition.** Compound components expose parts; element swap goes through
   `render`; icons and loaders are detected children, never slot props. Bare form
-  controls (Input, Select, Textarea, Range) self-wire from `Field`;
-  Checkbox / Radio / Switch keep an inline label because the control lives
-  inside it.
+  controls (Input, Select, Textarea, Range, QuantityInput, `FileInput.Control`,
+  `Search.Input`) self-wire from `Field`; Checkbox / Radio / Switch keep an
+  inline label because the control lives inside it.
 - **CSS.** Selectors are `@scope`d, not BEM: one `loam-` class per root, parts
   by element type or short class. A scope that hosts foreign content is fenced
   with a donut (`to ([class*="loam-"])`). Refer to elements directly, with no
@@ -170,19 +175,18 @@ every docs page has a markdown twin at the same URL with `.md` appended, and
 [`llms-full.txt`](https://loamui.com/llms-full.txt) has them all in one file.
 The [Composing components](https://loamui.com/docs/composing/) guide shows how
 to build your own components (a hero, a pricing table, a carousel) from the
-three primitives without adding anything to the library, and the package
-ships `AGENTS.md`, a one-page summary of the conventions an agent needs when
-writing against `@loamui/core`.
+three primitives, the same way the [examples](https://loamui.com/examples/)
+are built, and the package ships an `AGENTS.md`, a one-page summary of the
+conventions an agent needs when writing against it.
 
 ## Repository layout
 
 This is a pnpm + Turborepo monorepo:
 
 - [`packages/core`](./packages/core): `@loamui/core`, the component library.
-- [`packages/ui`](./packages/ui): `@loamui/ui`, compositions (hero, header,
-  footer, pricing, testimonials) built from core.
 - [`apps/docs`](./apps/docs): the marketing site and documentation (Next.js).
-- [`apps/ui`](./apps/ui): the compositions gallery, deployed under `/ui`.
+- [`apps/docs/src/examples`](./apps/docs/src/examples): the copy-paste examples
+  shown at `/examples` on the docs site.
 
 ## Development
 

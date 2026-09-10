@@ -1,20 +1,24 @@
 "use client";
 
 import { useMemo } from "react";
-import type { InputHTMLAttributes, ReactNode, Ref } from "react";
+import type { ReactNode } from "react";
 import { useFieldControlProps } from "../Field/Field";
 import { useUserInvalid } from "../../use-user-invalid";
 import { composeRefs } from "../../render";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 
-export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
-  /** Class for the bordered field wrapper (className goes to the control itself). */
-  wrapperClassName?: string;
-  /** Content rendered inside the field, before the input. */
-  leftSection?: ReactNode;
-  /** Content rendered inside the field, after the input. */
-  rightSection?: ReactNode;
-  ref?: Ref<HTMLInputElement>;
+export interface InputProps extends PartProps<"input"> {
+  /**
+   * Props for the bordered box around the input (`div.loam-Input-field`).
+   * `className`, `style`, `ref` and every other prop of the component land
+   * on the `<input>` itself; this is the one way to reach the box.
+   */
+  wrapperProps?: Omit<PartProps<"div">, "children">;
+  /** Content rendered inside the box, before the input. */
+  startSection?: ReactNode;
+  /** Content rendered inside the box, after the input. */
+  endSection?: ReactNode;
 }
 
 /**
@@ -30,14 +34,16 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
  *   <Input type="email" autoComplete="email" />
  * </Field.Root>
  * ```
+ *
+ * The native `size` attribute is forwarded and honoured: a sized input is
+ * as wide as that many characters and the box shrink-wraps it, so a
+ * two-digit answer gets a two-digit field.
  */
 export function Input({
-  leftSection,
-  rightSection,
-  disabled,
+  startSection,
+  endSection,
+  wrapperProps,
   className,
-  wrapperClassName,
-  style,
   id,
   "aria-invalid": ariaInvalid,
   "aria-describedby": ariaDescribedby,
@@ -46,25 +52,21 @@ export function Input({
   ref,
   ...rest
 }: InputProps) {
-  const field = useFieldControlProps();
+  const field = useFieldControlProps(ariaDescribedby);
   const { nativeInvalid, validationRef, checkOnInput, checkOnInvalid } =
     useUserInvalid<HTMLInputElement>();
   const inputRef = useMemo(() => composeRefs(ref, validationRef), [ref, validationRef]);
+  const { className: wrapperClassName, ...wrapper } = wrapperProps ?? {};
   return (
-    <div
-      className={cx("loam-Input-field", wrapperClassName)}
-      data-disabled={disabled || undefined}
-      style={style}
-    >
-      {leftSection && <span className="section">{leftSection}</span>}
+    <div className={cx("loam-Input-field", wrapperClassName)} {...wrapper}>
+      {startSection && <span className="section">{startSection}</span>}
       <input
         ref={inputRef}
         className={className}
-        disabled={disabled}
         id={id ?? field.id}
         {...rest}
         aria-invalid={ariaInvalid ?? field["aria-invalid"] ?? (nativeInvalid || undefined)}
-        aria-describedby={ariaDescribedby ?? field["aria-describedby"]}
+        aria-describedby={field["aria-describedby"]}
         onInput={(e) => {
           onInput?.(e);
           checkOnInput(e);
@@ -74,7 +76,7 @@ export function Input({
           checkOnInvalid(e);
         }}
       />
-      {rightSection && <span className="section">{rightSection}</span>}
+      {endSection && <span className="section">{endSection}</span>}
     </div>
   );
 }

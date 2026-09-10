@@ -48,12 +48,12 @@ export function MobileNav() {
           </button>
         }
       />
-      <Drawer.Panel side="start" className={classes.panel}>
+      <Drawer.Popup side="start" className={classes.panel}>
         <Drawer.Title className={classes.srOnly}>Navigation</Drawer.Title>
         <div className={classes.nav}>
           <NavLinks onNavigate={() => setOpen(false)} />
         </div>
-      </Drawer.Panel>
+      </Drawer.Popup>
     </Drawer.Root>
   );
 }

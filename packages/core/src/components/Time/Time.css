@@ -1,0 +1,5 @@
+/*
+ * A Time sizes nothing: the date takes the font of whatever it sits in, and
+ * its figures (lining, tabular) are the `time` element rule in elements.css,
+ * so plain markup gets them too. Nothing is left for the component to add.
+ */

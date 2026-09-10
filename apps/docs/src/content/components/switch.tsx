@@ -6,10 +6,12 @@ import { SwitchFieldDemo } from "./switch.client";
 const doc: ComponentContent = {
   slug: "switch",
   lead: "An on/off toggle for a single setting that takes effect immediately.",
-  importLine: `import { Field, Switch, SwitchControl } from "@loamui/core";`,
+  importLine: `import { Field, Switch } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",
+      description:
+        "A bare Switch named by aria-label, for a row where the words already sit beside it. Off by default: a setting the user has not turned on.",
       code: `<Switch aria-label="Email notifications" />`,
       render: () => <Switch aria-label="Email notifications" />,
     },
@@ -23,36 +25,38 @@ const doc: ComponentContent = {
       title: "Label position",
       description: "labelPosition places the label after the toggle (default) or before it.",
       code: `<Switch label="Enable notifications" />
-<Switch label="Label on the left" labelPosition="start" />`,
+<Switch label="Marketing emails" labelPosition="start" />`,
       render: () => (
         <div style={{ display: "grid", gap: "0.75rem" }}>
           <Example label="Label at the end (default)">
             <Switch label="Enable notifications" />
           </Example>
           <Example label="Label at the start">
-            <Switch label="Label on the left" labelPosition="start" />
+            <Switch label="Marketing emails" labelPosition="start" />
           </Example>
         </div>
       ),
     },
     {
       title: "Disabled",
-      code: `<Switch label="Off & disabled" disabled />
-<Switch label="On & disabled" defaultChecked disabled />`,
+      description:
+        "disabled reaches the native input: the row is dimmed and skipped by Tab, and a switch that is on and disabled shows a setting that is on and not the user's to change here. Disabled is detected on the input, never declared on the row.",
+      code: `<Switch label="Usage analytics" disabled />
+<Switch label="Security alerts" defaultChecked disabled />`,
       render: () => (
         <div style={{ display: "grid", gap: "0.75rem" }}>
-          <Switch label="Off & disabled" disabled />
-          <Switch label="On & disabled" defaultChecked disabled />
+          <Switch label="Usage analytics" disabled />
+          <Switch label="Security alerts" defaultChecked disabled />
         </div>
       ),
     },
     {
       title: "Composed inside a Field",
       description:
-        "The bare SwitchControl self-wires from Field context: label association and description linking come from the Field, the same composition contract every form control shares.",
+        "The bare Switch.Control self-wires from Field context: label association and description linking come from the Field, the same composition contract every form control shares.",
       code: `<Field.Root>
   <Field.Label>
-    <SwitchControl defaultChecked /> Email notifications
+    <Switch.Control defaultChecked /> Email notifications
   </Field.Label>
   <Field.Description>Sent at most once a day.</Field.Description>
 </Field.Root>`,
@@ -82,6 +86,7 @@ const doc: ComponentContent = {
     "The label is tied to the control; the whole row is clickable.",
     "In the rare case a switch needs an error message, wrap it in a Field.Root and add a Field.Error before the control: the message marks it invalid and is announced.",
     "State is conveyed by more than colour (the thumb position), so it remains clear in forced-colors and for colour-blind users.",
+    "Disabled is detected on the native input (:has(input:disabled) on the row, input:disabled on the track), never declared on a wrapper.",
   ],
   props: [
     {
@@ -101,21 +106,23 @@ const doc: ComponentContent = {
       description: "Which side of the toggle the label sits on.",
     },
     {
-      name: "wrapperClassName",
-      type: "string",
-      description: "Class for the label-row wrapper element (the input keeps className).",
+      name: "wrapperProps",
+      type: 'PartProps<"label">',
+      description:
+        "Props for the labelled row (the <label> around the toggle and its words). className, style, ref and every other prop land on the <input> itself.",
     },
     {
       name: "...others",
       type: "InputHTMLAttributes",
-      description: 'All native <input type="checkbox"> props (except type and size) are forwarded.',
+      description:
+        'All native <input type="checkbox"> props (except type and size), and ref, are forwarded to the <input>.',
     },
   ],
   parts: [
     {
-      name: "SwitchControl",
+      name: "Switch.Control",
       description:
-        "The bare toggle without a label, for composing inside a Field where the label lives on Field.Label. It reads its wiring (id, aria-describedby, aria-invalid) from the field context, and takes the same props as Switch minus label, description, labelPosition and wrapperClassName.",
+        "The bare toggle without a label, for composing inside a Field where the label lives on Field.Label. It reads its wiring (id, aria-describedby, aria-invalid) from the field context, and takes the same props as Switch minus label, description and labelPosition; its wrapperProps reach the span around the input and track.",
     },
   ],
 };

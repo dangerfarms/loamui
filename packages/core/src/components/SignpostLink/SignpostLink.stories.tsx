@@ -42,7 +42,7 @@ export const InContextRegion: Story = {
 /**
  * Compose, don't configure: `render` substitutes the built-in `<a>` — here a
  * plain `<a>` standing in for a framework's router link — and the arrow
- * anatomy still wraps the label. The label may live on either element.
+ * anatomy becomes the element's children. The label stays on SignpostLink.
  */
 export const CustomElement: Story = {
   render: (args) => (

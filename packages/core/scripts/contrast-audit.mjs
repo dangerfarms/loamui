@@ -168,11 +168,10 @@ const labelRecipes = [
   labelWeights("components/Alert/Alert.css", "--_accent"),
   labelWeights("components/ErrorSummary/ErrorSummary.css", "--loam-color-danger"),
   labelWeights("elements.css", "--loam-color-fg"),
-  labelWeights("components/Pagination/Pagination.css", "--loam-color-fg"),
 ];
 for (const r of labelRecipes.slice(1)) {
   if (r.light !== labelRecipes[0].light || r.dark !== labelRecipes[0].dark) {
-    throw new Error("label recipes have drifted apart across Button/Badge/Alert/ErrorSummary/elements/Pagination");
+    throw new Error("label recipes have drifted apart across Button/Badge/Alert/ErrorSummary/elements");
   }
 }
 const LABEL = labelRecipes[0];
@@ -198,10 +197,6 @@ const elementsTint = tintWeights("elements.css", "--loam-color-fg");
 if (elementsTint.light !== TINT.light || elementsTint.dark !== TINT.dark) {
   throw new Error("native button tint in elements.css has drifted from Button.css");
 }
-const paginationTint = tintWeights("components/Pagination/Pagination.css", "--loam-color-fg");
-if (paginationTint.light !== TINT.light || paginationTint.dark !== TINT.dark) {
-  throw new Error("Pagination control tint has drifted from Button.css");
-}
 
 // ---- the audited pairs ----------------------------------------------
 const failures = [];
@@ -225,12 +220,42 @@ for (const scheme of ["light", "dark"]) {
   check("text-muted on bg", scheme, t("--loam-color-fg-muted"), t("--loam-color-bg"), 4.5);
   check("text-dim (placeholder) on surface", scheme, t("--loam-color-fg-dim"), t("--loam-color-surface"), 4.5);
   check("danger text (Field.Error) on bg", scheme, t("--loam-color-danger"), t("--loam-color-bg"), 4.5);
+  // The -strong family is also TEXT: Tabs' selected tab, Details' open
+  // summary and any contexted label lean on it holding 4.5:1 on both
+  // surfaces, where the raw hue does not (light warning is 2.5:1).
+  for (const status of ["primary", "success", "danger", "warning", "info"]) {
+    check(`${status}-strong text on bg`, scheme, t(`--loam-color-${status}-strong`), t("--loam-color-bg"), 4.5);
+    check(`${status}-strong text on surface`, scheme, t(`--loam-color-${status}-strong`), t("--loam-color-surface"), 4.5);
+  }
+  // Fills and edges on the subtle surface: Meter and Progress tracks, the
+  // SchemeToggle's chosen option, FileInput's drop zone; and the accent as a
+  // glyph on a Card (Rating in a ProductCard).
+  for (const status of ["primary", "success", "danger", "warning", "info"]) {
+    check(`${status}-strong fill on bg-subtle`, scheme, t(`--loam-color-${status}-strong`), t("--loam-color-bg-subtle"), 3.0);
+  }
+  check("line-strong on bg-subtle", scheme, t("--loam-color-line-strong"), t("--loam-color-bg-subtle"), 3.0);
+  check("text-muted on bg-subtle", scheme, t("--loam-color-fg-muted"), t("--loam-color-bg-subtle"), 4.5);
+  check("primary-strong edge on primary-soft", scheme, t("--loam-color-primary-strong"), t("--loam-color-primary-soft"), 3.0);
+  check("accent glyph on surface", scheme, t("--loam-color-accent"), t("--loam-color-surface"), 3.0);
   check("fill text on primary-strong", scheme, t("--loam-color-on-strong"), t("--loam-color-primary-strong"), 4.5);
   check("fill text on success-strong", scheme, t("--loam-color-on-strong"), t("--loam-color-success-strong"), 4.5);
   check("fill text on danger-strong", scheme, t("--loam-color-on-strong"), t("--loam-color-danger-strong"), 4.5);
   check("fill text on warning-strong", scheme, t("--loam-color-on-strong"), t("--loam-color-warning-strong"), 4.5);
   check("fill text on info-strong", scheme, t("--loam-color-on-strong"), t("--loam-color-info-strong"), 4.5);
   check("ErrorSummary link on danger-soft", scheme, mixedLabel(t("--loam-color-danger"), scheme), t("--loam-color-danger-soft"), 4.5);
+  // Text on the -soft surfaces. A page link inside a soft-tinted region
+  // (a notice, a callout, an ErrorSummary body) keeps the link colour, so
+  // the link must read on every soft. The status's own text there is the
+  // -strong token: the RAW hue on its -soft is banned as text (light
+  // warning on warning-soft is far below 4.5:1), which is why the pair
+  // audited is -strong, and why no component paints raw-on-soft.
+  for (const s of ["primary", "success", "danger", "warning", "info"]) {
+    check(`link on ${s}-soft`, scheme, t("--loam-color-link"), t(`--loam-color-${s}-soft`), 4.5);
+    // No component sets small -strong TEXT on its -soft: the pair in use is a
+    // glyph or an edge (a Feature icon, FileInput's drop-zone border), so the
+    // non-text threshold applies. Small text on a tint stays the mixed label.
+    check(`${s}-strong glyph on ${s}-soft`, scheme, t(`--loam-color-${s}-strong`), t(`--loam-color-${s}-soft`), 3.0);
+  }
   for (const s of ["primary", "success", "danger", "warning", "info"]) {
     const colour = t(`--loam-color-${s}`);
     const tint = mixOklab(colour, t("--loam-color-bg"), scheme === "light" ? TINT.light : TINT.dark);

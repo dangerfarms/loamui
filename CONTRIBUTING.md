@@ -26,6 +26,8 @@ pnpm dev        # runs the docs site
   component has several roots); parts inside the scope are type selectors or
   short classes (`label`, `p.description`). The encapsulation is `@scope`'s
   job, not the class name's.
+- `apps/docs/src/examples`: the copy-paste examples at `/examples`, one folder
+  each, built from core alone and gated by `check:examples`.
 - `apps/docs`: the Next.js marketing + documentation site. Every page of the
   docs site has a markdown twin at the same URL with `.md` appended, and
   `/llms.txt` indexes them; the export is generated from source by
@@ -64,7 +66,8 @@ LoamUI's CSS follows two references, installed as agent skills in this repo
 
 Concretely this means: cascade layers (`@layer`) with `@scope`d element selectors
 instead of BEM; additive CSS (each property set once under mutually-exclusive
-conditions; the only permitted override is `elements` → `components`); logical
+conditions; the only permitted override is `elements` → `components`, and the
+`loamui.ui` layer above adds without overriding anything in `components`); logical
 properties; `oklch()` / `light-dark()` / `color-mix()`; container queries; and
 **progressive enhancement, not degradation** (opt into motion via
 `@media (prefers-reduced-motion: no-preference)`, never a global
@@ -151,8 +154,8 @@ Button). The `render` prop exists only to _substitute_ that element
 common case needs `render`, the part has the wrong default element. The
 exception is `Field.Control`, whose entire purpose is wiring an arbitrary
 element into the field: the LoamUI controls (`Input`, `Select`, `Textarea`,
-`Range`) self-wire from Field context when rendered inside `Field.Root`, so
-they never go through it.
+`Range`, `QuantityInput`, `FileInput.Control`, `Search.Input`) self-wire from
+Field context when rendered inside `Field.Root`, so they never go through it.
 
 **One merge contract** (`src/render.ts`, used by every part): event handlers
 chain (the element's own handler runs first, wiring second, both always run);
@@ -169,10 +172,15 @@ chain (the element's own handler runs first, wiring second, both always run);
   `Object.assign(Convenience, { Root, … })` so both `<Alert title=…>` and
   `<Alert.Root>` work
 - Form controls → bare controls that self-wire from Field context via
-  `useFieldControlProps()` (`Input`, `Select`, `Textarea`, `Range`): no
+  `useFieldControlProps()` (`Input`, `Select`, `Textarea`, `Range`,
+  `QuantityInput`, `FileInput.Control`, `Search.Input`): no
   label/description/error props; composition inside `Field.Root` supplies
   them. Inline controls whose anatomy is a row (Checkbox, Switch, Radio)
   keep the labelled convenience form plus a bare `XControl` part
+- Composed from other components (Search from Input + Button, QuantityInput
+  from `<input>` + two Buttons, CopyButton from Button) → the inner
+  components keep their own props and CSS behind the scope's donut; the
+  composite adds only its wiring
 
 RSC note: `@loamui/core` ships as a single bundle with a `"use client"`
 banner, so in React Server Components **every** compound export is a client
@@ -185,17 +193,20 @@ Any JSX that uses compound parts (docs demos included) must live in a
 **State attributes**: the shared styling vocabulary, identical on every
 component (never invent synonyms):
 
-| Attribute                                          | Where                                     | Meaning                                                                                                |
-| -------------------------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `data-popup-open`                                  | trigger                                   | its popup/bubble is open                                                                               |
-| `data-open`                                        | popup/panel                               | open; uniform across enhanced & fallback                                                               |
-| `data-disabled`                                    | wrapper/control                           | disabled styling hook                                                                                  |
-| `data-current`                                     | nav item                                  | current page/location                                                                                  |
-| `data-size` / `data-position`                      | some display components (Badge, Progress) | instance styling hooks read by the stylesheet; form controls have no size hooks: their sizing is fluid |
-| `data-orientation`                                 | RadioGroup                                | display hook (see Sanctioned exceptions)                                                               |
-| `data-label-position`                              | Switch                                    | display hook (see Sanctioned exceptions)                                                               |
-| `data-striped` / `data-hover` / `data-col-borders` | Table                                     | display hooks (see Sanctioned exceptions)                                                              |
-| `data-striped` / `data-animated`                   | Progress                                  | display hooks (see Sanctioned exceptions)                                                              |
+| Attribute                                                                 | Where                                                                    | Meaning                                                                                                |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `data-popup-open`                                                         | trigger                                                                  | its popup/bubble is open                                                                               |
+| `data-open`                                                               | popup/panel                                                              | open; uniform across enhanced & fallback                                                               |
+| `data-disabled`                                                           | `Pagination.Link`                                                        | a paging link with nowhere to go; controls are detected via `:disabled`                                |
+| `data-current`                                                            | nav item                                                                 | current page/location                                                                                  |
+| `data-size` / `data-side`                                                 | Badge, Loader, Progress, Meter; Drawer, Popover, Menu and Tooltip popups | instance styling hooks read by the stylesheet; form controls have no size hooks: their sizing is fluid |
+| `data-orientation`                                                        | RadioGroup                                                               | display hook (see Sanctioned exceptions)                                                               |
+| `data-label-position`                                                     | Switch                                                                   | display hook (see Sanctioned exceptions)                                                               |
+| `data-striped` / `data-hover` / `data-col-borders` / `data-sticky-header` | Table                                                                    | display hooks (see Sanctioned exceptions)                                                              |
+| `data-striped` / `data-animated`                                          | Progress (root)                                                          | display hooks (see Sanctioned exceptions)                                                              |
+| `data-show-label`                                                         | Rating (and the scheme-toggle example)                                   | display hook (see Sanctioned exceptions)                                                               |
+| `data-read-only`                                                          | Rating                                                                   | display mode: a picture of the value, not inputs                                                       |
+| `data-dragging`                                                           | `FileInput.Root`                                                         | a drag carrying files is over the box; detected from the drag events, never a prop                     |
 
 Components built on native state use the platform's hook instead (e.g.
 Details styles `details[open]`). **Prefer detection over declaration**:
@@ -232,10 +243,21 @@ derived anatomy (`padding-block: var(--loam-space-sm)` +
 `font-size: var(--loam-text-sm)` × `line-height: 1.2` + 1px borders), so they
 height-align by construction at every container width. There are no
 control-height tokens and no size props on form controls; a control that
-must match this height adopts the same stack (see Pagination).
+must match this height renders Button, or adopts the same stack.
 Glyph controls (Checkbox, Radio, Switch, Range) size their geometry in `em`
 on a `font-size: var(--loam-text-sm)` basis, so glyphs ride the same fluid
 scale as their labels.
+
+**Numeric bounds are not size props.** The doctrine bans props that
+re-encode a visual decision; it does not ban the platform's own numbers.
+The exceptions, and why each is a semantic rather than a size:
+
+| Component                              | Props                                      | What they are                                                                                                                           |
+| -------------------------------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `Meter`                                | `min` / `max` / `low` / `high` / `optimum` | the range and its bands, forwarded to `<meter>`; the browser picks the band, the CSS paints it                                          |
+| `QuantityInput`                        | `min` / `max` / `step`                     | the count's bounds and increment, forwarded to `<input type="number">`; the buttons disable at the ends                                 |
+| `Rating`                               | `max`                                      | how many stars there are, which is how many radios                                                                                      |
+| `Badge`, `Loader`, `Progress`, `Meter` | `size`                                     | the one sanctioned `size`, always `"sm" \| "md" \| "lg"` emitted as `data-size`: an intrinsic glyph or track that no container can size |
 
 ### Sanctioned exceptions
 
@@ -243,18 +265,23 @@ Under review: these are the exceptions to the doctrine above; do not add to
 this list without a maintainer ruling. Each exists today and is accepted until
 a maintainer decides otherwise.
 
-- Input `leftSection` / `rightSection`: adornments inside the field box, not
+- Input `startSection` / `endSection`: adornments inside the field box, not
   icons in flow, so `:has()` detection cannot place them.
-- Alert `icon` on the convenience form: mirrors the `Alert.Icon` part.
-- Table `striped` / `highlightOnHover` / `withColumnBorders`: display hooks,
-  emitted as the `data-striped` / `data-hover` / `data-col-borders`
-  attributes.
+- Alert `icon` and `onClose` on the convenience form: mirror the `Alert.Icon`
+  and `Alert.Close` parts.
+- Table `striped` / `highlightOnHover` / `withColumnBorders` / `stickyHeader`:
+  display hooks, emitted as the `data-striped` / `data-hover` /
+  `data-col-borders` / `data-sticky-header` attributes. The scroller's height
+  cap is the public `--loam-table-block-size`, a custom property, not a prop.
 - Progress `striped` / `animated`: display hooks, emitted as the
   `data-striped` / `data-animated` attributes.
 - RadioGroup `orientation`: emits `data-orientation`; the layout of a set, not
   a control.
 - Switch `labelPosition`: emits `data-label-position`.
-- RadioGroup `error`: a group-level message that Field cannot supply.
+- Rating `showLabel` (and the scheme-toggle example): emits
+  `data-show-label`; whether the
+  group's name is painted as well as read. Rating `readOnly` emits
+  `data-read-only` for display mode.
 
 ## Adding or changing a component
 
@@ -276,6 +303,46 @@ The essentials either way:
    No CSS-in-JS.
 3. Keep everything accessible: correct roles, keyboard support, focus-visible rings.
 4. Add or update the component's docs entry in `apps/docs/src/content/components/`.
+
+## Examples (`/examples`)
+
+Core holds primitives; the docs site's examples section holds sections built
+from them the way any consumer would: a hero, a header with dropdowns, a
+sign-in form, a basket. An example is copied and changed, never installed, so
+it is written as the markup a reader will paste. Each lives in
+`apps/docs/src/examples/<category>/<slug>/` as four files, and
+`pnpm check:examples` refuses one that breaks the rules below.
+
+1. **It solves a real problem, honestly.** The title and description say
+   exactly what it does; the content is specific (one fictional organisation,
+   Hedgerow, throughout; never lorem); siblings in a category are told apart
+   at a glance. A near-duplicate is merged, not added.
+2. **The markup is the deliverable.** `Example.tsx` is one root element
+   carrying the slug as its class, core components used as they come, and
+   nothing that depends on the docs page. Literal markup over data arrays and
+   abstractions: a reader edits three cards, not a config object.
+3. **Built the way any consumer would.** Imports are `@loamui/core`, `react`
+   and `./example.css` only. Every rule in `example.css` sits inside
+   `@scope (.<slug>…) to ([class*="loam-"])`; a second scope may be rooted at
+   a core element to place it (grid area, flex basis, a public `--loam-*`
+   property), never to change how it looks. Tokens only; logical properties;
+   container queries, not media queries.
+4. **The pillars in the copy.** Real elements and the element styles for bare
+   markup; `:has()` detection over declared state; status through
+   `--loam-context`, remembering that `primary` is the brand slot and
+   neutral by default; forced colours wherever colour carries state; motion
+   opt-in; every icon-only control named by hidden text; `role="list"` on a
+   list whose markers are stripped.
+5. **Idiomatic, current React.** `"use client"` only where the module needs
+   it (compound parts, hooks, a function passed as a prop; the gate checks);
+   no effects deriving state; `useId` for ids on a unit that repeats on a
+   page; native form attributes over handlers.
+6. **It says why.** `meta.ts` carries one sentence per pillar that applies,
+   stating the specific judgment the example encodes, and a comment in the
+   stylesheet only where it names a trap, in three lines or fewer.
+7. **It proves one promise.** `example.test.tsx` renders, runs axe, and
+   asserts the one thing the example promises: a landmark's name, a current
+   link, a described-by association.
 
 ## Before opening a PR
 

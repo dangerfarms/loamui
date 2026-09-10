@@ -5,14 +5,17 @@
 
     align-items: center;
     background: var(--_bg);
-    block-size: var(--_size, 2.5rem);
+
+    /* Public size hook, set per instance or on a region; the type inside
+       is em-based so it follows. */
+    block-size: var(--loam-avatar-size, 2.5rem);
     border-radius: var(--_radius, var(--loam-radius-full));
     color: var(--_fg);
     display: inline flex;
     flex: none;
     font-size: var(--loam-text-sm);
     font-weight: 600;
-    inline-size: var(--_size, 2.5rem);
+    inline-size: var(--loam-avatar-size, 2.5rem);
     justify-content: center;
     line-height: 1;
     overflow: clip;
@@ -64,31 +67,38 @@
   }
 }
 
-/* Group — overlap children with a surface ring */
-@scope (.loam-Avatar-group) {
+/* Group — a list whose items overlap, each ringed in the surface colour.
+   The ring and overlap sit on the item, so the avatars inside stay behind
+   the donut untouched. */
+@scope (.loam-Avatar-group) to ([class*="loam-"]) {
   :scope {
     align-items: center;
     display: inline flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
 
-    > * {
-      border: 2px solid var(--loam-color-surface);
-      box-sizing: content-box;
-      margin-inline-start: calc(-1 * var(--_overlap, 0.5rem));
+  li {
+    border: 2px solid var(--loam-color-surface);
+    border-radius: var(--loam-radius-full);
+    display: block flex;
+    margin: 0;
+    margin-inline-start: calc(-1 * var(--loam-avatar-overlap, 0.5rem));
 
-      /* Identity at rest — the hover lift transitions both ways. */
-      translate: 0 0;
+    /* Identity at rest — the hover lift transitions both ways. */
+    translate: 0 0;
 
-      @media (prefers-reduced-motion: no-preference) {
-        transition: translate var(--loam-duration-md) var(--loam-ease);
-      }
-    }
-
-    > *:first-child {
+    &:first-child {
       margin-inline-start: 0;
     }
 
+    @media (prefers-reduced-motion: no-preference) {
+      transition: translate var(--loam-duration-md) var(--loam-ease);
+    }
+
     @media (hover: hover) {
-      > *:hover {
+      &:hover {
         translate: 0 -2px;
         z-index: 1;
       }

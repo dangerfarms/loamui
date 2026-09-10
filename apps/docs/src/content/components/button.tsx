@@ -77,12 +77,12 @@ const doc: ComponentContent = {
   <Button>Cancel</Button>
 </div>`,
       render: () => (
-        <div style={{ display: "grid", gap: "1.25rem" }}>
+        <div style={{ display: "grid", gap: "1.25rem", inlineSize: "100%" }}>
           <Example label="Container of 16rem or less: the button spans it">
             <div
               style={{
                 containerType: "inline-size",
-                inlineSize: "14rem",
+                inlineSize: "min(100%, 14rem)",
                 padding: "0.75rem",
                 border: "1px dashed var(--loam-color-line)",
                 borderRadius: "var(--loam-radius-md)",
@@ -95,8 +95,7 @@ const doc: ComponentContent = {
             <div
               style={{
                 containerType: "inline-size",
-                inlineSize: "24rem",
-                maxInlineSize: "100%",
+                inlineSize: "min(100%, 24rem)",
                 padding: "0.75rem",
                 border: "1px dashed var(--loam-color-line)",
                 borderRadius: "var(--loam-radius-md)",
@@ -120,7 +119,7 @@ const doc: ComponentContent = {
     {
       title: "Icons, composed as children",
       description:
-        "There are no leftSection or rightSection props. An svg child is detected via :has() and gets flex layout, a gap and 1em sizing. Icon-only is detected from the accessible name: add the aria-label an icon-only button needs anyway and it becomes square.",
+        "There are no leftSection or rightSection props. An svg child is detected via :has() and gets flex layout, a gap and 1em sizing. Icon-only is detected from the accessible name: the aria-label (or aria-labelledby) an icon-only button needs anyway, or hidden text beside the icon in the shared loam-VisuallyHidden class, and it becomes square.",
       code: `<Button>
   <svg viewBox="0 -0.5 25 25" fill="none" aria-hidden>
     <path d="M5.5 12.5L10.167 17L19.5 8" stroke="currentColor"
@@ -131,6 +130,11 @@ const doc: ComponentContent = {
 
 <Button aria-label="Approve">
   <svg>…</svg>
+</Button>
+
+<Button>
+  <svg>…</svg>
+  <span className="loam-VisuallyHidden">Approve</span>
 </Button>`,
       render: () => (
         <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap" }}>
@@ -161,7 +165,38 @@ const doc: ComponentContent = {
               </svg>
             </Button>
           </Example>
+          <Example label="Icon-only: named by hidden text">
+            <Button>
+              <svg viewBox="0 -0.5 25 25" fill="none" aria-hidden>
+                <path
+                  d="M5.5 12.5L10.167 17L19.5 8"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className="loam-VisuallyHidden">Approve</span>
+            </Button>
+          </Example>
         </div>
+      ),
+    },
+    {
+      title: "Another element",
+      description:
+        "render substitutes the element and merges the Button's class and wiring onto it. Not for navigation, which is SignpostLink; here a native <summary> wears the button so a disclosure's toggle looks like the action it is.",
+      code: `<details>
+  <Button render={<summary />}>Show details</Button>
+  <p>The disclosure is native; the summary wears the button.</p>
+</details>`,
+      render: () => (
+        <details>
+          <Button render={<summary />}>Show details</Button>
+          <p style={{ marginBlockStart: "0.75rem" }}>
+            The disclosure is native; the summary wears the button.
+          </p>
+        </details>
       ),
     },
     {
@@ -210,8 +245,8 @@ const doc: ComponentContent = {
   ],
   accessibility: [
     "Always renders a real <button>, so keyboard focus, Enter/Space activation and the button role come from the platform for free.",
-    'Write a specific label: the text should make sense out of context ("Save changes", not "OK"). Icon-only buttons need an aria-label.',
-    "For a loading state, add `disabled` and compose a <Loader/> (marked aria-hidden) into the children so it isn't announced as content.",
+    'Write a specific label: the text should make sense out of context ("Save changes", not "OK"). Icon-only buttons need a name: aria-label, aria-labelledby, or hidden text in the loam-VisuallyHidden class beside the icon; any of the three also makes the button square.',
+    "For a loading state, add disabled and compose a Loader (marked aria-hidden) into the children so it isn't announced as content.",
     "Focus is shown with a :focus-visible ring (never removed without a replacement), and colour is never the only signal of state.",
   ],
   props: [
@@ -228,7 +263,7 @@ const doc: ComponentContent = {
     },
     {
       name: "render",
-      type: "RenderProp",
+      type: "element | (props) => node",
       description:
         "Substitute the rendered element; the Button's classes and wiring merge onto yours. Not for navigation: a call-to-action that goes somewhere is a SignpostLink.",
     },

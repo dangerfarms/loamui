@@ -29,6 +29,56 @@ describe("Field composition wiring", () => {
     expect(error).toHaveAttribute("role", "alert");
   });
 
+  it("keeps a control's own aria-describedby after the Field's ids", () => {
+    const { rerender } = render(
+      <>
+        <p id="rules">Letters and digits only.</p>
+        <Field.Root>
+          <Field.Label>Username</Field.Label>
+          <Field.Description>Shown on your profile.</Field.Description>
+          <Field.Error>{null}</Field.Error>
+          <Input aria-describedby="rules" />
+        </Field.Root>
+      </>,
+    );
+    const input = screen.getByLabelText("Username");
+    const description = screen.getByText("Shown on your profile.");
+    expect(input).toHaveAttribute("aria-describedby", `${description.id} rules`);
+
+    rerender(
+      <>
+        <p id="rules">Letters and digits only.</p>
+        <Field.Root>
+          <Field.Label>Username</Field.Label>
+          <Field.Description>Shown on your profile.</Field.Description>
+          <Field.Error>Enter a username</Field.Error>
+          <Input aria-describedby="rules" />
+        </Field.Root>
+      </>,
+    );
+    const error = screen.getByRole("alert");
+    expect(input).toHaveAttribute("aria-describedby", `${description.id} ${error.id} rules`);
+    expect(input).toHaveAccessibleDescription(
+      "Shown on your profile. Error: Enter a username Letters and digits only.",
+    );
+  });
+
+  it("does the same through Field.Control, each id once", () => {
+    render(
+      <>
+        <p id="rules">Letters and digits only.</p>
+        <Field.Root>
+          <Field.Label>Username</Field.Label>
+          <Field.Description>Shown on your profile.</Field.Description>
+          <Field.Control render={<input aria-describedby="rules rules" />} />
+        </Field.Root>
+      </>,
+    );
+    const input = screen.getByLabelText("Username");
+    const description = screen.getByText("Shown on your profile.");
+    expect(input).toHaveAttribute("aria-describedby", `${description.id} rules`);
+  });
+
   it("omits error wiring when there is no error content", () => {
     render(
       <Field.Root>
@@ -96,5 +146,72 @@ describe("Field composition wiring", () => {
     expect(input).toHaveAttribute("aria-invalid", "true");
     fireEvent.reset(form);
     expect(input).not.toHaveAttribute("aria-invalid");
+  });
+});
+
+describe("Field labels", () => {
+  it("says its own words in the language the labels give it", () => {
+    render(
+      <Field.Root labels={{ optional: "(facultatif)", errorPrefix: "Erreur : " }}>
+        <Field.Label optional>Société</Field.Label>
+        <Field.Error>Saisissez le nom de votre société</Field.Error>
+        <Input />
+      </Field.Root>,
+    );
+    expect(screen.getByLabelText("Société (facultatif)")).toBeInTheDocument();
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Erreur : Saisissez le nom de votre société",
+    );
+  });
+
+  it("prefixes an error with hidden words by default", () => {
+    render(
+      <Field.Root>
+        <Field.Label>Email</Field.Label>
+        <Field.Error>Enter your email address</Field.Error>
+        <Input />
+      </Field.Root>,
+    );
+    expect(screen.getByRole("alert")).toHaveTextContent("Error: Enter your email address");
+    expect(screen.getByRole("alert").querySelector(".loam-VisuallyHidden")).toHaveTextContent(
+      "Error:",
+    );
+  });
+});
+
+describe("Input", () => {
+  it("lands className, style and ref on the input, wrapperProps on the box, and sections beside it", () => {
+    let node: HTMLInputElement | null = null;
+    const { container } = render(
+      <Field.Root>
+        <Field.Label>Handle</Field.Label>
+        <Input
+          className="mine"
+          style={{ textAlign: "end" }}
+          ref={(el) => {
+            node = el;
+          }}
+          wrapperProps={{ className: "box", id: "box" }}
+          startSection="@"
+          endSection=".dev"
+        />
+      </Field.Root>,
+    );
+    const input = screen.getByLabelText("Handle") as HTMLInputElement;
+    expect(node).toBe(input);
+    expect(input).toHaveClass("mine");
+    expect(input.style.textAlign).toBe("end");
+    const box = container.querySelector("#box")!;
+    expect(box).toHaveClass("loam-Input-field", "box");
+    const sections = box.querySelectorAll("span.section");
+    expect(sections[0]).toHaveTextContent("@");
+    expect(sections[1]).toHaveTextContent(".dev");
+    expect(box.firstElementChild).toBe(sections[0]);
+    expect(box.lastElementChild).toBe(sections[1]);
+  });
+
+  it("forwards the native size attribute", () => {
+    render(<Input aria-label="Year" size={4} />);
+    expect(screen.getByLabelText("Year")).toHaveAttribute("size", "4");
   });
 });

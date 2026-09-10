@@ -1,0 +1,304 @@
+/* A nav landmark holding lists of links. It hosts consumer links and
+   icons, hence the donut. A Group is the component's own details element,
+   not core's Details (a boxed surface with a padded body, where a group in
+   a nav is a line among lines), so the scope reaches into it and a list
+   reads the same whether it sits in the nav or in a group. The lines
+   themselves are set by the scope below this one. */
+@scope (.loam-Nav) to ([class*="loam-"]) {
+  :scope {
+    display: block grid;
+    gap: var(--loam-space-sm);
+  }
+
+  /* A sidebar with several titled sections is one Root per section,
+     stacked; the space between them is the nav's own, so the stack reads
+     as one column without a wrapper rule. */
+  .loam-Nav + :scope {
+    margin-block-start: var(--loam-space-lg);
+  }
+
+  /* A small label above the lists, set the same whatever element it
+     renders as: a heading through `render` keeps the nav's own type, not
+     the page's heading scale. */
+  .title {
+    color: var(--loam-color-fg-muted);
+    font-family: var(--loam-font);
+    font-size: var(--loam-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    margin: 0;
+    padding-inline: var(--loam-space-sm);
+    text-transform: uppercase;
+  }
+
+  ul {
+    display: block grid;
+    gap: 2px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    /* A nested list indents a level, whether it sits in an item or in a
+       group: a group's list is a nested list too, so the two indents are
+       one value, the public --loam-nav-indent. */
+    ul {
+      padding-inline-start: var(--loam-nav-indent, var(--loam-space-md));
+    }
+  }
+
+  li {
+    margin: 0;
+
+    /* The item holding a dropdown is the panel's box where anchor
+       positioning is missing and the panel sits under it, not in the top
+       layer; harmless where the panel is anchored. */
+    &:has(> .dropdown-trigger) {
+      position: relative;
+    }
+  }
+}
+
+/* Every link and every group's summary is one line of the nav, set the
+   same. Rooted at the line rather than the nav (as Table's sort control is
+   rooted at itself) because a Link rendered as a button and handed to a
+   Menu or Popover as its trigger sits inside that part's own wrapper,
+   which the nav's donut fences out; rooted here, it is a line of the nav
+   wherever it sits, and the donut fences only the consumer's parts inside
+   a line. `.link` is the nav's word: a class of that name anywhere under
+   the landmark is read as one of its lines. */
+@scope (.loam-Nav :is(.link, summary.group-title)) to ([class*="loam-"]) {
+  /* The marker's border, transparent at rest, so the current one does not
+     shift its text; the size set here rather than inherited, so a group's
+     links match the links beside it. No box of its own (a button brings
+     the elements layer's; it is shed here), text set from the start, and
+     the pointer for every element the line may render as. The line's
+     height is the public --loam-nav-link-size; a consumer raises it to
+     2.75rem where a thumb is the pointer, as in a mobile menu. */
+  :scope {
+    align-items: center;
+    background: none;
+    border: 0;
+    border-radius: var(--loam-radius-md);
+    box-shadow: none;
+    color: var(--loam-color-fg);
+    cursor: pointer;
+    display: block flex;
+    font-size: var(--loam-text-md);
+    font-weight: 400;
+    gap: var(--loam-space-sm);
+    line-height: 1.4;
+    min-block-size: var(--loam-nav-link-size, 2.25rem);
+    padding-block: var(--loam-space-xs);
+    padding-inline: var(--loam-space-sm);
+    text-align: start;
+    text-decoration: none;
+    white-space: normal;
+
+    /* The consumer's icon, sized on the text. */
+    svg {
+      block-size: auto;
+      flex: none;
+      inline-size: 1.25em;
+    }
+
+    /* The current destination is marked by a line and weight as well as a
+       background, so it survives a flattened or absent background. The
+       state is the ARIA attribute, whatever it says: page, location, step. */
+    &[aria-current] {
+      background: var(--loam-color-bg-subtle);
+      border-color: var(--loam-color-primary-strong);
+      color: var(--loam-color-fg-strong);
+      font-weight: 600;
+    }
+
+    /* The group's summary sheds the native marker. */
+    &:is(summary) {
+      list-style: none;
+      user-select: none;
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+    }
+
+    /* A line that opens something (a group's summary, a dropdown's
+       trigger) ends in a chevron drawn from two borders, turning while
+       the fold or panel is open. Borders, not a glyph, so forced colours
+       keep it in the text colour. */
+    &:is(summary, .dropdown-trigger)::after {
+      block-size: 0.5em;
+      border-block-end: 2px solid currentcolor;
+      border-inline-end: 2px solid currentcolor;
+      content: "";
+      flex: none;
+      inline-size: 0.5em;
+      margin-block-start: -0.25em;
+      margin-inline-start: auto;
+      rotate: 45deg;
+
+      @media (prefers-reduced-motion: no-preference) {
+        transition: rotate var(--loam-duration-sm) var(--loam-ease);
+      }
+    }
+
+    details.group[open] > &::after,
+    &.dropdown-trigger[aria-expanded="true"]::after {
+      margin-block-start: 0.25em;
+      rotate: -135deg;
+    }
+
+    /* A group holding the current page is the reader's place too: its
+       title takes the weight, and while the group is closed, the marker
+       as well, so the location is never folded out of sight. */
+    details.group:has(.link[aria-current]) > & {
+      color: var(--loam-color-fg-strong);
+      font-weight: 600;
+    }
+
+    details.group:not([open]):has(.link[aria-current]) > & {
+      border-color: var(--loam-color-primary-strong);
+    }
+
+    /* The same for a dropdown: its panel is the trigger's next sibling,
+       so a current link in there gives the trigger the weight, and the
+       marker while the panel is closed. */
+    &.dropdown-trigger:has(+ * .link[aria-current]) {
+      color: var(--loam-color-fg-strong);
+      font-weight: 600;
+    }
+
+    &.dropdown-trigger[aria-expanded="false"]:has(+ * .link[aria-current]) {
+      border-color: var(--loam-color-primary-strong);
+    }
+
+    /* The marker's edge is the public --loam-nav-current-edge: the start
+       edge in a column, block-end in a row, where the bar runs under the
+       link. A style query is answered by ancestors, so it is declared on
+       the Root or above, never on the link itself. */
+    @container not style(--loam-nav-current-edge: block-end) {
+      border-inline-start: 2px solid transparent;
+    }
+
+    @container style(--loam-nav-current-edge: block-end) {
+      border-block-end: 2px solid transparent;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        background: var(--loam-color-bg-subtle);
+        color: var(--loam-color-fg-strong);
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition:
+        background var(--loam-duration-sm) var(--loam-ease),
+        border-color var(--loam-duration-sm) var(--loam-ease),
+        color var(--loam-duration-sm) var(--loam-ease);
+    }
+
+    /* Forced colours flatten the background and the marker's colour, so
+       the current entry keeps its weight and the marker is named in the
+       system highlight; the chevron already draws in the text colour.
+       After the base rules: same specificity, order decides. */
+    @media (forced-colors: active) {
+      &[aria-current] {
+        border-color: Highlight;
+      }
+
+      details.group:not([open]):has(.link[aria-current]) > & {
+        border-color: Highlight;
+      }
+
+      &.dropdown-trigger[aria-expanded="false"]:has(+ * .link[aria-current]) {
+        border-color: Highlight;
+      }
+    }
+  }
+}
+
+/* A dropdown's panel: a native popover, so it leaves the nav for the top
+   layer and carries its own scope; it hosts the consumer's list, hence the
+   donut. It is a column of lines whatever edge the row around it draws
+   the marker on, so the edge is reset here, where the links' style query
+   will find it. */
+@scope (.loam-Nav-dropdown) to ([class*="loam-"]) {
+  :scope {
+    /* The panel's width is the public --loam-nav-dropdown-size, capped to
+       the viewport; a wide panel raises it and lays a grid inside. */
+    --_size: var(--loam-nav-dropdown-size, 16rem);
+    --loam-nav-current-edge: inline-start;
+
+    background: var(--loam-color-surface);
+    border: 1px solid var(--loam-color-line);
+    border-radius: var(--loam-radius-md);
+    box-shadow: var(--loam-shadow-lg);
+    inline-size: min(var(--_size), 90vi);
+    margin: 0;
+    padding: var(--loam-space-xs);
+
+    /* Enhanced: top layer + anchor positioning, tethered to the trigger by
+       the per-instance anchor-name the two parts share through inline
+       styles. Under the trigger's start edge; the browser flips it up or
+       to the other side when it would leave the viewport. */
+    @supports (anchor-name: --loam-probe) {
+      /* The UA gives [popover] `inset: 0`; clear it so the area alone
+         places the box. */
+      inset: auto;
+      margin-block: var(--loam-space-xs);
+      position: fixed;
+      position-area: block-end span-inline-end;
+      position-try-fallbacks: flip-block, flip-inline;
+
+      @media (prefers-reduced-motion: no-preference) {
+        opacity: 1;
+        transition:
+          opacity var(--loam-duration-md) var(--loam-ease),
+          translate var(--loam-duration-md) var(--loam-ease),
+          display var(--loam-duration-md) var(--loam-ease) allow-discrete,
+          overlay var(--loam-duration-md) var(--loam-ease) allow-discrete;
+        translate: 0 0;
+
+        &:not(:popover-open) {
+          opacity: 0;
+          translate: 0 -0.25rem;
+        }
+
+        @starting-style {
+          opacity: 0;
+          translate: 0 -0.25rem;
+        }
+      }
+    }
+
+    /* Fallback: no anchor positioning (and no top layer), so the panel is
+       an ordinary absolutely positioned box under its Item. */
+    @supports not (anchor-name: --loam-probe) {
+      inset-block-start: calc(100% + var(--loam-space-xs));
+      inset-inline-start: 0;
+      position: absolute;
+      z-index: var(--loam-z-popup);
+    }
+
+    /* Forced colours drop the shadow; the border, in the text colour,
+       keeps the panel's edge. */
+    @media (forced-colors: active) {
+      border-color: CanvasText;
+    }
+  }
+
+  /* The nav's own list rules stop at the panel (it is a loam- root), so a
+     List inside it is set here the same way. */
+  ul {
+    display: block grid;
+    gap: 2px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    margin: 0;
+  }
+}

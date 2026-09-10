@@ -2,20 +2,20 @@
 
 import { Tooltip } from "@loamui/core";
 
-const positions = [
+const sides = [
   ["Top", "top"],
   ["Bottom", "bottom"],
   ["Left", "left"],
   ["Right", "right"],
 ] as const;
 
-export function TooltipPositions() {
+export function TooltipSides() {
   return (
     <>
-      {positions.map(([label, position]) => (
-        <Tooltip.Root key={position}>
+      {sides.map(([label, side]) => (
+        <Tooltip.Root key={side}>
           <Tooltip.Trigger>{label}</Tooltip.Trigger>
-          <Tooltip.Popup position={position}>On the {position}</Tooltip.Popup>
+          <Tooltip.Popup side={side}>On the {side}</Tooltip.Popup>
         </Tooltip.Root>
       ))}
     </>

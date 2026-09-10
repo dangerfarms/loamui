@@ -1,9 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SearchIcon } from "./Icons";
-import { COMPONENTS, GETTING_STARTED, PRIMITIVES } from "./nav";
+import { COMPONENTS, EXAMPLES_NAV, GETTING_STARTED, PRIMITIVES } from "./nav";
+import { EXAMPLE_META } from "@/examples/generated-meta";
 import classes from "./CommandMenu.module.css";
 
 interface Result {
@@ -28,14 +29,35 @@ const ALL: Result[] = [
     hint: c.category,
     href: `/docs/components/${c.slug}`,
   })),
+  ...EXAMPLES_NAV.map((e) => ({
+    label: e.name,
+    hint: "Examples",
+    href: e.href,
+  })),
+  ...EXAMPLE_META.map((e) => ({
+    label: e.meta.title,
+    hint: "Example",
+    href: `/examples/${e.category}/${e.slug}`,
+  })),
 ];
 
+/**
+ * The site search: a native modal dialog (focus containment, Escape and
+ * the backdrop come with `showModal()`) holding an APG editable combobox.
+ * The text box owns focus; the list is a listbox the box points into with
+ * `aria-activedescendant`, so arrow keys move a highlight that a screen
+ * reader hears without focus leaving the box. Opens from the trigger or
+ * with ⌘K / Ctrl+K.
+ */
 export function CommandMenu() {
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
   const [active, setActive] = useState(0);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const baseId = useId();
+  const listId = `${baseId}-list`;
+  const optionId = (i: number) => `${baseId}-option-${i}`;
   const router = useRouter();
 
   const results = useMemo(() => {
@@ -90,6 +112,14 @@ export function CommandMenu() {
     return () => el.removeEventListener("click", onBackdropClick);
   }, []);
 
+  // The highlighted option stays in view as the arrow keys move it; the
+  // list scrolls, the page does not.
+  useEffect(() => {
+    if (!open) return;
+    const el = document.getElementById(`${baseId}-option-${active}`);
+    el?.scrollIntoView({ block: "nearest" });
+  }, [active, open, baseId]);
+
   const go = (href: string) => {
     setOpen(false);
     router.push(href);
@@ -102,6 +132,12 @@ export function CommandMenu() {
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       setActive((a) => Math.max(a - 1, 0));
+    } else if (e.key === "Home" && results.length > 0) {
+      e.preventDefault();
+      setActive(0);
+    } else if (e.key === "End" && results.length > 0) {
+      e.preventDefault();
+      setActive(results.length - 1);
     } else if (e.key === "Enter" && results[active]) {
       e.preventDefault();
       go(results[active].href);
@@ -115,16 +151,19 @@ export function CommandMenu() {
         className={classes.trigger}
         onClick={openPalette}
         aria-label="Search documentation"
+        aria-keyshortcuts="Meta+K Control+K"
       >
         <SearchIcon width={16} height={16} />
         <span className={classes.triggerLabel}>Search…</span>
-        <kbd className={classes.kbd}>⌘K</kbd>
+        <kbd className={classes.kbd} aria-hidden>
+          ⌘K
+        </kbd>
       </button>
 
       <dialog
         ref={dialogRef}
         className={classes.panel}
-        aria-label="Search"
+        aria-label="Search documentation"
         onClose={() => setOpen(false)}
         {...({ closedby: "any" } as object)}
       >
@@ -133,7 +172,16 @@ export function CommandMenu() {
           <input
             ref={inputRef}
             className={classes.input}
-            placeholder="Search components and guides…"
+            type="text"
+            role="combobox"
+            aria-label="Search components, guides and examples"
+            aria-autocomplete="list"
+            aria-expanded="true"
+            aria-controls={listId}
+            aria-activedescendant={results[active] ? optionId(active) : undefined}
+            autoComplete="off"
+            spellCheck={false}
+            placeholder="Search components, guides and examples…"
             value={q}
             onChange={(e) => {
               setQ(e.target.value);
@@ -142,22 +190,38 @@ export function CommandMenu() {
             onKeyDown={onKeyDown}
           />
         </div>
-        <ul className={classes.results}>
-          {results.length === 0 && <li className={classes.empty}>No results for “{q}”.</li>}
-          {results.map((r, i) => (
-            <li key={r.href}>
-              <button
-                type="button"
-                className={classes.result}
-                data-active={i === active || undefined}
-                onMouseEnter={() => setActive(i)}
-                onClick={() => go(r.href)}
-              >
+        {results.length === 0 && (
+          <p className={classes.empty} role="status">
+            No results for “{q}”. Try a component name, a guide or an example.
+          </p>
+        )}
+        {/* APG combobox: the options are never focused (the box keeps focus
+            and points at one with aria-activedescendant), so they carry no
+            tabindex and no key handler of their own. */}
+        <ul
+          id={listId}
+          className={classes.results}
+          aria-label="Results"
+          hidden={results.length === 0}
+          {...{ role: "listbox" }}
+        >
+          {results.map((r, i) => {
+            const option = {
+              id: optionId(i),
+              role: "option",
+              "aria-selected": i === active,
+              onMouseMove: () => setActive(i),
+              // Keep focus in the box: a click on an option must not blur it.
+              onMouseDown: (e: React.MouseEvent) => e.preventDefault(),
+              onClick: () => go(r.href),
+            };
+            return (
+              <li key={r.href} className={classes.result} {...option}>
                 <span>{r.label}</span>
                 <span className={classes.hint}>{r.hint}</span>
-              </button>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ul>
       </dialog>
     </>

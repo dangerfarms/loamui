@@ -31,16 +31,13 @@ const doc: ComponentContent = {
     {
       title: "With a RadioGroup",
       description:
-        "RadioGroup renders a Fieldset internally, so a legend labels the set of radios.",
-      code: `<RadioGroup
-  label="Plan"
-  name="plan"
-  defaultValue="pro"
->
+        "RadioGroup.Root is a Fieldset.Root, so RadioGroup.Legend labels the set of radios.",
+      code: `<RadioGroup.Root name="plan" defaultValue="pro">
+  <RadioGroup.Legend>Plan</RadioGroup.Legend>
   <Radio value="free" label="Free" />
   <Radio value="pro" label="Pro" />
   <Radio value="team" label="Team" />
-</RadioGroup>`,
+</RadioGroup.Root>`,
       render: () => <FieldsetRadioDemo />,
     },
   ],
@@ -50,7 +47,7 @@ const doc: ComponentContent = {
   ],
   whenNotToUse: [
     "For a single labelled control: use Field (or a control's own label).",
-    "As a generic layout box: Fieldset carries grouping semantics, not just spacing.",
+    "As a generic layout box: Fieldset carries grouping semantics, not only spacing.",
   ],
   howItWorks: [
     {
@@ -71,7 +68,16 @@ const doc: ComponentContent = {
     {
       name: "Fieldset.Root",
       description:
-        "Renders a native <fieldset> grouping the controls; native <fieldset> props are forwarded.",
+        "Renders a native <fieldset> grouping the controls; native <fieldset> props and ref are forwarded.",
+      props: [
+        {
+          name: "labels",
+          type: "{ optional?: ReactNode }",
+          default: '{ optional: "(optional)" }',
+          description:
+            "The Fieldset's own words, read by the Legend: the text after an optional legend. Pass it in the page's language.",
+        },
+      ],
     },
     {
       name: "Fieldset.Legend",
@@ -81,7 +87,8 @@ const doc: ComponentContent = {
           name: "optional",
           type: "boolean",
           default: "false",
-          description: 'Appends "(optional)". Optional is marked in words, not with an asterisk.',
+          description:
+            'Appends labels.optional ("(optional)"). Optional is marked in words, not with an asterisk.',
         },
       ],
     },

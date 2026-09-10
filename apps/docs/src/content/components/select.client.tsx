@@ -26,7 +26,10 @@ export function SelectPlaceholderDemo() {
     <div style={{ maxInlineSize: "20rem", inlineSize: "100%" }}>
       <Field.Root>
         <Field.Label>Country</Field.Label>
-        <Select placeholder="Pick a country">
+        <Select>
+          <option value="" disabled>
+            Pick a country
+          </option>
           <option value="ca">Canada</option>
           <option value="uk">United Kingdom</option>
           <option value="us">United States</option>
@@ -62,7 +65,12 @@ export function SelectErrorDemo() {
       <Field.Root>
         <Field.Label>Country</Field.Label>
         <Field.Error>Select a country</Field.Error>
-        <Select placeholder="Pick a country">{countryOptions}</Select>
+        <Select>
+          <option value="" disabled>
+            Pick a country
+          </option>
+          {countryOptions}
+        </Select>
       </Field.Root>
     </div>
   );

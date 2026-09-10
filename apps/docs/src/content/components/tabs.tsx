@@ -1,118 +1,62 @@
-import { Tabs, TabsList, TabsTab, TabsPanel } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
+import { TabsBasicDemo, TabsDisabledDemo, TabsIconsDemo } from "./tabs.client";
 
 const doc: ComponentContent = {
   slug: "tabs",
   lead: "One visible panel from a related set, chosen from a tab list in the same view.",
-  importLine: `import { Tabs, TabsList, TabsTab, TabsPanel } from "@loamui/core";`,
+  importLine: `import { Tabs } from "@loamui/core";`,
   demos: [
     {
-      title: "Basic",
+      title: "Basic usage",
       description: "Uncontrolled via defaultValue. Arrow keys move between tabs.",
-      code: `<Tabs defaultValue="account">
-  <TabsList>
-    <TabsTab value="account">Account</TabsTab>
-    <TabsTab value="security">Security</TabsTab>
-    <TabsTab value="notifications">Notifications</TabsTab>
-  </TabsList>
-  <TabsPanel value="account">Update your name and email address.</TabsPanel>
-  <TabsPanel value="security">Change your password and enable 2FA.</TabsPanel>
-  <TabsPanel value="notifications">Choose how you want to be notified.</TabsPanel>
-</Tabs>`,
-      render: () => (
-        <div style={{ inlineSize: "100%", maxInlineSize: "28rem" }}>
-          <Tabs defaultValue="account">
-            <TabsList>
-              <TabsTab value="account">Account</TabsTab>
-              <TabsTab value="security">Security</TabsTab>
-              <TabsTab value="notifications">Notifications</TabsTab>
-            </TabsList>
-            <TabsPanel value="account">Update your name and email address.</TabsPanel>
-            <TabsPanel value="security">Change your password and enable 2FA.</TabsPanel>
-            <TabsPanel value="notifications">Choose how you want to be notified.</TabsPanel>
-          </Tabs>
-        </div>
-      ),
+      code: `<Tabs.Root defaultValue="account">
+  <Tabs.List>
+    <Tabs.Tab value="account">Account</Tabs.Tab>
+    <Tabs.Tab value="security">Security</Tabs.Tab>
+    <Tabs.Tab value="notifications">Notifications</Tabs.Tab>
+  </Tabs.List>
+  <Tabs.Panel value="account">Update your name and email address.</Tabs.Panel>
+  <Tabs.Panel value="security">Change your password and enable 2FA.</Tabs.Panel>
+  <Tabs.Panel value="notifications">Choose how you want to be notified.</Tabs.Panel>
+</Tabs.Root>`,
+      render: () => <TabsBasicDemo />,
     },
     {
       title: "With icons (composed as children)",
       description:
         "No leftSection prop: an svg child is detected via :has(svg) and gets a gap and label-relative sizing, the same detection Button uses. Compose the icon before the label and mark it aria-hidden.",
-      code: `<Tabs defaultValue="files">
-  <TabsList>
-    <TabsTab value="files">
+      code: `<Tabs.Root defaultValue="files">
+  <Tabs.List>
+    <Tabs.Tab value="files">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden>
         <path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0
           2-2V8l-6-6H6Zm7 1.5L18.5 9H13V3.5Z" />
       </svg>
       Files
-    </TabsTab>
-    <TabsTab value="team"><svg>…</svg> Team</TabsTab>
-    <TabsTab value="settings"><svg>…</svg> Settings</TabsTab>
-  </TabsList>
-  <TabsPanel value="files">All your documents in one place.</TabsPanel>
-  <TabsPanel value="team">Invite teammates and manage roles.</TabsPanel>
-  <TabsPanel value="settings">Configure your workspace preferences.</TabsPanel>
-</Tabs>`,
-      render: () => (
-        <div style={{ inlineSize: "100%", maxInlineSize: "28rem" }}>
-          <Tabs defaultValue="files">
-            <TabsList>
-              <TabsTab value="files">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                  <path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6Zm7 1.5L18.5 9H13V3.5Z" />
-                </svg>
-                Files
-              </TabsTab>
-              <TabsTab value="team">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                  <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.42 0-8 2.69-8 6v1a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-1c0-3.31-3.58-6-8-6Z" />
-                </svg>
-                Team
-              </TabsTab>
-              <TabsTab value="settings">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                  <path d="M19.43 12.98a7.8 7.8 0 0 0 0-1.96l2.03-1.58-1.92-3.32-2.39.96a7.6 7.6 0 0 0-1.7-.98L15.1 3.5h-3.84l-.35 2.54a7.6 7.6 0 0 0-1.7.98l-2.39-.96-1.92 3.32 2.03 1.58a7.8 7.8 0 0 0 0 1.96l-2.03 1.58 1.92 3.32 2.39-.96c.52.4 1.09.73 1.7.98l.35 2.54h3.84l.35-2.54a7.6 7.6 0 0 0 1.7-.98l2.39.96 1.92-3.32-2.03-1.58ZM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z" />
-                </svg>
-                Settings
-              </TabsTab>
-            </TabsList>
-            <TabsPanel value="files">All your documents in one place.</TabsPanel>
-            <TabsPanel value="team">Invite teammates and manage roles.</TabsPanel>
-            <TabsPanel value="settings">Configure your workspace preferences.</TabsPanel>
-          </Tabs>
-        </div>
-      ),
+    </Tabs.Tab>
+    <Tabs.Tab value="team"><svg>…</svg> Team</Tabs.Tab>
+    <Tabs.Tab value="settings"><svg>…</svg> Settings</Tabs.Tab>
+  </Tabs.List>
+  <Tabs.Panel value="files">All your documents in one place.</Tabs.Panel>
+  <Tabs.Panel value="team">Invite teammates and manage roles.</Tabs.Panel>
+  <Tabs.Panel value="settings">Configure your workspace preferences.</Tabs.Panel>
+</Tabs.Root>`,
+      render: () => <TabsIconsDemo />,
     },
     {
       title: "Disabled tab",
       description: "A disabled tab is skipped by keyboard navigation.",
-      code: `<Tabs defaultValue="overview">
-  <TabsList>
-    <TabsTab value="overview">Overview</TabsTab>
-    <TabsTab value="reports">Reports</TabsTab>
-    <TabsTab value="billing" disabled>Billing</TabsTab>
-  </TabsList>
-  <TabsPanel value="overview">Everything at a glance.</TabsPanel>
-  <TabsPanel value="reports">Usage for the last month.</TabsPanel>
-  <TabsPanel value="billing">Upgrade to unlock billing.</TabsPanel>
-</Tabs>`,
-      render: () => (
-        <div style={{ inlineSize: "100%", maxInlineSize: "28rem" }}>
-          <Tabs defaultValue="overview">
-            <TabsList>
-              <TabsTab value="overview">Overview</TabsTab>
-              <TabsTab value="reports">Reports</TabsTab>
-              <TabsTab value="billing" disabled>
-                Billing
-              </TabsTab>
-            </TabsList>
-            <TabsPanel value="overview">Everything at a glance.</TabsPanel>
-            <TabsPanel value="reports">Usage for the last month.</TabsPanel>
-            <TabsPanel value="billing">Upgrade to unlock billing.</TabsPanel>
-          </Tabs>
-        </div>
-      ),
+      code: `<Tabs.Root defaultValue="overview">
+  <Tabs.List>
+    <Tabs.Tab value="overview">Overview</Tabs.Tab>
+    <Tabs.Tab value="reports">Reports</Tabs.Tab>
+    <Tabs.Tab value="billing" disabled>Billing</Tabs.Tab>
+  </Tabs.List>
+  <Tabs.Panel value="overview">Everything at a glance.</Tabs.Panel>
+  <Tabs.Panel value="reports">Usage for the last month.</Tabs.Panel>
+  <Tabs.Panel value="billing">Upgrade to unlock billing.</Tabs.Panel>
+</Tabs.Root>`,
+      render: () => <TabsDisabledDemo />,
     },
   ],
   whenToUse: [
@@ -146,37 +90,37 @@ const doc: ComponentContent = {
     'The wiring is generated from one id: role="tablist"/"tab"/"tabpanel" with aria-selected, aria-controls on each tab and aria-labelledby on each panel, so assistive technology announces which tab is active and what it controls.',
     "Each panel has tabIndex 0, so a panel whose content contains no focusable element can still be reached and scrolled by keyboard.",
   ],
-  props: [
-    {
-      name: "defaultValue",
-      type: "string",
-      description:
-        "Required initial tab value for uncontrolled usage. Omit only when value is supplied.",
-    },
-    {
-      name: "value",
-      type: "string",
-      description: "Controlled active tab value. Required when defaultValue is omitted.",
-    },
-    {
-      name: "onChange",
-      type: "(value: string) => void",
-      description: "Called with the new value when the active tab changes.",
-    },
-    {
-      name: "...others",
-      type: "HTMLAttributes<HTMLDivElement>",
-      description: "All native <div> props are forwarded.",
-    },
-  ],
   parts: [
     {
-      name: "TabsList",
+      name: "Tabs.Root",
+      description:
+        "Owns the active value (controlled or uncontrolled) and renders the wrapper; all native <div> props are forwarded.",
+      props: [
+        {
+          name: "defaultValue",
+          type: "string",
+          description:
+            "Required initial tab value for uncontrolled usage. Omit only when value is supplied.",
+        },
+        {
+          name: "value",
+          type: "string",
+          description: "Controlled active tab value. Required when defaultValue is omitted.",
+        },
+        {
+          name: "onChange",
+          type: "(value: string) => void",
+          description: "Called with the new value when the active tab changes.",
+        },
+      ],
+    },
+    {
+      name: "Tabs.List",
       description:
         'The tab strip (role="tablist") that owns the roving tabindex and arrow-key behaviour; all native <div> props are forwarded.',
     },
     {
-      name: "TabsTab",
+      name: "Tabs.Tab",
       description: "One tab button; all native <button> props are forwarded.",
       props: [
         {
@@ -192,7 +136,7 @@ const doc: ComponentContent = {
       ],
     },
     {
-      name: "TabsPanel",
+      name: "Tabs.Panel",
       description:
         "The content shown while its tab is active; all native <div> props are forwarded.",
       props: [

@@ -1,6 +1,6 @@
 ---
 title: Composing components
-description: How to build your own components (a hero, a pricing card, a carousel) from the three primitives, without adding anything to the library.
+description: How to build your own components (a hero, a pricing card, a carousel) from the three primitives, the way the examples are built.
 ---
 
 > LoamUI documentation, generated from the same source as the live page —
@@ -8,13 +8,13 @@ description: How to build your own components (a hero, a pricing card, a carouse
 
 # Composing components
 
-LoamUI ships 33 low-level components and no more. A hero, a pricing table, a carousel or a testimonial wall is yours to build, from the three primitives, in your own codebase. This page is the recipe, for you and for your agent.
+LoamUI's core ships 47 low-level components and no more. A hero, a pricing table, a carousel or a testimonial wall is a composition: built from the three primitives the way any consumer would, in your own codebase. This page is the recipe, for you and for your agent; the [examples](/examples) are the same recipe applied a hundred times, to copy and change.
 
 ## The recipe
 
 1. **Write the markup as native HTML.** A `section` with an `h2` and a `p` is already styled by the [element styles](/docs/element-styles): type scale, leading, margins, links. Reach for a LoamUI component only where the element needs structure it does not have (a button, a field, a badge, a disclosure).
-2. **Give the root a class and a scoped rule.** `@scope (.hero)` keeps the rule inside the component, so parts can be plain type selectors (`h2`, `p.lede`) with no naming scheme. Use only `--loam-*` tokens for colour, space, type and radius; never a raw value.
-3. **Compose LoamUI parts inside it.** `Button`, `Badge`, `SignpostLink`, `Card`. Do not restyle their internals. If a part needs structural overrides to fit, the thing you are building belongs downstream, not in the library.
+2. **Give the root a class and a scoped rule.** `@scope (.hero)` keeps the rule inside the component, so parts can be plain type selectors (`h2`, `p.description`) with no naming scheme. Use only `--loam-*` tokens for colour, space, type and radius; never a raw value.
+3. **Compose LoamUI parts inside it.** `Button`, `Badge`, `SignpostLink`, `Card`. Do not restyle their internals. If a part needs structural overrides to fit, the thing you are building is a composition (yours, or one of the [examples](/examples)), never a change to core.
 4. **Declare context and size on the region.** `--loam-context: primary` on the root recolours everything inside; `container-type: inline-size` lets the fluid tokens respond to the component's own width instead of the viewport.
 
 ## A hero
@@ -29,7 +29,7 @@ export function Hero() {
         <Badge>New</Badge>
       </div>
       <h2>Modern UI primitives for agent-assisted developers.</h2>
-      <p className="lede">Three primitives your agent builds from.</p>
+      <p className="description">Three primitives your agent builds from.</p>
       <div className="actions">
         <SignpostLink href="/docs">Get started</SignpostLink>
         <a href="https://github.com/dangerfarms/loamui">Star on GitHub</a>
@@ -57,7 +57,7 @@ export function Hero() {
     max-inline-size: 18ch;
   }
 
-  p.lede {
+  p.description {
     color: var(--loam-color-fg-muted);
     font-size: var(--loam-text-lg);
     margin: 0;
@@ -72,11 +72,11 @@ export function Hero() {
 }
 ```
 
-Nothing in the library changed. The heading and the lede come from the element styles and the type scale; the badge and the signpost link come from the components; the box is yours.
+Nothing in the library changed. The heading and the description come from the element styles and the type scale; the badge and the signpost link come from the components; the box is yours.
 
 ## A pricing card
 
-`Card` is the surface. A scoped rule adds the anatomy a plan needs, and `--loam-context: primary` on the card marks the recommended plan: the badge and the button recolour, and nothing else has to know.
+`Card` is the surface and `Price` writes the amount. A scoped rule adds the anatomy a plan needs, and `--loam-context: primary` on the card marks the recommended plan: the badge and the button recolour, and nothing else has to know.
 
 ```tsx
 <Card className="plan" style={{ "--loam-context": "primary" }}>
@@ -84,7 +84,7 @@ Nothing in the library changed. The heading and the lede come from the element s
     Team <Badge>Most popular</Badge>
   </h3>
   <p className="price">
-    £24 <small>per seat, per month</small>
+    <Price value={24} currency="GBP">per seat, per month</Price>
   </p>
   <ul>
     <li>Unlimited projects</li>
@@ -106,7 +106,6 @@ Nothing in the library changed. The heading and the lede come from the element s
 
   p.price {
     font-size: var(--loam-text-2xl);
-    font-variant-numeric: lining-nums tabular-nums;
     font-weight: 700;
     margin: 0;
   }
@@ -114,6 +113,35 @@ Nothing in the library changed. The heading and the lede come from the element s
 ```
 
 Three plans in a row is a grid on the parent (`grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr))`), not a prop on the card; see the [Layout guide](/docs/layout).
+
+## A FAQ
+
+A list of questions is a list of native disclosures. Core's `Details` is the general accordion: give every item the same `name` and the browser keeps at most one open, leave it off and readers can hold two answers open to compare, and find-in-page opens a closed answer when it matches inside. Nothing runs at runtime, and there is no FAQ component to learn.
+
+```tsx
+<section aria-labelledby="faq-title" className="faq">
+  <h2 id="faq-title">Questions</h2>
+  <Details.Root name="faq">
+    <Details.Summary>Does it work without JavaScript?</Details.Summary>
+    <Details.Content>Yes. The stylesheet is static CSS and the disclosures are native.</Details.Content>
+  </Details.Root>
+  <Details.Root name="faq">
+    <Details.Summary>Which browsers are supported?</Details.Summary>
+    <Details.Content>Every browser with Baseline Newly Available CSS.</Details.Content>
+  </Details.Root>
+</section>
+```
+
+```css
+@scope (.faq) {
+  :scope {
+    display: block grid;
+    gap: var(--loam-space-sm);
+  }
+}
+```
+
+If the page needs `FAQPage` structured data, build it from the same questions in the code that renders them; the markup above is all the reader sees.
 
 ## Where a carousel goes
 

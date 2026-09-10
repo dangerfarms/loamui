@@ -67,7 +67,7 @@ There are no size or fullWidth props. Padding and font are fluid (container-rela
 
 ### Icons, composed as children
 
-There are no leftSection or rightSection props. An svg child is detected via :has() and gets flex layout, a gap and 1em sizing. Icon-only is detected from the accessible name: add the aria-label an icon-only button needs anyway and it becomes square.
+There are no leftSection or rightSection props. An svg child is detected via :has() and gets flex layout, a gap and 1em sizing. Icon-only is detected from the accessible name: the aria-label (or aria-labelledby) an icon-only button needs anyway, or hidden text beside the icon in the shared loam-VisuallyHidden class, and it becomes square.
 
 ```tsx
 <Button>
@@ -81,6 +81,22 @@ There are no leftSection or rightSection props. An svg child is detected via :ha
 <Button aria-label="Approve">
   <svg>…</svg>
 </Button>
+
+<Button>
+  <svg>…</svg>
+  <span className="loam-VisuallyHidden">Approve</span>
+</Button>
+```
+
+### Another element
+
+render substitutes the element and merges the Button's class and wiring onto it. Not for navigation, which is SignpostLink; here a native <summary> wears the button so a disclosure's toggle looks like the action it is.
+
+```tsx
+<details>
+  <Button render={<summary />}>Show details</Button>
+  <p>The disclosure is native; the summary wears the button.</p>
+</details>
 ```
 
 ### Loading state
@@ -128,8 +144,8 @@ Emphasis is a property of the region, not the button: wrap the section's single 
 ## Accessibility
 
 - Always renders a real <button>, so keyboard focus, Enter/Space activation and the button role come from the platform for free.
-- Write a specific label: the text should make sense out of context ("Save changes", not "OK"). Icon-only buttons need an aria-label.
-- For a loading state, add `disabled` and compose a <Loader/> (marked aria-hidden) into the children so it isn't announced as content.
+- Write a specific label: the text should make sense out of context ("Save changes", not "OK"). Icon-only buttons need a name: aria-label, aria-labelledby, or hidden text in the loam-VisuallyHidden class beside the icon; any of the three also makes the button square.
+- For a loading state, add disabled and compose a Loader (marked aria-hidden) into the children so it isn't announced as content.
 - Focus is shown with a :focus-visible ring (never removed without a replacement), and colour is never the only signal of state.
 
 ## Props
@@ -140,7 +156,7 @@ Status is not a prop: it comes from the surrounding `--loam-context` region (see
 | --- | --- | --- | --- |
 | `children` | `ReactNode` | — | The button content: label, and any composed icons/spinner. |
 | `type` | `"button" \| "submit" \| "reset"` | `"button"` | Unlike a native <button>, never a submit button unless you say so. |
-| `render` | `RenderProp` | — | Substitute the rendered element; the Button's classes and wiring merge onto yours. Not for navigation: a call-to-action that goes somewhere is a SignpostLink. |
+| `render` | `element \| (props) => node` | — | Substitute the rendered element; the Button's classes and wiring merge onto yours. Not for navigation: a call-to-action that goes somewhere is a SignpostLink. |
 | `...others` | `ButtonHTMLAttributes` | — | All native <button> props are forwarded. |
 
 ## Custom properties

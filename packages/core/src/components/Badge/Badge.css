@@ -14,7 +14,10 @@
        declared hue of an achromatic colour still interpolates); cartesian
        mixing only desaturates, so the channel's hue survives. */
     background: color-mix(in oklab, var(--_color), var(--loam-color-bg) 85%);
-    block-size: var(--_h, 1.375rem);
+
+    /* Geometry in em on the size's type step, so a size is one font-size
+       decision and the pill scales with the fluid scale. */
+    block-size: var(--_h, 1.85em);
     border-radius: var(--_radius, var(--loam-radius-full));
     color: light-dark(
       color-mix(in oklab, var(--_color) 70%, oklch(0% 0 0deg)),
@@ -27,19 +30,17 @@
     inline-size: fit-content;
     letter-spacing: 0.01em;
     line-height: 1;
-    padding-inline: var(--_px, 0.625rem);
+    padding-inline: var(--_px, 0.85em);
+    text-decoration: none;
     user-select: none;
     white-space: nowrap;
 
     &[data-size="sm"] {
-      --_h: 1.125rem;
-      --_px: 0.5rem;
-      --_fz: 0.6875rem;
+      --_h: 1.5em;
+      --_px: 0.67em;
     }
 
     &[data-size="lg"] {
-      --_h: 1.625rem;
-      --_px: 0.8125rem;
       --_fz: var(--loam-text-sm);
       --_gap: var(--loam-space-sm);
     }
@@ -58,6 +59,12 @@
     border-radius: var(--loam-radius-full);
     flex: none;
     inline-size: 0.5em;
+
+    /* Background paint is dropped in forced colors; the dot survives as an
+       outline in the text colour. */
+    @media (forced-colors: active) {
+      border: max(1px, 0.12em) solid CanvasText;
+    }
   }
 
   :scope:has(svg) {

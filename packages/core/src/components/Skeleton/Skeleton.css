@@ -1,39 +1,35 @@
-@scope (.loam-Skeleton) {
+/* The children (a LoamUI part or a consumer's own markup) are foreign
+   content behind the donut; nothing here needs to reach them, because the
+   whole subtree is hidden by inheritance from the root. */
+@scope (.loam-Skeleton) to ([class*="loam-"]) {
   :scope {
-    block-size: var(--_h, 1lh);
+    /* Public sizing hooks for a bare placeholder, where there is no content
+       to measure; a wrapped child sizes the box instead (below). */
+    block-size: var(--loam-skeleton-block-size, 1lh);
 
     /* Public shape hook — consumers may set it per instance or region. */
     border-radius: var(--loam-skeleton-radius, var(--loam-radius-md));
-
-    /* Bare text children have no box for the child rule below to hide. */
-    color: transparent;
     display: block flow;
-    inline-size: var(--_w, 100%);
+    inline-size: var(--loam-skeleton-inline-size, 100%);
     overflow: clip;
     pointer-events: none;
     position: relative;
     user-select: none;
+
+    /* Everything inside keeps its layout but paints nothing: visibility
+       inherits through the donut, where a child rule could not reach. */
+    visibility: hidden;
   }
 
   /* Wrapped children size the box: measured, not declared. */
   :scope:has(> *) {
-    block-size: var(--_h, auto);
-    inline-size: var(--_w, fit-content);
+    block-size: var(--loam-skeleton-block-size, auto);
+    inline-size: var(--loam-skeleton-inline-size, fit-content);
   }
 
-  /* Element children keep their layout but paint nothing — visibility
-     also hides backgrounds, which a transparent color cannot. */
-  :scope > * {
-    visibility: hidden;
-  }
-
-  /* After the :has() rule so the circle wins at equal specificity.
-     2.5rem matches Avatar's md, the shape this exists to stand in for. */
-  :scope[data-circle] {
-    aspect-ratio: 1;
-    block-size: auto;
-    border-radius: var(--loam-radius-full);
-    inline-size: var(--_size, 2.5rem);
+  /* A wrapped Avatar is the circle this stands in for. */
+  :scope:has(> .loam-Avatar) {
+    border-radius: var(--loam-skeleton-radius, var(--loam-radius-full));
   }
 
   /* The tint is a weak mix of the text colour: text is guaranteed to
@@ -52,9 +48,10 @@
     content: "";
     inset: 0;
     position: absolute;
+    visibility: visible;
 
     @media (prefers-reduced-motion: no-preference) {
-      animation: loam-skeleton-shimmer 1.4s ease-in-out infinite;
+      animation: loam-skeleton-shimmer calc(var(--loam-duration-lg) * 5) var(--loam-ease) infinite;
       background-size: 200% 100%;
     }
 

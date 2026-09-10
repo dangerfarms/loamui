@@ -1,0 +1,74 @@
+@scope (.card-background-image) to ([class*="loam-"]) {
+  /* color-scheme: dark re-resolves every light-dark() token inside, so the
+     words and the scrim are the audited dark pair whatever the page's scheme. */
+  :scope {
+    align-content: end;
+    color: var(--loam-color-fg);
+    color-scheme: dark;
+    container-type: inline-size;
+    display: block grid;
+    min-block-size: 20rem;
+    overflow: clip;
+    position: relative;
+
+    &::after {
+      background: linear-gradient(
+        to top,
+        color-mix(in oklch, var(--loam-color-bg) 88%, transparent) 0%,
+        color-mix(in oklch, var(--loam-color-bg) 64%, transparent) 55%,
+        color-mix(in oklch, var(--loam-color-bg) 24%, transparent) 100%
+      );
+      content: "";
+      inset: 0;
+      position: absolute;
+    }
+  }
+
+  img.media {
+    block-size: 100%;
+    inline-size: 100%;
+    inset: 0;
+    object-fit: cover;
+    position: absolute;
+  }
+
+  div.text {
+    display: block grid;
+    gap: var(--loam-space-sm);
+    justify-items: start;
+    position: relative;
+    z-index: 1;
+  }
+
+  p.meta {
+    margin: 0;
+  }
+
+  h3 {
+    color: var(--loam-color-fg-strong);
+    font-size: var(--loam-text-xl);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  p.description {
+    margin: 0;
+    max-inline-size: var(--loam-measure);
+    text-wrap: pretty;
+  }
+
+  div.actions {
+    margin-block-start: var(--loam-space-xs);
+  }
+
+  /* Forced colours drop the scrim, so the picture goes too. */
+  @media (forced-colors: active) {
+    :scope::after {
+      display: none;
+    }
+
+    img.media {
+      display: none;
+    }
+  }
+}

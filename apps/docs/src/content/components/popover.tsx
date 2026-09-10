@@ -85,7 +85,7 @@ const doc: ComponentContent = {
     },
   ],
   accessibility: [
-    "Where the popover attribute and anchor positioning are both supported, the browser provides top-layer rendering, light dismiss and Escape; other browsers get a wrapper-anchored fallback with the same behaviour re-implemented in a few lines of JS, a deliberate no-polyfill, progressive-enhancement trade-off (see the browser support policy at https://github.com/dangerfarms/loamui/blob/main/CONTRIBUTING.md#browser-support-policy).",
+    "Where the popover attribute and anchor positioning are both supported, the browser provides top-layer rendering, light dismiss and Escape; other browsers get a wrapper-anchored fallback with the same behaviour re-implemented in a few lines of JS, a deliberate no-polyfill, progressive-enhancement trade-off, per the browser support policy in CONTRIBUTING.",
     'Dialog semantics match what aria-haspopup="dialog" promises screen-reader users: opening moves focus into the panel and closing returns it to the trigger.',
     "Trigger is a real <button> with aria-expanded; Popover.Title and Popover.Description automatically label the dialog via aria-labelledby / aria-describedby.",
     "Collision handling uses position-try flipping at viewport edges in supporting browsers; the fallback keeps the requested side.",
@@ -129,7 +129,7 @@ const doc: ComponentContent = {
         'The floating panel (role="dialog", popover attribute); native <div> props are forwarded.',
       props: [
         {
-          name: "position",
+          name: "side",
           type: `"bottom" | "top"`,
           default: `"bottom"`,
           description: "Which side of the trigger the panel opens toward.",
@@ -140,6 +140,14 @@ const doc: ComponentContent = {
       name: "Popover.Title",
       description:
         "Optional heading that labels the popup for assistive technology; native heading props are forwarded.",
+      props: [
+        {
+          name: "render",
+          type: "element | (props) => node",
+          description:
+            "Substitute the heading element so its level follows the page (render={<h3 />}); defaults to an <h2>.",
+        },
+      ],
     },
     {
       name: "Popover.Description",
@@ -150,6 +158,15 @@ const doc: ComponentContent = {
       name: "Popover.Close",
       description:
         "A button that closes the popup from inside; native <button> props are forwarded.",
+    },
+  ],
+  cssProps: [
+    {
+      name: "--loam-popover-size",
+      syntax: "CSS length",
+      default: "20rem",
+      description:
+        "The panel's widest extent; content sizes it between a floor derived from this and the cap. Never wider than the viewport.",
     },
   ],
 };

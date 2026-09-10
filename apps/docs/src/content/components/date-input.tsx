@@ -4,6 +4,7 @@ import {
   DateInputWholeErrorDemo,
   DateInputPartErrorDemo,
   DateInputMonthYearDemo,
+  DateInputSummaryDemo,
 } from "./date-input.client";
 
 const doc: ComponentContent = {
@@ -14,14 +15,14 @@ const doc: ComponentContent = {
     {
       title: "Basic usage",
       description:
-        "A memorable date is typed, not picked: day, month and year are separate fields in a fieldset named by the legend. Day and year raise a numeric keypad on touch devices; the month keeps the full keyboard so names like Mar are accepted too.",
+        "A memorable date is typed, not picked: Day, Month and Year are separate Fields in a fieldset named by the legend, each a core Field around a core Input sized to its answer. Day and year raise a numeric keypad on touch devices; the month keeps the full keyboard so names like Mar are accepted too.",
       code: `<DateInput.Root name="date-of-birth" autoComplete="bday">
   <DateInput.Legend>Date of birth</DateInput.Legend>
   <DateInput.Description>For example, 27 3 2007</DateInput.Description>
   <DateInput.Fields>
-    <DateInput.Field part="day" />
-    <DateInput.Field part="month" />
-    <DateInput.Field part="year" />
+    <DateInput.Day />
+    <DateInput.Month />
+    <DateInput.Year />
   </DateInput.Fields>
 </DateInput.Root>`,
       render: () => <DateInputDemo />,
@@ -35,9 +36,9 @@ const doc: ComponentContent = {
   <DateInput.Description>For example, 27 3 2007</DateInput.Description>
   <DateInput.Error>Enter your date of birth</DateInput.Error>
   <DateInput.Fields>
-    <DateInput.Field part="day" />
-    <DateInput.Field part="month" />
-    <DateInput.Field part="year" />
+    <DateInput.Day />
+    <DateInput.Month />
+    <DateInput.Year />
   </DateInput.Fields>
 </DateInput.Root>`,
       render: () => <DateInputWholeErrorDemo />,
@@ -53,9 +54,9 @@ const doc: ComponentContent = {
     Membership start date must include a year
   </DateInput.Error>
   <DateInput.Fields>
-    <DateInput.Field part="day" defaultValue="27" />
-    <DateInput.Field part="month" defaultValue="3" />
-    <DateInput.Field part="year" />
+    <DateInput.Day defaultValue="27" />
+    <DateInput.Month defaultValue="3" />
+    <DateInput.Year />
   </DateInput.Fields>
 </DateInput.Root>`,
       render: () => <DateInputPartErrorDemo />,
@@ -63,13 +64,13 @@ const doc: ComponentContent = {
     {
       title: "Month and year only",
       description:
-        "Render only the fields the question needs: the naming, autofill and error wiring adapt to whichever parts are present.",
+        "Render only the parts the question needs: the naming, autofill and error wiring adapt to whichever are present.",
       code: `<DateInput.Root name="card-expiry">
   <DateInput.Legend>Expiry date</DateInput.Legend>
   <DateInput.Description>For example, 3 2031</DateInput.Description>
   <DateInput.Fields>
-    <DateInput.Field part="month" />
-    <DateInput.Field part="year" />
+    <DateInput.Month />
+    <DateInput.Year />
   </DateInput.Fields>
 </DateInput.Root>`,
       render: () => <DateInputMonthYearDemo />,
@@ -77,7 +78,7 @@ const doc: ComponentContent = {
   ],
   whenToUse: [
     "For dates the user knows or can look up: a date of birth, the issue or expiry date on a document.",
-    "When the answer must be an exact date submitted with a form: day, month and year, or just the parts the question needs.",
+    "When the answer must be an exact date submitted with a form: day, month and year, or only the parts the question needs.",
   ],
   whenNotToUse: [
     "For choosing a date from availability (booking an appointment, picking a delivery slot), where a calendar shows which dates are possible.",
@@ -94,26 +95,37 @@ const doc: ComponentContent = {
     },
     {
       title: "Highlight only the wrong part",
-      body: 'If one field is empty or impossible, say so ("[Date] must include a year") and pass parts to the Error to mark just that field invalid. If you cannot tell which part is wrong, or the parts are individually fine but the date is not real, leave parts unset so the whole date is highlighted. Either way the user\'s correct entries are never cleared.',
+      body: 'If one field is empty or impossible, say so ("[Date] must include a year") and pass parts to the Error to mark only that field invalid. If you cannot tell which part is wrong, or the parts are individually fine but the date is not real, leave parts unset so the whole date is highlighted. Either way the user\'s correct entries are never cleared.',
     },
     {
       title: "Autofill for dates of birth",
-      body: "When the date is the user's own date of birth, pass autoComplete=\"bday\" to the Root: each Field gets the matching bday-day / bday-month / bday-year value, so browsers can fill it and assistive technology knows the field's purpose. This is WCAG 1.3.5 (Identify Input Purpose). Leave it off for any other date: a wrong autofilled birthday in a membership-start field is worse than typing.",
+      body: "When the date is the user's own date of birth, pass autoComplete=\"bday\" to the Root: each part gets the matching bday-day / bday-month / bday-year value, so browsers can fill it and assistive technology knows the field's purpose. This is WCAG 1.3.5 (Identify Input Purpose). Leave it off for any other date: a wrong autofilled birthday in a membership-start field is worse than typing.",
     },
     {
       title: "Linking from an ErrorSummary",
-      body: "Pass an id to the Root and the fields become {id}-day, {id}-month and {id}-year. Point the summary item at the first field in error (the year in the example below) so activating it lands the user exactly where the correction starts.",
-      code: `<ErrorSummary.Item href="#membership-start-year">
-  Membership start date must include a year
-</ErrorSummary.Item>
+      body: "Pass an id to the Root and the fields become {id}-day, {id}-month and {id}-year. Point the summary item at the first field in error (the year in the example below) so activating it lands the user exactly where the correction starts. The summary here has autoFocus off because it is rendered with the page rather than after a failed submit; leave the default on in a form.",
+      code: `<ErrorSummary.Root autoFocus={false}>
+  <ErrorSummary.Title />
+  <ErrorSummary.List>
+    <ErrorSummary.Item href="#membership-start-year">
+      Membership start date must include a year
+    </ErrorSummary.Item>
+  </ErrorSummary.List>
+</ErrorSummary.Root>
 
-<DateInput.Root id="membership-start">
+<DateInput.Root id="membership-start" name="membership-start">
   <DateInput.Legend>When did your membership start?</DateInput.Legend>
+  <DateInput.Description>For example, 27 3 2019</DateInput.Description>
   <DateInput.Error parts={["year"]}>
     Membership start date must include a year
   </DateInput.Error>
-  …
+  <DateInput.Fields>
+    <DateInput.Day defaultValue="27" />
+    <DateInput.Month defaultValue="3" />
+    <DateInput.Year />
+  </DateInput.Fields>
 </DateInput.Root>`,
+      render: () => <DateInputSummaryDemo />,
     },
     {
       title: "Accept how people write dates",
@@ -144,10 +156,10 @@ const doc: ComponentContent = {
   ],
   accessibility: [
     "The group is a native <fieldset> named by its <legend>, so screen readers announce the question with each of the fields.",
-    "Each Field has its own visible <label>: Day, Month, Year by default; pass children to swap them for other languages.",
+    "Each part is a core Field with its own visible Field.Label: Day, Month, Year by default; pass children to swap them for other languages. The group's own words, the optional marker and the hidden error prefix, come from labels on the Root.",
     'The Description and Error are linked to the fieldset via aria-describedby, and the Error uses role="alert" so it is announced as it appears; invalid fields also set aria-invalid.',
     'Day and year use inputMode="numeric" (a number pad without the hazards of type="number"); the month field keeps the full keyboard so names like "jan" can be typed.',
-    "The fields are sized to their answers (two digits, four for the year); width is information about the expected length.",
+    "The parts are sized to their answers through the Input's native size attribute (two characters, three for a month that may be a name, four for the year); width is information about the expected length.",
   ],
   parts: [
     {
@@ -165,18 +177,25 @@ const doc: ComponentContent = {
           type: `"bday"`,
           description: "Wires browser date-of-birth autofill (WCAG 1.3.5).",
         },
+        {
+          name: "labels",
+          type: "{ optional?: ReactNode; errorPrefix?: ReactNode }",
+          default: '{ optional: "(optional)", errorPrefix: "Error: " }',
+          description:
+            "The group's own words, read by the Legend and the Error. Pass them in the page's language.",
+        },
       ],
     },
     {
       name: "DateInput.Legend",
       description:
-        "Names the group (this is Fieldset.Legend); native <legend> props are forwarded.",
+        "Names the group (this is Fieldset.Legend); native <legend> props and ref are forwarded.",
       props: [
         {
           name: "optional",
           type: "boolean",
           default: "false",
-          description: "Marks the whole question optional in text.",
+          description: "Marks the whole question optional in text (labels.optional).",
         },
       ],
     },
@@ -199,22 +218,43 @@ const doc: ComponentContent = {
     },
     {
       name: "DateInput.Fields",
-      description: "Lays out the row of fields; native <div> props are forwarded.",
+      description: "Lays out the row of parts; native <div> props and ref are forwarded.",
     },
     {
-      name: "DateInput.Field",
+      name: "DateInput.Day",
       description:
-        "One labelled date field. All native <input> props are forwarded: value, onChange, maxLength, refs.",
+        'The day part: a core Field around a core Input with the right name, autocomplete, inputMode="numeric" and a size of two characters. All Input props are forwarded: value, onChange, maxLength, ref, wrapperProps.',
       props: [
-        {
-          name: "part",
-          type: `"day" | "month" | "year"`,
-          description: "Which date part this field asks for (required).",
-        },
         {
           name: "children",
           type: "ReactNode",
-          default: `"Day" / "Month" / "Year"`,
+          default: `"Day"`,
+          description: "The visible field label.",
+        },
+      ],
+    },
+    {
+      name: "DateInput.Month",
+      description:
+        "The month part, wired like DateInput.Day. It keeps the full keyboard so a name like Mar can be typed, and is sized to three characters.",
+      props: [
+        {
+          name: "children",
+          type: "ReactNode",
+          default: `"Month"`,
+          description: "The visible field label.",
+        },
+      ],
+    },
+    {
+      name: "DateInput.Year",
+      description:
+        'The year part, wired like DateInput.Day: inputMode="numeric" and a size of four characters.',
+      props: [
+        {
+          name: "children",
+          type: "ReactNode",
+          default: `"Year"`,
           description: "The visible field label.",
         },
       ],

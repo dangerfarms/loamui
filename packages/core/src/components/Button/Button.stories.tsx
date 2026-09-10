@@ -133,11 +133,37 @@ export const WithContent: Story = {
           />
         </svg>
       </Button>
+      <Button>
+        <svg viewBox="0 -0.5 25 25" fill="none" aria-hidden>
+          <path
+            d="M5.5 12.5L10.167 17L19.5 8"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        <span className="loam-VisuallyHidden">Approve</span>
+      </Button>
       <Button disabled>
         <Loader />
         Saving
       </Button>
     </div>
+  ),
+};
+
+/**
+ * `render` substitutes the element and merges the Button's class and wiring
+ * onto it. Not for navigation (that is SignpostLink); here, a summary that
+ * looks like the button it behaves as.
+ */
+export const CustomElement: Story = {
+  render: () => (
+    <details>
+      <Button render={<summary />}>Show details</Button>
+      <p>The disclosure is native; the summary wears the button.</p>
+    </details>
   ),
 };
 

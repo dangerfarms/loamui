@@ -10,7 +10,9 @@ import classes from "./Sidebar.module.css";
  * where tokens, element styles and components read as three peer destinations.
  * The component categories nest beneath the Components primitive (by
  * indentation, not a separate section), so Components stays part of the trio
- * instead of splitting off. Shared by the desktop Sidebar and the mobile
+ * instead of splitting off. The examples are their own destination with their
+ * own rail, reached from the header: this navigation is the library's, and
+ * lists only what the library ships. Shared by the desktop Sidebar and the mobile
  * Drawer so the two never drift. `onNavigate` fires when a link is chosen, so
  * the Drawer can close on selection.
  */
@@ -24,7 +26,7 @@ export function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
       <Link
         href={href}
         className={classes.link}
-        data-active={isActive(href) || undefined}
+        aria-current={isActive(href) ? "page" : undefined}
         onClick={onNavigate}
       >
         {name}

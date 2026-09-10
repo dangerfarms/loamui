@@ -1,4 +1,4 @@
-@scope (.loam-Drawer-panel) to ([class*="loam-"]) {
+@scope (.loam-Drawer-popup) to ([class*="loam-"]) {
   :scope {
     /* Panel extent on the short axis (width for start/end, height for
        top/bottom). Block children stretch, so content can't decide this one —
@@ -15,15 +15,15 @@
     overscroll-behavior: contain;
     padding: var(--loam-space-lg);
 
-    &[data-position="start"],
-    &[data-position="end"] {
+    &[data-side="start"],
+    &[data-side="end"] {
       block-size: auto;
       inline-size: min(var(--_size), 100dvi - var(--loam-space-xl));
       inset-block: 0;
       max-block-size: 100dvb;
     }
 
-    &[data-position="start"] {
+    &[data-side="start"] {
       --_hidden: -100% 0;
 
       border-end-end-radius: var(--loam-radius-lg);
@@ -31,7 +31,7 @@
       inset-inline: 0 auto;
     }
 
-    &[data-position="end"] {
+    &[data-side="end"] {
       --_hidden: 100% 0;
 
       border-end-start-radius: var(--loam-radius-lg);
@@ -39,15 +39,15 @@
       inset-inline: auto 0;
     }
 
-    &[data-position="top"],
-    &[data-position="bottom"] {
+    &[data-side="top"],
+    &[data-side="bottom"] {
       block-size: min(var(--_size), 100dvb - var(--loam-space-xl));
       inline-size: auto;
       inset-inline: 0;
       max-inline-size: 100dvi;
     }
 
-    &[data-position="top"] {
+    &[data-side="top"] {
       --_hidden: 0 -100%;
 
       border-end-end-radius: var(--loam-radius-lg);
@@ -55,7 +55,7 @@
       inset-block: 0 auto;
     }
 
-    &[data-position="bottom"] {
+    &[data-side="bottom"] {
       --_hidden: 0 100%;
 
       border-start-end-radius: var(--loam-radius-lg);

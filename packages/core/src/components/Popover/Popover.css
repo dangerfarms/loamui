@@ -9,14 +9,18 @@
    carries its own scope. */
 @scope (.loam-Popover-popup) to ([class*="loam-"]) {
   :scope {
+    /* Content decides the width between a floor and a readable cap; the
+       cap is the public `--loam-popover-size`, the floor derives from it. */
+    --_size: var(--loam-popover-size, 20rem);
+
     background: var(--loam-color-surface);
     border: 1px solid var(--loam-color-line);
     border-radius: var(--loam-radius-md);
     box-shadow: var(--loam-shadow-lg);
     inline-size: max-content;
     margin: 0;
-    max-inline-size: min(20rem, 90vi);
-    min-inline-size: 12rem;
+    max-inline-size: min(var(--_size), 90vi);
+    min-inline-size: calc(var(--_size) * 0.6);
     padding: var(--loam-space-md);
 
     /* Enhanced: top layer + anchor positioning, tethered to the trigger.
@@ -30,11 +34,11 @@
       position: fixed;
       position-try: flip-block;
 
-      &[data-position="bottom"] {
+      &[data-side="bottom"] {
         inset-block-start: calc(anchor(end) + var(--loam-space-xs));
       }
 
-      &[data-position="top"] {
+      &[data-side="top"] {
         inset-block-end: calc(anchor(start) + var(--loam-space-xs));
       }
 
@@ -53,7 +57,7 @@
           translate: 0 -0.25rem;
         }
 
-        &[data-position="top"] {
+        &[data-side="top"] {
           &:not(:popover-open) {
             translate: 0 0.25rem;
           }
@@ -75,13 +79,13 @@
     @supports not (anchor-name: --loam-probe) {
       inset-inline-start: 0;
       position: absolute;
-      z-index: 50;
+      z-index: var(--loam-z-popup);
 
-      &[data-position="bottom"] {
+      &[data-side="bottom"] {
         inset-block-start: calc(100% + var(--loam-space-xs));
       }
 
-      &[data-position="top"] {
+      &[data-side="top"] {
         inset-block-end: calc(100% + var(--loam-space-xs));
       }
     }

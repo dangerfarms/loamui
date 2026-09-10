@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, within } from "storybook/test";
 import type { CSSProperties } from "react";
 import { Alert } from "../../index";
 
@@ -66,9 +67,69 @@ export const WithIcon: Story = {
   ),
 };
 
-export const MessageOnly: Story = {
+export const DescriptionOnly: Story = {
   args: {
     title: undefined,
     children: "A concise, single-line notice with no heading.",
+  },
+};
+
+/**
+ * `onClose` renders an `Alert.Close`: a LoamUI Button at the inline end,
+ * named "Dismiss" (or `labels.close`). The alert does not remove itself; the
+ * handler stops rendering it.
+ */
+export const Dismissible: Story = {
+  args: {
+    title: "Draft restored",
+    children: "We recovered the draft you were editing.",
+    onClose: () => {},
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("button", { name: "Dismiss" })).toBeInTheDocument();
+  },
+};
+
+/**
+ * The parts, in the anatomy the convenience form renders. `Alert.Title`
+ * takes `render` where the title belongs in the page outline.
+ */
+export const Composed: Story = {
+  render: () => (
+    <div style={{ "--loam-context": "warning" } as CSSProperties}>
+      <Alert.Root>
+        <Alert.Icon>
+          <span aria-hidden>⚠</span>
+        </Alert.Icon>
+        <Alert.Body>
+          <Alert.Title render={<h2 />}>Storage almost full</Alert.Title>
+          <Alert.Description>Free up space to keep syncing.</Alert.Description>
+        </Alert.Body>
+        <Alert.Close onClose={() => {}} labels={{ close: "Hide this warning" }} />
+      </Alert.Root>
+    </div>
+  ),
+};
+
+/**
+ * `role="alert"` interrupts: for a message that appears in response to an
+ * action. Forwarded props spread after the default `role="status"`, so the
+ * consumer's role wins.
+ */
+export const Interrupting: Story = {
+  args: {
+    role: "alert",
+    title: "Payment declined",
+    children: "Your card was refused. Try another card or contact your bank.",
+  },
+  render: (args) => (
+    <div style={{ "--loam-context": "danger" } as CSSProperties}>
+      <Alert {...args} />
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("alert")).toHaveTextContent("Payment declined");
   },
 };

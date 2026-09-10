@@ -102,7 +102,7 @@ A popover earns its place when it holds a handful of controls: a filter set, a q
 
 ## Accessibility
 
-- Where the popover attribute and anchor positioning are both supported, the browser provides top-layer rendering, light dismiss and Escape; other browsers get a wrapper-anchored fallback with the same behaviour re-implemented in a few lines of JS, a deliberate no-polyfill, progressive-enhancement trade-off (see the browser support policy at https://github.com/dangerfarms/loamui/blob/main/CONTRIBUTING.md#browser-support-policy).
+- Where the popover attribute and anchor positioning are both supported, the browser provides top-layer rendering, light dismiss and Escape; other browsers get a wrapper-anchored fallback with the same behaviour re-implemented in a few lines of JS, a deliberate no-polyfill, progressive-enhancement trade-off, per the browser support policy in CONTRIBUTING.
 - Dialog semantics match what aria-haspopup="dialog" promises screen-reader users: opening moves focus into the panel and closing returns it to the trigger.
 - Trigger is a real <button> with aria-expanded; Popover.Title and Popover.Description automatically label the dialog via aria-labelledby / aria-describedby.
 - Collision handling uses position-try flipping at viewport edges in supporting browsers; the fallback keeps the requested side.
@@ -133,11 +133,15 @@ The floating panel (role="dialog", popover attribute); native <div> props are fo
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `position` | `"bottom" \| "top"` | `"bottom"` | Which side of the trigger the panel opens toward. |
+| `side` | `"bottom" \| "top"` | `"bottom"` | Which side of the trigger the panel opens toward. |
 
 ### Popover.Title
 
 Optional heading that labels the popup for assistive technology; native heading props are forwarded.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `render` | `element \| (props) => node` | — | Substitute the heading element so its level follows the page (render={<h3 />}); defaults to an <h2>. |
 
 ### Popover.Description
 
@@ -146,4 +150,10 @@ Optional supporting text wired via aria-describedby; native <p> props are forwar
 ### Popover.Close
 
 A button that closes the popup from inside; native <button> props are forwarded.
+
+## Custom properties
+
+| Property | Syntax | Default | Description |
+| --- | --- | --- | --- |
+| `--loam-popover-size` | `CSS length` | `20rem` | The panel's widest extent; content sizes it between a floor derived from this and the cap. Never wider than the viewport. |
 

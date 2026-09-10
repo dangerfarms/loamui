@@ -30,8 +30,7 @@ export function InputContainersDemo() {
       <div
         style={{
           containerType: "inline-size",
-          inlineSize: "16rem",
-          maxInlineSize: "100%",
+          inlineSize: "min(100%, 16rem)",
           padding: "0.75rem",
           border: "1px dashed var(--loam-color-line)",
           borderRadius: "var(--loam-radius-md)",
@@ -45,8 +44,7 @@ export function InputContainersDemo() {
       <div
         style={{
           containerType: "inline-size",
-          inlineSize: "30rem",
-          maxInlineSize: "100%",
+          inlineSize: "min(100%, 30rem)",
           padding: "0.75rem",
           border: "1px dashed var(--loam-color-line)",
           borderRadius: "var(--loam-radius-md)",
@@ -136,13 +134,22 @@ export function InputSectionsDemo() {
     >
       <Field.Root>
         <Field.Label>Handle</Field.Label>
-        <Input leftSection="@" />
+        <Input startSection="@" />
       </Field.Root>
       <Field.Root>
         <Field.Label>Site name</Field.Label>
-        <Input rightSection=".dev" />
+        <Input endSection=".dev" />
       </Field.Root>
     </div>
+  );
+}
+
+export function InputSizedDemo() {
+  return (
+    <Field.Root>
+      <Field.Label>Sort code</Field.Label>
+      <Input inputMode="numeric" size={6} />
+    </Field.Root>
   );
 }
 

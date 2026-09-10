@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import type { FormEvent } from "react";
+import { useFormReset } from "./use-form-reset";
 
 type ValidatableControl = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
@@ -14,16 +15,8 @@ type ValidatableControl = HTMLInputElement | HTMLSelectElement | HTMLTextAreaEle
  */
 export function useUserInvalid<T extends ValidatableControl>() {
   const [nativeInvalid, setNativeInvalid] = useState(false);
-  const [control, setControl] = useState<T | null>(null);
-  const validationRef = useCallback((node: T | null) => setControl(node), []);
-
-  useEffect(() => {
-    const form = control?.form;
-    if (!form) return;
-    const clear = () => setNativeInvalid(false);
-    form.addEventListener("reset", clear);
-    return () => form.removeEventListener("reset", clear);
-  }, [control]);
+  const clear = useCallback(() => setNativeInvalid(false), []);
+  const validationRef = useFormReset<T>(clear);
 
   const checkOnInvalid = useCallback((event: FormEvent<T>) => {
     const invalid = !event.currentTarget.validity.valid;

@@ -83,6 +83,10 @@ arithmetic:
 | `--loam-duration-lg` | `300ms` |
 | `--loam-ease` | `cubic-bezier(0.4, 0, 0.2, 1)` |
 | `--loam-ease-elastic` | `cubic-bezier(0.34, 1.56, 0.64, 1)` |
+| `--loam-z-popup` | `40` |
+| `--loam-z-overlay` | `50` |
+| `--loam-z-toast` | `100` |
+| `--loam-z-skip-link` | `110` |
 | `--loam-ring-width` | `3px` |
 | `--loam-disabled-opacity` | `0.55` |
 

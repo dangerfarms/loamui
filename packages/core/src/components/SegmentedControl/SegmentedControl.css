@@ -1,0 +1,135 @@
+/* A native fieldset of radios dressed as a pill. The browser's fieldset
+   border and padding are reset here rather than by core's Fieldset: the
+   row is the whole anatomy. Each segment is a label around a radio the
+   component hides with .loam-VisuallyHidden, so the label is the target
+   and the input keeps focus and the arrow keys. The pill fits the control
+   height contract: 1px borders, the inset and the segment's own padding
+   add up to Button's padding-block on either side of a 1.2 line. Donut:
+   the segments host consumer labels and icons. */
+@scope (.loam-SegmentedControl) to ([class*="loam-"]) {
+  :scope {
+    --_inset: 2px;
+
+    align-items: center;
+    background: var(--loam-color-bg-subtle);
+    border: 1px solid var(--loam-color-line);
+    border-radius: var(--loam-radius-full);
+    display: inline flex;
+    gap: var(--_inset);
+    margin: 0;
+    min-inline-size: 0;
+    padding: var(--_inset);
+  }
+
+  /* Floated, the legend leaves the fieldset's legend slot and lines up as
+     a flex item before the segments. Hidden, it wears loam-VisuallyHidden
+     and is out of this scope. */
+  legend {
+    color: var(--loam-color-fg-muted);
+    float: inline-start;
+    font-size: var(--loam-text-sm);
+    font-weight: 500;
+    line-height: 1.2;
+    margin: 0;
+    padding-block: 0;
+    padding-inline: var(--loam-space-sm) var(--loam-space-xs);
+  }
+
+  label.segment {
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: var(--loam-radius-full);
+    color: var(--loam-color-fg-muted);
+    cursor: pointer;
+    display: inline flex;
+    font-size: var(--loam-text-sm);
+    font-weight: 500;
+    gap: var(--loam-space-sm);
+    justify-content: center;
+    line-height: 1.2;
+
+    /* The segment's own height (the line and Button's padding, less the
+       inset the padding gives up on each side; the borders cancel), so an
+       icon-only segment is a circle and a text one grows from it. */
+    min-inline-size: var(
+      --loam-segmented-control-segment-size,
+      calc(1.2 * var(--loam-text-sm) + 2 * var(--loam-space-sm) - 2 * var(--_inset))
+    );
+    padding-block: calc(var(--loam-space-sm) - var(--_inset) - 1px);
+    padding-inline: var(--loam-space-md);
+    user-select: none;
+    white-space: nowrap;
+
+    /* The consumer's icon, sized on the text. Alone after the radio, or
+       beside hidden text, it sits in a circle. The hidden text's class is
+       written as an attribute: the donut gate reads a `.loam-` anywhere in
+       a subject as dead, and this one is a :has() argument, not a subject. */
+    svg {
+      block-size: auto;
+      flex: none;
+      inline-size: 1em;
+    }
+
+    &:has(> input:first-child + svg:last-child),
+    &:has(> input:first-child + svg + [class~="loam-VisuallyHidden"]:last-child) {
+      padding-inline: 0;
+    }
+
+    /* The chosen segment lifts onto a surface. The line-strong edge is
+       what carries the state at 3:1; surface on the subtle pill alone
+       would not. */
+    &:has(input:checked) {
+      background: var(--loam-color-surface);
+      border-color: var(--loam-color-line-strong);
+      box-shadow: var(--loam-shadow-sm);
+      color: var(--loam-color-fg-strong);
+    }
+
+    /* The ring belongs on the segment; the input's own ring is clipped
+       away with it. */
+    &:has(input:focus-visible) {
+      outline: var(--loam-ring-width) solid var(--loam-color-ring);
+      outline-offset: 2px;
+    }
+
+    &:has(input:disabled) {
+      cursor: not-allowed;
+      opacity: var(--loam-disabled-opacity);
+    }
+
+    @media (hover: hover) {
+      &:hover:not(:has(input:checked, input:disabled)) {
+        color: var(--loam-color-fg);
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition:
+        background var(--loam-duration-sm) var(--loam-ease),
+        border-color var(--loam-duration-sm) var(--loam-ease),
+        box-shadow var(--loam-duration-md) var(--loam-ease),
+        color var(--loam-duration-sm) var(--loam-ease);
+    }
+  }
+
+  /* Forced colours strip the paint that says "chosen", so the state moves
+     to the system highlight; the ring keeps the system focus colour, and
+     a disabled segment, whose opacity is flattened, is named in GrayText.
+     After the base rules: same specificity, order decides. */
+  @media (forced-colors: active) {
+    label.segment:has(input:checked) {
+      background: Highlight;
+      border-color: Highlight;
+      color: HighlightText;
+      forced-color-adjust: none;
+    }
+
+    label.segment:has(input:focus-visible) {
+      outline-color: Highlight;
+    }
+
+    label.segment:has(input:disabled) {
+      color: GrayText;
+    }
+  }
+}

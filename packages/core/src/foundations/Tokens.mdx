@@ -47,7 +47,7 @@ attribute just sets `color-scheme`, so the `light-dark()` tokens re-resolve for
 that region. Remove it to follow the OS again.
 
 ```html
-<section data-theme="dark"> … </section>
+<section data-theme="dark">…</section>
 ```
 
 One caveat: a colour already resolved on an ancestor inherits as a resolved
@@ -93,7 +93,7 @@ line-height + border) that aligns by construction at every container width.
 
 1. **Target the class names.** Roots carry stable prefixed classes
    (`.loam-Button`, `.loam-Card`, `.loam-Input-field`). LoamUI's styles live in a
-   `@layer`, so any *unlayered* rule of yours beats them.
+   `@layer`, so any _unlayered_ rule of yours beats them.
 2. **Add your own `className`.** Every component forwards `className`, `style`
    and native props to its root.
 3. **Order your own layer** after the library's:

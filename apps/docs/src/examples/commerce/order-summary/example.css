@@ -1,0 +1,89 @@
+@scope (.order-summary) to ([class*="loam-"]) {
+  :scope {
+    container-type: inline-size;
+    display: block grid;
+    gap: var(--loam-space-md);
+    max-inline-size: 36rem;
+  }
+
+  h2 {
+    font-size: var(--loam-text-xl);
+    margin: 0;
+  }
+
+  dl {
+    display: block grid;
+    grid-template-columns: 1fr auto auto;
+    margin: 0;
+  }
+
+  dt {
+    color: var(--loam-color-fg-strong);
+    font-weight: 600;
+  }
+
+  dd {
+    margin: 0;
+
+    &.value {
+      grid-column: 2;
+      text-align: end;
+    }
+
+    &.note {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-sm);
+      grid-column: 1 / -1;
+      margin-block-start: var(--loam-space-xs);
+    }
+
+    &.change {
+      grid-column: 3;
+      grid-row: 1;
+      white-space: nowrap;
+    }
+  }
+
+  div.row {
+    border-block-end: 1px solid var(--loam-color-line);
+    column-gap: var(--loam-space-lg);
+    display: block grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    padding-block: var(--loam-space-sm);
+
+    &.total {
+      border-block-start: var(--loam-ring-width) solid var(--loam-color-line-strong);
+      margin-block-start: var(--loam-space-xs);
+
+      dt,
+      dd.value {
+        color: var(--loam-color-fg-strong);
+        font-size: var(--loam-text-lg);
+        font-weight: 700;
+      }
+    }
+  }
+
+  div.actions {
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-md) var(--loam-space-lg);
+    margin-block-start: var(--loam-space-xs);
+  }
+
+  /* A container query is answered by an ancestor, never by the element that
+     declares it. */
+  @container (inline-size < 24rem) {
+    dl {
+      grid-template-columns: 1fr auto;
+    }
+
+    dd.change {
+      grid-column: 2;
+      grid-row: auto;
+      text-align: end;
+    }
+  }
+}

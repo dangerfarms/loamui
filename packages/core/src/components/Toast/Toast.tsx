@@ -1,40 +1,15 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import type {
-  ButtonHTMLAttributes,
-  HTMLAttributes,
-  MouseEvent as ReactMouseEvent,
-  ReactNode,
-} from "react";
+import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { MouseEvent as ReactMouseEvent, ReactNode } from "react";
 import { cx } from "../../utils";
-import { mergeProps, renderWithProps } from "../../render";
+import type { PartProps } from "../../utils";
+import { useRequiredContext } from "../../context";
+import { composeRefs, mergeProps, renderWithProps } from "../../render";
 import type { RenderProp } from "../../render";
+import { useSupports } from "../../use-support";
 
 import { Button } from "../Button/Button";
-
-/**
- * The exit-transition length, read from the `--loam-duration-lg` token so a
- * retimed theme stays in sync (no hard-coded magic number to drift). Falls
- * back to 300ms where computed styles are unavailable (e.g. jsdom).
- */
-function exitDurationMs(): number {
-  if (typeof getComputedStyle !== "function" || typeof document === "undefined") return 300;
-  const raw = getComputedStyle(document.documentElement)
-    .getPropertyValue("--loam-duration-lg")
-    .trim();
-  if (raw.endsWith("ms")) return parseFloat(raw) || 300;
-  if (raw.endsWith("s")) return (parseFloat(raw) || 0.3) * 1000;
-  return 300;
-}
 
 /**
  * Transient notifications, composed from parts.
@@ -62,7 +37,7 @@ function exitDurationMs(): number {
  * toast.add({ title: "Saved", description: "Your changes are live." });
  * ```
  *
- * Toasts are for confirmations and background events — never for errors the
+ * Toasts are for confirmations and background events, never for errors the
  * user must fix (use Field errors or an Alert in place), and never as the
  * only record of something important.
  */
@@ -81,7 +56,7 @@ export interface ToastOptions {
   priority?: "normal" | "high";
   /** Auto-dismiss delay in ms; 0 keeps the toast until dismissed. */
   timeout?: number;
-  /** Stable id — adding again with the same id updates in place. */
+  /** Stable id: adding again with the same id updates in place. */
   id?: string;
 }
 
@@ -97,6 +72,10 @@ interface ToastContextValue {
   add: (options: ToastOptions) => string;
   /** Dismiss one toast by id, or all when omitted. */
   close: (id?: string) => void;
+  /** Drop a toast from the list once its exit has played. */
+  remove: (id: string) => void;
+  /** The Roots currently mounted, by toast id: they play the exit. */
+  mounted: Set<string>;
   /** Timers pause while the pointer/focus is inside the viewport. */
   pause: () => void;
   resume: () => void;
@@ -104,13 +83,13 @@ interface ToastContextValue {
 
 const ToastContext = createContext<ToastContextValue | null>(null);
 
+function useToastContext(part: string): ToastContextValue {
+  return useRequiredContext(ToastContext, part, "Toast.Provider");
+}
+
 /** Fire and dismiss toasts from anywhere under a Toast.Provider. */
 export function useToast(): Pick<ToastContextValue, "toasts" | "add" | "close"> {
-  const ctx = useContext(ToastContext);
-  if (!ctx) {
-    throw new Error("useToast must be called inside <Toast.Provider>.");
-  }
-  return ctx;
+  return useToastContext("useToast");
 }
 
 export interface ToastProviderProps {
@@ -141,55 +120,42 @@ function ToastProvider({ timeout = 5000, limit = 3, children }: ToastProviderPro
     >(),
   );
   const pausedRef = useRef(false);
-  const exitTimers = useRef(new Set<ReturnType<typeof setTimeout>>());
+  const mounted = useRef(new Set<string>());
 
-  const remove = useCallback((id?: string) => {
-    toastsRef.current = id ? toastsRef.current.filter((t) => t.id !== id) : [];
-    setToasts(toastsRef.current);
-    setExiting((prev) => {
-      if (!id) return new Set();
-      const next = new Set(prev);
-      next.delete(id);
-      return next;
-    });
-    if (id) {
-      const timer = timers.current.get(id);
-      if (timer?.handle) clearTimeout(timer.handle);
-      timers.current.delete(id);
-    } else {
-      for (const t of timers.current.values()) {
-        if (t.handle) clearTimeout(t.handle);
-      }
-      timers.current.clear();
-    }
+  const clearTimer = useCallback((id: string) => {
+    const timer = timers.current.get(id);
+    if (timer?.handle) clearTimeout(timer.handle);
+    timers.current.delete(id);
   }, []);
 
-  // Two-phase close: mark the toast as exiting so its CSS transition plays,
-  // then remove it. Where motion is off (preference or no matchMedia, e.g.
-  // jsdom) removal is immediate.
+  const remove = useCallback(
+    (id: string) => {
+      toastsRef.current = toastsRef.current.filter((t) => t.id !== id);
+      setToasts(toastsRef.current);
+      setExiting((prev) => {
+        if (!prev.has(id)) return prev;
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+      clearTimer(id);
+    },
+    [clearTimer],
+  );
+
+  // Two-phase close: mark the toast as exiting so its Root can play the
+  // exit transition, then the Root removes it. A toast with no Root
+  // rendered has nothing to animate and goes at once.
   const close = useCallback(
     (id?: string) => {
-      const animated =
-        typeof matchMedia === "function" &&
-        matchMedia("(prefers-reduced-motion: no-preference)").matches;
-      if (!id || !animated) {
-        remove(id);
-        return;
+      const ids = id ? [id] : toastsRef.current.map((t) => t.id);
+      for (const each of ids) {
+        clearTimer(each);
+        if (mounted.current.has(each)) setExiting((prev) => new Set(prev).add(each));
+        else remove(each);
       }
-      setExiting((prev) => new Set(prev).add(id));
-      const timer = timers.current.get(id);
-      if (timer?.handle) clearTimeout(timer.handle);
-      timers.current.delete(id);
-      // Matches the CSS exit transition (--loam-duration-lg), read from the
-      // token so a retimed theme can't desync: shorter unmounts mid-animation,
-      // longer leaves a ghost node.
-      const handle = setTimeout(() => {
-        exitTimers.current.delete(handle);
-        remove(id);
-      }, exitDurationMs());
-      exitTimers.current.add(handle);
     },
-    [remove],
+    [clearTimer, remove],
   );
 
   const schedule = useCallback(
@@ -209,21 +175,15 @@ function ToastProvider({ timeout = 5000, limit = 3, children }: ToastProviderPro
         ? prev.map((t) => (t.id === id ? data : t))
         : [...prev, data];
       const dropIndex = Math.max(0, appended.length - limit);
-      for (const dropped of appended.slice(0, dropIndex)) {
-        const timer = timers.current.get(dropped.id);
-        if (timer?.handle) clearTimeout(timer.handle);
-        timers.current.delete(dropped.id);
-      }
+      for (const dropped of appended.slice(0, dropIndex)) clearTimer(dropped.id);
       toastsRef.current = appended.slice(dropIndex);
       setToasts(toastsRef.current);
       const delay = options.timeout ?? timeout;
-      const existing = timers.current.get(id);
-      if (existing?.handle) clearTimeout(existing.handle);
+      clearTimer(id);
       if (delay > 0) schedule(id, delay);
-      else timers.current.delete(id);
       return id;
     },
-    [limit, timeout, schedule],
+    [limit, timeout, schedule, clearTimer],
   );
 
   const pause = useCallback(() => {
@@ -250,39 +210,45 @@ function ToastProvider({ timeout = 5000, limit = 3, children }: ToastProviderPro
 
   useEffect(() => {
     const map = timers.current;
-    const exits = exitTimers.current;
     return () => {
       for (const t of map.values()) {
         if (t.handle) clearTimeout(t.handle);
       }
-      for (const handle of exits) clearTimeout(handle);
     };
   }, []);
 
   const value = useMemo<ToastContextValue>(
-    () => ({ toasts, exiting, add, close, pause, resume }),
-    [toasts, exiting, add, close, pause, resume],
+    () => ({ toasts, exiting, add, close, remove, mounted: mounted.current, pause, resume }),
+    [toasts, exiting, add, close, remove, pause, resume],
   );
 
   return <ToastContext value={value}>{children}</ToastContext>;
 }
 
-export interface ToastViewportProps extends HTMLAttributes<HTMLDivElement> {}
+/** The words the Viewport speaks. */
+export interface ToastViewportLabels {
+  /** The landmark's accessible name. @default "Notifications" */
+  region?: string;
+}
 
-function ToastViewport({ className, children, ...rest }: ToastViewportProps) {
-  const ctx = useContext(ToastContext);
-  if (!ctx) {
-    throw new Error("Toast.Viewport must be rendered inside <Toast.Provider>.");
-  }
+export interface ToastViewportProps extends PartProps<"div"> {
+  /** The words the region speaks: `region` names the landmark. */
+  labels?: ToastViewportLabels;
+}
+
+/** The popover API, probed on the element prototype. */
+function supportsPopover(): boolean {
+  return typeof HTMLElement !== "undefined" && "showPopover" in HTMLElement.prototype;
+}
+
+function ToastViewport({ labels, className, children, ref: refProp, ...rest }: ToastViewportProps) {
+  const ctx = useToastContext("Toast.Viewport");
   const ref = useRef<HTMLDivElement>(null);
-  const [enhanced, setEnhanced] = useState(false);
-  useEffect(
-    () => setEnhanced(typeof HTMLElement !== "undefined" && "showPopover" in HTMLElement.prototype),
-    [],
-  );
+  const composedRef = useMemo(() => composeRefs(refProp, ref), [refProp]);
+  const enhanced = useSupports(supportsPopover);
 
   // The viewport stays in the top layer permanently so toasts inserted into
-  // it are announced by their live-region roles — a hidden container would
+  // it are announced by their live-region roles: a hidden container would
   // swallow the first announcement.
   useEffect(() => {
     const el = ref.current;
@@ -291,7 +257,7 @@ function ToastViewport({ className, children, ...rest }: ToastViewportProps) {
   }, [enhanced]);
 
   // F6 jumps focus into the notifications region (and back out on Escape via
-  // the browser's normal focus behaviour — the viewport never traps).
+  // the browser's normal focus behaviour; the viewport never traps).
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "F6" || ctx.toasts.length === 0) return;
@@ -304,11 +270,13 @@ function ToastViewport({ className, children, ...rest }: ToastViewportProps) {
     return () => document.removeEventListener("keydown", onKey);
   }, [ctx.toasts.length]);
 
+  const regionLabel = labels?.region ?? "Notifications";
+
   return (
     <div
-      aria-label="Notifications"
+      aria-label={regionLabel}
       {...rest}
-      ref={ref}
+      ref={composedRef}
       role="region"
       tabIndex={-1}
       popover={enhanced ? "manual" : undefined}
@@ -329,42 +297,105 @@ function ToastViewport({ className, children, ...rest }: ToastViewportProps) {
   );
 }
 
-export interface ToastRootProps extends HTMLAttributes<HTMLDivElement> {
+/** The toast a Root renders, read by the parts inside it. */
+const ToastItemContext = createContext<ToastData | null>(null);
+
+function useToastItem(part: string): ToastData {
+  return useRequiredContext(ToastItemContext, part, "Toast.Root");
+}
+
+export interface ToastRootProps extends PartProps<"div"> {
   /** The toast being rendered (from `useToast().toasts`). */
   toast: ToastData;
 }
 
-function ToastRoot({ toast, className, children, ...rest }: ToastRootProps) {
-  const ctx = useContext(ToastContext);
+function ToastRoot({ toast, className, children, ref: refProp, ...rest }: ToastRootProps) {
+  const ctx = useToastContext("Toast.Root");
+  const ref = useRef<HTMLDivElement>(null);
+  const composedRef = useMemo(() => composeRefs(refProp, ref), [refProp]);
+  const exiting = ctx.exiting.has(toast.id);
+
+  const { mounted } = ctx;
+  useEffect(() => {
+    mounted.add(toast.id);
+    return () => {
+      mounted.delete(toast.id);
+    };
+  }, [mounted, toast.id]);
+
+  // The exit ends when the stylesheet says so: `transitionend` on the toast
+  // itself. Where no transition will run (reduced motion, no motion styles,
+  // jsdom) the computed durations are all zero and the toast goes at once.
+  const { remove } = ctx;
+  useEffect(() => {
+    const el = ref.current;
+    if (!exiting || !el) return;
+    const durations = getComputedStyle(el).transitionDuration || "0s";
+    const animated = durations.split(",").some((d) => parseFloat(d) > 0);
+    if (!animated) {
+      remove(toast.id);
+      return;
+    }
+    const onEnd = (e: TransitionEvent) => {
+      if (e.target === el) remove(toast.id);
+    };
+    el.addEventListener("transitionend", onEnd);
+    el.addEventListener("transitioncancel", onEnd);
+    return () => {
+      el.removeEventListener("transitionend", onEnd);
+      el.removeEventListener("transitioncancel", onEnd);
+    };
+  }, [exiting, remove, toast.id]);
+
   return (
-    <div
-      // A live region: role="status" announces politely on insertion;
-      // role="alert" interrupts — reserved for priority: "high".
-      role={toast.priority === "high" ? "alert" : "status"}
-      className={cx("toast", className)}
-      data-exiting={ctx?.exiting.has(toast.id) || undefined}
-      {...rest}
-    >
+    <ToastItemContext value={toast}>
+      <div
+        // A live region: role="status" announces politely on insertion;
+        // role="alert" interrupts, reserved for priority: "high".
+        role={toast.priority === "high" ? "alert" : "status"}
+        className={cx("toast", className)}
+        data-exiting={exiting || undefined}
+        {...rest}
+        ref={composedRef}
+      >
+        {children}
+      </div>
+    </ToastItemContext>
+  );
+}
+
+/** Wiring the Title and Description attach to whatever they render. */
+export interface ToastTextRenderProps {
+  className: string;
+}
+
+export interface ToastTitleProps extends PartProps<"div"> {
+  /** Substitute the element (`render={<strong />}`). Defaults to a `<div>`. */
+  render?: RenderProp<ToastTextRenderProps>;
+}
+
+function ToastTitle({ render, className, children, ...rest }: ToastTitleProps) {
+  useToastItem("Toast.Title");
+  const wiring: ToastTextRenderProps = { className: cx("title", className) };
+  if (render) return <>{renderWithProps(render, { ...rest, ...wiring, children })}</>;
+  return (
+    <div {...rest} {...wiring}>
       {children}
     </div>
   );
 }
 
-export interface ToastTitleProps extends HTMLAttributes<HTMLDivElement> {}
-
-function ToastTitle({ className, children, ...rest }: ToastTitleProps) {
-  return (
-    <div className={cx("title", className)} {...rest}>
-      {children}
-    </div>
-  );
+export interface ToastDescriptionProps extends PartProps<"div"> {
+  /** Substitute the element (`render={<p />}`). Defaults to a `<div>`. */
+  render?: RenderProp<ToastTextRenderProps>;
 }
 
-export interface ToastDescriptionProps extends HTMLAttributes<HTMLDivElement> {}
-
-function ToastDescription({ className, children, ...rest }: ToastDescriptionProps) {
+function ToastDescription({ render, className, children, ...rest }: ToastDescriptionProps) {
+  useToastItem("Toast.Description");
+  const wiring: ToastTextRenderProps = { className: cx("description", className) };
+  if (render) return <>{renderWithProps(render, { ...rest, ...wiring, children })}</>;
   return (
-    <div className={cx("description", className)} {...rest}>
+    <div {...rest} {...wiring}>
       {children}
     </div>
   );
@@ -376,24 +407,21 @@ export interface ToastActionRenderProps {
   onClick: (e: ReactMouseEvent<Element>) => void;
 }
 
-export interface ToastActionProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  /** The toast this action belongs to (its activation dismisses it). */
-  toastId: string;
+export interface ToastActionProps extends PartProps<"button"> {
+  /** Runs before the toast dismisses. */
   onAction?: () => void;
   /** Substitute your own element; defaults to a LoamUI Button. */
   render?: RenderProp<ToastActionRenderProps>;
 }
 
-function ToastAction({ toastId, onAction, render, children, ...rest }: ToastActionProps) {
-  const ctx = useContext(ToastContext);
-  if (!ctx) {
-    throw new Error("Toast.Action must be rendered inside <Toast.Provider>.");
-  }
+function ToastAction({ onAction, render, children, ...rest }: ToastActionProps) {
+  const ctx = useToastContext("Toast.Action");
+  const toast = useToastItem("Toast.Action");
   const actionProps: ToastActionRenderProps = {
     type: "button",
     onClick: () => {
       onAction?.();
-      ctx.close(toastId);
+      ctx.close(toast.id);
     },
   };
   return render ? (
@@ -403,36 +431,59 @@ function ToastAction({ toastId, onAction, render, children, ...rest }: ToastActi
   );
 }
 
-export interface ToastCloseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  /** The toast to dismiss. */
-  toastId: string;
+/** Wiring the Close part attaches to whatever it renders. */
+export interface ToastCloseRenderProps {
+  type: "button";
+  "aria-label": string;
+  onClick: (e: ReactMouseEvent<Element>) => void;
 }
 
-function ToastClose({ toastId, className, children, ...rest }: ToastCloseProps) {
-  const ctx = useContext(ToastContext);
-  if (!ctx) {
-    throw new Error("Toast.Close must be rendered inside <Toast.Provider>.");
-  }
+/** The words the Close part speaks. */
+export interface ToastCloseLabels {
+  /** The button's accessible name. @default "Dismiss notification" */
+  dismiss?: string;
+}
+
+export interface ToastCloseProps extends PartProps<"button"> {
+  /** The words the button speaks: `dismiss` is its accessible name. */
+  labels?: ToastCloseLabels;
+  /** Substitute your own element; defaults to a LoamUI Button. */
+  render?: RenderProp<ToastCloseRenderProps>;
+}
+
+function CrossIcon() {
   return (
-    <button
-      type="button"
-      aria-label="Dismiss notification"
-      className={cx("close", className)}
-      onClick={() => ctx.close(toastId)}
-      {...rest}
-    >
-      {children ?? (
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden>
-          <path
-            d="M4 4l8 8m0-8l-8 8"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-        </svg>
-      )}
-    </button>
+    <svg viewBox="0 0 16 16" fill="none" aria-hidden>
+      <path d="M4 4l8 8m0-8l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
   );
+}
+
+function ToastClose({ labels, render, children, ...rest }: ToastCloseProps) {
+  const ctx = useToastContext("Toast.Close");
+  const toast = useToastItem("Toast.Close");
+  const closeProps: ToastCloseRenderProps = {
+    type: "button",
+    "aria-label": labels?.dismiss ?? "Dismiss notification",
+    onClick: () => ctx.close(toast.id),
+  };
+  const content = children ?? <CrossIcon />;
+  return render ? (
+    <>{renderWithProps(render, mergeProps(closeProps, { children: content, ...rest }))}</>
+  ) : (
+    <>{renderWithProps(<Button {...rest}>{content}</Button>, closeProps)}</>
+  );
+}
+
+/** The words the ready-made viewport speaks: the landmark's, then each Close's. */
+export interface ToastsLabels extends ToastViewportLabels, ToastCloseLabels {}
+
+export interface ToastsProps {
+  /**
+   * The words the viewport speaks: `region` names the landmark, `dismiss`
+   * names each toast's close button.
+   */
+  labels?: ToastsLabels;
 }
 
 /**
@@ -440,10 +491,10 @@ function ToastClose({ toastId, className, children, ...rest }: ToastCloseProps) 
  * description, action and a dismiss button. Compose the parts yourself only
  * when this layout doesn't fit.
  */
-export function Toasts() {
+export function Toasts({ labels }: ToastsProps) {
   const { toasts } = useToast();
   return (
-    <ToastViewport>
+    <ToastViewport labels={{ region: labels?.region }}>
       {toasts.map((toast) => (
         <ToastRoot key={toast.id} toast={toast}>
           <div className="content">
@@ -451,11 +502,9 @@ export function Toasts() {
             {toast.description && <ToastDescription>{toast.description}</ToastDescription>}
           </div>
           {toast.action && (
-            <ToastAction toastId={toast.id} onAction={toast.action.onClick}>
-              {toast.action.label}
-            </ToastAction>
+            <ToastAction onAction={toast.action.onClick}>{toast.action.label}</ToastAction>
           )}
-          <ToastClose toastId={toast.id} />
+          <ToastClose labels={{ dismiss: labels?.dismiss }} />
         </ToastRoot>
       ))}
     </ToastViewport>

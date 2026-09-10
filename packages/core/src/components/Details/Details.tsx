@@ -1,7 +1,8 @@
-import type { DetailsHTMLAttributes, HTMLAttributes, ReactNode, Ref } from "react";
+import type { ReactNode } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 
-export interface DetailsRootProps extends DetailsHTMLAttributes<HTMLDetailsElement> {
+export interface DetailsRootProps extends PartProps<"details"> {
   /** Open by default (maps to the native open attribute). */
   defaultOpen?: boolean;
   /**
@@ -11,7 +12,6 @@ export interface DetailsRootProps extends DetailsHTMLAttributes<HTMLDetailsEleme
    */
   name?: string;
   children?: ReactNode;
-  ref?: Ref<HTMLDetailsElement>;
 }
 
 /**
@@ -41,9 +41,8 @@ function DetailsRoot({ defaultOpen, name, className, children, ref, ...rest }: D
   );
 }
 
-export interface DetailsSummaryProps extends HTMLAttributes<HTMLElement> {
+export interface DetailsSummaryProps extends PartProps<"summary"> {
   children?: ReactNode;
-  ref?: Ref<HTMLElement>;
 }
 
 /** The always-visible line; the chevron is aria-hidden decoration. */
@@ -54,8 +53,6 @@ function DetailsSummary({ className, children, ref, ...rest }: DetailsSummaryPro
       <svg
         className="chevron"
         viewBox="0 0 24 24"
-        width="18"
-        height="18"
         fill="none"
         stroke="currentColor"
         strokeWidth="2"
@@ -69,9 +66,8 @@ function DetailsSummary({ className, children, ref, ...rest }: DetailsSummaryPro
   );
 }
 
-export interface DetailsContentProps extends HTMLAttributes<HTMLDivElement> {
+export interface DetailsContentProps extends PartProps<"div"> {
   children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
 
 /** The revealed body: padded, muted prose. */

@@ -1,79 +1,131 @@
-@scope (.loam-Table-scroll) {
+/* Donut: the table hosts consumer-rendered cells. */
+@scope (.loam-Table) to ([class*="loam-"]) {
   :scope {
     border-radius: var(--loam-radius-md);
     inline-size: 100%;
-    overflow-inline: auto;
-  }
-}
 
-@scope (.loam-Table) to ([class*="loam-"]) {
-  :scope {
-    border-collapse: collapse;
+    /* A cap on the scroller's height is the public --loam-table-block-size:
+       set it and long tables scroll in place, the wrapper becoming a named
+       region as it does for width. Unset, the table is as tall as its rows. */
+    max-block-size: var(--loam-table-block-size, none);
+
+    /* overflow (shorthand), not the logical overflow-inline: the latter is
+       not yet Baseline (see elements.css `pre`), so wide tables would not
+       scroll in some browsers. */
+    overflow: auto;
+
+    /* A containing block for hidden text: a .loam-VisuallyHidden span inside
+       a cell is positioned, and without this it escapes the scroller and
+       widens the page. */
+    position: relative;
+  }
+
+  table {
     font-size: var(--loam-text-sm);
     inline-size: 100%;
+  }
 
-    &[data-caption-side="top"] {
-      /* stylelint-disable-next-line value-keyword-layout-mappings --
-         caption-side has no logical equivalent; the physical keyword is
-         the only form. */
-      caption-side: top;
-    }
+  caption {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-xs);
+    padding-block: var(--loam-space-sm);
+    text-align: start;
+  }
 
-    &[data-caption-side="bottom"] {
-      /* stylelint-disable-next-line value-keyword-layout-mappings --
-         see above: no logical equivalent exists. */
-      caption-side: bottom;
-    }
+  th,
+  td {
+    border-block-end: 1px solid var(--loam-color-line);
 
-    caption {
-      color: var(--loam-color-fg-muted);
-      font-size: var(--loam-text-xs);
-      padding-block: var(--loam-space-sm);
-      text-align: start;
-    }
+    /* The page hyphenates prose; a squeezed data cell should wrap at spaces
+       or scroll, never break "desk-top" or "HW-1042". */
+    hyphens: manual;
+    padding-block: var(--loam-space-md);
+    padding-inline: var(--loam-space-lg);
+    vertical-align: middle;
+  }
 
-    th,
-    td {
-      border-block-end: 1px solid var(--loam-color-line);
-      padding-block: var(--loam-space-md);
-      padding-inline: var(--loam-space-lg);
-      text-align: start;
-      vertical-align: middle;
+  thead th {
+    border-block-end: 1px solid var(--loam-color-line-strong);
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  tbody tr:last-child :is(td, th) {
+    border-block-end: none;
+  }
+
+  /* A sortable header holds a Button, which brings its own padding; the
+     cell gives some of its own back so the row stays near header height. */
+  thead th[aria-sort] {
+    padding-block: var(--loam-space-xs);
+  }
+
+  /* A sticky header: the column names stay at the top of the scroller (the
+     wrapper, capped by --loam-table-block-size or the layout around it)
+     while the rows pass beneath. The cells are painted an opaque surface
+     so rows do not show through, and raised above the positioned hidden
+     text a cell may hold. Collapsed borders belong to the table, not the
+     cell, so the header's bottom line would stay behind as it sticks; the
+     table separates them (at zero spacing, so nothing else moves) and each
+     cell carries its own edge, which travels with it. A border rather than
+     a shadow so forced colours, which drop shadows and flatten the
+     background to Canvas, keep the line and the cover. */
+  :scope[data-sticky-header] {
+    table {
+      border-collapse: separate;
+      border-spacing: 0;
     }
 
     thead th {
-      border-block-end: 1px solid var(--loam-color-line-strong);
-      color: var(--loam-color-fg-muted);
-      font-size: var(--loam-text-xs);
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      white-space: nowrap;
+      background: var(--loam-color-surface);
+      inset-block-start: 0;
+      position: sticky;
+      z-index: 1;
     }
+  }
 
-    tbody tr:last-child td {
-      border-block-end: none;
-    }
+  :scope[data-col-borders] th:not(:last-child),
+  :scope[data-col-borders] td:not(:last-child) {
+    border-inline-end: 1px solid var(--loam-color-line);
+  }
 
-    &[data-col-borders] th:not(:last-child),
-    &[data-col-borders] td:not(:last-child) {
-      border-inline-end: 1px solid var(--loam-color-line);
-    }
+  :scope[data-striped] tbody tr:nth-child(even) {
+    background: var(--loam-color-bg-subtle);
+  }
 
-    &[data-striped] tbody tr:nth-child(even) {
-      background: var(--loam-color-bg-subtle);
+  @media (prefers-reduced-motion: no-preference) {
+    :scope[data-hover] tbody tr {
+      transition: background var(--loam-duration-md) var(--loam-ease);
     }
+  }
 
-    @media (prefers-reduced-motion: no-preference) {
-      &[data-hover] tbody tr {
-        transition: background var(--loam-duration-md) var(--loam-ease);
-      }
+  @media (hover: hover) {
+    :scope[data-hover] tbody tr:hover {
+      background: var(--loam-color-surface-hover);
     }
+  }
+}
 
-    @media (hover: hover) {
-      &[data-hover] tbody tr:hover {
-        background: var(--loam-color-surface-hover);
-      }
-    }
+/* The sort control is a core Button, past the table's donut: this scope
+   adds only the glyph, read from the `aria-sort` on the cell around it.
+   Text arrows in the button's own colour: the unsorted state is the
+   two-headed shape, not a dimmer paint, so the glyph holds the button's
+   contrast in every context and forced colours paint it as text. */
+@scope (.loam-Table-sort) {
+  :scope::after {
+    content: "\2195";
+    margin-inline-start: var(--loam-space-xs);
+  }
+
+  th[aria-sort="ascending"] > :scope::after {
+    content: "\2191";
+  }
+
+  th[aria-sort="descending"] > :scope::after {
+    content: "\2193";
   }
 }

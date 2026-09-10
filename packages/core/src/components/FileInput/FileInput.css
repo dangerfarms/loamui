@@ -1,0 +1,95 @@
+/* The native file input is the control; the Prompt label is the box. The
+   Root is the drop target and hosts the list, so every part is a type
+   selector inside it. Donut: the label hosts consumer text. */
+@scope (.loam-FileInput) to ([class*="loam-"]) {
+  :scope {
+    inline-size: 100%;
+    position: relative;
+  }
+
+  label {
+    background: var(--loam-color-surface);
+    border: 1px dashed var(--loam-color-line-strong);
+    border-radius: var(--loam-radius-lg);
+    color: var(--loam-color-fg-muted);
+    cursor: pointer;
+    display: block flow;
+    font-size: var(--loam-text-sm);
+    padding: var(--loam-space-lg);
+    text-align: center;
+
+    /* A file held over the box: the -strong border holds 3:1 on the soft
+       tint in every context. */
+    :scope[data-dragging] & {
+      background: var(--loam-color-primary-soft);
+      border-color: var(--loam-color-primary-strong);
+      color: var(--loam-color-fg);
+    }
+
+    /* The ring is drawn on the box, whose input is visually hidden but
+       keeps focus; danger re-answers the ring the way Input does. */
+    :scope:has(input:focus-visible) & {
+      border-color: var(--loam-color-primary);
+      outline: var(--loam-ring-width) solid var(--loam-color-ring);
+      outline-offset: 2px;
+    }
+
+    :scope:has(input[aria-invalid="true"]) & {
+      --loam-color-ring: var(--loam-color-danger-ring);
+
+      border-color: var(--loam-color-danger);
+    }
+
+    :scope:has(input:disabled) & {
+      cursor: not-allowed;
+      opacity: var(--loam-disabled-opacity);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition:
+        background var(--loam-duration-sm) var(--loam-ease),
+        border-color var(--loam-duration-sm) var(--loam-ease);
+    }
+  }
+
+  /* The native control inside a Root wears .loam-VisuallyHidden (set by
+     the component): out of sight, still focusable and in the
+     accessibility tree, the box doing the inviting. */
+
+  ul {
+    font-size: var(--loam-text-sm);
+    margin: 0;
+
+    /* No display: none while empty — a live region must already be in the
+       accessibility tree when its content changes for the change to be
+       announced. The list simply has no height until it has items. */
+    &:not(:empty) {
+      margin-block-start: var(--loam-space-sm);
+    }
+  }
+
+  li {
+    overflow-wrap: anywhere;
+  }
+
+  span.size {
+    color: var(--loam-color-fg-muted);
+  }
+
+  /* Dashed borders and outlines survive forced colours; the state and the
+     ring move to system colours. */
+  @media (forced-colors: active) {
+    label {
+      border-color: CanvasText;
+
+      :scope[data-dragging] & {
+        border-color: Highlight;
+        border-style: solid;
+      }
+
+      :scope:has(input:focus-visible) & {
+        outline-color: Highlight;
+      }
+    }
+  }
+}

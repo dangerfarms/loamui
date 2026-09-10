@@ -20,16 +20,16 @@ import { DateInput } from "@loamui/core";
 
 ### Basic usage
 
-A memorable date is typed, not picked: day, month and year are separate fields in a fieldset named by the legend. Day and year raise a numeric keypad on touch devices; the month keeps the full keyboard so names like Mar are accepted too.
+A memorable date is typed, not picked: Day, Month and Year are separate Fields in a fieldset named by the legend, each a core Field around a core Input sized to its answer. Day and year raise a numeric keypad on touch devices; the month keeps the full keyboard so names like Mar are accepted too.
 
 ```tsx
 <DateInput.Root name="date-of-birth" autoComplete="bday">
   <DateInput.Legend>Date of birth</DateInput.Legend>
   <DateInput.Description>For example, 27 3 2007</DateInput.Description>
   <DateInput.Fields>
-    <DateInput.Field part="day" />
-    <DateInput.Field part="month" />
-    <DateInput.Field part="year" />
+    <DateInput.Day />
+    <DateInput.Month />
+    <DateInput.Year />
   </DateInput.Fields>
 </DateInput.Root>
 ```
@@ -44,9 +44,9 @@ An Error without parts puts all the fields in the invalid state, the right defau
   <DateInput.Description>For example, 27 3 2007</DateInput.Description>
   <DateInput.Error>Enter your date of birth</DateInput.Error>
   <DateInput.Fields>
-    <DateInput.Field part="day" />
-    <DateInput.Field part="month" />
-    <DateInput.Field part="year" />
+    <DateInput.Day />
+    <DateInput.Month />
+    <DateInput.Year />
   </DateInput.Fields>
 </DateInput.Root>
 ```
@@ -63,24 +63,24 @@ When the message names a specific part, parts on the Error narrows the invalid s
     Membership start date must include a year
   </DateInput.Error>
   <DateInput.Fields>
-    <DateInput.Field part="day" defaultValue="27" />
-    <DateInput.Field part="month" defaultValue="3" />
-    <DateInput.Field part="year" />
+    <DateInput.Day defaultValue="27" />
+    <DateInput.Month defaultValue="3" />
+    <DateInput.Year />
   </DateInput.Fields>
 </DateInput.Root>
 ```
 
 ### Month and year only
 
-Render only the fields the question needs: the naming, autofill and error wiring adapt to whichever parts are present.
+Render only the parts the question needs: the naming, autofill and error wiring adapt to whichever are present.
 
 ```tsx
 <DateInput.Root name="card-expiry">
   <DateInput.Legend>Expiry date</DateInput.Legend>
   <DateInput.Description>For example, 3 2031</DateInput.Description>
   <DateInput.Fields>
-    <DateInput.Field part="month" />
-    <DateInput.Field part="year" />
+    <DateInput.Month />
+    <DateInput.Year />
   </DateInput.Fields>
 </DateInput.Root>
 ```
@@ -88,7 +88,7 @@ Render only the fields the question needs: the naming, autofill and error wiring
 ## When to use it
 
 - For dates the user knows or can look up: a date of birth, the issue or expiry date on a document.
-- When the answer must be an exact date submitted with a form: day, month and year, or just the parts the question needs.
+- When the answer must be an exact date submitted with a form: day, month and year, or only the parts the question needs.
 
 ## When not to
 
@@ -107,27 +107,37 @@ Give an example in the Description, and choose it so it can only be read one way
 
 ### Highlight only the wrong part
 
-If one field is empty or impossible, say so ("[Date] must include a year") and pass parts to the Error to mark just that field invalid. If you cannot tell which part is wrong, or the parts are individually fine but the date is not real, leave parts unset so the whole date is highlighted. Either way the user's correct entries are never cleared.
+If one field is empty or impossible, say so ("[Date] must include a year") and pass parts to the Error to mark only that field invalid. If you cannot tell which part is wrong, or the parts are individually fine but the date is not real, leave parts unset so the whole date is highlighted. Either way the user's correct entries are never cleared.
 
 ### Autofill for dates of birth
 
-When the date is the user's own date of birth, pass autoComplete="bday" to the Root: each Field gets the matching bday-day / bday-month / bday-year value, so browsers can fill it and assistive technology knows the field's purpose. This is WCAG 1.3.5 (Identify Input Purpose). Leave it off for any other date: a wrong autofilled birthday in a membership-start field is worse than typing.
+When the date is the user's own date of birth, pass autoComplete="bday" to the Root: each part gets the matching bday-day / bday-month / bday-year value, so browsers can fill it and assistive technology knows the field's purpose. This is WCAG 1.3.5 (Identify Input Purpose). Leave it off for any other date: a wrong autofilled birthday in a membership-start field is worse than typing.
 
 ### Linking from an ErrorSummary
 
-Pass an id to the Root and the fields become {id}-day, {id}-month and {id}-year. Point the summary item at the first field in error (the year in the example below) so activating it lands the user exactly where the correction starts.
+Pass an id to the Root and the fields become {id}-day, {id}-month and {id}-year. Point the summary item at the first field in error (the year in the example below) so activating it lands the user exactly where the correction starts. The summary here has autoFocus off because it is rendered with the page rather than after a failed submit; leave the default on in a form.
 
 ```tsx
-<ErrorSummary.Item href="#membership-start-year">
-  Membership start date must include a year
-</ErrorSummary.Item>
+<ErrorSummary.Root autoFocus={false}>
+  <ErrorSummary.Title />
+  <ErrorSummary.List>
+    <ErrorSummary.Item href="#membership-start-year">
+      Membership start date must include a year
+    </ErrorSummary.Item>
+  </ErrorSummary.List>
+</ErrorSummary.Root>
 
-<DateInput.Root id="membership-start">
+<DateInput.Root id="membership-start" name="membership-start">
   <DateInput.Legend>When did your membership start?</DateInput.Legend>
+  <DateInput.Description>For example, 27 3 2019</DateInput.Description>
   <DateInput.Error parts={["year"]}>
     Membership start date must include a year
   </DateInput.Error>
-  …
+  <DateInput.Fields>
+    <DateInput.Day defaultValue="27" />
+    <DateInput.Month defaultValue="3" />
+    <DateInput.Year />
+  </DateInput.Fields>
 </DateInput.Root>
 ```
 
@@ -138,10 +148,10 @@ Users copy dates from documents that disagree about format. The month field acce
 ## Accessibility
 
 - The group is a native <fieldset> named by its <legend>, so screen readers announce the question with each of the fields.
-- Each Field has its own visible <label>: Day, Month, Year by default; pass children to swap them for other languages.
+- Each part is a core Field with its own visible Field.Label: Day, Month, Year by default; pass children to swap them for other languages. The group's own words, the optional marker and the hidden error prefix, come from labels on the Root.
 - The Description and Error are linked to the fieldset via aria-describedby, and the Error uses role="alert" so it is announced as it appears; invalid fields also set aria-invalid.
 - Day and year use inputMode="numeric" (a number pad without the hazards of type="number"); the month field keeps the full keyboard so names like "jan" can be typed.
-- The fields are sized to their answers (two digits, four for the year); width is information about the expected length.
+- The parts are sized to their answers through the Input's native size attribute (two characters, three for a month that may be a name, four for the year); width is information about the expected length.
 
 ## Error messages
 
@@ -163,14 +173,15 @@ The fieldset and the wiring; native <fieldset> props are forwarded.
 | --- | --- | --- | --- |
 | `name` | `string` | — | Prefix for each field's submitted name: {name}-day, {name}-month, {name}-year. |
 | `autoComplete` | `"bday"` | — | Wires browser date-of-birth autofill (WCAG 1.3.5). |
+| `labels` | `{ optional?: ReactNode; errorPrefix?: ReactNode }` | `{ optional: "(optional)", errorPrefix: "Error: " }` | The group's own words, read by the Legend and the Error. Pass them in the page's language. |
 
 ### DateInput.Legend
 
-Names the group (this is Fieldset.Legend); native <legend> props are forwarded.
+Names the group (this is Fieldset.Legend); native <legend> props and ref are forwarded.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `optional` | `boolean` | `false` | Marks the whole question optional in text. |
+| `optional` | `boolean` | `false` | Marks the whole question optional in text (labels.optional). |
 
 ### DateInput.Description
 
@@ -186,14 +197,29 @@ Error message announced via role="alert"; native <p> props are forwarded.
 
 ### DateInput.Fields
 
-Lays out the row of fields; native <div> props are forwarded.
+Lays out the row of parts; native <div> props and ref are forwarded.
 
-### DateInput.Field
+### DateInput.Day
 
-One labelled date field. All native <input> props are forwarded: value, onChange, maxLength, refs.
+The day part: a core Field around a core Input with the right name, autocomplete, inputMode="numeric" and a size of two characters. All Input props are forwarded: value, onChange, maxLength, ref, wrapperProps.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `part` | `"day" \| "month" \| "year"` | — | Which date part this field asks for (required). |
-| `children` | `ReactNode` | `"Day" / "Month" / "Year"` | The visible field label. |
+| `children` | `ReactNode` | `"Day"` | The visible field label. |
+
+### DateInput.Month
+
+The month part, wired like DateInput.Day. It keeps the full keyboard so a name like Mar can be typed, and is sized to three characters.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `ReactNode` | `"Month"` | The visible field label. |
+
+### DateInput.Year
+
+The year part, wired like DateInput.Day: inputMode="numeric" and a size of four characters.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `ReactNode` | `"Year"` | The visible field label. |
 

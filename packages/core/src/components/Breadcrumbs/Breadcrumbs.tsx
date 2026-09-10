@@ -1,5 +1,6 @@
-import type { AnchorHTMLAttributes, CSSProperties, HTMLAttributes, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 import { renderWithProps } from "../../render";
 import type { RenderProp } from "../../render";
 
@@ -15,51 +16,50 @@ import type { RenderProp } from "../../render";
  * ```
  *
  * Items are links via `href` (the built-in element), plain text when
- * `current`, or any element via `render` — e.g. a router link:
+ * `current`, or any element via `render`, e.g. a router link:
  * `render={<Link href="/settings" />}`. The consumer marks the current page
  * explicitly, so truncated paths ("Home / … / Billing") stay correct.
- * Separators are CSS (`--_separator`), not DOM.
+ * Separators are CSS, drawn from the public `--loam-breadcrumbs-separator`
+ * property (a CSS string, `"/"` by default), not DOM.
  */
 
-export interface BreadcrumbsRootProps extends HTMLAttributes<HTMLElement> {
-  /** Separator glyph drawn between items (via CSS). @default "/" */
-  separator?: string;
+/** The words the landmark speaks. */
+export interface BreadcrumbsLabels {
+  /** The landmark's accessible name. @default "Breadcrumbs" */
+  navigation?: string;
 }
 
-function BreadcrumbsRoot({ separator, className, style, children, ...rest }: BreadcrumbsRootProps) {
+export interface BreadcrumbsRootProps extends PartProps<"nav"> {
+  /** The words the landmark speaks: `navigation` is its accessible name. */
+  labels?: BreadcrumbsLabels;
+}
+
+function BreadcrumbsRoot({ labels, className, children, ...rest }: BreadcrumbsRootProps) {
+  const navigationLabel = labels?.navigation ?? "Breadcrumbs";
   return (
-    <nav
-      aria-label="Breadcrumbs"
-      className={cx("loam-Breadcrumbs", className)}
-      style={
-        separator !== undefined
-          ? ({
-              ...style,
-              "--_separator": `"${separator.replaceAll("\\", "\\\\").replaceAll('"', '\\"')}"`,
-            } as CSSProperties)
-          : style
-      }
-      {...rest}
-    >
+    <nav aria-label={navigationLabel} {...rest} className={cx("loam-Breadcrumbs", className)}>
       <ol>{children}</ol>
     </nav>
   );
 }
 
-/** Wiring the Item attaches to whatever it renders. */
+/** Wiring the Item attaches to the link it renders. */
 export interface BreadcrumbsItemRenderProps {
   "aria-current": "page" | undefined;
   children?: ReactNode;
-  className?: string;
 }
 
-export interface BreadcrumbsItemProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+export interface BreadcrumbsItemProps extends PartProps<"li"> {
+  /** Renders the crumb as a link. */
+  href?: string;
   /** Marks this item as the current page (`aria-current="page"`). */
   current?: boolean;
   /**
-   * Substitute the built-in element — e.g. a router link:
+   * Substitute the built-in link, e.g. a router link:
    * `render={<Link href="/settings" />}`. Defaults to an `<a>` when `href`
-   * is given, plain text otherwise.
+   * is given, plain text otherwise. Attributes for the link itself go on
+   * the element you render; `className`, `ref` and the rest land on the
+   * `<li>`, which carries the part's class.
    */
   render?: RenderProp<BreadcrumbsItemRenderProps>;
 }
@@ -78,19 +78,21 @@ function BreadcrumbsItem({
   };
 
   const content = render ? (
-    renderWithProps(render, { ...rest, ...wiring, className })
+    renderWithProps(render, wiring)
   ) : href !== undefined ? (
-    <a href={href} className={className} {...rest} {...wiring}>
+    <a href={href} {...wiring}>
       {children}
     </a>
   ) : (
-    <span className={className} {...(rest as HTMLAttributes<HTMLElement>)} {...wiring}>
-      {children}
-    </span>
+    <span {...wiring}>{children}</span>
   );
 
   return (
-    <li className="loam-Breadcrumbs-item" data-current={current || undefined}>
+    <li
+      {...rest}
+      className={cx("loam-Breadcrumbs-item", className)}
+      data-current={current || undefined}
+    >
       {content}
     </li>
   );

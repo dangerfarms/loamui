@@ -8,7 +8,7 @@ description: A flexible surface container.
 
 # Card
 
-A surface container that groups related content.
+A surface container that groups related content: the one surface primitive, which compositions such as a product card or a testimonial are built on rather than restyling.
 
 ## Import
 
@@ -30,6 +30,17 @@ A padded surface holding a heading, text, and an action.
 </Card>
 ```
 
+### Another element
+
+render substitutes the <div>: an <li> in a list of cards, a <label> when the whole surface is a control's label, an <article> for a self-contained piece. The class and attributes merge onto the element.
+
+```tsx
+<ul>
+  <Card render={<li />}>North Field</Card>
+  <Card render={<li />}>South Field</Card>
+</ul>
+```
+
 ## When to use it
 
 - To group related content (a heading, supporting text, an action) onto one surface so it reads as a single unit.
@@ -44,7 +55,7 @@ A padded surface holding a heading, text, and an action.
 
 ### A surface, not a control
 
-Card is deliberately just a styled <div>: no role, no tabindex, no cursor. If the whole card should be clickable, the accessible pattern is one real <a> inside it (usually on the card's heading) stretched over the surface with an ::after covering the card. Keyboard users get one tab stop, screen readers get a real link with a real name, and right-click / open-in-new-tab keep working. A click handler on the div gives you none of that.
+Card is deliberately nothing more than a styled <div>: no role, no tabindex, no cursor. If the whole card should be clickable, the accessible pattern is one real <a> inside it (usually on the card's heading) stretched over the surface with an ::after covering the card. Keyboard users get one tab stop, screen readers get a real link with a real name, and right-click / open-in-new-tab keep working. A click handler on the div gives you none of that.
 
 ### Cards are skimmed by their headings
 
@@ -60,5 +71,6 @@ Screen-reader users navigate by heading; sighted users scan the same way. Start 
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
+| `render` | `element \| (props) => node` | — | Substitute the rendered element (render={<li />}, render={<label />}, render={<article />}); the Card's class and attributes merge onto it. |
 | `...others` | `DivHTMLAttributes` | — | All native <div> props are forwarded. |
 

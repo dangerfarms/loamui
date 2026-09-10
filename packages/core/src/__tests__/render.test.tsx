@@ -26,7 +26,15 @@ describe("mergeProps", () => {
       { className: "own", "aria-describedby": "existing" },
     );
     expect(props.className).toBe("wiring own");
-    expect(props["aria-describedby"]).toBe("existing tip-1");
+    expect(props["aria-describedby"]).toBe("tip-1 existing");
+  });
+
+  it("lists each id once, wiring first", () => {
+    const props = mergeProps(
+      { "aria-describedby": "desc err" },
+      { "aria-describedby": "rules err" },
+    );
+    expect(props["aria-describedby"]).toBe("desc err rules");
   });
 
   it("merges style with wiring winning on conflicts", () => {
@@ -57,6 +65,27 @@ describe("mergeProps", () => {
     render(<button {...(props as object)}>ref</button>);
     expect(a.current).toBeInstanceOf(HTMLButtonElement);
     expect(fnTarget.el).toBe(a.current);
+  });
+
+  it("runs a ref callback's cleanup on detach, and nulls the rest", () => {
+    const a = createRef<HTMLButtonElement>();
+    const calls: Array<HTMLButtonElement | null | "cleanup"> = [];
+    const subscribing = (el: HTMLButtonElement | null) => {
+      calls.push(el);
+      return () => {
+        calls.push("cleanup");
+      };
+    };
+    const composed = composeRefs<HTMLButtonElement>(a, subscribing);
+    const props = mergeProps({ ref: composed }, {});
+    const { unmount } = render(<button {...(props as object)}>ref</button>);
+    const el = a.current;
+    expect(el).toBeInstanceOf(HTMLButtonElement);
+    expect(calls).toEqual([el]);
+    unmount();
+    // React 19 honours the cleanup instead of calling the callback with null.
+    expect(calls).toEqual([el, "cleanup"]);
+    expect(a.current).toBeNull();
   });
 });
 

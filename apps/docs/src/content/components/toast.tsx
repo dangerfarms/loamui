@@ -100,7 +100,7 @@ const doc: ComponentContent = {
     },
   ],
   whenToUse: [
-    "To confirm the outcome of an action the user just took (saved, sent, archived) without interrupting their flow.",
+    "To confirm the outcome of an action the user has taken (saved, sent, archived) without interrupting their flow.",
     "For background events that complete while the user is elsewhere: an export finishing, a sync completing.",
   ],
   whenNotToUse: [
@@ -111,7 +111,7 @@ const doc: ComponentContent = {
   howItWorks: [
     {
       title: "Confirm outcomes; never ask questions",
-      body: "A toast states what just happened: saved, sent, restored. It disappears on its own, so a message that expects a decision has the wrong container: use Modal for questions, an Alert in the page for conditions that persist.",
+      body: "A toast states what has happened: saved, sent, restored. It disappears on its own, so a message that expects a decision has the wrong container: use Modal for questions, an Alert in the page for conditions that persist.",
     },
     {
       title: "Reserve high priority for failures",
@@ -123,7 +123,7 @@ const doc: ComponentContent = {
     },
     {
       title: "F6 reaches the viewport",
-      body: "The toast region is a labelled landmark, and F6 jumps focus into it from anywhere; that is how a keyboard user reaches an action before the timer ends. Keeping that path clear takes no effort: just don't wrap toasts in extra focusable chrome.",
+      body: "The toast region is a labelled landmark, and F6 jumps focus into it from anywhere; that is how a keyboard user reaches an action before the timer ends. Keeping that path clear takes no effort: don't wrap toasts in extra focusable chrome.",
     },
   ],
   accessibility: [
@@ -131,7 +131,8 @@ const doc: ComponentContent = {
     'The notifications region is role="region", labelled "Notifications", and never traps focus.',
     "Auto-dismiss timers pause while the pointer or keyboard focus is inside the viewport and resume with the remaining time (WCAG 2.2.1 Timing Adjustable).",
     'The viewport renders with popover="manual": the browser\'s top layer places it above every dialog and popover with no z-index war, and nothing can light-dismiss it.',
-    'The default dismiss button carries an explicit aria-label ("Dismiss notification").',
+    'The default dismiss button is a LoamUI Button with an explicit aria-label ("Dismiss notification"); labels replaces it and the region\'s name for another language.',
+    "Every default string is overridable: labels on <Toasts /> (or on Toast.Viewport and Toast.Close) names the region and the dismiss button.",
   ],
   parts: [
     {
@@ -156,16 +157,33 @@ const doc: ComponentContent = {
       name: "Toasts",
       description:
         "The ready-made viewport: renders every active toast with title, description, action and a dismiss button. Compose the parts below yourself only when this layout doesn't fit.",
+      props: [
+        {
+          name: "labels",
+          type: "{ region?: string; dismiss?: string }",
+          default: `{ region: "Notifications", dismiss: "Dismiss notification" }`,
+          description:
+            'The words the viewport speaks: region names the landmark ("Notifications"), dismiss names each close button ("Dismiss notification").',
+        },
+      ],
     },
     {
       name: "Toast.Viewport",
       description:
         "The top-layer notifications region for a custom layout; all native <div> props are forwarded.",
+      props: [
+        {
+          name: "labels",
+          type: "{ region?: string }",
+          default: `{ region: "Notifications" }`,
+          description: "The landmark's accessible name.",
+        },
+      ],
     },
     {
       name: "Toast.Root",
       description:
-        "Renders one toast; its live-region role comes from the toast's priority. Native <div> props are forwarded.",
+        "Renders one toast; its live-region role comes from the toast's priority, and the parts inside read the toast from it. Native <div> props are forwarded.",
       props: [
         {
           name: "toast",
@@ -177,21 +195,31 @@ const doc: ComponentContent = {
     {
       name: "Toast.Title",
       description: "The toast's heading; native <div> props are forwarded.",
+      props: [
+        {
+          name: "render",
+          type: "element | (props) => node",
+          description:
+            "Substitute the element (render={<strong />}); it receives the part's class.",
+        },
+      ],
     },
     {
       name: "Toast.Description",
       description: "The toast's message body; native <div> props are forwarded.",
+      props: [
+        {
+          name: "render",
+          type: "element | (props) => node",
+          description: "Substitute the element (render={<p />}); it receives the part's class.",
+        },
+      ],
     },
     {
       name: "Toast.Action",
       description:
         "A LoamUI Button inside a toast; activating it runs onAction and dismisses that toast. Native <button> props are forwarded.",
       props: [
-        {
-          name: "toastId",
-          type: "string",
-          description: "Which toast the action belongs to.",
-        },
         {
           name: "onAction",
           type: "() => void",
@@ -207,14 +235,28 @@ const doc: ComponentContent = {
     {
       name: "Toast.Close",
       description:
-        'A labelled dismiss button ("Dismiss notification") with a default × icon. Native <button> props are forwarded.',
+        'A LoamUI Button that dismisses its toast, labelled "Dismiss notification" with a default × icon (children replace the icon). Native <button> props are forwarded.',
       props: [
         {
-          name: "toastId",
-          type: "string",
-          description: "Which toast to dismiss.",
+          name: "labels",
+          type: "{ dismiss?: string }",
+          default: `{ dismiss: "Dismiss notification" }`,
+          description: "The button's accessible name.",
+        },
+        {
+          name: "render",
+          type: "element | (props) => node",
+          description: "Substitute your own element; it receives the close wiring.",
         },
       ],
+    },
+  ],
+  cssProps: [
+    {
+      name: "--loam-toast-size",
+      syntax: "CSS length",
+      default: "22rem",
+      description: "The viewport's width; never wider than the viewport minus its margins.",
     },
   ],
   hooks: [

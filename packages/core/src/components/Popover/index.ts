@@ -5,6 +5,7 @@ export type {
   PopoverTriggerRenderProps,
   PopoverPopupProps,
   PopoverTitleProps,
+  PopoverTitleRenderProps,
   PopoverDescriptionProps,
   PopoverCloseProps,
   PopoverCloseRenderProps,

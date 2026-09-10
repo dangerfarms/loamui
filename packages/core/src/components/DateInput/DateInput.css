@@ -1,7 +1,8 @@
-/* The legend comes from the Fieldset primitive and each part reuses
-   Input, so borders, focus rings and the aria-invalid danger state
-   are Input's own. Only the description/error text and the part layout
-   live here. The donut stops this scope at the composed Inputs. */
+/* The legend comes from the Fieldset primitive and each part is a core
+   Field around a core Input, so labels, borders, focus rings and the
+   aria-invalid danger state are theirs. Only the description and error
+   text and the row of parts live here; the donut stops this scope at the
+   composed Fields. */
 @scope (.loam-DateInput) to ([class*="loam-"]) {
   p.description {
     color: var(--loam-color-fg-muted);
@@ -15,48 +16,15 @@
     margin: 0;
   }
 
+  /* A grid of max-content columns, not a flex row: a Field fills its
+     container, and a max-content track is exactly as wide as the sized
+     Input inside it, so each part is as wide as its answer without any
+     rule reaching past the donut. */
   div.parts {
-    display: block flex;
-    flex-wrap: wrap;
+    display: block grid;
     gap: var(--loam-space-md);
-  }
-
-  [data-part] {
-    display: block flex;
-    flex-direction: column;
-    gap: var(--loam-space-xs);
-  }
-
-  label {
-    font-size: var(--loam-text-sm);
-    font-weight: 500;
-  }
-}
-
-/* Deliberate reaches into the composed Input — scoped without the donut on
-   purpose, because the subject IS the nested component. Width is
-   information: the input is sized to its answer (two digits, four for the
-   year, plus a character of editing slack) and the box shrink-wraps it —
-   the control's padding and borders are never restated here. */
-@scope (.loam-DateInput) {
-  [data-part] > .loam-Input-field {
-    inline-size: fit-content;
-  }
-
-  [data-part="year"] .loam-Input-field input {
-    flex: none;
-    inline-size: 5ch;
-  }
-
-  [data-part="day"] .loam-Input-field input {
-    flex: none;
-    inline-size: 3ch;
-  }
-
-  /* The month takes names ("Mar") as well as numbers — give the answer
-     room to be typed. */
-  [data-part="month"] .loam-Input-field input {
-    flex: none;
-    inline-size: 4ch;
+    grid-auto-columns: max-content;
+    grid-auto-flow: column;
+    justify-content: start;
   }
 }

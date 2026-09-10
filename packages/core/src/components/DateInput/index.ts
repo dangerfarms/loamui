@@ -1,9 +1,10 @@
 export { DateInput } from "./DateInput";
 export type {
+  DateInputLabels,
   DateInputRootProps,
   DateInputDescriptionProps,
   DateInputErrorProps,
   DateInputFieldsProps,
-  DateInputFieldProps,
+  DateInputPartProps,
   DateInputPart,
 } from "./DateInput";

@@ -1,7 +1,12 @@
+/* The block is a container so the copy button can move out of the way of
+   the first line where the box is too narrow to hold both. */
 .wrap {
-  background: var(--loam-color-bg-subtle);
+  /* On the surface colour, not the subtle ground: the highlighter's token
+     colours hold 4.5:1 there in both schemes. */
+  background: var(--loam-color-surface);
   border: 1px solid var(--loam-color-line);
   border-radius: var(--loam-radius-md);
+  container-type: inline-size;
   overflow: hidden;
   position: relative;
 }
@@ -11,34 +16,34 @@
   font-size: var(--loam-text-sm);
   line-height: 1.6;
   margin: 0;
-  overflow-inline: auto;
+
+  /* The shorthand, not overflow-inline: the logical form is not Baseline,
+     and an un-clipped block widens the page to its longest line. */
+  overflow: auto;
   padding: 1rem 1.125rem;
+  tab-size: 2;
+
+  /* Only a block that scrolls is focusable (see useScrollable). */
+  &:focus-visible {
+    outline: var(--loam-ring-width) solid var(--loam-color-ring);
+    outline-offset: -2px;
+  }
+
+  @container (width <= 36rem) {
+    padding-block-start: 2.75rem;
+  }
 }
 
 .line {
   display: block flow;
 }
 
+/* The core CopyButton, set small and pinned to the corner. */
 .copy {
-  background: var(--loam-color-surface);
-  border: 1px solid var(--loam-color-line);
-  border-radius: var(--loam-radius-sm);
-  box-shadow: none;
-  color: var(--loam-color-fg-muted);
-  cursor: pointer;
   font-size: var(--loam-text-xs);
-  font-weight: 600;
   inset-block-start: 0.5rem;
   inset-inline-end: 0.5rem;
   padding: 0.25rem 0.6rem;
   position: absolute;
-  transition:
-    color var(--loam-duration-md) var(--loam-ease),
-    border-color var(--loam-duration-md) var(--loam-ease);
   z-index: 1;
-
-  &:hover {
-    border-color: var(--loam-color-line-strong);
-    color: var(--loam-color-fg);
-  }
 }

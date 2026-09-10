@@ -28,6 +28,13 @@
     }
   }
 
+  /* A sized input is as wide as its answer: the box shrink-wraps the
+     platform's own width for `size` characters instead of filling the
+     field. */
+  :scope:has(> input[size]) {
+    inline-size: fit-content;
+  }
+
   /* Autofilled: the wrapper border carries the signal (the input itself
      paints the tint — see below). :autofill and :-webkit-autofill must stay
      in separate blocks — one unsupported selector invalidates a shared
@@ -48,7 +55,7 @@
     border-color: var(--loam-color-danger);
   }
 
-  :scope[data-disabled] {
+  :scope:has(input:disabled) {
     background: var(--loam-color-bg-subtle);
     opacity: var(--loam-disabled-opacity);
   }
@@ -57,7 +64,6 @@
     background: transparent;
     border: none;
     color: inherit;
-    flex: 1;
     font: inherit;
     min-inline-size: 0;
     outline: none;
@@ -65,6 +71,16 @@
     /* UA inputs carry 1-2px default padding; with a derived (auto) height
        that would break the Button alignment, so zero it explicitly. */
     padding: 0;
+  }
+
+  /* Without `size` the input takes the box; with it, the platform's own
+     width for that many characters stands. */
+  input:not([size]) {
+    flex: 1;
+  }
+
+  input[size] {
+    flex: none;
   }
 
   input::placeholder {
@@ -94,6 +110,21 @@
     svg {
       block-size: auto;
       inline-size: 1.125em;
+    }
+  }
+
+  /* Forced colours drop the danger border colour, so the invalid state
+     moves to an outline in a system colour; the focus ring is offset
+     further out and still reads as its own ring. Mirrors Checkbox. */
+  @media (forced-colors: active) {
+    :scope:has(input[aria-invalid="true"]) {
+      outline: 2px solid LinkText;
+      outline-offset: 1px;
+
+      &:focus-within {
+        outline: var(--loam-ring-width) solid Highlight;
+        outline-offset: 2px;
+      }
     }
   }
 }

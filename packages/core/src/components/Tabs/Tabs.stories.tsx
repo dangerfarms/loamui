@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
-import { Tabs, TabsList, TabsTab, TabsPanel } from "../../index";
+import { Tabs } from "../../index";
 
 const meta = {
   title: "Navigation/Tabs",
-  component: Tabs,
+  component: Tabs.Root,
   tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
         component:
-          "Switch between related panels of content, composed with " +
-          "`Tabs.List`, `Tabs.Tab` and `Tabs.Panel`. Supports uncontrolled " +
+          "Switch between related panels of content, composed from " +
+          "`Tabs.Root`, `Tabs.List`, `Tabs.Tab` and `Tabs.Panel`. Supports uncontrolled " +
           "(`defaultValue`) and controlled (`value`/`onChange`) usage.",
       },
     },
@@ -26,24 +26,24 @@ const meta = {
     },
   },
   render: (args) => (
-    <Tabs {...args}>
-      <TabsList>
-        <TabsTab value="overview">Overview</TabsTab>
-        <TabsTab value="activity">Activity</TabsTab>
-        <TabsTab value="settings">Settings</TabsTab>
-      </TabsList>
-      <TabsPanel value="overview">
+    <Tabs.Root {...args}>
+      <Tabs.List>
+        <Tabs.Tab value="overview">Overview</Tabs.Tab>
+        <Tabs.Tab value="activity">Activity</Tabs.Tab>
+        <Tabs.Tab value="settings">Settings</Tabs.Tab>
+      </Tabs.List>
+      <Tabs.Panel value="overview">
         <p>Overview panel — a snapshot of everything at a glance.</p>
-      </TabsPanel>
-      <TabsPanel value="activity">
+      </Tabs.Panel>
+      <Tabs.Panel value="activity">
         <p>Activity panel — the latest events on your account.</p>
-      </TabsPanel>
-      <TabsPanel value="settings">
+      </Tabs.Panel>
+      <Tabs.Panel value="settings">
         <p>Settings panel — tweak your preferences here.</p>
-      </TabsPanel>
-    </Tabs>
+      </Tabs.Panel>
+    </Tabs.Root>
   ),
-} satisfies Meta<typeof Tabs>;
+} satisfies Meta<typeof Tabs.Root>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -53,9 +53,9 @@ export const Playground: Story = {};
 /** An svg child is detected and spaced, exactly as in Button. */
 export const WithIcons: Story = {
   render: (args) => (
-    <Tabs {...args}>
-      <TabsList>
-        <TabsTab value="overview">
+    <Tabs.Root {...args}>
+      <Tabs.List>
+        <Tabs.Tab value="overview">
           <svg viewBox="0 0 16 16" fill="none" aria-hidden>
             <path
               d="M8 2v12M3 7l5-5 5 5"
@@ -65,8 +65,8 @@ export const WithIcons: Story = {
             />
           </svg>
           Overview
-        </TabsTab>
-        <TabsTab value="activity">
+        </Tabs.Tab>
+        <Tabs.Tab value="activity">
           <svg viewBox="0 0 16 16" fill="none" aria-hidden>
             <path
               d="M2 13l4-5 3 3 5-8"
@@ -76,8 +76,8 @@ export const WithIcons: Story = {
             />
           </svg>
           Activity
-        </TabsTab>
-        <TabsTab value="settings">
+        </Tabs.Tab>
+        <Tabs.Tab value="settings">
           <svg viewBox="0 0 16 16" fill="none" aria-hidden>
             <path
               d="M8 5a3 3 0 100 6 3 3 0 000-6zM8 1v2m0 10v2m7-7h-2M3 8H1"
@@ -87,42 +87,42 @@ export const WithIcons: Story = {
             />
           </svg>
           Settings
-        </TabsTab>
-      </TabsList>
-      <TabsPanel value="overview">
+        </Tabs.Tab>
+      </Tabs.List>
+      <Tabs.Panel value="overview">
         <p>Overview panel — a snapshot of everything at a glance.</p>
-      </TabsPanel>
-      <TabsPanel value="activity">
+      </Tabs.Panel>
+      <Tabs.Panel value="activity">
         <p>Activity panel — the latest events on your account.</p>
-      </TabsPanel>
-      <TabsPanel value="settings">
+      </Tabs.Panel>
+      <Tabs.Panel value="settings">
         <p>Settings panel — tweak your preferences here.</p>
-      </TabsPanel>
-    </Tabs>
+      </Tabs.Panel>
+    </Tabs.Root>
   ),
 };
 
 /** A disabled tab cannot be activated and is skipped by keyboard navigation. */
 export const DisabledTab: Story = {
   render: (args) => (
-    <Tabs {...args}>
-      <TabsList>
-        <TabsTab value="overview">Overview</TabsTab>
-        <TabsTab value="activity">Activity</TabsTab>
-        <TabsTab value="settings" disabled>
+    <Tabs.Root {...args}>
+      <Tabs.List>
+        <Tabs.Tab value="overview">Overview</Tabs.Tab>
+        <Tabs.Tab value="activity">Activity</Tabs.Tab>
+        <Tabs.Tab value="settings" disabled>
           Settings
-        </TabsTab>
-      </TabsList>
-      <TabsPanel value="overview">
+        </Tabs.Tab>
+      </Tabs.List>
+      <Tabs.Panel value="overview">
         <p>Overview panel — a snapshot of everything at a glance.</p>
-      </TabsPanel>
-      <TabsPanel value="activity">
+      </Tabs.Panel>
+      <Tabs.Panel value="activity">
         <p>Activity panel — the latest events on your account.</p>
-      </TabsPanel>
-      <TabsPanel value="settings">
+      </Tabs.Panel>
+      <Tabs.Panel value="settings">
         <p>Settings panel — you shouldn&apos;t be able to reach this.</p>
-      </TabsPanel>
-    </Tabs>
+      </Tabs.Panel>
+    </Tabs.Root>
   ),
 };
 

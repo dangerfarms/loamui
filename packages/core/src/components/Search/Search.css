@@ -1,0 +1,29 @@
+/*
+ * Search — a <search> landmark around a native form. The scope arranges
+ * the form's row and hides the label; the box and the button are the
+ * library's own Input and Button, behind the donut, and keep their own
+ * declarations. Nothing here is painted, so there is no forced-colours
+ * treatment to write: the box and the button carry their own.
+ */
+@scope (.loam-Search) to ([class*="loam-"]) {
+  /* <search> is block-level in every browser that knows it; declared so
+     the row also holds where the element is still unknown. */
+  :scope {
+    display: block flow;
+  }
+
+  /* One row: the first cell grows, the button keeps its width, and both sit
+     on the same baseline when a Field's label and hint sit above the box.
+     A grid, not flex, because the first cell is a core Input or a core
+     Field (past the donut): the track sizes it without styling it. */
+  form {
+    align-items: end;
+    display: block grid;
+    gap: var(--loam-space-sm);
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  /* type="search" keeps the platform's clear affordance: neither Input.css
+     nor elements.css sets appearance on the control, so there is nothing
+     to restore here. */
+}

@@ -112,11 +112,11 @@ Labels are sentence case with no trailing colon, and name the thing the field as
 
 ### When validation runs
 
-Two paths, one timing rule. Native constraints (required, type, minlength) open the error state only after a submit attempt. Once open, the error remains while the value is invalid and clears as soon as the correction is valid. The render path is explicit: a field is invalid exactly while a Field.Error with content is rendered, so server or async validation is just rendering that message after submission. Neither path validates on blur or complains mid-word.
+Two paths, one timing rule. Native constraints (required, type, minlength) open the error state only after a submit attempt. Once open, the error remains while the value is invalid and clears as soon as the correction is valid. The render path is explicit: a field is invalid exactly while a Field.Error with content is rendered, so server or async validation is rendering that message after submission. Neither path validates on blur or complains mid-word.
 
 ### Styling state from outside
 
-Everything the family knows about a field is expressed in selectors you can target: [aria-invalid="true"] on the control, :has(> p.error) on the .loam-Field root, [data-disabled] on control boxes, and :focus-within on the field box. There are no visual state props to mirror; the DOM is the contract.
+Everything the family knows about a field is expressed in selectors you can target: [aria-invalid="true"] on the control, :has(> p.error) on the .loam-Field root, :has(input:disabled) on a control box (disabled is detected on the native control, never declared on a wrapper), and :focus-within on the field box. There are no visual state props to mirror; the DOM is the contract.
 
 ### One error, one place, one wording
 
@@ -125,8 +125,8 @@ The message renders once, inside the field, tied to the control by aria-describe
 ## Accessibility
 
 - Field.Root generates one id and hands it to Field.Label (via htmlFor) and to the control, so label and control are always associated.
-- Description and error ids are added to the control's aria-describedby only when those parts are present.
-- Any Field.Error with content sets aria-invalid on the control and is announced with role="alert"; a visually hidden "Error: " prefix makes the announcement unmistakable out of context.
+- Description and error ids are added to the control's aria-describedby only when those parts are present, ahead of any aria-describedby the control carries itself, each id once: a control that brings its own description keeps it.
+- Any Field.Error with content sets aria-invalid on the control and is announced with role="alert"; a visually hidden "Error: " prefix (labels.errorPrefix on the Root) makes the announcement unmistakable out of context.
 - The LoamUI controls read this wiring from context; Field.Control hands it to arbitrary elements, letting you keep semantic, native controls instead of re-implementing them.
 
 ## Error messages
@@ -147,14 +147,15 @@ Wraps a field and provides context. The invalid state is detected: it is true ex
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `id` | `string` | — | Base id for the control; auto-generated when omitted. |
+| `labels` | `{ optional?: ReactNode; errorPrefix?: ReactNode }` | `{ optional: "(optional)", errorPrefix: "Error: " }` | The Field's own words, read by Field.Label and Field.Error: the text after an optional label, and the hidden words before an error. Pass them in the page's language. |
 
 ### Field.Label
 
-Label tied to the control; native <label> props are forwarded.
+Label tied to the control; native <label> props and ref are forwarded.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `optional` | `boolean` | `false` | Appends "(optional)"; optional is marked in words, not with an asterisk. |
+| `optional` | `boolean` | `false` | Appends labels.optional ("(optional)"); optional is marked in words, not with an asterisk. |
 
 ### Field.Description
 

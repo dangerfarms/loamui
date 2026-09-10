@@ -43,9 +43,13 @@
     min-inline-size: 0;
   }
 
+  /* Sized in CSS, not SVG attributes, so the chevron rides the summary's
+     font size. */
   svg.chevron {
+    block-size: 1em;
     color: var(--loam-color-fg-muted);
     flex: none;
+    inline-size: 1em;
     rotate: 0deg;
 
     :scope[open] > summary & {

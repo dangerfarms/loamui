@@ -1,32 +1,30 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef } from "react";
-import type { InputHTMLAttributes, ReactNode, Ref } from "react";
+import type { ReactNode } from "react";
 import { cx } from "../../utils";
-import { composeRefs } from "../../render";
+import type { PartProps } from "../../utils";
+import { composeRefs, idList } from "../../render";
 import { useFieldControlProps } from "../Field/Field";
 import { useUserInvalid } from "../../use-user-invalid";
 
-export interface CheckboxProps extends Omit<
-  InputHTMLAttributes<HTMLInputElement>,
-  "size" | "type"
-> {
+export interface CheckboxProps extends Omit<PartProps<"input">, "size" | "type"> {
   /** Label rendered next to the checkbox. */
   label?: ReactNode;
   /** Helper text rendered below the label. */
   description?: ReactNode;
   /** Render the "partially checked" (dash) state. */
   indeterminate?: boolean;
-  /** Root wrapper class. */
-  wrapperClassName?: string;
-  ref?: Ref<HTMLInputElement>;
+  /**
+   * Props for the labelled row's root (`div.loam-Checkbox-wrapper`), which
+   * exists only with a `label` or `description`. `className`, `style`,
+   * `ref` and every other prop land on the `<input>` itself.
+   */
+  wrapperProps?: Omit<PartProps<"div">, "children">;
 }
 
 /** The bare control, minus any label. */
-export type CheckboxControlProps = Omit<
-  CheckboxProps,
-  "label" | "description" | "wrapperClassName"
->;
+export type CheckboxControlProps = Omit<CheckboxProps, "label" | "description" | "wrapperProps">;
 
 /**
  * A plain `<input type="checkbox">` — the elements layer paints it with the
@@ -38,7 +36,6 @@ function CheckboxControl({
   indeterminate = false,
   id,
   className,
-  disabled,
   "aria-invalid": ariaInvalid,
   "aria-describedby": ariaDescribedby,
   onInput,
@@ -46,7 +43,7 @@ function CheckboxControl({
   ref,
   ...rest
 }: CheckboxControlProps) {
-  const field = useFieldControlProps();
+  const field = useFieldControlProps(ariaDescribedby);
   const innerRef = useRef<HTMLInputElement>(null);
   const { nativeInvalid, validationRef, checkOnInput, checkOnInvalid } =
     useUserInvalid<HTMLInputElement>();
@@ -63,7 +60,7 @@ function CheckboxControl({
 
   const resolvedAriaInvalid = ariaInvalid ?? field["aria-invalid"] ?? (nativeInvalid || undefined);
   const resolvedId = id ?? field.id;
-  const describedBy = ariaDescribedby ?? field["aria-describedby"];
+  const describedBy = field["aria-describedby"];
 
   return (
     <input
@@ -71,7 +68,6 @@ function CheckboxControl({
       id={resolvedId}
       type="checkbox"
       className={cx("loam-Checkbox", className)}
-      disabled={disabled}
       {...rest}
       aria-invalid={resolvedAriaInvalid}
       aria-describedby={describedBy}
@@ -92,41 +88,38 @@ function CheckboxControl({
  *
  * The `label`/`description` props render an accessible inline row; errors
  * compose via `Field.Error`. Without them you get only the control, which
- * self-wires when placed inside a `Field`.
+ * self-wires when placed inside a `Field`. The labelled row reads the
+ * Field too: its input takes the Field's id, so a `Field.Label` in the
+ * same Field points at it, and the Field's description and error join its
+ * own description in `aria-describedby`.
  */
-export function Checkbox({
+function CheckboxLabelled({
   label,
   description,
-  disabled,
-  required,
   id,
-  wrapperClassName,
+  wrapperProps,
+  "aria-describedby": ariaDescribedby,
   ref,
   ...control
 }: CheckboxProps) {
   const autoId = useId();
+  const field = useFieldControlProps();
 
   if (!label && !description) {
-    return (
-      <CheckboxControl ref={ref} id={id} disabled={disabled} required={required} {...control} />
-    );
+    return <CheckboxControl ref={ref} id={id} aria-describedby={ariaDescribedby} {...control} />;
   }
 
-  const fieldId = id ?? autoId;
+  const fieldId = id ?? field.id ?? autoId;
   const descId = description ? `${fieldId}-desc` : undefined;
+  const { className: wrapperClassName, ...wrapper } = wrapperProps ?? {};
 
   return (
-    <div
-      className={cx("loam-Checkbox-wrapper", wrapperClassName)}
-      data-disabled={disabled || undefined}
-    >
+    <div className={cx("loam-Checkbox-wrapper", wrapperClassName)} {...wrapper}>
       <label htmlFor={fieldId}>
         <CheckboxControl
           ref={ref}
           id={fieldId}
-          disabled={disabled}
-          required={required}
-          aria-describedby={descId}
+          aria-describedby={idList(descId, ariaDescribedby)}
           {...control}
         />
         <span className="body">
@@ -142,4 +135,7 @@ export function Checkbox({
   );
 }
 
-export { CheckboxControl };
+export const Checkbox = Object.assign(CheckboxLabelled, {
+  /** The bare box, for composing inside a `Field.Label` of its own. */
+  Control: CheckboxControl,
+});

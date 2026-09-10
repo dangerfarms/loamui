@@ -1,28 +1,21 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import type {
-  RefObject,
-  ButtonHTMLAttributes,
-  DialogHTMLAttributes,
-  HTMLAttributes,
-  MouseEvent as ReactMouseEvent,
-  ReactNode,
-  Ref,
-} from "react";
+import type { ReactNode } from "react";
 import { cx } from "../../utils";
-import { usePresence } from "../../use-presence";
-import { mergeProps, renderWithProps, composeRefs } from "../../render";
+import type { PartProps } from "../../utils";
+import { mergeProps, renderWithProps } from "../../render";
 import type { RenderProp } from "../../render";
+import {
+  DialogContext,
+  dialogCloseProps,
+  dialogTriggerProps,
+  useDialogContext,
+  useDialogDescription,
+  useDialogPopup,
+  useDialogRoot,
+  useDialogTitle,
+} from "../../use-dialog";
+import type { DialogCloseRenderProps, DialogTriggerRenderProps } from "../../use-dialog";
 
 import { Button } from "../Button/Button";
 
@@ -47,31 +40,7 @@ import { Button } from "../Button/Button";
  * ```
  */
 
-interface ModalContextValue {
-  open: boolean;
-  /** True once the Invoker Commands API is confirmed (commandfor/command). */
-  invokers: boolean;
-  setOpen: (open: boolean) => void;
-  /** The Trigger's element (native dialog close restores focus to it). */
-  triggerRef: RefObject<HTMLButtonElement | null>;
-  dialogId: string;
-  titleId: string;
-  descriptionId: string;
-  hasTitle: boolean;
-  hasDescription: boolean;
-  registerTitle: () => () => void;
-  registerDescription: () => () => void;
-}
-
-const ModalContext = createContext<ModalContextValue | null>(null);
-
-function useModalContext(part: string): ModalContextValue {
-  const ctx = useContext(ModalContext);
-  if (!ctx) {
-    throw new Error(`${part} must be rendered inside <Modal.Root>.`);
-  }
-  return ctx;
-}
+const COMPONENT = "Modal";
 
 export interface ModalRootProps {
   /** Controlled open state. */
@@ -83,107 +52,25 @@ export interface ModalRootProps {
   children?: ReactNode;
 }
 
-function ModalRoot({
-  open: openProp,
-  defaultOpen = false,
-  onOpenChange,
-  children,
-}: ModalRootProps) {
-  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
-  const open = openProp ?? uncontrolledOpen;
-  const [hasTitle, registerTitle] = usePresence();
-  // Feature-probe the element prototype, never window/document.
-  const [invokers, setInvokers] = useState(false);
-  useEffect(() => setInvokers("commandForElement" in HTMLButtonElement.prototype), []);
-  const [hasDescription, registerDescription] = usePresence();
-
-  const autoId = useId();
-  const dialogId = `${autoId}-modal`;
-
-  const openRef = useRef(open);
-  openRef.current = open;
-  const controlledRef = useRef(false);
-  controlledRef.current = openProp !== undefined;
-  const triggerRef = useRef<HTMLButtonElement | null>(null);
-  const setOpen = useCallback(
-    (next: boolean) => {
-      if (next === openRef.current) return;
-      // In controlled mode the parent owns the state; we only propose.
-      if (!controlledRef.current) setUncontrolledOpen(next);
-      onOpenChange?.(next);
-    },
-    [onOpenChange],
-  );
-
-  const value = useMemo<ModalContextValue>(
-    () => ({
-      open,
-      setOpen,
-      invokers,
-      triggerRef,
-      dialogId,
-      titleId: `${dialogId}-title`,
-      descriptionId: `${dialogId}-description`,
-      hasTitle,
-      hasDescription,
-      registerTitle,
-      registerDescription,
-    }),
-    [
-      open,
-      setOpen,
-      invokers,
-      dialogId,
-      hasTitle,
-      hasDescription,
-      registerTitle,
-      registerDescription,
-    ],
-  );
-
-  return <ModalContext value={value}>{children}</ModalContext>;
+function ModalRoot({ open, defaultOpen, onOpenChange, children }: ModalRootProps) {
+  const value = useDialogRoot(COMPONENT, { open, defaultOpen, onOpenChange });
+  return <DialogContext value={value}>{children}</DialogContext>;
 }
 
-/** Wiring the Trigger attaches to whatever it renders. */
-export interface ModalTriggerRenderProps {
-  type: "button";
-  /** Declarative invoker wiring (Invoker Commands API) where supported. */
-  commandfor: string | undefined;
-  command: "show-modal" | undefined;
-  "aria-haspopup": "dialog";
-  /** Styling hook — present while the modal is open. */
-  "data-popup-open": "true" | undefined;
-  onClick: (e: ReactMouseEvent<Element>) => void;
-  ref: Ref<HTMLButtonElement>;
-}
+export interface ModalTriggerRenderProps extends DialogTriggerRenderProps {}
 
-export interface ModalTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ModalTriggerProps extends PartProps<"button"> {
   /**
-   * Substitute your own element as the trigger (`render={<MyIconButton />}`) — triggers act, so keep them buttons
-   * or pass a function receiving the wiring props. Without it, the Trigger
-   * renders a LoamUI Button.
+   * Substitute your own element as the trigger (`render={<MyIconButton />}`);
+   * triggers act, so keep them buttons, or pass a function receiving the
+   * wiring props. Without it, the Trigger renders a LoamUI Button.
    */
   render?: RenderProp<ModalTriggerRenderProps>;
 }
 
 function ModalTrigger({ render, children, ...rest }: ModalTriggerProps) {
-  const ctx = useModalContext("Modal.Trigger");
-
-  const triggerProps: ModalTriggerRenderProps = {
-    ref: ctx.triggerRef,
-    type: "button",
-    // Enhanced: once hydration has probed for invoker support, the browser
-    // owns open via commandfor (no click handler needed). The dialog's toggle
-    // event syncs state either way.
-    commandfor: ctx.invokers ? ctx.dialogId : undefined,
-    command: ctx.invokers ? "show-modal" : undefined,
-    "aria-haspopup": "dialog",
-    "data-popup-open": ctx.open ? "true" : undefined,
-    onClick: () => {
-      if (!ctx.invokers) ctx.setOpen(true);
-    },
-  };
-
+  const ctx = useDialogContext(COMPONENT, "Trigger");
+  const triggerProps = dialogTriggerProps(ctx);
   return render ? (
     <>{renderWithProps(render, mergeProps(triggerProps, { children, ...rest }))}</>
   ) : (
@@ -191,14 +78,13 @@ function ModalTrigger({ render, children, ...rest }: ModalTriggerProps) {
   );
 }
 
-export interface ModalPopupProps extends Omit<DialogHTMLAttributes<HTMLDialogElement>, "open"> {
-  ref?: Ref<HTMLDialogElement>;
+export interface ModalPopupProps extends Omit<PartProps<"dialog">, "open"> {
   /**
    * Renders an alert dialog (`role="alertdialog"`): a confirmation that
-   * interrupts the user and cannot be light-dismissed — clicking the
-   * backdrop does nothing, only Escape or an explicit choice closes it.
-   * Pair with a Title and Description, and put `autoFocus` on the
-   * least-destructive action so it is the default answer.
+   * interrupts the user and cannot be light-dismissed. Clicking the backdrop
+   * does nothing; only Escape or an explicit choice closes it. Pair with a
+   * Title and Description, and put `autoFocus` on the least-destructive
+   * action so it is the default answer.
    */
   alert?: boolean;
 }
@@ -207,147 +93,73 @@ function ModalPopup({
   alert = false,
   className,
   children,
-  ref: refProp,
+  ref,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
+  "aria-describedby": ariaDescribedBy,
   ...rest
 }: ModalPopupProps) {
-  const ctx = useModalContext("Modal.Popup");
-  const { open, setOpen } = ctx;
-  const ref = useRef<HTMLDialogElement>(null);
-  const composedRef = useMemo(() => composeRefs(refProp, ref), [refProp]);
-
-  // Reconcile React state with the native dialog. No dependency array — a
-  // controlled parent may reject a close reported by the `close` event, and
-  // only an every-render reconcile converges the DOM back.
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (open && !el.open) el.showModal();
-    else if (!open && el.open) el.close();
+  const ctx = useDialogContext(COMPONENT, "Popup");
+  const dialogProps = useDialogPopup(ctx, {
+    ref,
+    lightDismiss: !alert,
+    label: ariaLabel,
+    labelledBy: ariaLabelledBy,
+    describedBy: ariaDescribedBy,
   });
-
-  // Native closes (Escape, closedby light dismiss, form method="dialog")
-  // flow back into state via the `close` event; a native invoker open
-  // (command="show-modal") flows in via `toggle`.
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const onClose = () => setOpen(false);
-    const onToggle = (e: Event) => {
-      if ((e as ToggleEvent).newState === "open") setOpen(true);
-    };
-    el.addEventListener("close", onClose);
-    el.addEventListener("toggle", onToggle);
-    return () => {
-      el.removeEventListener("close", onClose);
-      el.removeEventListener("toggle", onToggle);
-    };
-  }, [setOpen]);
-
-  // Light-dismiss fallback for browsers without `closedby` (Safari): a click
-  // whose target is the dialog but whose coordinates fall outside its content
-  // rect landed on the backdrop. Alert dialogs never light-dismiss.
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || alert || "closedBy" in HTMLDialogElement.prototype) return;
-    const onClick = (e: MouseEvent) => {
-      if (e.target !== el) return;
-      const rect = el.getBoundingClientRect();
-      const inside =
-        rect.top <= e.clientY &&
-        e.clientY <= rect.bottom &&
-        rect.left <= e.clientX &&
-        e.clientX <= rect.right;
-      if (!inside) el.close();
-    };
-    el.addEventListener("click", onClick);
-    return () => el.removeEventListener("click", onClick);
-  }, [alert]);
-
-  // Lock body scroll while open (showModal doesn't; the CSS-only
-  // `body:has(dialog:modal)` route would restyle the host page).
-  useEffect(() => {
-    if (!open) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [open]);
 
   return (
     // rest cannot override what follows: the dialog wiring (id, open
     // reconciliation, closedby) must win.
     <dialog
       {...rest}
-      ref={composedRef}
-      id={ctx.dialogId}
+      {...dialogProps}
       // Missing from React's typings; lowercase passes through as an attribute.
-      // "closerequest" = Escape closes, backdrop clicks don't — the native
+      // "closerequest" = Escape closes, backdrop clicks don't: the native
       // spelling of an alert dialog's dismissal contract.
       {...({ closedby: alert ? "closerequest" : "any" } as object)}
       role={alert ? "alertdialog" : undefined}
-      aria-labelledby={ctx.hasTitle ? ctx.titleId : undefined}
-      aria-describedby={ctx.hasDescription ? ctx.descriptionId : undefined}
       className={cx("loam-Modal-popup", className)}
-      data-open={open || undefined}
     >
       {children}
     </dialog>
   );
 }
 
-export interface ModalTitleProps extends HTMLAttributes<HTMLHeadingElement> {}
+export interface ModalTitleProps extends PartProps<"h2"> {}
 
 function ModalTitle({ className, children, ...rest }: ModalTitleProps) {
-  const ctx = useModalContext("Modal.Title");
-  const { registerTitle } = ctx;
-  useEffect(() => registerTitle(), [registerTitle]);
+  const ctx = useDialogContext(COMPONENT, "Title");
+  const id = useDialogTitle(ctx);
   return (
-    <h2 className={cx("title", className)} id={ctx.titleId} {...rest}>
+    <h2 className={cx("title", className)} id={id} {...rest}>
       {children}
     </h2>
   );
 }
 
-export interface ModalDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {}
+export interface ModalDescriptionProps extends PartProps<"p"> {}
 
 function ModalDescription({ className, children, ...rest }: ModalDescriptionProps) {
-  const ctx = useModalContext("Modal.Description");
-  const { registerDescription } = ctx;
-  useEffect(() => registerDescription(), [registerDescription]);
+  const ctx = useDialogContext(COMPONENT, "Description");
+  const id = useDialogDescription(ctx);
   return (
-    <p className={cx("description", className)} id={ctx.descriptionId} {...rest}>
+    <p className={cx("description", className)} id={id} {...rest}>
       {children}
     </p>
   );
 }
 
-/** Wiring the Close part attaches to whatever it renders. */
-export interface ModalCloseRenderProps {
-  type: "button";
-  /** Declarative invoker wiring (Invoker Commands API) where supported. */
-  commandfor: string | undefined;
-  command: "close" | undefined;
-  onClick: (e: ReactMouseEvent<Element>) => void;
-}
+export interface ModalCloseRenderProps extends DialogCloseRenderProps {}
 
-export interface ModalCloseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ModalCloseProps extends PartProps<"button"> {
   /** Substitute your own element; defaults to a LoamUI Button. */
   render?: RenderProp<ModalCloseRenderProps>;
 }
 
 function ModalClose({ render, children, ...rest }: ModalCloseProps) {
-  const ctx = useModalContext("Modal.Close");
-  const closeProps: ModalCloseRenderProps = {
-    type: "button",
-    commandfor: ctx.invokers ? ctx.dialogId : undefined,
-    command: ctx.invokers ? "close" : undefined,
-    onClick: () => {
-      // Enhanced path: command="close" closes natively; the dialog's close
-      // event syncs state (same flow as Escape/light dismiss).
-      if (!ctx.invokers) ctx.setOpen(false);
-    },
-  };
+  const ctx = useDialogContext(COMPONENT, "Close");
+  const closeProps = dialogCloseProps(ctx);
   return render ? (
     <>{renderWithProps(render, mergeProps(closeProps, { children, ...rest }))}</>
   ) : (

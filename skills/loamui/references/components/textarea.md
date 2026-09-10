@@ -31,6 +31,8 @@ Inside Field.Root the textarea reads its id from the field, so Field.Label is wi
 
 ### With description
 
+Field.Description is linked to the textarea through aria-describedby, so the hint is read with the field. State a length limit here, before the answer is written, rather than in an error after it.
+
 ```tsx
 <Field.Root>
   <Field.Label>Bio</Field.Label>
@@ -67,7 +69,7 @@ A Field.Error before the control marks the field invalid and is announced: the m
 
 ### Auto-grow is built in
 
-Where the platform supports field-sizing: content, the field grows with the answer up to ten lines and then scrolls (no JS, no measuring). A minimum height keeps the empty field recognisably multi-line, and the rows prop remains the semantic fallback height where auto-grow is unsupported. Set it to match the expected answer: three rows asks for a note, ten invites an essay.
+Where the platform supports field-sizing: content, the field grows with the answer and then scrolls (no JS, no measuring). rows is real either way: it is the field's height where auto-grow is unsupported, and where it is supported the field starts at that many lines and grows to ten, or to its rows when asked for more. Set it to match the expected answer: three rows asks for a note, ten invites an essay.
 
 ### Keep resize on
 
@@ -100,7 +102,7 @@ People draft long answers elsewhere and paste them in; blocking paste, or cleari
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `rows` | `number` | `3` | Number of visible text rows. |
-| `wrapperClassName` | `string` | — | Class for the bordered field wrapper; className goes to the control itself. |
-| `...others` | `TextareaHTMLAttributes` | — | All native <textarea> props are forwarded, except size (sizing is contextual). |
+| `rows` | `number` | `3` | Visible text rows: the field's height, and where the platform grows the field with its content, the height it starts at. |
+| `wrapperProps` | `PartProps<"div">` | — | Props for the bordered box around the textarea. className, style, ref and every other prop land on the <textarea> itself; this is the one way to reach the box. |
+| `...others` | `TextareaHTMLAttributes` | — | All native <textarea> props, and ref, are forwarded to the <textarea>. |
 

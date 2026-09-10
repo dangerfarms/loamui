@@ -1,11 +1,9 @@
-import type { AnchorHTMLAttributes, ReactNode, Ref } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 
-export interface SkipLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+export interface SkipLinkProps extends PartProps<"a"> {
   /** The id of the main content landmark, e.g. `"#content"`. */
   href: string;
-  children?: ReactNode;
-  ref?: Ref<HTMLAnchorElement>;
 }
 
 /**
@@ -22,12 +20,14 @@ export interface SkipLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
  *
  * Keyboard and screen-reader users otherwise re-traverse the whole header
  * on every page. Render it before everything else; the target needs the
- * matching `id` (and `<main>` is the right home for it).
+ * matching `id` (and `<main>` is the right home for it). The label is the
+ * children, "Skip to main content" by default.
  */
-export function SkipLink({ className, children, ref, ...rest }: SkipLinkProps) {
+export function SkipLink({ className, children, ...rest }: SkipLinkProps) {
+  const label = children ?? "Skip to main content";
   return (
-    <a ref={ref} className={cx("loam-SkipLink", className)} {...rest}>
-      {children ?? "Skip to main content"}
+    <a {...rest} className={cx("loam-SkipLink", className)}>
+      {label}
     </a>
   );
 }

@@ -1,7 +1,7 @@
-import type { HTMLAttributes } from "react";
 import { cx } from "../../utils";
+import type { PartProps } from "../../utils";
 
-export interface SeparatorProps extends HTMLAttributes<HTMLHRElement> {
+export interface SeparatorProps extends PartProps<"hr"> {
   /**
    * Vertical separators divide items in a row (toolbars, inline lists).
    * @default "horizontal"
@@ -18,9 +18,10 @@ export interface SeparatorProps extends HTMLAttributes<HTMLHRElement> {
  * on the region instead; reach for Separator when the division is *content*
  * (it is announced to assistive technology as a separator).
  */
-export function Separator({ orientation = "horizontal", className, ...rest }: SeparatorProps) {
+export function Separator({ orientation = "horizontal", className, ref, ...rest }: SeparatorProps) {
   return (
     <hr
+      ref={ref}
       aria-orientation={orientation === "vertical" ? "vertical" : undefined}
       data-orientation={orientation}
       className={cx("loam-Separator", className)}

@@ -1,31 +1,35 @@
-import { Radio, RadioGroup } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
+import {
+  RadioBasicDemo,
+  RadioDescriptionsDemo,
+  RadioDisabledDemo,
+  RadioGroupErrorDemo,
+  RadioGroupLabelsDemo,
+  RadioHorizontalDemo,
+} from "./radio.client";
 
 const doc: ComponentContent = {
   slug: "radio",
   lead: "A single choice from a small set of visible, mutually exclusive options.",
-  importLine: `import { Radio, RadioGroup, RadioControl } from "@loamui/core";`,
+  importLine: `import { Radio, RadioGroup } from "@loamui/core";`,
   demos: [
     {
       title: "Basic group",
-      description: "A RadioGroup shares one name so only one option can be selected.",
-      code: `<RadioGroup label="Theme" defaultValue="system">
+      description:
+        "A RadioGroup.Root shares one name so only one option can be selected; RadioGroup.Legend names the set.",
+      code: `<RadioGroup.Root defaultValue="system">
+  <RadioGroup.Legend>Theme</RadioGroup.Legend>
   <Radio value="system" label="System" />
   <Radio value="light" label="Light" />
   <Radio value="dark" label="Dark" />
-</RadioGroup>`,
-      render: () => (
-        <RadioGroup label="Theme" defaultValue="system">
-          <Radio value="system" label="System" />
-          <Radio value="light" label="Light" />
-          <Radio value="dark" label="Dark" />
-        </RadioGroup>
-      ),
+</RadioGroup.Root>`,
+      render: () => <RadioBasicDemo />,
     },
     {
       title: "With descriptions",
       description: "Each option can carry helper text under its label.",
-      code: `<RadioGroup label="Delivery">
+      code: `<RadioGroup.Root>
+  <RadioGroup.Legend>Delivery</RadioGroup.Legend>
   <Radio
     value="standard"
     label="Standard"
@@ -36,67 +40,62 @@ const doc: ComponentContent = {
     label="Express"
     description="Guaranteed next-day delivery."
   />
-</RadioGroup>`,
-      render: () => (
-        <RadioGroup label="Delivery">
-          <Radio value="standard" label="Standard" description="Arrives in 3-5 business days." />
-          <Radio value="express" label="Express" description="Guaranteed next-day delivery." />
-        </RadioGroup>
-      ),
+</RadioGroup.Root>`,
+      render: () => <RadioDescriptionsDemo />,
     },
     {
       title: "Horizontal",
       description:
         "Lay the options out in a row only when there are two, short options. More than that, or longer labels, read better stacked.",
-      code: `<RadioGroup label="Contact preference" orientation="horizontal">
+      code: `<RadioGroup.Root orientation="horizontal">
+  <RadioGroup.Legend>Contact preference</RadioGroup.Legend>
   <Radio value="email" label="Email" />
   <Radio value="phone" label="Phone" />
-</RadioGroup>`,
-      render: () => (
-        <RadioGroup label="Contact preference" orientation="horizontal">
-          <Radio value="email" label="Email" />
-          <Radio value="phone" label="Phone" />
-        </RadioGroup>
-      ),
+</RadioGroup.Root>`,
+      render: () => <RadioHorizontalDemo />,
     },
     {
       title: "Disabled option",
       description:
         "Disable a single Radio to keep an unavailable option visible in the set. The rest of the group stays selectable.",
-      code: `<RadioGroup label="Plan">
+      code: `<RadioGroup.Root>
+  <RadioGroup.Legend>Plan</RadioGroup.Legend>
   <Radio value="basic" label="Basic" />
   <Radio value="pro" label="Pro" />
   <Radio value="legacy" label="Legacy" disabled />
-</RadioGroup>`,
-      render: () => (
-        <RadioGroup label="Plan">
-          <Radio value="basic" label="Basic" />
-          <Radio value="pro" label="Pro" />
-          <Radio value="legacy" label="Legacy" disabled />
-        </RadioGroup>
-      ),
+</RadioGroup.Root>`,
+      render: () => <RadioDisabledDemo />,
     },
     {
-      title: "Group error",
+      title: "Group description and error",
       description:
-        "The error prop marks the whole group invalid and describes it: the message and danger border sit on the fieldset, not on any one option, so every choice stays selectable.",
-      code: `<RadioGroup label="Plan" error="Select a plan to continue">
+        "RadioGroup.Description and RadioGroup.Error are joined to the group with aria-describedby. An Error with content marks the whole group invalid: the message and the danger rings sit on the fieldset and its radios, and every choice stays selectable.",
+      code: `<RadioGroup.Root>
+  <RadioGroup.Legend>Plan</RadioGroup.Legend>
+  <RadioGroup.Description>You can change it later.</RadioGroup.Description>
+  <RadioGroup.Error>Select a plan to continue</RadioGroup.Error>
   <Radio value="basic" label="Basic" />
   <Radio value="pro" label="Pro" />
   <Radio value="legacy" label="Legacy" />
-</RadioGroup>`,
-      render: () => (
-        <RadioGroup label="Plan" error="Select a plan to continue">
-          <Radio value="basic" label="Basic" />
-          <Radio value="pro" label="Pro" />
-          <Radio value="legacy" label="Legacy" />
-        </RadioGroup>
-      ),
+</RadioGroup.Root>`,
+      render: () => <RadioGroupErrorDemo />,
+    },
+    {
+      title: "In another language",
+      description:
+        "The group's own words, the optional marker after the legend and the hidden prefix before an error, come from labels on the Root.",
+      code: `<RadioGroup.Root labels={{ optional: "(facultatif)", errorPrefix: "Erreur : " }}>
+  <RadioGroup.Legend optional>Formule</RadioGroup.Legend>
+  <RadioGroup.Error>Choisissez une formule</RadioGroup.Error>
+  <Radio value="basic" label="Essentielle" />
+  <Radio value="pro" label="Pro" />
+</RadioGroup.Root>`,
+      render: () => <RadioGroupLabelsDemo />,
     },
   ],
   whenToUse: [
     "For choosing exactly one option from a small, visible set (roughly 2 to 5).",
-    "Always inside a RadioGroup, which shares a name and labels the set with a <fieldset>/<legend>.",
+    "Always inside a RadioGroup.Root, which shares a name and labels the set with a <fieldset>/<legend>.",
   ],
   whenNotToUse: [
     "For many options: a Select is more compact.",
@@ -132,9 +131,10 @@ const doc: ComponentContent = {
     },
   ],
   accessibility: [
-    "RadioGroup renders a native <fieldset> with a <legend>, the accessible way to name a group: screen readers announce the legend when a radio is focused.",
+    "RadioGroup.Root renders a native <fieldset> with a <legend>, the accessible way to name a group: screen readers announce the legend when a radio is focused.",
     "Radios share one name so the browser enforces single-selection and arrow-key navigation natively.",
-    'A group error sets aria-describedby and aria-invalid on the fieldset, which carries role="radiogroup", the one place ARIA allows aria-invalid for radios. Required native groups use the same state after a submit attempt and clear it after a selection. The individual radios never claim it; their danger borders are pure CSS answering the group state.',
+    'A RadioGroup.Error with content sets aria-describedby and aria-invalid on the fieldset, which carries role="radiogroup", the one place ARIA allows aria-invalid for radios. Required native groups take the same state after a submit attempt and clear it after a selection. The individual radios never claim it; their danger rings are pure CSS answering the group state.',
+    "Disabled is detected on the native input (:has(input:disabled) on the row), never declared on a wrapper.",
   ],
   props: [
     {
@@ -148,37 +148,29 @@ const doc: ComponentContent = {
       description: "Helper text rendered under the label.",
     },
     {
-      name: "wrapperClassName",
-      type: "string",
-      description: "Class for the label-row wrapper element (the input keeps className).",
+      name: "wrapperProps",
+      type: 'PartProps<"label">',
+      description:
+        "Props for the labelled row (the <label> around the input and its words). className, style, ref and every other prop land on the <input> itself.",
     },
     {
       name: "...others",
       type: "InputHTMLAttributes",
-      description: 'All native <input type="radio"> props (except type and size) are forwarded.',
+      description:
+        'All native <input type="radio"> props (except type and size), and ref, are forwarded to the <input>.',
     },
   ],
   parts: [
     {
-      name: "RadioGroup",
+      name: "Radio.Control",
       description:
-        'The group fieldset: legend, helper text, shared name and single-selection state for the <Radio> options inside it. Renders role="radiogroup" and carries the group error.',
+        "The bare input without a label row, for composing inside a Field where the label lives on Field.Label. Takes the same props as Radio minus label, description and wrapperProps.",
+    },
+    {
+      name: "RadioGroup.Root",
+      description:
+        'The group: a Fieldset.Root with role="radiogroup" that shares a name and the selection with the <Radio> options inside it, at any depth. Native <fieldset> props and ref are forwarded.',
       props: [
-        {
-          name: "label",
-          type: "ReactNode",
-          description: "Group legend (wired via aria-labelledby).",
-        },
-        {
-          name: "description",
-          type: "ReactNode",
-          description: "Helper text rendered under the group legend.",
-        },
-        {
-          name: "error",
-          type: "ReactNode",
-          description: "Error message; marks the group invalid.",
-        },
         {
           name: "name",
           type: "string",
@@ -206,17 +198,37 @@ const doc: ComponentContent = {
           description: "Layout direction of the options.",
         },
         {
-          name: "optional",
-          type: "boolean",
-          default: "false",
-          description: 'Appends "(optional)" to the group legend; optional is marked in words.',
+          name: "labels",
+          type: "{ optional?: ReactNode; errorPrefix?: ReactNode }",
+          default: '{ optional: "(optional)", errorPrefix: "Error: " }',
+          description:
+            "The group's own words, read by the Legend and the Error. Pass them in the page's language.",
         },
       ],
     },
     {
-      name: "RadioControl",
+      name: "RadioGroup.Legend",
       description:
-        "The bare input without a label row, for composing inside a Field where the label lives on Field.Label. Takes the same props as Radio minus label, description and wrapperClassName.",
+        "The group's name: Fieldset.Legend, so optional marks the group optional in words. Native <legend> props and ref are forwarded.",
+      props: [
+        {
+          name: "optional",
+          type: "boolean",
+          default: "false",
+          description:
+            'Appends labels.optional ("(optional)"); optional is marked in words, not with an asterisk.',
+        },
+      ],
+    },
+    {
+      name: "RadioGroup.Description",
+      description:
+        "Helper text under the legend, joined to the group with aria-describedby. Native <p> props and ref are forwarded.",
+    },
+    {
+      name: "RadioGroup.Error",
+      description:
+        'The group\'s error, announced with role="alert". With content it marks the group invalid; without content it renders nothing. Native <p> props and ref are forwarded.',
     },
   ],
 };

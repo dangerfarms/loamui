@@ -6,25 +6,38 @@ import field from "@/content/components/field";
 import fieldset from "@/content/components/fieldset";
 import button from "@/content/components/button";
 import input from "@/content/components/input";
+import passwordInput from "@/content/components/password-input";
 import textarea from "@/content/components/textarea";
 import select from "@/content/components/select";
+import combobox from "@/content/components/combobox";
 import separator from "@/content/components/separator";
 import checkbox from "@/content/components/checkbox";
 import dateinput from "@/content/components/date-input";
 import errorsummary from "@/content/components/error-summary";
 import radio from "@/content/components/radio";
+import segmentedControl from "@/content/components/segmented-control";
 import switchDoc from "@/content/components/switch";
 import range from "@/content/components/range";
+import search from "@/content/components/search";
+import quantityInput from "@/content/components/quantity-input";
+import rating from "@/content/components/rating";
+import fileInput from "@/content/components/file-input";
+import copyButton from "@/content/components/copy-button";
 
 // Data display
 import badge from "@/content/components/badge";
+import price from "@/content/components/price";
+import time from "@/content/components/time";
 import card from "@/content/components/card";
 import avatar from "@/content/components/avatar";
 import table from "@/content/components/table";
+import carousel from "@/content/components/carousel";
+import stepper from "@/content/components/stepper";
 
 // Feedback
 import alert from "@/content/components/alert";
 import progress from "@/content/components/progress";
+import meter from "@/content/components/meter";
 import skeleton from "@/content/components/skeleton";
 import loader from "@/content/components/loader";
 import toast from "@/content/components/toast";
@@ -43,6 +56,7 @@ import signpostLink from "@/content/components/signpost-link";
 import skipLink from "@/content/components/skip-link";
 import breadcrumbs from "@/content/components/breadcrumbs";
 import pagination from "@/content/components/pagination";
+import nav from "@/content/components/nav";
 
 // Layout is not a component: compose native CSS layout modules with the space
 // tokens. See the Layout guide (/docs/layout).
@@ -52,21 +66,34 @@ const content: ComponentContent[] = [
   fieldset,
   button,
   input,
+  passwordInput,
   textarea,
   select,
+  combobox,
   separator,
   checkbox,
   dateinput,
   errorsummary,
   radio,
+  segmentedControl,
   switchDoc,
   range,
+  search,
+  quantityInput,
+  rating,
+  fileInput,
+  copyButton,
   badge,
+  price,
+  time,
   card,
   avatar,
   table,
+  carousel,
+  stepper,
   alert,
   progress,
+  meter,
   skeleton,
   loader,
   toast,
@@ -81,6 +108,7 @@ const content: ComponentContent[] = [
   skipLink,
   breadcrumbs,
   pagination,
+  nav,
 ];
 
 // Identity lives in the manifest (site/nav.ts), substance in the content

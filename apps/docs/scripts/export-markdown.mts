@@ -15,6 +15,9 @@ import { join, relative, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { COMPONENTS, CATEGORY_ORDER } from "../src/site/nav.js";
 import type { ComponentContent } from "../src/renderer/types.js";
+import { EXAMPLE_CATEGORIES } from "../src/examples/categories.js";
+import { EXAMPLE_META } from "../src/examples/generated-meta.js";
+import { PILLARS } from "../src/examples/types.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const APP = join(ROOT, "src", "app");
@@ -313,6 +316,47 @@ try {
   );
 }
 
+// ---- examples: the folder's own files → markdown ------------------------
+
+const EXAMPLES_DIR = join(ROOT, "src", "examples");
+
+/** An example's twin: its meta, the pillar notes, then both files in fences. */
+function exampleMarkdown(entry: (typeof EXAMPLE_META)[number]): string {
+  const { slug, category, meta } = entry;
+  const dir = join(EXAMPLES_DIR, category, slug);
+  const tsx = readFileSync(join(dir, "Example.tsx"), "utf8").trim();
+  const css = readFileSync(join(dir, "example.css"), "utf8").trim();
+  const categoryTitle = EXAMPLE_CATEGORIES.find((c) => c.slug === category)?.title ?? category;
+  const out: string[] = [];
+  out.push("---", `title: ${meta.title}`, `description: ${meta.description}`, "---", "", PREAMBLE, "");
+  out.push(`# ${meta.title}`, "", meta.description, "");
+  out.push(
+    `An example in **${categoryTitle}**: a component and a stylesheet built from \`@loamui/core\`, ` +
+      "to copy into a project and change. Both files are below, exactly as the live preview renders them.",
+    "",
+  );
+  out.push(`- Uses: ${meta.uses.length ? meta.uses.map((u) => `\`${u}\``).join(", ") : "element styles and tokens only"}`);
+  if (meta.tags?.length) out.push(`- Tags: ${meta.tags.join(", ")}`);
+  out.push(`- Live: ${ORIGIN}/examples/${category}/${slug}`, "");
+  const notes = PILLARS.filter((p) => meta.notes[p.key]);
+  if (notes.length) {
+    out.push("## Built to the pillars", "");
+    for (const p of notes) out.push(`- **${p.name}.** ${meta.notes[p.key]}`);
+    out.push("");
+  }
+  out.push("## Example.tsx", "", "```tsx", tsx, "```", "");
+  out.push("## example.css", "", "```css", css, "```", "");
+  return out.join("\n").replace(/\n{3,}/g, "\n\n") + "\n";
+}
+
+for (const entry of EXAMPLE_META) {
+  writeBoth(
+    join(PUBLIC, "examples", entry.category, `${entry.slug}.md`),
+    join(SKILL_REFS, "examples", entry.category, `${entry.slug}.md`),
+    exampleMarkdown(entry),
+  );
+}
+
 // ---- llms.txt ----------------------------------------------------------
 const guideOrder = ["/docs", "/docs/installation", "/docs/tokens", "/docs/element-styles", "/docs/components", "/docs/contextualism", "/docs/composing", "/docs/layout", "/docs/typography", "/docs/accessibility"];
 const sorted = [...guides].sort((a, b) => {
@@ -340,6 +384,19 @@ for (const category of CATEGORY_ORDER) {
   lines.push("", `## Components: ${category}`, "");
   for (const c of items) lines.push(`- [${c.name}](${ORIGIN}/docs/components/${c.slug}.md): ${c.description}`);
 }
+lines.push(
+  "",
+  "## Examples",
+  "",
+  "> Ready-made sections built from `@loamui/core` to copy and change: each twin",
+  "> carries the component and its stylesheet in full.",
+);
+for (const category of EXAMPLE_CATEGORIES) {
+  const items = EXAMPLE_META.filter((e) => e.category === category.slug);
+  if (!items.length) continue;
+  lines.push("", `### Examples: ${category.title}`, "");
+  for (const e of items) lines.push(`- [${e.meta.title}](${ORIGIN}/examples/${e.category}/${e.slug}.md): ${e.meta.description}`);
+}
 writeFileSync(join(PUBLIC, "llms.txt"), lines.join("\n") + "\n");
 
 // ---- AGENTS.md: the package's one-page summary, served at /AGENTS.md too ---
@@ -359,6 +416,7 @@ for (const category of CATEGORY_ORDER) {
     }
   }
 }
+for (const e of EXAMPLE_META) full.push("---", "", readFileSync(join(SKILL_REFS, "examples", e.category, `${e.slug}.md`), "utf8"));
 writeFileSync(join(PUBLIC, "llms-full.txt"), full.join("\n"));
 
 // ---- skill references index: llms.txt with local paths for offline use ----
@@ -380,8 +438,15 @@ for (const category of CATEGORY_ORDER) {
   for (const c of items)
     idx.push(`- [${c.name}](components/${c.slug}.md) — ${c.description} · [live](${ORIGIN}/docs/components/${c.slug}.md)`);
 }
+for (const category of EXAMPLE_CATEGORIES) {
+  const items = EXAMPLE_META.filter((e) => e.category === category.slug);
+  if (!items.length) continue;
+  idx.push("", `## Examples: ${category.title}`, "");
+  for (const e of items)
+    idx.push(`- [${e.meta.title}](examples/${e.category}/${e.slug}.md) — ${e.meta.description} · [live](${ORIGIN}/examples/${e.category}/${e.slug}.md)`);
+}
 writeFileSync(join(SKILL_REFS, "index.md"), idx.join("\n") + "\n");
 
 console.log(
-  `markdown export: ${guides.length} guide twins (mdx-derived), ${COMPONENTS.length} component twins (data-derived), llms.txt + llms-full.txt → public/, references → skills/loamui/references/`,
+  `markdown export: ${guides.length} guide twins (mdx-derived), ${COMPONENTS.length} component twins (data-derived), ${EXAMPLE_META.length} example twins (folder-derived), llms.txt + llms-full.txt → public/, references → skills/loamui/references/`,
 );

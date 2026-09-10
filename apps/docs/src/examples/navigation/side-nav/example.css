@@ -1,0 +1,5 @@
+@scope (.side-nav) to ([class*="loam-"]) {
+  :scope {
+    inline-size: min(100%, 18rem);
+  }
+}

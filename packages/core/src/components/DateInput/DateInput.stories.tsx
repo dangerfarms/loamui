@@ -10,9 +10,9 @@ const meta = {
       description: {
         component:
           "Composable parts for asking for a memorable date — one already " +
-          "known, like a date of birth — which is typed, not picked. Each " +
-          "part is a separate labelled field inside a `<fieldset>`, so " +
-          "render only the parts you need and the wiring adapts.",
+          "known, like a date of birth — which is typed, not picked. Day, " +
+          "Month and Year are each a Field around a sized Input inside a " +
+          "`<fieldset>`, so render only the parts you need and the wiring adapts.",
       },
     },
   },
@@ -32,9 +32,9 @@ export const Default: Story = {
       <DateInput.Legend>Date of birth</DateInput.Legend>
       <DateInput.Description>For example, 27 3 2007</DateInput.Description>
       <DateInput.Fields>
-        <DateInput.Field part="day" />
-        <DateInput.Field part="month" />
-        <DateInput.Field part="year" />
+        <DateInput.Day />
+        <DateInput.Month />
+        <DateInput.Year />
       </DateInput.Fields>
     </DateInput.Root>
   ),
@@ -52,9 +52,9 @@ export const ErrorOnOnePart: Story = {
       <DateInput.Description>For example, 27 3 2019</DateInput.Description>
       <DateInput.Error parts={["year"]}>Membership start date must include a year</DateInput.Error>
       <DateInput.Fields>
-        <DateInput.Field part="day" defaultValue="27" />
-        <DateInput.Field part="month" defaultValue="3" />
-        <DateInput.Field part="year" />
+        <DateInput.Day defaultValue="27" />
+        <DateInput.Month defaultValue="3" />
+        <DateInput.Year />
       </DateInput.Fields>
     </DateInput.Root>
   ),

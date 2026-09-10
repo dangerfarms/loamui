@@ -117,7 +117,16 @@ consequence still lives in the stylesheets:
 Notice the checkbox: `--loam-context` is not a button feature. The region remaps
 the semantic colour tokens for _every_ LoamUI component inside: checked states, focus
 rings, carets. No component contains context code; the cascade does the
-work. And since the declaration must sit on an ancestor (see above), a single dangerous
+work.
+
+The remap reaches LoamUI elements and their descendants; it does not restyle the region's
+own element. A page's own element that declares a context paints itself with the status
+tokens directly (`border-color: var(--loam-color-danger)` in its own rule), and the
+components inside it answer the context. Nor can a region answer its own style query: to
+mark the element itself, declare the context on its parent. One more thing to expect: `primary`
+is the brand slot, and the default theme leaves it neutral (near-black in light, near-white in
+dark), so a Button in a primary region looks like any other until a theme remaps that one token;
+mark an action out with position or words, not with the context alone. And since the declaration must sit on an ancestor (see above), a single dangerous
 button is just a one-element region, a wrapper around the button:
 
 ```tsx
@@ -237,7 +246,7 @@ remember. The arrangement is the declaration.
 
 When the DOM already expresses a state, LoamUI styles it with `:has()` instead of
 asking you to repeat it as a prop. An icon inside a button is detected (no
-`leftSection` prop):
+`startSection` prop):
 
 <div className={prose.block}>
   <Button>

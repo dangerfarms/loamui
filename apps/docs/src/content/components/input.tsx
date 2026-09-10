@@ -9,6 +9,7 @@ import {
   InputNativeValidationDemo,
   InputNumericDemo,
   InputSectionsDemo,
+  InputSizedDemo,
 } from "./input.client";
 
 const doc: ComponentContent = {
@@ -46,7 +47,9 @@ const doc: ComponentContent = {
       render: () => <InputContainersDemo />,
     },
     {
-      title: "Description & required",
+      title: "Description and required",
+      description:
+        "Field.Description is linked to the input through aria-describedby, so the hint is announced with the field. required lives on the control as the native attribute: it is never shown as an asterisk, and it drives validation after a submit attempt.",
       code: `<Field.Root>
   <Field.Label>Username</Field.Label>
   <Field.Description>This will be your public handle.</Field.Description>
@@ -96,12 +99,12 @@ const doc: ComponentContent = {
         "Sections sit inside the field but outside the accessible name, so the Field.Label still does the naming. A placeholder alone never can.",
       code: `<Field.Root>
   <Field.Label>Handle</Field.Label>
-  <Input leftSection="@" />
+  <Input startSection="@" />
 </Field.Root>
 
 <Field.Root>
   <Field.Label>Site name</Field.Label>
-  <Input rightSection=".dev" />
+  <Input endSection=".dev" />
 </Field.Root>`,
       render: () => <InputSectionsDemo />,
     },
@@ -117,7 +120,7 @@ const doc: ComponentContent = {
   howItWorks: [
     {
       title: "Asking for numbers",
-      body: 'Never use type="number": scroll wheels and arrow keys silently change the value, and browsers give poor feedback when the input is invalid. Pass inputMode="numeric" for whole numbers or inputMode="decimal" for amounts (both forward straight to the native input) so touch devices raise a number pad while the field keeps normal text behaviour.',
+      body: 'Never use type="number": scroll wheels and arrow keys silently change the value, and browsers give poor feedback when the input is invalid. Pass inputMode="numeric" for whole numbers or inputMode="decimal" for amounts (both forward straight to the native input) so touch devices raise a number pad while the field keeps normal text behaviour. A small count a person nudges by one (items in a cart, guests, seats) is QuantityInput, the library\'s one use of a number input: its buttons make the stepping deliberate.',
       code: `<Field.Root>
   <Field.Label>Account number</Field.Label>
   <Input inputMode="numeric" />
@@ -147,8 +150,13 @@ const doc: ComponentContent = {
       body: "A placeholder vanishes the moment the user types, is skipped by some assistive technology, and its dimmed colour fails contrast as instruction text. Field.Label is for what the field is; format hints go in Field.Description, which stays visible and is announced. These docs use none at all: the example lives in Field.Description, where it survives typing.",
     },
     {
-      title: "Width belongs to the container",
-      body: "The field fills whatever it is placed in; there is no size or width prop. Width is information: a four-character reference in a page-wide box reads as a harder question than it is, so put the field in a container sized to the expected answer.",
+      title: "Width belongs to the container, or to the answer",
+      body: "The field fills whatever it is placed in; there is no width prop. Width is information: a four-character reference in a page-wide box reads as a harder question than it is. For an answer of a known length, the native size attribute is the platform's own measure: the input is as wide as that many characters and the box shrink-wraps it. DateInput is built on it. For anything else, put the field in a container sized to the expected answer.",
+      code: `<Field.Root>
+  <Field.Label>Sort code</Field.Label>
+  <Input inputMode="numeric" size={6} />
+</Field.Root>`,
+      render: () => <InputSizedDemo />,
     },
   ],
   errors: [
@@ -177,29 +185,37 @@ const doc: ComponentContent = {
     "Inside a Field.Root the input reads its id from the field, so Field.Label is a real <label> tied to it: clicking the label focuses the field and screen readers announce it.",
     "Field.Description and Field.Error are linked via aria-describedby, and a rendered error also sets aria-invalid, announced together when the field gains focus.",
     'Field.Error uses role="alert" so the message is announced as it appears.',
-    "leftSection / rightSection render your content beside the input but outside its accessible name. Mark visual content like currency symbols or icons aria-hidden, and carry the unit in the label or description so non-visual users get it too.",
+    "startSection / endSection render your content beside the input but outside its accessible name. Mark visual content like currency symbols or icons aria-hidden, and carry the unit in the label or description so non-visual users get it too.",
+    "Under forced colours the danger border colour is dropped, so an invalid field carries its state as an outline in a system colour, with the focus ring offset further out.",
     "Mark optional fields in words (Field.Label's optional prop) rather than asterisking required ones: required lives on the control as the native required attribute, which drives validation after submission.",
   ],
   props: [
     {
-      name: "leftSection",
+      name: "startSection",
       type: "ReactNode",
-      description: "Content inside the field, before the input.",
+      description: "Content inside the box, before the input.",
     },
     {
-      name: "rightSection",
+      name: "endSection",
       type: "ReactNode",
-      description: "Content inside the field, after the input.",
+      description: "Content inside the box, after the input.",
     },
     {
-      name: "wrapperClassName",
-      type: "string",
-      description: "Class for the bordered field wrapper; className goes to the control itself.",
+      name: "size",
+      type: "number",
+      description:
+        "The native size attribute, honoured: the input is as wide as that many characters and the box shrink-wraps it.",
+    },
+    {
+      name: "wrapperProps",
+      type: 'PartProps<"div">',
+      description:
+        "Props for the bordered box around the input. className, style, ref and every other prop land on the <input> itself; this is the one way to reach the box.",
     },
     {
       name: "...others",
       type: "InputHTMLAttributes",
-      description: "All native <input> props are forwarded, except size (sizing is contextual).",
+      description: "All native <input> props, and ref, are forwarded to the <input>.",
     },
   ],
 };

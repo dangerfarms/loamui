@@ -13,10 +13,6 @@
       margin: 0;
       padding: 0;
     }
-
-    li {
-      margin-block: 0;
-    }
   }
 }
 
@@ -28,13 +24,14 @@
   :scope {
     align-items: center;
     display: inline flex;
+    margin-block: 0;
     min-inline-size: 0;
 
     &:not(:first-child)::before {
       color: var(--loam-color-fg-dim);
 
       /* The empty alt keeps the glyph out of the accessibility tree. */
-      content: var(--_separator, "/") / "";
+      content: var(--loam-breadcrumbs-separator, "/") / "";
       margin-inline-end: var(--loam-space-sm);
       user-select: none;
     }
@@ -42,7 +39,7 @@
     a {
       border-radius: var(--loam-radius-sm);
       color: var(--loam-color-fg-muted);
-      padding-inline: 2px;
+      padding-inline: 0.125em;
       text-decoration: none;
 
       @media (prefers-reduced-motion: no-preference) {

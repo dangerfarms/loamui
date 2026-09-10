@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState, type ReactNode } from "react";
+import { CopyButton } from "@loamui/core";
 import { CodeBlock } from "@/renderer/CodeBlock";
 import classes from "./AgentShowcase.module.css";
 
@@ -32,23 +33,12 @@ export function AgentShowcase({
   children: ReactNode;
 }) {
   const [tab, setTab] = useState<Tab>("result");
-  const [copied, setCopied] = useState<"skill" | "prompt" | null>(null);
   const baseId = useId();
-
-  const copy = async (what: "skill" | "prompt", text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(what);
-      setTimeout(() => setCopied(null), 1500);
-    } catch {
-      /* clipboard unavailable: the text is selectable */
-    }
-  };
 
   return (
     <div className={classes.grid}>
       <div className={classes.ask}>
-        <span className={classes.step}>Ask</span>
+        <h3 className={classes.step}>Ask</h3>
         {skillCommand && (
           <>
             <p className={classes.label}>
@@ -56,15 +46,17 @@ export function AgentShowcase({
               {skillNote && <span className={classes.note}>{skillNote}</span>}
             </p>
             <div className={classes.command}>
-              <span className={classes.prompt}>$</span>
+              <span className={classes.prompt} aria-hidden>
+                $
+              </span>
               <code>{skillCommand}</code>
-              <button
-                type="button"
+              <CopyButton
                 className={classes.copy}
-                onClick={() => copy("skill", skillCommand)}
+                value={skillCommand}
+                aria-label="Copy the skill install command"
               >
-                {copied === "skill" ? "Copied" : "Copy"}
-              </button>
+                Copy
+              </CopyButton>
             </div>
           </>
         )}
@@ -74,15 +66,15 @@ export function AgentShowcase({
         </p>
         <div className={classes.promptBox}>
           <p>{prompt}</p>
-          <button type="button" className={classes.copy} onClick={() => copy("prompt", prompt)}>
-            {copied === "prompt" ? "Copied" : "Copy"}
-          </button>
+          <CopyButton className={classes.copy} value={prompt} aria-label="Copy the prompt">
+            Copy
+          </CopyButton>
         </div>
       </div>
 
       <div className={classes.code}>
         <div className={classes.codeHead}>
-          <span className={classes.step}>Under the hood</span>
+          <h3 className={classes.step}>Under the hood</h3>
           <div role="tablist" aria-label="Generated code" className={classes.tabs}>
             {(["result", "tsx", "css"] as const).map((t) => (
               <button

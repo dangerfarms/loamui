@@ -41,7 +41,7 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = {};
 
 /** The panel can open toward the bottom (default) or the top of its trigger. */
-export const Positions: Story = {
+export const Sides: Story = {
   render: () => (
     <div
       style={{
@@ -53,11 +53,29 @@ export const Positions: Story = {
     >
       <Popover.Root>
         <Popover.Trigger>Opens down</Popover.Trigger>
-        <Popover.Popup position="bottom">Anchored below.</Popover.Popup>
+        <Popover.Popup side="bottom">Anchored below.</Popover.Popup>
       </Popover.Root>
       <Popover.Root>
         <Popover.Trigger>Opens up</Popover.Trigger>
-        <Popover.Popup position="top">Anchored above.</Popover.Popup>
+        <Popover.Popup side="top">Anchored above.</Popover.Popup>
+      </Popover.Root>
+    </div>
+  ),
+};
+
+/**
+ * `Popover.Title` takes `render` so the heading level follows the page:
+ * inside a section under an `<h2>`, the panel's heading is an `<h3>`.
+ */
+export const HeadingLevel: Story = {
+  render: () => (
+    <div style={{ display: "flex", justifyContent: "center", padding: "4rem" }}>
+      <Popover.Root>
+        <Popover.Trigger>Quick settings</Popover.Trigger>
+        <Popover.Popup>
+          <Popover.Title render={<h3 />}>Settings</Popover.Title>
+          <Popover.Description>The heading is an h3 here.</Popover.Description>
+        </Popover.Popup>
       </Popover.Root>
     </div>
   ),

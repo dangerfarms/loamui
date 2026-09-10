@@ -62,7 +62,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "A styled data table composed from native thead/tbody/tr/th/td. Its boolean props tune how the data reads, not how it looks: `striped` and `highlightOnHover` aid row tracking, `withColumnBorders` separates columns, and `captionSide` places the caption — data-presentation semantics, not size or variant knobs. When the table outgrows its container it becomes a keyboard-focusable horizontal scroll region.",
+          "A styled data table composed from native thead/tbody/tr/th/td. Its boolean props tune how the data reads, not how it looks: `striped` and `highlightOnHover` aid row tracking, `withColumnBorders` separates columns — data-presentation semantics, not size or variant knobs. The component's own element is the scroll wrapper; when the table outgrows its container it becomes a keyboard-focusable horizontal scroll region.",
       },
     },
   },
@@ -70,13 +70,13 @@ const meta = {
     striped: false,
     highlightOnHover: false,
     withColumnBorders: false,
-    captionSide: "top",
+    stickyHeader: false,
   },
   argTypes: {
     striped: { control: "boolean" },
     highlightOnHover: { control: "boolean" },
     withColumnBorders: { control: "boolean" },
-    captionSide: { control: "inline-radio", options: ["top", "bottom"] },
+    stickyHeader: { control: "boolean" },
   },
   render: (args) => <FieldTable {...args} />,
 } satisfies Meta<typeof Table>;
@@ -94,7 +94,49 @@ export const WithColumnBorders: Story = {
   args: { withColumnBorders: true, striped: true },
 };
 
-export const CaptionBottom: Story = { args: { captionSide: "bottom" } };
+/**
+ * A capped scroller keeps its header row in view: the cap is the public
+ * `--loam-table-block-size` on the component's own element, and
+ * `stickyHeader` pins the column names to its top.
+ */
+export const StickyHeader: Story = {
+  args: { stickyHeader: true },
+  render: (args) => (
+    <Table {...args} style={{ "--loam-table-block-size": "12rem" } as React.CSSProperties}>
+      <caption>Field register — every season on record</caption>
+      <thead>
+        <tr>
+          <th scope="col">Field</th>
+          <th scope="col">Crop</th>
+          <th scope="col">Area</th>
+          <th scope="col">Yield</th>
+        </tr>
+      </thead>
+      <tbody>
+        {[2020, 2021, 2022, 2023, 2024, 2025, 2026].flatMap((year) =>
+          fields.map((field) => (
+            <tr key={`${year}-${field.name}`}>
+              <th scope="row">
+                {field.name} ({year})
+              </th>
+              <td>{field.crop}</td>
+              <td>{field.area}</td>
+              <td>{field.yield}</td>
+            </tr>
+          )),
+        )}
+      </tbody>
+    </Table>
+  ),
+};
+
+/**
+ * Caption placement is the platform's own `caption-side`, set on the
+ * `<table>` through `tableProps` (or a consumer class).
+ */
+export const CaptionBottom: Story = {
+  args: { tableProps: { style: { captionSide: "bottom" } } },
+};
 
 /**
  * When the table is wider than its container it becomes a keyboard-focusable

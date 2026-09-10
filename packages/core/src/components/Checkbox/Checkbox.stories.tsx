@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Checkbox, CheckboxControl, Field } from "../../index";
+import { Checkbox, Field } from "../../index";
 
 const meta = {
   title: "Inputs/Checkbox",
@@ -62,7 +62,7 @@ export const Disabled: Story = {
 };
 
 /**
- * A label-less `CheckboxControl` self-wires from the surrounding Field: it reads
+ * A label-less `Checkbox.Control` self-wires from the surrounding Field: it reads
  * its id from `Field.Root` (so `Field.Label` points at it) plus any
  * `aria-describedby`/`aria-invalid`, with no label or error props of its own.
  */
@@ -70,7 +70,7 @@ export const SelfWiringInField: Story = {
   render: () => (
     <Field.Root>
       <Field.Label>I accept the terms and conditions</Field.Label>
-      <CheckboxControl />
+      <Checkbox.Control />
     </Field.Root>
   ),
 };

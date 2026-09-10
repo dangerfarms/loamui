@@ -7,7 +7,7 @@
     display: block flex;
     flex-direction: column;
     gap: var(--loam-space-sm);
-    inline-size: min(22rem, calc(100vi - 2 * var(--loam-space-lg)));
+    inline-size: min(var(--loam-toast-size, 22rem), calc(100vi - 2 * var(--loam-space-lg)));
 
     /* Clear the UA's [popover] inset/size defaults. */
     inset: auto;
@@ -73,37 +73,9 @@
     }
   }
 
-  button.close {
-    background: none;
-    block-size: 1.5rem;
-    border: 0;
-    border-radius: var(--loam-radius-sm);
-    box-shadow: none;
-    color: var(--loam-color-fg-muted);
-    cursor: pointer;
-    display: inline grid;
-    flex-shrink: 0;
-    inline-size: 1.5rem;
-    margin: 0;
-    padding: 0;
-    place-items: center;
-
-    svg {
-      block-size: 1em;
-      inline-size: 1em;
-    }
-
-    @media (hover: hover) {
-      &:hover {
-        background: var(--loam-color-bg-subtle);
-        color: var(--loam-color-fg);
-      }
-    }
-  }
-
   @supports not selector(:popover-open) {
     :scope {
-      z-index: 100;
+      z-index: var(--loam-z-toast);
     }
   }
 }

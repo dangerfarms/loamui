@@ -17,11 +17,12 @@ const doc: ComponentContent = {
     },
     {
       title: "Sizes",
-      description: "Use a token or pass a pixel number.",
+      description:
+        "size is one of three tokens, emitted as data-size and answered by the stylesheet. Without it the size comes from context: 1.5rem standalone, 1em inside a Button, or whatever a region sets --loam-loader-size to.",
       code: `<Loader size="sm" />
 <Loader size="md" />
 <Loader size="lg" />
-<Loader size={48} />`,
+<span style={{ "--loam-loader-size": "3rem" }}><Loader /></span>`,
       render: () => (
         <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap", alignItems: "end" }}>
           <Example label="Small">
@@ -33,8 +34,10 @@ const doc: ComponentContent = {
           <Example label="Large">
             <Loader size="lg" />
           </Example>
-          <Example label="Custom: size={48}">
-            <Loader size={48} />
+          <Example label="From a region: --loam-loader-size">
+            <span style={{ "--loam-loader-size": "3rem" } as CSSProperties}>
+              <Loader />
+            </span>
           </Example>
         </div>
       ),
@@ -99,9 +102,9 @@ const doc: ComponentContent = {
   props: [
     {
       name: "size",
-      type: `"sm" | "md" | "lg" | number`,
+      type: `"sm" | "md" | "lg"`,
       description:
-        "Overall size, as a token or an explicit pixel number. When omitted, the size comes from context: 1.5rem standalone, 1em inside a Button (like an icon).",
+        "Overall size, emitted as data-size. When omitted, the size comes from context: 1.5rem standalone, 1em inside a Button (like an icon), or a region's --loam-loader-size.",
     },
     {
       name: "label",
