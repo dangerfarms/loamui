@@ -16,7 +16,15 @@ An example in **Carousels**: a component and a stylesheet built from `@loamui/co
 - Tags: carousel, booking, stay, gallery, photos, rating
 - Live: https://loamui.com/examples/carousels/card-with-carousel
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The photos scroll on an ordinary scroll-snap track, so a swipe or the arrow keys page them with no JavaScript; the rating is one picture named 4.8 out of 5 and the price is a data element whose value is the number.
 - **Modern CSS.** The Carousel's item width is its public property, set to 100% on the Card so it inherits down and each photo fills the track; the price takes the display face from the paragraph around it.
@@ -28,6 +36,7 @@ An example in **Carousels**: a component and a stylesheet built from `@loamui/co
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Card, Carousel, Price, Rating } from "@loamui/core";
 import "./example.css";
 
@@ -47,9 +56,15 @@ const PHOTOS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card
-      render={<article className="card-with-carousel" aria-labelledby="card-with-carousel-title" />}
+      render={
+        <article
+          className="card-with-carousel"
+          aria-labelledby={`${instanceId}-card-with-carousel-title`}
+        />
+      }
     >
       <Carousel.Root
         className="photos"
@@ -81,7 +96,7 @@ export default function Example() {
         </div>
       </Carousel.Root>
       <div className="head">
-        <h3 id="card-with-carousel-title">The Orchard Cabin</h3>
+        <h3 id={`${instanceId}-card-with-carousel-title`}>The Orchard Cabin</h3>
         <p className="rating">
           <Rating readOnly label="Average rating" value={4.8} />
           <span>

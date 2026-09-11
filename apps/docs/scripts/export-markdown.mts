@@ -10,7 +10,15 @@
  * document). Component pages render from the same registry data the page
  * renders. Nothing derives from built output, so nothing can drift.
  */
-import { readFileSync, writeFileSync, readdirSync, statSync, mkdirSync, rmSync, copyFileSync } from "node:fs";
+import {
+  readFileSync,
+  writeFileSync,
+  readdirSync,
+  statSync,
+  mkdirSync,
+  rmSync,
+  copyFileSync,
+} from "node:fs";
 import { join, relative, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { COMPONENTS, CATEGORY_ORDER } from "../src/site/nav.js";
@@ -53,10 +61,17 @@ function table(headers: string[], rows: string[][]): string {
   ].join("\n");
 }
 
-function propsTable(rows: { name: string; type?: string; default?: string; description?: string }[]) {
+function propsTable(
+  rows: { name: string; type?: string; default?: string; description?: string }[],
+) {
   return table(
     ["Prop", "Type", "Default", "Description"],
-    rows.map((r) => [`\`${r.name}\``, r.type ? `\`${r.type}\`` : "—", r.default ? `\`${r.default}\`` : "—", r.description ?? ""]),
+    rows.map((r) => [
+      `\`${r.name}\``,
+      r.type ? `\`${r.type}\`` : "—",
+      r.default ? `\`${r.default}\`` : "—",
+      r.description ?? "",
+    ]),
   );
 }
 
@@ -75,13 +90,18 @@ function tokenTable(): string {
 /** Guide twin: /docs/tokens → public/docs/tokens.md + references/guides/tokens.md. */
 function writeGuideTwin(route: string, md: string) {
   const file = route === "/" ? join(PUBLIC, "index.md") : join(PUBLIC, route.slice(1) + ".md");
-  const slug = route === "/" ? "index" : route === "/docs" ? "introduction" : route.split("/").at(-1)!;
+  const slug =
+    route === "/" ? "index" : route === "/docs" ? "introduction" : route.split("/").at(-1)!;
   writeBoth(file, join(SKILL_REFS, "guides", `${slug}.md`), md);
 }
 
 /** Component twin: public/docs/components/<slug>.md + references/components/<slug>.md. */
 function writeComponentTwin(slug: string, md: string) {
-  writeBoth(join(PUBLIC, "docs", "components", `${slug}.md`), join(SKILL_REFS, "components", `${slug}.md`), md);
+  writeBoth(
+    join(PUBLIC, "docs", "components", `${slug}.md`),
+    join(SKILL_REFS, "components", `${slug}.md`),
+    md,
+  );
 }
 
 // Start the skill references from empty so removed pages don't linger.
@@ -105,7 +125,9 @@ function jsxToText(s: string): string {
 
 /** Serialize an .mdx source file to plain markdown. */
 function mdxToMarkdown(src: string): { md: string; title: string; description: string } {
-  const meta = src.match(/export const metadata = \{[\s\S]*?title: "([^"]+)"[\s\S]*?description:\s*\n?\s*"([^"]+)"/);
+  const meta = src.match(
+    /export const metadata = \{[\s\S]*?title: "([^"]+)"[\s\S]*?description:\s*\n?\s*"([^"]+)"/,
+  );
   const title = meta?.[1] ?? "";
   const description = meta?.[2] ?? "";
 
@@ -116,10 +138,15 @@ function mdxToMarkdown(src: string): { md: string; title: string; description: s
   let s = src;
   const mi = s.indexOf("export const metadata");
   if (mi > -1) {
-    let depth = 0, j = s.indexOf("{", mi), k = j;
-    for (;; k++) {
+    let depth = 0,
+      j = s.indexOf("{", mi),
+      k = j;
+    for (; ; k++) {
       if (s[k] === "{") depth++;
-      else if (s[k] === "}") { depth--; if (depth === 0) break; }
+      else if (s[k] === "}") {
+        depth--;
+        if (depth === 0) break;
+      }
     }
     k = s.indexOf(";", k) + 1;
     s = s.slice(0, mi) + s.slice(k);
@@ -187,8 +214,8 @@ function mdxToMarkdown(src: string): { md: string; title: string; description: s
         const l = lines[i]!;
         block += l + "\n";
         depth += (l.match(/<[A-Za-z][^/>]*(?<!\/)>/g) ?? []).length; // opening tags
-        depth += (l.match(/<[A-Za-z][^>]*\/>/g) ?? []).length * 0;   // self-closing: net 0
-        depth -= (l.match(/<\/[A-Za-z][^>]*>/g) ?? []).length;       // closing tags
+        depth += (l.match(/<[A-Za-z][^>]*\/>/g) ?? []).length * 0; // self-closing: net 0
+        depth -= (l.match(/<\/[A-Za-z][^>]*>/g) ?? []).length; // closing tags
         i++;
       } while (i < lines.length && depth > 0);
 
@@ -206,8 +233,19 @@ function mdxToMarkdown(src: string): { md: string; title: string; description: s
     i++;
   }
 
-  const body = out.join("\n").replace(/\n{3,}/g, "\n\n").trim();
-  const front = ["---", `title: ${title}`, `description: ${description}`, "---", "", PREAMBLE, ""].join("\n");
+  const body = out
+    .join("\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+  const front = [
+    "---",
+    `title: ${title}`,
+    `description: ${description}`,
+    "---",
+    "",
+    PREAMBLE,
+    "",
+  ].join("\n");
   return { md: `${front}\n${body}\n`, title, description };
 }
 
@@ -243,8 +281,10 @@ function componentMarkdown(doc: ComponentContent, name: string, description: str
     out.push("```tsx", demo.code, "```", "");
   }
 
-  if (doc.whenToUse?.length) out.push("## When to use it", "", ...doc.whenToUse.map((b) => `- ${b}`), "");
-  if (doc.whenNotToUse?.length) out.push("## When not to", "", ...doc.whenNotToUse.map((b) => `- ${b}`), "");
+  if (doc.whenToUse?.length)
+    out.push("## When to use it", "", ...doc.whenToUse.map((b) => `- ${b}`), "");
+  if (doc.whenNotToUse?.length)
+    out.push("## When not to", "", ...doc.whenNotToUse.map((b) => `- ${b}`), "");
 
   if (doc.howItWorks?.length) {
     out.push("## How it works", "");
@@ -254,17 +294,27 @@ function componentMarkdown(doc: ComponentContent, name: string, description: str
     }
   }
 
-  if (doc.accessibility?.length) out.push("## Accessibility", "", ...doc.accessibility.map((b) => `- ${b}`), "");
+  if (doc.accessibility?.length)
+    out.push("## Accessibility", "", ...doc.accessibility.map((b) => `- ${b}`), "");
 
   if (doc.errors?.length) {
     out.push("## Error messages", "");
-    out.push(table(["Situation", "Message"], doc.errors.map((e) => [e.situation, `\`${e.message}\``])), "");
+    out.push(
+      table(
+        ["Situation", "Message"],
+        doc.errors.map((e) => [e.situation, `\`${e.message}\``]),
+      ),
+      "",
+    );
   }
 
   if (doc.props?.length) {
     out.push("## Props", "");
     if (doc.contextual)
-      out.push("Status is not a prop: it comes from the surrounding `--loam-context` region (see the Contextualism guide).", "");
+      out.push(
+        "Status is not a prop: it comes from the surrounding `--loam-context` region (see the Contextualism guide).",
+        "",
+      );
     out.push(propsTable(doc.props), "");
   }
 
@@ -281,7 +331,12 @@ function componentMarkdown(doc: ComponentContent, name: string, description: str
     out.push(
       table(
         ["Property", "Syntax", "Default", "Description"],
-        doc.cssProps.map((p) => [`\`${p.name}\``, `\`${p.syntax}\``, p.default ? `\`${p.default}\`` : "—", p.description ?? ""]),
+        doc.cssProps.map((p) => [
+          `\`${p.name}\``,
+          `\`${p.syntax}\``,
+          p.default ? `\`${p.default}\`` : "—",
+          p.description ?? "",
+        ]),
       ),
       "",
     );
@@ -303,7 +358,10 @@ let componentTwins = 0;
 try {
   for (const meta of COMPONENTS) {
     const mod = await import(join(contentDir, `${meta.slug}.tsx`));
-    writeComponentTwin(meta.slug, componentMarkdown(mod.default as ComponentContent, meta.name, meta.description));
+    writeComponentTwin(
+      meta.slug,
+      componentMarkdown(mod.default as ComponentContent, meta.name, meta.description),
+    );
     componentTwins++;
   }
 } catch (err) {
@@ -328,19 +386,45 @@ function exampleMarkdown(entry: (typeof EXAMPLE_META)[number]): string {
   const css = readFileSync(join(dir, "example.css"), "utf8").trim();
   const categoryTitle = EXAMPLE_CATEGORIES.find((c) => c.slug === category)?.title ?? category;
   const out: string[] = [];
-  out.push("---", `title: ${meta.title}`, `description: ${meta.description}`, "---", "", PREAMBLE, "");
+  out.push(
+    "---",
+    `title: ${meta.title}`,
+    `description: ${meta.description}`,
+    "---",
+    "",
+    PREAMBLE,
+    "",
+  );
   out.push(`# ${meta.title}`, "", meta.description, "");
   out.push(
     `An example in **${categoryTitle}**: a component and a stylesheet built from \`@loamui/core\`, ` +
       "to copy into a project and change. Both files are below, exactly as the live preview renders them.",
     "",
   );
-  out.push(`- Uses: ${meta.uses.length ? meta.uses.map((u) => `\`${u}\``).join(", ") : "element styles and tokens only"}`);
+  out.push(
+    `- Uses: ${meta.uses.length ? meta.uses.map((u) => `\`${u}\``).join(", ") : "element styles and tokens only"}`,
+  );
   if (meta.tags?.length) out.push(`- Tags: ${meta.tags.join(", ")}`);
   out.push(`- Live: ${ORIGIN}/examples/${category}/${slug}`, "");
+  out.push(
+    "## Using this example",
+    "",
+    "Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.",
+    "",
+  );
+  out.push(
+    meta.integration ??
+      "Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.",
+    "",
+  );
   const notes = PILLARS.filter((p) => meta.notes[p.key]);
   if (notes.length) {
-    out.push("## Built to the pillars", "");
+    out.push(
+      "## Design decisions",
+      "",
+      "These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.",
+      "",
+    );
     for (const p of notes) out.push(`- **${p.name}.** ${meta.notes[p.key]}`);
     out.push("");
   }
@@ -358,9 +442,21 @@ for (const entry of EXAMPLE_META) {
 }
 
 // ---- llms.txt ----------------------------------------------------------
-const guideOrder = ["/docs", "/docs/installation", "/docs/tokens", "/docs/element-styles", "/docs/components", "/docs/contextualism", "/docs/composing", "/docs/layout", "/docs/typography", "/docs/accessibility"];
+const guideOrder = [
+  "/docs",
+  "/docs/installation",
+  "/docs/tokens",
+  "/docs/element-styles",
+  "/docs/components",
+  "/docs/contextualism",
+  "/docs/composing",
+  "/docs/layout",
+  "/docs/typography",
+  "/docs/accessibility",
+];
 const sorted = [...guides].sort((a, b) => {
-  const ia = guideOrder.indexOf(a.route), ib = guideOrder.indexOf(b.route);
+  const ia = guideOrder.indexOf(a.route),
+    ib = guideOrder.indexOf(b.route);
   return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
 });
 
@@ -376,13 +472,16 @@ const lines: string[] = [
   "",
   "## Guides",
   "",
-  ...sorted.map((g) => `- [${g.title}](${ORIGIN}${g.route}.md)${g.description ? `: ${g.description}` : ""}`),
+  ...sorted.map(
+    (g) => `- [${g.title}](${ORIGIN}${g.route}.md)${g.description ? `: ${g.description}` : ""}`,
+  ),
 ];
 for (const category of CATEGORY_ORDER) {
   const items = COMPONENTS.filter((c) => c.category === category);
   if (!items.length) continue;
   lines.push("", `## Components: ${category}`, "");
-  for (const c of items) lines.push(`- [${c.name}](${ORIGIN}/docs/components/${c.slug}.md): ${c.description}`);
+  for (const c of items)
+    lines.push(`- [${c.name}](${ORIGIN}/docs/components/${c.slug}.md): ${c.description}`);
 }
 lines.push(
   "",
@@ -395,7 +494,10 @@ for (const category of EXAMPLE_CATEGORIES) {
   const items = EXAMPLE_META.filter((e) => e.category === category.slug);
   if (!items.length) continue;
   lines.push("", `### Examples: ${category.title}`, "");
-  for (const e of items) lines.push(`- [${e.meta.title}](${ORIGIN}/examples/${e.category}/${e.slug}.md): ${e.meta.description}`);
+  for (const e of items)
+    lines.push(
+      `- [${e.meta.title}](${ORIGIN}/examples/${e.category}/${e.slug}.md): ${e.meta.description}`,
+    );
 }
 writeFileSync(join(PUBLIC, "llms.txt"), lines.join("\n") + "\n");
 
@@ -403,9 +505,15 @@ writeFileSync(join(PUBLIC, "llms.txt"), lines.join("\n") + "\n");
 copyFileSync(join(ROOT, "..", "..", "packages", "core", "AGENTS.md"), join(PUBLIC, "AGENTS.md"));
 
 // ---- llms-full.txt: every twin in one file, for tools that ingest one -----
-const guideSlug = (route: string) => (route === "/" ? "index" : route === "/docs" ? "introduction" : route.split("/").at(-1)!);
+const guideSlug = (route: string) =>
+  route === "/" ? "index" : route === "/docs" ? "introduction" : route.split("/").at(-1)!;
 const full: string[] = [lines.join("\n"), ""];
-for (const g of sorted) full.push("---", "", readFileSync(join(SKILL_REFS, "guides", `${guideSlug(g.route)}.md`), "utf8"));
+for (const g of sorted)
+  full.push(
+    "---",
+    "",
+    readFileSync(join(SKILL_REFS, "guides", `${guideSlug(g.route)}.md`), "utf8"),
+  );
 for (const category of CATEGORY_ORDER) {
   for (const c of COMPONENTS.filter((x) => x.category === category)) {
     const f = join(SKILL_REFS, "components", `${c.slug}.md`);
@@ -416,7 +524,12 @@ for (const category of CATEGORY_ORDER) {
     }
   }
 }
-for (const e of EXAMPLE_META) full.push("---", "", readFileSync(join(SKILL_REFS, "examples", e.category, `${e.slug}.md`), "utf8"));
+for (const e of EXAMPLE_META)
+  full.push(
+    "---",
+    "",
+    readFileSync(join(SKILL_REFS, "examples", e.category, `${e.slug}.md`), "utf8"),
+  );
 writeFileSync(join(PUBLIC, "llms-full.txt"), full.join("\n"));
 
 // ---- skill references index: llms.txt with local paths for offline use ----
@@ -429,21 +542,28 @@ const idx: string[] = [
   "",
   "## Guides",
   "",
-  ...sorted.map((g) => `- [${g.title}](guides/${guideSlug(g.route)}.md) — ${g.description} · [live](${ORIGIN}${g.route}.md)`),
+  ...sorted.map(
+    (g) =>
+      `- [${g.title}](guides/${guideSlug(g.route)}.md) — ${g.description} · [live](${ORIGIN}${g.route}.md)`,
+  ),
 ];
 for (const category of CATEGORY_ORDER) {
   const items = COMPONENTS.filter((c) => c.category === category);
   if (!items.length) continue;
   idx.push("", `## Components: ${category}`, "");
   for (const c of items)
-    idx.push(`- [${c.name}](components/${c.slug}.md) — ${c.description} · [live](${ORIGIN}/docs/components/${c.slug}.md)`);
+    idx.push(
+      `- [${c.name}](components/${c.slug}.md) — ${c.description} · [live](${ORIGIN}/docs/components/${c.slug}.md)`,
+    );
 }
 for (const category of EXAMPLE_CATEGORIES) {
   const items = EXAMPLE_META.filter((e) => e.category === category.slug);
   if (!items.length) continue;
   idx.push("", `## Examples: ${category.title}`, "");
   for (const e of items)
-    idx.push(`- [${e.meta.title}](examples/${e.category}/${e.slug}.md) — ${e.meta.description} · [live](${ORIGIN}/examples/${e.category}/${e.slug}.md)`);
+    idx.push(
+      `- [${e.meta.title}](examples/${e.category}/${e.slug}.md) — ${e.meta.description} · [live](${ORIGIN}/examples/${e.category}/${e.slug}.md)`,
+    );
 }
 writeFileSync(join(SKILL_REFS, "index.md"), idx.join("\n") + "\n");
 

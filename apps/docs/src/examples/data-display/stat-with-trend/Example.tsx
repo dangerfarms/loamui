@@ -1,7 +1,11 @@
+"use client";
+
+import { useId } from "react";
 import { Badge, Card } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card render={<dl className="stat-with-trend" />}>
       <dt>Orders posted this week</dt>
@@ -24,9 +28,9 @@ export default function Example() {
           viewBox="0 0 80 24"
           preserveAspectRatio="none"
           role="img"
-          aria-labelledby="stat-with-trend-sparkline"
+          aria-labelledby={`${instanceId}-stat-with-trend-sparkline`}
         >
-          <title id="stat-with-trend-sparkline">
+          <title id={`${instanceId}-stat-with-trend-sparkline`}>
             Orders per week over the last eight weeks: 2,610, 2,780, 2,690, 2,950, 3,120, 3,080,
             3,310 and 3,904. Rising.
           </title>

@@ -1,3 +1,6 @@
+"use client";
+
+import { useId } from "react";
 import { Avatar } from "@loamui/core";
 import "./example.css";
 
@@ -9,11 +12,12 @@ const PEOPLE = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="person-grid" aria-labelledby="person-grid-title">
+    <section className="person-grid" aria-labelledby={`${instanceId}-person-grid-title`}>
       <header>
         <p className="eyebrow">The growers</p>
-        <h2 id="person-grid-title">Who grows your seed</h2>
+        <h2 id={`${instanceId}-person-grid-title`}>Who grows your seed</h2>
         <p className="description">
           Every variety in the catalogue is grown, selected and saved by a member. These four look
           after the trial beds at the nursery.

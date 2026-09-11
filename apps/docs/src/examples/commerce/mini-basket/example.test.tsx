@@ -22,7 +22,7 @@ if (typeof HTMLDialogElement.prototype.showModal !== "function") {
 describe("mini-basket", () => {
   it("opens from a counted trigger to a dialog named by its title, holding two lines named by their products", async () => {
     const { container } = render(<Example />);
-    const trigger = screen.getByRole("button", { name: "Basket 2 items" });
+    const trigger = screen.getByRole("button", { name: "Basket 2 products" });
     expect(trigger).toHaveAttribute("aria-haspopup", "dialog");
     fireEvent.click(trigger);
 
@@ -32,11 +32,12 @@ describe("mini-basket", () => {
     await waitFor(() => expect(dialog.open).toBe(true));
     expect(trigger).toHaveAttribute("data-popup-open", "true");
 
-    const lines = within(dialog).getAllByRole("article");
-    expect(lines.map((a) => a.getAttribute("aria-labelledby"))).toEqual([
-      "mini-basket-climbing-bean-blue-lake-title",
-      "mini-basket-raspberry-autumn-bliss-title",
-    ]);
+    expect(
+      within(dialog).getByRole("article", { name: "Climbing bean ‘Blue Lake’ seeds" }),
+    ).toBeInTheDocument();
+    expect(
+      within(dialog).getByRole("article", { name: "Raspberry ‘Autumn Bliss’ canes" }),
+    ).toBeInTheDocument();
     expect(
       within(dialog).getByRole("spinbutton", {
         name: "Quantity of Raspberry ‘Autumn Bliss’ canes",
@@ -55,5 +56,38 @@ describe("mini-basket", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: "Close basket" }));
     await waitFor(() => expect(dialog.open).toBe(false));
     expect(trigger).not.toHaveAttribute("data-popup-open");
+  });
+  it("derives prices, validates drafts and supports remove, undo and an empty basket", async () => {
+    render(<Example />);
+    fireEvent.click(screen.getByRole("button", { name: "Basket 2 products" }));
+    const dialog = await screen.findByRole("dialog", { name: "Your basket" });
+    const basket = within(dialog);
+    const quantity = basket.getByRole("spinbutton", { name: /Quantity of Climbing/ });
+    fireEvent.change(quantity, { target: { value: "5" } });
+    expect(basket.getByText("Subtotal").nextElementSibling).toHaveTextContent("£38");
+    expect(basket.getByText("Total").nextElementSibling).toHaveTextContent("£41.95");
+    fireEvent.change(quantity, { target: { value: "" } });
+    fireEvent.blur(quantity);
+    expect(quantity).toHaveAttribute("aria-invalid", "true");
+    expect(basket.queryByRole("link", { name: "Go to checkout" })).toBeNull();
+    expect(basket.getByText("Total").nextElementSibling).toHaveTextContent(
+      "Enter valid quantities",
+    );
+    fireEvent.change(quantity, { target: { value: "5" } });
+    fireEvent.click(basket.getByRole("button", { name: /Remove Raspberry/ }));
+    expect(basket.getAllByRole("article")).toHaveLength(1);
+    expect(basket.getByText("Total").nextElementSibling).toHaveTextContent("£17.95");
+    expect(basket.getByRole("button", { name: "Undo removal" })).toHaveFocus();
+    fireEvent.click(basket.getByRole("button", { name: "Undo removal" }));
+    expect(basket.getAllByRole("article")).toHaveLength(2);
+    expect(basket.getByRole("button", { name: "Close basket" })).toHaveFocus();
+    fireEvent.click(basket.getByRole("button", { name: /Remove Raspberry/ }));
+    fireEvent.click(basket.getByRole("button", { name: /Remove Climbing/ }));
+    expect(basket.queryByRole("article")).toBeNull();
+    expect(basket.getByText("Your basket is empty.")).toBeVisible();
+    expect(basket.getByText("Total").nextElementSibling).toHaveTextContent("£0");
+    expect(basket.queryByRole("link", { name: "Go to checkout" })).toBeNull();
+    fireEvent.click(basket.getByRole("button", { name: "Undo removal" }));
+    expect(basket.getByRole("spinbutton")).toHaveValue(5);
   });
 });

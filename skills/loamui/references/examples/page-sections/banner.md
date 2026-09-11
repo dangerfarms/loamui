@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: announcement, notice, top bar
 - Live: https://loamui.com/examples/page-sections/banner
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A div with no role, because a bar that is in the page from the first paint is content; only a bar a script injects later is news and would take role status.
 - **Modern CSS.** A wrapping flex row: the paragraph takes the slack with a basis of 24ch, and the link keeps its width and drops beneath when the bar is narrower than both.

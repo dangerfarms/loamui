@@ -16,7 +16,15 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - Tags: newsletter, subscribe, input, button, row, email
 - Live: https://loamui.com/examples/forms/input-with-button
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A native form: Enter in the box or the button posts the address to the action, and required plus type="email" let the browser refuse an empty or malformed one before anything is sent.
 - **Modern CSS.** The row is a two-track grid scoped at itself, because it sits inside the Field the donut fences off, and a container query answered by the form collapses it to one track under 24rem, so the same markup is a row in a footer and a stack in a sidebar without a breakpoint.

@@ -16,9 +16,11 @@ const megabytes = new Intl.NumberFormat("en-GB", {
 /** What is wrong with a choice, in words, or nothing. */
 function problem(files: File[]): string | null {
   if (files.length > MOST) return `Choose ${MOST} photos at most: ${files.length} were chosen`;
+  const unsupported = files.find((file) => !["image/jpeg", "image/png"].includes(file.type));
+  if (unsupported) return `${unsupported.name} is not a supported photo. Choose a JPEG or PNG file`;
   const big = files.find((file) => file.size > LIMIT);
   if (big) {
-    return `${big.name} is ${megabytes.format(big.size / 1_000_000)}. Each photo must be under 10 MB: choose a smaller copy`;
+    return `${big.name} is ${megabytes.format(big.size / 1_000_000)}. Each photo must be 10 MB or smaller: choose a smaller copy`;
   }
   return null;
 }

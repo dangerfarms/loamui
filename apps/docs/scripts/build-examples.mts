@@ -3,7 +3,7 @@
  *
  * Every example is a folder, src/examples/<category>/<slug>/, holding
  * Example.tsx, example.css, meta.ts and example.test.tsx. This script
- * scans them and writes two modules:
+ * scans them and writes the registry modules:
  *
  *   src/examples/generated-meta.ts   — one entry per example: slug,
  *                                      category and meta. JSX-free, so the
@@ -12,6 +12,9 @@
  *                                      a single component or stylesheet.
  *   src/examples/generated.ts        — the same entries with the Example
  *                                      component, for the pages to render.
+ *   src/examples/generated-previews.ts — lazy components for the gallery,
+ *                                      backed by one generated module per
+ *                                      category, loaded near the viewport.
  *   src/examples/generated-source.ts — the raw text of Example.tsx and
  *                                      example.css per slug, read from
  *                                      disk, so the code a page shows is
@@ -67,7 +70,8 @@ for (const category of readdirSync(DIR)) {
 }
 
 for (const c of EXAMPLE_CATEGORIES) {
-  if (!existsSync(join(DIR, c.slug))) problems.push(`categories.ts lists "${c.slug}" but src/examples/${c.slug}/ does not exist`);
+  if (!existsSync(join(DIR, c.slug)))
+    problems.push(`categories.ts lists "${c.slug}" but src/examples/${c.slug}/ does not exist`);
 }
 
 if (problems.length) {
@@ -92,7 +96,9 @@ const HEADER = [
 const metaModule = [
   ...HEADER,
   'import type { ExampleMetaEntry } from "./types";',
-  ...found.map(({ category, slug }, i) => `import { meta as meta${i} } from "./${category}/${slug}/meta";`),
+  ...found.map(
+    ({ category, slug }, i) => `import { meta as meta${i} } from "./${category}/${slug}/meta";`,
+  ),
   "",
   "/** Every example's identity and meta, in category order then display order. JSX-free. */",
   "export const EXAMPLE_META: ExampleMetaEntry[] = [",
@@ -108,7 +114,9 @@ const registry = [
   ...HEADER,
   'import type { ExampleEntry } from "./types";',
   'import { EXAMPLE_META } from "./generated-meta";',
-  ...found.map(({ category, slug }, i) => `import Example${i} from "./${category}/${slug}/Example";`),
+  ...found.map(
+    ({ category, slug }, i) => `import Example${i} from "./${category}/${slug}/Example";`,
+  ),
   "",
   "/** Every example with its component, in the same order as EXAMPLE_META. */",
   "export const EXAMPLES: ExampleEntry[] = [",
@@ -127,14 +135,53 @@ const source = [
     const dir = join(DIR, category, slug);
     const tsx = readFileSync(join(dir, "Example.tsx"), "utf8");
     const css = readFileSync(join(dir, "example.css"), "utf8");
-    return [`  ${JSON.stringify(slug)}: {`, `    tsx: ${JSON.stringify(tsx)},`, `    css: ${JSON.stringify(css)},`, "  },"];
+    return [
+      `  ${JSON.stringify(slug)}: {`,
+      `    tsx: ${JSON.stringify(tsx)},`,
+      `    css: ${JSON.stringify(css)},`,
+      "  },",
+    ];
   }),
   "};",
   "",
 ];
 
-const files = { "generated-meta.ts": metaModule, "generated.ts": registry, "generated-source.ts": source };
+const previews = [
+  ...HEADER,
+  'import { lazy, type ComponentType, type LazyExoticComponent } from "react";',
+  "",
+  "/** Lazy identities stay stable; examples in a category share an import boundary. */",
+  "export const EXAMPLE_PREVIEWS: Record<string, LazyExoticComponent<ComponentType>> = {",
+  ...found.map(
+    ({ category, slug }, i) =>
+      `  ${JSON.stringify(slug)}: lazy(() => import("./generated-preview-${category}").then((m) => ({ default: m.Example${i} }))),`,
+  ),
+  "};",
+  "",
+];
+
+const files: Record<string, string[]> = {
+  "generated-meta.ts": metaModule,
+  "generated.ts": registry,
+  "generated-source.ts": source,
+  "generated-previews.ts": previews,
+};
+for (const { slug: category } of EXAMPLE_CATEGORIES) {
+  files[`generated-preview-${category}.ts`] = [
+    ...HEADER,
+    ...found.flatMap((entry, i) =>
+      entry.category === category
+        ? [`export { default as Example${i} } from "./${category}/${entry.slug}/Example";`]
+        : [],
+    ),
+    "",
+  ];
+}
 for (const [name, lines] of Object.entries(files)) writeFileSync(join(DIR, name), lines.join("\n"));
 // The repo's format gate covers generated files too.
-execFileSync("npx", ["oxfmt", ...Object.keys(files).map((name) => join(DIR, name))], { stdio: "ignore" });
-console.log(`build-examples: ${found.length} example(s) in ${listed.size} categories → src/examples/${Object.keys(files).join(", ")}`);
+execFileSync("npx", ["oxfmt", ...Object.keys(files).map((name) => join(DIR, name))], {
+  stdio: "ignore",
+});
+console.log(
+  `build-examples: ${found.length} example(s) in ${listed.size} categories → src/examples/${Object.keys(files).join(", ")}`,
+);

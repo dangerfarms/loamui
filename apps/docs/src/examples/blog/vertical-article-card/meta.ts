@@ -14,7 +14,7 @@ export const meta: ExampleMeta = {
     composition:
       "Card, Badge, Time and Avatar are used as they come; the avatar size is its public property, set on the author row rather than passed to the Avatar.",
     accessible:
-      "The title is the link and the card is not, so the link's name is the title alone; the picture illustrates the title, so its alt is empty; the avatar is hidden because the name is printed beside it.",
+      "The title is the link and the card is not, so the link's name is the title alone; the picture describes the flowers shown; the avatar is hidden because the name is printed beside it.",
   },
   tags: ["post", "teaser", "column", "narrow", "blog card"],
   order: 10,

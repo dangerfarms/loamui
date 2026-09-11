@@ -16,7 +16,15 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - Tags: currency, amount, money, number, select, gift card
 - Live: https://loamui.com/examples/forms/number-with-currency
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Currency changes the symbol, not the entered amount: no exchange-rate conversion is implied. Validate the amount, supported currency and gift-card limits in your application before accepting payment.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The amount is a text input with inputMode="decimal", so a phone offers the number pad and a decimal point without the spinner a type="number" box would add; the currency is a native <select> whose options are the three ISO codes, submitted under their own name.
 - **Modern CSS.** The row is a two-track grid with the select's track sized to its content; the symbol in the box is one span that changes with the select, so no width is reserved for the widest currency.
@@ -28,7 +36,7 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 ```tsx
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { Field, Input, Select } from "@loamui/core";
 import "./example.css";
 
@@ -39,6 +47,7 @@ const CURRENCIES = [
 ];
 
 export default function Example() {
+  const currencyId = useId();
   const [currency, setCurrency] = useState("GBP");
   const symbol = CURRENCIES.find((c) => c.code === currency)?.symbol;
 
@@ -56,6 +65,7 @@ export default function Example() {
           startSection={<span aria-hidden="true">{symbol}</span>}
         />
         <Select
+          id={currencyId}
           name="currency"
           aria-label="Currency"
           value={currency}

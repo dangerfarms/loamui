@@ -16,7 +16,15 @@ An example in **Users**: a component and a stylesheet built from `@loamui/core`,
 - Tags: account, avatar, dropdown, sign out, profile
 - Live: https://loamui.com/examples/users/user-menu
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** Sign out is a submit button in a method="post" form, because ending a session changes state on the server and a GET link would be followed by prefetchers and crawlers.
 - **Composition.** Menu's trigger is the Button core renders, holding an Avatar and hidden text and never restyled, and the account block is plain text before the items with a Menu.Separator under it, so arrow keys skip it and it names the menu instead.
@@ -27,18 +35,20 @@ An example in **Users**: a component and a stylesheet built from `@loamui/core`,
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Avatar, Menu } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Menu.Root className="user-menu">
       <Menu.Trigger>
         <Avatar name="Imogen Hartley" src="https://picsum.photos/id/823/96/96" aria-hidden />
         <span className="loam-VisuallyHidden">Account menu for Imogen Hartley</span>
       </Menu.Trigger>
-      <Menu.Popup aria-labelledby="user-menu-account">
-        <div className="account" id="user-menu-account">
+      <Menu.Popup aria-labelledby={`${instanceId}-user-menu-account`}>
+        <div className="account" id={`${instanceId}-user-menu-account`}>
           <strong>Imogen Hartley</strong>
           <span className="email">imogen@hedgerow.example</span>
         </div>

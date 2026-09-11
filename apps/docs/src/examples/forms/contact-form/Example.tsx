@@ -1,18 +1,20 @@
 "use client";
 
+import { useId } from "react";
 import { Button, Field, Input, Select, Textarea } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <form
       className="contact-form"
       action="/contact"
       method="post"
-      aria-labelledby="contact-form-title"
+      aria-labelledby={`${instanceId}-contact-form-title`}
     >
       <div className="intro">
-        <h2 id="contact-form-title">Get in touch</h2>
+        <h2 id={`${instanceId}-contact-form-title`}>Get in touch</h2>
         <p>
           The nursery answers email on Tuesdays and Fridays. For an order that has already been
           posted, include the order number.

@@ -1,16 +1,20 @@
+"use client";
+
+import { useId } from "react";
 import { Badge, Button, SignpostLink } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="hero-with-image" aria-labelledby="hero-with-image-title">
+    <section className="hero-with-image" aria-labelledby={`${instanceId}-hero-with-image-title`}>
       <div className="inner">
         <div className="text">
           <p className="eyebrow">
             <Badge>Spring catalogue</Badge>
             <span>Sowing from March</span>
           </p>
-          <h1 id="hero-with-image-title">Seed saved by growers, for growers.</h1>
+          <h1 id={`${instanceId}-hero-with-image-title`}>Seed saved by growers, for growers.</h1>
           <p className="lede">
             Hedgerow is a nursery and seed co-op. Every packet is an open-pollinated variety grown
             on a member plot, dried and packed by hand, and posted the week you order it.

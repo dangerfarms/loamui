@@ -27,8 +27,4 @@
   font-size: var(--loam-text-sm);
   margin: 0;
   text-wrap: pretty;
-
-  &[data-generic] {
-    color: var(--loam-color-fg-dim);
-  }
 }

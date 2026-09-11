@@ -16,7 +16,15 @@ An example in **Application cards**: a component and a stylesheet built from `@l
 - Tags: services, actions, shortcuts, dashboard, quick links
 - Live: https://loamui.com/examples/app-cards/card-actions-grid
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The Card is a section named by its own heading, the actions are a list of buttons, and the way to the rest is a link, because it goes to a page rather than doing something here.
 - **Modern CSS.** The grid is auto-fill over a minimum tile width, so the count of columns is the Card's width divided by a readable tile, never a breakpoint; each cell is a grid so its Button stretches to fill it.
@@ -26,6 +34,9 @@ An example in **Application cards**: a component and a stylesheet built from `@l
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Button, Card } from "@loamui/core";
 import "./example.css";
 
@@ -55,13 +66,19 @@ const SERVICES = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card
-      render={<section className="card-actions-grid" aria-labelledby="card-actions-grid-title" />}
+      render={
+        <section
+          className="card-actions-grid"
+          aria-labelledby={`${instanceId}-card-actions-grid-title`}
+        />
+      }
     >
       <div className="inner">
         <div className="head">
-          <h2 id="card-actions-grid-title">Services</h2>
+          <h2 id={`${instanceId}-card-actions-grid-title`}>Services</h2>
           <a className="more" href="/services">
             And 12 more services
           </a>

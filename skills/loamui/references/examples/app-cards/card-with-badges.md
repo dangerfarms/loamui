@@ -16,7 +16,15 @@ An example in **Application cards**: a component and a stylesheet built from `@l
 - Tags: place, venue, listing, amenities, location
 - Live: https://loamui.com/examples/app-cards/card-with-badges
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The Card is an article named by its heading; the badges and the amenities are lists, each named for what it lists, so a reader can jump to On site and hear five items.
 - **Modern CSS.** The amenities are an auto-fill grid over a minimum width, so a narrow Card stacks them and a wide one runs them across; the icons are sized in em to the text beside them.
@@ -26,6 +34,9 @@ An example in **Application cards**: a component and a stylesheet built from `@l
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Badge, Card, SignpostLink } from "@loamui/core";
 import "./example.css";
 
@@ -48,9 +59,15 @@ const AMENITIES = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card
-      render={<article className="card-with-badges" aria-labelledby="card-with-badges-title" />}
+      render={
+        <article
+          className="card-with-badges"
+          aria-labelledby={`${instanceId}-card-with-badges-title`}
+        />
+      }
     >
       <img
         className="media"
@@ -60,7 +77,7 @@ export default function Example() {
         height="500"
       />
       <div className="head">
-        <h3 id="card-with-badges-title">Hedgerow Nursery, Ludlow</h3>
+        <h3 id={`${instanceId}-card-with-badges-title`}>Hedgerow Nursery, Ludlow</h3>
         <ul className="tags" role="list" aria-label="Where and when">
           <li>
             <Badge>Shropshire</Badge>
@@ -74,10 +91,14 @@ export default function Example() {
         Four acres on the edge of Mortimer Forest: the seed house, two acres of stock beds, a walled
         garden that members can walk after closing, and a yard café that does a good bacon roll.
       </p>
-      <p className="lead" id="card-with-badges-amenities">
+      <p className="lead" id={`${instanceId}-card-with-badges-amenities`}>
         On site
       </p>
-      <ul className="amenities" role="list" aria-labelledby="card-with-badges-amenities">
+      <ul
+        className="amenities"
+        role="list"
+        aria-labelledby={`${instanceId}-card-with-badges-amenities`}
+      >
         {AMENITIES.map((amenity) => (
           <li key={amenity.name}>
             <svg

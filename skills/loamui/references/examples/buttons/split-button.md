@@ -16,7 +16,15 @@ An example in **Buttons**: a component and a stylesheet built from `@loamui/core
 - Tags: split button, menu, basket, actions, group, dropdown
 - Live: https://loamui.com/examples/buttons/split-button
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** One form: the main button submits it, and each menu item is a submit button with its own name and value, so the server learns which way was chosen and nothing needs JavaScript to post. The menu is a native popover with light dismiss and Escape.
 - **Modern CSS.** The shared edge is --loam-button-radius, the public hook Button reads, set on the group for the trigger and on the main cell for its button; :dir(rtl) swaps the two values because border-radius is physical, and a one-pixel negative margin lays the two borders on one line.

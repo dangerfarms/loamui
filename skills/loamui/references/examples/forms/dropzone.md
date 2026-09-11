@@ -16,12 +16,20 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - Tags: file, upload, dropzone, drag and drop, photos, size limit
 - Live: https://loamui.com/examples/forms/dropzone
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+This example checks file count, declared MIME type and size for immediate feedback. Supply an upload endpoint that validates the actual file content and limits independently before storing it.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The control is a native <input type="file"> with accept and multiple: a dropped file lands in the same input, so the form posts it like a picked one, and the accept list filters the picker. A refused choice is cleared from the input, so the form cannot post what the message said no to.
 - **Modern CSS.** The drag state is core's data-dragging on the box, painted in the -strong border that holds 3:1 in every context; the example styles only the icon and the two lines it puts inside the prompt.
-- **Composition.** Field.Root with FileInput.Root, Control, Prompt and Files as core ships them; the prompt's children are the example's, and the size and count limits are one function from the chosen files to words, rendered as the Field's error.
-- **Accessible & gatekept.** The limits are in the description, joined to the input by aria-describedby, before any choice is made; a refused choice is an alert that names the file and its size and says what to do. The list of chosen files is a polite live region core keeps in the page from the start, so the choice is announced as well as shown, and the input stays focusable inside the box the prompt draws.
+- **Composition.** Field.Root with FileInput.Root, Control, Prompt and Files as core ships them; the prompt's children are the example's, and the type, size and count limits are one function from the chosen files to words, rendered as the Field's error.
+- **Accessible & gatekept.** The limits are in the description, joined to the input by aria-describedby, before any choice is made; a refused choice is an alert that explains the failed constraint and says what to do. The list of chosen files is a polite live region core keeps in the page from the start, so the choice is announced as well as shown, and the input stays focusable inside the box the prompt draws.
 
 ## Example.tsx
 
@@ -44,9 +52,11 @@ const megabytes = new Intl.NumberFormat("en-GB", {
 /** What is wrong with a choice, in words, or nothing. */
 function problem(files: File[]): string | null {
   if (files.length > MOST) return `Choose ${MOST} photos at most: ${files.length} were chosen`;
+  const unsupported = files.find((file) => !["image/jpeg", "image/png"].includes(file.type));
+  if (unsupported) return `${unsupported.name} is not a supported photo. Choose a JPEG or PNG file`;
   const big = files.find((file) => file.size > LIMIT);
   if (big) {
-    return `${big.name} is ${megabytes.format(big.size / 1_000_000)}. Each photo must be under 10 MB: choose a smaller copy`;
+    return `${big.name} is ${megabytes.format(big.size / 1_000_000)}. Each photo must be 10 MB or smaller: choose a smaller copy`;
   }
   return null;
 }

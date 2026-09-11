@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { Card, Fieldset, Switch } from "@loamui/core";
 import "./example.css";
 
@@ -35,16 +36,15 @@ const PREFERENCES = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card className="card-with-switches">
       <Fieldset.Root className="preferences">
         <Fieldset.Legend>Notifications</Fieldset.Legend>
-        <p className="description">
-          Which messages Hedgerow sends you. Each one is off until you turn it on.
-        </p>
+        <p className="description">Choose which messages Hedgerow sends you.</p>
         <div className="rows">
           {PREFERENCES.map((preference) => {
-            const id = `card-with-switches-${preference.id}`;
+            const id = `${instanceId}-card-with-switches-${preference.id}`;
             return (
               <div className="row" key={preference.id}>
                 <div className="text">

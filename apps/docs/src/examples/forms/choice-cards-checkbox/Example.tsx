@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { Card, Checkbox, Fieldset } from "@loamui/core";
 import "./example.css";
 
@@ -24,12 +25,13 @@ const ADDONS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Fieldset.Root className="choice-cards-checkbox">
       <Fieldset.Legend>Add-ons</Fieldset.Legend>
       <div className="cards">
         {ADDONS.map((addon) => {
-          const id = `addon-${addon.value}`;
+          const id = `${instanceId}-addon-${addon.value}`;
           return (
             <Card key={addon.value} render={<label className="card" htmlFor={id} />}>
               <span className="control">

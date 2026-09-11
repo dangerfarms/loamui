@@ -1,6 +1,9 @@
+/* Explicit columns here, on .group and on the page's .content avoid
+   repeated intrinsic sizing through nested grids as previews mount or resize. */
 .index {
   display: block grid;
   gap: 2rem;
+  grid-template-columns: minmax(0, 1fr);
 }
 
 /* One row: the search, the component filter and the count. Wraps as a
@@ -85,6 +88,7 @@
 .group {
   display: block grid;
   gap: 1rem;
+  grid-template-columns: minmax(0, 1fr);
   scroll-margin-block-start: 5rem;
 }
 
@@ -124,14 +128,12 @@
    card is the link's hit area (see .cardLink); hover lifts it, keyboard
    focus rings it. */
 
-/* Off-screen cards skip layout and paint; the intrinsic size keeps the
-   scrollbar honest before a card is first laid out. */
+/* LazyThumb defers the preview. Keep the card laid out so its observer
+   can detect approaching previews and its placeholder stays the same size. */
 .card {
   background: var(--loam-color-surface);
   border: 1px solid var(--loam-color-line);
   border-radius: var(--loam-radius-lg);
-  contain-intrinsic-block-size: auto 20rem;
-  content-visibility: auto;
   display: block grid;
   grid-template-rows: auto 1fr;
   margin: 0;

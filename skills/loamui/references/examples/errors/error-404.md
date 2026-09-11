@@ -16,7 +16,15 @@ An example in **Error pages**: a component and a stylesheet built from `@loamui/
 - Tags: 404, not found, missing, error page, text only
 - Live: https://loamui.com/examples/errors/error-404
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its own h1, because the error is the page; the code is a paragraph, not a heading, so the outline reads Page not found and not 404.
 - **Modern CSS.** The page is a container so its type answers its own width, the title balances its lines and the description wraps prettily; nothing here is sized to a viewport.
@@ -26,14 +34,18 @@ An example in **Error pages**: a component and a stylesheet built from `@loamui/
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { SignpostLink } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="error-404" aria-labelledby="error-404-title">
+    <section className="error-404" aria-labelledby={`${instanceId}-error-404-title`}>
       <p className="code">404</p>
-      <h1 id="error-404-title">Page not found</h1>
+      <h1 id={`${instanceId}-error-404-title`}>Page not found</h1>
       <p className="description">
         The page may have moved when the catalogue was reorganised, or the address may have a typo.
         Check the address, or start again from the home page.

@@ -16,7 +16,15 @@ An example in **Buttons**: a component and a stylesheet built from `@loamui/core
 - Tags: menu, dropdown, create, button, actions, icons
 - Live: https://loamui.com/examples/buttons/button-with-menu
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The items are links, because each creates something on its own page; the popup is a native popover in the top layer with light dismiss and Escape, anchored to the button where the browser has anchor positioning.
 - **Modern CSS.** One declaration: the Menu is a primary region, so the button's colour is answered by context and no variant is passed; the icons are svg children that the Button and the items detect and size on their own text.

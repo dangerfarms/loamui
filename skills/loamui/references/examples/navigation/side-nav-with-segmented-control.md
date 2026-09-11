@@ -16,7 +16,15 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 - Tags: sidebar, segmented control, radio, sections, switch
 - Live: https://loamui.com/examples/navigation/side-nav-with-segmented-control
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The switch is a native radio group in a fieldset, so the arrow keys move between Account and Shop as they do on any radios, and the chosen segment is drawn from the radio's own :checked; the list not chosen is hidden with the hidden attribute.
 - **Modern CSS.** The pill is core's at its natural width, and the chosen state moves to the system highlight under forced colours in SegmentedControl's stylesheet, not here; the example's stylesheet is a single rule for the column.

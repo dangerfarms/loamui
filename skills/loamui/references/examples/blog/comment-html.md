@@ -16,7 +16,15 @@ An example in **Blog**: a component and a stylesheet built from `@loamui/core`, 
 - Tags: discussion, reply, thread, rich text, formatted
 - Live: https://loamui.com/examples/blog/comment-html
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The body is ordinary HTML, a paragraph with a link and a strong, then a ul, so the element styles dress it and a reader's tools see a link and a list, not a run of styled spans.
 - **Modern CSS.** The example writes no rule for the link, the bold text or the bullets: the element layer already has them, and this scope only spaces the blocks inside the reading measure.
@@ -26,6 +34,9 @@ An example in **Blog**: a component and a stylesheet built from `@loamui/core`, 
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Avatar, Time } from "@loamui/core";
 import "./example.css";
 
@@ -34,11 +45,12 @@ import "./example.css";
 const NOW = "2026-09-08T09:00:00Z";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <article className="comment-html" aria-labelledby="comment-html-author">
+    <article className="comment-html" aria-labelledby={`${instanceId}-comment-html-author`}>
       <header>
         <Avatar name="Tom Bradshaw" aria-hidden />
-        <a id="comment-html-author" className="author" href="/members/tom-bradshaw">
+        <a id={`${instanceId}-comment-html-author`} className="author" href="/members/tom-bradshaw">
           Tom Bradshaw
         </a>
         <Time value="2026-09-06T18:12:00Z" locale="en-GB" relative={{ now: NOW }} />

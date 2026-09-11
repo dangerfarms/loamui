@@ -16,7 +16,15 @@ An example in **Data display**: a component and a stylesheet built from `@loamui
 - Tags: address, phone, email, opening hours, footer
 - Live: https://loamui.com/examples/data-display/contact-details
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** An address element, which is contact information for the page, holding a description list; the phone is a tel link and the email a mailto link, so a tap dials or writes, and the hours are two descriptions of one term.
 - **Modern CSS.** Two columns where the block has room and stacked pairs where it has not, each layout owned outright by its own container query; the pairs are grouping divs the wide grid sees through.

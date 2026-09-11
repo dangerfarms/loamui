@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { Button, Card, Meter, Time } from "@loamui/core";
 import "./example.css";
 
@@ -42,13 +42,17 @@ function Chevron({ direction }: { direction: -1 | 1 }) {
 }
 
 export default function Example() {
+  const instanceId = useId();
   const [day, setDay] = useState<Day>(TODAY);
   const at = DAYS.indexOf(day);
   const previous = DAYS[at - 1];
   const next = DAYS[at + 1];
 
   return (
-    <section className="stats-with-controls" aria-labelledby="stats-with-controls-title">
+    <section
+      className="stats-with-controls"
+      aria-labelledby={`${instanceId}-stats-with-controls-title`}
+    >
       <div className="controls">
         <Button
           aria-disabled={previous ? undefined : true}
@@ -59,7 +63,7 @@ export default function Example() {
           <Chevron direction={-1} />
           <span className="loam-VisuallyHidden">Previous day</span>
         </Button>
-        <h2 id="stats-with-controls-title">
+        <h2 id={`${instanceId}-stats-with-controls-title`}>
           <Time value={day.date} locale="en-GB" dateStyle="full" />
         </h2>
         <Button

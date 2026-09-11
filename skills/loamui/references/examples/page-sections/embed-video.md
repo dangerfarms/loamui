@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: iframe, youtube, media, video
 - Live: https://loamui.com/examples/page-sections/embed-video
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A figure holding an iframe and a figcaption; the iframe's title is the only name a screen reader has for the frame, so it says what the video is and whose it is.
 - **Modern CSS.** The frame is sized by aspect-ratio before anything loads, so the page never shifts, and the subtle background is its footprint until then.
@@ -80,6 +88,10 @@ export default function Example() {
     font-size: var(--loam-text-sm);
     margin: 0;
     max-inline-size: var(--loam-measure);
+
+    a {
+      text-decoration: underline;
+    }
   }
 }
 ```

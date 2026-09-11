@@ -37,4 +37,24 @@ describe("autocomplete-async", () => {
     );
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
+  it("settles loading when an existing result is chosen during a replacement search", async () => {
+    const { container } = render(<Example />);
+    const input = screen.getByRole("combobox", { name: "Variety" });
+    fireEvent.change(input, { target: { value: "kale" } });
+    const option = await screen.findByRole(
+      "option",
+      { name: "Kale 'Nero di Toscana'" },
+      { timeout: 3000 },
+    );
+    fireEvent.change(input, { target: { value: "k" } });
+    expect(container.querySelector(".loam-Loader")).not.toBeNull();
+    fireEvent.click(option);
+    expect(input).toHaveValue("Kale 'Nero di Toscana'");
+    expect(container.querySelector(".loam-Loader")).toBeNull();
+    expect(container.querySelector("p.status")).toHaveTextContent("selected.");
+    // Let the cancelled request's deadline pass: it must not replace selection feedback.
+    await new Promise((resolve) => setTimeout(resolve, 650));
+    expect(container.querySelector("p.status")).toHaveTextContent("selected.");
+    expect(container.querySelector(".loam-Loader")).toBeNull();
+  });
 });

@@ -16,7 +16,15 @@ An example in **Application cards**: a component and a stylesheet built from `@l
 - Tags: campaign, goal, progress, figures, dashboard
 - Live: https://loamui.com/examples/app-cards/card-with-stats
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The bar is the native progress element named by its label, and the three figures are one description list whose terms follow their values on screen while the markup reads term first.
 - **Modern CSS.** The figures are tabular lining numerals so the count and the target line up under the bar; the three columns are a grid divided by lines, with the first column's inset dropped so the row starts flush.
@@ -28,12 +36,21 @@ An example in **Application cards**: a component and a stylesheet built from `@l
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Card, Progress } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <Card render={<article className="card-with-stats" aria-labelledby="card-with-stats-title" />}>
+    <Card
+      render={
+        <article
+          className="card-with-stats"
+          aria-labelledby={`${instanceId}-card-with-stats-title`}
+        />
+      }
+    >
       <img
         className="media"
         src="https://picsum.photos/id/112/800/450"
@@ -41,7 +58,7 @@ export default function Example() {
         width="800"
         height="450"
       />
-      <h3 id="card-with-stats-title">Autumn seed-saving drive</h3>
+      <h3 id={`${instanceId}-card-with-stats-title`}>Autumn seed-saving drive</h3>
       <p className="description">
         Members save seed from this year’s plots and send it in for next year’s catalogue. Every
         packet is grown out and germination-tested before it is listed.

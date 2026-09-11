@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: landing, marketing, closing, cta
 - Live: https://loamui.com/examples/page-sections/call-to-action
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its h2, so the close of the page is a landmark a screen reader can jump to, not a styled div.
 - **Modern CSS.** The surface is the subtle background token with the large radius, and the words are centred by the grid, so nothing here is a colour or a size of the section's own.
@@ -26,13 +34,17 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { SignpostLink } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="call-to-action" aria-labelledby="call-to-action-title">
-      <h2 id="call-to-action-title">Ready to sow?</h2>
+    <section className="call-to-action" aria-labelledby={`${instanceId}-call-to-action-title`}>
+      <h2 id={`${instanceId}-call-to-action-title`}>Ready to sow?</h2>
       <p className="lede">
         Order by Thursday and your packets are posted the same week, with a growing guide in every
         envelope.

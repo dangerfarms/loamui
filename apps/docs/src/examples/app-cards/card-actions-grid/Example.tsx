@@ -1,3 +1,6 @@
+"use client";
+
+import { useId } from "react";
 import { Button, Card } from "@loamui/core";
 import "./example.css";
 
@@ -27,13 +30,19 @@ const SERVICES = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card
-      render={<section className="card-actions-grid" aria-labelledby="card-actions-grid-title" />}
+      render={
+        <section
+          className="card-actions-grid"
+          aria-labelledby={`${instanceId}-card-actions-grid-title`}
+        />
+      }
     >
       <div className="inner">
         <div className="head">
-          <h2 id="card-actions-grid-title">Services</h2>
+          <h2 id={`${instanceId}-card-actions-grid-title`}>Services</h2>
           <a className="more" href="/services">
             And 12 more services
           </a>

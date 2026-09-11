@@ -16,7 +16,15 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - Tags: login, account, authentication, password
 - Live: https://loamui.com/examples/forms/sign-in
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A native form named by the heading through aria-labelledby, so a screen reader lands on "Sign in, form", posting with method="post" so the password never rides in a URL; the email field takes autoComplete="email" and the password autoComplete="current-password", the two values a password manager fills without guessing.
 - **Modern CSS.** The Card is the container and caps itself at 24rem: the fluid tokens inside answer the card's width, not the viewport's.
@@ -29,14 +37,16 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Button, Card, Checkbox, Field, Input, PasswordInput } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card render={<div className="sign-in" />}>
-      <h1 id="sign-in-title">Sign in</h1>
-      <form action="/sign-in" method="post" aria-labelledby="sign-in-title">
+      <h1 id={`${instanceId}-sign-in-title`}>Sign in</h1>
+      <form action="/sign-in" method="post" aria-labelledby={`${instanceId}-sign-in-title`}>
         <Field.Root>
           <Field.Label>Email address</Field.Label>
           <Input name="email" type="email" autoComplete="email" inputMode="email" required />

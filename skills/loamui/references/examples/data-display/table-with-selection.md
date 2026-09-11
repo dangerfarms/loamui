@@ -16,7 +16,15 @@ An example in **Data display**: a component and a stylesheet built from `@loamui
 - Tags: table, selection, checkbox, bulk, orders, select all
 - Live: https://loamui.com/examples/data-display/table-with-selection
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The boxes are native checkboxes, so Space toggles and a form would submit them; the header box is indeterminate when some rows are selected, which is the platform's own third state.
 - **Modern CSS.** A selected row is detected with :has(input:checked) rather than declared with an attribute the page would have to keep in step; the figures are end-aligned in tabular numerals.

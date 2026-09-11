@@ -16,7 +16,15 @@ An example in **Commerce**: a component and a stylesheet built from `@loamui/cor
 - Tags: shop, listing, catalogue, category page
 - Live: https://loamui.com/examples/commerce/product-grid
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A ul of products, each a Card rendered as an article named by its heading; the list says role="list" because stripping its markers drops the role in some browsers.
 - **Modern CSS.** One auto-fit grid rule decides the columns from the list's own width, and each card's percentage height resolves against the item the grid stretched, so the actions line up across a row.
@@ -27,6 +35,9 @@ An example in **Commerce**: a component and a stylesheet built from `@loamui/cor
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Badge, Button, Card, Price, Rating } from "@loamui/core";
 import "./example.css";
 
@@ -72,13 +83,17 @@ const PRODUCTS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <ul className="product-grid" role="list">
       {PRODUCTS.map((product) => (
         <li key={product.slug}>
           <Card
             render={
-              <article className="product" aria-labelledby={`product-${product.slug}-title`} />
+              <article
+                className="product"
+                aria-labelledby={`${instanceId}-product-${product.slug}-title`}
+              />
             }
           >
             <img
@@ -93,7 +108,7 @@ export default function Example() {
                 <Badge>{product.offer}</Badge>
               </p>
             )}
-            <h3 id={`product-${product.slug}-title`}>
+            <h3 id={`${instanceId}-product-${product.slug}-title`}>
               <a href={`/shop/${product.slug}`}>{product.name}</a>
             </h3>
             <div className="rating">

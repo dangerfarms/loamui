@@ -27,5 +27,9 @@
     font-size: var(--loam-text-sm);
     margin: 0;
     max-inline-size: var(--loam-measure);
+
+    a {
+      text-decoration: underline;
+    }
   }
 }

@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: quote, review, social proof
 - Live: https://loamui.com/examples/page-sections/testimonial
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A figure whose quote is a blockquote and whose author is the figcaption, so the platform ties the attribution to the words rather than a layout implying it.
 - **Modern CSS.** The blockquote drops the element style's rule and muted colour because here it is the main text, not an aside; everything else is the figure's gap.

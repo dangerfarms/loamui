@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: consent, cookies, gdpr, privacy, form
 - Live: https://loamui.com/examples/page-sections/cookie-banner
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its title, so it is a landmark a screen reader can list; the choices are submit buttons in a post form with name and value, so a server records them before any JavaScript runs.
 - **Modern CSS.** The banner sits in flow on the subtle background with a line beneath, never fixed over the page; the empty confirmation grid has no height, so it costs no room until it is filled.
@@ -28,7 +36,7 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 ```tsx
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useId, useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { Button } from "@loamui/core";
 import "./example.css";
@@ -56,6 +64,7 @@ function focusAfter(banner: HTMLElement) {
 }
 
 export default function Example() {
+  const instanceId = useId();
   const [choice, setChoice] = useState<Choice | null>(null);
   const [hidden, setHidden] = useState(false);
   const banner = useRef<HTMLElement>(null);
@@ -85,10 +94,14 @@ export default function Example() {
   if (hidden) return null;
 
   return (
-    <section className="cookie-banner" aria-labelledby="cookie-banner-title" ref={banner}>
+    <section
+      className="cookie-banner"
+      aria-labelledby={`${instanceId}-cookie-banner-title`}
+      ref={banner}
+    >
       {choice === null && (
         <div className="inner">
-          <h2 id="cookie-banner-title">Cookies on Hedgerow</h2>
+          <h2 id={`${instanceId}-cookie-banner-title`}>Cookies on Hedgerow</h2>
           <p>
             We use essential cookies to keep your basket and remember that you are signed in. They
             are always on.

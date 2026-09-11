@@ -16,7 +16,15 @@ An example in **Commerce**: a component and a stylesheet built from `@loamui/cor
 - Tags: basket, checkout, receipt, money, commerce
 - Live: https://loamui.com/examples/commerce/order-summary
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A description list under a heading that names it: each line is a term and its amount, the note is a second description of the delivery line, and the total is one more row rather than a different element.
 - **Modern CSS.** Every row is a subgrid of the list, so the amounts share a column and stack on their decimal; the total's weight and heavier rule are one nested rule on the row.
@@ -26,13 +34,17 @@ An example in **Commerce**: a component and a stylesheet built from `@loamui/cor
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Price, SignpostLink } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="order-summary" aria-labelledby="order-summary-title">
-      <h2 id="order-summary-title">Your order</h2>
+    <section className="order-summary" aria-labelledby={`${instanceId}-order-summary-title`}>
+      <h2 id={`${instanceId}-order-summary-title`}>Your order</h2>
       <dl>
         <div className="row">
           <dt>Subtotal</dt>

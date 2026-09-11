@@ -15,7 +15,7 @@ describe("number-input-with-slider", () => {
     expect(box).toHaveValue("20");
     expect(slider).toHaveValue("20");
     expect(slider).toHaveAccessibleDescription(
-      "Between 10 and 30 °C. Most seed germinates fastest around 20.",
+      "Whole degrees between 10 and 30 °C. Invalid or fractional entries return to the last temperature when you leave the field.",
     );
 
     fireEvent.change(slider, { target: { value: "25" } });
@@ -31,5 +31,15 @@ describe("number-input-with-slider", () => {
     expect(box).toHaveValue("30");
     expect(slider).toHaveValue("30");
     expect(await axe(container, axeOptions)).toHaveNoViolations();
+  });
+  it.each(["", "abc", "12.5", "Infinity"])("restores the last integer for %j on blur", (value) => {
+    render(<Example />);
+    const input = screen.getByRole("textbox");
+    const slider = screen.getByRole("slider");
+    fireEvent.change(slider, { target: { value: "24" } });
+    fireEvent.change(input, { target: { value } });
+    fireEvent.blur(input);
+    expect(input).toHaveValue("24");
+    expect(slider).toHaveValue("24");
   });
 });

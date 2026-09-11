@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: landing, marketing, benefits, checklist
 - Live: https://loamui.com/examples/page-sections/hero-with-bullets
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its h1 and a real list for the three points, each a strong title over a line, so a screen reader announces three items where the eye sees three ticks.
 - **Modern CSS.** The section is a container and the inner element the grid: one column below 48rem of its own width, then a 3:2 split with the picture in the smaller column; the tick is sized in em so it rides the fluid scale.
@@ -26,6 +34,9 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Button } from "@loamui/core";
 import "./example.css";
 
@@ -45,11 +56,15 @@ const POINTS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="hero-with-bullets" aria-labelledby="hero-with-bullets-title">
+    <section
+      className="hero-with-bullets"
+      aria-labelledby={`${instanceId}-hero-with-bullets-title`}
+    >
       <div className="inner">
         <div className="text">
-          <h1 id="hero-with-bullets-title">Seed that was grown here, for here.</h1>
+          <h1 id={`${instanceId}-hero-with-bullets-title`}>Seed that was grown here, for here.</h1>
           <p className="lede">
             Hedgerow is a nursery and seed co-op in the Shropshire hills. Everything in the
             catalogue was selected on a member plot, not bought in.

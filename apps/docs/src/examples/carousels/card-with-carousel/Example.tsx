@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { Card, Carousel, Price, Rating } from "@loamui/core";
 import "./example.css";
 
@@ -19,9 +20,15 @@ const PHOTOS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card
-      render={<article className="card-with-carousel" aria-labelledby="card-with-carousel-title" />}
+      render={
+        <article
+          className="card-with-carousel"
+          aria-labelledby={`${instanceId}-card-with-carousel-title`}
+        />
+      }
     >
       <Carousel.Root
         className="photos"
@@ -53,7 +60,7 @@ export default function Example() {
         </div>
       </Carousel.Root>
       <div className="head">
-        <h3 id="card-with-carousel-title">The Orchard Cabin</h3>
+        <h3 id={`${instanceId}-card-with-carousel-title`}>The Orchard Cabin</h3>
         <p className="rating">
           <Rating readOnly label="Average rating" value={4.8} />
           <span>

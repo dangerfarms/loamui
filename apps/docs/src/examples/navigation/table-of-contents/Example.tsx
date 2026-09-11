@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { Nav, useScrollSpy } from "@loamui/core";
 import "./example.css";
 
@@ -11,10 +12,12 @@ const SECTIONS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
+  const sections = SECTIONS.map((section) => ({ ...section, id: `${instanceId}-${section.id}` }));
   // The section in view: the first of these headings inside the top part
   // of the viewport, or the last one that was once none is.
   const active = useScrollSpy(
-    SECTIONS.map((section) => section.id),
+    sections.map((section) => section.id),
     { rootMargin: "0px 0px -60% 0px" },
   );
   return (
@@ -22,7 +25,7 @@ export default function Example() {
       <Nav.Root>
         <Nav.Title>On this page</Nav.Title>
         <Nav.List>
-          {SECTIONS.map((section) => (
+          {sections.map((section) => (
             <Nav.Item key={section.id}>
               <Nav.Link href={`#${section.id}`} current={active === section.id && "location"}>
                 {section.title}
@@ -36,7 +39,7 @@ export default function Example() {
           Tomatoes are the seed most members raise indoors, and the one most often started too
           early. Four steps take a packet from a windowsill in March to a bed in June.
         </p>
-        <h2 id="table-of-contents-sowing">Sowing</h2>
+        <h2 id={`${instanceId}-table-of-contents-sowing`}>Sowing</h2>
         <p>
           Sow from late March, two seeds to a 7cm pot of sieved compost, covered with a centimetre
           of vermiculite and kept at 18 to 21 degrees. A heated propagator gets them up in five
@@ -48,7 +51,7 @@ export default function Example() {
           dim stretches towards the light and never quite recovers the leg it gains in its first
           week.
         </p>
-        <h2 id="table-of-contents-pricking-out">Pricking out</h2>
+        <h2 id={`${instanceId}-table-of-contents-pricking-out`}>Pricking out</h2>
         <p>
           When the first true leaves show, the ones with the toothed edge rather than the smooth
           seed leaves, lift each seedling by a leaf and move it to its own 9cm pot. Hold the leaf,
@@ -58,7 +61,7 @@ export default function Example() {
           Bury the seedling deeper than it stood before, up to the seed leaves. Tomatoes root along
           the buried stem, and a plant with more root shrugs off the dry days in a greenhouse.
         </p>
-        <h2 id="table-of-contents-hardening-off">Hardening off</h2>
+        <h2 id={`${instanceId}-table-of-contents-hardening-off`}>Hardening off</h2>
         <p>
           A fortnight before planting out, start putting the pots outside by day and bringing them
           in at night, a little longer each day. The plant is learning wind and direct sun, and the
@@ -68,7 +71,7 @@ export default function Example() {
           Skip this and the leaves scorch white within a day of going out. Rush it and a cold night
           stalls the plant for three weeks, which is longer than the fortnight saved.
         </p>
-        <h2 id="table-of-contents-planting-out">Planting out</h2>
+        <h2 id={`${instanceId}-table-of-contents-planting-out`}>Planting out</h2>
         <p>
           After the last frost, which for the Marches is the first week of June more often than the
           last week of May, plant 45cm apart in ground that had compost dug in over winter. Water

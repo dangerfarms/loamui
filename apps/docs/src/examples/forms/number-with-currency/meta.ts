@@ -6,6 +6,8 @@ export const meta: ExampleMeta = {
     "An amount box with the currency's symbol in its start section and a select of currencies beside it, in one row: the label names the amount, the select names itself.",
   category: "forms",
   uses: ["Field", "Input", "Select"],
+  integration:
+    "Currency changes the symbol, not the entered amount: no exchange-rate conversion is implied. Validate the amount, supported currency and gift-card limits in your application before accepting payment.",
   notes: {
     native:
       'The amount is a text input with inputMode="decimal", so a phone offers the number pad and a decimal point without the spinner a type="number" box would add; the currency is a native <select> whose options are the three ISO codes, submitted under their own name.',

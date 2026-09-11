@@ -16,7 +16,15 @@ An example in **Commerce**: a component and a stylesheet built from `@loamui/cor
 - Tags: pricing, tiers, plans, membership, compare, commerce
 - Live: https://loamui.com/examples/commerce/pricing-table
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A list named Membership plans, one item per tier, each an article named by its own heading, so the page's articles list as Seedling, Grower, Plot-holder and the list announces how many there are.
 - **Modern CSS.** The list is an auto-fit grid answering its own width: three across where there is room, fewer where there is not, and the tiers share a height so the buttons sit level across the row; the recommended tier's ring is an outline on the list item, rounded to the Card's radius so it hugs the surface.
@@ -27,18 +35,26 @@ An example in **Commerce**: a component and a stylesheet built from `@loamui/cor
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Badge, Button, Card, Price } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <ul className="pricing-table" role="list" aria-label="Membership plans">
       <li>
-        <Card render={<article className="plan" aria-labelledby="pricing-table-seedling" />}>
+        <Card
+          render={
+            <article className="plan" aria-labelledby={`${instanceId}-pricing-table-seedling`} />
+          }
+        >
           <p className="eyebrow">
             <Badge>Starter</Badge>
           </p>
-          <h3 id="pricing-table-seedling">Seedling</h3>
+          <h3 id={`${instanceId}-pricing-table-seedling`}>Seedling</h3>
           <p className="description">For a windowsill, a balcony or a first raised bed.</p>
           <p className="price">
             <Price value={24} currency="GBP">
@@ -63,11 +79,15 @@ export default function Example() {
         </Card>
       </li>
       <li className="recommended">
-        <Card render={<article className="plan" aria-labelledby="pricing-table-grower" />}>
+        <Card
+          render={
+            <article className="plan" aria-labelledby={`${instanceId}-pricing-table-grower`} />
+          }
+        >
           <p className="eyebrow">
             <Badge>Most popular</Badge>
           </p>
-          <h3 id="pricing-table-grower">Grower</h3>
+          <h3 id={`${instanceId}-pricing-table-grower`}>Grower</h3>
           <p className="description">For a household that sows most of what it eats.</p>
           <p className="price">
             <Price value={48} currency="GBP">
@@ -89,11 +109,15 @@ export default function Example() {
         </Card>
       </li>
       <li>
-        <Card render={<article className="plan" aria-labelledby="pricing-table-plot-holder" />}>
+        <Card
+          render={
+            <article className="plan" aria-labelledby={`${instanceId}-pricing-table-plot-holder`} />
+          }
+        >
           <p className="eyebrow">
             <Badge>With a bed</Badge>
           </p>
-          <h3 id="pricing-table-plot-holder">Plot-holder</h3>
+          <h3 id={`${instanceId}-pricing-table-plot-holder`}>Plot-holder</h3>
           <p className="description">For a grower who wants ground of their own.</p>
           <p className="price">
             <Price value={120} currency="GBP">

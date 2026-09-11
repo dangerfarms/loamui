@@ -16,7 +16,15 @@ An example in **Grids**: a component and a stylesheet built from `@loamui/core`,
 - Tags: grid, subgrid, layout, cards, align
 - Live: https://loamui.com/examples/grids/grid-subgrid
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A list of three items, each a card named by its h3, so the row of workshops is a list to a screen reader and each card says what it is.
 - **Modern CSS.** The list is the grid and each card spans three of its rows with grid-template-rows: subgrid, so the tallest description sets the row for all three and every button lands on one line without a fixed height or a JavaScript measure.
@@ -26,6 +34,9 @@ An example in **Grids**: a component and a stylesheet built from `@loamui/core`,
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Button, Card } from "@loamui/core";
 import "./example.css";
 
@@ -53,15 +64,21 @@ const WORKSHOPS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <ul className="grid-subgrid" role="list">
       {WORKSHOPS.map((workshop) => (
         <Card
           key={workshop.slug}
-          render={<li className="workshop" aria-labelledby={`grid-subgrid-${workshop.slug}`} />}
+          render={
+            <li
+              className="workshop"
+              aria-labelledby={`${instanceId}-grid-subgrid-${workshop.slug}`}
+            />
+          }
         >
           <div className="head">
-            <h3 id={`grid-subgrid-${workshop.slug}`}>{workshop.title}</h3>
+            <h3 id={`${instanceId}-grid-subgrid-${workshop.slug}`}>{workshop.title}</h3>
             <p className="when">{workshop.when}</p>
           </div>
           <p className="description">{workshop.description}</p>

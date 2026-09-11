@@ -16,7 +16,15 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - Tags: register, registration, account, create account, consent
 - Live: https://loamui.com/examples/forms/sign-up
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** One name field with autoComplete="name", because a single box holds every name in the world in the order its owner writes it; the password takes autoComplete="new-password", the value that tells a password manager to make one up and save it, and minLength carries the rule the description states.
 - **Modern CSS.** The same 24rem Card as Sign in; the one thing added is the consent line, a Checkbox whose label holds two links and wraps inside the card's width with no rule of its own.
@@ -29,14 +37,16 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Button, Card, Checkbox, Field, Input, PasswordInput } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card render={<div className="sign-up" />}>
-      <h1 id="sign-up-title">Create an account</h1>
-      <form action="/sign-up" method="post" aria-labelledby="sign-up-title">
+      <h1 id={`${instanceId}-sign-up-title`}>Create an account</h1>
+      <form action="/sign-up" method="post" aria-labelledby={`${instanceId}-sign-up-title`}>
         <Field.Root>
           <Field.Label>Full name</Field.Label>
           <Input name="name" autoComplete="name" required />

@@ -1,3 +1,6 @@
+"use client";
+
+import { useId } from "react";
 import { Button } from "@loamui/core";
 import "./example.css";
 
@@ -17,11 +20,15 @@ const POINTS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="hero-with-bullets" aria-labelledby="hero-with-bullets-title">
+    <section
+      className="hero-with-bullets"
+      aria-labelledby={`${instanceId}-hero-with-bullets-title`}
+    >
       <div className="inner">
         <div className="text">
-          <h1 id="hero-with-bullets-title">Seed that was grown here, for here.</h1>
+          <h1 id={`${instanceId}-hero-with-bullets-title`}>Seed that was grown here, for here.</h1>
           <p className="lede">
             Hedgerow is a nursery and seed co-op in the Shropshire hills. Everything in the
             catalogue was selected on a member plot, not bought in.

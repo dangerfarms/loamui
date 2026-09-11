@@ -16,7 +16,15 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 - Tags: sidebar, app shell, vertical nav, sign out, settings
 - Live: https://loamui.com/examples/navigation/side-nav-two-sections
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** Sign out is a submit button in a method="post" form, because ending a session changes state on the server; it is rendered through Nav.Link, whose stylesheet sets a button as one line among the links, and the other five are real anchors.
 - **Modern CSS.** Nav's own grid stretches its rows: the title and the main list share a wrapper of the example's own pinned to the start of the first row, and the account list is pinned to the end of the second, so it sits at the block end however tall the column is; nothing is positioned, and the separator is a border on the second list.

@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: announcement, notice, status, warning
 - Live: https://loamui.com/examples/page-sections/banner-warning
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** Still a div with no role: a warning in the page from the start is content the reader meets in order, and only news injected later would announce itself.
 - **Modern CSS.** The glyph is an inline svg sized in em on the message's type, so it rides the fluid scale with the words beside it.

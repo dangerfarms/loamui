@@ -1,3 +1,6 @@
+"use client";
+
+import { useId } from "react";
 import { Avatar, Badge, Card, Time } from "@loamui/core";
 import "./example.css";
 
@@ -35,13 +38,17 @@ const ARTICLES = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <ul className="article-cards-grid" role="list">
       {ARTICLES.map((article) => (
         <li key={article.slug}>
           <Card
             render={
-              <article className="article" aria-labelledby={`article-${article.slug}-title`} />
+              <article
+                className="article"
+                aria-labelledby={`${instanceId}-article-${article.slug}-title`}
+              />
             }
           >
             <img
@@ -55,7 +62,7 @@ export default function Example() {
               <Badge>{article.category}</Badge>
               <Time value={article.date} locale="en-GB" dateStyle="long" />
             </p>
-            <h3 id={`article-${article.slug}-title`}>
+            <h3 id={`${instanceId}-article-${article.slug}-title`}>
               <a href={`/guides/${article.slug}`}>{article.title}</a>
             </h3>
             <p className="description">{article.description}</p>

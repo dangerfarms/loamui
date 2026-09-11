@@ -16,7 +16,15 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 - Tags: site footer, centred, copyright, small print
 - Live: https://loamui.com/examples/navigation/footer-centered
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A footer landmark holding one nav landmark named Footer, so a landmark list tells it apart from the header's Primary nav; the copyright and registration are a small element, which is what small is for.
 - **Modern CSS.** A grid with its items centred and a flex row that wraps from the middle out, so a long list of links folds into even lines on a narrow screen without a breakpoint.

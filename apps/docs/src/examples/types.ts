@@ -38,9 +38,11 @@ export interface ExampleMeta {
   uses: string[];
   /**
    * One sentence per pillar on the judgment this example encodes. Only the
-   * pillars that apply; the page fills the rest with the pillar's own line.
+   * pillars with a specific decision to explain; these are rationale, not certification.
    */
   notes: Partial<Record<PillarKey, string>>;
+  /** Application data, actions or services needed when using this recipe. */
+  integration?: string;
   /** Free-text search terms beyond the title ("landing", "marketing"). */
   tags?: string[];
   /** Position within the category (lower first); ties break by slug. */

@@ -16,7 +16,15 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 - Tags: site header, search, avatar, account
 - Live: https://loamui.com/examples/navigation/header-with-search
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** Search renders the search landmark around a real form, so Enter, the button and a GET to /search are the browser's; the account is a link because it goes somewhere.
 - **Modern CSS.** One flex row that reflows by the header's own width: the search grows between the nav and the account where there is room, and each takes a row of its own where there is not.

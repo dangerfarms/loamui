@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: features, benefits, split, icons, about
 - Live: https://loamui.com/examples/page-sections/features-with-title
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its h2, with the four points as a list of h3 headings, so the outline holds the argument and its evidence in order.
 - **Modern CSS.** Two grids, each answering the section's own width: the inner element splits 2:3 at 48rem, and the list of points fits two across whenever its column has 28rem to give them.
@@ -26,6 +34,9 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { SignpostLink } from "@loamui/core";
 import "./example.css";
 
@@ -78,11 +89,15 @@ const FEATURES = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="features-with-title" aria-labelledby="features-with-title-title">
+    <section
+      className="features-with-title"
+      aria-labelledby={`${instanceId}-features-with-title-title`}
+    >
       <div className="inner">
         <div className="text">
-          <h2 id="features-with-title-title">Why seed from a co-op is different</h2>
+          <h2 id={`${instanceId}-features-with-title-title`}>Why seed from a co-op is different</h2>
           <p>
             A packet from a seed company was bred somewhere warmer, flatter and drier than your
             plot. A packet from Hedgerow was grown twenty miles away by someone who eats what they

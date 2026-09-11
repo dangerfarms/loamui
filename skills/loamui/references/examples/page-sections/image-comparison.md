@@ -1,6 +1,6 @@
 ---
 title: Image comparison
-description: Two photographs of the same bed in one frame, the second revealed by a Range the reader drags or moves with the arrow keys.
+description: Black-and-white and colour treatments of the same photograph in one frame, the second revealed by a Range the reader drags or moves with the arrow keys.
 ---
 
 > LoamUI documentation, generated from the same source as the live page —
@@ -8,7 +8,7 @@ description: Two photographs of the same bed in one frame, the second revealed b
 
 # Image comparison
 
-Two photographs of the same bed in one frame, the second revealed by a Range the reader drags or moves with the arrow keys.
+Black-and-white and colour treatments of the same photograph in one frame, the second revealed by a Range the reader drags or moves with the arrow keys.
 
 An example in **Page sections**: a component and a stylesheet built from `@loamui/core`, to copy into a project and change. Both files are below, exactly as the live preview renders them.
 
@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: before, after, slider, reveal, photos
 - Live: https://loamui.com/examples/page-sections/image-comparison
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The handle is a real range input, so the comparison can be worked with a keyboard and is announced with a name and a value, not a pointer-only drag; the whole thing is a figure with a caption.
 - **Modern CSS.** Before, after and the divider share one grid cell in DOM order, the top image is cut with clip-path from a custom property, and the physical inset flips under :dir(rtl) where the Range runs the other way.
@@ -40,28 +48,28 @@ export default function Example() {
       <div className="before">
         <img
           src="https://picsum.photos/id/59/1200/675"
-          alt="The lower field in March, dry grass along the fence line"
+          alt="Black-and-white photograph of wooden fence posts and wire above long grass"
           width="1200"
           height="675"
         />
       </div>
       <div className="after">
         <img
-          src="https://picsum.photos/id/542/1200/675"
-          alt="The same field in July, green to the horizon under a summer storm"
+          src="https://picsum.photos/id/59/1200/675"
+          alt="The same fence photograph in colour: weathered brown posts above golden grass"
           width="1200"
           height="675"
         />
       </div>
       <Range
-        aria-label="Reveal the field in July"
+        aria-label="Reveal the colour photograph"
         min={0}
         max={100}
         value={position}
         onChange={(event) => setPosition(event.currentTarget.valueAsNumber)}
       />
       <figcaption>
-        The lower field at the nursery, March and July of the same year. Move the slider to compare.
+        One photograph in black and white and colour. Move the slider to compare the treatments.
       </figcaption>
     </figure>
   );
@@ -117,6 +125,10 @@ export default function Example() {
       inline-size: 100%;
       object-fit: cover;
     }
+  }
+
+  div.before img {
+    filter: grayscale(1);
   }
 
   div.after {

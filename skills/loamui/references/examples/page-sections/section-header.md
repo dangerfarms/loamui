@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: heading, intro, eyebrow, section
 - Live: https://loamui.com/examples/page-sections/section-header
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A div, not a section: this is the top of a section you write, and the h2 carries an id for that section's aria-labelledby, so the landmark is yours and named by this heading.
 - **Modern CSS.** The wrapper is the container and the inner element the grid; at 40rem of its own width the actions move into a second column through named areas, so a part left out leaves no hole.
@@ -26,15 +34,19 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { SignpostLink } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <div className="section-header">
       <div className="inner">
         <p className="eyebrow">Growing guides</p>
-        <h2 id="section-header-title">Learn to grow from seed</h2>
+        <h2 id={`${instanceId}-section-header-title`}>Learn to grow from seed</h2>
         <p className="description">
           Short guides on sowing, pricking out and hardening off, written by the growers who supply
           the packets.

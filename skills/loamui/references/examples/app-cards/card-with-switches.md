@@ -16,7 +16,15 @@ An example in **Application cards**: a component and a stylesheet built from `@l
 - Tags: settings, preferences, notifications, toggles, switch
 - Live: https://loamui.com/examples/app-cards/card-with-switches
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The group is a fieldset with a legend, so the switches are announced as Notifications; each toggle is a native checkbox with role switch, named by a real label element and described by the paragraph beside it.
 - **Modern CSS.** Each row is a two-column grid with the words taking the slack and the toggle centred on them; the lines between rows are borders, so they survive forced colours.
@@ -28,6 +36,7 @@ An example in **Application cards**: a component and a stylesheet built from `@l
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Card, Fieldset, Switch } from "@loamui/core";
 import "./example.css";
 
@@ -63,16 +72,15 @@ const PREFERENCES = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card className="card-with-switches">
       <Fieldset.Root className="preferences">
         <Fieldset.Legend>Notifications</Fieldset.Legend>
-        <p className="description">
-          Which messages Hedgerow sends you. Each one is off until you turn it on.
-        </p>
+        <p className="description">Choose which messages Hedgerow sends you.</p>
         <div className="rows">
           {PREFERENCES.map((preference) => {
-            const id = `card-with-switches-${preference.id}`;
+            const id = `${instanceId}-card-with-switches-${preference.id}`;
             return (
               <div className="row" key={preference.id}>
                 <div className="text">

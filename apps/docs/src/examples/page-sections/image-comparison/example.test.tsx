@@ -11,12 +11,12 @@ describe("image-comparison", () => {
     const { container } = render(<Example />);
     const figure = container.querySelector("figure.image-comparison") as HTMLElement;
     expect(figure.style.getPropertyValue("--_position")).toBe("50%");
-    const slider = screen.getByRole("slider", { name: "Reveal the field in July" });
+    const slider = screen.getByRole("slider", { name: "Reveal the colour photograph" });
     fireEvent.change(slider, { target: { value: "25" } });
     expect(figure.style.getPropertyValue("--_position")).toBe("25%");
     const images = screen.getAllByRole("img");
     expect(images).toHaveLength(2);
-    expect(images[1]?.getAttribute("alt")).toMatch(/July/);
+    expect(images[1]?.getAttribute("alt")).toMatch(/colour/);
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 });

@@ -1,14 +1,16 @@
 "use client";
 
+import { useId } from "react";
 import { Button, Field, Input } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="email-banner" aria-labelledby="email-banner-title">
+    <section className="email-banner" aria-labelledby={`${instanceId}-email-banner-title`}>
       <div className="inner">
         <div className="text">
-          <h2 id="email-banner-title">The sowing letter</h2>
+          <h2 id={`${instanceId}-email-banner-title`}>The sowing letter</h2>
           <p>
             What to sow this week, what is back on the bench, and one grower's note. Sent on Sundays
             from February to October, and never sold on.

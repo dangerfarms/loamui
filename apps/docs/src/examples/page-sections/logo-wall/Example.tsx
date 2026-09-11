@@ -1,9 +1,13 @@
+"use client";
+
+import { useId } from "react";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="logo-wall" aria-labelledby="logo-wall-title">
-      <h2 id="logo-wall-title">Stocked by</h2>
+    <section className="logo-wall" aria-labelledby={`${instanceId}-logo-wall-title`}>
+      <h2 id={`${instanceId}-logo-wall-title`}>Stocked by</h2>
       <ul role="list">
         <li>
           <svg role="img" aria-label="Teme Valley Growers" viewBox="0 0 40 40" fill="currentColor">

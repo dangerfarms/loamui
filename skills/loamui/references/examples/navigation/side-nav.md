@@ -16,7 +16,15 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 - Tags: sidebar, app shell, vertical nav, icons
 - Live: https://loamui.com/examples/navigation/side-nav
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A nav landmark named by its own Title, Nursery, so the words are written once; the links are real anchors and the icons inline svgs before their text.
 - **Composition.** Nav's parts are arranged in the markup and nothing else is written: the column around it sets a width and the example's stylesheet is a single rule.

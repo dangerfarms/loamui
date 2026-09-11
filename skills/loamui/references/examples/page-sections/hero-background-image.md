@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: landing, marketing, photo, cover, dark
 - Live: https://loamui.com/examples/page-sections/hero-background-image
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its h1, with the photograph as an img rather than a background-image so it is fetched, sized and lazy-loadable like any picture; the scrim is a pseudo-element behind the words.
 - **Modern CSS.** The section declares color-scheme: dark, so every light-dark() token inside re-resolves to the dark palette in both schemes: the scrim is the background token faded and the words the foreground token, the pair the audit checks.
@@ -27,12 +35,19 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Button, SignpostLink } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="hero-background-image" aria-labelledby="hero-background-image-title">
+    <section
+      className="hero-background-image"
+      aria-labelledby={`${instanceId}-hero-background-image-title`}
+    >
       <img
         className="media"
         src="https://picsum.photos/id/206/1600/900"
@@ -41,7 +56,9 @@ export default function Example() {
         height="900"
       />
       <div className="inner">
-        <h1 id="hero-background-image-title">A field of seed, saved by the people who sow it.</h1>
+        <h1 id={`${instanceId}-hero-background-image-title`}>
+          A field of seed, saved by the people who sow it.
+        </h1>
         <p className="lede">
           Hedgerow grows open-pollinated vegetables, herbs and flowers on member plots across
           Shropshire, and posts the seed the week you order it.

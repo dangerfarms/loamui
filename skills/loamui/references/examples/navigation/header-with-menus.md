@@ -16,7 +16,15 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 - Tags: site header, dropdown, disclosure, navbar, primary nav
 - Live: https://loamui.com/examples/navigation/header-with-menus
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** Every page in the two dropdowns is an anchor with an href in a list, and each panel is a native popover, so the top layer, light dismiss and Escape are the browser's; going somewhere is a link or a SignpostLink, never a Button.
 - **Modern CSS.** One flex row that reflows by the header's own width, the nav dropping to a row of its own where the header is narrow; each panel tethers to its trigger by anchor positioning where the browser has it, and the marker's edge is set on the Root as a style query the links answer.

@@ -16,7 +16,15 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - Tags: validation, email, error, live, validity, required
 - Live: https://loamui.com/examples/forms/input-validation
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The judgment is the platform's ValidityState on a type="email" input with required: valueMissing and typeMismatch are read, never re-implemented with a pattern, so the browser and the message agree. The Field.Error is a rendered element, and the Field marks the box aria-invalid because it is there.
 - **Modern CSS.** Nothing but a width in its stylesheet: the danger border, the ring and the forced-colours outline are core's, detected from aria-invalid; the example writes no invalid class.

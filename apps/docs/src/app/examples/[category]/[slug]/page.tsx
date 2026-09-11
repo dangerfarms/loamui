@@ -5,6 +5,7 @@ import { Badge } from "@loamui/core";
 import { EXAMPLES, exampleHref, examplesIn, getCategory, getExample } from "@/examples";
 import { EXAMPLE_SOURCE } from "@/examples/generated-source";
 import { COMPONENTS } from "@/site/nav";
+import { ExamplePreview } from "@/renderer/examples-preview";
 import { ExampleStage } from "@/renderer/examples-stage";
 import { ExampleCode } from "@/renderer/examples-code";
 import { ExamplePillars } from "@/renderer/examples-pillars";
@@ -70,8 +71,10 @@ export default async function ExamplePage({
           <p className={c.lead}>{example.meta.description}</p>
         </header>
 
-        <ExampleStage title={example.meta.title}>
-          <example.Example />
+        <ExampleStage title={example.meta.title} documentPreview={slug === "scheme-toggle"}>
+          <ExamplePreview slug={slug}>
+            <example.Example />
+          </ExamplePreview>
         </ExampleStage>
 
         <section className={c.section} aria-labelledby="code">
@@ -79,9 +82,15 @@ export default async function ExamplePage({
             Code
           </h2>
           <p className={c.sectionNote}>
-            Two files, exactly as the preview runs them. Copy both into your project side by side:
-            the component imports the stylesheet, and both use only what <code>@loamui/core</code>{" "}
-            already ships.
+            Copy <code>Example.tsx</code> and <code>example.css</code> side by side into a React 19
+            project. Install <code>@loamui/core</code> and load <code>@loamui/core/styles.css</code>{" "}
+            once at your application root, as shown in the{" "}
+            <Link href="/docs/installation">installation guide</Link>. The component imports its own
+            stylesheet.
+          </p>
+          <p className={c.sectionNote}>
+            {example.meta.integration ??
+              "Replace the sample content and images with your own. Links and form actions illustrate application routes; provide those destinations and connect any action buttons to your application before shipping."}
           </p>
           <ExampleCode source={source} />
         </section>
@@ -115,8 +124,13 @@ export default async function ExamplePage({
 
         <section className={c.section} aria-labelledby="pillars">
           <h2 id="pillars" className={c.h2}>
-            Built to the pillars
+            Design decisions
           </h2>
+          <p className={c.sectionNote}>
+            How this example applies the <Link href="/docs">five pillars</Link>. These notes explain
+            the design. The included tests cover structure and selected interactions; check
+            contrast, keyboard behavior and assistive technology support in your application.
+          </p>
           <ExamplePillars notes={example.meta.notes} />
         </section>
 

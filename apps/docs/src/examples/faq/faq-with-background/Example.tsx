@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { Details } from "@loamui/core";
 import "./example.css";
 
@@ -27,11 +28,15 @@ const QUESTIONS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="faq-with-background" aria-labelledby="faq-with-background-title">
+    <section
+      className="faq-with-background"
+      aria-labelledby={`${instanceId}-faq-with-background-title`}
+    >
       <div className="inner">
         <header>
-          <h2 id="faq-with-background-title">Questions about ordering</h2>
+          <h2 id={`${instanceId}-faq-with-background-title`}>Questions about ordering</h2>
           <p>
             Posting, replacements and joining as a group. Still unsure? The nursery answers the
             phone on open days.

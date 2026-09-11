@@ -16,7 +16,15 @@ An example in **Sliders**: a component and a stylesheet built from `@loamui/core
 - Tags: slider, range, output, value, readout, spacing
 - Live: https://loamui.com/examples/sliders/slider-with-output
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The readout is a native <output for> pointing at the range, so the browser knows the two belong together and reports the value as a status; the slider itself is an <input type="range"> with the platform's keyboard.
 - **Modern CSS.** The Root sets one custom property, the thumb's position as a fraction, and the Output's margin is a calc of it against the thumb's own size in em: no measuring, no script placing a bubble, and it holds at every container width.

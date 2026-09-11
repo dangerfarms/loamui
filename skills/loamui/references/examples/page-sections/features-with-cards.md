@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: features, services, cards, grid, icons
 - Live: https://loamui.com/examples/page-sections/features-with-cards
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its h2, a header for the intro and a list of six cards with h3 headings, so the outline reads the way the page looks.
 - **Modern CSS.** The list is an auto-fit grid answering the section's own width, and each card is scoped from its own root so the section's rule never reaches inside a Card.
@@ -27,6 +35,9 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Card } from "@loamui/core";
 import "./example.css";
 
@@ -106,11 +117,17 @@ const FEATURES = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="features-with-cards" aria-labelledby="features-with-cards-title">
+    <section
+      className="features-with-cards"
+      aria-labelledby={`${instanceId}-features-with-cards-title`}
+    >
       <header>
         <p className="eyebrow">What we do</p>
-        <h2 id="features-with-cards-title">Everything a grower needs, from one bench</h2>
+        <h2 id={`${instanceId}-features-with-cards-title`}>
+          Everything a grower needs, from one bench
+        </h2>
         <p className="description">
           Hedgerow sells seed and plants, but the co-op is the swap bench, the workshops and the
           guides that come with them.

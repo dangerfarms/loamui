@@ -16,6 +16,8 @@ describe("number-with-currency", () => {
     );
     const currency = screen.getByRole("combobox", { name: "Currency" });
     expect(currency).toHaveValue("GBP");
+    expect(currency.id).not.toBe(amount.id);
+    expect(container.querySelector("label")).toHaveAttribute("for", amount.id);
     expect(container.querySelector(".loam-Input-field")).toHaveTextContent("£");
 
     fireEvent.change(currency, { target: { value: "EUR" } });

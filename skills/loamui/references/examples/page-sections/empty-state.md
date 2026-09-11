@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: empty, no results, onboarding, orders
 - Live: https://loamui.com/examples/page-sections/empty-state
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A heading and a paragraph in a div: the Card already holds it, and a list that loaded empty is the page as it is, so there is no landmark and no live region to announce nothing happening.
 - **Modern CSS.** One centred grid column with the paragraph capped at the measure token; the Card decides the width and the fluid tokens answer it.

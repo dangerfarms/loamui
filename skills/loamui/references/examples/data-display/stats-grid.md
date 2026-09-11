@@ -16,7 +16,15 @@ An example in **Data display**: a component and a stylesheet built from `@loamui
 - Tags: metrics, dashboard, kpi, figures
 - Live: https://loamui.com/examples/data-display/stats-grid
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** Each tile is a description list of one pair: the label is the term and the figure its description, so the markup reads label then value while the screen shows value over label.
 - **Modern CSS.** The row is an auto-fit grid answering its own width, and the figures are set in tabular lining numerals from the display face so a row of them shares a baseline and a width per digit.

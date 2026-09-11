@@ -16,7 +16,15 @@ An example in **Error pages**: a component and a stylesheet built from `@loamui/
 - Tags: 503, busy, unavailable, maintenance, error page, refresh
 - Live: https://loamui.com/examples/errors/error-503
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its own h1; the way out is a button rather than a link, because refreshing is an action on this page and goes nowhere new.
 - **Modern CSS.** The page is a container so its type answers its own width, the title balances its lines and the description wraps prettily; nothing here is sized to a viewport.
@@ -29,14 +37,16 @@ An example in **Error pages**: a component and a stylesheet built from `@loamui/
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Button } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="error-503" aria-labelledby="error-503-title">
+    <section className="error-503" aria-labelledby={`${instanceId}-error-503-title`}>
       <p className="code">503</p>
-      <h1 id="error-503-title">All our servers are busy</h1>
+      <h1 id={`${instanceId}-error-503-title`}>All our servers are busy</h1>
       <p className="description">
         More people are ordering seed than the shop can serve at once. Your basket is safe where it
         is: wait a minute, then refresh the page.

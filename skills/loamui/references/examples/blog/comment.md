@@ -16,7 +16,15 @@ An example in **Blog**: a component and a stylesheet built from `@loamui/core`, 
 - Tags: discussion, reply, thread, review
 - Live: https://loamui.com/examples/blog/comment
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A comment is an article, self-contained and syndicable, with a header for the byline; the time is a time element whose dateTime is the exact moment whatever the words say.
 - **Modern CSS.** The article is its own container, so the Buttons in the actions row take their size from the comment's width rather than the page's.

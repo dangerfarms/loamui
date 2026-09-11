@@ -16,7 +16,15 @@ An example in **Blog**: a component and a stylesheet built from `@loamui/core`, 
 - Tags: post, news, teaser, blog card, likes
 - Live: https://loamui.com/examples/blog/article-card-footer
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The Card is an article with a footer element for its byline; the author is an address with rel="author", and the date is a time with a machine-readable dateTime.
 - **Modern CSS.** A flex column whose footer takes the slack with an auto margin, so in a row of cards the byline lands at the bottom of each; the likes count is set in tabular numerals so it holds its width.
@@ -26,14 +34,21 @@ An example in **Blog**: a component and a stylesheet built from `@loamui/core`, 
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Avatar, Badge, Card, Time } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card
       render={
-        <article className="article-card-footer" aria-labelledby="article-card-footer-title" />
+        <article
+          className="article-card-footer"
+          aria-labelledby={`${instanceId}-article-card-footer-title`}
+        />
       }
     >
       <img
@@ -46,7 +61,7 @@ export default function Example() {
       <p className="meta">
         <Badge>Harvest</Badge>
       </p>
-      <h3 id="article-card-footer-title">
+      <h3 id={`${instanceId}-article-card-footer-title`}>
         <a href="/journal/curing-winter-squash">Curing winter squash for storage</a>
       </h3>
       <p className="description">

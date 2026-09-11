@@ -16,7 +16,15 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - Tags: tooltip, help, hint, info, input, icon button
 - Live: https://loamui.com/examples/forms/input-with-tooltip
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The trigger is a real button, so it is in the tab order and the tooltip opens on focus as well as hover; the bubble is a popover in the top layer where the browser has anchor positioning, and a wrapper-anchored span elsewhere.
 - **Modern CSS.** A two-column grid, the box floored at zero and the Button at its own width: both take the derived control height, so the row lines up with no measuring, and the icon is sized in em from the Button's type.

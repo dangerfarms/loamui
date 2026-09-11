@@ -16,7 +16,15 @@ An example in **Commerce**: a component and a stylesheet built from `@loamui/cor
 - Tags: shop, listing, price, sale, add to basket
 - Live: https://loamui.com/examples/commerce/product-card
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The Card is rendered as an article named by its heading, the old price is an s element, and each price is a data element whose value is the number for machines.
 - **Modern CSS.** A flex column with the action's auto margin taking the slack, so every button in a row of cards lands at the same foot; the picture is cropped square by aspect-ratio and object-fit.

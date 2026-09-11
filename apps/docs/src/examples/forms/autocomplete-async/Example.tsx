@@ -49,7 +49,10 @@ export default function Example() {
       setSearching(false);
       return;
     }
-    if (text === chosen) return;
+    if (text === chosen) {
+      setSearching(false);
+      return;
+    }
     const controller = new AbortController();
     setSearching(true);
     searchSeedList(text, controller.signal).then(
@@ -64,13 +67,15 @@ export default function Example() {
 
   const status = searching
     ? "Searching the seed list…"
-    : matches === null
-      ? ""
-      : matches.length === 0
-        ? "Nothing in the seed list matches."
-        : matches.length === 1
-          ? "1 variety matches."
-          : `${matches.length} varieties match.`;
+    : query.trim() === chosen
+      ? `${chosen} selected.`
+      : matches === null
+        ? ""
+        : matches.length === 0
+          ? "Nothing in the seed list matches."
+          : matches.length === 1
+            ? "1 variety matches."
+            : `${matches.length} varieties match.`;
 
   return (
     <Field.Root className="autocomplete-async">

@@ -16,7 +16,15 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 - Tags: site footer, social, icons, legal, copyright
 - Live: https://loamui.com/examples/navigation/footer-with-social
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A footer landmark holding two nav landmarks, Social and Legal, so a landmark list names each; every social link carries rel="me", the identity relation that says the profile is the site's own.
 - **Modern CSS.** Two flex rows that put their ends apart where there is room and wrap where there is not, decided by the footer's own width; the icons are sized in em so they follow the footer's small type.

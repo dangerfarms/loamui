@@ -16,7 +16,15 @@ An example in **FAQ**: a component and a stylesheet built from `@loamui/core`, t
 - Tags: faq, help, support, contact, page header
 - Live: https://loamui.com/examples/faq/faq-page-header
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its h1, because this opens a page; the ways to reach us are an address element with mailto and tel links, and each question is a details element sharing one name.
 - **Modern CSS.** The section is the container: at 44rem of its own width the header becomes two columns and the contact block sits beside the intro at its own width, ending at the header's end edge in either writing direction.
@@ -28,6 +36,7 @@ An example in **FAQ**: a component and a stylesheet built from `@loamui/core`, t
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Details } from "@loamui/core";
 import "./example.css";
 
@@ -60,11 +69,12 @@ const QUESTIONS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="faq-page-header" aria-labelledby="faq-page-header-title">
+    <section className="faq-page-header" aria-labelledby={`${instanceId}-faq-page-header-title`}>
       <header>
         <div className="intro">
-          <h1 id="faq-page-header-title">Help and support</h1>
+          <h1 id={`${instanceId}-faq-page-header-title`}>Help and support</h1>
           <p>
             Answers to the questions the bench is asked most, and the ways to reach a person when
             the answer is not here.

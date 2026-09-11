@@ -6,6 +6,8 @@ export const meta: ExampleMeta = {
     "A variety picker whose suggestions arrive after a delay: a spinner in the box while the seed list is searched, then the matches, with the outcome written under the box.",
   category: "forms",
   uses: ["Combobox", "Field", "Loader"],
+  integration:
+    "The seed search uses a local list with a simulated delay. Replace searchSeedList with your API request and pass its AbortSignal; add a visible error and retry state for network failures.",
   notes: {
     native:
       'The box is a native input wearing the APG editable combobox, and the chosen variety is submitted under name="variety" as a hidden input, so the form posts a value whether or not the list ever opened.',

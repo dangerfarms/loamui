@@ -16,7 +16,15 @@ An example in **Carousels**: a component and a stylesheet built from `@loamui/co
 - Tags: carousel, articles, cards, slider, journal
 - Live: https://loamui.com/examples/carousels/carousel-with-cards
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The track is an ordinary scroller with scroll snapping, so it pages with a wheel, a swipe, the arrow keys and no JavaScript; each item is a Card rendered as an article named by its heading.
 - **Modern CSS.** The item width is the Carousel's public property set on the region, and the track's grid stretches every Card to one height, so an auto margin puts each link at the foot.
@@ -28,6 +36,7 @@ An example in **Carousels**: a component and a stylesheet built from `@loamui/co
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Badge, Card, Carousel, SignpostLink } from "@loamui/core";
 import "./example.css";
 
@@ -65,10 +74,11 @@ const ARTICLES = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Carousel.Root
       className="carousel-with-cards"
-      aria-labelledby="carousel-with-cards-title"
+      aria-labelledby={`${instanceId}-carousel-with-cards-title`}
       labels={{
         previous: "Previous articles",
         next: "Next articles",
@@ -77,7 +87,7 @@ export default function Example() {
       }}
     >
       <div className="head">
-        <h2 id="carousel-with-cards-title">From the growers’ journal</h2>
+        <h2 id={`${instanceId}-carousel-with-cards-title`}>From the growers’ journal</h2>
         <div className="controls">
           <Carousel.Previous />
           <Carousel.Next />
@@ -90,7 +100,7 @@ export default function Example() {
               render={
                 <article
                   className="article"
-                  aria-labelledby={`carousel-with-cards-${article.slug}`}
+                  aria-labelledby={`${instanceId}-carousel-with-cards-${article.slug}`}
                 />
               }
             >
@@ -105,7 +115,7 @@ export default function Example() {
               <p className="meta">
                 <Badge>{article.category}</Badge>
               </p>
-              <h3 id={`carousel-with-cards-${article.slug}`}>{article.title}</h3>
+              <h3 id={`${instanceId}-carousel-with-cards-${article.slug}`}>{article.title}</h3>
               <div className="foot">
                 <SignpostLink href={`/journal/${article.slug}`}>
                   Read article<span className="loam-VisuallyHidden"> – {article.title}</span>

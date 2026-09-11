@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { Details } from "@loamui/core";
 import "./example.css";
 
@@ -27,8 +28,9 @@ const QUESTIONS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="faq-with-image" aria-labelledby="faq-with-image-title">
+    <section className="faq-with-image" aria-labelledby={`${instanceId}-faq-with-image-title`}>
       <div className="inner">
         <svg
           className="illustration"
@@ -51,7 +53,7 @@ export default function Example() {
           <path d="M120 204v-34" />
         </svg>
         <div className="text">
-          <h2 id="faq-with-image-title">Sowing questions</h2>
+          <h2 id={`${instanceId}-faq-with-image-title`}>Sowing questions</h2>
           <p>
             The questions every packet's guide answers, gathered in one place for the first week of
             spring.

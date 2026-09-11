@@ -16,7 +16,15 @@ An example in **Data display**: a component and a stylesheet built from `@loamui
 - Tags: account, check your answers, key value, details
 - Live: https://loamui.com/examples/data-display/summary-list
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A description list: each label is a term and its value the description, grouped in a div per row so the pair and its link stay together, under a heading that names the section.
 - **Modern CSS.** The list is a three-column grid and every row a subgrid of it, so the change links share one column down the list and the values stay aligned whether or not a row has a link.
@@ -26,13 +34,17 @@ An example in **Data display**: a component and a stylesheet built from `@loamui
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Time } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="summary-list" aria-labelledby="summary-list-title">
-      <h2 id="summary-list-title">Your membership</h2>
+    <section className="summary-list" aria-labelledby={`${instanceId}-summary-list-title`}>
+      <h2 id={`${instanceId}-summary-list-title`}>Your membership</h2>
       <dl>
         <div className="row">
           <dt>Name</dt>

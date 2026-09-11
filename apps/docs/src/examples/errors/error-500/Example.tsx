@@ -1,11 +1,13 @@
 "use client";
 
+import { useId } from "react";
 import { Button } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="error-500" aria-labelledby="error-500-title">
+    <section className="error-500" aria-labelledby={`${instanceId}-error-500-title`}>
       <svg
         className="illustration"
         viewBox="0 0 120 96"
@@ -26,7 +28,7 @@ export default function Example() {
         <circle className="seed" cx="102" cy="88" r="2" />
       </svg>
       <p className="code">500</p>
-      <h1 id="error-500-title">Something went wrong on our side</h1>
+      <h1 id={`${instanceId}-error-500-title`}>Something went wrong on our side</h1>
       <p className="description">
         The catalogue did not answer, and it is not anything you did. Nothing in your basket is
         lost. Try the page again; if it keeps happening, tell us and quote the time.

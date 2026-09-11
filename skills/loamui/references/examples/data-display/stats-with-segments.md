@@ -16,7 +16,15 @@ An example in **Data display**: a component and a stylesheet built from `@loamui
 - Tags: share, segments, breakdown, devices, analytics, meter
 - Live: https://loamui.com/examples/data-display/stats-with-segments
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A real table with a caption, column and row headers and a tfoot for the total; each share is a native meter, so the browser reports the value and the CSS only paints it.
 - **Modern CSS.** The percentage sits at a fixed width in tabular figures so every bar starts on the same line and takes the rest of its cell; the figures are end-aligned to stack on their last digit.

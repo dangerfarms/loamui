@@ -16,38 +16,53 @@ An example in **Blog**: a component and a stylesheet built from `@loamui/core`, 
 - Tags: post, teaser, column, narrow, blog card
 - Live: https://loamui.com/examples/blog/vertical-article-card
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The Card is an article named by its heading, the author sits in an address with rel="author", and the date is a time with a machine-readable dateTime.
 - **Modern CSS.** The picture is held to a portrait ratio so a column of these cards lines up whatever the files' shapes; the card caps its own width and a grid of them sets the columns.
 - **Composition.** Card, Badge, Time and Avatar are used as they come; the avatar size is its public property, set on the author row rather than passed to the Avatar.
-- **Accessible & gatekept.** The title is the link and the card is not, so the link's name is the title alone; the picture illustrates the title, so its alt is empty; the avatar is hidden because the name is printed beside it.
+- **Accessible & gatekept.** The title is the link and the card is not, so the link's name is the title alone; the picture describes the flowers shown; the avatar is hidden because the name is printed beside it.
 
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Avatar, Badge, Card, Time } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card
       render={
-        <article className="vertical-article-card" aria-labelledby="vertical-article-card-title" />
+        <article
+          className="vertical-article-card"
+          aria-labelledby={`${instanceId}-vertical-article-card-title`}
+        />
       }
     >
       <img
         className="media"
         src="https://picsum.photos/id/152/600/750"
-        alt=""
+        alt="Purple trumpet-shaped flowers with water droplets"
         width="600"
         height="750"
       />
       <p className="meta">
-        <Badge>Winter jobs</Badge>
+        <Badge>Summer planting</Badge>
       </p>
-      <h3 id="vertical-article-card-title">
-        <a href="/journal/lifting-dahlias">Lifting and storing dahlia tubers</a>
+      <h3 id={`${instanceId}-vertical-article-card-title`}>
+        <a href="/journal/summer-container-colours">Colour ideas for summer containers</a>
       </h3>
       <div className="author">
         <Avatar name="Amara Okonkwo" aria-hidden />
@@ -57,7 +72,7 @@ export default function Example() {
               Amara Okonkwo
             </a>
           </address>
-          <Time value="2026-10-20" locale="en-GB" dateStyle="long" />
+          <Time value="2026-05-20" locale="en-GB" dateStyle="long" />
         </div>
       </div>
     </Card>

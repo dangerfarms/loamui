@@ -1,14 +1,19 @@
 "use client";
 
+import { useId } from "react";
 import { Button, Card, Field, Input, Textarea } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="contact-us-with-details" aria-labelledby="contact-us-with-details-title">
+    <section
+      className="contact-us-with-details"
+      aria-labelledby={`${instanceId}-contact-us-with-details-title`}
+    >
       <div className="inner">
         <div className="details">
-          <h2 id="contact-us-with-details-title">Contact us</h2>
+          <h2 id={`${instanceId}-contact-us-with-details-title`}>Contact us</h2>
           <p>
             Ask about an order, a variety, or a place on a workshop. The nursery answers email on
             Tuesdays and Fridays.
@@ -99,11 +104,11 @@ export default function Example() {
               className="form"
               action="/contact"
               method="post"
-              aria-labelledby="contact-us-with-details-form"
+              aria-labelledby={`${instanceId}-contact-us-with-details-form`}
             />
           }
         >
-          <h3 id="contact-us-with-details-form">Send a message</h3>
+          <h3 id={`${instanceId}-contact-us-with-details-form`}>Send a message</h3>
           <Field.Root>
             <Field.Label>Email address</Field.Label>
             <Field.Description>Only used to reply.</Field.Description>

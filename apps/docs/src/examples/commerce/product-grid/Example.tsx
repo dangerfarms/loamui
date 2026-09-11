@@ -1,3 +1,6 @@
+"use client";
+
+import { useId } from "react";
 import { Badge, Button, Card, Price, Rating } from "@loamui/core";
 import "./example.css";
 
@@ -43,13 +46,17 @@ const PRODUCTS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <ul className="product-grid" role="list">
       {PRODUCTS.map((product) => (
         <li key={product.slug}>
           <Card
             render={
-              <article className="product" aria-labelledby={`product-${product.slug}-title`} />
+              <article
+                className="product"
+                aria-labelledby={`${instanceId}-product-${product.slug}-title`}
+              />
             }
           >
             <img
@@ -64,7 +71,7 @@ export default function Example() {
                 <Badge>{product.offer}</Badge>
               </p>
             )}
-            <h3 id={`product-${product.slug}-title`}>
+            <h3 id={`${instanceId}-product-${product.slug}-title`}>
               <a href={`/shop/${product.slug}`}>{product.name}</a>
             </h3>
             <div className="rating">

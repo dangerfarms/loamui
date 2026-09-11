@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: landing, marketing, closing, cta, image
 - Live: https://loamui.com/examples/page-sections/call-to-action-with-media
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its h2 holding a plain img with real alt text and its intrinsic size, so the layout has the picture's shape before it loads.
 - **Modern CSS.** The section is the container and the inner element the grid; two columns arrive from the section's own width, never from the viewport.
@@ -26,18 +34,24 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { SignpostLink } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <section
       className="call-to-action-with-media"
-      aria-labelledby="call-to-action-with-media-title"
+      aria-labelledby={`${instanceId}-call-to-action-with-media-title`}
     >
       <div className="inner">
         <div className="text">
-          <h2 id="call-to-action-with-media-title">Sow along with us this spring</h2>
+          <h2 id={`${instanceId}-call-to-action-with-media-title`}>
+            Sow along with us this spring
+          </h2>
           <p className="lede">
             The sowing calendar tells you what to start each week, indoors or out, and the guide in
             every packet picks up where it leaves off.

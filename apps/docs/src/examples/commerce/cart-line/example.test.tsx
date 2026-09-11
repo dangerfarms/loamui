@@ -20,10 +20,33 @@ describe("cart-line", () => {
     expect(
       screen.getByRole("button", { name: "Remove Climbing bean ‘Blue Lake’ seeds" }),
     ).toHaveTextContent(/^Remove/);
-    expect(container.querySelector("p.total data")).toHaveTextContent("£5.60");
+    expect(container.querySelector("p.total data")).toHaveTextContent("£8.40");
     const each = container.querySelector("p.each data")!;
     expect(each).toHaveAttribute("value", "2.8");
     expect(each.querySelector("small.per")).toHaveTextContent("each");
     expect(await axe(container, axeOptions)).toHaveNoViolations();
+  });
+  it("updates its total, rejects invalid quantities and supports removal with focusable undo", () => {
+    const { container } = render(<Example />);
+    const quantity = screen.getByRole("spinbutton");
+    fireEvent.change(quantity, { target: { value: "5" } });
+    expect(container.querySelector("p.total")).toHaveTextContent("£14");
+    for (const value of ["", "0", "11", "2.5"]) {
+      fireEvent.change(quantity, { target: { value } });
+      fireEvent.blur(quantity);
+      expect(quantity).toHaveAttribute("aria-invalid", "true");
+      expect(container.querySelector("p.total data")).toBeNull();
+    }
+    fireEvent.change(quantity, { target: { value: "3" } });
+    expect(screen.queryByRole("alert")).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: /^Remove/ }));
+    expect(screen.queryByRole("article")).toBeNull();
+    expect(screen.getByRole("status")).toHaveTextContent("removed");
+    const undo = screen.getByRole("button", { name: "Undo removal" });
+    expect(undo).toHaveFocus();
+    fireEvent.click(undo);
+    expect(screen.getByRole("spinbutton")).toHaveValue(3);
+    expect(screen.getByRole("spinbutton")).toHaveFocus();
+    expect(container.querySelector("p.total")).toHaveTextContent("£8.40");
   });
 });

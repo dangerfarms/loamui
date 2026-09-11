@@ -1,9 +1,16 @@
+"use client";
+
+import { useId } from "react";
 import { Button, SignpostLink } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="hero-background-image" aria-labelledby="hero-background-image-title">
+    <section
+      className="hero-background-image"
+      aria-labelledby={`${instanceId}-hero-background-image-title`}
+    >
       <img
         className="media"
         src="https://picsum.photos/id/206/1600/900"
@@ -12,7 +19,9 @@ export default function Example() {
         height="900"
       />
       <div className="inner">
-        <h1 id="hero-background-image-title">A field of seed, saved by the people who sow it.</h1>
+        <h1 id={`${instanceId}-hero-background-image-title`}>
+          A field of seed, saved by the people who sow it.
+        </h1>
         <p className="lede">
           Hedgerow grows open-pollinated vegetables, herbs and flowers on member plots across
           Shropshire, and posts the seed the week you order it.

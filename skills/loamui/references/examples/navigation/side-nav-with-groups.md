@@ -16,7 +16,15 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 - Tags: sidebar, collapsible, nested, details, admin, icons
 - Live: https://loamui.com/examples/navigation/side-nav-with-groups
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** Each group is a native details element, so it opens and closes before any script runs and its state is the browser's; the groups share no name, so two areas can stay open while an administrator works across them. Give them one name and the browser keeps a single group open instead.
 - **Modern CSS.** The nested lists are indented through Nav's public --loam-nav-indent, computed from the icon's width and the gap after it, so the words of a nested link sit under the words of its group title rather than under the icon.

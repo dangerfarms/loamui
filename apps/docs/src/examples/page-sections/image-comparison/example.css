@@ -46,6 +46,10 @@
     }
   }
 
+  div.before img {
+    filter: grayscale(1);
+  }
+
   div.after {
     clip-path: inset(0 calc(100% - var(--_position)) 0 0);
 

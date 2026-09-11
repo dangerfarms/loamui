@@ -1,3 +1,6 @@
+"use client";
+
+import { useId } from "react";
 import { SignpostLink } from "@loamui/core";
 import "./example.css";
 
@@ -50,11 +53,15 @@ const FEATURES = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="features-with-title" aria-labelledby="features-with-title-title">
+    <section
+      className="features-with-title"
+      aria-labelledby={`${instanceId}-features-with-title-title`}
+    >
       <div className="inner">
         <div className="text">
-          <h2 id="features-with-title-title">Why seed from a co-op is different</h2>
+          <h2 id={`${instanceId}-features-with-title-title`}>Why seed from a co-op is different</h2>
           <p>
             A packet from a seed company was bred somewhere warmer, flatter and drier than your
             plot. A packet from Hedgerow was grown twenty miles away by someone who eats what they

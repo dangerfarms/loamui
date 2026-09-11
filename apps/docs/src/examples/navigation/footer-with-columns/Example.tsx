@@ -1,3 +1,6 @@
+"use client";
+
+import { useId } from "react";
 import "./example.css";
 
 const COLUMNS = [
@@ -31,6 +34,7 @@ const COLUMNS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <footer className="footer-with-columns">
       <div className="brand">
@@ -56,7 +60,7 @@ export default function Example() {
       </div>
       <div className="columns">
         {COLUMNS.map((column) => {
-          const id = `footer-${column.title.toLowerCase()}`;
+          const id = `${instanceId}-footer-${column.title.toLowerCase()}`;
           return (
             <nav key={column.title} aria-labelledby={id}>
               <h3 id={id}>{column.title}</h3>

@@ -16,7 +16,15 @@ An example in **Blog**: a component and a stylesheet built from `@loamui/core`, 
 - Tags: post, title, standfirst, lead image, masthead
 - Live: https://loamui.com/examples/blog/article-header
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The title is the page's one h1, the category above it is a link rather than a heading, the standfirst is a paragraph rather than an h2, and the picture is a figure whose credit is its figcaption.
 - **Modern CSS.** The article declares itself a container so the fluid type scale answers its column; the byline's dots are generated content with an empty alternative, so only the CSS knows the order of the parts.
@@ -26,17 +34,21 @@ An example in **Blog**: a component and a stylesheet built from `@loamui/core`, 
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Avatar, Badge, Time } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <article className="article-header" aria-labelledby="article-header-title">
+    <article className="article-header" aria-labelledby={`${instanceId}-article-header-title`}>
       <header>
         <p className="eyebrow">
           <a href="/guides">Growing guides</a>
         </p>
-        <h1 id="article-header-title">Sowing broad beans in autumn</h1>
+        <h1 id={`${instanceId}-article-header-title`}>Sowing broad beans in autumn</h1>
         <p className="standfirst">
           An October sowing of ‘Aquadulce Claudia’ overwinters in the open ground and crops a month
           before anything sown in spring. Which plots it suits, how deep to sow, and how to keep the

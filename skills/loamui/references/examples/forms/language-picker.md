@@ -16,7 +16,15 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - Tags: language, locale, menu, radio, i18n, picker
 - Live: https://loamui.com/examples/forms/language-picker
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** Each name carries its language's lang attribute, so a screen reader switches voice to say Cymraeg as Welsh and Deutsch as German; the codes are ISO 639-1 text, not flags, since a flag names a country and a language crosses several.
 - **Modern CSS.** The code glyph's scope is rooted at the glyph itself, once for the trigger and every item, cut in currentcolor so it follows the Button's channel and the item's highlight; forced colours give it an edge in place of the tint.

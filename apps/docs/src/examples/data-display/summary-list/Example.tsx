@@ -1,10 +1,14 @@
+"use client";
+
+import { useId } from "react";
 import { Time } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="summary-list" aria-labelledby="summary-list-title">
-      <h2 id="summary-list-title">Your membership</h2>
+    <section className="summary-list" aria-labelledby={`${instanceId}-summary-list-title`}>
+      <h2 id={`${instanceId}-summary-list-title`}>Your membership</h2>
       <dl>
         <div className="row">
           <dt>Name</dt>

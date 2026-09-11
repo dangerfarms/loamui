@@ -16,7 +16,15 @@ An example in **Data display**: a component and a stylesheet built from `@loamui
 - Tags: table, sticky, scroll, stock, inventory, long list
 - Live: https://loamui.com/examples/data-display/table-sticky-header
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A real table with a caption and row headers; the header sticks with position: sticky on the header cells themselves, which is what the platform provides and what Table's stickyHeader asks of it, so nothing is cloned or measured.
 - **Modern CSS.** The cap is Table's public --loam-table-block-size, one custom property declared on the Table from the example's scope; the header's surface and its edge are Table's own, so the example paints nothing.

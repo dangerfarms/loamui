@@ -6,6 +6,8 @@ export const meta: ExampleMeta = {
     "Three membership plans as cards, each the label of a real radio, with the chosen one marked by an edge as well as its dot.",
   category: "forms",
   uses: ["Card", "Radio", "RadioGroup"],
+  integration:
+    "Pass a name such as plan when integrating with a form endpoint. When omitted, RadioGroup generates a unique name so multiple copies on one page remain independent. Supply the real membership options and submit the selected value in your application.",
   notes: {
     native:
       "A RadioGroup shares the name and the default, and each card is a <label> around a native radio, so the whole surface is the click target and the arrow keys move the choice as on any radio set; the state lives in the input, not on the card.",

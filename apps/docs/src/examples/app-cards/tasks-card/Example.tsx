@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { Avatar, Card, Progress, Time } from "@loamui/core";
 import "./example.css";
 
@@ -11,12 +12,15 @@ const TEAM = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <Card render={<article className="tasks-card" aria-labelledby="tasks-card-title" />}>
+    <Card
+      render={<article className="tasks-card" aria-labelledby={`${instanceId}-tasks-card-title`} />}
+    >
       <p className="due">
         Due <Time value="2026-11-30" locale="en-GB" dateStyle="long" />
       </p>
-      <h3 id="tasks-card-title">Spring catalogue 2027</h3>
+      <h3 id={`${instanceId}-tasks-card-title`}>Spring catalogue 2027</h3>
       <p className="description">
         Every variety trialled this year written up, photographed and priced, ready for the printer
         in December.

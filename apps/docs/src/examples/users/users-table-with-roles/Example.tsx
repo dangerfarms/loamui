@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { Avatar, Badge, Button, Select, Table, Time } from "@loamui/core";
 import "./example.css";
 
@@ -77,6 +78,7 @@ const MEMBERS: Member[] = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <form className="users-table-with-roles" method="post" action="/team/roles">
       <Table>
@@ -106,11 +108,11 @@ export default function Example() {
                 </span>
               </th>
               <td className="role">
-                <label className="loam-VisuallyHidden" htmlFor={`role-${member.id}`}>
+                <label className="loam-VisuallyHidden" htmlFor={`${instanceId}-role-${member.id}`}>
                   Role for {member.name}
                 </label>
                 <Select
-                  id={`role-${member.id}`}
+                  id={`${instanceId}-role-${member.id}`}
                   name={`role[${member.id}]`}
                   defaultValue={member.role}
                 >

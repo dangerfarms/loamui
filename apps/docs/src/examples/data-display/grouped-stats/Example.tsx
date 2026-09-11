@@ -1,10 +1,18 @@
+"use client";
+
+import { useId } from "react";
 import { Card, Price } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <Card render={<section className="grouped-stats" aria-labelledby="grouped-stats-title" />}>
-      <h2 id="grouped-stats-title">Open day, 5 September</h2>
+    <Card
+      render={
+        <section className="grouped-stats" aria-labelledby={`${instanceId}-grouped-stats-title`} />
+      }
+    >
+      <h2 id={`${instanceId}-grouped-stats-title`}>Open day, 5 September</h2>
       <dl className="groups">
         <div className="group">
           <dt>Visitors</dt>

@@ -16,7 +16,15 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 - Tags: app header, tabs, account menu, avatar, top bar
 - Live: https://loamui.com/examples/navigation/header-with-tabs
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The tabs are links in a nav, not a tablist: each goes to a page, so it is an anchor with an href and the current one carries aria-current; Sign out is a submit button in a method="post" form.
 - **Modern CSS.** The underline is Nav's own marker moved from the link's start edge to its block end by one declaration, the public --loam-nav-current-edge on the header, which the Nav answers through a style query; the row sits on the header's line by a one-pixel overlap.

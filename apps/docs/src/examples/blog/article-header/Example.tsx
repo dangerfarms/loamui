@@ -1,14 +1,18 @@
+"use client";
+
+import { useId } from "react";
 import { Avatar, Badge, Time } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <article className="article-header" aria-labelledby="article-header-title">
+    <article className="article-header" aria-labelledby={`${instanceId}-article-header-title`}>
       <header>
         <p className="eyebrow">
           <a href="/guides">Growing guides</a>
         </p>
-        <h1 id="article-header-title">Sowing broad beans in autumn</h1>
+        <h1 id={`${instanceId}-article-header-title`}>Sowing broad beans in autumn</h1>
         <p className="standfirst">
           An October sowing of ‘Aquadulce Claudia’ overwinters in the open ground and crops a month
           before anything sown in spring. Which plots it suits, how deep to sow, and how to keep the

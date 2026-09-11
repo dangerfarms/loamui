@@ -16,7 +16,15 @@ An example in **Blog**: a component and a stylesheet built from `@loamui/core`, 
 - Tags: teaser, hero card, overlay, scrim, image card
 - Live: https://loamui.com/examples/blog/card-background-image
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The picture is an img in the markup, not a CSS background, so it lazy-loads, prints and is swapped like any image; the Card is an article named by its heading.
 - **Modern CSS.** The Card sets color-scheme: dark, so every light-dark() token inside resolves to its dark answer whatever the page's scheme: light words over a scrim mixed from the dark background token, with no second palette written for the card.
@@ -27,14 +35,21 @@ An example in **Blog**: a component and a stylesheet built from `@loamui/core`, 
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Badge, Card, SignpostLink } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card
       render={
-        <article className="card-background-image" aria-labelledby="card-background-image-title" />
+        <article
+          className="card-background-image"
+          aria-labelledby={`${instanceId}-card-background-image-title`}
+        />
       }
     >
       <img
@@ -48,7 +63,7 @@ export default function Example() {
         <p className="meta">
           <Badge>Members’ plots</Badge>
         </p>
-        <h3 id="card-background-image-title">The walled garden after closing</h3>
+        <h3 id={`${instanceId}-card-background-image-title`}>The walled garden after closing</h3>
         <p className="description">
           What the members who hold a plot inside the wall do with the hour after the gates shut,
           and why the co-op keeps that hour theirs.

@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { Details } from "@loamui/core";
 import "./example.css";
 
@@ -27,9 +28,10 @@ const QUESTIONS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="faq-simple" aria-labelledby="faq-simple-title">
-      <h2 id="faq-simple-title">Frequently asked questions</h2>
+    <section className="faq-simple" aria-labelledby={`${instanceId}-faq-simple-title`}>
+      <h2 id={`${instanceId}-faq-simple-title`}>Frequently asked questions</h2>
       <p className="description">
         The four things people ask the bench most often. For anything else, write to{" "}
         <a href="mailto:hello@hedgerow.coop">hello@hedgerow.coop</a>.

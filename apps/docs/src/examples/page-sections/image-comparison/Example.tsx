@@ -12,28 +12,28 @@ export default function Example() {
       <div className="before">
         <img
           src="https://picsum.photos/id/59/1200/675"
-          alt="The lower field in March, dry grass along the fence line"
+          alt="Black-and-white photograph of wooden fence posts and wire above long grass"
           width="1200"
           height="675"
         />
       </div>
       <div className="after">
         <img
-          src="https://picsum.photos/id/542/1200/675"
-          alt="The same field in July, green to the horizon under a summer storm"
+          src="https://picsum.photos/id/59/1200/675"
+          alt="The same fence photograph in colour: weathered brown posts above golden grass"
           width="1200"
           height="675"
         />
       </div>
       <Range
-        aria-label="Reveal the field in July"
+        aria-label="Reveal the colour photograph"
         min={0}
         max={100}
         value={position}
         onChange={(event) => setPosition(event.currentTarget.valueAsNumber)}
       />
       <figcaption>
-        The lower field at the nursery, March and July of the same year. Move the slider to compare.
+        One photograph in black and white and colour. Move the slider to compare the treatments.
       </figcaption>
     </figure>
   );

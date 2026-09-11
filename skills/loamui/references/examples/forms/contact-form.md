@@ -16,7 +16,15 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - Tags: contact, enquiry, message, support
 - Live: https://loamui.com/examples/forms/contact-form
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A native form named by its heading, with a native select for the subject that starts on a disabled prompt so a skipped subject submits nothing rather than the first option, and required catches it.
 - **Modern CSS.** The form is its own container and its own grid, capped at a readable width; the fields answer the form's width, not the viewport's.
@@ -29,19 +37,21 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Button, Field, Input, Select, Textarea } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <form
       className="contact-form"
       action="/contact"
       method="post"
-      aria-labelledby="contact-form-title"
+      aria-labelledby={`${instanceId}-contact-form-title`}
     >
       <div className="intro">
-        <h2 id="contact-form-title">Get in touch</h2>
+        <h2 id={`${instanceId}-contact-form-title`}>Get in touch</h2>
         <p>
           The nursery answers email on Tuesdays and Fridays. For an order that has already been
           posted, include the order number.

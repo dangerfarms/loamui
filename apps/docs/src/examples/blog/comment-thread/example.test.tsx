@@ -14,11 +14,8 @@ describe("comment-thread", () => {
     const replies = screen.getByRole("list", { name: "Replies to Dafydd Rees" });
     expect(parent).toContainElement(replies);
     expect(within(replies).getAllByRole("listitem")).toHaveLength(2);
-    expect(
-      within(replies)
-        .getAllByRole("article")
-        .map((a) => a.getAttribute("aria-labelledby")),
-    ).toEqual(["comment-thread-reply-1-author", "comment-thread-reply-2-author"]);
+    expect(within(replies).getByRole("article", { name: "Nia Prosser" })).toBeInTheDocument();
+    expect(within(replies).getByRole("article", { name: "Priya Natarajan" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Reply to Priya Natarajan" })).toBeInTheDocument();
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });

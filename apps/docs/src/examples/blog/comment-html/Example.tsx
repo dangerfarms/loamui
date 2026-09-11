@@ -1,3 +1,6 @@
+"use client";
+
+import { useId } from "react";
 import { Avatar, Time } from "@loamui/core";
 import "./example.css";
 
@@ -6,11 +9,12 @@ import "./example.css";
 const NOW = "2026-09-08T09:00:00Z";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <article className="comment-html" aria-labelledby="comment-html-author">
+    <article className="comment-html" aria-labelledby={`${instanceId}-comment-html-author`}>
       <header>
         <Avatar name="Tom Bradshaw" aria-hidden />
-        <a id="comment-html-author" className="author" href="/members/tom-bradshaw">
+        <a id={`${instanceId}-comment-html-author`} className="author" href="/members/tom-bradshaw">
           Tom Bradshaw
         </a>
         <Time value="2026-09-06T18:12:00Z" locale="en-GB" relative={{ now: NOW }} />

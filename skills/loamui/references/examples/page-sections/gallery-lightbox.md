@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: photos, images, grid, modal, lightbox
 - Live: https://loamui.com/examples/page-sections/gallery-lightbox
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** Every thumbnail is an a whose href is the full-size file, so the gallery works before hydration and a modified click still opens a new tab; the lightbox is a native dialog with its backdrop, Escape and focus restore.
 - **Modern CSS.** An auto-fill grid of square, object-fit thumbnails answering its own width, and the Modal's width set through its public --loam-modal-size rather than a rule inside it.

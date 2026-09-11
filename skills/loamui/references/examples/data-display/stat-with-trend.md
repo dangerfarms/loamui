@@ -16,7 +16,15 @@ An example in **Data display**: a component and a stylesheet built from `@loamui
 - Tags: metrics, dashboard, kpi, sparkline, trend
 - Live: https://loamui.com/examples/data-display/stat-with-trend
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A description list of one term and three descriptions: the label, the figure, and the trend, so the markup reads label then value while the screen leads with the figure.
 - **Modern CSS.** The figure is set in tabular lining numerals from the display face, and the trend row wraps on its own when the tile is narrow; no breakpoint names a device.
@@ -27,10 +35,14 @@ An example in **Data display**: a component and a stylesheet built from `@loamui
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Badge, Card } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card render={<dl className="stat-with-trend" />}>
       <dt>Orders posted this week</dt>
@@ -53,9 +65,9 @@ export default function Example() {
           viewBox="0 0 80 24"
           preserveAspectRatio="none"
           role="img"
-          aria-labelledby="stat-with-trend-sparkline"
+          aria-labelledby={`${instanceId}-stat-with-trend-sparkline`}
         >
-          <title id="stat-with-trend-sparkline">
+          <title id={`${instanceId}-stat-with-trend-sparkline`}>
             Orders per week over the last eight weeks: 2,610, 2,780, 2,690, 2,950, 3,120, 3,080,
             3,310 and 3,904. Rising.
           </title>

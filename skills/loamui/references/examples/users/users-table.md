@@ -16,7 +16,15 @@ An example in **Users**: a component and a stylesheet built from `@loamui/core`,
 - Tags: table, team, members, actions, menu, contacts
 - Live: https://loamui.com/examples/users/users-table
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A real table with a caption, column headers and a row header per person, so a cell is announced with the row and column it belongs to; the email and phone are mailto: and tel: links, and removing someone is a submit button in a method="post" form.
 - **Modern CSS.** The Table's own element is the scroll wrapper and the example's root, so three cells are shaped from one scope while the Avatars and the Menus inside stay behind the donut; the actions column is sized to its button by an inline size of zero.

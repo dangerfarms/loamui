@@ -16,7 +16,15 @@ An example in **Buttons**: a component and a stylesheet built from `@loamui/core
 - Tags: upload, progress, button, disabled, loading, async
 - Live: https://loamui.com/examples/buttons/button-with-progress
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The bar is a native <progress> with a value, not a div with a width: the browser paints the fill and exposes the percentage. It is a sibling of the button laid over its edge, because a <button> may hold only phrasing content, and the button is disabled with the attribute, so a second click cannot start a second upload.
 - **Modern CSS.** The stack is a one-cell inline grid: the Button fills it by auto-placement and the bar is placed into the same cell by grid-area and aligned to the end, so nothing is measured or absolutely positioned; a primary region colours both.

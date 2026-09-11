@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: features, benefits, grid, icons, marketing
 - Live: https://loamui.com/examples/page-sections/feature-grid
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its h2, a header for the intro and a list of six items with h3 headings, so the outline reads the way the page looks.
 - **Modern CSS.** The list is an auto-fit grid answering the section's own width, and the icon square is sized in em on the heading's type so it rides the fluid scale.
@@ -26,6 +34,9 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import "./example.css";
 
 const FEATURES = [
@@ -101,11 +112,12 @@ const FEATURES = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="feature-grid" aria-labelledby="feature-grid-title">
+    <section className="feature-grid" aria-labelledby={`${instanceId}-feature-grid-title`}>
       <header>
         <p className="eyebrow">Why Hedgerow</p>
-        <h2 id="feature-grid-title">Seed you can save again</h2>
+        <h2 id={`${instanceId}-feature-grid-title`}>Seed you can save again</h2>
         <p className="description">
           Everything in the catalogue is grown for flavour and for saving, so a packet is the start
           of a variety you keep, not a purchase you repeat.

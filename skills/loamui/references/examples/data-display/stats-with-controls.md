@@ -16,7 +16,15 @@ An example in **Data display**: a component and a stylesheet built from `@loamui
 - Tags: daily, metrics, meter, capacity, date picker, dashboard
 - Live: https://loamui.com/examples/data-display/stats-with-controls
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The bars are native meter elements, because each figure sits within a known range rather than progressing toward an end; the date is a time element and the tiles are one description list.
 - **Modern CSS.** The tiles are an auto-fit grid answering the section's width; the figures are tabular lining numerals so they hold their width as the day changes under them, and the Meter's track reads because it sits on the Card's surface rather than a tinted tile.
@@ -28,7 +36,7 @@ An example in **Data display**: a component and a stylesheet built from `@loamui
 ```tsx
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { Button, Card, Meter, Time } from "@loamui/core";
 import "./example.css";
 
@@ -70,13 +78,17 @@ function Chevron({ direction }: { direction: -1 | 1 }) {
 }
 
 export default function Example() {
+  const instanceId = useId();
   const [day, setDay] = useState<Day>(TODAY);
   const at = DAYS.indexOf(day);
   const previous = DAYS[at - 1];
   const next = DAYS[at + 1];
 
   return (
-    <section className="stats-with-controls" aria-labelledby="stats-with-controls-title">
+    <section
+      className="stats-with-controls"
+      aria-labelledby={`${instanceId}-stats-with-controls-title`}
+    >
       <div className="controls">
         <Button
           aria-disabled={previous ? undefined : true}
@@ -87,7 +99,7 @@ export default function Example() {
           <Chevron direction={-1} />
           <span className="loam-VisuallyHidden">Previous day</span>
         </Button>
-        <h2 id="stats-with-controls-title">
+        <h2 id={`${instanceId}-stats-with-controls-title`}>
           <Time value={day.date} locale="en-GB" dateStyle="full" />
         </h2>
         <Button

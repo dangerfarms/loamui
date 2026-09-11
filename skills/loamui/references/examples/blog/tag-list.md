@@ -16,7 +16,15 @@ An example in **Blog**: a component and a stylesheet built from `@loamui/core`, 
 - Tags: topics, categories, labels, chips, pills
 - Live: https://loamui.com/examples/blog/tag-list
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A ul of links, because a set of tags is a list and each tag goes somewhere; the current one carries aria-current="page", the platform's own word for it.
 - **Modern CSS.** The list's markers go in CSS and its role is restored in the markup, and the ring on the current tag is drawn on the item with :has(), so the Badge itself is untouched.

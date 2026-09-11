@@ -16,7 +16,15 @@ An example in **Users**: a component and a stylesheet built from `@loamui/core`,
 - Tags: team, cards, grid, growers, rate, directory
 - Live: https://loamui.com/examples/users/users-grid
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A list of articles, each named by its heading, so a screen reader announces four items and can jump between them; the email is a mailto: link and the rate a data element whose machine-readable value is the number.
 - **Modern CSS.** The list is a grid of as many 16rem columns as fit, so the cards reflow with no breakpoint, and each card is a two-column grid inside with the facts and the action spanning both.
@@ -26,6 +34,9 @@ An example in **Users**: a component and a stylesheet built from `@loamui/core`,
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Avatar, Card, Price, SignpostLink } from "@loamui/core";
 import "./example.css";
 
@@ -65,18 +76,19 @@ const GROWERS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <ul className="users-grid" role="list">
       {GROWERS.map((grower) => (
         <li key={grower.id}>
-          <Card render={<article aria-labelledby={`users-grid-${grower.id}`} />}>
+          <Card render={<article aria-labelledby={`${instanceId}-users-grid-${grower.id}`} />}>
             <Avatar
               name={grower.name}
               src={`https://picsum.photos/id/${grower.photo}/120/120`}
               aria-hidden
             />
             <div className="text">
-              <h2 id={`users-grid-${grower.id}`}>{grower.name}</h2>
+              <h2 id={`${instanceId}-users-grid-${grower.id}`}>{grower.name}</h2>
               <p className="role">{grower.role}</p>
             </div>
             <dl>
@@ -111,7 +123,7 @@ export default function Example() {
   :scope {
     display: block grid;
     gap: var(--loam-space-md);
-    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
     list-style: none;
     margin: 0;
     padding: 0;
@@ -152,7 +164,7 @@ export default function Example() {
     display: block grid;
     gap: var(--loam-space-sm);
     grid-column: 1 / -1;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
     margin-block: var(--loam-space-xs) 0;
     margin-inline: 0;
 
@@ -172,6 +184,7 @@ export default function Example() {
 
     dd {
       font-size: var(--loam-text-sm);
+      hyphens: manual;
       margin: 0;
       overflow-wrap: anywhere;
     }

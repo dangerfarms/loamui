@@ -1,3 +1,6 @@
+"use client";
+
+import { useId } from "react";
 import "./example.css";
 
 const FEATURES = [
@@ -73,11 +76,12 @@ const FEATURES = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="feature-grid" aria-labelledby="feature-grid-title">
+    <section className="feature-grid" aria-labelledby={`${instanceId}-feature-grid-title`}>
       <header>
         <p className="eyebrow">Why Hedgerow</p>
-        <h2 id="feature-grid-title">Seed you can save again</h2>
+        <h2 id={`${instanceId}-feature-grid-title`}>Seed you can save again</h2>
         <p className="description">
           Everything in the catalogue is grown for flavour and for saving, so a packet is the start
           of a variety you keep, not a purchase you repeat.

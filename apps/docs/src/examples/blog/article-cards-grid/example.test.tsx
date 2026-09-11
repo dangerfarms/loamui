@@ -13,11 +13,9 @@ describe("article-cards-grid", () => {
     expect(list).toHaveClass("article-cards-grid");
     expect(screen.getAllByRole("listitem")).toHaveLength(3);
     const articles = screen.getAllByRole("article");
-    expect(articles.map((a) => a.getAttribute("aria-labelledby"))).toEqual([
-      "article-planting-a-native-hedge-title",
-      "article-tomato-seed-from-one-fruit-title",
-      "article-september-plant-sale-title",
-    ]);
+    for (const article of articles) {
+      expect(article).toHaveAccessibleName(article.querySelector("h3")!.textContent!);
+    }
     expect(
       screen.getByRole("article", { name: "Saving tomato seed from a single fruit" }),
     ).toHaveClass("loam-Card");

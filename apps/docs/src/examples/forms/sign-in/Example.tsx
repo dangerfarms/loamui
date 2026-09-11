@@ -1,13 +1,15 @@
 "use client";
 
+import { useId } from "react";
 import { Button, Card, Checkbox, Field, Input, PasswordInput } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card render={<div className="sign-in" />}>
-      <h1 id="sign-in-title">Sign in</h1>
-      <form action="/sign-in" method="post" aria-labelledby="sign-in-title">
+      <h1 id={`${instanceId}-sign-in-title`}>Sign in</h1>
+      <form action="/sign-in" method="post" aria-labelledby={`${instanceId}-sign-in-title`}>
         <Field.Root>
           <Field.Label>Email address</Field.Label>
           <Input name="email" type="email" autoComplete="email" inputMode="email" required />

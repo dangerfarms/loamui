@@ -16,7 +16,15 @@ An example in **Grids**: a component and a stylesheet built from `@loamui/core`,
 - Tags: grid, layout, cards, lead, columns
 - Live: https://loamui.com/examples/grids/grid-asymmetric
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A list of three articles, each named by its own h3, so the grid is a list to a screen reader and each card a named piece; no wrapper element exists only to be a column.
 - **Modern CSS.** The list is the container and the grid: two columns at 2:1 from 44rem of its own width with the lead spanning both rows, so the stacked pair's height is the lead's, and one column in source order below that.
@@ -26,14 +34,18 @@ An example in **Grids**: a component and a stylesheet built from `@loamui/core`,
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Card, SignpostLink } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <ul className="grid-asymmetric" role="list">
       <li className="lead">
-        <Card render={<article aria-labelledby="grid-asymmetric-lead" />}>
+        <Card render={<article aria-labelledby={`${instanceId}-grid-asymmetric-lead`} />}>
           <img
             className="media"
             src="https://picsum.photos/id/646/1200/800"
@@ -41,7 +53,7 @@ export default function Example() {
             width="1200"
             height="800"
           />
-          <h3 id="grid-asymmetric-lead">September at the nursery</h3>
+          <h3 id={`${instanceId}-grid-asymmetric-lead`}>September at the nursery</h3>
           <p>
             The plant sale opens on the first Saturday, the last of the summer seed comes off the
             bench, and the field walks move to the afternoon as the light shortens. Bare-root orders
@@ -53,8 +65,8 @@ export default function Example() {
         </Card>
       </li>
       <li>
-        <Card render={<article aria-labelledby="grid-asymmetric-sale" />}>
-          <h3 id="grid-asymmetric-sale">Plant sale</h3>
+        <Card render={<article aria-labelledby={`${instanceId}-grid-asymmetric-sale`} />}>
+          <h3 id={`${instanceId}-grid-asymmetric-sale`}>Plant sale</h3>
           <p>
             Member-grown perennials, herbs and the last vegetable plugs, on the bench from nine on
             Saturday 5 September.
@@ -65,8 +77,8 @@ export default function Example() {
         </Card>
       </li>
       <li>
-        <Card render={<article aria-labelledby="grid-asymmetric-swap" />}>
-          <h3 id="grid-asymmetric-swap">Seed swap</h3>
+        <Card render={<article aria-labelledby={`${instanceId}-grid-asymmetric-swap`} />}>
+          <h3 id={`${instanceId}-grid-asymmetric-swap`}>Seed swap</h3>
           <p>
             Bring what you saved and take what you need, first Sunday of the month. Labels and
             envelopes are on the table.

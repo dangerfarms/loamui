@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: landing, marketing, banner
 - Live: https://loamui.com/examples/page-sections/hero-with-image
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its own heading, an h1 because a hero opens the page; the type is the element styles' own.
 - **Modern CSS.** The hero is a container: two columns where it has room, one where it has not, decided by its own width rather than the viewport.
@@ -27,19 +35,23 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Badge, Button, SignpostLink } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="hero-with-image" aria-labelledby="hero-with-image-title">
+    <section className="hero-with-image" aria-labelledby={`${instanceId}-hero-with-image-title`}>
       <div className="inner">
         <div className="text">
           <p className="eyebrow">
             <Badge>Spring catalogue</Badge>
             <span>Sowing from March</span>
           </p>
-          <h1 id="hero-with-image-title">Seed saved by growers, for growers.</h1>
+          <h1 id={`${instanceId}-hero-with-image-title`}>Seed saved by growers, for growers.</h1>
           <p className="lede">
             Hedgerow is a nursery and seed co-op. Every packet is an open-pollinated variety grown
             on a member plot, dried and packed by hand, and posted the week you order it.

@@ -8,7 +8,22 @@ const axeOptions = { rules: { "color-contrast": { enabled: false } } };
 
 /** jsdom's own `files` setter takes only a FileList nothing can construct. */
 function choose(input: HTMLInputElement, files: File[]) {
-  Object.defineProperty(input, "files", { configurable: true, writable: true, value: files });
+  let selected = files;
+  Object.defineProperty(input, "files", {
+    configurable: true,
+    get: () => selected,
+    set: (value: File[]) => {
+      selected = value;
+    },
+  });
+  // Match the browser's file-input reset; jsdom cannot construct a FileList.
+  Object.defineProperty(input, "value", {
+    configurable: true,
+    get: () => "",
+    set: (value: string) => {
+      if (value === "") selected = [];
+    },
+  });
   fireEvent.change(input);
 }
 
@@ -27,7 +42,7 @@ describe("dropzone", () => {
     Object.defineProperty(big, "size", { value: 14_200_000 });
     choose(input, [big]);
     expect(screen.getByRole("alert")).toHaveTextContent(
-      "bed-b14.jpg is 14.2 MB. Each photo must be under 10 MB: choose a smaller copy",
+      "bed-b14.jpg is 14.2 MB. Each photo must be 10 MB or smaller: choose a smaller copy",
     );
     expect(input).toHaveAttribute("aria-invalid", "true");
 
@@ -37,4 +52,38 @@ describe("dropzone", () => {
     expect(screen.getByRole("list")).toHaveTextContent("meadow.png 6 bytes");
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
+  it.each(["selection", "drop"])(
+    "validates type, size and count through %s and recovers",
+    (method) => {
+      const { container } = render(<Example />);
+      const input = screen.getByLabelText(/Plot photos/) as HTMLInputElement;
+      const submit = (files: File[]) => {
+        if (method === "selection") choose(input, files);
+        else {
+          choose(input, []);
+          fireEvent.drop(container.querySelector(".loam-FileInput")!, {
+            dataTransfer: { types: ["Files"], files },
+          });
+        }
+      };
+      const png = () => new File(["png"], "plot.png", { type: "image/png" });
+      const big = png();
+      Object.defineProperty(big, "size", { value: 10_000_001 });
+      for (const [files, error] of [
+        [[new File(["notes"], "notes.txt", { type: "text/plain" })], /Choose a JPEG or PNG/],
+        [[big], /10 MB or smaller/],
+        [Array.from({ length: 6 }, png), /Choose 5 photos at most/],
+      ] as [File[], RegExp][]) {
+        submit(files);
+        expect(screen.getByRole("alert")).toHaveTextContent(error);
+        expect(input.files).toHaveLength(0);
+        expect(screen.queryAllByRole("listitem")).toHaveLength(0);
+      }
+      const boundary = png();
+      Object.defineProperty(boundary, "size", { value: 10_000_000 });
+      submit([boundary]);
+      expect(screen.queryByRole("alert")).toBeNull();
+      expect(screen.getByRole("list")).toHaveTextContent("plot.png");
+    },
+  );
 });

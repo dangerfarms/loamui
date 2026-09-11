@@ -1,15 +1,23 @@
+"use client";
+
+import { useId } from "react";
 import { Badge, Button, Card, Price } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <ul className="pricing-table" role="list" aria-label="Membership plans">
       <li>
-        <Card render={<article className="plan" aria-labelledby="pricing-table-seedling" />}>
+        <Card
+          render={
+            <article className="plan" aria-labelledby={`${instanceId}-pricing-table-seedling`} />
+          }
+        >
           <p className="eyebrow">
             <Badge>Starter</Badge>
           </p>
-          <h3 id="pricing-table-seedling">Seedling</h3>
+          <h3 id={`${instanceId}-pricing-table-seedling`}>Seedling</h3>
           <p className="description">For a windowsill, a balcony or a first raised bed.</p>
           <p className="price">
             <Price value={24} currency="GBP">
@@ -34,11 +42,15 @@ export default function Example() {
         </Card>
       </li>
       <li className="recommended">
-        <Card render={<article className="plan" aria-labelledby="pricing-table-grower" />}>
+        <Card
+          render={
+            <article className="plan" aria-labelledby={`${instanceId}-pricing-table-grower`} />
+          }
+        >
           <p className="eyebrow">
             <Badge>Most popular</Badge>
           </p>
-          <h3 id="pricing-table-grower">Grower</h3>
+          <h3 id={`${instanceId}-pricing-table-grower`}>Grower</h3>
           <p className="description">For a household that sows most of what it eats.</p>
           <p className="price">
             <Price value={48} currency="GBP">
@@ -60,11 +72,15 @@ export default function Example() {
         </Card>
       </li>
       <li>
-        <Card render={<article className="plan" aria-labelledby="pricing-table-plot-holder" />}>
+        <Card
+          render={
+            <article className="plan" aria-labelledby={`${instanceId}-pricing-table-plot-holder`} />
+          }
+        >
           <p className="eyebrow">
             <Badge>With a bed</Badge>
           </p>
-          <h3 id="pricing-table-plot-holder">Plot-holder</h3>
+          <h3 id={`${instanceId}-pricing-table-plot-holder`}>Plot-holder</h3>
           <p className="description">For a grower who wants ground of their own.</p>
           <p className="price">
             <Price value={120} currency="GBP">

@@ -16,7 +16,15 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - Tags: floating label, label, placeholder, input, animation
 - Live: https://loamui.com/examples/forms/floating-label
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A real <label for> on a real input: the words are the control's name in every state, and clicking them focuses the box. The placeholder is one space, there only so :placeholder-shown answers whether the box is empty; no hint is hidden in it.
 - **Modern CSS.** The two positions are one :has() on the field, input:focus or input:not(:placeholder-shown), with no script watching the value; the rise is a transition on inset and font-size behind prefers-reduced-motion.
@@ -28,13 +36,15 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Field, Input } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <Field.Root className="floating-label" id="full-name">
-      <label htmlFor="full-name">Full name</label>
+    <Field.Root className="floating-label" id={`${instanceId}-full-name`}>
+      <label htmlFor={`${instanceId}-full-name`}>Full name</label>
       {/* One space: :placeholder-shown is true exactly while the box is
           empty, and a space shows nothing. The label is never the hint. */}
       <Input name="name" autoComplete="name" placeholder=" " />

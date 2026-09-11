@@ -16,7 +16,15 @@ An example in **Application cards**: a component and a stylesheet built from `@l
 - Tags: milestone, project, tasks, team, deadline
 - Live: https://loamui.com/examples/app-cards/tasks-card
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The due date is a time element whose text is written for people and whose dateTime is the date; the bar is the native progress element and the team is a list, one item per person.
 - **Modern CSS.** The Card is a flex column whose foot takes the slack with an auto margin, so a row of milestones lines its teams up; the count is set in tabular figures at the end, under the end of the fill.
@@ -28,6 +36,7 @@ An example in **Application cards**: a component and a stylesheet built from `@l
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Avatar, Card, Progress, Time } from "@loamui/core";
 import "./example.css";
 
@@ -39,12 +48,15 @@ const TEAM = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <Card render={<article className="tasks-card" aria-labelledby="tasks-card-title" />}>
+    <Card
+      render={<article className="tasks-card" aria-labelledby={`${instanceId}-tasks-card-title`} />}
+    >
       <p className="due">
         Due <Time value="2026-11-30" locale="en-GB" dateStyle="long" />
       </p>
-      <h3 id="tasks-card-title">Spring catalogue 2027</h3>
+      <h3 id={`${instanceId}-tasks-card-title`}>Spring catalogue 2027</h3>
       <p className="description">
         Every variety trialled this year written up, photographed and priced, ready for the printer
         in December.

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { Field, Input, Select } from "@loamui/core";
 import "./example.css";
 
@@ -11,6 +11,7 @@ const CURRENCIES = [
 ];
 
 export default function Example() {
+  const currencyId = useId();
   const [currency, setCurrency] = useState("GBP");
   const symbol = CURRENCIES.find((c) => c.code === currency)?.symbol;
 
@@ -28,6 +29,7 @@ export default function Example() {
           startSection={<span aria-hidden="true">{symbol}</span>}
         />
         <Select
+          id={currencyId}
           name="currency"
           aria-label="Currency"
           value={currency}

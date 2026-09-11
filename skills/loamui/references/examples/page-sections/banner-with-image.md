@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: promotion, offer, sale, banner, photo
 - Live: https://loamui.com/examples/page-sections/banner-with-image
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its h2 with the photograph as an img carrying real alt text, because a picture of the trees on offer is content, not decoration.
 - **Modern CSS.** The section is the container and the grid: one column with the picture on top, then a 2:3 split at 44rem of its own width where the picture grows to the height of the words and is cropped rather than letterboxed.
@@ -27,12 +35,19 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Badge, SignpostLink } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="banner-with-image" aria-labelledby="banner-with-image-title">
+    <section
+      className="banner-with-image"
+      aria-labelledby={`${instanceId}-banner-with-image-title`}
+    >
       <img
         className="media"
         src="https://picsum.photos/id/429/800/600"
@@ -45,7 +60,7 @@ export default function Example() {
           <Badge>Until 30 November</Badge>
           <span>Bare-root season</span>
         </p>
-        <h2 id="banner-with-image-title">Members take a fifth off fruit trees</h2>
+        <h2 id={`${instanceId}-banner-with-image-title`}>Members take a fifth off fruit trees</h2>
         <p className="description">
           Apples, pears, plums and soft fruit on local rootstocks, lifted the week they are posted.
           Order before the end of November and the discount comes off at the basket.

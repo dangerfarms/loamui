@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { Field, Input, Range } from "@loamui/core";
 import "./example.css";
 
@@ -8,22 +8,25 @@ const MIN = 10;
 const MAX = 30;
 
 export default function Example() {
+  const instanceId = useId();
   const [value, setValue] = useState(20);
   // What the box shows can lag the value: a half-typed number is not yet
   // a temperature, and clearing the box is not asking for zero.
   const [text, setText] = useState("20");
 
   const settle = (next: number) => {
-    const clamped = Math.min(MAX, Math.max(MIN, next));
+    const clamped =
+      Number.isFinite(next) && Number.isInteger(next) ? Math.min(MAX, Math.max(MIN, next)) : value;
     setValue(clamped);
     setText(String(clamped));
   };
 
   return (
-    <Field.Root className="number-input-with-slider" id="propagator">
-      <Field.Label id="propagator-label">Propagator temperature</Field.Label>
+    <Field.Root className="number-input-with-slider" id={`${instanceId}-propagator`}>
+      <Field.Label id={`${instanceId}-propagator-label`}>Propagator temperature</Field.Label>
       <Field.Description>
-        Between {MIN} and {MAX} °C. Most seed germinates fastest around 20.
+        Whole degrees between {MIN} and {MAX} °C. Invalid or fractional entries return to the last
+        temperature when you leave the field.
       </Field.Description>
       <div className="row">
         <Input
@@ -42,8 +45,8 @@ export default function Example() {
           onBlur={() => settle(text === "" ? value : Number(text))}
         />
         <Range
-          id="propagator-slider"
-          aria-labelledby="propagator-label"
+          id={`${instanceId}-propagator-slider`}
+          aria-labelledby={`${instanceId}-propagator-label`}
           min={MIN}
           max={MAX}
           step={1}

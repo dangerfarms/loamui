@@ -16,7 +16,15 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 - Tags: site map, legal, small print
 - Live: https://loamui.com/examples/navigation/footer-with-columns
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A footer landmark holding four nav landmarks, three named by their headings and the fourth Legal, so a screen reader's landmark list reads Shop, Grow, Co-op, Legal.
 - **Modern CSS.** The columns are an auto-fit grid and the brand joins the row only where the footer's own width allows; no breakpoint names a device.
@@ -26,6 +34,9 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import "./example.css";
 
 const COLUMNS = [
@@ -59,6 +70,7 @@ const COLUMNS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <footer className="footer-with-columns">
       <div className="brand">
@@ -84,7 +96,7 @@ export default function Example() {
       </div>
       <div className="columns">
         {COLUMNS.map((column) => {
-          const id = `footer-${column.title.toLowerCase()}`;
+          const id = `${instanceId}-footer-${column.title.toLowerCase()}`;
           return (
             <nav key={column.title} aria-labelledby={id}>
               <h3 id={id}>{column.title}</h3>

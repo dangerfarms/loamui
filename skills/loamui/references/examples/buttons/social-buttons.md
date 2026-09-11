@@ -16,7 +16,15 @@ An example in **Buttons**: a component and a stylesheet built from `@loamui/core
 - Tags: sign in, oauth, google, github, apple, social, login
 - Live: https://loamui.com/examples/buttons/social-buttons
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** Each button submits its own form to the provider's sign-in address with POST, because starting a sign-in is an action with a side effect, not a page to link to; the form works with JavaScript off.
 - **Modern CSS.** The list answers a container query on the wrapper, three columns from 36rem and one below, and each form is a one-cell grid so its Button stretches to the cell without a width prop.

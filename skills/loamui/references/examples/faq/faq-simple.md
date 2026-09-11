@@ -16,7 +16,15 @@ An example in **FAQ**: a component and a stylesheet built from `@loamui/core`, t
 - Tags: faq, accordion, questions, disclosure, help
 - Live: https://loamui.com/examples/faq/faq-simple
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** Each question is a details element with the question as its summary: the browser owns the toggle, the keyboard support and, through the shared name, the rule that opening one closes the rest, with no state in the page.
 - **Modern CSS.** The example is a grid of gaps and nothing more; the surface, line, chevron and open state are the Details' own, and its open animation is gated on interpolate-size by core, not here.
@@ -28,6 +36,7 @@ An example in **FAQ**: a component and a stylesheet built from `@loamui/core`, t
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Details } from "@loamui/core";
 import "./example.css";
 
@@ -55,9 +64,10 @@ const QUESTIONS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="faq-simple" aria-labelledby="faq-simple-title">
-      <h2 id="faq-simple-title">Frequently asked questions</h2>
+    <section className="faq-simple" aria-labelledby={`${instanceId}-faq-simple-title`}>
+      <h2 id={`${instanceId}-faq-simple-title`}>Frequently asked questions</h2>
       <p className="description">
         The four things people ask the bench most often. For anything else, write to{" "}
         <a href="mailto:hello@hedgerow.coop">hello@hedgerow.coop</a>.

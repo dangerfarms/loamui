@@ -16,7 +16,15 @@ An example in **Error pages**: a component and a stylesheet built from `@loamui/
 - Tags: 404, not found, missing, error page, illustration
 - Live: https://loamui.com/examples/errors/error-404-image
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its own h1, because the error is the page; the code is a paragraph, not a heading, so the outline reads Nothing is growing here and not 404.
 - **Modern CSS.** The page is a container: one column with the picture under the words where it is narrow, two columns with the picture at the end where it is wide; nothing is sized to a viewport.
@@ -26,15 +34,19 @@ An example in **Error pages**: a component and a stylesheet built from `@loamui/
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { SignpostLink } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="error-404-image" aria-labelledby="error-404-image-title">
+    <section className="error-404-image" aria-labelledby={`${instanceId}-error-404-image-title`}>
       <div className="text">
         <p className="code">404</p>
-        <h1 id="error-404-image-title">Nothing is growing here</h1>
+        <h1 id={`${instanceId}-error-404-image-title`}>Nothing is growing here</h1>
         <p className="description">
           We looked under every pot. The page you asked for is not here: the link you followed may
           be out of date, or the page went when the new season’s catalogue replaced the old one.

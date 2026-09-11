@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: newsletter, subscribe, signup, email, banner
 - Live: https://loamui.com/examples/page-sections/email-banner
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A native form that submits the email to its action: Enter in the box or the button sends it, with required and type=email catching a slip before anything is posted.
 - **Modern CSS.** The section paints the subtle surface and is the container: at 40rem of its own width the illustration takes a column beside the words, and below it is left out rather than pushed under the form.
@@ -29,15 +37,17 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Button, Field, Input } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="email-banner" aria-labelledby="email-banner-title">
+    <section className="email-banner" aria-labelledby={`${instanceId}-email-banner-title`}>
       <div className="inner">
         <div className="text">
-          <h2 id="email-banner-title">The sowing letter</h2>
+          <h2 id={`${instanceId}-email-banner-title`}>The sowing letter</h2>
           <p>
             What to sow this week, what is back on the bench, and one grower's note. Sent on Sundays
             from February to October, and never sold on.

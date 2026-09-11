@@ -16,7 +16,15 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 - Tags: site header, mega menu, dropdown, guides, navbar
 - Live: https://loamui.com/examples/navigation/header-mega-menu
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The panel is a native popover in the top layer, so light dismiss and Escape are the browser's, and every guide inside is an anchor in a list; the panel opens on a press, not on hover, so a keyboard and a touch screen open the same thing.
 - **Modern CSS.** The panel's width is Nav's public --loam-nav-dropdown-size, raised to 32rem on the Root where the panel reads it, and the guides fill it with auto-fill columns, so two sit side by side where there is room and one where there is not; the strip at the foot is a box with its own padding inside the panel's.

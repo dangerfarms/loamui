@@ -1,15 +1,21 @@
+"use client";
+
+import { useId } from "react";
 import { SignpostLink } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <section
       className="call-to-action-with-media"
-      aria-labelledby="call-to-action-with-media-title"
+      aria-labelledby={`${instanceId}-call-to-action-with-media-title`}
     >
       <div className="inner">
         <div className="text">
-          <h2 id="call-to-action-with-media-title">Sow along with us this spring</h2>
+          <h2 id={`${instanceId}-call-to-action-with-media-title`}>
+            Sow along with us this spring
+          </h2>
           <p className="lede">
             The sowing calendar tells you what to start each week, indoors or out, and the guide in
             every packet picks up where it leaves off.

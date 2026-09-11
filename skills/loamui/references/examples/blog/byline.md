@@ -16,7 +16,15 @@ An example in **Blog**: a component and a stylesheet built from `@loamui/core`, 
 - Tags: author, date, reading time, meta
 - Live: https://loamui.com/examples/blog/byline
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The author's name sits in an address element, which HTML reserves for the contact information of an article's author, around a link with rel="author"; the dates are time elements.
 - **Modern CSS.** The dots between the parts are generated content drawn before every span that follows the address, so the parts can be reordered or dropped and the dots still fall only between them.

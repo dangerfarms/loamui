@@ -16,7 +16,15 @@ An example in **Sliders**: a component and a stylesheet built from `@loamui/core
 - Tags: slider, range, marks, ticks, datalist, moisture
 - Live: https://loamui.com/examples/sliders/slider-with-marks
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A native <input type="range"> with a <datalist> of the marks: the platform snaps the thumb to them where it supports it, and the ticks under the track are a picture of that list, hidden from assistive technology so the slider is not followed by a phantom listbox.
 - **Modern CSS.** Nothing but a width in its stylesheet: every mark's position is one custom property core sets on it, placed by the thumb's own geometry in em, so the labels stay under their values at every container width and text size.

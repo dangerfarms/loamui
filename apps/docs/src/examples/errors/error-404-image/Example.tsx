@@ -1,12 +1,16 @@
+"use client";
+
+import { useId } from "react";
 import { SignpostLink } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="error-404-image" aria-labelledby="error-404-image-title">
+    <section className="error-404-image" aria-labelledby={`${instanceId}-error-404-image-title`}>
       <div className="text">
         <p className="code">404</p>
-        <h1 id="error-404-image-title">Nothing is growing here</h1>
+        <h1 id={`${instanceId}-error-404-image-title`}>Nothing is growing here</h1>
         <p className="description">
           We looked under every pot. The page you asked for is not here: the link you followed may
           be out of date, or the page went when the new season’s catalogue replaced the old one.

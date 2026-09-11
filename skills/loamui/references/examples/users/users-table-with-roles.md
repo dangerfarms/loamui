@@ -16,7 +16,15 @@ An example in **Users**: a component and a stylesheet built from `@loamui/core`,
 - Tags: table, team, roles, permissions, select, status, last active
 - Live: https://loamui.com/examples/users/users-table-with-roles
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** Each role is a native select named by a label that is read but not seen, and the table sits in a method="post" form with one submit button, so a change is a form submission the browser can make with no script.
 - **Modern CSS.** The form is the root and the Table a scope of its own past the donut; the role column is floored at a width that fits its longest option, so nothing shifts as a choice changes.
@@ -29,6 +37,7 @@ An example in **Users**: a component and a stylesheet built from `@loamui/core`,
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Avatar, Badge, Button, Select, Table, Time } from "@loamui/core";
 import "./example.css";
 
@@ -106,6 +115,7 @@ const MEMBERS: Member[] = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <form className="users-table-with-roles" method="post" action="/team/roles">
       <Table>
@@ -135,11 +145,11 @@ export default function Example() {
                 </span>
               </th>
               <td className="role">
-                <label className="loam-VisuallyHidden" htmlFor={`role-${member.id}`}>
+                <label className="loam-VisuallyHidden" htmlFor={`${instanceId}-role-${member.id}`}>
                   Role for {member.name}
                 </label>
                 <Select
-                  id={`role-${member.id}`}
+                  id={`${instanceId}-role-${member.id}`}
                   name={`role[${member.id}]`}
                   defaultValue={member.role}
                 >

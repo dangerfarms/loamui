@@ -1,17 +1,19 @@
 "use client";
 
+import { useId } from "react";
 import { Avatar, Menu } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Menu.Root className="user-menu">
       <Menu.Trigger>
         <Avatar name="Imogen Hartley" src="https://picsum.photos/id/823/96/96" aria-hidden />
         <span className="loam-VisuallyHidden">Account menu for Imogen Hartley</span>
       </Menu.Trigger>
-      <Menu.Popup aria-labelledby="user-menu-account">
-        <div className="account" id="user-menu-account">
+      <Menu.Popup aria-labelledby={`${instanceId}-user-menu-account`}>
+        <div className="account" id={`${instanceId}-user-menu-account`}>
           <strong>Imogen Hartley</strong>
           <span className="email">imogen@hedgerow.example</span>
         </div>

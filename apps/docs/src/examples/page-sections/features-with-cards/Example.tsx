@@ -1,3 +1,6 @@
+"use client";
+
+import { useId } from "react";
 import { Card } from "@loamui/core";
 import "./example.css";
 
@@ -77,11 +80,17 @@ const FEATURES = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="features-with-cards" aria-labelledby="features-with-cards-title">
+    <section
+      className="features-with-cards"
+      aria-labelledby={`${instanceId}-features-with-cards-title`}
+    >
       <header>
         <p className="eyebrow">What we do</p>
-        <h2 id="features-with-cards-title">Everything a grower needs, from one bench</h2>
+        <h2 id={`${instanceId}-features-with-cards-title`}>
+          Everything a grower needs, from one bench
+        </h2>
         <p className="description">
           Hedgerow sells seed and plants, but the co-op is the swap bench, the workshops and the
           guides that come with them.

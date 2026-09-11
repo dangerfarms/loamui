@@ -16,7 +16,15 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - Tags: search, header, site search, landmark
 - Live: https://loamui.com/examples/forms/inline-search-form
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A native <search> landmark around a native form: Enter in the box or the button submits a GET to the action with the query under q, and type="search" keeps the platform's own clear affordance.
 - **Modern CSS.** The landmark's own grid puts the box and the button on one row; the example adds a width cap that shrinks with the header rather than a breakpoint.

@@ -16,7 +16,15 @@ An example in **FAQ**: a component and a stylesheet built from `@loamui/core`, t
 - Tags: faq, accordion, questions, surface, help
 - Live: https://loamui.com/examples/faq/faq-with-background
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its h2 with a header for the intro and a details element per question; the shared name makes them exclusive without a line of script.
 - **Modern CSS.** The section paints the subtle surface and is its own container: the questions are capped at 44rem and centred, and the padding doubles at 48rem of the section's width, not the viewport's.
@@ -29,6 +37,7 @@ An example in **FAQ**: a component and a stylesheet built from `@loamui/core`, t
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Details } from "@loamui/core";
 import "./example.css";
 
@@ -56,11 +65,15 @@ const QUESTIONS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="faq-with-background" aria-labelledby="faq-with-background-title">
+    <section
+      className="faq-with-background"
+      aria-labelledby={`${instanceId}-faq-with-background-title`}
+    >
       <div className="inner">
         <header>
-          <h2 id="faq-with-background-title">Questions about ordering</h2>
+          <h2 id={`${instanceId}-faq-with-background-title`}>Questions about ordering</h2>
           <p>
             Posting, replacements and joining as a group. Still unsure? The nursery answers the
             phone on open days.

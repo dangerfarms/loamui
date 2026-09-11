@@ -16,7 +16,15 @@ An example in **FAQ**: a component and a stylesheet built from `@loamui/core`, t
 - Tags: faq, accordion, questions, illustration, help
 - Live: https://loamui.com/examples/faq/faq-with-image
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its h2 with a details element per question; the illustration is inline SVG in currentColor, so it needs no image file and takes the scheme with the words.
 - **Modern CSS.** One column below 48rem of the section's own width with the picture ordered last, then a 1:2 split with the picture first and sticky at the top, so it keeps the questions company as they open.
@@ -28,6 +36,7 @@ An example in **FAQ**: a component and a stylesheet built from `@loamui/core`, t
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Details } from "@loamui/core";
 import "./example.css";
 
@@ -55,8 +64,9 @@ const QUESTIONS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="faq-with-image" aria-labelledby="faq-with-image-title">
+    <section className="faq-with-image" aria-labelledby={`${instanceId}-faq-with-image-title`}>
       <div className="inner">
         <svg
           className="illustration"
@@ -79,7 +89,7 @@ export default function Example() {
           <path d="M120 204v-34" />
         </svg>
         <div className="text">
-          <h2 id="faq-with-image-title">Sowing questions</h2>
+          <h2 id={`${instanceId}-faq-with-image-title`}>Sowing questions</h2>
           <p>
             The questions every packet's guide answers, gathered in one place for the first week of
             spring.

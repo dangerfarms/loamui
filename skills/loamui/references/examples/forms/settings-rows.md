@@ -16,7 +16,15 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - Tags: preferences, settings, toggles, notifications, account
 - Live: https://loamui.com/examples/forms/settings-rows
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A native fieldset names the group, and each row's label is the control's real <label>, so clicking the words flips the switch; the wiring is core Field's, not the switch's, which is why a Select and a Checkbox sit in the same slot labelled and described the same way.
 - **Modern CSS.** The row's grid is rooted inside the Field that wires it, and the error auto-places under the words; below 24rem the control drops beneath the words, decided by the stack's own width.

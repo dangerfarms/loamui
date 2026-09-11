@@ -16,7 +16,15 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - Tags: plans, pricing, membership, radio cards, options
 - Live: https://loamui.com/examples/forms/choice-cards-radio
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Pass a name such as plan when integrating with a form endpoint. When omitted, RadioGroup generates a unique name so multiple copies on one page remain independent. Supply the real membership options and submit the selected value in your application.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A RadioGroup shares the name and the default, and each card is a <label> around a native radio, so the whole surface is the click target and the arrow keys move the choice as on any radio set; the state lives in the input, not on the card.
 - **Modern CSS.** Checked is detected from the input with :has(), never declared on the card: an outline in the Card's own line's place, and a focus ring around the card when the radio inside has keyboard focus.
@@ -29,6 +37,7 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Card, Radio, RadioGroup } from "@loamui/core";
 import "./example.css";
 
@@ -51,13 +60,14 @@ const PLANS = [
   },
 ];
 
-export default function Example() {
+export default function Example({ name }: { name?: string }) {
+  const instanceId = useId();
   return (
-    <RadioGroup.Root className="choice-cards-radio" name="plan" defaultValue="grower">
+    <RadioGroup.Root className="choice-cards-radio" name={name} defaultValue="grower">
       <RadioGroup.Legend>Choose a membership</RadioGroup.Legend>
       <div className="cards">
         {PLANS.map((plan) => {
-          const id = `plan-${plan.value}`;
+          const id = `${instanceId}-plan-${plan.value}`;
           return (
             <Card key={plan.value} render={<label className="card" htmlFor={id} />}>
               <span className="control">

@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: iframe, openstreetmap, location, directions
 - Live: https://loamui.com/examples/page-sections/embed-map
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The same figure and iframe as the video, with a src that happens to be a map; the title says what the map shows, since that is the only name the frame has.
 - **Modern CSS.** A 4 / 3 aspect-ratio on the frame, because a map reads better squarer than a video; nothing else changes between the two embeds.
@@ -82,6 +90,10 @@ export default function Example() {
     font-size: var(--loam-text-sm);
     margin: 0;
     max-inline-size: var(--loam-measure);
+
+    a {
+      text-decoration: underline;
+    }
   }
 }
 ```

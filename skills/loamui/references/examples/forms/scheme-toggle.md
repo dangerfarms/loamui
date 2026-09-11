@@ -16,12 +16,20 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - Tags: theme, dark mode, colour scheme, light-dark, preference
 - Live: https://loamui.com/examples/forms/scheme-toggle
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+The control changes its whole document and remembers the choice under the color-scheme storage key. Use that same key in your application’s pre-paint theme script. The docs run this example in a separate document so its theme does not change the surrounding page.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A native radio group in core's pill: the arrow keys move the choice, the legend names it, and choosing sets or removes data-theme on the root, which is the whole mechanism: color-scheme re-resolves and every light-dark() token follows.
 - **Modern CSS.** No stylesheet of its own: the chosen segment, the focus ring and the forced-colours treatment are core's, and the theme change is one attribute the tokens already answer.
 - **Composition.** SegmentedControl.Root, Legend and Item as core ships them, with an icon and hidden words in each segment; the storage logic is the example's, in the same file, and drops into any page that reads the same key.
-- **Accessible & gatekept.** The legend names the group and each segment carries its name in hidden text, so the icons are never the only label. The choice is read from storage before the first paint, so two toggles on one page, or two tabs, stay in step; the page's own pre-paint script prevents a flash of the wrong scheme.
+- **Accessible & gatekept.** The legend names the group and each segment carries its name in hidden text, so the icons are never the only label. Two toggles on one page and storage changes from another tab stay in step. The application can use a pre-paint script with the same storage key to prevent a flash of the wrong scheme.
 
 ## Example.tsx
 
@@ -35,7 +43,7 @@ import "./example.css";
 type Scheme = "system" | "light" | "dark";
 
 /** The key the page's pre-paint script reads, so a reload keeps the choice. */
-const STORAGE_KEY = "loamui-theme";
+const STORAGE_KEY = "color-scheme";
 
 function readStored(): Scheme {
   try {
@@ -47,17 +55,26 @@ function readStored(): Scheme {
   return "system";
 }
 
-// Storage is the store. The storage event carries another tab's change;
+// The root attribute is the current choice, even if storage is unavailable.
+// The storage event carries another tab's change;
 // this tab's own changes are announced by hand, since the event does not
 // fire in the document that made them.
 const listeners = new Set<() => void>();
 
+function readSnapshot(): Scheme {
+  const theme = document.documentElement.dataset.theme;
+  return theme === "light" || theme === "dark" ? theme : "system";
+}
+
 function subscribe(listener: () => void) {
   listeners.add(listener);
-  window.addEventListener("storage", listener);
+  const onStorage = (event: StorageEvent) => {
+    if (event.key === STORAGE_KEY || event.key === null) apply(readStored());
+  };
+  window.addEventListener("storage", onStorage);
   return () => {
     listeners.delete(listener);
-    window.removeEventListener("storage", listener);
+    window.removeEventListener("storage", onStorage);
   };
 }
 
@@ -79,13 +96,12 @@ function apply(scheme: Scheme) {
 
 export default function Example() {
   // The server cannot know the stored choice: System keeps the markup
-  // deterministic, and the client snapshot replaces it before paint.
-  const scheme = useSyncExternalStore(subscribe, readStored, () => "system" as Scheme);
+  // deterministic, and the client snapshot supplies the applied choice.
+  const scheme = useSyncExternalStore(subscribe, readSnapshot, () => "system" as Scheme);
 
   // A page without a pre-paint script still ends up wearing the stored choice.
   useEffect(() => {
-    const stored = readStored();
-    if (stored !== "system") document.documentElement.dataset.theme = stored;
+    apply(readStored());
   }, []);
 
   return (

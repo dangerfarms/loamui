@@ -16,7 +16,15 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 - Tags: sidebar, search, badge, count, account, avatar
 - Live: https://loamui.com/examples/navigation/side-nav-with-search
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** Search renders the search landmark around a real form with one text box, so Enter submits it by the browser's own rule and no button is needed; the account row is a link because it goes somewhere.
 - **Modern CSS.** Three grid rows, the middle one 1fr, pin the account to the foot without positioning; inside a link the words grow to fill the line, which is what pushes the count to the end.

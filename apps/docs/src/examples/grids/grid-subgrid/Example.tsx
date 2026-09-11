@@ -1,3 +1,6 @@
+"use client";
+
+import { useId } from "react";
 import { Button, Card } from "@loamui/core";
 import "./example.css";
 
@@ -25,15 +28,21 @@ const WORKSHOPS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <ul className="grid-subgrid" role="list">
       {WORKSHOPS.map((workshop) => (
         <Card
           key={workshop.slug}
-          render={<li className="workshop" aria-labelledby={`grid-subgrid-${workshop.slug}`} />}
+          render={
+            <li
+              className="workshop"
+              aria-labelledby={`${instanceId}-grid-subgrid-${workshop.slug}`}
+            />
+          }
         >
           <div className="head">
-            <h3 id={`grid-subgrid-${workshop.slug}`}>{workshop.title}</h3>
+            <h3 id={`${instanceId}-grid-subgrid-${workshop.slug}`}>{workshop.title}</h3>
             <p className="when">{workshop.when}</p>
           </div>
           <p className="description">{workshop.description}</p>

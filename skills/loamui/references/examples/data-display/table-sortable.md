@@ -16,7 +16,15 @@ An example in **Data display**: a component and a stylesheet built from `@loamui
 - Tags: table, sort, data, stock, inventory
 - Live: https://loamui.com/examples/data-display/table-sortable
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A real table with a caption, column headers and a row header per variety, so a cell is announced with the row and column it belongs to; the sort control is a button, not a header that happens to be clickable.
 - **Modern CSS.** The figures are set end-aligned in tabular numerals so a column stacks on its last digit; the sort glyph is the Table's own, drawn from the aria-sort the header already carries.

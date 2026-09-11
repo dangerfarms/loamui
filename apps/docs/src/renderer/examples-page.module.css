@@ -52,6 +52,7 @@
 .content {
   display: block grid;
   gap: 3rem;
+  grid-template-columns: minmax(0, 1fr);
   min-inline-size: 0;
 }
 

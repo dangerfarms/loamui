@@ -1,14 +1,16 @@
 "use client";
 
+import { useId } from "react";
 import { Stepper } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="stepper-progress" aria-labelledby="stepper-progress-title">
+    <section className="stepper-progress" aria-labelledby={`${instanceId}-stepper-progress-title`}>
       <header>
         <p className="eyebrow">Order HR-20417</p>
-        <h2 id="stepper-progress-title">Your order is being packed</h2>
+        <h2 id={`${instanceId}-stepper-progress-title`}>Your order is being packed</h2>
         <p>
           Placed on <time dateTime="2026-09-03T09:14">Thursday 3 September</time>: four packets and
           a hand fork, going to Ludlow.

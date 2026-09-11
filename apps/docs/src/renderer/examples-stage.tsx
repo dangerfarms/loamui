@@ -134,7 +134,7 @@ function OpenIcon() {
 }
 
 /**
- * The live example inside an isolated frame with its own controls: a
+ * The live example inside a styled container with its own controls: a
  * colour scheme pinned to the frame alone (data-theme sets color-scheme
  * for the subtree, so every light-dark() token re-resolves inside it),
  * width presets so the container queries answer without a window resize,
@@ -147,12 +147,15 @@ export function ExampleStage({
   title,
   href,
   children,
+  documentPreview = false,
 }: {
   /** Names the frame for assistive technology. */
   title: string;
   /** The example's own page; omitted on that page. */
   href?: string;
   children: ReactNode;
+  /** Whole-document examples manage their own scheme inside an iframe. */
+  documentPreview?: boolean;
 }) {
   const [state, setState] = useState<StageState>(DEFAULT);
   const site = useSiteScheme();
@@ -196,19 +199,23 @@ export function ExampleStage({
             </Button>
           ))}
         </div>
-        <Button
-          className={classes.control}
-          aria-pressed={state.rtl}
-          title="Right-to-left"
-          onClick={() => update({ rtl: !state.rtl })}
-        >
-          <RtlIcon />
-          <span className="loam-VisuallyHidden">Right-to-left</span>
-        </Button>
-        <Button className={classes.control} title={schemeLabel} onClick={flipScheme}>
-          {scheme === "dark" ? <MoonIcon /> : <SunIcon />}
-          <span className="loam-VisuallyHidden">{schemeLabel}</span>
-        </Button>
+        {!documentPreview && (
+          <>
+            <Button
+              className={classes.control}
+              aria-pressed={state.rtl}
+              title="Right-to-left"
+              onClick={() => update({ rtl: !state.rtl })}
+            >
+              <RtlIcon />
+              <span className="loam-VisuallyHidden">Right-to-left</span>
+            </Button>
+            <Button className={classes.control} title={schemeLabel} onClick={flipScheme}>
+              {scheme === "dark" ? <MoonIcon /> : <SunIcon />}
+              <span className="loam-VisuallyHidden">{schemeLabel}</span>
+            </Button>
+          </>
+        )}
         {href && (
           <Link href={href} className={classes.open} title="Open on its own page">
             <OpenIcon />

@@ -1,3 +1,6 @@
+"use client";
+
+import { useId } from "react";
 import { Avatar, Card, Price, SignpostLink } from "@loamui/core";
 import "./example.css";
 
@@ -37,18 +40,19 @@ const GROWERS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <ul className="users-grid" role="list">
       {GROWERS.map((grower) => (
         <li key={grower.id}>
-          <Card render={<article aria-labelledby={`users-grid-${grower.id}`} />}>
+          <Card render={<article aria-labelledby={`${instanceId}-users-grid-${grower.id}`} />}>
             <Avatar
               name={grower.name}
               src={`https://picsum.photos/id/${grower.photo}/120/120`}
               aria-hidden
             />
             <div className="text">
-              <h2 id={`users-grid-${grower.id}`}>{grower.name}</h2>
+              <h2 id={`${instanceId}-users-grid-${grower.id}`}>{grower.name}</h2>
               <p className="role">{grower.role}</p>
             </div>
             <dl>

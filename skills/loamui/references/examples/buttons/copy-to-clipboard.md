@@ -16,7 +16,15 @@ An example in **Buttons**: a component and a stylesheet built from `@loamui/core
 - Tags: copy, clipboard, share, link, referral, read-only
 - Live: https://loamui.com/examples/buttons/copy-to-clipboard
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The link is in a real read-only input, so it can be focused, selected and copied with the keyboard whether or not the Clipboard API is available; focusing it selects the whole address, one keystroke from a manual copy.
 - **Modern CSS.** The row is a two-track grid; the CopyButton's wrapper has no box, so the Button takes the second track as a bare Button would, sharing the derived control height with the box beside it.

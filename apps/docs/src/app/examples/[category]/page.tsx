@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { EXAMPLE_CATEGORIES, exampleHref, examplesIn, getCategory } from "@/examples";
 import { EXAMPLE_SOURCE } from "@/examples/generated-source";
 import { ExamplesRail } from "@/renderer/examples-rail";
+import { ExamplePreview } from "@/renderer/examples-preview";
 import { ExampleStage } from "@/renderer/examples-stage";
 import { ExampleCodePanel } from "@/renderer/examples-code-panel";
 import { ExampleCrumbs } from "@/renderer/examples-crumbs";
@@ -67,10 +68,16 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
                   </h2>
                   <p className={c.entryDesc}>{e.meta.description}</p>
                 </div>
-                <ExampleStage title={e.meta.title} href={exampleHref(e)}>
-                  <e.Example />
+                <ExampleStage
+                  title={e.meta.title}
+                  href={exampleHref(e)}
+                  documentPreview={e.slug === "scheme-toggle"}
+                >
+                  <ExamplePreview slug={e.slug}>
+                    <e.Example />
+                  </ExamplePreview>
                 </ExampleStage>
-                {source && <ExampleCodePanel source={source} />}
+                {source && <ExampleCodePanel source={source} href={exampleHref(e)} />}
               </article>
             );
           })}

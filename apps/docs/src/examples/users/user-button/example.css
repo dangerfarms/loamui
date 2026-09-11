@@ -19,7 +19,7 @@
     }
 
     > span {
-      color: var(--loam-color-fg-muted);
+      color: var(--loam-color-fg);
       font-size: var(--loam-text-xs);
       overflow: hidden;
       text-overflow: ellipsis;
@@ -28,7 +28,7 @@
   }
 
   svg {
-    color: var(--loam-color-fg-muted);
+    color: var(--loam-color-fg);
     flex: none;
 
     &:dir(rtl) {

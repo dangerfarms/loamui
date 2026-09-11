@@ -1,11 +1,20 @@
 "use client";
 
+import { useId } from "react";
 import { Card, Progress } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <Card render={<article className="card-with-stats" aria-labelledby="card-with-stats-title" />}>
+    <Card
+      render={
+        <article
+          className="card-with-stats"
+          aria-labelledby={`${instanceId}-card-with-stats-title`}
+        />
+      }
+    >
       <img
         className="media"
         src="https://picsum.photos/id/112/800/450"
@@ -13,7 +22,7 @@ export default function Example() {
         width="800"
         height="450"
       />
-      <h3 id="card-with-stats-title">Autumn seed-saving drive</h3>
+      <h3 id={`${instanceId}-card-with-stats-title`}>Autumn seed-saving drive</h3>
       <p className="description">
         Members save seed from this year’s plots and send it in for next year’s catalogue. Every
         packet is grown out and germination-tested before it is listed.

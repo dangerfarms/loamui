@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useId, useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { Button } from "@loamui/core";
 import "./example.css";
@@ -28,6 +28,7 @@ function focusAfter(banner: HTMLElement) {
 }
 
 export default function Example() {
+  const instanceId = useId();
   const [choice, setChoice] = useState<Choice | null>(null);
   const [hidden, setHidden] = useState(false);
   const banner = useRef<HTMLElement>(null);
@@ -57,10 +58,14 @@ export default function Example() {
   if (hidden) return null;
 
   return (
-    <section className="cookie-banner" aria-labelledby="cookie-banner-title" ref={banner}>
+    <section
+      className="cookie-banner"
+      aria-labelledby={`${instanceId}-cookie-banner-title`}
+      ref={banner}
+    >
       {choice === null && (
         <div className="inner">
-          <h2 id="cookie-banner-title">Cookies on Hedgerow</h2>
+          <h2 id={`${instanceId}-cookie-banner-title`}>Cookies on Hedgerow</h2>
           <p>
             We use essential cookies to keep your basket and remember that you are signed in. They
             are always on.

@@ -7,7 +7,7 @@ import "./example.css";
 type Scheme = "system" | "light" | "dark";
 
 /** The key the page's pre-paint script reads, so a reload keeps the choice. */
-const STORAGE_KEY = "loamui-theme";
+const STORAGE_KEY = "color-scheme";
 
 function readStored(): Scheme {
   try {
@@ -19,17 +19,26 @@ function readStored(): Scheme {
   return "system";
 }
 
-// Storage is the store. The storage event carries another tab's change;
+// The root attribute is the current choice, even if storage is unavailable.
+// The storage event carries another tab's change;
 // this tab's own changes are announced by hand, since the event does not
 // fire in the document that made them.
 const listeners = new Set<() => void>();
 
+function readSnapshot(): Scheme {
+  const theme = document.documentElement.dataset.theme;
+  return theme === "light" || theme === "dark" ? theme : "system";
+}
+
 function subscribe(listener: () => void) {
   listeners.add(listener);
-  window.addEventListener("storage", listener);
+  const onStorage = (event: StorageEvent) => {
+    if (event.key === STORAGE_KEY || event.key === null) apply(readStored());
+  };
+  window.addEventListener("storage", onStorage);
   return () => {
     listeners.delete(listener);
-    window.removeEventListener("storage", listener);
+    window.removeEventListener("storage", onStorage);
   };
 }
 
@@ -51,13 +60,12 @@ function apply(scheme: Scheme) {
 
 export default function Example() {
   // The server cannot know the stored choice: System keeps the markup
-  // deterministic, and the client snapshot replaces it before paint.
-  const scheme = useSyncExternalStore(subscribe, readStored, () => "system" as Scheme);
+  // deterministic, and the client snapshot supplies the applied choice.
+  const scheme = useSyncExternalStore(subscribe, readSnapshot, () => "system" as Scheme);
 
   // A page without a pre-paint script still ends up wearing the stored choice.
   useEffect(() => {
-    const stored = readStored();
-    if (stored !== "system") document.documentElement.dataset.theme = stored;
+    apply(readStored());
   }, []);
 
   return (

@@ -16,7 +16,15 @@ An example in **Grids**: a component and a stylesheet built from `@loamui/core`,
 - Tags: grid, layout, cards, lead, featured, columns
 - Live: https://loamui.com/examples/grids/grid-leading-item
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A list of five articles, each named by its h3, in an order that reads as the layout does: the lead first, then the side note, then the three guides.
 - **Modern CSS.** The list is the container and the grid, and each width owns its layout outright: one column, two from 36rem with the lead across both, three from 56rem with the lead across two, so no rule of one width overrides another.
@@ -27,6 +35,9 @@ An example in **Grids**: a component and a stylesheet built from `@loamui/core`,
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Badge, Card, SignpostLink } from "@loamui/core";
 import "./example.css";
 
@@ -49,14 +60,15 @@ const GUIDES = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <ul className="grid-leading-item" role="list">
       <li className="lead">
-        <Card render={<article aria-labelledby="grid-leading-item-lead" />}>
+        <Card render={<article aria-labelledby={`${instanceId}-grid-leading-item-lead`} />}>
           <p className="eyebrow">
             <Badge>Start here</Badge>
           </p>
-          <h3 id="grid-leading-item-lead">Your first year of seed saving</h3>
+          <h3 id={`${instanceId}-grid-leading-item-lead`}>Your first year of seed saving</h3>
           <p>
             Which crops to save from first, how far apart to keep them from their relatives, and how
             to clean, dry and store what you gather. Written for a plot of any size, by the growers
@@ -68,8 +80,8 @@ export default function Example() {
         </Card>
       </li>
       <li className="side">
-        <Card render={<article aria-labelledby="grid-leading-item-side" />}>
-          <h3 id="grid-leading-item-side">Sowing this week</h3>
+        <Card render={<article aria-labelledby={`${instanceId}-grid-leading-item-side`} />}>
+          <h3 id={`${instanceId}-grid-leading-item-side`}>Sowing this week</h3>
           <p>
             Winter lettuce, spinach and spring onions outside; hardy peas under a cloche for May.
           </p>
@@ -80,8 +92,10 @@ export default function Example() {
       </li>
       {GUIDES.map((guide) => (
         <li key={guide.slug}>
-          <Card render={<article aria-labelledby={`grid-leading-item-${guide.slug}`} />}>
-            <h3 id={`grid-leading-item-${guide.slug}`}>{guide.title}</h3>
+          <Card
+            render={<article aria-labelledby={`${instanceId}-grid-leading-item-${guide.slug}`} />}
+          >
+            <h3 id={`${instanceId}-grid-leading-item-${guide.slug}`}>{guide.title}</h3>
             <p>{guide.description}</p>
             <div className="actions">
               <SignpostLink href={`/guides/${guide.slug}`}>How to grow</SignpostLink>

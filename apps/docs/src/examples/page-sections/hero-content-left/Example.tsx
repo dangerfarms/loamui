@@ -1,12 +1,19 @@
+"use client";
+
+import { useId } from "react";
 import { Button, SignpostLink } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="hero-content-left" aria-labelledby="hero-content-left-title">
+    <section
+      className="hero-content-left"
+      aria-labelledby={`${instanceId}-hero-content-left-title`}
+    >
       <div className="inner">
         <div className="text">
-          <h1 id="hero-content-left-title">Grow a variety you can keep.</h1>
+          <h1 id={`${instanceId}-hero-content-left-title`}>Grow a variety you can keep.</h1>
           <p className="lede">
             Every packet from Hedgerow is open-pollinated and comes true from saved seed, so the
             beans you sow this spring are the beans your children sow. Members pick twelve packets a

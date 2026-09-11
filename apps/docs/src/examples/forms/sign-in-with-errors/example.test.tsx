@@ -12,11 +12,10 @@ describe("sign-in-with-errors", () => {
     const summary = screen.getByRole("group", { name: "There is a problem" });
     expect(summary).toHaveAttribute("tabindex", "-1");
     const link = screen.getByRole("link", { name: "Enter your password" });
-    expect(link).toHaveAttribute("href", "#sign-in-password");
     const password = screen.getByLabelText("Password");
-    expect(password.id).toBe("sign-in-password");
+    expect(link).toHaveAttribute("href", `#${password.id}`);
     expect(password).toHaveAttribute("aria-invalid", "true");
-    const error = document.getElementById("sign-in-password-error");
+    const error = document.getElementById(`${password.id}-error`);
     expect(error).toHaveTextContent("Enter your password");
     expect(password.getAttribute("aria-describedby")).toContain(error!.id);
     expect(screen.getByLabelText("Email address")).toHaveValue("imogen.hartley@hedgerow");

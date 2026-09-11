@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { Badge, Card, Carousel, SignpostLink } from "@loamui/core";
 import "./example.css";
 
@@ -37,10 +38,11 @@ const ARTICLES = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Carousel.Root
       className="carousel-with-cards"
-      aria-labelledby="carousel-with-cards-title"
+      aria-labelledby={`${instanceId}-carousel-with-cards-title`}
       labels={{
         previous: "Previous articles",
         next: "Next articles",
@@ -49,7 +51,7 @@ export default function Example() {
       }}
     >
       <div className="head">
-        <h2 id="carousel-with-cards-title">From the growers’ journal</h2>
+        <h2 id={`${instanceId}-carousel-with-cards-title`}>From the growers’ journal</h2>
         <div className="controls">
           <Carousel.Previous />
           <Carousel.Next />
@@ -62,7 +64,7 @@ export default function Example() {
               render={
                 <article
                   className="article"
-                  aria-labelledby={`carousel-with-cards-${article.slug}`}
+                  aria-labelledby={`${instanceId}-carousel-with-cards-${article.slug}`}
                 />
               }
             >
@@ -77,7 +79,7 @@ export default function Example() {
               <p className="meta">
                 <Badge>{article.category}</Badge>
               </p>
-              <h3 id={`carousel-with-cards-${article.slug}`}>{article.title}</h3>
+              <h3 id={`${instanceId}-carousel-with-cards-${article.slug}`}>{article.title}</h3>
               <div className="foot">
                 <SignpostLink href={`/journal/${article.slug}`}>
                   Read article<span className="loam-VisuallyHidden"> – {article.title}</span>

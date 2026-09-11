@@ -5,3 +5,12 @@
 .content {
   padding: 0;
 }
+
+.message {
+  margin: 0;
+  padding: var(--loam-space-md);
+
+  a {
+    text-decoration: underline;
+  }
+}

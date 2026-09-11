@@ -16,7 +16,15 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - Tags: password, forgot password, label, link, sign in
 - Live: https://loamui.com/examples/forms/forgot-password-on-label
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A link, because resetting a password goes somewhere; the box is core's PasswordInput with autoComplete="current-password", so a password manager fills it and the Show password toggle keeps its own name.
 - **Modern CSS.** The row is a wrapping flex line with space between: on a narrow field the link drops to a second line and keeps to the end edge by an auto margin, with no breakpoint.

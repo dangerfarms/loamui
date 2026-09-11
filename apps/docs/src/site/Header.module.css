@@ -89,3 +89,12 @@
       background var(--loam-duration-md) var(--loam-ease);
   }
 }
+
+/* Keep all header actions available at the smallest supported page width. */
+@container (inline-size <= 24rem) {
+  .inner,
+  .left,
+  .right {
+    gap: 0.5rem;
+  }
+}

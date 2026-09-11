@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: order, tracking, steps, progress, status
 - Live: https://loamui.com/examples/page-sections/stepper-progress
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The order lives in an ol, so a screen reader announces 2 of 4 from the list itself; the placed date is a time element with its machine-readable value.
 - **Modern CSS.** The Stepper stacks in a narrow container and runs as a row where it has 40rem, decided by its own width; the example adds only the spacing between header, steps and the way back.
@@ -29,15 +37,17 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Stepper } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="stepper-progress" aria-labelledby="stepper-progress-title">
+    <section className="stepper-progress" aria-labelledby={`${instanceId}-stepper-progress-title`}>
       <header>
         <p className="eyebrow">Order HR-20417</p>
-        <h2 id="stepper-progress-title">Your order is being packed</h2>
+        <h2 id={`${instanceId}-stepper-progress-title`}>Your order is being packed</h2>
         <p>
           Placed on <time dateTime="2026-09-03T09:14">Thursday 3 September</time>: four packets and
           a hand fork, going to Ludlow.

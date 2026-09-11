@@ -16,7 +16,15 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - Tags: reset password, recovery, account, email
 - Live: https://loamui.com/examples/forms/forgot-password
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A native form named by its heading, with one email field carrying autoComplete="email" and inputMode="email" so a phone offers the keyboard with @ on it.
 - **Modern CSS.** One field, so the card is mostly type: the description between the title and the form takes over the title's gap, and the 24rem cap keeps that paragraph to two lines.
@@ -29,18 +37,24 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Button, Card, Field, Input } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card render={<div className="forgot-password" />}>
-      <h1 id="forgot-password-title">Forgot your password?</h1>
+      <h1 id={`${instanceId}-forgot-password-title`}>Forgot your password?</h1>
       <p className="description">
         Enter the email address you signed up with. If it has an account, we will send a link to set
         a new password.
       </p>
-      <form action="/forgot-password" method="post" aria-labelledby="forgot-password-title">
+      <form
+        action="/forgot-password"
+        method="post"
+        aria-labelledby={`${instanceId}-forgot-password-title`}
+      >
         <Field.Root>
           <Field.Label>Email address</Field.Label>
           <Input name="email" type="email" autoComplete="email" inputMode="email" required />

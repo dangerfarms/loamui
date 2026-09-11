@@ -16,7 +16,15 @@ An example in **Data display**: a component and a stylesheet built from `@loamui
 - Tags: reviews, ratings, table, distribution, meter, would grow again
 - Live: https://loamui.com/examples/data-display/table-reviews
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A real table with a caption, column headers and a row header per variety; each rating is a Rating in display mode, one named picture of the value rather than five decorative stars, and each share is a native meter.
 - **Modern CSS.** The split cell is a three-column grid with both figures at fixed widths in tabular numerals and the Meter filling the middle track, so the bars line up down the column without a rule on the Meter.

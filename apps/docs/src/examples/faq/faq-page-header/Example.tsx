@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { Details } from "@loamui/core";
 import "./example.css";
 
@@ -32,11 +33,12 @@ const QUESTIONS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="faq-page-header" aria-labelledby="faq-page-header-title">
+    <section className="faq-page-header" aria-labelledby={`${instanceId}-faq-page-header-title`}>
       <header>
         <div className="intro">
-          <h1 id="faq-page-header-title">Help and support</h1>
+          <h1 id={`${instanceId}-faq-page-header-title`}>Help and support</h1>
           <p>
             Answers to the questions the bench is asked most, and the ways to reach a person when
             the answer is not here.

@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { Card, Radio, RadioGroup } from "@loamui/core";
 import "./example.css";
 
@@ -22,13 +23,14 @@ const PLANS = [
   },
 ];
 
-export default function Example() {
+export default function Example({ name }: { name?: string }) {
+  const instanceId = useId();
   return (
-    <RadioGroup.Root className="choice-cards-radio" name="plan" defaultValue="grower">
+    <RadioGroup.Root className="choice-cards-radio" name={name} defaultValue="grower">
       <RadioGroup.Legend>Choose a membership</RadioGroup.Legend>
       <div className="cards">
         {PLANS.map((plan) => {
-          const id = `plan-${plan.value}`;
+          const id = `${instanceId}-plan-${plan.value}`;
           return (
             <Card key={plan.value} render={<label className="card" htmlFor={id} />}>
               <span className="control">

@@ -16,7 +16,15 @@ An example in **Application cards**: a component and a stylesheet built from `@l
 - Tags: progress, kpi, figure, dashboard, goal
 - Live: https://loamui.com/examples/app-cards/stats-card-progress
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The bar is the native progress element with its label as its accessible name, and the count is text a reader can select and copy, not a number drawn into a canvas.
 - **Modern CSS.** The count is set in tabular lining numerals from the display face so it holds its width as it changes; the thick track is the Progress's own large size, the one size a track can carry.
@@ -28,18 +36,23 @@ An example in **Application cards**: a component and a stylesheet built from `@l
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Card, Progress } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card
       render={
-        <section className="stats-card-progress" aria-labelledby="stats-card-progress-title" />
+        <section
+          className="stats-card-progress"
+          aria-labelledby={`${instanceId}-stats-card-progress-title`}
+        />
       }
     >
       <p className="lead">This week</p>
-      <h3 id="stats-card-progress-title">Orders packed</h3>
+      <h3 id={`${instanceId}-stats-card-progress-title`}>Orders packed</h3>
       <p className="value">
         1,120 <span>of 1,600 orders</span>
       </p>

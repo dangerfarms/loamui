@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: contact, enquiry, address, form, support
 - Live: https://loamui.com/examples/page-sections/contact-us-with-details
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The details are an address holding a description list, so email, phone and place are terms with values rather than a list of icons; the form is a native form named by its own h3, with the email and message required.
 - **Modern CSS.** The section paints the subtle surface and is the container; at 44rem of its own width the inner element splits 2:3, and the Card is scoped from its own root so the section's rule never reaches inside it.
@@ -29,15 +37,20 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Button, Card, Field, Input, Textarea } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="contact-us-with-details" aria-labelledby="contact-us-with-details-title">
+    <section
+      className="contact-us-with-details"
+      aria-labelledby={`${instanceId}-contact-us-with-details-title`}
+    >
       <div className="inner">
         <div className="details">
-          <h2 id="contact-us-with-details-title">Contact us</h2>
+          <h2 id={`${instanceId}-contact-us-with-details-title`}>Contact us</h2>
           <p>
             Ask about an order, a variety, or a place on a workshop. The nursery answers email on
             Tuesdays and Fridays.
@@ -128,11 +141,11 @@ export default function Example() {
               className="form"
               action="/contact"
               method="post"
-              aria-labelledby="contact-us-with-details-form"
+              aria-labelledby={`${instanceId}-contact-us-with-details-form`}
             />
           }
         >
-          <h3 id="contact-us-with-details-form">Send a message</h3>
+          <h3 id={`${instanceId}-contact-us-with-details-form`}>Send a message</h3>
           <Field.Root>
             <Field.Label>Email address</Field.Label>
             <Field.Description>Only used to reply.</Field.Description>

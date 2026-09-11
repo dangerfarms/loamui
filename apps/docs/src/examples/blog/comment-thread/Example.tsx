@@ -1,3 +1,6 @@
+"use client";
+
+import { useId } from "react";
 import { Avatar, Badge, Button, Time } from "@loamui/core";
 import "./example.css";
 
@@ -6,11 +9,16 @@ import "./example.css";
 const NOW = "2026-09-08T09:00:00Z";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <article className="comment-thread" aria-labelledby="comment-thread-author">
+    <article className="comment-thread" aria-labelledby={`${instanceId}-comment-thread-author`}>
       <header>
         <Avatar name="Dafydd Rees" aria-hidden />
-        <a id="comment-thread-author" className="author" href="/members/dafydd-rees">
+        <a
+          id={`${instanceId}-comment-thread-author`}
+          className="author"
+          href="/members/dafydd-rees"
+        >
           Dafydd Rees
         </a>
         <Time value="2026-09-05T14:30:00Z" locale="en-GB" relative={{ now: NOW }} />
@@ -28,10 +36,14 @@ export default function Example() {
       </div>
       <ul className="replies" role="list" aria-label="Replies to Dafydd Rees">
         <li>
-          <article aria-labelledby="comment-thread-reply-1-author">
+          <article aria-labelledby={`${instanceId}-comment-thread-reply-1-author`}>
             <header>
               <Avatar name="Nia Prosser" aria-hidden />
-              <a id="comment-thread-reply-1-author" className="author" href="/growers/nia-prosser">
+              <a
+                id={`${instanceId}-comment-thread-reply-1-author`}
+                className="author"
+                href="/growers/nia-prosser"
+              >
                 Nia Prosser
               </a>
               <Badge>Author</Badge>
@@ -52,11 +64,11 @@ export default function Example() {
           </article>
         </li>
         <li>
-          <article aria-labelledby="comment-thread-reply-2-author">
+          <article aria-labelledby={`${instanceId}-comment-thread-reply-2-author`}>
             <header>
               <Avatar name="Priya Natarajan" aria-hidden />
               <a
-                id="comment-thread-reply-2-author"
+                id={`${instanceId}-comment-thread-reply-2-author`}
                 className="author"
                 href="/members/priya-natarajan"
               >

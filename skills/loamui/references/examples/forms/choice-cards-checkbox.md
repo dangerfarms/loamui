@@ -16,7 +16,15 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - Tags: add-ons, extras, checkbox cards, options, membership
 - Live: https://loamui.com/examples/forms/choice-cards-checkbox
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A fieldset names the set and each card is a <label> around a native checkbox sharing one name, so the form submits every ticked value under it and the whole surface is the click target.
 - **Modern CSS.** Checked and disabled are detected from the input with :has(), never declared on the card; the disabled option fades its words while the Card keeps its line, so it still reads as one of the set.
@@ -29,6 +37,7 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Card, Checkbox, Fieldset } from "@loamui/core";
 import "./example.css";
 
@@ -53,12 +62,13 @@ const ADDONS = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Fieldset.Root className="choice-cards-checkbox">
       <Fieldset.Legend>Add-ons</Fieldset.Legend>
       <div className="cards">
         {ADDONS.map((addon) => {
-          const id = `addon-${addon.value}`;
+          const id = `${instanceId}-addon-${addon.value}`;
           return (
             <Card key={addon.value} render={<label className="card" htmlFor={id} />}>
               <span className="control">

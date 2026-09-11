@@ -16,7 +16,15 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 - Tags: breadcrumbs, title, actions, app shell, record
 - Live: https://loamui.com/examples/navigation/page-header
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A header named by the page's one h1 through aria-labelledby, so a landmark list says which page's header it is; the date is a time element with a machine-readable dateTime.
 - **Modern CSS.** A two-column grid answered by the header's own width: the text is pinned to the first column and the actions flow beside it where there is room, beneath it where there is not.
@@ -29,19 +37,21 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Badge, Breadcrumbs, Button, Time } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <header className="page-header" aria-labelledby="page-header-title">
+    <header className="page-header" aria-labelledby={`${instanceId}-page-header-title`}>
       <Breadcrumbs.Root>
         <Breadcrumbs.Item href="/library">Seed library</Breadcrumbs.Item>
         <Breadcrumbs.Item href="/library/tomatoes">Tomatoes</Breadcrumbs.Item>
         <Breadcrumbs.Item current>Gardener&rsquo;s Delight</Breadcrumbs.Item>
       </Breadcrumbs.Root>
       <div className="text">
-        <h1 id="page-header-title">Gardener&rsquo;s Delight</h1>
+        <h1 id={`${instanceId}-page-header-title`}>Gardener&rsquo;s Delight</h1>
         <p className="description">
           An open-pollinated cherry tomato, sweet and heavy-cropping, saved on the Lower Field plot
           since 2019 and offered to members every spring.

@@ -16,7 +16,15 @@ An example in **Error pages**: a component and a stylesheet built from `@loamui/
 - Tags: 500, server error, try again, error page
 - Live: https://loamui.com/examples/errors/error-500
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its own h1, because the error is the page; trying again is a button, because it does something, and telling someone is a link, because it goes somewhere.
 - **Modern CSS.** The page is a container so its type answers its own width, the title balances its lines and the description wraps prettily; nothing here is sized to a viewport.
@@ -29,12 +37,14 @@ An example in **Error pages**: a component and a stylesheet built from `@loamui/
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Button } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="error-500" aria-labelledby="error-500-title">
+    <section className="error-500" aria-labelledby={`${instanceId}-error-500-title`}>
       <svg
         className="illustration"
         viewBox="0 0 120 96"
@@ -55,7 +65,7 @@ export default function Example() {
         <circle className="seed" cx="102" cy="88" r="2" />
       </svg>
       <p className="code">500</p>
-      <h1 id="error-500-title">Something went wrong on our side</h1>
+      <h1 id={`${instanceId}-error-500-title`}>Something went wrong on our side</h1>
       <p className="description">
         The catalogue did not answer, and it is not anything you did. Nothing in your basket is
         lost. Try the page again; if it keeps happening, tell us and quote the time.

@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: history, events, dates, changelog, milestones
 - Live: https://loamui.com/examples/page-sections/timeline
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** An ol carries the order and a time element carries each date with its machine-readable value; the dots and the line are pseudo-elements, so nothing decorative is in the accessibility tree.
 - **Modern CSS.** Each event is a grid with named areas, the dot centred on the date's line with lh, and the connector run across the list's gap with a negative margin rather than absolute positioning.

@@ -1,11 +1,18 @@
+"use client";
+
+import { useId } from "react";
 import { Badge, Card, SignpostLink } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card
       render={
-        <article className="card-background-image" aria-labelledby="card-background-image-title" />
+        <article
+          className="card-background-image"
+          aria-labelledby={`${instanceId}-card-background-image-title`}
+        />
       }
     >
       <img
@@ -19,7 +26,7 @@ export default function Example() {
         <p className="meta">
           <Badge>Members’ plots</Badge>
         </p>
-        <h3 id="card-background-image-title">The walled garden after closing</h3>
+        <h3 id={`${instanceId}-card-background-image-title`}>The walled garden after closing</h3>
         <p className="description">
           What the members who hold a plot inside the wall do with the hour after the gates shut,
           and why the co-op keeps that hour theirs.

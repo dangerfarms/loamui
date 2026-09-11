@@ -1,11 +1,18 @@
+"use client";
+
+import { useId } from "react";
 import { Avatar, Badge, Card, Time } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card
       render={
-        <article className="article-card-footer" aria-labelledby="article-card-footer-title" />
+        <article
+          className="article-card-footer"
+          aria-labelledby={`${instanceId}-article-card-footer-title`}
+        />
       }
     >
       <img
@@ -18,7 +25,7 @@ export default function Example() {
       <p className="meta">
         <Badge>Harvest</Badge>
       </p>
-      <h3 id="article-card-footer-title">
+      <h3 id={`${instanceId}-article-card-footer-title`}>
         <a href="/journal/curing-winter-squash">Curing winter squash for storage</a>
       </h3>
       <p className="description">

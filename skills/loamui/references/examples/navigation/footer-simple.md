@@ -16,7 +16,15 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 - Tags: site footer, copyright, small print
 - Live: https://loamui.com/examples/navigation/footer-simple
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A footer landmark, so a screen reader can jump to the end of the page; the nav inside is named Footer to tell it from the header's Primary nav, and the copyright is a small element.
 - **Modern CSS.** A single wrapping flex row, answered by the footer's own width: the links sit between the brand and the small print, and wrap beneath them where the row is too short.

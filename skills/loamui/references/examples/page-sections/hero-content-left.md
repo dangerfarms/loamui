@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: landing, marketing, illustration, split
 - Live: https://loamui.com/examples/page-sections/hero-content-left
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its h1; the illustration is inline SVG drawn in currentColor, so it is styled by the same cascade as the words and needs no image file.
 - **Modern CSS.** The section is a container and the inner element the grid: one column with the picture last, two columns at 48rem of the section's own width, decided by the section rather than the viewport.
@@ -27,15 +35,22 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Button, SignpostLink } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="hero-content-left" aria-labelledby="hero-content-left-title">
+    <section
+      className="hero-content-left"
+      aria-labelledby={`${instanceId}-hero-content-left-title`}
+    >
       <div className="inner">
         <div className="text">
-          <h1 id="hero-content-left-title">Grow a variety you can keep.</h1>
+          <h1 id={`${instanceId}-hero-content-left-title`}>Grow a variety you can keep.</h1>
           <p className="lede">
             Every packet from Hedgerow is open-pollinated and comes true from saved seed, so the
             beans you sow this spring are the beans your children sow. Members pick twelve packets a

@@ -16,11 +16,19 @@ An example in **Commerce**: a component and a stylesheet built from `@loamui/cor
 - Tags: basket, cart, quantity, line item, checkout
 - Live: https://loamui.com/examples/commerce/cart-line
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Quantities, totals, removal and undo work locally. Supply product data, replace the product link, and persist basket changes in your application. Prices and stock must be confirmed by your checkout service.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The line is an article named by its heading, the quantity is one native number input inside a labelled Field, and each amount is a data element carrying the number.
 - **Modern CSS.** Named grid areas place every part, and a narrower line rearranges them by container query: the totals fold under the name and the control shares the last row with the remove action.
-- **Composition.** QuantityInput self-wires from the Field around it, so the label, id and any error reach the input without a prop; the line does no arithmetic, and the total is a Price the page computes.
+- **Composition.** QuantityInput self-wires from the Field around it, so the label, id and any error reach the input without a prop; the example derives its Price from the valid quantity and unit price.
 - **Contextualism.** The remove action is a neutral Button on purpose: taking a packet out of a basket is not a destructive act, so it is not in a danger region.
 - **Accessible & gatekept.** The Field's label is real text hidden from view, so a screen reader hears "Quantity of Climbing bean ‘Blue Lake’ seeds" rather than "Quantity" three times in a basket, and the remove button names the product the same way; the thumbnail's alt is empty because the name is beside it.
 
@@ -29,12 +37,46 @@ An example in **Commerce**: a component and a stylesheet built from `@loamui/cor
 ```tsx
 "use client";
 
-import { useId } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Button, Field, Price, QuantityInput } from "@loamui/core";
 import "./example.css";
 
+const UNIT_PRICE_PENCE = 280;
+
 export default function Example() {
   const title = useId();
+  const [draft, setDraft] = useState("2");
+  const [error, setError] = useState(false);
+  const [removed, setRemoved] = useState(false);
+  const undo = useRef<HTMLButtonElement>(null);
+  const quantityInput = useRef<HTMLInputElement>(null);
+  const restoreFocus = useRef(false);
+  const quantity = Number(draft);
+  const valid = draft !== "" && Number.isInteger(quantity) && quantity >= 1 && quantity <= 10;
+
+  useEffect(() => {
+    if (removed) undo.current?.focus();
+    else if (restoreFocus.current) {
+      quantityInput.current?.focus();
+      restoreFocus.current = false;
+    }
+  }, [removed]);
+
+  if (removed)
+    return (
+      <div className="cart-line">
+        <p role="status">Climbing bean ‘Blue Lake’ seeds removed from your basket.</p>
+        <Button
+          ref={undo}
+          onClick={() => {
+            restoreFocus.current = true;
+            setRemoved(false);
+          }}
+        >
+          Undo removal
+        </Button>
+      </div>
+    );
   return (
     <article className="cart-line" aria-labelledby={title}>
       <div className="inner">
@@ -54,19 +96,37 @@ export default function Example() {
             <Field.Label className="loam-VisuallyHidden">
               Quantity of Climbing bean ‘Blue Lake’ seeds
             </Field.Label>
-            <QuantityInput name="quantity" defaultValue={2} min={1} max={10} />
+            <Field.Error>{error ? "Enter a whole quantity from 1 to 10." : null}</Field.Error>
+            <QuantityInput
+              name="quantity"
+              ref={quantityInput}
+              value={draft}
+              min={1}
+              max={10}
+              required
+              onChange={(event) => {
+                setDraft(event.currentTarget.value);
+                setError(false);
+              }}
+              onBlur={() => setError(!valid)}
+            />
           </Field.Root>
         </div>
-        <p className="total">
-          <Price value={5.6} currency="GBP" locale="en-GB" />
+        <p className="total" aria-live="polite" aria-atomic="true">
+          <span className="loam-VisuallyHidden">Line total: </span>
+          {valid ? (
+            <Price value={(quantity * UNIT_PRICE_PENCE) / 100} currency="GBP" locale="en-GB" />
+          ) : (
+            "—"
+          )}
         </p>
         <p className="each">
-          <Price value={2.8} currency="GBP" locale="en-GB">
+          <Price value={UNIT_PRICE_PENCE / 100} currency="GBP" locale="en-GB">
             each
           </Price>
         </p>
         <div className="actions">
-          <Button>
+          <Button onClick={() => setRemoved(true)}>
             Remove<span className="loam-VisuallyHidden"> Climbing bean ‘Blue Lake’ seeds</span>
           </Button>
         </div>

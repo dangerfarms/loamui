@@ -11,7 +11,7 @@ describe("section-header", () => {
     const { container } = render(<Example />);
     expect(screen.queryByRole("region")).not.toBeInTheDocument();
     const heading = screen.getByRole("heading", { level: 2, name: "Learn to grow from seed" });
-    expect(heading).toHaveAttribute("id", "section-header-title");
+    expect(heading).toHaveAttribute("id", expect.stringContaining("section-header-title"));
     expect(screen.getByText("Growing guides").tagName).toBe("P");
     expect(screen.getByRole("link", { name: "All guides" })).toHaveAttribute("href", "/guides");
     expect(await axe(container, axeOptions)).toHaveNoViolations();

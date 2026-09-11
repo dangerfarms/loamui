@@ -16,7 +16,15 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 - Tags: social, icons, profiles, footer
 - Live: https://loamui.com/examples/navigation/social-links
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A nav landmark named Social around a list of plain links; each link carries rel="me", the identity relation that says the profile is the site's own.
 - **Modern CSS.** The icon is sized in em, so it follows whatever type surrounds the row, and every target is floored at 24px with a gap between neighbours, whatever size that makes the glyph.

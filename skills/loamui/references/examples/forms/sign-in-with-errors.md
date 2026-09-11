@@ -16,7 +16,15 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - Tags: validation, error summary, login, account
 - Live: https://loamui.com/examples/forms/sign-in-with-errors
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** Each Field carries an explicit id so the summary's links are fragment links to real controls: activating one moves focus into the field, and the browser scrolls to it without a line of scripting.
 - **Modern CSS.** The Field's invalid state is detected, not declared: a rendered Field.Error is what marks the field, and the box's danger border follows the control's own aria-invalid.
@@ -29,27 +37,35 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 ```tsx
 "use client";
 
+import { useId } from "react";
 import { Button, Card, Checkbox, ErrorSummary, Field, Input, PasswordInput } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card render={<div className="sign-in-with-errors" />}>
-      <h1 id="sign-in-with-errors-title">Sign in</h1>
-      <form action="/sign-in" method="post" aria-labelledby="sign-in-with-errors-title">
+      <h1 id={`${instanceId}-sign-in-with-errors-title`}>Sign in</h1>
+      <form
+        action="/sign-in"
+        method="post"
+        aria-labelledby={`${instanceId}-sign-in-with-errors-title`}
+      >
         {/* The summary appears after a failed submit and takes focus when
             it does; this page renders that state on load, so autoFocus is
             off here and only here. */}
         <ErrorSummary.Root autoFocus={false}>
           <ErrorSummary.Title />
           <ErrorSummary.List>
-            <ErrorSummary.Item href="#sign-in-email">
+            <ErrorSummary.Item href={`#${instanceId}-sign-in-email`}>
               Enter an email address in the correct format, like name@example.com
             </ErrorSummary.Item>
-            <ErrorSummary.Item href="#sign-in-password">Enter your password</ErrorSummary.Item>
+            <ErrorSummary.Item href={`#${instanceId}-sign-in-password`}>
+              Enter your password
+            </ErrorSummary.Item>
           </ErrorSummary.List>
         </ErrorSummary.Root>
-        <Field.Root id="sign-in-email">
+        <Field.Root id={`${instanceId}-sign-in-email`}>
           <Field.Label>Email address</Field.Label>
           <Field.Error>
             Enter an email address in the correct format, like name@example.com
@@ -63,7 +79,7 @@ export default function Example() {
             required
           />
         </Field.Root>
-        <Field.Root id="sign-in-password">
+        <Field.Root id={`${instanceId}-sign-in-password`}>
           <Field.Label>Password</Field.Label>
           <Field.Error>Enter your password</Field.Error>
           <PasswordInput name="password" autoComplete="current-password" required />

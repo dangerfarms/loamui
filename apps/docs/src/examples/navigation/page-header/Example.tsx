@@ -1,18 +1,20 @@
 "use client";
 
+import { useId } from "react";
 import { Badge, Breadcrumbs, Button, Time } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <header className="page-header" aria-labelledby="page-header-title">
+    <header className="page-header" aria-labelledby={`${instanceId}-page-header-title`}>
       <Breadcrumbs.Root>
         <Breadcrumbs.Item href="/library">Seed library</Breadcrumbs.Item>
         <Breadcrumbs.Item href="/library/tomatoes">Tomatoes</Breadcrumbs.Item>
         <Breadcrumbs.Item current>Gardener&rsquo;s Delight</Breadcrumbs.Item>
       </Breadcrumbs.Root>
       <div className="text">
-        <h1 id="page-header-title">Gardener&rsquo;s Delight</h1>
+        <h1 id={`${instanceId}-page-header-title`}>Gardener&rsquo;s Delight</h1>
         <p className="description">
           An open-pollinated cherry tomato, sweet and heavy-cropping, saved on the Lower Field plot
           since 2019 and offered to members every spring.

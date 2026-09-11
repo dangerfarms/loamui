@@ -16,7 +16,15 @@ An example in **Navigation**: a component and a stylesheet built from `@loamui/c
 - Tags: site header, top bar, navbar, brand
 - Live: https://loamui.com/examples/navigation/header-simple
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A header landmark holding a nav landmark named Primary; the brand is a plain link home, and going somewhere is a SignpostLink rather than a Button dressed as one.
 - **Modern CSS.** The header is a container: the nav shares the row where there is room and drops beneath the brand and the action where there is not, decided by the header's own width.

@@ -3,7 +3,7 @@ import type { ExampleMeta } from "@/examples/types";
 export const meta: ExampleMeta = {
   title: "Image comparison",
   description:
-    "Two photographs of the same bed in one frame, the second revealed by a Range the reader drags or moves with the arrow keys.",
+    "Black-and-white and colour treatments of the same photograph in one frame, the second revealed by a Range the reader drags or moves with the arrow keys.",
   category: "page-sections",
   uses: ["Range"],
   notes: {

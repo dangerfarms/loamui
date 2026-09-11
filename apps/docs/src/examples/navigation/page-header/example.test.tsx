@@ -12,7 +12,10 @@ describe("page-header", () => {
     const header = screen.getByRole("banner");
     expect(header).toHaveClass("page-header");
     expect(header).toHaveAccessibleName("Gardener’s Delight");
-    expect(screen.getByRole("heading", { level: 1 })).toHaveAttribute("id", "page-header-title");
+    expect(screen.getByRole("heading", { level: 1 })).toHaveAttribute(
+      "id",
+      expect.stringContaining("page-header-title"),
+    );
 
     const crumbs = screen.getByRole("navigation", { name: "Breadcrumbs" });
     expect(header.firstElementChild).toBe(crumbs);

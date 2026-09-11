@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { Avatar, Card, Carousel } from "@loamui/core";
 import "./example.css";
 
@@ -41,9 +42,13 @@ function Chevron({ direction }: { direction: -1 | 1 }) {
 }
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <Carousel.Root className="testimonial-carousel" aria-labelledby="testimonial-carousel-title">
-      <h2 id="testimonial-carousel-title">What members say</h2>
+    <Carousel.Root
+      className="testimonial-carousel"
+      aria-labelledby={`${instanceId}-testimonial-carousel-title`}
+    >
+      <h2 id={`${instanceId}-testimonial-carousel-title`}>What members say</h2>
       <Carousel.Track>
         {TESTIMONIALS.map((testimonial) => (
           <Carousel.Item key={testimonial.name}>

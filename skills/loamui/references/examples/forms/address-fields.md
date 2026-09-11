@@ -16,7 +16,15 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - Tags: address, checkout, delivery, shipping, autofill, postcode
 - Live: https://loamui.com/examples/forms/address-fields
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A native fieldset named by its legend, and one input per part of the address: a single multi-line box cannot be autofilled, validated or read back a part at a time. Every purpose carries "section-delivery shipping", so a browser fills this group from the saved delivery address and leaves a billing group on the same page alone.
 - **Modern CSS.** The lines are a grid of the example's own inside the Fieldset, so the group spaces itself as a form spaces its fields without touching the Fieldset's own stack.

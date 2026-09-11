@@ -16,7 +16,15 @@ An example in **Data display**: a component and a stylesheet built from `@loamui
 - Tags: metrics, kpi, change, trend, dashboard, comparison
 - Live: https://loamui.com/examples/data-display/stats-with-diff
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** Each tile is a description list: the label is the term, the figure and its change are descriptions; the sales figure is a data element whose value is the number.
 - **Modern CSS.** The row is an auto-fit grid answering its own width; the figures and the percentages are set in tabular lining numerals so the tiles line up.

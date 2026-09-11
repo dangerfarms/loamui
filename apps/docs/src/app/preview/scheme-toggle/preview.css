@@ -1,0 +1,12 @@
+/* This static route shares the root assets, but presents only the example document.
+   The marker limits these rules to this route, including after client navigation. */
+body:has(.example-document) > :is(header, footer, .loam-SkipLink) {
+  display: none;
+}
+
+.example-document {
+  display: block grid;
+  gap: var(--loam-space-md);
+  justify-items: start;
+  padding: var(--loam-space-md);
+}

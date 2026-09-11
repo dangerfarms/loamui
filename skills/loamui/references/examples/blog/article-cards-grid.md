@@ -16,7 +16,15 @@ An example in **Blog**: a component and a stylesheet built from `@loamui/core`, 
 - Tags: index, listing, featured, blog grid
 - Live: https://loamui.com/examples/blog/article-cards-grid
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A ul of articles, each a Card rendered as an article named by its heading; the list says role="list" because stripping its markers drops the role in some browsers.
 - **Modern CSS.** The list is the grid and every item is a container, so the lead card lays its picture beside the text as soon as it is wide enough, decided by the item's width rather than a breakpoint.
@@ -26,6 +34,9 @@ An example in **Blog**: a component and a stylesheet built from `@loamui/core`, 
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Avatar, Badge, Card, Time } from "@loamui/core";
 import "./example.css";
 
@@ -63,13 +74,17 @@ const ARTICLES = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <ul className="article-cards-grid" role="list">
       {ARTICLES.map((article) => (
         <li key={article.slug}>
           <Card
             render={
-              <article className="article" aria-labelledby={`article-${article.slug}-title`} />
+              <article
+                className="article"
+                aria-labelledby={`${instanceId}-article-${article.slug}-title`}
+              />
             }
           >
             <img
@@ -83,7 +98,7 @@ export default function Example() {
               <Badge>{article.category}</Badge>
               <Time value={article.date} locale="en-GB" dateStyle="long" />
             </p>
-            <h3 id={`article-${article.slug}-title`}>
+            <h3 id={`${instanceId}-article-${article.slug}-title`}>
               <a href={`/guides/${article.slug}`}>{article.title}</a>
             </h3>
             <p className="description">{article.description}</p>

@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: landing, marketing, membership, centred
 - Live: https://loamui.com/examples/page-sections/hero-centered
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its own h1, so it is a region in a screen reader's landmark list; the type is the element styles' own, at the top of the fluid scale.
 - **Modern CSS.** One grid column with justify-items and text-align centring every part; the headline is balanced and the lede capped at the measure token so neither runs long.
@@ -27,17 +35,21 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Badge, SignpostLink } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="hero-centered" aria-labelledby="hero-centered-title">
+    <section className="hero-centered" aria-labelledby={`${instanceId}-hero-centered-title`}>
       <p className="eyebrow">
         <Badge>Membership</Badge>
         <span>From £3 a month</span>
       </p>
-      <h1 id="hero-centered-title">Join the co-op that grows its own seed.</h1>
+      <h1 id={`${instanceId}-hero-centered-title`}>Join the co-op that grows its own seed.</h1>
       <p className="lede">
         Members get first pick of every catalogue, a share of the seed we save each autumn and a
         vote on what the nursery grows next year.

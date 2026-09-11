@@ -1,10 +1,14 @@
+"use client";
+
+import { useId } from "react";
 import { Price, SignpostLink } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="order-summary" aria-labelledby="order-summary-title">
-      <h2 id="order-summary-title">Your order</h2>
+    <section className="order-summary" aria-labelledby={`${instanceId}-order-summary-title`}>
+      <h2 id={`${instanceId}-order-summary-title`}>Your order</h2>
       <dl>
         <div className="row">
           <dt>Subtotal</dt>

@@ -16,7 +16,15 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 - Tags: team, people, about, growers, staff
 - Live: https://loamui.com/examples/page-sections/person-grid
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its h2, a header for the intro and a list of four items whose names are h3 headings, so the outline lists the people.
 - **Modern CSS.** An auto-fit grid answering the section's own width, and the Avatar sized through its public --loam-avatar-size on the list item rather than a rule inside it.
@@ -26,6 +34,9 @@ An example in **Page sections**: a component and a stylesheet built from `@loamu
 ## Example.tsx
 
 ```tsx
+"use client";
+
+import { useId } from "react";
 import { Avatar } from "@loamui/core";
 import "./example.css";
 
@@ -37,11 +48,12 @@ const PEOPLE = [
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
-    <section className="person-grid" aria-labelledby="person-grid-title">
+    <section className="person-grid" aria-labelledby={`${instanceId}-person-grid-title`}>
       <header>
         <p className="eyebrow">The growers</p>
-        <h2 id="person-grid-title">Who grows your seed</h2>
+        <h2 id={`${instanceId}-person-grid-title`}>Who grows your seed</h2>
         <p className="description">
           Every variety in the catalogue is grown, selected and saved by a member. These four look
           after the trial beds at the nursery.

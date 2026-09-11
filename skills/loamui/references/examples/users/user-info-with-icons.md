@@ -16,7 +16,15 @@ An example in **Users**: a component and a stylesheet built from `@loamui/core`,
 - Tags: profile, contact, email, phone, avatar
 - Live: https://loamui.com/examples/users/user-info-with-icons
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The email is a mailto: link and the phone a tel: link, so a tap opens the mail app or the dialler; the two are a description list whose terms, Email and Phone, are read but not seen.
 - **Modern CSS.** The role is written after the name, so a heading comes first, and moved above it by order in the grid; a long address wraps anywhere inside a cell floored at zero rather than widening the column.

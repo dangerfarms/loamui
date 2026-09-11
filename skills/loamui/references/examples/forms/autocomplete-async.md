@@ -16,7 +16,15 @@ An example in **Forms**: a component and a stylesheet built from `@loamui/core`,
 - Tags: autocomplete, combobox, async, search, loading, typeahead
 - Live: https://loamui.com/examples/forms/autocomplete-async
 
-## Built to the pillars
+## Using this example
+
+Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+
+The seed search uses a local list with a simulated delay. Replace searchSeedList with your API request and pass its AbortSignal; add a visible error and retry state for network failures.
+
+## Design decisions
+
+These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The box is a native input wearing the APG editable combobox, and the chosen variety is submitted under name="variety" as a hidden input, so the form posts a value whether or not the list ever opened.
 - **Modern CSS.** The Loader's size is the one inherited hook the example sets, on the Field, so the spinner in the end section is the size of an icon there and the box keeps the derived control height; the status line reserves a line so the field does not jump when it fills.
@@ -77,7 +85,10 @@ export default function Example() {
       setSearching(false);
       return;
     }
-    if (text === chosen) return;
+    if (text === chosen) {
+      setSearching(false);
+      return;
+    }
     const controller = new AbortController();
     setSearching(true);
     searchSeedList(text, controller.signal).then(
@@ -92,13 +103,15 @@ export default function Example() {
 
   const status = searching
     ? "Searching the seed list…"
-    : matches === null
-      ? ""
-      : matches.length === 0
-        ? "Nothing in the seed list matches."
-        : matches.length === 1
-          ? "1 variety matches."
-          : `${matches.length} varieties match.`;
+    : query.trim() === chosen
+      ? `${chosen} selected.`
+      : matches === null
+        ? ""
+        : matches.length === 0
+          ? "Nothing in the seed list matches."
+          : matches.length === 1
+            ? "1 variety matches."
+            : `${matches.length} varieties match.`;
 
   return (
     <Field.Root className="autocomplete-async">

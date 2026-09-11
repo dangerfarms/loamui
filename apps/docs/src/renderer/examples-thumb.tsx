@@ -3,12 +3,10 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 /**
- * A card preview that mounts its live example only while the card is near
- * the viewport, and unmounts it again once the card has scrolled well
- * past. A hundred-odd examples rendered at once is enough work to stall a
- * renderer; kept to the dozen or so around the viewport, the index costs
- * what a dozen cards cost however long it grows. The placeholder keeps the
- * card's size, so nothing shifts as previews come and go.
+ * Mount a live example when its card approaches the viewport, then retain it
+ * for return visits. The fixed-aspect placeholder keeps the card's size
+ * stable before mounting. Card layout stays available to the observer;
+ * the surrounding grids provide explicit columns to bound intrinsic sizing.
  */
 export function LazyThumb({ className, children }: { className?: string; children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -21,12 +19,12 @@ export function LazyThumb({ className, children }: { className?: string; childre
       setNear(true);
       return;
     }
-    // One viewport of margin either side: a preview mounts a screen before
-    // it arrives and leaves a screen after it has gone, so a small scroll
-    // back never re-renders it.
+    // Preload nearby previews and keep them mounted when scrolling back.
     const io = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) setNear(entry.isIntersecting);
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        setNear(true);
+        io.disconnect();
       },
       { rootMargin: "100% 0px" },
     );

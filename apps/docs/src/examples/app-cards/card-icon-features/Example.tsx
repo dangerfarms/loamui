@@ -1,44 +1,53 @@
-import { Badge, Button, Card, Price } from "@loamui/core";
+"use client";
+
+import { useId } from "react";
+import { Badge, Card, Price, SignpostLink } from "@loamui/core";
 import "./example.css";
 
 // One stroked path per feature, drawn on a 24-unit grid in currentColor.
 const FEATURES = [
   {
-    name: "Six plants, hardened off",
+    name: "Mixed succulent plants",
     d: "M12 21V9M12 9C9 9 6 7 6 3c4 0 6 2 6 6zM12 13c0-4 2-6 6-6 0 4-3 6-6 6z",
   },
   {
-    name: "Posted in the second week of May",
-    d: "M2 7h11v9H2zM13 10h4l3 3v3h-7M5 19a2 2 0 1 0 .01 0M18 19a2 2 0 1 0 .01 0",
+    name: "Collection from the nursery",
+    d: "M4 20h16M6 20V10l6-6 6 6v10M9 20v-4h6v4",
   },
-  { name: "Peat-free compost", d: "M4 20h16M6 20V10l6-6 6 6v10M9 20v-4h6v4" },
+  { name: "Glass bowl included", d: "M4 7h16M4 7c0 8 3 13 8 13s8-5 8-13M4 7c0-2 4-4 8-4s8 2 8 4" },
   {
-    name: "Raised from the co-op’s own seed",
-    d: "M4 20c0-8 6-12 16-12-2 8-8 12-16 12zM4 20c4-4 8-6 12-8",
+    name: "Gift message available",
+    d: "M5 4h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-8l-6 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM7 8h10M7 12h7",
   },
 ];
 
 export default function Example() {
+  const instanceId = useId();
   return (
     <Card
-      render={<article className="card-icon-features" aria-labelledby="card-icon-features-title" />}
+      render={
+        <article
+          className="card-icon-features"
+          aria-labelledby={`${instanceId}-card-icon-features-title`}
+        />
+      }
     >
       <img
         className="media"
         src="https://picsum.photos/id/530/800/500"
-        alt="Succulents and young plants in a glass propagation case on the greenhouse bench"
+        alt="Rosette and trailing succulents planted in a clear glass bowl"
         width="800"
         height="500"
       />
       <div className="head">
-        <h3 id="card-icon-features-title">Tomato ‘Gardener’s Delight’ plant collection</h3>
+        <h3 id={`${instanceId}-card-icon-features-title`}>Succulent bowl</h3>
         <p className="flag">
-          <Badge>New for 2027</Badge>
+          <Badge>Gift idea</Badge>
         </p>
       </div>
       <p className="description">
-        Six cordon plants, potted on twice and hardened off in the yard before they leave, so they
-        go straight into a greenhouse border or a grow bag.
+        A mixed planting of rosette and trailing succulents in a clear glass bowl. Ready to display
+        or give as a gift.
       </p>
       <ul className="features" role="list" aria-label="What you get">
         {FEATURES.map((feature) => (
@@ -61,14 +70,11 @@ export default function Example() {
       <div className="foot">
         <p className="price">
           <Price value={18.5} currency="GBP" locale="en-GB">
-            for six plants
+            per bowl
           </Price>
         </p>
         <div className="actions">
-          <Button>
-            Add<span className="loam-VisuallyHidden"> the Gardener’s Delight collection</span> to
-            basket
-          </Button>
+          <SignpostLink href="/shop/succulent-bowl">View succulent bowl</SignpostLink>
         </div>
       </div>
     </Card>
