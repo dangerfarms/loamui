@@ -1,6 +1,9 @@
 @scope (.grid-leading-item) to ([class*="loam-"]) {
   :scope {
-    container-type: inline-size;
+    container: grid-leading-item / inline-size;
+  }
+
+  ul {
     display: block grid;
     gap: var(--loam-space-md);
     list-style: none;
@@ -10,21 +13,30 @@
 
   li {
     display: block grid;
+    grid-template-columns: minmax(0, 1fr);
     margin: 0;
   }
 
-  @container (inline-size >= 36rem) {
-    :scope {
+  @container grid-leading-item (inline-size < 36rem) {
+    ul {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @container grid-leading-item (36rem <= inline-size < 56rem) {
+    ul {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+  }
 
+  @container grid-leading-item (inline-size >= 36rem) {
     li.lead {
       grid-column: span 2;
     }
   }
 
-  @container (inline-size >= 56rem) {
-    :scope {
+  @container grid-leading-item (inline-size >= 56rem) {
+    ul {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
@@ -44,8 +56,11 @@
   }
 
   h3 {
-    font-size: var(--loam-text-lg);
     margin: 0;
+
+    li:not(.lead) :scope & {
+      font-size: var(--loam-text-lg);
+    }
 
     li.lead :scope & {
       font-size: var(--loam-text-xl);

@@ -4,7 +4,7 @@
 // and command menu can import it without pulling in demo code.
 
 import type { Category } from "@/renderer/types";
-import { EXAMPLE_CATEGORIES } from "../examples/categories";
+import { examplesByCategory } from "../examples/catalog";
 
 export interface NavItem {
   name: string;
@@ -34,13 +34,13 @@ export const PRIMITIVES: { name: string; href: string }[] = [
   { name: "Components", href: "/docs/components" },
 ];
 
-// The examples, for the command menu: the index, then one entry per
-// category. Derived from the examples' own category list, so search cannot
+// The recipes, for the command menu: the index, then one entry per
+// category. Derived from the recipes' own category list, so search cannot
 // offer a category the site does not have. Deliberately absent from the
 // docs sidebar, which lists the library, not the gallery built from it.
 export const EXAMPLES_NAV: { name: string; href: string }[] = [
-  { name: "All examples", href: "/examples" },
-  ...EXAMPLE_CATEGORIES.map((c) => ({ name: c.title, href: `/examples/${c.slug}` })),
+  { name: "All recipes", href: "/recipes" },
+  ...examplesByCategory().map(({ category: c }) => ({ name: c.title, href: `/recipes/${c.slug}` })),
 ];
 
 export const CATEGORY_ORDER = [

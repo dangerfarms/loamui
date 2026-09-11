@@ -1,7 +1,7 @@
 "use client";
 
 import { useId } from "react";
-import { Button, Card } from "@loamui/core";
+import { Card, SignpostLink } from "@loamui/core";
 import "./example.css";
 
 const WORKSHOPS = [
@@ -47,7 +47,9 @@ export default function Example() {
           </div>
           <p className="description">{workshop.description}</p>
           <div className="actions">
-            <Button>Book a place</Button>
+            <SignpostLink href={`/workshops/${workshop.slug}`}>
+              Book a place<span className="loam-VisuallyHidden"> – {workshop.title}</span>
+            </SignpostLink>
           </div>
         </Card>
       ))}

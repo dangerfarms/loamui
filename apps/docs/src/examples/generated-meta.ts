@@ -2,273 +2,37 @@
 // Do not edit: add or change an example folder and rerun `pnpm dev` or `pnpm build`.
 
 import type { ExampleMetaEntry } from "./types";
-import { meta as meta0 } from "./page-sections/hero-with-image/meta";
-import { meta as meta1 } from "./page-sections/hero-centered/meta";
-import { meta as meta2 } from "./page-sections/call-to-action/meta";
-import { meta as meta3 } from "./page-sections/call-to-action-with-media/meta";
-import { meta as meta4 } from "./page-sections/banner/meta";
-import { meta as meta5 } from "./page-sections/banner-warning/meta";
-import { meta as meta6 } from "./page-sections/section-header/meta";
-import { meta as meta7 } from "./page-sections/feature-grid/meta";
-import { meta as meta8 } from "./page-sections/testimonial/meta";
-import { meta as meta9 } from "./page-sections/testimonial-carousel/meta";
-import { meta as meta10 } from "./page-sections/logo-wall/meta";
-import { meta as meta11 } from "./page-sections/gallery-lightbox/meta";
-import { meta as meta12 } from "./page-sections/image-comparison/meta";
-import { meta as meta13 } from "./page-sections/embed-video/meta";
-import { meta as meta14 } from "./page-sections/embed-map/meta";
-import { meta as meta15 } from "./page-sections/empty-state/meta";
-import { meta as meta16 } from "./page-sections/cookie-banner/meta";
-import { meta as meta17 } from "./page-sections/stepper-progress/meta";
-import { meta as meta18 } from "./page-sections/timeline/meta";
-import { meta as meta19 } from "./page-sections/person-grid/meta";
-import { meta as meta20 } from "./page-sections/hero-background-image/meta";
-import { meta as meta21 } from "./page-sections/hero-content-left/meta";
-import { meta as meta22 } from "./page-sections/hero-with-bullets/meta";
-import { meta as meta23 } from "./page-sections/features-with-cards/meta";
-import { meta as meta24 } from "./page-sections/features-with-title/meta";
-import { meta as meta25 } from "./page-sections/contact-us-with-details/meta";
-import { meta as meta26 } from "./page-sections/email-banner/meta";
-import { meta as meta27 } from "./page-sections/banner-with-image/meta";
-import { meta as meta28 } from "./navigation/footer-with-columns/meta";
-import { meta as meta29 } from "./navigation/header-simple/meta";
-import { meta as meta30 } from "./navigation/header-with-search/meta";
-import { meta as meta31 } from "./navigation/footer-simple/meta";
-import { meta as meta32 } from "./navigation/mobile-nav/meta";
-import { meta as meta33 } from "./navigation/side-nav/meta";
-import { meta as meta34 } from "./navigation/side-nav-with-groups/meta";
-import { meta as meta35 } from "./navigation/table-of-contents/meta";
-import { meta as meta36 } from "./navigation/social-links/meta";
-import { meta as meta37 } from "./navigation/page-header/meta";
-import { meta as meta38 } from "./navigation/side-nav-two-sections/meta";
-import { meta as meta39 } from "./navigation/side-nav-rail/meta";
-import { meta as meta40 } from "./navigation/side-nav-with-search/meta";
-import { meta as meta41 } from "./navigation/side-nav-with-segmented-control/meta";
-import { meta as meta42 } from "./navigation/header-with-menus/meta";
-import { meta as meta43 } from "./navigation/header-mega-menu/meta";
-import { meta as meta44 } from "./navigation/header-with-tabs/meta";
-import { meta as meta45 } from "./navigation/footer-centered/meta";
-import { meta as meta46 } from "./navigation/footer-with-social/meta";
-import { meta as meta47 } from "./forms/sign-in/meta";
-import { meta as meta48 } from "./forms/sign-up/meta";
-import { meta as meta49 } from "./forms/forgot-password/meta";
-import { meta as meta50 } from "./forms/sign-in-with-errors/meta";
-import { meta as meta51 } from "./forms/contact-form/meta";
-import { meta as meta52 } from "./forms/address-fields/meta";
-import { meta as meta53 } from "./forms/settings-rows/meta";
-import { meta as meta54 } from "./forms/password-strength/meta";
-import { meta as meta55 } from "./forms/choice-cards-radio/meta";
-import { meta as meta56 } from "./forms/choice-cards-checkbox/meta";
-import { meta as meta57 } from "./forms/scheme-toggle/meta";
-import { meta as meta58 } from "./forms/inline-search-form/meta";
-import { meta as meta59 } from "./forms/autocomplete-async/meta";
-import { meta as meta60 } from "./forms/floating-label/meta";
-import { meta as meta61 } from "./forms/number-with-currency/meta";
-import { meta as meta62 } from "./forms/forgot-password-on-label/meta";
-import { meta as meta63 } from "./forms/input-with-tooltip/meta";
-import { meta as meta64 } from "./forms/input-validation/meta";
-import { meta as meta65 } from "./forms/input-with-button/meta";
-import { meta as meta66 } from "./forms/language-picker/meta";
-import { meta as meta67 } from "./forms/dropzone/meta";
-import { meta as meta68 } from "./data-display/stats-grid/meta";
-import { meta as meta69 } from "./data-display/stat-with-trend/meta";
-import { meta as meta70 } from "./data-display/summary-list/meta";
-import { meta as meta71 } from "./data-display/task-list/meta";
-import { meta as meta72 } from "./data-display/contact-details/meta";
-import { meta as meta73 } from "./data-display/table-sortable/meta";
-import { meta as meta74 } from "./data-display/stats-with-controls/meta";
-import { meta as meta75 } from "./data-display/stats-with-diff/meta";
-import { meta as meta76 } from "./data-display/grouped-stats/meta";
-import { meta as meta77 } from "./data-display/stats-with-segments/meta";
-import { meta as meta78 } from "./data-display/table-reviews/meta";
-import { meta as meta79 } from "./data-display/table-sticky-header/meta";
-import { meta as meta80 } from "./data-display/table-with-selection/meta";
-import { meta as meta81 } from "./app-cards/card-actions-grid/meta";
-import { meta as meta82 } from "./app-cards/card-with-badges/meta";
-import { meta as meta83 } from "./app-cards/card-with-stats/meta";
-import { meta as meta84 } from "./app-cards/card-icon-features/meta";
-import { meta as meta85 } from "./app-cards/stats-card-progress/meta";
-import { meta as meta86 } from "./app-cards/card-with-switches/meta";
-import { meta as meta87 } from "./app-cards/tasks-card/meta";
-import { meta as meta88 } from "./users/user-menu/meta";
-import { meta as meta89 } from "./users/user-button/meta";
-import { meta as meta90 } from "./users/user-card/meta";
-import { meta as meta91 } from "./users/user-info-with-icons/meta";
-import { meta as meta92 } from "./users/users-table/meta";
-import { meta as meta93 } from "./users/users-table-with-roles/meta";
-import { meta as meta94 } from "./users/users-grid/meta";
-import { meta as meta95 } from "./blog/article-card/meta";
-import { meta as meta96 } from "./blog/article-cards-grid/meta";
-import { meta as meta97 } from "./blog/article-header/meta";
-import { meta as meta98 } from "./blog/byline/meta";
-import { meta as meta99 } from "./blog/comment/meta";
-import { meta as meta100 } from "./blog/comment-thread/meta";
-import { meta as meta101 } from "./blog/tag-list/meta";
-import { meta as meta102 } from "./blog/article-card-footer/meta";
-import { meta as meta103 } from "./blog/card-background-image/meta";
-import { meta as meta104 } from "./blog/vertical-article-card/meta";
-import { meta as meta105 } from "./blog/comment-html/meta";
-import { meta as meta106 } from "./commerce/product-card/meta";
-import { meta as meta107 } from "./commerce/product-grid/meta";
-import { meta as meta108 } from "./commerce/cart-line/meta";
-import { meta as meta109 } from "./commerce/mini-basket/meta";
-import { meta as meta110 } from "./commerce/order-summary/meta";
-import { meta as meta111 } from "./commerce/pricing-table/meta";
-import { meta as meta112 } from "./buttons/copy-to-clipboard/meta";
-import { meta as meta113 } from "./buttons/button-with-menu/meta";
-import { meta as meta114 } from "./buttons/button-with-progress/meta";
-import { meta as meta115 } from "./buttons/social-buttons/meta";
-import { meta as meta116 } from "./buttons/split-button/meta";
-import { meta as meta117 } from "./sliders/slider-with-marks/meta";
-import { meta as meta118 } from "./sliders/slider-with-output/meta";
-import { meta as meta119 } from "./sliders/number-input-with-slider/meta";
-import { meta as meta120 } from "./carousels/carousel-with-cards/meta";
-import { meta as meta121 } from "./carousels/card-with-carousel/meta";
-import { meta as meta122 } from "./faq/faq-simple/meta";
-import { meta as meta123 } from "./faq/faq-with-background/meta";
-import { meta as meta124 } from "./faq/faq-with-image/meta";
-import { meta as meta125 } from "./faq/faq-page-header/meta";
-import { meta as meta126 } from "./grids/grid-asymmetric/meta";
-import { meta as meta127 } from "./grids/grid-leading-item/meta";
-import { meta as meta128 } from "./grids/grid-subgrid/meta";
-import { meta as meta129 } from "./errors/error-404/meta";
-import { meta as meta130 } from "./errors/error-500/meta";
-import { meta as meta131 } from "./errors/error-404-image/meta";
-import { meta as meta132 } from "./errors/error-503/meta";
+import { meta as meta0 } from "./heroes/hero-with-image/meta";
+import { meta as meta1 } from "./heroes/hero-background-image/meta";
+import { meta as meta2 } from "./banners/banner-with-image/meta";
+import { meta as meta3 } from "./banners/banner-background-image/meta";
+import { meta as meta4 } from "./cards/article-card/meta";
+import { meta as meta5 } from "./cards/profile-card/meta";
+import { meta as meta6 } from "./cards/gallery-card/meta";
+import { meta as meta7 } from "./media/article-carousel/meta";
+import { meta as meta8 } from "./media/image-comparison/meta";
+import { meta as meta9 } from "./grids/grid-asymmetric/meta";
+import { meta as meta10 } from "./grids/grid-subgrid/meta";
+import { meta as meta11 } from "./content/faq/meta";
+import { meta as meta12 } from "./content/timeline/meta";
+import { meta as meta13 } from "./forms/sign-in-with-errors/meta";
+import { meta as meta14 } from "./forms/contact-us-with-details/meta";
 
 /** Every example's identity and meta, in category order then display order. JSX-free. */
 export const EXAMPLE_META: ExampleMetaEntry[] = [
-  { slug: "hero-with-image", category: "page-sections", meta: meta0 },
-  { slug: "hero-centered", category: "page-sections", meta: meta1 },
-  { slug: "call-to-action", category: "page-sections", meta: meta2 },
-  { slug: "call-to-action-with-media", category: "page-sections", meta: meta3 },
-  { slug: "banner", category: "page-sections", meta: meta4 },
-  { slug: "banner-warning", category: "page-sections", meta: meta5 },
-  { slug: "section-header", category: "page-sections", meta: meta6 },
-  { slug: "feature-grid", category: "page-sections", meta: meta7 },
-  { slug: "testimonial", category: "page-sections", meta: meta8 },
-  { slug: "testimonial-carousel", category: "page-sections", meta: meta9 },
-  { slug: "logo-wall", category: "page-sections", meta: meta10 },
-  { slug: "gallery-lightbox", category: "page-sections", meta: meta11 },
-  { slug: "image-comparison", category: "page-sections", meta: meta12 },
-  { slug: "embed-video", category: "page-sections", meta: meta13 },
-  { slug: "embed-map", category: "page-sections", meta: meta14 },
-  { slug: "empty-state", category: "page-sections", meta: meta15 },
-  { slug: "cookie-banner", category: "page-sections", meta: meta16 },
-  { slug: "stepper-progress", category: "page-sections", meta: meta17 },
-  { slug: "timeline", category: "page-sections", meta: meta18 },
-  { slug: "person-grid", category: "page-sections", meta: meta19 },
-  { slug: "hero-background-image", category: "page-sections", meta: meta20 },
-  { slug: "hero-content-left", category: "page-sections", meta: meta21 },
-  { slug: "hero-with-bullets", category: "page-sections", meta: meta22 },
-  { slug: "features-with-cards", category: "page-sections", meta: meta23 },
-  { slug: "features-with-title", category: "page-sections", meta: meta24 },
-  { slug: "contact-us-with-details", category: "page-sections", meta: meta25 },
-  { slug: "email-banner", category: "page-sections", meta: meta26 },
-  { slug: "banner-with-image", category: "page-sections", meta: meta27 },
-  { slug: "footer-with-columns", category: "navigation", meta: meta28 },
-  { slug: "header-simple", category: "navigation", meta: meta29 },
-  { slug: "header-with-search", category: "navigation", meta: meta30 },
-  { slug: "footer-simple", category: "navigation", meta: meta31 },
-  { slug: "mobile-nav", category: "navigation", meta: meta32 },
-  { slug: "side-nav", category: "navigation", meta: meta33 },
-  { slug: "side-nav-with-groups", category: "navigation", meta: meta34 },
-  { slug: "table-of-contents", category: "navigation", meta: meta35 },
-  { slug: "social-links", category: "navigation", meta: meta36 },
-  { slug: "page-header", category: "navigation", meta: meta37 },
-  { slug: "side-nav-two-sections", category: "navigation", meta: meta38 },
-  { slug: "side-nav-rail", category: "navigation", meta: meta39 },
-  { slug: "side-nav-with-search", category: "navigation", meta: meta40 },
-  { slug: "side-nav-with-segmented-control", category: "navigation", meta: meta41 },
-  { slug: "header-with-menus", category: "navigation", meta: meta42 },
-  { slug: "header-mega-menu", category: "navigation", meta: meta43 },
-  { slug: "header-with-tabs", category: "navigation", meta: meta44 },
-  { slug: "footer-centered", category: "navigation", meta: meta45 },
-  { slug: "footer-with-social", category: "navigation", meta: meta46 },
-  { slug: "sign-in", category: "forms", meta: meta47 },
-  { slug: "sign-up", category: "forms", meta: meta48 },
-  { slug: "forgot-password", category: "forms", meta: meta49 },
-  { slug: "sign-in-with-errors", category: "forms", meta: meta50 },
-  { slug: "contact-form", category: "forms", meta: meta51 },
-  { slug: "address-fields", category: "forms", meta: meta52 },
-  { slug: "settings-rows", category: "forms", meta: meta53 },
-  { slug: "password-strength", category: "forms", meta: meta54 },
-  { slug: "choice-cards-radio", category: "forms", meta: meta55 },
-  { slug: "choice-cards-checkbox", category: "forms", meta: meta56 },
-  { slug: "scheme-toggle", category: "forms", meta: meta57 },
-  { slug: "inline-search-form", category: "forms", meta: meta58 },
-  { slug: "autocomplete-async", category: "forms", meta: meta59 },
-  { slug: "floating-label", category: "forms", meta: meta60 },
-  { slug: "number-with-currency", category: "forms", meta: meta61 },
-  { slug: "forgot-password-on-label", category: "forms", meta: meta62 },
-  { slug: "input-with-tooltip", category: "forms", meta: meta63 },
-  { slug: "input-validation", category: "forms", meta: meta64 },
-  { slug: "input-with-button", category: "forms", meta: meta65 },
-  { slug: "language-picker", category: "forms", meta: meta66 },
-  { slug: "dropzone", category: "forms", meta: meta67 },
-  { slug: "stats-grid", category: "data-display", meta: meta68 },
-  { slug: "stat-with-trend", category: "data-display", meta: meta69 },
-  { slug: "summary-list", category: "data-display", meta: meta70 },
-  { slug: "task-list", category: "data-display", meta: meta71 },
-  { slug: "contact-details", category: "data-display", meta: meta72 },
-  { slug: "table-sortable", category: "data-display", meta: meta73 },
-  { slug: "stats-with-controls", category: "data-display", meta: meta74 },
-  { slug: "stats-with-diff", category: "data-display", meta: meta75 },
-  { slug: "grouped-stats", category: "data-display", meta: meta76 },
-  { slug: "stats-with-segments", category: "data-display", meta: meta77 },
-  { slug: "table-reviews", category: "data-display", meta: meta78 },
-  { slug: "table-sticky-header", category: "data-display", meta: meta79 },
-  { slug: "table-with-selection", category: "data-display", meta: meta80 },
-  { slug: "card-actions-grid", category: "app-cards", meta: meta81 },
-  { slug: "card-with-badges", category: "app-cards", meta: meta82 },
-  { slug: "card-with-stats", category: "app-cards", meta: meta83 },
-  { slug: "card-icon-features", category: "app-cards", meta: meta84 },
-  { slug: "stats-card-progress", category: "app-cards", meta: meta85 },
-  { slug: "card-with-switches", category: "app-cards", meta: meta86 },
-  { slug: "tasks-card", category: "app-cards", meta: meta87 },
-  { slug: "user-menu", category: "users", meta: meta88 },
-  { slug: "user-button", category: "users", meta: meta89 },
-  { slug: "user-card", category: "users", meta: meta90 },
-  { slug: "user-info-with-icons", category: "users", meta: meta91 },
-  { slug: "users-table", category: "users", meta: meta92 },
-  { slug: "users-table-with-roles", category: "users", meta: meta93 },
-  { slug: "users-grid", category: "users", meta: meta94 },
-  { slug: "article-card", category: "blog", meta: meta95 },
-  { slug: "article-cards-grid", category: "blog", meta: meta96 },
-  { slug: "article-header", category: "blog", meta: meta97 },
-  { slug: "byline", category: "blog", meta: meta98 },
-  { slug: "comment", category: "blog", meta: meta99 },
-  { slug: "comment-thread", category: "blog", meta: meta100 },
-  { slug: "tag-list", category: "blog", meta: meta101 },
-  { slug: "article-card-footer", category: "blog", meta: meta102 },
-  { slug: "card-background-image", category: "blog", meta: meta103 },
-  { slug: "vertical-article-card", category: "blog", meta: meta104 },
-  { slug: "comment-html", category: "blog", meta: meta105 },
-  { slug: "product-card", category: "commerce", meta: meta106 },
-  { slug: "product-grid", category: "commerce", meta: meta107 },
-  { slug: "cart-line", category: "commerce", meta: meta108 },
-  { slug: "mini-basket", category: "commerce", meta: meta109 },
-  { slug: "order-summary", category: "commerce", meta: meta110 },
-  { slug: "pricing-table", category: "commerce", meta: meta111 },
-  { slug: "copy-to-clipboard", category: "buttons", meta: meta112 },
-  { slug: "button-with-menu", category: "buttons", meta: meta113 },
-  { slug: "button-with-progress", category: "buttons", meta: meta114 },
-  { slug: "social-buttons", category: "buttons", meta: meta115 },
-  { slug: "split-button", category: "buttons", meta: meta116 },
-  { slug: "slider-with-marks", category: "sliders", meta: meta117 },
-  { slug: "slider-with-output", category: "sliders", meta: meta118 },
-  { slug: "number-input-with-slider", category: "sliders", meta: meta119 },
-  { slug: "carousel-with-cards", category: "carousels", meta: meta120 },
-  { slug: "card-with-carousel", category: "carousels", meta: meta121 },
-  { slug: "faq-simple", category: "faq", meta: meta122 },
-  { slug: "faq-with-background", category: "faq", meta: meta123 },
-  { slug: "faq-with-image", category: "faq", meta: meta124 },
-  { slug: "faq-page-header", category: "faq", meta: meta125 },
-  { slug: "grid-asymmetric", category: "grids", meta: meta126 },
-  { slug: "grid-leading-item", category: "grids", meta: meta127 },
-  { slug: "grid-subgrid", category: "grids", meta: meta128 },
-  { slug: "error-404", category: "errors", meta: meta129 },
-  { slug: "error-500", category: "errors", meta: meta130 },
-  { slug: "error-404-image", category: "errors", meta: meta131 },
-  { slug: "error-503", category: "errors", meta: meta132 },
+  { slug: "hero-with-image", category: "heroes", meta: meta0 },
+  { slug: "hero-background-image", category: "heroes", meta: meta1 },
+  { slug: "banner-with-image", category: "banners", meta: meta2 },
+  { slug: "banner-background-image", category: "banners", meta: meta3 },
+  { slug: "article-card", category: "cards", meta: meta4 },
+  { slug: "profile-card", category: "cards", meta: meta5 },
+  { slug: "gallery-card", category: "cards", meta: meta6 },
+  { slug: "article-carousel", category: "media", meta: meta7 },
+  { slug: "image-comparison", category: "media", meta: meta8 },
+  { slug: "grid-asymmetric", category: "grids", meta: meta9 },
+  { slug: "grid-subgrid", category: "grids", meta: meta10 },
+  { slug: "faq", category: "content", meta: meta11 },
+  { slug: "timeline", category: "content", meta: meta12 },
+  { slug: "sign-in-with-errors", category: "forms", meta: meta13 },
+  { slug: "contact-us-with-details", category: "forms", meta: meta14 },
 ];

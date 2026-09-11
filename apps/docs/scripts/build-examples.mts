@@ -29,6 +29,7 @@ import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from "
 import { execFileSync } from "node:child_process";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { PUBLISHED_RECIPES } from "../src/examples/recipes.js";
 import { EXAMPLE_CATEGORIES } from "../src/examples/categories.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -43,6 +44,8 @@ interface Found {
 
 const listed = new Set(EXAMPLE_CATEGORIES.map((c) => c.slug));
 const found: Found[] = [];
+const published = new Set(PUBLISHED_RECIPES);
+const discovered = new Set<string>();
 const problems: string[] = [];
 
 for (const category of readdirSync(DIR)) {
@@ -65,7 +68,9 @@ for (const category of readdirSync(DIR)) {
     // type module through tsx for every example on every dev start.
     const meta = readFileSync(join(dir, "meta.ts"), "utf8");
     const order = Number(meta.match(/\border:\s*(\d+)/)?.[1] ?? 1000);
-    found.push({ category, slug, order });
+    const key = `${category}/${slug}`;
+    discovered.add(key);
+    if (published.has(key)) found.push({ category, slug, order });
   }
 }
 
@@ -73,6 +78,11 @@ for (const c of EXAMPLE_CATEGORIES) {
   if (!existsSync(join(DIR, c.slug)))
     problems.push(`categories.ts lists "${c.slug}" but src/examples/${c.slug}/ does not exist`);
 }
+
+for (const key of published) {
+  if (!discovered.has(key)) problems.push(`Published recipe "${key}" has no complete source folder`);
+}
+if (published.size !== PUBLISHED_RECIPES.length) problems.push("Duplicate published recipe");
 
 if (problems.length) {
   console.error(`build-examples: ${problems.length} problem(s)\n- ${problems.join("\n- ")}`);

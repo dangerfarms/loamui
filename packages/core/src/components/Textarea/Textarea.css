@@ -4,10 +4,8 @@
     border: 1px solid var(--loam-color-line-strong);
     border-radius: var(--_radius, var(--loam-radius-md));
     display: block flex;
-    font-size: var(--loam-text-sm);
-    line-height: 1.2;
-    padding-block: var(--loam-space-sm);
-    padding-inline: var(--loam-space-md);
+    font-size: var(--loam-text-md);
+    line-height: 1.5;
 
     &:focus-within {
       border-color: var(--loam-color-primary);
@@ -56,7 +54,7 @@
     font: inherit;
     min-inline-size: 0;
     outline: none;
-    padding: 0;
+    padding: var(--loam-space-md);
     resize: block;
   }
 
@@ -88,8 +86,8 @@
   @supports (field-sizing: content) {
     textarea {
       field-sizing: content;
-      max-block-size: max(10lh, calc(var(--_rows, 3) * 1lh));
-      min-block-size: calc(var(--_rows, 3) * 1lh);
+      max-block-size: calc(max(10lh, var(--_rows, 3) * 1lh) + var(--loam-space-md) * 2);
+      min-block-size: calc(var(--_rows, 3) * 1lh + var(--loam-space-md) * 2);
     }
   }
 

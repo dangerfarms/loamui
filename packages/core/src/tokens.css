@@ -218,7 +218,7 @@
     color-scheme: light dark;
 
     /* No control-sizing tokens: inputs and buttons align by a shared derived
-       anatomy (padding-block --loam-space-sm + --loam-text-sm × 1.2 + 1px
+       anatomy (padding-block --loam-space-md + --loam-text-md × 1.5 + 1px
        borders). Do not add height tokens. */
   }
 

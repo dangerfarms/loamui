@@ -63,7 +63,7 @@ const doc: ComponentContent = {
     {
       title: "Size and width from context",
       description:
-        "There are no size or fullWidth props. Padding and font are fluid (container-relative tokens), so the button is sized by the space it lives in. Width is the parent's decision: a container of 16rem or less makes a button span it, a grid or stacked-flex region stretches its buttons (that is the platform's own layout at work), and a flex row shrink-wraps them to their labels.",
+        "There are no size or fullWidth props. Body-text and spacing tokens give the button a generous default and adapt it to its container. Labels can wrap when text is enlarged or translated; height grows with the content. Width is the parent's decision: a container of 16rem or less makes a button span it, a grid or stacked-flex region stretches its buttons (that is the platform's own layout at work), and a flex row shrink-wraps them to their labels.",
       code: `<div style={{ containerType: "inline-size", inlineSize: "14rem" }}>
   <Button>Save changes</Button>
 </div>

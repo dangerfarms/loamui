@@ -9,7 +9,7 @@ const axeOptions = { rules: { "color-contrast": { enabled: false } } };
 describe("grid-asymmetric", () => {
   it("is a list of three named articles on cards whose lead comes first and carries the photograph", async () => {
     const { container } = render(<Example />);
-    expect(screen.getByRole("list")).toHaveClass("grid-asymmetric");
+    expect(screen.getByRole("list").parentElement).toHaveClass("grid-asymmetric");
     const items = screen.getAllByRole("listitem");
     expect(items).toHaveLength(3);
     expect(items[0]).toHaveClass("lead");

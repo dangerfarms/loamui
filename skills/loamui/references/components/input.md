@@ -31,7 +31,7 @@ Inside Field.Root the input reads its id from the field, so Field.Label is wired
 
 ### Size from context
 
-There is no size prop. Padding and font are fluid container-relative tokens: the control adapts to the space it lives in, and always height-aligns with Button, which shares the same derived anatomy. See the Contextualism guide.
+There is no visual size prop. Body-text and spacing tokens give the control a readable, generous default and adapt it to its container. The native input owns its padding, so taps inside that padding focus the field. Single-line inputs align with single-line Buttons through shared typography and spacing; neither has a fixed height. The native HTML size attribute still sets an answer width in characters.
 
 ```tsx
 <div style={{ containerType: "inline-size", inlineSize: "16rem" }}>

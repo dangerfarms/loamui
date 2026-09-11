@@ -5,15 +5,9 @@
     border: 1px solid var(--loam-color-line-strong);
     border-radius: var(--_radius, var(--loam-radius-md));
     display: block flex;
-    font-size: var(--loam-text-sm);
+    font-size: var(--loam-text-md);
     gap: var(--loam-space-sm);
-    line-height: 1.2;
-
-    /* Height is derived, not declared: same stack as Button (padding-block
-       space-sm + text-sm × 1.2 + 1px border), so inputs and buttons align
-       by construction at every container width. */
-    padding-block: var(--loam-space-sm);
-    padding-inline: var(--loam-space-md);
+    line-height: 1.5;
 
     &:focus-within {
       border-color: var(--loam-color-primary);
@@ -68,9 +62,9 @@
     min-inline-size: 0;
     outline: none;
 
-    /* UA inputs carry 1-2px default padding; with a derived (auto) height
-       that would break the Button alignment, so zero it explicitly. */
-    padding: 0;
+    /* The native control owns its padding, so the whole text-entry area
+       accepts taps. Body type and spacing share Button's derived height. */
+    padding: var(--loam-space-md);
   }
 
   /* Without `size` the input takes the box; with it, the platform's own
@@ -105,6 +99,14 @@
     color: var(--loam-color-fg-muted);
     display: inline flex;
     flex-shrink: 0;
+
+    &:first-child {
+      padding-inline-start: var(--loam-space-md);
+    }
+
+    &:last-child {
+      padding-inline-end: var(--loam-space-md);
+    }
 
     /* Sections must not stretch the derived height. */
     svg {

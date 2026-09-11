@@ -1,34 +1,39 @@
 @scope (.sign-in-with-errors) to ([class*="loam-"]) {
-  :scope {
-    container-type: inline-size;
-
-    /* An explicit inline-size: a grid or flex parent would otherwise size a
-       contained element to nothing. */
-    inline-size: 100%;
-    margin-inline: auto;
-    max-inline-size: 24rem;
+  @layer loamui.components {
+    :scope {
+      container-type: inline-size;
+      inline-size: 100%;
+      margin-inline: auto;
+      max-inline-size: 28rem;
+    }
   }
+}
 
-  h1 {
-    font-size: var(--loam-text-xl);
-    margin-block: 0 var(--loam-space-lg);
-  }
+@scope (.sign-in-with-errors form) to ([class*="loam-"]) {
+  @layer loamui.components {
+    :scope {
+      display: block grid;
+      font-size: var(--loam-text-md);
+      gap: var(--loam-space-lg);
+      grid-template-columns: minmax(0, 1fr);
+      overflow-wrap: anywhere;
+    }
 
-  form {
-    display: block grid;
-    gap: var(--loam-space-lg);
-  }
+    h1,
+    p {
+      margin-block: 0;
+    }
 
-  div.actions {
-    --loam-context: primary;
+    div.actions {
+      --loam-context: primary;
 
-    display: block grid;
-  }
+      display: block grid;
+    }
 
-  p.footer {
-    color: var(--loam-color-fg-muted);
-    font-size: var(--loam-text-sm);
-    margin-block: var(--loam-space-lg) 0;
-    text-align: center;
+    p {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-sm);
+      text-align: center;
+    }
   }
 }

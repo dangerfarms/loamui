@@ -31,13 +31,13 @@ const ALL: Result[] = [
   })),
   ...EXAMPLES_NAV.map((e) => ({
     label: e.name,
-    hint: "Examples",
+    hint: "Recipes",
     href: e.href,
   })),
   ...EXAMPLE_META.map((e) => ({
     label: e.meta.title,
     hint: "Example",
-    href: `/examples/${e.category}/${e.slug}`,
+    href: `/recipes/${e.category}/${e.slug}`,
   })),
 ];
 
@@ -174,14 +174,14 @@ export function CommandMenu() {
             className={classes.input}
             type="text"
             role="combobox"
-            aria-label="Search components, guides and examples"
+            aria-label="Search components, guides and recipes"
             aria-autocomplete="list"
             aria-expanded="true"
             aria-controls={listId}
             aria-activedescendant={results[active] ? optionId(active) : undefined}
             autoComplete="off"
             spellCheck={false}
-            placeholder="Search components, guides and examples…"
+            placeholder="Search components, guides and recipes…"
             value={q}
             onChange={(e) => {
               setQ(e.target.value);

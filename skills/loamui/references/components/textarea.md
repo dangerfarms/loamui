@@ -69,7 +69,7 @@ A Field.Error before the control marks the field invalid and is announced: the m
 
 ### Auto-grow is built in
 
-Where the platform supports field-sizing: content, the field grows with the answer and then scrolls (no JS, no measuring). rows is real either way: it is the field's height where auto-grow is unsupported, and where it is supported the field starts at that many lines and grows to ten, or to its rows when asked for more. Set it to match the expected answer: three rows asks for a note, ten invites an essay.
+Where the platform supports field-sizing: content, the field grows with the answer and then scrolls (no JS, no measuring). rows is real either way: it is the field's height where auto-grow is unsupported, and where it is supported the field starts at that many lines and grows to ten, or to its rows when asked for more. Body-sized text uses a 1.5 line height for reading longer answers, and the native textarea owns the tappable padding. Set rows to match the expected answer: three rows asks for a note, ten invites an essay.
 
 ### Keep resize on
 

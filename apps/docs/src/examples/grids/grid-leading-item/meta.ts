@@ -10,7 +10,7 @@ export const meta: ExampleMeta = {
     native:
       "A list of five articles, each named by its h3, in an order that reads as the layout does: the lead first, then the side note, then the three guides.",
     modern:
-      "The list is the container and the grid, and each width owns its layout outright: one column, two from 36rem with the lead across both, three from 56rem with the lead across two, so no rule of one width overrides another.",
+      "An outer region is the named container and the list is the grid, and each width owns its layout outright: one column, two from 36rem with the lead across both, three from 56rem with the lead across two, so no rule of one width overrides another.",
     composition:
       "Card is rendered as each article through its render prop; the lead's larger type comes from a scope of its own on the lead's card, not a prop, and the Badge and SignpostLink are past the donut.",
     context:

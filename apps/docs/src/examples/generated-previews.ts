@@ -6,396 +6,46 @@ import { lazy, type ComponentType, type LazyExoticComponent } from "react";
 /** Lazy identities stay stable; examples in a category share an import boundary. */
 export const EXAMPLE_PREVIEWS: Record<string, LazyExoticComponent<ComponentType>> = {
   "hero-with-image": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example0 })),
-  ),
-  "hero-centered": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example1 })),
-  ),
-  "call-to-action": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example2 })),
-  ),
-  "call-to-action-with-media": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example3 })),
-  ),
-  banner: lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example4 })),
-  ),
-  "banner-warning": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example5 })),
-  ),
-  "section-header": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example6 })),
-  ),
-  "feature-grid": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example7 })),
-  ),
-  testimonial: lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example8 })),
-  ),
-  "testimonial-carousel": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example9 })),
-  ),
-  "logo-wall": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example10 })),
-  ),
-  "gallery-lightbox": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example11 })),
-  ),
-  "image-comparison": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example12 })),
-  ),
-  "embed-video": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example13 })),
-  ),
-  "embed-map": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example14 })),
-  ),
-  "empty-state": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example15 })),
-  ),
-  "cookie-banner": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example16 })),
-  ),
-  "stepper-progress": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example17 })),
-  ),
-  timeline: lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example18 })),
-  ),
-  "person-grid": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example19 })),
+    import("./generated-preview-heroes").then((m) => ({ default: m.Example0 })),
   ),
   "hero-background-image": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example20 })),
-  ),
-  "hero-content-left": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example21 })),
-  ),
-  "hero-with-bullets": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example22 })),
-  ),
-  "features-with-cards": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example23 })),
-  ),
-  "features-with-title": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example24 })),
-  ),
-  "contact-us-with-details": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example25 })),
-  ),
-  "email-banner": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example26 })),
+    import("./generated-preview-heroes").then((m) => ({ default: m.Example1 })),
   ),
   "banner-with-image": lazy(() =>
-    import("./generated-preview-page-sections").then((m) => ({ default: m.Example27 })),
+    import("./generated-preview-banners").then((m) => ({ default: m.Example2 })),
   ),
-  "footer-with-columns": lazy(() =>
-    import("./generated-preview-navigation").then((m) => ({ default: m.Example28 })),
-  ),
-  "header-simple": lazy(() =>
-    import("./generated-preview-navigation").then((m) => ({ default: m.Example29 })),
-  ),
-  "header-with-search": lazy(() =>
-    import("./generated-preview-navigation").then((m) => ({ default: m.Example30 })),
-  ),
-  "footer-simple": lazy(() =>
-    import("./generated-preview-navigation").then((m) => ({ default: m.Example31 })),
-  ),
-  "mobile-nav": lazy(() =>
-    import("./generated-preview-navigation").then((m) => ({ default: m.Example32 })),
-  ),
-  "side-nav": lazy(() =>
-    import("./generated-preview-navigation").then((m) => ({ default: m.Example33 })),
-  ),
-  "side-nav-with-groups": lazy(() =>
-    import("./generated-preview-navigation").then((m) => ({ default: m.Example34 })),
-  ),
-  "table-of-contents": lazy(() =>
-    import("./generated-preview-navigation").then((m) => ({ default: m.Example35 })),
-  ),
-  "social-links": lazy(() =>
-    import("./generated-preview-navigation").then((m) => ({ default: m.Example36 })),
-  ),
-  "page-header": lazy(() =>
-    import("./generated-preview-navigation").then((m) => ({ default: m.Example37 })),
-  ),
-  "side-nav-two-sections": lazy(() =>
-    import("./generated-preview-navigation").then((m) => ({ default: m.Example38 })),
-  ),
-  "side-nav-rail": lazy(() =>
-    import("./generated-preview-navigation").then((m) => ({ default: m.Example39 })),
-  ),
-  "side-nav-with-search": lazy(() =>
-    import("./generated-preview-navigation").then((m) => ({ default: m.Example40 })),
-  ),
-  "side-nav-with-segmented-control": lazy(() =>
-    import("./generated-preview-navigation").then((m) => ({ default: m.Example41 })),
-  ),
-  "header-with-menus": lazy(() =>
-    import("./generated-preview-navigation").then((m) => ({ default: m.Example42 })),
-  ),
-  "header-mega-menu": lazy(() =>
-    import("./generated-preview-navigation").then((m) => ({ default: m.Example43 })),
-  ),
-  "header-with-tabs": lazy(() =>
-    import("./generated-preview-navigation").then((m) => ({ default: m.Example44 })),
-  ),
-  "footer-centered": lazy(() =>
-    import("./generated-preview-navigation").then((m) => ({ default: m.Example45 })),
-  ),
-  "footer-with-social": lazy(() =>
-    import("./generated-preview-navigation").then((m) => ({ default: m.Example46 })),
-  ),
-  "sign-in": lazy(() =>
-    import("./generated-preview-forms").then((m) => ({ default: m.Example47 })),
-  ),
-  "sign-up": lazy(() =>
-    import("./generated-preview-forms").then((m) => ({ default: m.Example48 })),
-  ),
-  "forgot-password": lazy(() =>
-    import("./generated-preview-forms").then((m) => ({ default: m.Example49 })),
-  ),
-  "sign-in-with-errors": lazy(() =>
-    import("./generated-preview-forms").then((m) => ({ default: m.Example50 })),
-  ),
-  "contact-form": lazy(() =>
-    import("./generated-preview-forms").then((m) => ({ default: m.Example51 })),
-  ),
-  "address-fields": lazy(() =>
-    import("./generated-preview-forms").then((m) => ({ default: m.Example52 })),
-  ),
-  "settings-rows": lazy(() =>
-    import("./generated-preview-forms").then((m) => ({ default: m.Example53 })),
-  ),
-  "password-strength": lazy(() =>
-    import("./generated-preview-forms").then((m) => ({ default: m.Example54 })),
-  ),
-  "choice-cards-radio": lazy(() =>
-    import("./generated-preview-forms").then((m) => ({ default: m.Example55 })),
-  ),
-  "choice-cards-checkbox": lazy(() =>
-    import("./generated-preview-forms").then((m) => ({ default: m.Example56 })),
-  ),
-  "scheme-toggle": lazy(() =>
-    import("./generated-preview-forms").then((m) => ({ default: m.Example57 })),
-  ),
-  "inline-search-form": lazy(() =>
-    import("./generated-preview-forms").then((m) => ({ default: m.Example58 })),
-  ),
-  "autocomplete-async": lazy(() =>
-    import("./generated-preview-forms").then((m) => ({ default: m.Example59 })),
-  ),
-  "floating-label": lazy(() =>
-    import("./generated-preview-forms").then((m) => ({ default: m.Example60 })),
-  ),
-  "number-with-currency": lazy(() =>
-    import("./generated-preview-forms").then((m) => ({ default: m.Example61 })),
-  ),
-  "forgot-password-on-label": lazy(() =>
-    import("./generated-preview-forms").then((m) => ({ default: m.Example62 })),
-  ),
-  "input-with-tooltip": lazy(() =>
-    import("./generated-preview-forms").then((m) => ({ default: m.Example63 })),
-  ),
-  "input-validation": lazy(() =>
-    import("./generated-preview-forms").then((m) => ({ default: m.Example64 })),
-  ),
-  "input-with-button": lazy(() =>
-    import("./generated-preview-forms").then((m) => ({ default: m.Example65 })),
-  ),
-  "language-picker": lazy(() =>
-    import("./generated-preview-forms").then((m) => ({ default: m.Example66 })),
-  ),
-  dropzone: lazy(() => import("./generated-preview-forms").then((m) => ({ default: m.Example67 }))),
-  "stats-grid": lazy(() =>
-    import("./generated-preview-data-display").then((m) => ({ default: m.Example68 })),
-  ),
-  "stat-with-trend": lazy(() =>
-    import("./generated-preview-data-display").then((m) => ({ default: m.Example69 })),
-  ),
-  "summary-list": lazy(() =>
-    import("./generated-preview-data-display").then((m) => ({ default: m.Example70 })),
-  ),
-  "task-list": lazy(() =>
-    import("./generated-preview-data-display").then((m) => ({ default: m.Example71 })),
-  ),
-  "contact-details": lazy(() =>
-    import("./generated-preview-data-display").then((m) => ({ default: m.Example72 })),
-  ),
-  "table-sortable": lazy(() =>
-    import("./generated-preview-data-display").then((m) => ({ default: m.Example73 })),
-  ),
-  "stats-with-controls": lazy(() =>
-    import("./generated-preview-data-display").then((m) => ({ default: m.Example74 })),
-  ),
-  "stats-with-diff": lazy(() =>
-    import("./generated-preview-data-display").then((m) => ({ default: m.Example75 })),
-  ),
-  "grouped-stats": lazy(() =>
-    import("./generated-preview-data-display").then((m) => ({ default: m.Example76 })),
-  ),
-  "stats-with-segments": lazy(() =>
-    import("./generated-preview-data-display").then((m) => ({ default: m.Example77 })),
-  ),
-  "table-reviews": lazy(() =>
-    import("./generated-preview-data-display").then((m) => ({ default: m.Example78 })),
-  ),
-  "table-sticky-header": lazy(() =>
-    import("./generated-preview-data-display").then((m) => ({ default: m.Example79 })),
-  ),
-  "table-with-selection": lazy(() =>
-    import("./generated-preview-data-display").then((m) => ({ default: m.Example80 })),
-  ),
-  "card-actions-grid": lazy(() =>
-    import("./generated-preview-app-cards").then((m) => ({ default: m.Example81 })),
-  ),
-  "card-with-badges": lazy(() =>
-    import("./generated-preview-app-cards").then((m) => ({ default: m.Example82 })),
-  ),
-  "card-with-stats": lazy(() =>
-    import("./generated-preview-app-cards").then((m) => ({ default: m.Example83 })),
-  ),
-  "card-icon-features": lazy(() =>
-    import("./generated-preview-app-cards").then((m) => ({ default: m.Example84 })),
-  ),
-  "stats-card-progress": lazy(() =>
-    import("./generated-preview-app-cards").then((m) => ({ default: m.Example85 })),
-  ),
-  "card-with-switches": lazy(() =>
-    import("./generated-preview-app-cards").then((m) => ({ default: m.Example86 })),
-  ),
-  "tasks-card": lazy(() =>
-    import("./generated-preview-app-cards").then((m) => ({ default: m.Example87 })),
-  ),
-  "user-menu": lazy(() =>
-    import("./generated-preview-users").then((m) => ({ default: m.Example88 })),
-  ),
-  "user-button": lazy(() =>
-    import("./generated-preview-users").then((m) => ({ default: m.Example89 })),
-  ),
-  "user-card": lazy(() =>
-    import("./generated-preview-users").then((m) => ({ default: m.Example90 })),
-  ),
-  "user-info-with-icons": lazy(() =>
-    import("./generated-preview-users").then((m) => ({ default: m.Example91 })),
-  ),
-  "users-table": lazy(() =>
-    import("./generated-preview-users").then((m) => ({ default: m.Example92 })),
-  ),
-  "users-table-with-roles": lazy(() =>
-    import("./generated-preview-users").then((m) => ({ default: m.Example93 })),
-  ),
-  "users-grid": lazy(() =>
-    import("./generated-preview-users").then((m) => ({ default: m.Example94 })),
+  "banner-background-image": lazy(() =>
+    import("./generated-preview-banners").then((m) => ({ default: m.Example3 })),
   ),
   "article-card": lazy(() =>
-    import("./generated-preview-blog").then((m) => ({ default: m.Example95 })),
+    import("./generated-preview-cards").then((m) => ({ default: m.Example4 })),
   ),
-  "article-cards-grid": lazy(() =>
-    import("./generated-preview-blog").then((m) => ({ default: m.Example96 })),
+  "profile-card": lazy(() =>
+    import("./generated-preview-cards").then((m) => ({ default: m.Example5 })),
   ),
-  "article-header": lazy(() =>
-    import("./generated-preview-blog").then((m) => ({ default: m.Example97 })),
+  "gallery-card": lazy(() =>
+    import("./generated-preview-cards").then((m) => ({ default: m.Example6 })),
   ),
-  byline: lazy(() => import("./generated-preview-blog").then((m) => ({ default: m.Example98 }))),
-  comment: lazy(() => import("./generated-preview-blog").then((m) => ({ default: m.Example99 }))),
-  "comment-thread": lazy(() =>
-    import("./generated-preview-blog").then((m) => ({ default: m.Example100 })),
+  "article-carousel": lazy(() =>
+    import("./generated-preview-media").then((m) => ({ default: m.Example7 })),
   ),
-  "tag-list": lazy(() =>
-    import("./generated-preview-blog").then((m) => ({ default: m.Example101 })),
-  ),
-  "article-card-footer": lazy(() =>
-    import("./generated-preview-blog").then((m) => ({ default: m.Example102 })),
-  ),
-  "card-background-image": lazy(() =>
-    import("./generated-preview-blog").then((m) => ({ default: m.Example103 })),
-  ),
-  "vertical-article-card": lazy(() =>
-    import("./generated-preview-blog").then((m) => ({ default: m.Example104 })),
-  ),
-  "comment-html": lazy(() =>
-    import("./generated-preview-blog").then((m) => ({ default: m.Example105 })),
-  ),
-  "product-card": lazy(() =>
-    import("./generated-preview-commerce").then((m) => ({ default: m.Example106 })),
-  ),
-  "product-grid": lazy(() =>
-    import("./generated-preview-commerce").then((m) => ({ default: m.Example107 })),
-  ),
-  "cart-line": lazy(() =>
-    import("./generated-preview-commerce").then((m) => ({ default: m.Example108 })),
-  ),
-  "mini-basket": lazy(() =>
-    import("./generated-preview-commerce").then((m) => ({ default: m.Example109 })),
-  ),
-  "order-summary": lazy(() =>
-    import("./generated-preview-commerce").then((m) => ({ default: m.Example110 })),
-  ),
-  "pricing-table": lazy(() =>
-    import("./generated-preview-commerce").then((m) => ({ default: m.Example111 })),
-  ),
-  "copy-to-clipboard": lazy(() =>
-    import("./generated-preview-buttons").then((m) => ({ default: m.Example112 })),
-  ),
-  "button-with-menu": lazy(() =>
-    import("./generated-preview-buttons").then((m) => ({ default: m.Example113 })),
-  ),
-  "button-with-progress": lazy(() =>
-    import("./generated-preview-buttons").then((m) => ({ default: m.Example114 })),
-  ),
-  "social-buttons": lazy(() =>
-    import("./generated-preview-buttons").then((m) => ({ default: m.Example115 })),
-  ),
-  "split-button": lazy(() =>
-    import("./generated-preview-buttons").then((m) => ({ default: m.Example116 })),
-  ),
-  "slider-with-marks": lazy(() =>
-    import("./generated-preview-sliders").then((m) => ({ default: m.Example117 })),
-  ),
-  "slider-with-output": lazy(() =>
-    import("./generated-preview-sliders").then((m) => ({ default: m.Example118 })),
-  ),
-  "number-input-with-slider": lazy(() =>
-    import("./generated-preview-sliders").then((m) => ({ default: m.Example119 })),
-  ),
-  "carousel-with-cards": lazy(() =>
-    import("./generated-preview-carousels").then((m) => ({ default: m.Example120 })),
-  ),
-  "card-with-carousel": lazy(() =>
-    import("./generated-preview-carousels").then((m) => ({ default: m.Example121 })),
-  ),
-  "faq-simple": lazy(() =>
-    import("./generated-preview-faq").then((m) => ({ default: m.Example122 })),
-  ),
-  "faq-with-background": lazy(() =>
-    import("./generated-preview-faq").then((m) => ({ default: m.Example123 })),
-  ),
-  "faq-with-image": lazy(() =>
-    import("./generated-preview-faq").then((m) => ({ default: m.Example124 })),
-  ),
-  "faq-page-header": lazy(() =>
-    import("./generated-preview-faq").then((m) => ({ default: m.Example125 })),
+  "image-comparison": lazy(() =>
+    import("./generated-preview-media").then((m) => ({ default: m.Example8 })),
   ),
   "grid-asymmetric": lazy(() =>
-    import("./generated-preview-grids").then((m) => ({ default: m.Example126 })),
-  ),
-  "grid-leading-item": lazy(() =>
-    import("./generated-preview-grids").then((m) => ({ default: m.Example127 })),
+    import("./generated-preview-grids").then((m) => ({ default: m.Example9 })),
   ),
   "grid-subgrid": lazy(() =>
-    import("./generated-preview-grids").then((m) => ({ default: m.Example128 })),
+    import("./generated-preview-grids").then((m) => ({ default: m.Example10 })),
   ),
-  "error-404": lazy(() =>
-    import("./generated-preview-errors").then((m) => ({ default: m.Example129 })),
+  faq: lazy(() => import("./generated-preview-content").then((m) => ({ default: m.Example11 }))),
+  timeline: lazy(() =>
+    import("./generated-preview-content").then((m) => ({ default: m.Example12 })),
   ),
-  "error-500": lazy(() =>
-    import("./generated-preview-errors").then((m) => ({ default: m.Example130 })),
+  "sign-in-with-errors": lazy(() =>
+    import("./generated-preview-forms").then((m) => ({ default: m.Example13 })),
   ),
-  "error-404-image": lazy(() =>
-    import("./generated-preview-errors").then((m) => ({ default: m.Example131 })),
-  ),
-  "error-503": lazy(() =>
-    import("./generated-preview-errors").then((m) => ({ default: m.Example132 })),
+  "contact-us-with-details": lazy(() =>
+    import("./generated-preview-forms").then((m) => ({ default: m.Example14 })),
   ),
 };

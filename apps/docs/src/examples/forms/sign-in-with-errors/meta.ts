@@ -3,21 +3,25 @@ import type { ExampleMeta } from "@/examples/types";
 export const meta: ExampleMeta = {
   title: "Sign in with errors",
   description:
-    "The sign-in form after a failed submit: an error summary first, linked to each field, and the same words again under the field itself.",
+    "A sign-in form that helps people correct missing or mistyped details, with a focused error summary and matching field messages.",
+  whenToUse:
+    "Use for email-and-password sign-in when validation needs a summary as well as errors beside each field. Errors appear after submission, so people can finish entering their details before being asked to correct them.",
+  integration:
+    "Submit the empty form or a mistyped email to try the error flow. Pass an action URL to use your own POST endpoint; the sample defaults to /sign-in. Valid input navigates to that endpoint without storing credentials in React state. Implement authentication and server validation there, including validation when JavaScript is unavailable. Native required and email checks remain active before hydration. Return authentication failures without revealing whether an account exists, and prefix the response page title with Error:. Preserve the email and persistent-session choice after server rejection, but never echo the password into response HTML. Provide the recovery and registration routes and implement the optional persistent session. This recipe does not authenticate anyone or store credentials.",
   category: "forms",
   uses: ["Button", "Card", "Checkbox", "ErrorSummary", "Field", "Input", "PasswordInput"],
   notes: {
     native:
-      "Each Field carries an explicit id so the summary's links are fragment links to real controls: activating one moves focus into the field, and the browser scrolls to it without a line of scripting.",
+      "A native POST form retains username and current-password autocomplete. Native validation blocks invalid submissions before and after hydration. React handles invalid events to replace browser popups with the error summary, reading built-in validity states without an email regex or additional password rules.",
     modern:
-      "The Field's invalid state is detected, not declared: a rendered Field.Error is what marks the field, and the box's danger border follows the control's own aria-invalid.",
+      "Recipe styles sit in loamui.components inside donut scopes. The outer container lets Card and the form resolve fluid tokens locally; element styles supply the heading typography, while grid gap owns form spacing.",
     composition:
-      "ErrorSummary is the form's first child and Field.Error sits in each field; the same message in both places, so the two read identically out of context.",
+      "Card supplies the surface without structural overrides. ErrorSummary, Field.Error, Input and PasswordInput retain their own styling and behavior. Each error string is shared between its summary link and field message.",
     context:
-      "The actions row declares --loam-context: primary because the one Button is the form's action; primary is the brand slot, neutral until a theme fills it, so the declaration says where the action belongs, not that it stands out.",
+      "The action region declares --loam-context: primary. Rendering Field.Error makes the field invalid through the primitive's detection; the recipe neither sets aria-invalid manually nor repaints an input border.",
     accessible:
-      'Errors are placed twice on purpose: the summary is where a screen reader starts after the submit, and the message under the field is what a sighted reader sees when they get there. Each says what to do in the words of the question, never "invalid" or "required", and nothing typed is cleared. The password is asked for again rather than guessed at, and the summary lists the email problem first because that is the order the form is read in.',
+      "The form stays enabled while people enter details; errors are reported after a validation attempt, without validating each keystroke. A failed submit mounts a focused ErrorSummary; each further failed attempt focuses it again. Its links focus the corresponding controls through core's wiring. useId keeps the targets unique, values remain entered, and the persistent-session checkbox starts unchecked.",
   },
   tags: ["validation", "error summary", "login", "account"],
-  order: 4,
+  order: 1,
 };

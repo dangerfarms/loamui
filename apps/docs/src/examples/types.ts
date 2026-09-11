@@ -16,7 +16,7 @@ export type PillarKey = (typeof PILLARS)[number]["key"];
 
 /** A category folder under src/examples, in display order. */
 export interface ExampleCategory {
-  /** The folder name and the URL segment: /examples/<slug>. */
+  /** The folder name and the URL segment: /recipes/<slug>. */
   slug: string;
   title: string;
   /** One line under the title on the category page and the index rail. */
@@ -28,6 +28,8 @@ export interface ExampleMeta {
   title: string;
   /** One sentence: what the section is and what it is for. */
   description: string;
+  /** The problem this recipe solves and how to choose it over related recipes. */
+  whenToUse?: string;
   /** Must equal the folder the example lives in; the gate checks. */
   category: string;
   /**

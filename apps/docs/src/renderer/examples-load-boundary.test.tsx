@@ -18,12 +18,12 @@ it("keeps navigation available when an optional example chunk fails to load", as
           <FailedPreview />
         </Suspense>
       </ExampleLoadBoundary>
-      <a href="/examples/forms/sign-in">Sign in example</a>
+      <a href="/recipes/forms/sign-in">Sign in example</a>
     </>,
   );
   expect(await screen.findByText("Preview unavailable")).toBeInTheDocument();
   expect(screen.getByRole("link", { name: "Sign in example" })).toHaveAttribute(
     "href",
-    "/examples/forms/sign-in",
+    "/recipes/forms/sign-in",
   );
 });

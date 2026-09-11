@@ -18,7 +18,7 @@ describe("grid-subgrid", () => {
       const parts = Array.from(item.children).map((child) => child.className);
       expect(parts).toEqual(["head", "description", "actions"]);
     }
-    expect(screen.getAllByRole("button", { name: "Book a place" })).toHaveLength(3);
+    expect(screen.getAllByRole("link", { name: /^Book a place/ })).toHaveLength(3);
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 });

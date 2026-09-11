@@ -1,0 +1,6 @@
+[      21ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:3010/node_modules/.vite/deps/react-dom_client.js?v=cac61a68:20354
+[   88231ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:3010/node_modules/.vite/deps/react-dom_client.js?v=cac61a68:20354
+[   88500ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:3010/node_modules/.vite/deps/react-dom_client.js?v=cac61a68:20354
+[   88518ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://picsum.photos/id/429/400/300:0
+[   88617ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://picsum.photos/id/429/400/300:0
+[  139196ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:3010/node_modules/.vite/deps/react-dom_client.js?v=cac61a68:20354

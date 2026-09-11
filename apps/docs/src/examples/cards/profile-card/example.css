@@ -1,0 +1,61 @@
+@scope (.profile-card) to ([class*="loam-"]) {
+  :scope {
+    --loam-avatar-size: 5rem;
+
+    display: block grid;
+    gap: var(--loam-space-xs);
+    grid-template-columns: minmax(0, 1fr);
+    inline-size: min(100%, 20rem);
+    justify-items: center;
+    text-align: center;
+  }
+
+  h2 {
+    font-size: var(--loam-text-xl);
+    margin-block: var(--loam-space-sm) 0;
+  }
+
+  p.role {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-sm);
+    margin: 0;
+  }
+
+  dl.stats {
+    display: block grid;
+    gap: var(--loam-space-sm);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    inline-size: 100%;
+    margin-block: var(--loam-space-md) var(--loam-space-sm);
+
+    div {
+      display: block grid;
+      gap: calc(var(--loam-space-xs) / 2);
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    dt {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-xs);
+      order: 1;
+    }
+
+    dd {
+      color: var(--loam-color-fg-strong);
+      font-family: var(--loam-font-display);
+      font-size: var(--loam-text-lg);
+      font-variant-numeric: lining-nums tabular-nums;
+      font-weight: 700;
+      line-height: 1.1;
+      margin: 0;
+    }
+  }
+
+  div.actions {
+    --loam-context: primary;
+
+    display: block grid;
+    grid-template-columns: minmax(0, 1fr);
+    inline-size: 100%;
+  }
+}

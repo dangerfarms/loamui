@@ -8,6 +8,42 @@ import type { ExampleCategory } from "./types";
  */
 export const EXAMPLE_CATEGORIES: ExampleCategory[] = [
   {
+    slug: "heroes",
+    title: "Heroes",
+    blurb: "Page introductions with a headline, supporting copy and clear destinations.",
+  },
+  {
+    slug: "banners",
+    title: "Banners",
+    blurb: "Focused promotions with one destination, beside or over a photograph.",
+  },
+  {
+    slug: "cards",
+    title: "Cards",
+    blurb: "One article, person or listing presented as a self-contained item.",
+  },
+  {
+    slug: "media",
+    title: "Media",
+    blurb: "Browse a collection of articles or compare two images.",
+  },
+  {
+    slug: "grids",
+    title: "Grids",
+    blurb: "Arrange a featured item or align content across a set of cards.",
+  },
+  {
+    slug: "content",
+    title: "Content",
+    blurb: "Present questions and answers or a sequence of dated events.",
+  },
+  {
+    slug: "forms",
+    title: "Forms",
+    blurb: "Sign in, recover from errors or send an enquiry with clear labels and next steps.",
+  },
+  // Unpublished source folders remain registered for validation.
+  {
     slug: "page-sections",
     title: "Page sections",
     blurb: "Heroes, features and calls to action: the blocks a marketing page is built from.",
@@ -18,11 +54,6 @@ export const EXAMPLE_CATEGORIES: ExampleCategory[] = [
     blurb: "Headers, footers and side navigation: the way around a site.",
   },
   {
-    slug: "forms",
-    title: "Forms",
-    blurb: "Signing in, getting in touch, settings and choices: forms that say what they need.",
-  },
-  {
     slug: "data-display",
     title: "Data display",
     blurb: "Stats, lists and summaries: figures and facts laid out to be read at a glance.",
@@ -30,17 +61,17 @@ export const EXAMPLE_CATEGORIES: ExampleCategory[] = [
   {
     slug: "app-cards",
     title: "Application cards",
-    blurb: "Services, progress, preferences and tasks, each on one surface.",
+    blurb: "A product surface composed from an image, features, a price and a destination.",
   },
   {
     slug: "users",
     title: "Users",
-    blurb: "People in an application: who is signed in, who is on the team, and what they can do.",
+    blurb: "A member profile with labelled statistics and a follow interaction.",
   },
   {
     slug: "blog",
     title: "Blog",
-    blurb: "Articles, authors, comments and tags: the parts of a publication.",
+    blurb: "Article teasers with bylines, images and clear reading destinations.",
   },
   {
     slug: "commerce",
@@ -66,11 +97,6 @@ export const EXAMPLE_CATEGORIES: ExampleCategory[] = [
     slug: "faq",
     title: "FAQ",
     blurb: "Questions and answers as native disclosures, alone or with a header and an image.",
-  },
-  {
-    slug: "grids",
-    title: "Grids",
-    blurb: "Layouts in CSS grid: uneven columns, a leading item, and subgrid rows that line up.",
   },
   {
     slug: "errors",

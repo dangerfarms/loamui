@@ -9,10 +9,9 @@
 //      imports (cx and renderWithProps are plumbing, not components);
 //   4. meta.category is the folder, and the folder's category is listed in
 //      categories.ts;
-//   5. Example.tsx carries "use client" when it uses compound parts, hooks,
-//      or passes a function as a prop
-//      (Details.Root) or hooks: core ships one client bundle, so dot access
-//      is undefined in a server module;
+//   5. Example.tsx carries "use client" when it uses compound parts, client
+//      hooks, or passes a function as a prop. useId is supported in synchronous
+//      server components; core compound parts still need a client boundary;
 //   6. example.css has no rule outside a `@scope (.<slug>…) to
 //      ([class*="loam-"])` block, and its root class is the slug: the donut
 //      is the one rule of composing, and every scope must start at the
@@ -149,7 +148,9 @@ for (const category of readdirSync(DIR)) {
     const isClient = /^\s*["']use client["'];?/m.test(tsx);
     const body = tsx.replace(/^import[\s\S]*?["'][^"']+["'];?$/gm, "");
     const dotAccess = [...coreNames].filter((n) => new RegExp(`\\b${n}\\.[A-Z]`).test(body));
-    const hooks = /\buse[A-Z]\w*\s*\(/.test(body);
+    // Recipes default-export synchronous functions. useId is available in
+    // React's server runtime; conservatively require a boundary for other hooks.
+    const hooks = /\buse(?!Id\b)[A-Z]\w*\s*\(/.test(body);
     // A function written into a prop (an event handler, a labels callback)
     // cannot cross from a server module into a client component; Next
     // refuses the page at build time. Arrow functions inside `.map(` calls

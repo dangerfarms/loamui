@@ -1,7 +1,5 @@
 "use client";
 
-import { ExamplePreview } from "./examples-preview";
-
 import { Suspense, useId, useMemo, useState } from "react";
 import Link from "next/link";
 import { Badge, Button, Search, Select } from "@loamui/core";
@@ -27,7 +25,7 @@ function matches(e: ExampleMetaEntry, term: string, uses: string): boolean {
  * preview is the real example at two fifths of its size, inert and hidden
  * from assistive technology, so the card can never show something the
  * code does not.
- * Browsing links disable prefetch so offscreen examples stay unloaded.
+ * Browsing links disable prefetch so offscreen recipes stay unloaded.
  */
 export function ExamplesIndex() {
   const [query, setQuery] = useState("");
@@ -58,13 +56,13 @@ export function ExamplesIndex() {
     <div className={classes.index}>
       <div className={classes.filters}>
         <Search.Root
-          aria-label="Search examples"
+          aria-label="Search recipes"
           className={classes.search}
           onSubmit={(e) => e.preventDefault()}
         >
-          <Search.Label className="loam-VisuallyHidden">Search examples</Search.Label>
+          <Search.Label className="loam-VisuallyHidden">Search recipes</Search.Label>
           <Search.Input
-            placeholder="Search examples…"
+            placeholder="Search recipes…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
@@ -89,7 +87,7 @@ export function ExamplesIndex() {
           </Select>
         </div>
         <p className={classes.status} role="status">
-          {filtered ? `${shown} of ${total}` : `${total} examples`}
+          {filtered ? `${shown} of ${total}` : `${total} recipes`}
         </p>
       </div>
 
@@ -117,11 +115,7 @@ export function ExamplesIndex() {
             <h2 id={`${category.slug}-heading`} className={classes.groupTitle}>
               {category.title}
             </h2>
-            <Link
-              href={`/examples/${category.slug}`}
-              className={classes.groupLink}
-              prefetch={false}
-            >
+            <Link href={`/recipes/${category.slug}`} className={classes.groupLink} prefetch={false}>
               {filtered ? "View all" : `All ${items.length}`}
               <span className="loam-VisuallyHidden"> in {category.title}</span>
               <span aria-hidden> →</span>
@@ -139,9 +133,7 @@ export function ExamplesIndex() {
                     <div className={classes.thumbInner}>
                       <ExampleLoadBoundary fallback={<p>Preview unavailable</p>}>
                         <Suspense fallback={null}>
-                          <ExamplePreview slug={e.slug}>
-                            <Preview />
-                          </ExamplePreview>
+                          <Preview />
                         </Suspense>
                       </ExampleLoadBoundary>
                     </div>

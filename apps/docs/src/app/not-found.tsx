@@ -20,8 +20,8 @@ export default function NotFound() {
       </p>
       <div className={c.actions}>
         <SignpostLink render={<Link href="/docs" />}>Read the docs</SignpostLink>
-        <Link href="/examples" className={c.plainLink}>
-          Browse the examples
+        <Link href="/recipes" className={c.plainLink}>
+          Browse the recipes
         </Link>
       </div>
     </section>

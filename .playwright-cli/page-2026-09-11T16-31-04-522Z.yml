@@ -1,0 +1,43 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - text: Banner
+      - combobox "Banner" [ref=e5]:
+        - option "image" [selected]
+        - option "background"
+    - generic [ref=e6]:
+      - text: Width
+      - combobox "Width" [ref=e7]:
+        - option "224"
+        - option "320"
+        - option "600"
+        - option "800"
+        - option "1000" [selected]
+    - generic [ref=e8]:
+      - text: Scheme
+      - combobox "Scheme" [ref=e9]:
+        - option "light" [selected]
+        - option "dark"
+    - generic [ref=e10]:
+      - text: Text
+      - combobox "Text" [ref=e11]:
+        - option "100" [selected]
+        - option "200"
+    - generic [ref=e12]:
+      - checkbox "RTL" [ref=e13]
+      - text: RTL
+    - generic [ref=e14]:
+      - checkbox "Two instances" [ref=e15]
+      - text: Two instances
+  - main [ref=e16]:
+    - region [ref=e18]:
+      - generic [ref=e19]:
+        - img "A cup of freshly picked raspberries" [ref=e20]
+        - generic [ref=e21]:
+          - paragraph [ref=e22]:
+            - generic [ref=e23]: Offer
+            - generic [ref=e24]: Until 30 November · bare-root season
+          - heading "Members save 20% on fruit plants" [level=2] [ref=e25]
+          - paragraph [ref=e26]: Apples, pears, plums and soft fruit on local rootstocks, lifted the week they are posted. Order before the end of November and the discount comes off at the basket.
+          - link "See the fruit list" [ref=e28] [cursor=pointer]:
+            - /url: /catalogue/fruit

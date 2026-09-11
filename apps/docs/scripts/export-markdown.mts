@@ -106,6 +106,9 @@ function writeComponentTwin(slug: string, md: string) {
 
 // Start the skill references from empty so removed pages don't linger.
 rmSync(SKILL_REFS, { recursive: true, force: true });
+// Generated recipe twins must disappear when their catalog entries are disabled.
+for (const directory of ["examples", "recipes"])
+  rmSync(join(PUBLIC, directory), { recursive: true, force: true });
 
 // ---- guides: page.mdx source → markdown --------------------------------
 
@@ -397,7 +400,7 @@ function exampleMarkdown(entry: (typeof EXAMPLE_META)[number]): string {
   );
   out.push(`# ${meta.title}`, "", meta.description, "");
   out.push(
-    `An example in **${categoryTitle}**: a component and a stylesheet built from \`@loamui/core\`, ` +
+    `A recipe in **${categoryTitle}**: a component and a stylesheet built from \`@loamui/core\`, ` +
       "to copy into a project and change. Both files are below, exactly as the live preview renders them.",
     "",
   );
@@ -405,9 +408,9 @@ function exampleMarkdown(entry: (typeof EXAMPLE_META)[number]): string {
     `- Uses: ${meta.uses.length ? meta.uses.map((u) => `\`${u}\``).join(", ") : "element styles and tokens only"}`,
   );
   if (meta.tags?.length) out.push(`- Tags: ${meta.tags.join(", ")}`);
-  out.push(`- Live: ${ORIGIN}/examples/${category}/${slug}`, "");
+  out.push(`- Live: ${ORIGIN}/recipes/${category}/${slug}`, "");
   out.push(
-    "## Using this example",
+    "## Using this recipe",
     "",
     "Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.",
     "",
@@ -417,6 +420,7 @@ function exampleMarkdown(entry: (typeof EXAMPLE_META)[number]): string {
       "Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.",
     "",
   );
+  if (meta.whenToUse) out.push("## When to use", "", meta.whenToUse, "");
   const notes = PILLARS.filter((p) => meta.notes[p.key]);
   if (notes.length) {
     out.push(
@@ -435,8 +439,8 @@ function exampleMarkdown(entry: (typeof EXAMPLE_META)[number]): string {
 
 for (const entry of EXAMPLE_META) {
   writeBoth(
-    join(PUBLIC, "examples", entry.category, `${entry.slug}.md`),
-    join(SKILL_REFS, "examples", entry.category, `${entry.slug}.md`),
+    join(PUBLIC, "recipes", entry.category, `${entry.slug}.md`),
+    join(SKILL_REFS, "recipes", entry.category, `${entry.slug}.md`),
     exampleMarkdown(entry),
   );
 }
@@ -485,18 +489,18 @@ for (const category of CATEGORY_ORDER) {
 }
 lines.push(
   "",
-  "## Examples",
+  "## Recipes",
   "",
-  "> Ready-made sections built from `@loamui/core` to copy and change: each twin",
+  "> Recipes grouped by purpose, built from `@loamui/core` to copy and change: each twin",
   "> carries the component and its stylesheet in full.",
 );
 for (const category of EXAMPLE_CATEGORIES) {
   const items = EXAMPLE_META.filter((e) => e.category === category.slug);
   if (!items.length) continue;
-  lines.push("", `### Examples: ${category.title}`, "");
+  lines.push("", `### Recipes: ${category.title}`, "");
   for (const e of items)
     lines.push(
-      `- [${e.meta.title}](${ORIGIN}/examples/${e.category}/${e.slug}.md): ${e.meta.description}`,
+      `- [${e.meta.title}](${ORIGIN}/recipes/${e.category}/${e.slug}.md): ${e.meta.description}`,
     );
 }
 writeFileSync(join(PUBLIC, "llms.txt"), lines.join("\n") + "\n");
@@ -528,7 +532,7 @@ for (const e of EXAMPLE_META)
   full.push(
     "---",
     "",
-    readFileSync(join(SKILL_REFS, "examples", e.category, `${e.slug}.md`), "utf8"),
+    readFileSync(join(SKILL_REFS, "recipes", e.category, `${e.slug}.md`), "utf8"),
   );
 writeFileSync(join(PUBLIC, "llms-full.txt"), full.join("\n"));
 
@@ -559,10 +563,10 @@ for (const category of CATEGORY_ORDER) {
 for (const category of EXAMPLE_CATEGORIES) {
   const items = EXAMPLE_META.filter((e) => e.category === category.slug);
   if (!items.length) continue;
-  idx.push("", `## Examples: ${category.title}`, "");
+  idx.push("", `## Recipes: ${category.title}`, "");
   for (const e of items)
     idx.push(
-      `- [${e.meta.title}](examples/${e.category}/${e.slug}.md) — ${e.meta.description} · [live](${ORIGIN}/examples/${e.category}/${e.slug}.md)`,
+      `- [${e.meta.title}](recipes/${e.category}/${e.slug}.md) — ${e.meta.description} · [live](${ORIGIN}/recipes/${e.category}/${e.slug}.md)`,
     );
 }
 writeFileSync(join(SKILL_REFS, "index.md"), idx.join("\n") + "\n");

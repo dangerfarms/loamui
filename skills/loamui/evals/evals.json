@@ -1,5 +1,5 @@
 {
-  "$comment": "Behavioural evals for the loamui skill. Run each prompt with and without the skill loaded; grade against `expect` and `forbid`. The delta is the skill's value — iterate the SKILL.md wording on whatever fails. See README.md.",
+  "$comment": "Behavioural eval definitions, run in clean consumer projects with and without the skill. Grade generated artifacts and browser behaviour; these definitions are not an automated runner. See README.md.",
   "evals": [
     {
       "id": "danger-button",
@@ -22,13 +22,11 @@
       "expect": [
         "Each text control sits inside Field.Root with Field.Label and Field.Error",
         "The optional field uses <Field.Label optional> rather than marking required fields",
-        "No manual id / aria-describedby / aria-invalid on the controls",
+        "Field supplies default relationships; any explicit IDs or descriptions resolve correctly without duplicate IDs",
         "Error messages say what to do in the question's words (e.g. 'Enter your email address')"
       ],
       "forbid": [
-        " *",
         "This field is required",
-        "aria-describedby=",
         "Please enter"
       ]
     },
@@ -39,7 +37,11 @@
         "Sets --loam-modal-size (style prop or scoped CSS) where the modal is used",
         "Does not look for or add a size prop"
       ],
-      "forbid": ["size=\"lg\"", "size={", "width: 900px"]
+      "forbid": [
+        "size=\"lg\"",
+        "size={",
+        "width: 900px"
+      ]
     },
     {
       "id": "cta-link",
@@ -48,7 +50,11 @@
         "Uses SignpostLink (navigation), optionally with render={<Link/>} for a router link",
         "Explains that Button is for actions and a link should not be dressed as a button"
       ],
-      "forbid": ["<Button", "className=\"loam-Button", "role=\"button\""]
+      "forbid": [
+        "<Button",
+        "className=\"loam-Button",
+        "role=\"button\""
+      ]
     },
     {
       "id": "faq-accordion",
@@ -57,7 +63,11 @@
         "Uses Details.Root / Details.Summary / Details.Content per question",
         "Does not hand-roll a details element with loam-Details classes or a custom chevron"
       ],
-      "forbid": ["Accordion", "className=\"loam-Details", "<summary>"]
+      "forbid": [
+        "Accordion",
+        "className=\"loam-Details",
+        "<summary>"
+      ]
     },
     {
       "id": "theme-brand",
@@ -66,7 +76,11 @@
         "Overrides --loam-color-primary and --loam-font-display at :root (or a scope), in oklch()",
         "Does not edit component CSS, private --_ properties, or add !important"
       ],
-      "forbid": ["#0", "!important", "--_"]
+      "forbid": [
+        "#0",
+        "!important",
+        "--_"
+      ]
     },
     {
       "id": "nextjs-install",
@@ -75,7 +89,10 @@
         "Installs @loamui/core and serves styles.css as a static file (copy to public/ + <link>) rather than importing it, citing the CSS-pipeline limitation",
         "No provider or plugin is added"
       ],
-      "forbid": ["ThemeProvider", "LoamProvider"]
+      "forbid": [
+        "ThemeProvider",
+        "LoamProvider"
+      ]
     },
     {
       "id": "page-layout",
@@ -85,7 +102,12 @@
         "Uses Card for the stat surfaces",
         "Does not look for Grid, Stack, or Container components"
       ],
-      "forbid": ["<Grid", "<Stack", "<Container", "<Flex"]
+      "forbid": [
+        "<Grid",
+        "<Stack",
+        "<Container",
+        "<Flex"
+      ]
     },
     {
       "id": "unknown-component",
@@ -94,7 +116,64 @@
         "Reads references/components/date-input.md (or the live .md) before writing code",
         "Uses the documented parts and wiring from that reference rather than guessing props"
       ],
-      "forbid": ["type=\"date\""]
+      "forbid": [
+        "type=\"date\""
+      ]
+    },
+    {
+      "id": "responsive-editorial-grid",
+      "prompt": "Use LoamUI to build an editorial section with one large featured article and two smaller articles. I need to reuse it in a full-width page and a narrow sidebar.",
+      "expect": [
+        "Uses a semantic collection and existing core parts, preserving their surfaces",
+        "At 224px and 1000px in a plain parent there is no page overflow",
+        "Any size query measures an ancestor of the changing layout, with consistent thresholds for tracks and spans",
+        "Links identify their article destinations; no inert buttons or docs-site imports"
+      ],
+      "forbid": [
+        "!important",
+        "className=\"loam-Card\""
+      ]
+    },
+    {
+      "id": "independent-faqs",
+      "prompt": "Build a LoamUI FAQ for delivery and another for returns. Show both on the same page.",
+      "expect": [
+        "Uses Details and readable questions and answers",
+        "IDs are unique across instances and headings name the correct sections",
+        "If disclosures are exclusive, opening delivery does not close returns",
+        "Provides keyboard and repeated-instance verification results or states what could not be run"
+      ],
+      "forbid": []
+    },
+    {
+      "id": "adapt-recipe",
+      "prompt": "Adapt the LoamUI Article card recipe for a pottery journal with an author, publication date and a link to read the article.",
+      "expect": [
+        "Reads the published recipe and relevant component references",
+        "Changes the article copy, author, image alternative text, date and destination coherently",
+        "Uses a link for article navigation and retains Card surface ownership",
+        "Keeps copied React and CSS independent of the docs catalog and preview machinery",
+        "Uses tokens for design values while allowing structural dimensions"
+      ],
+      "forbid": [
+        "@/renderer/",
+        "@/examples/"
+      ]
+    },
+    {
+      "id": "choose-banner-recipe",
+      "prompt": "Use LoamUI to add a short seed-sale promotion halfway down an existing page. The photograph should fill the background and there should be one link to the sale.",
+      "expect": [
+        "Reads the Banner with background image recipe and its When to use guidance",
+        "Uses a compact named section with an appropriate heading, one navigation link and a decorative image",
+        "Does not turn the promotion into a page-opening hero or force it into the Card primitive",
+        "Checks narrow layout and text contrast against the image overlay in the consuming theme"
+      ],
+      "forbid": [
+        "<h1",
+        "variant=",
+        "fullWidth="
+      ]
     }
   ]
 }

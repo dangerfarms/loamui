@@ -274,12 +274,12 @@ export default function HomePage() {
           <span className="eyebrow">Built with an agent</span>
           <h2 className={c.sectionTitle}>Ask for a component. Get one built on the primitives.</h2>
           <p className={c.sectionSub}>
-            LoamUI&rsquo;s core ships {COMPONENTS.length} low-level parts and no more. Everything
-            else, a menu, a hero, a carousel, is a composition: your agent builds it from the three
-            primitives, reading the same documentation you do, or starts from one of the{" "}
-            <Link href="/examples">examples</Link>. Here is one, exactly as an agent produced it
-            from <a href="/llms.txt">llms.txt</a>: each card declares what it means, and the badge
-            and button inside answer it.
+            LoamUI&rsquo;s core ships {COMPONENTS.length} low-level parts and no more. Larger
+            sections, such as a hero or a grid of cards, are compositions: your agent builds it from
+            the three primitives, reading the same documentation you do, or starts from one of the{" "}
+            <Link href="/recipes">recipes</Link>. Here is one, exactly as an agent produced it from{" "}
+            <a href="/llms.txt">llms.txt</a>: each card declares what it means, and the badge and
+            button inside answer it.
           </p>
         </div>
         <AgentShowcase
@@ -567,12 +567,12 @@ export default function HomePage() {
       {/* Examples */}
       <section className={`container ${c.section}`} data-no-hyphens>
         <div className={`${c.sectionHead} ${c.center}`}>
-          <span className="eyebrow">Examples</span>
-          <h2 className={c.sectionTitle}>{EXAMPLE_META.length} examples, ready to copy.</h2>
+          <span className="eyebrow">Recipes</span>
+          <h2 className={c.sectionTitle}>{EXAMPLE_META.length} recipes, ready to adapt.</h2>
           <p className={c.sectionSub}>
-            Heroes, forms, pricing, navigation and more, each a component and a stylesheet built on
-            the primitives and held to the pillars. Copy the two files, or point your agent at the
-            markdown twin.
+            Heroes, cards, image treatments and responsive layouts, each a component and a
+            stylesheet built on the primitives and held to the pillars. Copy the two files, or point
+            your agent at the markdown twin.
           </p>
         </div>
         <ExamplesTeaser />

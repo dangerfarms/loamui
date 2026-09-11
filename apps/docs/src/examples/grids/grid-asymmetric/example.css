@@ -1,6 +1,9 @@
 @scope (.grid-asymmetric) to ([class*="loam-"]) {
   :scope {
-    container-type: inline-size;
+    container: grid-asymmetric / inline-size;
+  }
+
+  ul {
     display: block grid;
     gap: var(--loam-space-md);
     list-style: none;
@@ -10,11 +13,18 @@
 
   li {
     display: block grid;
+    grid-template-columns: minmax(0, 1fr);
     margin: 0;
   }
 
-  @container (inline-size >= 44rem) {
-    :scope {
+  @container grid-asymmetric (inline-size < 44rem) {
+    ul {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @container grid-asymmetric (inline-size >= 44rem) {
+    ul {
       grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
     }
 

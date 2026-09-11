@@ -102,7 +102,7 @@ the authority for everything it covers: run it and believe it.
   per-project structural overrides to be reused is a downstream recipe, not a
   core primitive. Token overrides are the sanctioned theming surface; overriding
   spacing, layout or structure is the smell that says a component is too
-  specific to live here. Larger sections live as copy-paste examples on the
+  specific to live here. Larger sections live as copy-paste recipes on the
   docs site: built on core the way any consumer would, held to the same
   pillars and gates, and never a reason to change a primitive.
 - **Composition.** Compound components expose parts; element swap goes through
@@ -175,7 +175,7 @@ every docs page has a markdown twin at the same URL with `.md` appended, and
 [`llms-full.txt`](https://loamui.com/llms-full.txt) has them all in one file.
 The [Composing components](https://loamui.com/docs/composing/) guide shows how
 to build your own components (a hero, a pricing table, a carousel) from the
-three primitives, the same way the [examples](https://loamui.com/examples/)
+three primitives, the same way the [recipes](https://loamui.com/recipes/)
 are built, and the package ships an `AGENTS.md`, a one-page summary of the
 conventions an agent needs when writing against it.
 
@@ -185,8 +185,8 @@ This is a pnpm + Turborepo monorepo:
 
 - [`packages/core`](./packages/core): `@loamui/core`, the component library.
 - [`apps/docs`](./apps/docs): the marketing site and documentation (Next.js).
-- [`apps/docs/src/examples`](./apps/docs/src/examples): the copy-paste examples
-  shown at `/examples` on the docs site.
+- [`apps/docs/src/examples`](./apps/docs/src/examples): the copy-paste recipes
+  shown at `/recipes` on the docs site.
 
 ## Development
 

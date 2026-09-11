@@ -28,10 +28,10 @@
       color-mix(in oklab, var(--_color) 55%, oklch(100% 0 0deg))
     );
     display: inline flow-root;
-    font-size: var(--loam-text-sm);
+    font-size: var(--loam-text-md);
     font-weight: 600;
-    line-height: 1.2;
-    padding-block: var(--loam-space-sm);
+    line-height: 1.5;
+    padding-block: var(--loam-space-md);
     padding-inline: var(--loam-space-lg);
     text-align: center;
     text-decoration: none;
@@ -39,7 +39,7 @@
     /* Identity at rest — the pressed shift transitions both ways. */
     translate: 0 0;
     user-select: none;
-    white-space: nowrap;
+    white-space: normal;
 
     &:active:not(:disabled) {
       background: light-dark(
@@ -108,7 +108,9 @@
       :has(> :is(svg, .loam-Loader):first-child + .loam-VisuallyHidden:last-child),
       :has(> .loam-VisuallyHidden:first-child + :is(svg, .loam-Loader):last-child)
     ) {
-    padding-inline: var(--loam-space-sm);
+    min-block-size: calc(1.5em + var(--loam-space-md) * 2 + 2px);
+    min-inline-size: calc(1.5em + var(--loam-space-md) * 2 + 2px);
+    padding-inline: var(--loam-space-md);
   }
 
   /* Context: within a primary region — THE action of the area. */

@@ -3,23 +3,23 @@
 import Link from "next/link";
 import { SignpostLink } from "@loamui/core";
 import { EXAMPLE_META } from "@/examples/generated-meta";
-import HeroWithImage from "@/examples/page-sections/hero-with-image/Example";
-import SignIn from "@/examples/forms/sign-in/Example";
-import PricingTable from "@/examples/commerce/pricing-table/Example";
+import HeroWithImage from "@/examples/heroes/hero-with-image/Example";
+import ImageComparison from "@/examples/media/image-comparison/Example";
+import Subgrid from "@/examples/grids/grid-subgrid/Example";
 import { LazyThumb } from "./examples-thumb";
 import classes from "./examples-teaser.module.css";
 
 /**
- * Three examples picked by hand, imported one by one so the home page
+ * Three recipes picked by hand, imported one by one so the home page
  * carries three components and not the whole registry.
  */
 const PICKS = [
-  { category: "page-sections", slug: "hero-with-image", Example: HeroWithImage },
-  { category: "forms", slug: "sign-in", Example: SignIn },
-  { category: "commerce", slug: "pricing-table", Example: PricingTable },
+  { category: "heroes", slug: "hero-with-image", Example: HeroWithImage },
+  { category: "media", slug: "image-comparison", Example: ImageComparison },
+  { category: "grids", slug: "grid-subgrid", Example: Subgrid },
 ];
 
-/** The home page's pointer to the examples: three live previews and the way in. */
+/** The home page's pointer to the recipes: three live previews and the way in. */
 export function ExamplesTeaser() {
   const total = EXAMPLE_META.length;
   return (
@@ -34,7 +34,7 @@ export function ExamplesTeaser() {
                   <pick.Example />
                 </div>
               </LazyThumb>
-              <Link href={`/examples/${pick.category}/${pick.slug}`} className={classes.link}>
+              <Link href={`/recipes/${pick.category}/${pick.slug}`} className={classes.link}>
                 {title}
               </Link>
             </li>
@@ -42,7 +42,7 @@ export function ExamplesTeaser() {
         })}
       </ul>
       <p className={classes.cta}>
-        <SignpostLink render={<Link href="/examples" />}>Browse all {total} examples</SignpostLink>
+        <SignpostLink render={<Link href="/recipes" />}>Browse all {total} recipes</SignpostLink>
       </p>
     </>
   );
