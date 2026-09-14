@@ -25,7 +25,7 @@ import { COMPONENTS, CATEGORY_ORDER } from "../src/site/nav.js";
 import type { ComponentContent } from "../src/renderer/types.js";
 import { EXAMPLE_CATEGORIES } from "../src/examples/categories.js";
 import { EXAMPLE_META } from "../src/examples/generated-meta.js";
-import { recipePrompt } from "../src/examples/recipe-prompt.js";
+import { linkedRecipePrompt, recipePrompt } from "../src/examples/recipe-prompt.js";
 import { PILLARS } from "../src/examples/types.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -434,6 +434,19 @@ function exampleMarkdown(entry: (typeof EXAMPLE_META)[number]): string {
     for (const p of notes) out.push(`- **${p.name}.** ${meta.notes[p.key]}`);
     out.push("");
   }
+  out.push(
+    "## References",
+    "",
+    `- [Installation](${ORIGIN}/docs/installation.md)`,
+    `- [Tokens](${ORIGIN}/docs/tokens.md)`,
+    `- [Element styles](${ORIGIN}/docs/element-styles.md)`,
+  );
+  for (const name of meta.uses) {
+    const component = COMPONENTS.find((item) => item.name === name);
+    if (!component) throw new Error(`Missing recipe reference for ${name}`);
+    out.push(`- [${name}](${ORIGIN}/docs/components/${component.slug}.md)`);
+  }
+  out.push("");
   out.push("## Example.tsx", "", "```tsx", tsx, "```", "");
   out.push("## example.css", "", "```css", css, "```", "");
   return out.join("\n").replace(/\n{3,}/g, "\n\n") + "\n";
@@ -497,7 +510,8 @@ for (const entry of EXAMPLE_META) {
   });
   const file = join(PROMPTS, entry.category, `${entry.slug}.txt`);
   mkdirSync(dirname(file), { recursive: true });
-  writeFileSync(file, absoluteLinks(prompt));
+  writeFileSync(file, linkedRecipePrompt(entry, ORIGIN));
+  writeFileSync(file.replace(/\.txt$/, ".full.txt"), absoluteLinks(prompt));
 }
 
 const lines: string[] = [

@@ -36,6 +36,14 @@ These notes explain the design. The included tests cover structure and selected 
 - **Contextualism.** The surrounding colour scheme determines the background, scrim, text and link tokens. The eyebrow declares the primary brand context for its offer Badge, just as in Banner with image; a promotion does not imply a warning.
 - **Accessible & gatekept.** useId names repeated regions independently. A solid background, full foreground text and an 88% scheme-aware background-token scrim protect the words even if the photograph fails; recheck contrast when changing either. Content determines the height and grows with enlarged text. Focus rings are not clipped. Forced colours remove the decorative image and scrim, leaving system colours and a visible border.
 
+## References
+
+- [Installation](https://loamui.com/docs/installation.md)
+- [Tokens](https://loamui.com/docs/tokens.md)
+- [Element styles](https://loamui.com/docs/element-styles.md)
+- [Badge](https://loamui.com/docs/components/badge.md)
+- [SignpostLink](https://loamui.com/docs/components/signpost-link.md)
+
 ## Example.tsx
 
 ```tsx

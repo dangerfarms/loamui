@@ -36,6 +36,12 @@ These notes explain the design. The included tests cover structure and selected 
 - **Contextualism.** The block is a plain neutral surface, not a --loam-context region: questions carry no status, so nothing inside should take a status colour.
 - **Accessible & gatekept.** All answers remain visible for scanning, browser search and comparison. Headings expose the question structure, the contact link offers a next step, and a forced-colour border preserves the section boundary.
 
+## References
+
+- [Installation](https://loamui.com/docs/installation.md)
+- [Tokens](https://loamui.com/docs/tokens.md)
+- [Element styles](https://loamui.com/docs/element-styles.md)
+
 ## Example.tsx
 
 ```tsx

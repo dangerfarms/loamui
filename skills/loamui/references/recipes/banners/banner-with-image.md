@@ -36,6 +36,14 @@ These notes explain the design. The included tests cover structure and selected 
 - **Contextualism.** The eyebrow declares --loam-context: primary, so the offer Badge inherits the brand context without a styling prop. A promotion does not imply a warning; the adjacent text spells out the closing date.
 - **Accessible & gatekept.** useId names each repeated region by its own h2. The photograph has descriptive alt text and reserved space before loading. Enlarged text can grow the layout; rounded image corners do not clip focus rings. The date is written out, the destination is a native link, and the border survives forced colours.
 
+## References
+
+- [Installation](https://loamui.com/docs/installation.md)
+- [Tokens](https://loamui.com/docs/tokens.md)
+- [Element styles](https://loamui.com/docs/element-styles.md)
+- [Badge](https://loamui.com/docs/components/badge.md)
+- [SignpostLink](https://loamui.com/docs/components/signpost-link.md)
+
 ## Example.tsx
 
 ```tsx

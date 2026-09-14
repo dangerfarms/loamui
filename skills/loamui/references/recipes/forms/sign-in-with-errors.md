@@ -36,6 +36,19 @@ These notes explain the design. The included tests cover structure and selected 
 - **Contextualism.** The action region declares --loam-context: primary. Rendering Field.Error makes the field invalid through the primitive's detection; the recipe neither sets aria-invalid manually nor repaints an input border.
 - **Accessible & gatekept.** The form stays enabled while people enter details; errors are reported after a validation attempt, without validating each keystroke. A failed submit mounts a focused ErrorSummary; each further failed attempt focuses it again. Its links focus the corresponding controls through core's wiring. useId keeps the targets unique, values remain entered, and the persistent-session checkbox starts unchecked.
 
+## References
+
+- [Installation](https://loamui.com/docs/installation.md)
+- [Tokens](https://loamui.com/docs/tokens.md)
+- [Element styles](https://loamui.com/docs/element-styles.md)
+- [Button](https://loamui.com/docs/components/button.md)
+- [Card](https://loamui.com/docs/components/card.md)
+- [Checkbox](https://loamui.com/docs/components/checkbox.md)
+- [ErrorSummary](https://loamui.com/docs/components/error-summary.md)
+- [Field](https://loamui.com/docs/components/field.md)
+- [Input](https://loamui.com/docs/components/input.md)
+- [PasswordInput](https://loamui.com/docs/components/password-input.md)
+
 ## Example.tsx
 
 ```tsx

@@ -35,6 +35,14 @@ These notes explain the design. The included tests cover structure and selected 
 - **Composition.** Card is rendered as each article through its render prop; the example arranges the column inside, the SignpostLink is past the donut, and the Card's padding and line are left alone.
 - **Accessible & gatekept.** The photograph carries real alt text because a picture of the orchard is what the lead is about; the actions are links because each goes somewhere, and every card's action sits at its foot so the eye finds it in the same place three times.
 
+## References
+
+- [Installation](https://loamui.com/docs/installation.md)
+- [Tokens](https://loamui.com/docs/tokens.md)
+- [Element styles](https://loamui.com/docs/element-styles.md)
+- [Card](https://loamui.com/docs/components/card.md)
+- [SignpostLink](https://loamui.com/docs/components/signpost-link.md)
+
 ## Example.tsx
 
 ```tsx

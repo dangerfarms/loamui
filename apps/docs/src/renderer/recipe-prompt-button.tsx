@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Button } from "@loamui/core";
 import classes from "./recipe-prompt-button.module.css";
 
 type Status = "idle" | "copying" | "copied" | "ready" | "failed";
@@ -73,17 +72,21 @@ export function RecipePromptButton({ title, href }: { title: string; href: strin
 
   return (
     <div className={classes.actions}>
-      <Button
-        onClick={() => void copy()}
-        aria-disabled={status === "copying"}
-        aria-busy={status === "copying"}
-        aria-label={`Copy prompt for ${title}`}
-      >
-        {status === "copying" ? "Copying…" : status === "copied" ? "Copied" : "Copy prompt"}
-      </Button>
-      <a href={href} aria-label={`Open prompt for ${title}`}>
-        Open prompt
-      </a>
+      <div className={classes.controls}>
+        <button
+          type="button"
+          onClick={() => void copy()}
+          aria-disabled={status === "copying"}
+          aria-busy={status === "copying"}
+          aria-label={`Copy prompt for ${title}`}
+        >
+          {status === "copying" ? "Copying…" : status === "copied" ? "Copied" : "Copy prompt"}
+        </button>
+        <a href={href} aria-label={`Open prompt for ${title}`}>
+          Open prompt
+          <span aria-hidden="true"> →</span>
+        </a>
+      </div>
       <p
         role="status"
         className={

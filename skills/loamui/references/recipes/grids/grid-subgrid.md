@@ -35,6 +35,14 @@ These notes explain the design. The included tests cover structure and selected 
 - **Composition.** Card is rendered as the list item through its render prop, which is what lets the Card be the grid item that subgrids; the SignpostLink inside is past the donut and the Card's padding becomes the gutter of its tracks.
 - **Accessible & gatekept.** Workshops have named list items, dates with machine-readable local date-times and booking links that include the workshop title in their accessible names. Source order stays heading, description, then action as the grid reflows.
 
+## References
+
+- [Installation](https://loamui.com/docs/installation.md)
+- [Tokens](https://loamui.com/docs/tokens.md)
+- [Element styles](https://loamui.com/docs/element-styles.md)
+- [Card](https://loamui.com/docs/components/card.md)
+- [SignpostLink](https://loamui.com/docs/components/signpost-link.md)
+
 ## Example.tsx
 
 ```tsx

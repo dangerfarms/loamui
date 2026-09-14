@@ -36,6 +36,14 @@ These notes explain the design. The included tests cover structure and selected 
 - **Contextualism.** The eyebrow declares --loam-context: primary, so the Badge inside takes the brand colour without a prop; primary is the brand slot, neutral until a theme fills it, and the eyebrow reads as one by its place above the heading.
 - **Accessible & gatekept.** useId keeps each region tied to its own heading. Both destinations are keyboard-operable links with visible text, the play icon is decorative, and the photograph has descriptive alt text. Content order is unchanged when the grid stacks.
 
+## References
+
+- [Installation](https://loamui.com/docs/installation.md)
+- [Tokens](https://loamui.com/docs/tokens.md)
+- [Element styles](https://loamui.com/docs/element-styles.md)
+- [Badge](https://loamui.com/docs/components/badge.md)
+- [SignpostLink](https://loamui.com/docs/components/signpost-link.md)
+
 ## Example.tsx
 
 ```tsx

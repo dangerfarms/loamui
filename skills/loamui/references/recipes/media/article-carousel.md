@@ -35,6 +35,16 @@ These notes explain the design. The included tests cover structure and selected 
 - **Composition.** Carousel.Root, Track, Item, Previous, Next and Indicators are arranged in the markup: the Buttons sit beside the title and the dots beneath, an arrangement the parts allow because they read one context rather than one layout.
 - **Accessible & gatekept.** The region is named by its heading, the paging Buttons and the dots are named through labels, the status announces Article 2 of 5 once the track settles, and every Read article link finishes with the article's title in hidden text.
 
+## References
+
+- [Installation](https://loamui.com/docs/installation.md)
+- [Tokens](https://loamui.com/docs/tokens.md)
+- [Element styles](https://loamui.com/docs/element-styles.md)
+- [Badge](https://loamui.com/docs/components/badge.md)
+- [Card](https://loamui.com/docs/components/card.md)
+- [Carousel](https://loamui.com/docs/components/carousel.md)
+- [SignpostLink](https://loamui.com/docs/components/signpost-link.md)
+
 ## Example.tsx
 
 ```tsx

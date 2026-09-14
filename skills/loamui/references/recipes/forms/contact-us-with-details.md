@@ -36,6 +36,17 @@ These notes explain the design. The included tests cover structure and selected 
 - **Contextualism.** The actions region declares --loam-context: primary for its Button. Shared surface, text and border tokens follow the colour scheme; layout and sizing are supplied by the parent rather than configuration props.
 - **Accessible & gatekept.** Required fields are identified in visible labels. Error messages appear after an attempt and match the focused summary links; useId keeps repeated forms independent. Failed responses preserve entered values. Confirmed delivery replaces the form with a focused heading and next steps. Decorative icons repeat visible terms and are hidden from assistive technology. Email and telephone values retain left-to-right ordering in RTL pages. Text and DOM order stay intact when the grid stacks, and real borders preserve surface boundaries in forced colours.
 
+## References
+
+- [Installation](https://loamui.com/docs/installation.md)
+- [Tokens](https://loamui.com/docs/tokens.md)
+- [Element styles](https://loamui.com/docs/element-styles.md)
+- [Button](https://loamui.com/docs/components/button.md)
+- [ErrorSummary](https://loamui.com/docs/components/error-summary.md)
+- [Field](https://loamui.com/docs/components/field.md)
+- [Input](https://loamui.com/docs/components/input.md)
+- [Textarea](https://loamui.com/docs/components/textarea.md)
+
 ## Example.tsx
 
 ```tsx

@@ -35,6 +35,13 @@ These notes explain the design. The included tests cover structure and selected 
 - **Composition.** Range is dropped in as it comes; the example holds the value in state and writes it onto the figure as a custom property the stylesheet reads.
 - **Accessible & gatekept.** The range is named, describes its current percentage, and references the caption. Both images have descriptive alt text. The server-rendered position shows half of each; the divider remains within the frame at both endpoints and has forced-colour treatment.
 
+## References
+
+- [Installation](https://loamui.com/docs/installation.md)
+- [Tokens](https://loamui.com/docs/tokens.md)
+- [Element styles](https://loamui.com/docs/element-styles.md)
+- [Range](https://loamui.com/docs/components/range.md)
+
 ## Example.tsx
 
 ```tsx

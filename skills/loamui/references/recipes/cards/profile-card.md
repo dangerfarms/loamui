@@ -36,6 +36,15 @@ These notes explain the design. The included tests cover structure and selected 
 - **Contextualism.** A profile has no status meaning, so it keeps the neutral surface and ordinary link treatment rather than inventing a primary or success region.
 - **Accessible & gatekept.** The Avatar is hidden because the name is printed beneath it, so a screen reader hears the person once; the figures carry their labels in the markup, not in a tooltip.
 
+## References
+
+- [Installation](https://loamui.com/docs/installation.md)
+- [Tokens](https://loamui.com/docs/tokens.md)
+- [Element styles](https://loamui.com/docs/element-styles.md)
+- [Avatar](https://loamui.com/docs/components/avatar.md)
+- [Card](https://loamui.com/docs/components/card.md)
+- [SignpostLink](https://loamui.com/docs/components/signpost-link.md)
+
 ## Example.tsx
 
 ```tsx

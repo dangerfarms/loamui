@@ -52,7 +52,7 @@ An element cannot size-query itself. Put the measuring container outside the lay
 
 ## Read and adapt a reference
 
-Read the [composing guide](/docs/composing.md), the selected recipe's complete TSX and CSS, and the reference for each core component used. Skill users can read these offline in `references/`. Recipe prompts include the selected source and its component references so those examples remain available without browsing.
+Read the [composing guide](/docs/composing.md), the selected recipe's complete TSX and CSS, and the reference for each core component used. Skill users can read these offline in `references/`. Each recipe card offers a short prompt linking to these references. If your assistant cannot open links, follow the complete-prompt link inside it and attach that text instead: it includes the selected source, workflow and component references for use without browsing.
 
 Use the published recipes as worked references for this contract. Publication and design notes are not certification: verify every adaptation in its consuming environment.
 

@@ -152,11 +152,11 @@ export function ExamplesIndex() {
                         ))}
                       </ul>
                     )}
-                    <RecipePromptButton
-                      title={e.meta.title}
-                      href={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/recipe-prompts/${e.category}/${e.slug}.txt`}
-                    />
                   </div>
+                  <RecipePromptButton
+                    title={e.meta.title}
+                    href={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/recipe-prompts/${e.category}/${e.slug}.txt`}
+                  />
                 </li>
               );
             })}

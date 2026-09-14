@@ -35,6 +35,16 @@ These notes explain the design. The included tests cover structure and selected 
 - **Composition.** Card, Badge, Time and Avatar are used as they come; the example's rule stops at each root and only arranges the column between them.
 - **Accessible & gatekept.** The title is the link and the card is not, so the link's name is the title alone; the picture illustrates the title, so its alt is empty; the avatar is hidden because the name is printed beside it.
 
+## References
+
+- [Installation](https://loamui.com/docs/installation.md)
+- [Tokens](https://loamui.com/docs/tokens.md)
+- [Element styles](https://loamui.com/docs/element-styles.md)
+- [Avatar](https://loamui.com/docs/components/avatar.md)
+- [Badge](https://loamui.com/docs/components/badge.md)
+- [Card](https://loamui.com/docs/components/card.md)
+- [Time](https://loamui.com/docs/components/time.md)
+
 ## Example.tsx
 
 ```tsx

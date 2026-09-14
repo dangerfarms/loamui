@@ -35,6 +35,16 @@ These notes explain the design. The included tests cover structure and selected 
 - **Composition.** A Carousel sits inside a Card the way any content would, its own region inside the article; Rating and Price are dropped in as they come, and the example reaches into none of them.
 - **Accessible & gatekept.** The article and photo region are named. Each photograph describes the actual view; controls have photo-specific labels and the visible review count says “63 reviews”. The title is a link to the full listing, without making the entire card an interactive wrapper.
 
+## References
+
+- [Installation](https://loamui.com/docs/installation.md)
+- [Tokens](https://loamui.com/docs/tokens.md)
+- [Element styles](https://loamui.com/docs/element-styles.md)
+- [Card](https://loamui.com/docs/components/card.md)
+- [Carousel](https://loamui.com/docs/components/carousel.md)
+- [Price](https://loamui.com/docs/components/price.md)
+- [Rating](https://loamui.com/docs/components/rating.md)
+
 ## Example.tsx
 
 ```tsx

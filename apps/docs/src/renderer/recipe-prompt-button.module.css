@@ -1,21 +1,42 @@
-.actions {
-  align-items: center;
-  display: block flex;
-  flex-wrap: wrap;
-  gap: var(--loam-space-sm);
-  margin-block-start: var(--loam-space-sm);
-  position: relative;
-  z-index: 1;
+@layer loamui.components {
+  @scope (.actions) {
+    :scope {
+      border-block-start: 1px solid var(--loam-color-line);
+      container-type: inline-size;
+      position: relative;
+      z-index: 1;
+    }
 
-  > a {
-    font-size: var(--loam-text-sm);
-    padding-block: var(--loam-space-sm);
-    text-decoration: underline;
+    .controls {
+      align-items: center;
+      display: block flex;
+      flex-wrap: wrap;
+      gap: var(--loam-space-sm) var(--loam-space-lg);
+      padding-block: var(--loam-space-sm);
+      padding-inline: var(--loam-space-lg);
+
+      button {
+        font-size: var(--loam-text-sm);
+        min-block-size: 2.75rem;
+        padding-block: var(--loam-space-xs);
+        padding-inline: var(--loam-space-md);
+      }
+
+      a {
+        align-items: center;
+        display: inline flex;
+        font-size: var(--loam-text-sm);
+        gap: var(--loam-space-xs);
+        min-block-size: 2.75rem;
+        text-underline-offset: 0.2em;
+      }
+    }
+
+    .message {
+      font-size: var(--loam-text-sm);
+      overflow-wrap: anywhere;
+      padding-block-end: var(--loam-space-sm);
+      padding-inline: var(--loam-space-lg);
+    }
   }
-}
-
-.message {
-  flex-basis: 100%;
-  font-size: var(--loam-text-sm);
-  overflow-wrap: anywhere;
 }

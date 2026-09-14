@@ -36,6 +36,13 @@ These notes explain the design. The included tests cover structure and selected 
 - **Contextualism.** The section inherits the surrounding colour scheme. Background, overlay, text and link tokens adapt together, with no fixed dark region or appearance props.
 - **Accessible & gatekept.** The photograph is decoration behind the words, so its alt is empty. useId ties repeated regions to their own headings. Native links retain visible text and focus rings; enlarged text can grow the section. Forced colours remove both the picture and scrim, leaving native system colours and a visible border.
 
+## References
+
+- [Installation](https://loamui.com/docs/installation.md)
+- [Tokens](https://loamui.com/docs/tokens.md)
+- [Element styles](https://loamui.com/docs/element-styles.md)
+- [SignpostLink](https://loamui.com/docs/components/signpost-link.md)
+
 ## Example.tsx
 
 ```tsx

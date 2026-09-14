@@ -9,8 +9,20 @@ const prompts = "apps/docs/public/recipe-prompts";
 let count = 0;
 for (const category of readdirSync(join(root, prompts))) {
   for (const file of readdirSync(join(root, prompts, category))) {
+    if (file.endsWith(".full.txt")) continue;
     const slug = file.replace(/\.txt$/, "");
-    const prompt = read(`${prompts}/${category}/${file}`);
+    const short = read(`${prompts}/${category}/${file}`);
+    const prompt = read(`${prompts}/${category}/${slug}.full.txt`);
+    assert.ok(short.split(/\s+/).length < 350, `${slug}: default prompt is too long`);
+    for (const path of [
+      `/recipes/${category}/${slug}.md`,
+      "/docs/agent-workflow.md",
+      "/docs/composing.md",
+      `/recipe-prompts/${category}/${slug}.full.txt`,
+    ]) {
+      assert.ok(short.includes(`https://loamui.com${path}`), `${slug}: missing ${path}`);
+      assert.ok(existsSync(join(root, "apps/docs/public", path)), `${slug}: broken ${path}`);
+    }
     for (const [source, language] of [
       ["Example.tsx", "tsx"],
       ["example.css", "css"],
@@ -24,6 +36,10 @@ for (const category of readdirSync(join(root, prompts))) {
     const twin = read(`skills/loamui/references/recipes/${category}/${slug}.md`);
     const uses = twin.match(/^- Uses: (.+)$/m)?.[1] ?? "";
     for (const match of uses.matchAll(/`([^`]+)`/g)) {
+      assert.ok(
+        twin.includes(`- [${match[1]}](https://loamui.com/docs/components/`),
+        `${slug}: missing ${match[1]} link`,
+      );
       assert.ok(
         prompt.includes(`# Reference: ${match[1]}\n`),
         `${slug}: missing ${match[1]} contract`,
@@ -45,5 +61,5 @@ assert.ok(
   "Index must carry essential workflow",
 );
 console.log(
-  `check-recipe-prompts: OK (${count} complete prompts, exact recipe source, component contracts, one llms.txt)`,
+  `check-recipe-prompts: OK (${count} short prompts with valid references and complete offline prompts, exact recipe source, component contracts, one llms.txt)`,
 );

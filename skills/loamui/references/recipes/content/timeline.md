@@ -35,6 +35,12 @@ These notes explain the design. The included tests cover structure and selected 
 - **Composition.** Element styles alone: an ordered list, headings, paragraphs and time, so no component is imported and no Stepper is bent into a history.
 - **Accessible & gatekept.** The list keeps role=list so its count survives list-style: none, and in forced colours the dot keeps an outline and the connector its ink where the fills would vanish.
 
+## References
+
+- [Installation](https://loamui.com/docs/installation.md)
+- [Tokens](https://loamui.com/docs/tokens.md)
+- [Element styles](https://loamui.com/docs/element-styles.md)
+
 ## Example.tsx
 
 ```tsx
