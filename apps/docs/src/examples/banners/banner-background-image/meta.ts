@@ -18,9 +18,9 @@ export const meta: ExampleMeta = {
     composition:
       "The section owns the photograph and scrim instead of overriding a Card surface; Badge and SignpostLink are composed unchanged, beyond the scope boundary.",
     context:
-      "One dark colour scheme re-resolves the text and control tokens; the deadline is a warning region, just as in Banner with image, so the Badge inherits its meaning without a prop.",
+      "The surrounding colour scheme determines the background, scrim, text and link tokens. The eyebrow declares the primary brand context for its offer Badge, just as in Banner with image; a promotion does not imply a warning.",
     accessible:
-      "useId names repeated regions independently. A solid background and 88% dark token scrim protect the words even if the photograph fails; recheck contrast when changing either. Content determines the height and grows with enlarged text. Focus rings are not clipped. Forced colours remove the decorative image and scrim, leaving system colours and a visible border.",
+      "useId names repeated regions independently. A solid background, full foreground text and an 88% scheme-aware background-token scrim protect the words even if the photograph fails; recheck contrast when changing either. Content determines the height and grows with enlarged text. Focus rings are not clipped. Forced colours remove the decorative image and scrim, leaving system colours and a visible border.",
   },
   tags: ["promotion", "background", "image", "full-width", "call to action"],
   order: 2,

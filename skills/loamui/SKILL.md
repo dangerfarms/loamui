@@ -17,8 +17,7 @@ metadata:
 
 - **Live docs:** <https://loamui.com>. Every page has a markdown twin at the
   same URL with `.md` appended (`/docs/components/button` →
-  `/docs/components/button.md`). Index: <https://loamui.com/llms.txt>; all
-  pages in one file: <https://loamui.com/llms-full.txt>.
+  `/docs/components/button.md`). Index: <https://loamui.com/llms.txt>.
 - **Offline copies** of those twins ship with this skill, generated from the
   docs source so they match the site: start at
   [`references/index.md`](references/index.md), then
@@ -31,7 +30,8 @@ metadata:
 - **Recipes:** the curated `/recipes` collection contains portable React and CSS
   with design decisions. Find the relevant entry in [the reference
   index](references/index.md);
-  only published recipes ship under `references/recipes/`. Choose by the user's
+  only published recipes ship under `references/recipes/`. Verify each adaptation;
+  publication is not certification. Choose by the user's
   purpose and the recipe's **When to use** guidance, then read the recipe and
   [composing guide](references/guides/composing.md). The sections are Heroes,
   Banners, Cards, Media, Grids, Content and Forms.
@@ -39,6 +39,17 @@ metadata:
   a card represents one item.
   Gallery card browses photos of one item; Article carousel browses several
   items. Match that role before adapting the appearance.
+
+## Start by checking the environment
+
+Read [Building with an agent](references/guides/agent-workflow.md) before
+implementation. It defines the repository and chat-only workflows, setup
+approval boundary, five-pillar acceptance criteria and verification report.
+Inspect the installed package, stylesheet delivery and initial layer order;
+do not install or change shared infrastructure without existing authorization
+or an approved concrete proposal. In chat, probe actual package and rendering
+capabilities. Never substitute fake LoamUI components or claim unrun checks.
+The complete recipe and component examples remain bundled for offline use.
 
 ## The three primitives
 
@@ -55,11 +66,14 @@ metadata:
 ## The five pillars, as rules
 
 1. **Native CSS.** Use real elements for semantics and static CSS for styling.
-   Native controls supply platform behaviour; preserve their labels and
-   keyboard support. No CSS-in-JS or styling runtime.
+   Use native `<button>`, `<dialog>` via `showModal()`, and `<details>` where
+   their semantics fit. Native controls supply platform behaviour; preserve
+   their labels and keyboard support. No CSS-in-JS or styling runtime.
 2. **Modern CSS.** Use scoped, additive rules, logical properties and the
-   library’s responsive tokens. Choose modern features for the problem at
-   hand; they are tools, not a feature checklist. No `!important`, BEM or
+   library’s responsive tokens. Use `@layer`, `@scope`, nesting, container
+   queries and intrinsic layout; tokens supply `clamp()`, `oklch()` and
+   `light-dark()`. Choose modern features for the problem at hand; they are
+   tools, not a feature checklist. No `!important`, BEM or
    specificity battles. Follow the host’s cascade-layer arrangement.
 3. **Composition.** Assemble named parts and use `render` when changing the
    element. Button icons and loaders are children; Input instead documents
@@ -88,10 +102,11 @@ No layout components (use native grid, flex or flow with the space tokens), no
 
 ## How to build with it
 
-1. **Install and import once.** `pnpm add @loamui/core`, then
-   `import "@loamui/core/styles.css"` at the app root. React 19, ESM only, no
-   provider. **Next.js:** its CSS pipeline cannot parse the stylesheet — serve
-   it as a static file instead (see `references/guides/installation.md`).
+1. **Check setup before changing it.** Follow the environment workflow above.
+   If authorized setup is needed, install `@loamui/core` with the project's
+   package manager and load its CSS once. React 19, ESM only, no provider.
+   Consult [installation](references/guides/installation.md) for CSS pipeline
+   failures and establish layer order before recipe styles load.
 2. **Read before composing.** Check the installed package version and read
    [the composing guide](references/guides/composing.md), the nearest published
    recipe, and each component reference you will use. Prefer installed types
@@ -192,8 +207,8 @@ Each of these has been seen in real migrations. Check your output against them.
   element styles are the baseline. Build on them.
 - **`!important`, BEM, physical properties, viewport units for sizing.** The
   library uses none; neither should styles around it.
-- **Importing the stylesheet through a bundler that cannot parse it** (Next.js
-  today). Serve it statically; see the installation guide.
+- **Importing the stylesheet through a bundler that cannot parse it** (including
+  affected Next.js toolchains). Serve it statically; see the installation guide.
 - **A `Heading` or `Text` component.** Typography is domain-specific:
   `@scope (h1.headline) { :scope { font-family: var(--loam-font-display) } }`.
 

@@ -4,9 +4,25 @@ import { useId, useState, type FormEvent } from "react";
 import { Button, Card, Checkbox, ErrorSummary, Field, Input, PasswordInput } from "@loamui/core";
 import "./example.css";
 
-export default function Example({ action = "/sign-in" }: { action?: string }) {
+type SignInResponse = {
+  values: { email: string; remember: boolean };
+  errors: { email?: string; password?: string; form?: string };
+};
+
+export default function Example({
+  action = "/sign-in",
+  initialResponse,
+}: {
+  action?: string;
+  initialResponse?: SignInResponse;
+}) {
   const id = useId();
-  const [validation, setValidation] = useState({ email: "", password: "", attempt: 0 });
+  const [validation, setValidation] = useState({
+    email: initialResponse?.errors.email ?? "",
+    password: initialResponse?.errors.password ?? "",
+    form: initialResponse?.errors.form ?? "",
+    attempt: 0,
+  });
 
   function handleValidation(event: FormEvent<HTMLFormElement>) {
     const fields = event.currentTarget.elements;
@@ -23,6 +39,7 @@ export default function Example({ action = "/sign-in" }: { action?: string }) {
     setValidation((previous) => ({
       email: emailError,
       password: passwordError,
+      form: "",
       attempt: previous.attempt + 1,
     }));
   }
@@ -38,19 +55,22 @@ export default function Example({ action = "/sign-in" }: { action?: string }) {
           onSubmit={handleValidation}
         >
           <h1 id={`${id}-title`}>Sign in</h1>
-          {(validation.email || validation.password) && (
+          {(validation.email || validation.password || validation.form) && (
             <ErrorSummary.Root key={validation.attempt}>
               <ErrorSummary.Title />
-              <ErrorSummary.List>
-                {validation.email && (
-                  <ErrorSummary.Item href={`#${id}-email`}>{validation.email}</ErrorSummary.Item>
-                )}
-                {validation.password && (
-                  <ErrorSummary.Item href={`#${id}-password`}>
-                    {validation.password}
-                  </ErrorSummary.Item>
-                )}
-              </ErrorSummary.List>
+              {validation.form && <p>{validation.form}</p>}
+              {(validation.email || validation.password) && (
+                <ErrorSummary.List>
+                  {validation.email && (
+                    <ErrorSummary.Item href={`#${id}-email`}>{validation.email}</ErrorSummary.Item>
+                  )}
+                  {validation.password && (
+                    <ErrorSummary.Item href={`#${id}-password`}>
+                      {validation.password}
+                    </ErrorSummary.Item>
+                  )}
+                </ErrorSummary.List>
+              )}
             </ErrorSummary.Root>
           )}
           <Field.Root id={`${id}-email`}>
@@ -58,6 +78,7 @@ export default function Example({ action = "/sign-in" }: { action?: string }) {
             {validation.email && <Field.Error>{validation.email}</Field.Error>}
             <Input
               name="email"
+              defaultValue={initialResponse?.values.email}
               type="email"
               dir="ltr"
               autoComplete="username"
@@ -73,7 +94,11 @@ export default function Example({ action = "/sign-in" }: { action?: string }) {
             <PasswordInput name="password" autoComplete="current-password" required />
           </Field.Root>
           <a href="/forgot-password">Forgot your password?</a>
-          <Checkbox name="remember" label="Keep me signed in" />
+          <Checkbox
+            name="remember"
+            label="Keep me signed in"
+            defaultChecked={initialResponse?.values.remember ?? false}
+          />
           <div className="actions">
             <Button type="submit">Sign in</Button>
           </div>

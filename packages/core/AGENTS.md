@@ -7,6 +7,13 @@ markdown twin at the same URL with `.md` appended, and
 
 ## Setup
 
+Before changing dependencies or shared styles, inspect the consuming project's
+instructions, installed package version, CSS delivery and layer order. Follow
+<https://loamui.com/docs/agent-workflow.md>; propose concrete infrastructure
+changes for approval unless already authorized. In chat-only environments,
+use the real package or provide source with explicit runtime verification gaps.
+Never emulate core exports or claim unrun checks.
+
 ```tsx
 import "@loamui/core/styles.css"; // once, at the app root
 import { Button, Field, Input } from "@loamui/core";
@@ -39,7 +46,8 @@ that uses parts lives in a `"use client"` file; callable forms (`<Button>`,
 
 ## The rules that matter
 
-1. **No `size`, `variant`, `color` or `fullWidth` props.** They do not exist.
+1. **Do not invent `size`, `variant`, `color` or `fullWidth` props.** Use the
+   documented exceptions below.
    Status comes from a region: `<div style={{ "--loam-context": "danger" }}>`.
    A style query is answered by ancestors, so wrap even a single control.
    Contexts: `primary | success | warning | info | danger`. The exceptions:
@@ -49,7 +57,8 @@ that uses parts lives in a `"use client"` file; callable forms (`<Button>`,
    QuantityInput's `min`/`max`/`step`) are the platform's own semantics, not
    sizing.
 2. **Size comes from the container.** Declare `container-type: inline-size`
-   on a region and the fluid tokens respond. A size query styles descendants,
+   on a region and resolve fluid tokens on its descendants. Inherited computed
+   font sizes do not re-evaluate inside a new container. A size query styles descendants,
    never the measuring element itself. In a container of 16rem or less
    a Button spans the full width.
 3. **Width comes from layout.** A grid or stacked flex region stretches its
@@ -70,11 +79,13 @@ Field.Error, Input` in that order; the controls (`Input`, `Select`,
 
    ```css
    @scope (.pricing-card) to ([class*="loam-"]) {
-     :scope {
-       background: var(--loam-color-surface);
-       border: 1px solid var(--loam-color-line);
-       border-radius: var(--loam-radius-lg);
-       padding: var(--loam-space-lg);
+     @layer loamui.components {
+       :scope {
+         background: var(--loam-color-surface);
+         border: 1px solid var(--loam-color-line);
+         border-radius: var(--loam-radius-lg);
+         padding: var(--loam-space-lg);
+       }
      }
    }
    ```
@@ -82,6 +93,10 @@ Field.Error, Input` in that order; the controls (`Input`, `Select`,
    Compose LoamUI parts inside it. Do not restyle a LoamUI component's
    internals; if a component needs structural overrides to fit, build the
    thing downstream instead.
+
+Establish `@layer loamui.tokens, loamui.elements, loamui.components;` in
+the earliest application stylesheet, before recipes register those layers.
+A later declaration cannot reorder existing layers.
 
 ## House style for the CSS you write
 

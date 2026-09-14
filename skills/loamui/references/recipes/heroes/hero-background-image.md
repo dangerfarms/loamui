@@ -13,7 +13,7 @@ A page-opening section over a full-bleed photograph: a headline, a lede and two 
 A recipe in **Heroes**: a component and a stylesheet built from `@loamui/core`, to copy into a project and change. Both files are below, exactly as the live preview renders them.
 
 - Uses: `SignpostLink`
-- Tags: landing, marketing, photo, cover, dark
+- Tags: landing, marketing, photo, cover
 - Live: https://loamui.com/recipes/heroes/hero-background-image
 
 ## Using this recipe
@@ -31,9 +31,9 @@ Use for a prominent page introduction over an atmospheric photograph. Choose a b
 These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A section named by its h1, with a native header and an eagerly discoverable img. The image sits behind the content, so the header supplies the minimum height and grows when text needs more room. Element styles own heading typography and link states.
-- **Modern CSS.** Styles sit in loamui.components inside a donut scope. The section measures its header’s fluid padding, type and minimum height; there are no viewport layout breakpoints. A token-based scrim protects the text, and a solid background keeps it readable if the image fails.
-- **Composition.** SignpostLink inherits the region’s dark scheme; the secondary film destination is an ordinary link.
-- **Contextualism.** One declaration on the region decides the scheme for everything in it; the SignpostLink takes its dark-scheme paint without a prop.
+- **Modern CSS.** Styles sit in loamui.components inside a donut scope. The section measures its header’s fluid padding, type and minimum height; there are no viewport layout breakpoints. A token-based scrim and full foreground text protect readability in either scheme, and a solid background keeps it readable if the image fails.
+- **Composition.** SignpostLink follows the surrounding colour scheme through core tokens; the secondary film destination is an ordinary link.
+- **Contextualism.** The section inherits the surrounding colour scheme. Background, overlay, text and link tokens adapt together, with no fixed dark region or appearance props.
 - **Accessible & gatekept.** The photograph is decoration behind the words, so its alt is empty. useId ties repeated regions to their own headings. Native links retain visible text and focus rings; enlarged text can grow the section. Forced colours remove both the picture and scrim, leaving native system colours and a visible border.
 
 ## Example.tsx
@@ -86,7 +86,6 @@ export default function Example() {
       background: var(--loam-color-bg);
       border-radius: var(--loam-radius-xl);
       color: var(--loam-color-fg);
-      color-scheme: dark;
       container-type: inline-size;
       isolation: isolate;
       position: relative;
@@ -132,7 +131,6 @@ export default function Example() {
     }
 
     p.lede {
-      color: var(--loam-color-fg-muted);
       font-size: var(--loam-text-lg);
       max-inline-size: var(--loam-measure);
     }

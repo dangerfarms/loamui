@@ -8,6 +8,7 @@ import { EXAMPLE_PREVIEWS } from "@/examples/generated-previews";
 import type { ExampleMetaEntry } from "@/examples/types";
 import classes from "./examples-index.module.css";
 import { LazyThumb } from "./examples-thumb";
+import { RecipePromptButton } from "./recipe-prompt-button";
 import { ExampleLoadBoundary } from "./examples-load-boundary";
 
 function matches(e: ExampleMetaEntry, term: string, uses: string): boolean {
@@ -93,7 +94,7 @@ export function ExamplesIndex() {
 
       {groups.length === 0 && (
         <div className={classes.empty}>
-          <p className={classes.emptyTitle}>No example matches.</p>
+          <p className={classes.emptyTitle}>No recipe matches.</p>
           <p className={classes.emptyText}>
             Try a shorter word, or build it from the primitives with the{" "}
             <Link href="/docs/composing">Composing guide</Link>.
@@ -151,6 +152,10 @@ export function ExamplesIndex() {
                         ))}
                       </ul>
                     )}
+                    <RecipePromptButton
+                      title={e.meta.title}
+                      href={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/recipe-prompts/${e.category}/${e.slug}.txt`}
+                    />
                   </div>
                 </li>
               );

@@ -1,9 +1,56 @@
 "use client";
 
-import { Button, Field, Input, Textarea } from "@loamui/core";
+import { useCallback, useId, useState, type FormEvent } from "react";
+import { Button, ErrorSummary, Field, Input, Textarea } from "@loamui/core";
 import "./example.css";
 
-export default function Example({ action = "/contact" }: { action?: string }) {
+type ContactResponse =
+  | { status: "sent" }
+  | {
+      status: "error";
+      values: { email: string; message: string };
+      errors: { email?: string; message?: string; form?: string };
+    };
+
+export default function Example({
+  action = "/contact",
+  initialResponse,
+}: {
+  action?: string;
+  initialResponse?: ContactResponse;
+}) {
+  const id = useId();
+  const failure = initialResponse?.status === "error" ? initialResponse : undefined;
+  const [validation, setValidation] = useState({
+    email: failure?.errors.email ?? "",
+    message: failure?.errors.message ?? "",
+    form: failure?.errors.form ?? "",
+    attempt: 0,
+  });
+  const focusConfirmation = useCallback((heading: HTMLHeadingElement | null) => {
+    heading?.focus();
+  }, []);
+
+  function handleValidation(event: FormEvent<HTMLFormElement>) {
+    const fields = event.currentTarget.elements;
+    const email = fields.namedItem("email") as HTMLInputElement;
+    const message = fields.namedItem("message") as HTMLTextAreaElement;
+    const emailError = email.validity.valueMissing
+      ? "Enter your email address"
+      : email.validity.typeMismatch
+        ? "Enter an email address in the correct format, like name@example.com"
+        : "";
+    const messageError = message.validity.valueMissing ? "Enter your message" : "";
+
+    if (emailError || messageError) event.preventDefault();
+    setValidation((previous) => ({
+      email: emailError,
+      message: messageError,
+      form: "",
+      attempt: previous.attempt + 1,
+    }));
+  }
+
   return (
     <section className="contact-us-with-details">
       <div>
@@ -97,30 +144,73 @@ export default function Example({ action = "/contact" }: { action?: string }) {
             </dl>
           </address>
         </div>
-        <form action={action} method="post">
-          <h3>Send a message</h3>
-          <Field.Root>
-            <Field.Label>Email address (required)</Field.Label>
-            <Field.Description>We’ll reply to this address.</Field.Description>
-            <Input
-              name="email"
-              type="email"
-              dir="ltr"
-              autoComplete="email"
-              autoCapitalize="none"
-              spellCheck={false}
-              inputMode="email"
-              required
-            />
-          </Field.Root>
-          <Field.Root>
-            <Field.Label>Message (required)</Field.Label>
-            <Textarea name="message" rows={5} required />
-          </Field.Root>
-          <div className="actions">
-            <Button type="submit">Send message</Button>
+        {initialResponse?.status === "sent" ? (
+          <div className="confirmation">
+            <h3 ref={focusConfirmation} tabIndex={-1}>
+              Message sent
+            </h3>
+            <p>
+              Thank you for contacting the nursery. We’ll reply on our next email day: Tuesday or
+              Friday.
+            </p>
+            <p>You do not need to send your message again.</p>
+            <a href="/">Return to the nursery homepage</a>
           </div>
-        </form>
+        ) : (
+          <form
+            action={action}
+            method="post"
+            aria-labelledby={`${id}-title`}
+            onInvalid={handleValidation}
+            onSubmit={handleValidation}
+          >
+            <h3 id={`${id}-title`}>Send a message</h3>
+            {(validation.email || validation.message || validation.form) && (
+              <ErrorSummary.Root key={validation.attempt}>
+                <ErrorSummary.Title aria-level={4} />
+                {validation.form && <p>{validation.form}</p>}
+                {(validation.email || validation.message) && (
+                  <ErrorSummary.List>
+                    {validation.email && (
+                      <ErrorSummary.Item href={`#${id}-email`}>
+                        {validation.email}
+                      </ErrorSummary.Item>
+                    )}
+                    {validation.message && (
+                      <ErrorSummary.Item href={`#${id}-message`}>
+                        {validation.message}
+                      </ErrorSummary.Item>
+                    )}
+                  </ErrorSummary.List>
+                )}
+              </ErrorSummary.Root>
+            )}
+            <Field.Root id={`${id}-email`}>
+              <Field.Label>Email address (required)</Field.Label>
+              <Field.Description>We’ll reply to this address.</Field.Description>
+              {validation.email && <Field.Error>{validation.email}</Field.Error>}
+              <Input
+                name="email"
+                defaultValue={failure?.values.email}
+                type="email"
+                dir="ltr"
+                autoComplete="email"
+                autoCapitalize="none"
+                spellCheck={false}
+                inputMode="email"
+                required
+              />
+            </Field.Root>
+            <Field.Root id={`${id}-message`}>
+              <Field.Label>Message (required)</Field.Label>
+              {validation.message && <Field.Error>{validation.message}</Field.Error>}
+              <Textarea name="message" defaultValue={failure?.values.message} rows={5} required />
+            </Field.Root>
+            <div className="actions">
+              <Button type="submit">Send message</Button>
+            </div>
+          </form>
+        )}
       </div>
     </section>
   );

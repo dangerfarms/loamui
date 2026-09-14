@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from "vitest";
-import { render, screen, cleanup, fireEvent } from "@testing-library/react";
+import { render, screen, cleanup } from "@testing-library/react";
 import { axe } from "vitest-axe";
 import Example from "./Example";
 
@@ -7,18 +7,7 @@ afterEach(cleanup);
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };
 
 describe("profile-card", () => {
-  it("toggles following and restores the follower count on undo", () => {
-    render(<Example />);
-    const button = screen.getByRole("button", { name: "Follow" });
-    expect(button).toHaveAttribute("aria-pressed", "false");
-    fireEvent.click(button);
-    expect(button).toHaveAttribute("aria-pressed", "true");
-    expect(screen.getByText("213")).toBeInTheDocument();
-    fireEvent.click(button);
-    expect(button).toHaveAttribute("aria-pressed", "false");
-    expect(screen.getByText("212")).toBeInTheDocument();
-  });
-  it("is a Card rendered as an article named by the person, with three labelled figures and a follow button", async () => {
+  it("is a Card rendered as an article named by the person, with three labelled figures and a profile link", async () => {
     const { container } = render(<Example />);
     const card = screen.getByRole("article", { name: "Imogen Hartley" });
     expect(card).toHaveClass("loam-Card", "profile-card");
@@ -27,7 +16,10 @@ describe("profile-card", () => {
     expect(screen.getByText("Varieties saved").tagName).toBe("DT");
     expect(screen.getByText("38").tagName).toBe("DD");
     expect(card.querySelectorAll("dl.stats dd")).toHaveLength(3);
-    expect(screen.getByRole("button", { name: "Follow" })).toHaveClass("loam-Button");
+    expect(screen.getByRole("link", { name: "Meet Imogen" })).toHaveAttribute(
+      "href",
+      "/growers/imogen-hartley",
+    );
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 });

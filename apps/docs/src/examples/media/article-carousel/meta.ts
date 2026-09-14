@@ -8,11 +8,13 @@ export const meta: ExampleMeta = {
     "Use when readers need to browse several articles in a horizontal collection. Choose a grid when seeing and comparing the items together is more useful.",
   category: "media",
   uses: ["Badge", "Card", "Carousel", "SignpostLink"],
+  integration:
+    "Replace the sample articles and destinations with real content. Choose a visible grid when comparison or discovery of every item matters more than a compact horizontal collection. Adjust heading levels to the page; keep the accessible link suffixes unique.",
   notes: {
     native:
-      "The track is an ordinary scroller with scroll snapping, so it pages with a wheel, a swipe, the arrow keys and no JavaScript; each item is a Card rendered as an article named by its heading.",
+      "The track is an ordinary scroll-snap list that supports touch and trackpad scrolling without the paging script. Carousel supplies keyboard paging and button state after hydration. Each Card is an article named by its heading.",
     modern:
-      "The item width is the Carousel's public property set on the region, and the track's grid stretches every Card to one height, so an auto margin puts each link at the foot.",
+      "The public item-size property sets the preferred card width while the track caps it to the available space. Each Card measures its own content, uses layered scoped rules and aligns the final link with an auto margin. Responsive images are lazy and reserve their ratio.",
     composition:
       "Carousel.Root, Track, Item, Previous, Next and Indicators are arranged in the markup: the Buttons sit beside the title and the dots beneath, an arrangement the parts allow because they read one context rather than one layout.",
     accessible:

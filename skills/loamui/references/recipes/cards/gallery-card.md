@@ -20,7 +20,7 @@ A recipe in **Cards**: a component and a stylesheet built from `@loamui/core`, t
 
 Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
 
-Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+Replace the sample listing destination, photographs, rating, review count and nightly price with real data. The photographs illustrate a fictional stay; keep each alt faithful to the replacement image. Set the heading level for the surrounding page.
 
 ## When to use
 
@@ -30,10 +30,10 @@ Use for one listing whose photographs need browsing alongside its rating and pri
 
 These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
-- **Native CSS.** The photos scroll on an ordinary scroll-snap track, so a swipe or the arrow keys page them with no JavaScript; the rating is one picture named 4.8 out of 5 and the price is a data element whose value is the number.
-- **Modern CSS.** The Carousel's item width is its public property, set to 100% on the Card so it inherits down and each photo fills the track; the price takes the display face from the paragraph around it.
+- **Native CSS.** A native scroll-snap list contains the photographs. Touch and trackpad scrolling work without the paging script; Carousel supplies the buttons, indicator state and keyboard paging after hydration. The rating has an accessible numeric value and Price renders a data element.
+- **Modern CSS.** Layered scopes protect the embedded controls. The Card measures its content, and the public --loam-carousel-item-size hook makes each photograph fill the track. Responsive images reserve their ratio; controls and rating metadata wrap when space is limited.
 - **Composition.** A Carousel sits inside a Card the way any content would, its own region inside the article; Rating and Price are dropped in as they come, and the example reaches into none of them.
-- **Accessible & gatekept.** The carousel is named Photos of the Orchard Cabin and every photo has an alt that says what is in it, because here the pictures are the content; the controls and the dots are named through labels, and the review count finishes in a hidden word.
+- **Accessible & gatekept.** The article and photo region are named. Each photograph describes the actual view; controls have photo-specific labels and the visible review count says “63 reviews”. The title is a link to the full listing, without making the entire card an interactive wrapper.
 
 ## Example.tsx
 
@@ -44,21 +44,6 @@ import { useId } from "react";
 import { Card, Carousel, Price, Rating } from "@loamui/core";
 import "./example.css";
 
-const PHOTOS = [
-  {
-    seed: 206,
-    alt: "The cabin at the edge of the orchard in evening light",
-  },
-  {
-    seed: 225,
-    alt: "A pot of tea and a cup on the cabin’s kitchen table",
-  },
-  {
-    seed: 33,
-    alt: "The meadow beside the cabin at dusk, seen from the porch",
-  },
-];
-
 export default function Example() {
   const instanceId = useId();
   return (
@@ -67,53 +52,77 @@ export default function Example() {
         <article className="gallery-card" aria-labelledby={`${instanceId}-gallery-card-title`} />
       }
     >
-      <Carousel.Root
-        className="photos"
-        labels={{
-          region: "Photos of the Orchard Cabin",
-          previous: "Previous photo",
-          next: "Next photo",
-          indicator: (index, count) => `Go to photo ${index} of ${count}`,
-          status: (index, count) => `Photo ${index} of ${count}`,
-        }}
-      >
-        <Carousel.Track>
-          {PHOTOS.map((photo) => (
-            <Carousel.Item key={photo.seed}>
+      <div className="body">
+        <Carousel.Root
+          className="photos"
+          labels={{
+            region: "Photos of the Orchard Cabin",
+            previous: "Previous photo",
+            next: "Next photo",
+            indicator: (index, count) => `Go to photo ${index} of ${count}`,
+            status: (index, count) => `Photo ${index} of ${count}`,
+          }}
+        >
+          <Carousel.Track>
+            <Carousel.Item>
               <img
-                src={`https://picsum.photos/id/${photo.seed}/640/400`}
-                alt={photo.alt}
+                src="https://picsum.photos/id/206/640/400"
+                alt="A timber building among orchard trees in low sunlight"
                 width="640"
                 height="400"
                 loading="lazy"
+                sizes="auto, 100vw"
+                srcSet="https://picsum.photos/id/206/320/200 320w, https://picsum.photos/id/206/640/400 640w, https://picsum.photos/id/206/960/600 960w"
               />
             </Carousel.Item>
-          ))}
-        </Carousel.Track>
-        <div className="controls">
-          <Carousel.Previous />
-          <Carousel.Indicators />
-          <Carousel.Next />
+            <Carousel.Item>
+              <img
+                src="https://picsum.photos/id/225/640/400"
+                alt="A glass pot of tea and a small cup beside yellow roses"
+                width="640"
+                height="400"
+                loading="lazy"
+                sizes="auto, 100vw"
+                srcSet="https://picsum.photos/id/225/320/200 320w, https://picsum.photos/id/225/640/400 640w, https://picsum.photos/id/225/960/600 960w"
+              />
+            </Carousel.Item>
+            <Carousel.Item>
+              <img
+                src="https://picsum.photos/id/33/640/400"
+                alt="White wildflowers and tall meadow grass in low sunlight"
+                width="640"
+                height="400"
+                loading="lazy"
+                sizes="auto, 100vw"
+                srcSet="https://picsum.photos/id/33/320/200 320w, https://picsum.photos/id/33/640/400 640w, https://picsum.photos/id/33/960/600 960w"
+              />
+            </Carousel.Item>
+          </Carousel.Track>
+          <div className="controls">
+            <Carousel.Previous />
+            <Carousel.Indicators />
+            <Carousel.Next />
+          </div>
+        </Carousel.Root>
+        <div className="head">
+          <h3 id={`${instanceId}-gallery-card-title`}>
+            <a href="/stays/orchard-cabin">The Orchard Cabin</a>
+          </h3>
+          <div className="rating">
+            <Rating readOnly label="Average rating" value={4.8} />
+            <span>63 reviews</span>
+          </div>
         </div>
-      </Carousel.Root>
-      <div className="head">
-        <h3 id={`${instanceId}-gallery-card-title`}>The Orchard Cabin</h3>
-        <p className="rating">
-          <Rating readOnly label="Average rating" value={4.8} />
-          <span>
-            (63<span className="loam-VisuallyHidden"> reviews</span>)
-          </span>
+        <p className="description">
+          Two nights at the nursery, sleeping four, with the walled garden to yourselves once the
+          gates close and breakfast from the yard café.
+        </p>
+        <p className="price">
+          <Price value={145} currency="GBP" locale="en-GB">
+            per night
+          </Price>
         </p>
       </div>
-      <p className="description">
-        Two nights at the nursery, sleeping four, with the walled garden to yourselves once the
-        gates close and breakfast from the yard café.
-      </p>
-      <p className="price">
-        <Price value={145} currency="GBP" locale="en-GB">
-          per night
-        </Price>
-      </p>
     </Card>
   );
 }
@@ -123,67 +132,80 @@ export default function Example() {
 
 ```css
 @scope (.gallery-card) to ([class*="loam-"]) {
-  :scope {
-    --loam-carousel-item-size: 100%;
+  @layer loamui.components {
+    :scope {
+      --loam-carousel-item-size: 100%;
 
-    display: block grid;
-    gap: var(--loam-space-sm);
-    grid-template-columns: minmax(0, 1fr);
-    max-inline-size: 36rem;
-  }
+      container-type: inline-size;
+      display: block grid;
+      grid-template-columns: minmax(0, 1fr);
+      max-inline-size: 36rem;
+    }
 
-  div.head {
-    align-items: baseline;
-    display: block flex;
-    flex-wrap: wrap;
-    gap: var(--loam-space-xs) var(--loam-space-md);
-    justify-content: space-between;
-  }
+    div.body {
+      display: block grid;
+      font-size: var(--loam-text-md);
+      gap: var(--loam-space-sm);
+      grid-template-columns: minmax(0, 1fr);
+      overflow-wrap: anywhere;
+    }
 
-  h3 {
-    font-size: var(--loam-text-lg);
-    margin: 0;
-  }
+    div.head {
+      align-items: baseline;
+      display: block flex;
+      flex-wrap: wrap;
+      gap: var(--loam-space-xs) var(--loam-space-md);
+      justify-content: space-between;
+    }
 
-  p.rating {
-    align-items: center;
-    color: var(--loam-color-fg-muted);
-    display: block flex;
-    font-size: var(--loam-text-sm);
-    font-variant-numeric: lining-nums tabular-nums;
-    gap: var(--loam-space-xs);
-    margin: 0;
-  }
+    h3 {
+      margin-block: 0;
+    }
 
-  p.description {
-    color: var(--loam-color-fg-muted);
-    margin: 0;
-    text-wrap: pretty;
-  }
+    div.rating {
+      align-items: center;
+      color: var(--loam-color-fg-muted);
+      display: block flex;
+      flex-wrap: wrap;
+      font-size: var(--loam-text-sm);
+      font-variant-numeric: lining-nums tabular-nums;
+      gap: var(--loam-space-xs);
+      margin-block: 0;
+    }
 
-  p.price {
-    color: var(--loam-color-fg-strong);
-    font-family: var(--loam-font-display);
-    font-size: var(--loam-text-xl);
-    font-weight: 700;
-    margin: 0;
+    p.description {
+      color: var(--loam-color-fg-muted);
+      margin-block: 0;
+      text-wrap: pretty;
+    }
+
+    p.price {
+      color: var(--loam-color-fg-strong);
+      font-family: var(--loam-font-display);
+      font-size: var(--loam-text-xl);
+      font-weight: 700;
+      margin-block: 0;
+    }
   }
 }
 
 @scope (.gallery-card section.photos) to ([class*="loam-"]) {
-  img {
-    aspect-ratio: 16 / 10;
-    block-size: auto;
-    border-radius: var(--loam-radius-md);
-    inline-size: 100%;
-    object-fit: cover;
-  }
+  @layer loamui.components {
+    img {
+      aspect-ratio: 16 / 10;
+      block-size: auto;
+      border-radius: var(--loam-radius-md);
+      inline-size: 100%;
+      object-fit: cover;
+    }
 
-  div.controls {
-    align-items: center;
-    display: block flex;
-    gap: var(--loam-space-sm);
-    justify-content: center;
+    div.controls {
+      align-items: center;
+      display: block flex;
+      flex-wrap: wrap;
+      gap: var(--loam-space-sm);
+      justify-content: center;
+    }
   }
 }
 ```

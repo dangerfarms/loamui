@@ -32,7 +32,7 @@
     }
 
     p.eyebrow {
-      --loam-context: warning;
+      --loam-context: primary;
 
       align-items: center;
       color: var(--loam-color-fg-muted);

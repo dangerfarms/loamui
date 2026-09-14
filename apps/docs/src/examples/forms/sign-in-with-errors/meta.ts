@@ -7,7 +7,7 @@ export const meta: ExampleMeta = {
   whenToUse:
     "Use for email-and-password sign-in when validation needs a summary as well as errors beside each field. Errors appear after submission, so people can finish entering their details before being asked to correct them.",
   integration:
-    "Submit the empty form or a mistyped email to try the error flow. Pass an action URL to use your own POST endpoint; the sample defaults to /sign-in. Valid input navigates to that endpoint without storing credentials in React state. Implement authentication and server validation there, including validation when JavaScript is unavailable. Native required and email checks remain active before hydration. Return authentication failures without revealing whether an account exists, and prefix the response page title with Error:. Preserve the email and persistent-session choice after server rejection, but never echo the password into response HTML. Provide the recovery and registration routes and implement the optional persistent session. This recipe does not authenticate anyone or store credentials.",
+    "Submit the empty form or a mistyped email to try local validation. Pass action for your native POST endpoint; the default is /sign-in. On rejection, render a fresh Example with initialResponse: { values: { email, remember }, errors: { form: 'Email address and password do not match' } }. Use errors.email or errors.password for server field-validation messages. General authentication or service errors belong in errors.form; never reveal whether an account exists. The response restores email and the session choice, focuses the summary after hydration and never accepts or echoes a password. initialResponse initializes a new POST response, not an asynchronous update to a mounted form. Implement authentication and server validation at the endpoint; after success, establish the session and redirect to the signed-in destination. Set an Error: page-title prefix on rejection. Implement the recovery, registration and persistent-session routes. The recipe does not simulate authentication; test the real endpoint with password managers and mobile keyboards.",
   category: "forms",
   uses: ["Button", "Card", "Checkbox", "ErrorSummary", "Field", "Input", "PasswordInput"],
   notes: {
@@ -16,7 +16,7 @@ export const meta: ExampleMeta = {
     modern:
       "Recipe styles sit in loamui.components inside donut scopes. The outer container lets Card and the form resolve fluid tokens locally; element styles supply the heading typography, while grid gap owns form spacing.",
     composition:
-      "Card supplies the surface without structural overrides. ErrorSummary, Field.Error, Input and PasswordInput retain their own styling and behavior. Each error string is shared between its summary link and field message.",
+      "Card supplies the surface without structural overrides. ErrorSummary, Field.Error, Input and PasswordInput retain their own styling and behavior. Each field error is shared between its summary link and field message. A general server failure is summary text, not a fabricated field error.",
     context:
       "The action region declares --loam-context: primary. Rendering Field.Error makes the field invalid through the primitive's detection; the recipe neither sets aria-invalid manually nor repaints an input border.",
     accessible:

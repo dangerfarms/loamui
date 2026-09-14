@@ -8,11 +8,13 @@ export const meta: ExampleMeta = {
     "Use to preview one article with its date, author and reading destination. Choose Article carousel when readers need to browse a collection horizontally.",
   category: "cards",
   uses: ["Avatar", "Badge", "Card", "Time"],
+  integration:
+    "Replace the sample article and author destinations with real routes. Keep heading levels appropriate to the surrounding page. Replace the decorative illustration and its responsive sources together; supply alt text if the image adds information beyond the title.",
   notes: {
     native:
       'The Card is rendered as an article named by its own heading, the author sits in an address element with rel="author", and the date is a time with a machine-readable dateTime.',
     modern:
-      "A flex column whose foot takes the slack with an auto margin, so in a row of cards the byline lands at the bottom of each; the description is clamped only where line-clamp exists.",
+      "Layered, donut-scoped CSS preserves the Card surface. A measured inner column resolves fluid type and spacing locally; an auto margin aligns bylines in equal-height cards without truncating the description. Responsive, lazy images reserve their aspect ratio.",
     composition:
       "Card, Badge, Time and Avatar are used as they come; the example's rule stops at each root and only arranges the column between them.",
     accessible:

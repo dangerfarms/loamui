@@ -20,7 +20,7 @@ A recipe in **Media**: a component and a stylesheet built from `@loamui/core`, t
 
 Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
 
-Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+Use photographs of the same subject with matching dimensions and framing, and update both descriptions and the caption. This sample compares grayscale and colour treatments of one photo. React hydration is required to update the reveal; the initial images and caption remain available before it.
 
 ## When to use
 
@@ -31,9 +31,9 @@ Use to compare two views of the same subject with a labelled, keyboard-operable 
 These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** The handle is a real range input, so the comparison can be worked with a keyboard and is announced with a name and a value, not a pointer-only drag; the whole thing is a figure with a caption.
-- **Modern CSS.** Before, after and the divider share one grid cell in DOM order, the top image is cut with clip-path from a custom property, and the physical inset flips under :dir(rtl) where the Range runs the other way.
+- **Modern CSS.** A measuring wrapper contains the figure so fluid tokens resolve locally. Both images and the bounded divider share a grid cell. Layered scoped CSS clips the second treatment using a state-driven property, with mutually exclusive LTR and RTL rules.
 - **Composition.** Range is dropped in as it comes; the example holds the value in state and writes it onto the figure as a custom property the stylesheet reads.
-- **Accessible & gatekept.** Both images carry real alt text describing what each shows, the fallback position of 50% shows half of each before any script runs, and the divider keeps its ink in forced colours.
+- **Accessible & gatekept.** The range is named, describes its current percentage, and references the caption. Both images have descriptive alt text. The server-rendered position shows half of each; the divider remains within the frame at both endpoints and has forced-colour treatment.
 
 ## Example.tsx
 
@@ -49,39 +49,48 @@ export default function Example() {
   const controlId = useId();
   const [position, setPosition] = useState(50);
   return (
-    <figure className="image-comparison" style={{ "--_position": `${position}%` } as CSSProperties}>
-      <div className="before">
-        <img
-          src="https://picsum.photos/id/59/1200/675"
-          alt="Black-and-white photograph of wooden fence posts and wire above long grass"
-          width="1200"
-          height="675"
+    <div className="image-comparison">
+      <figure style={{ "--_position": `${position}%` } as CSSProperties}>
+        <div className="before">
+          <img
+            src="https://picsum.photos/id/59/1200/675"
+            alt="Black-and-white photograph of wooden fence posts and wire above long grass"
+            width="1200"
+            height="675"
+            loading="lazy"
+            sizes="auto, 100vw"
+            srcSet="https://picsum.photos/id/59/400/225 400w, https://picsum.photos/id/59/800/450 800w, https://picsum.photos/id/59/1200/675 1200w"
+          />
+        </div>
+        <div className="after">
+          <img
+            src="https://picsum.photos/id/59/1200/675"
+            alt="The same fence photograph in colour: weathered brown posts above golden grass"
+            width="1200"
+            height="675"
+            loading="lazy"
+            sizes="auto, 100vw"
+            srcSet="https://picsum.photos/id/59/400/225 400w, https://picsum.photos/id/59/800/450 800w, https://picsum.photos/id/59/1200/675 1200w"
+          />
+        </div>
+        <label htmlFor={controlId}>Reveal the colour photograph</label>
+        <Range
+          id={controlId}
+          aria-describedby={`${controlId}-caption`}
+          aria-valuetext={`${position}% colour photograph`}
+          min={0}
+          max={100}
+          value={position}
+          onChange={(event) => setPosition(event.currentTarget.valueAsNumber)}
         />
-      </div>
-      <div className="after">
-        <img
-          src="https://picsum.photos/id/59/1200/675"
-          alt="The same fence photograph in colour: weathered brown posts above golden grass"
-          width="1200"
-          height="675"
-        />
-      </div>
-      <label htmlFor={controlId}>Reveal the colour photograph</label>
-      <Range
-        id={controlId}
-        aria-valuetext={`${position}% colour photograph`}
-        min={0}
-        max={100}
-        value={position}
-        onChange={(event) => setPosition(event.currentTarget.valueAsNumber)}
-      />
-      <p className="value" aria-hidden="true">
-        {position}% colour
-      </p>
-      <figcaption>
-        One photograph in black and white and colour. Move the slider to compare the treatments.
-      </figcaption>
-    </figure>
+        <p className="value" aria-hidden="true">
+          {position}% colour
+        </p>
+        <figcaption id={`${controlId}-caption`}>
+          One photograph in black and white and colour. Move the slider to compare the treatments.
+        </figcaption>
+      </figure>
+    </div>
   );
 }
 ```
@@ -90,74 +99,84 @@ export default function Example() {
 
 ```css
 @scope (.image-comparison) to ([class*="loam-"]) {
-  :scope {
-    /* The script writes the position onto the figure; 50% is the fallback
-       before it runs. */
-    --_position: 50%;
-    --_ratio: 16 / 9;
+  @layer loamui.components {
+    :scope {
+      --_position: 50%;
 
-    container-type: inline-size;
-    display: block grid;
-    gap: var(--loam-space-sm);
-    grid-template-columns: minmax(0, 1fr);
-    margin: 0;
+      container-type: inline-size;
+    }
 
-    &::after {
-      background: var(--loam-color-on-strong);
-      box-shadow: 0 0 0 1px var(--loam-color-fg);
-      content: "";
-      grid-area: 1 / 1;
-      inline-size: var(--loam-ring-width);
-      justify-self: start;
-      margin-inline-start: calc(var(--_position) - var(--loam-ring-width) / 2);
-      pointer-events: none;
+    figure {
+      display: block grid;
+      font-size: var(--loam-text-md);
+      gap: var(--loam-space-sm);
+      grid-template-columns: minmax(0, 1fr);
+      margin-block: 0;
+      margin-inline: 0;
+      overflow-wrap: anywhere;
 
-      @media (forced-colors: active) {
-        background: CanvasText;
-        forced-color-adjust: none;
+      &::after {
+        background: var(--loam-color-on-strong);
+        border-inline: 1px solid var(--loam-color-fg-strong);
+        content: "";
+        grid-area: 1 / 1;
+        inline-size: var(--loam-ring-width);
+        justify-self: start;
+        margin-inline-start: clamp(
+          0px,
+          calc(var(--_position) - var(--loam-ring-width) / 2),
+          calc(100% - var(--loam-ring-width))
+        );
+        pointer-events: none;
+        z-index: 1;
+
+        @media (forced-colors: active) {
+          background: CanvasText;
+          forced-color-adjust: none;
+        }
       }
     }
-  }
 
-  div.before,
-  /* The inset is physical, so it flips under :dir(rtl), where the Range runs
-     the other way. */
-  div.after {
-    aspect-ratio: var(--_ratio);
-    border-radius: var(--loam-radius-md);
-    grid-area: 1 / 1;
-    inline-size: 100%;
-    overflow: hidden;
-
-    img {
-      block-size: 100%;
-      display: block flow;
+    div.before,
+    div.after {
+      aspect-ratio: 16 / 9;
+      border-radius: var(--loam-radius-md);
+      grid-area: 1 / 1;
       inline-size: 100%;
-      object-fit: cover;
+      overflow: hidden;
+
+      img {
+        block-size: 100%;
+        display: block flow;
+        inline-size: 100%;
+        object-fit: cover;
+      }
     }
-  }
 
-  div.before img {
-    filter: grayscale(1);
-  }
-
-  div.after {
-    clip-path: inset(0 calc(100% - var(--_position)) 0 0);
-
-    &:dir(rtl) {
-      clip-path: inset(0 0 0 calc(100% - var(--_position)));
+    div.before img {
+      filter: grayscale(1);
     }
-  }
 
-  p.value {
-    font-variant-numeric: tabular-nums;
-    margin: 0;
-  }
+    div.after {
+      &:dir(ltr) {
+        clip-path: inset(0 calc(100% - var(--_position)) 0 0);
+      }
 
-  figcaption {
-    color: var(--loam-color-fg-muted);
-    font-size: var(--loam-text-sm);
-    margin: 0;
+      &:dir(rtl) {
+        clip-path: inset(0 0 0 calc(100% - var(--_position)));
+      }
+    }
+
+    p.value {
+      font-variant-numeric: tabular-nums;
+      margin-block: 0;
+    }
+
+    figcaption {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-sm);
+      margin-block: 0;
+    }
   }
 }
 ```

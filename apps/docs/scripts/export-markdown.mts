@@ -25,6 +25,7 @@ import { COMPONENTS, CATEGORY_ORDER } from "../src/site/nav.js";
 import type { ComponentContent } from "../src/renderer/types.js";
 import { EXAMPLE_CATEGORIES } from "../src/examples/categories.js";
 import { EXAMPLE_META } from "../src/examples/generated-meta.js";
+import { recipePrompt } from "../src/examples/recipe-prompt.js";
 import { PILLARS } from "../src/examples/types.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -407,6 +408,7 @@ function exampleMarkdown(entry: (typeof EXAMPLE_META)[number]): string {
   out.push(
     `- Uses: ${meta.uses.length ? meta.uses.map((u) => `\`${u}\``).join(", ") : "element styles and tokens only"}`,
   );
+  out.push();
   if (meta.tags?.length) out.push(`- Tags: ${meta.tags.join(", ")}`);
   out.push(`- Live: ${ORIGIN}/recipes/${category}/${slug}`, "");
   out.push(
@@ -449,6 +451,7 @@ for (const entry of EXAMPLE_META) {
 const guideOrder = [
   "/docs",
   "/docs/installation",
+  "/docs/agent-workflow",
   "/docs/tokens",
   "/docs/element-styles",
   "/docs/components",
@@ -464,6 +467,39 @@ const sorted = [...guides].sort((a, b) => {
   return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
 });
 
+const workflow = readFileSync(join(SKILL_REFS, "guides", "agent-workflow.md"), "utf8");
+const workflowBody = workflow.slice(workflow.indexOf("# Building with an agent"));
+const absoluteLinks = (markdown: string) => markdown.replace(/\]\(\/(?!\/)/g, `](${ORIGIN}/`);
+
+// Static, on-demand prompt files: source and contracts stay out of gallery JavaScript.
+const PROMPTS = join(PUBLIC, "recipe-prompts");
+rmSync(PROMPTS, { recursive: true, force: true });
+for (const entry of EXAMPLE_META) {
+  const componentReferences = entry.meta.uses.map((name) => {
+    const component = COMPONENTS.find((item) => item.name === name);
+    if (!component) throw new Error(`Missing prompt reference for ${name}`);
+    return {
+      title: name,
+      markdown: readFileSync(join(SKILL_REFS, "components", `${component.slug}.md`), "utf8"),
+    };
+  });
+  const prompt = recipePrompt({
+    entry,
+    workflow: workflowBody,
+    recipe: exampleMarkdown(entry),
+    references: [
+      ...["installation", "composing"].map((slug) => ({
+        title: slug,
+        markdown: readFileSync(join(SKILL_REFS, "guides", `${slug}.md`), "utf8"),
+      })),
+      ...componentReferences,
+    ],
+  });
+  const file = join(PROMPTS, entry.category, `${entry.slug}.txt`);
+  mkdirSync(dirname(file), { recursive: true });
+  writeFileSync(file, absoluteLinks(prompt));
+}
+
 const lines: string[] = [
   "# LoamUI",
   "",
@@ -473,6 +509,8 @@ const lines: string[] = [
   "> same URL with `.md` appended. Treat these documents as authoritative",
   "> for the library. `/AGENTS.md` is a one-page summary of the conventions",
   "> an agent needs when writing against the package.",
+  "",
+  absoluteLinks(workflowBody.replace(/^#/gm, "##")),
   "",
   "## Guides",
   "",
@@ -508,33 +546,10 @@ writeFileSync(join(PUBLIC, "llms.txt"), lines.join("\n") + "\n");
 // ---- AGENTS.md: the package's one-page summary, served at /AGENTS.md too ---
 copyFileSync(join(ROOT, "..", "..", "packages", "core", "AGENTS.md"), join(PUBLIC, "AGENTS.md"));
 
-// ---- llms-full.txt: every twin in one file, for tools that ingest one -----
+// Retire the old aggregate; focused twins and the offline skill retain every example.
+rmSync(join(PUBLIC, "llms-full.txt"), { force: true });
 const guideSlug = (route: string) =>
   route === "/" ? "index" : route === "/docs" ? "introduction" : route.split("/").at(-1)!;
-const full: string[] = [lines.join("\n"), ""];
-for (const g of sorted)
-  full.push(
-    "---",
-    "",
-    readFileSync(join(SKILL_REFS, "guides", `${guideSlug(g.route)}.md`), "utf8"),
-  );
-for (const category of CATEGORY_ORDER) {
-  for (const c of COMPONENTS.filter((x) => x.category === category)) {
-    const f = join(SKILL_REFS, "components", `${c.slug}.md`);
-    try {
-      full.push("---", "", readFileSync(f, "utf8"));
-    } catch {
-      // component twins may be skipped during parallel dev startup (see above)
-    }
-  }
-}
-for (const e of EXAMPLE_META)
-  full.push(
-    "---",
-    "",
-    readFileSync(join(SKILL_REFS, "recipes", e.category, `${e.slug}.md`), "utf8"),
-  );
-writeFileSync(join(PUBLIC, "llms-full.txt"), full.join("\n"));
 
 // ---- skill references index: llms.txt with local paths for offline use ----
 const idx: string[] = [
@@ -572,5 +587,5 @@ for (const category of EXAMPLE_CATEGORIES) {
 writeFileSync(join(SKILL_REFS, "index.md"), idx.join("\n") + "\n");
 
 console.log(
-  `markdown export: ${guides.length} guide twins (mdx-derived), ${COMPONENTS.length} component twins (data-derived), ${EXAMPLE_META.length} example twins (folder-derived), llms.txt + llms-full.txt → public/, references → skills/loamui/references/`,
+  `markdown export: ${guides.length} guide twins (mdx-derived), ${COMPONENTS.length} component twins (data-derived), ${EXAMPLE_META.length} example twins (folder-derived), llms.txt + recipe prompts → public/, references → skills/loamui/references/`,
 );

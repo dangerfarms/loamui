@@ -7,9 +7,9 @@ afterEach(cleanup);
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };
 
 describe("grid-subgrid", () => {
-  it("is a list of three cards that are the items, each with a heading, a description and a button in that order", async () => {
+  it("is a list of three cards that are the items, each with a heading, a description and a booking link in that order", async () => {
     const { container } = render(<Example />);
-    expect(screen.getByRole("list")).toHaveClass("grid-subgrid");
+    expect(screen.getByRole("list").parentElement).toHaveClass("grid-subgrid");
     const items = screen.getAllByRole("listitem");
     expect(items).toHaveLength(3);
     for (const item of items) {

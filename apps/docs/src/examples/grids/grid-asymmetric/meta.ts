@@ -8,11 +8,13 @@ export const meta: ExampleMeta = {
     "Use to give one item prominence beside two supporting items while preserving reading order. Choose Subgrid rows when equal items need their content aligned.",
   category: "grids",
   uses: ["Card", "SignpostLink"],
+  integration:
+    "Replace the sample notices and destinations, and adjust heading levels to the page. Keep the lead item first in the source. Change the responsive image sources and alt description together.",
   notes: {
     native:
       "A list of three articles, each named by its own h3, so the grid is a list to a screen reader and each card a named piece; no wrapper element exists only to be a column.",
     modern:
-      "An outer region is the named container and the list is the grid: two columns at 2:1 from 44rem of its own width with the lead spanning both rows, so the stacked pair's height is the lead's, and one column in source order below that.",
+      "A named outer container measures the list. Mutually exclusive queries switch between one column and a 2:1 layout at 44rem, retaining source order. Each Card measures its own content; scoped rules in loamui.components arrange it without changing the surface.",
     composition:
       "Card is rendered as each article through its render prop; the example arranges the column inside, the SignpostLink is past the donut, and the Card's padding and line are left alone.",
     accessible:

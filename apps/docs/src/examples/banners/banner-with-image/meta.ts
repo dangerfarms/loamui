@@ -18,7 +18,7 @@ export const meta: ExampleMeta = {
     composition:
       "No Card: a Card pads every side and the picture runs to the edge, so the section paints its own surface and line from the same tokens; Badge and SignpostLink are dropped in as they come.",
     context:
-      "The eyebrow declares --loam-context: warning, so the offer Badge takes its colour from the deadline region without a prop. The adjacent text spells out the closing date.",
+      "The eyebrow declares --loam-context: primary, so the offer Badge inherits the brand context without a styling prop. A promotion does not imply a warning; the adjacent text spells out the closing date.",
     accessible:
       "useId names each repeated region by its own h2. The photograph has descriptive alt text and reserved space before loading. Enlarged text can grow the layout; rounded image corners do not clip focus rings. The date is written out, the destination is a native link, and the border survives forced colours.",
   },

@@ -1,0 +1,21 @@
+.actions {
+  align-items: center;
+  display: block flex;
+  flex-wrap: wrap;
+  gap: var(--loam-space-sm);
+  margin-block-start: var(--loam-space-sm);
+  position: relative;
+  z-index: 1;
+
+  > a {
+    font-size: var(--loam-text-sm);
+    padding-block: var(--loam-space-sm);
+    text-decoration: underline;
+  }
+}
+
+.message {
+  flex-basis: 100%;
+  font-size: var(--loam-text-sm);
+  overflow-wrap: anywhere;
+}

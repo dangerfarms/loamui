@@ -12,5 +12,10 @@ storybook-static/
 !.env.example
 coverage/
 
+.playwright/
+.playwright-cli/
+playwright-report/
+test-results/
+/output/playwright/
+
 local/
-apps/docs/public/llms-full.txt

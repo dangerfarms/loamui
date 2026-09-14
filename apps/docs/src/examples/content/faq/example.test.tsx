@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from "vitest";
-import { render, screen, cleanup, fireEvent } from "@testing-library/react";
+import { render, screen, cleanup } from "@testing-library/react";
 import { axe } from "vitest-axe";
 import Example from "./Example";
 
@@ -7,33 +7,28 @@ afterEach(cleanup);
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };
 
 describe("faq", () => {
-  it("keeps disclosure groups independent across instances", () => {
-    const { container } = render(
+  it("keeps the answers visible and the region names independent across instances", async () => {
+    const { rerender, container } = render(
       <>
         <Example />
         <Example />
       </>,
     );
-    const regions = container.querySelectorAll("section.faq");
-    const names = Array.from(regions).map(
-      (region) =>
-        new Set(
-          Array.from(region.querySelectorAll("details")).map((item) => item.getAttribute("name")),
-        ),
+    const regions = screen.getAllByRole("region", { name: "Questions about the nursery" });
+    expect(regions[0]!.getAttribute("aria-labelledby")).not.toBe(
+      regions[1]!.getAttribute("aria-labelledby"),
     );
-    expect(names[0]!.size).toBe(1);
-    expect(names[1]!.size).toBe(1);
-    expect([...names[0]!][0]).not.toBe([...names[1]!][0]);
-  });
-  it("is a region named by its h2 holding four disclosures that share one name and open on click", async () => {
-    const { container } = render(<Example />);
-    expect(screen.getByRole("region", { name: "Questions about ordering" })).toHaveClass("faq");
-    const details = Array.from(container.querySelectorAll("details"));
-    expect(details).toHaveLength(4);
-    expect(new Set(details.map((item) => item.getAttribute("name"))).size).toBe(1);
-    expect(details.every((item) => !item.open)).toBe(true);
-    fireEvent.click(screen.getByText("What if a packet does not come up?"));
-    expect(details.filter((item) => item.open)).toEqual([details[1]]);
+    for (const region of regions) {
+      expect(region.querySelectorAll("li > h3")).toHaveLength(4);
+      expect(region.querySelectorAll("li > p")).toHaveLength(4);
+      for (const answer of region.querySelectorAll("li > p")) expect(answer).toBeVisible();
+      expect(region.querySelector("details")).toBeNull();
+    }
+    expect(screen.getAllByRole("link", { name: "contact the nursery" })[0]).toHaveAttribute(
+      "href",
+      "/contact",
+    );
+    rerender(<Example />);
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 });

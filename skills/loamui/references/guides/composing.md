@@ -24,28 +24,32 @@ Give the recipe a root class and scope its styles. Stop at embedded LoamUI roots
 
 ```css
 @scope (.feature-section) to ([class*="loam-"]) {
-  :scope {
-    container: feature-section / inline-size;
-  }
-
-  div.items {
-    display: block grid;
-    gap: var(--loam-space-md);
-  }
-
-  @container feature-section (inline-size < 44rem) {
-    div.items {
-      grid-template-columns: minmax(0, 1fr);
+  @layer loamui.components {
+    :scope {
+      container: feature-section / inline-size;
     }
-  }
 
-  @container feature-section (inline-size >= 44rem) {
     div.items {
-      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      display: block grid;
+      gap: var(--loam-space-md);
+    }
+
+    @container feature-section (inline-size < 44rem) {
+      div.items {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @container feature-section (inline-size >= 44rem) {
+      div.items {
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      }
     }
   }
 }
 ```
+
+Establish the layer order before any recipe CSS loads, following [installation](/docs/installation). Resolve `font-size: var(--loam-text-md)` on content inside the measuring container when it must respond locally; an inherited computed font size will not re-evaluate there.
 
 The root measures the available space; its child owns the changing layout. An element cannot query its own size. Named containers keep a nested Card or a host page’s container from changing which region a query measures. Verify the recipe in a plain parent without the docs preview wrapper.
 
@@ -95,4 +99,4 @@ Consult [Google Chrome’s Modern Web Guidance](https://github.com/GoogleChrome/
 
 ## Asking an agent
 
-Install the consumer skill with `npx skills add dangerfarms/loamui`, or point the agent at [/llms.txt](/llms.txt). Ask it to read this guide, the nearest recipe and each component’s reference before composing. The output should include portable React and CSS, application integration requirements, and verification results. Treat passing tests as evidence for their specific assertions, rather than a guarantee about every possible use.
+Begin with the [environment and verification workflow](/docs/agent-workflow). Install the consumer skill with `npx skills add dangerfarms/loamui`, or point the agent at [/llms.txt](/llms.txt). Ask it to read this guide, the nearest recipe and each component’s reference before composing. The output should include portable React and CSS, application integration requirements, and verification results. Treat passing tests as evidence for their specific assertions, rather than a guarantee about every possible use.

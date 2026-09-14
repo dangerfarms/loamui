@@ -1,0 +1,69 @@
+---
+title: Building with an agent
+description: Check the environment, compose from the three primitives, and verify the five pillars in the result.
+---
+
+> LoamUI documentation, generated from the same source as the live page —
+> treat it as authoritative for `@loamui/core`.
+
+# Building with an agent
+
+Use this workflow when generating or reviewing UI with LoamUI, in a repository or a chat tool. Start from the user's purpose and preserve their application boundaries. The deliverable is portable React 19 and static CSS, with working integration points and evidence of the checks performed.
+
+## Establish the environment first
+
+Inspect what is available before changing anything. In a repository, read its instructions, package manifest, lockfile, app entry, stylesheet entry and relevant existing components. Check the installed `@loamui/core` version and its public exports/types. Use the existing package manager. Do not assume that the documentation and installed package are the same version.
+
+Check that the application loads all three primitives: tokens, element styles and components. Import the core stylesheet once, using the [installation guide](/docs/installation.md). Inspect the build pipeline and the rendered cascade; a successful import alone does not establish correct styling.
+
+The layer order must be established before any recipe or library style registers a layer:
+
+```css
+@layer loamui.tokens, loamui.elements, loamui.components;
+```
+
+Place that declaration in the application's earliest stylesheet. A later declaration cannot reorder already established layers. If a recipe first creates `loamui.components`, subsequently loading core can put `loamui.elements` above it: default image sizing then defeats the recipe's full-height image. Check direct loads and client navigation, including lazy stylesheet loading.
+
+Look for existing resets, unlayered element rules, theme declarations and browser targets that affect the new UI. Assess the integration region; do not require an unrelated application-wide migration. State the specific conflict and affected files. Before installing packages or changing shared infrastructure, present the minimal proposed changes and obtain approval unless that setup has already been authorized. Continue independent inspection and prepare a concrete proposal while approval is pending. Do not treat silence as approval.
+
+A useful setup report states: installed package/version; how styles load; layer order; relevant conflicts; available build/browser checks; and any proposed changes. If setup is already correct, proceed without another approval round.
+
+## When there is no repository
+
+Identify capabilities rather than guessing from a product name. Can the environment install the real package, resolve its React exports, load its CSS, render the result and run checks? Package installation in a code-execution sandbox does not prove the chat preview can use that package.
+
+- **Package and rendering available:** build with the real library and verify in that renderer.
+- **Source generation only:** provide the complete React and CSS files, required dependencies and application setup. State that rendering and runtime behaviour remain unverified.
+- **Required references unavailable:** use the skill's bundled references or the supplied recipe prompt. If neither supplies the needed contract, request the missing reference or package files before inventing an API.
+
+Never recreate fake `@loamui/core` exports, borrow `loam-*` classes on raw elements, substitute another UI library, or claim an approximation is LoamUI. A pattern using only native HTML, the real LoamUI tokens and element styles can be appropriate; it still needs the actual stylesheet. If the requested working preview is impossible here, explain the capability needed and supply an honest source deliverable where possible.
+
+## The contract for every implementation
+
+The three primitives are **tokens**, **element styles**, and **components**. Use semantic HTML and the existing element defaults first. Use `--loam-*` tokens for visual decisions. Compose core parts when they supply needed behaviour or anatomy; there is no requirement to import a component just to demonstrate a primitive.
+
+1. **Native CSS:** use semantic elements and static styles. Actions are buttons; destinations are links. Native `<button>`, `<dialog>` opened with `showModal()`, and `<details>` supply platform behaviour; use documented LoamUI components when composing those behaviours. Do not recreate controls with clickable divs or use a styling runtime.
+2. **Modern CSS:** put recipe rules in `loamui.components` within `@scope (.recipe) to ([class*="loam-"])`. Use type selectors and short classes for real distinctions. Use nesting, logical properties and additive conditions. Use container queries, intrinsic grid/flex and subgrid where appropriate. Tokens already supply `clamp()`, `oklch()` and `light-dark()`; do not duplicate their palette or force every CSS feature into a recipe. Avoid `!important`, BEM and private core selectors.
+3. **Composition:** read the relevant component contract before using parts or props. Keep core internals intact. Use `render` for supported element substitution. Button icons are children; Input has documented adornment props. Supply real application actions through a clear integration boundary.
+4. **Contextualism:** put `--loam-context` on the region that carries the meaning. Leave ordinary content neutral. Layout and available space govern sizing; do not invent `variant`, `color` or `fullWidth` props. Documented intrinsic sizes and native HTML attributes are exceptions. Resolve fluid font tokens on content inside its measuring container: inherited computed font sizes do not re-evaluate when a new container is introduced.
+5. **Accessible & gatekept:** preserve native labels, keyboard behaviour, focus, readable contrast and user preferences. Keep primary information visible; use Details for secondary information. Use Field's label, description, error, control order. Required fields are unmarked; mark optional fields in words. Errors say how to fix the value. A screenshot or axe pass cannot certify these requirements.
+
+An element cannot size-query itself. Put the measuring container outside the layout it controls. A recipe may use ordinary geometry such as a border width, aspect ratio or column threshold; design colours, spacing and typography come from tokens. A translucent image overlay needs contrast measured over the rendered photograph. Images may crop with `object-fit: cover` while text determines the component height; do not fix the text area's height or measure it with JavaScript.
+
+## Read and adapt a reference
+
+Read the [composing guide](/docs/composing.md), the selected recipe's complete TSX and CSS, and the reference for each core component used. Skill users can read these offline in `references/`. Recipe prompts include the selected source and its component references so those examples remain available without browsing.
+
+Use the published recipes as worked references for this contract. Publication and design notes are not certification: verify every adaptation in its consuming environment.
+
+Preserve the recipe's role: a hero introduces a page; a banner promotes one message within it; a card represents one item. Adapt content, heading level, alternative text, dates and destinations together. Keep image priority appropriate to placement: eager for the critical hero, lazy for genuinely offscreen media. Do not put docs previews, gallery loading, generated metadata or source viewers in the copied component.
+
+Use idiomatic React 19. Keep state for user interaction, and effects for external synchronisation. `useId` is for actual relationships that must remain unique across instances; it is not a required decoration. Do not add a client directive solely because a synchronous component uses `useId`; observe the framework's client boundaries for interactive parts. Keep code concise; explain decisions outside the copied files.
+
+## Verify, repair, and report
+
+Run the consuming project's formatter, type checker, lint and relevant tests. Render the composition outside the documentation site. Exercise narrow and wide parents, long copy, enlarged text, two instances, both schemes, keyboard and focus, forced colours and reduced motion. Check RTL when direction matters. Test image containment after content grows and on both cold and client navigations. Check form validation, value preservation and actual submission boundaries when relevant.
+
+Inspect the result visually as well as structurally. Core's token contrast and component tests do not verify the new content, theme, image overlay or composition. Repair failures and rerun affected checks. Report what ran, what failed, and what remains unverified. Do not label generated code fully conformant when required evidence is missing.
+
+For platform features, consult [Google Chrome's Modern Web Guidance](https://github.com/GoogleChrome/modern-web-guidance), or the relevant official platform documentation when its tool is unavailable. LoamUI permits Baseline Newly or Widely Available features; features outside that policy need progressive enhancement. Do not silently change a consumer's browser policy.

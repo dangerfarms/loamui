@@ -52,7 +52,9 @@
       margin-inline: 0;
     }
 
-    form {
+    form,
+    div.confirmation {
+      align-content: start;
       display: block grid;
       gap: var(--loam-space-lg);
       grid-template-columns: minmax(0, 1fr);
@@ -71,7 +73,7 @@
 
       > div {
         align-items: start;
-        background: var(--loam-color-bg-subtle);
+        background: var(--loam-color-surface);
         border: 1px solid var(--loam-color-line);
         border-radius: var(--loam-radius-xl);
         display: block grid;

@@ -4,7 +4,6 @@
       background: var(--loam-color-bg);
       border-radius: var(--loam-radius-xl);
       color: var(--loam-color-fg);
-      color-scheme: dark;
       container-type: inline-size;
       isolation: isolate;
       position: relative;
@@ -50,7 +49,6 @@
     }
 
     p.lede {
-      color: var(--loam-color-fg-muted);
       font-size: var(--loam-text-lg);
       max-inline-size: var(--loam-measure);
     }

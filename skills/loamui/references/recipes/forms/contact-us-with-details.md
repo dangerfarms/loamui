@@ -12,7 +12,7 @@ A short enquiry form alongside the nursery's email, phone number, address and op
 
 A recipe in **Forms**: a component and a stylesheet built from `@loamui/core`, to copy into a project and change. Both files are below, exactly as the live preview renders them.
 
-- Uses: `Button`, `Field`, `Input`, `Textarea`
+- Uses: `Button`, `ErrorSummary`, `Field`, `Input`, `Textarea`
 - Tags: contact, enquiry, address, form, support
 - Live: https://loamui.com/recipes/forms/contact-us-with-details
 
@@ -20,7 +20,7 @@ A recipe in **Forms**: a component and a stylesheet built from `@loamui/core`, t
 
 Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
 
-Replace the sample contact details and pass an action URL for your POST endpoint; the sample defaults to /contact. Validate both fields on the server, deliver the message and return a confirmation. If submission fails, preserve the entered values and return a focused ErrorSummary with matching Field.Error messages, as shown in Sign in with errors. The browser's required and email checks are a convenience, not a replacement for server validation.
+Replace the sample contact details and pass action for your POST endpoint; the default is /contact. Validate on the server and deliver or durably queue the message before confirming it. On failure, render a fresh Example with initialResponse: { status: 'error', values: { email, message }, errors: { form: 'We could not send your message. Please try again.' } }. Use errors.email and errors.message for field-specific validation; a service failure belongs in errors.form. Values are restored and the error summary receives focus after hydration. After confirmed success, redirect to a confirmation page rendering Example with initialResponse: { status: 'sent' }; its confirmation replaces the form, explains when a reply is due and receives focus after hydration. initialResponse initializes each new server response; it is not an asynchronous update to a mounted form. Give the response page an Error: title prefix on failure or a Message sent title on success. Native POST and validation remain usable without JavaScript. No message is sent by this recipe alone.
 
 ## When to use
 
@@ -30,21 +30,68 @@ Use when people should be able to choose between sending a message and contactin
 
 These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
-- **Native CSS.** An address and description list pair each contact method with its value. Email and phone links use mailto: and tel:. The native POST form uses native required fields, email validation and autocomplete.
+- **Native CSS.** An address and description list pair each contact method with its value. Email and phone links use mailto: and tel:. The native POST form uses required fields, email validation and autocomplete. After hydration, native validity supplies the focused summary and inline messages; valid submission remains a normal POST.
 - **Modern CSS.** Layered donut scopes keep recipe styles local. An intrinsic auto-fit grid stacks the details and form when two columns cannot fit; padding and type tokens resolve inside the section's container. The padding interpolation includes rem as well as cqi so it responds to enlarged root text; long labels and addresses can wrap. Headings inherit the element typography.
-- **Composition.** The section supplies one shared surface around the details and native form. Field wires labels and descriptions; Input, Textarea and Button keep their own styles. Avoiding nested padded surfaces leaves room for the form at narrow widths and enlarged text sizes.
+- **Composition.** The section supplies one shared surface around the details and native form. Field wires labels, descriptions and errors; ErrorSummary links focus their controls. Input, Textarea and Button keep their own styles. General server failures do not mark valid fields invalid. Avoiding nested padded surfaces leaves room for the form at narrow widths and enlarged text sizes.
 - **Contextualism.** The actions region declares --loam-context: primary for its Button. Shared surface, text and border tokens follow the colour scheme; layout and sizing are supplied by the parent rather than configuration props.
-- **Accessible & gatekept.** Required fields are identified in their visible labels, and the email description is wired by Field. Decorative icons repeat visible terms and are hidden from assistive technology. Email and telephone values retain left-to-right ordering in RTL pages. Text and DOM order stay intact when the grid stacks, and real borders preserve surface boundaries in forced colours.
+- **Accessible & gatekept.** Required fields are identified in visible labels. Error messages appear after an attempt and match the focused summary links; useId keeps repeated forms independent. Failed responses preserve entered values. Confirmed delivery replaces the form with a focused heading and next steps. Decorative icons repeat visible terms and are hidden from assistive technology. Email and telephone values retain left-to-right ordering in RTL pages. Text and DOM order stay intact when the grid stacks, and real borders preserve surface boundaries in forced colours.
 
 ## Example.tsx
 
 ```tsx
 "use client";
 
-import { Button, Field, Input, Textarea } from "@loamui/core";
+import { useCallback, useId, useState, type FormEvent } from "react";
+import { Button, ErrorSummary, Field, Input, Textarea } from "@loamui/core";
 import "./example.css";
 
-export default function Example({ action = "/contact" }: { action?: string }) {
+type ContactResponse =
+  | { status: "sent" }
+  | {
+      status: "error";
+      values: { email: string; message: string };
+      errors: { email?: string; message?: string; form?: string };
+    };
+
+export default function Example({
+  action = "/contact",
+  initialResponse,
+}: {
+  action?: string;
+  initialResponse?: ContactResponse;
+}) {
+  const id = useId();
+  const failure = initialResponse?.status === "error" ? initialResponse : undefined;
+  const [validation, setValidation] = useState({
+    email: failure?.errors.email ?? "",
+    message: failure?.errors.message ?? "",
+    form: failure?.errors.form ?? "",
+    attempt: 0,
+  });
+  const focusConfirmation = useCallback((heading: HTMLHeadingElement | null) => {
+    heading?.focus();
+  }, []);
+
+  function handleValidation(event: FormEvent<HTMLFormElement>) {
+    const fields = event.currentTarget.elements;
+    const email = fields.namedItem("email") as HTMLInputElement;
+    const message = fields.namedItem("message") as HTMLTextAreaElement;
+    const emailError = email.validity.valueMissing
+      ? "Enter your email address"
+      : email.validity.typeMismatch
+        ? "Enter an email address in the correct format, like name@example.com"
+        : "";
+    const messageError = message.validity.valueMissing ? "Enter your message" : "";
+
+    if (emailError || messageError) event.preventDefault();
+    setValidation((previous) => ({
+      email: emailError,
+      message: messageError,
+      form: "",
+      attempt: previous.attempt + 1,
+    }));
+  }
+
   return (
     <section className="contact-us-with-details">
       <div>
@@ -138,30 +185,73 @@ export default function Example({ action = "/contact" }: { action?: string }) {
             </dl>
           </address>
         </div>
-        <form action={action} method="post">
-          <h3>Send a message</h3>
-          <Field.Root>
-            <Field.Label>Email address (required)</Field.Label>
-            <Field.Description>We’ll reply to this address.</Field.Description>
-            <Input
-              name="email"
-              type="email"
-              dir="ltr"
-              autoComplete="email"
-              autoCapitalize="none"
-              spellCheck={false}
-              inputMode="email"
-              required
-            />
-          </Field.Root>
-          <Field.Root>
-            <Field.Label>Message (required)</Field.Label>
-            <Textarea name="message" rows={5} required />
-          </Field.Root>
-          <div className="actions">
-            <Button type="submit">Send message</Button>
+        {initialResponse?.status === "sent" ? (
+          <div className="confirmation">
+            <h3 ref={focusConfirmation} tabIndex={-1}>
+              Message sent
+            </h3>
+            <p>
+              Thank you for contacting the nursery. We’ll reply on our next email day: Tuesday or
+              Friday.
+            </p>
+            <p>You do not need to send your message again.</p>
+            <a href="/">Return to the nursery homepage</a>
           </div>
-        </form>
+        ) : (
+          <form
+            action={action}
+            method="post"
+            aria-labelledby={`${id}-title`}
+            onInvalid={handleValidation}
+            onSubmit={handleValidation}
+          >
+            <h3 id={`${id}-title`}>Send a message</h3>
+            {(validation.email || validation.message || validation.form) && (
+              <ErrorSummary.Root key={validation.attempt}>
+                <ErrorSummary.Title aria-level={4} />
+                {validation.form && <p>{validation.form}</p>}
+                {(validation.email || validation.message) && (
+                  <ErrorSummary.List>
+                    {validation.email && (
+                      <ErrorSummary.Item href={`#${id}-email`}>
+                        {validation.email}
+                      </ErrorSummary.Item>
+                    )}
+                    {validation.message && (
+                      <ErrorSummary.Item href={`#${id}-message`}>
+                        {validation.message}
+                      </ErrorSummary.Item>
+                    )}
+                  </ErrorSummary.List>
+                )}
+              </ErrorSummary.Root>
+            )}
+            <Field.Root id={`${id}-email`}>
+              <Field.Label>Email address (required)</Field.Label>
+              <Field.Description>We’ll reply to this address.</Field.Description>
+              {validation.email && <Field.Error>{validation.email}</Field.Error>}
+              <Input
+                name="email"
+                defaultValue={failure?.values.email}
+                type="email"
+                dir="ltr"
+                autoComplete="email"
+                autoCapitalize="none"
+                spellCheck={false}
+                inputMode="email"
+                required
+              />
+            </Field.Root>
+            <Field.Root id={`${id}-message`}>
+              <Field.Label>Message (required)</Field.Label>
+              {validation.message && <Field.Error>{validation.message}</Field.Error>}
+              <Textarea name="message" defaultValue={failure?.values.message} rows={5} required />
+            </Field.Root>
+            <div className="actions">
+              <Button type="submit">Send message</Button>
+            </div>
+          </form>
+        )}
       </div>
     </section>
   );
@@ -225,7 +315,9 @@ export default function Example({ action = "/contact" }: { action?: string }) {
       margin-inline: 0;
     }
 
-    form {
+    form,
+    div.confirmation {
+      align-content: start;
       display: block grid;
       gap: var(--loam-space-lg);
       grid-template-columns: minmax(0, 1fr);
@@ -244,7 +336,7 @@ export default function Example({ action = "/contact" }: { action?: string }) {
 
       > div {
         align-items: start;
-        background: var(--loam-color-bg-subtle);
+        background: var(--loam-color-surface);
         border: 1px solid var(--loam-color-line);
         border-radius: var(--loam-radius-xl);
         display: block grid;

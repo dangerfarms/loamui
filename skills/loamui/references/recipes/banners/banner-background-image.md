@@ -33,8 +33,8 @@ These notes explain the design. The included tests cover structure and selected 
 - **Native CSS.** A section named by its h2 promotes one destination; the decorative photograph is an img with empty alt and explicit dimensions, lazy-loaded for a promotion further down the page.
 - **Modern CSS.** Styles belong to loamui.components inside a donut scope. The container measures the header’s fluid token spacing and type. The content keeps the same spacing and content width as Banner with image from 44rem, with the text in the leading column of a 3:2 grid; below that it fills one column, and the photograph covers the entire section.
 - **Composition.** The section owns the photograph and scrim instead of overriding a Card surface; Badge and SignpostLink are composed unchanged, beyond the scope boundary.
-- **Contextualism.** One dark colour scheme re-resolves the text and control tokens; the deadline is a warning region, just as in Banner with image, so the Badge inherits its meaning without a prop.
-- **Accessible & gatekept.** useId names repeated regions independently. A solid background and 88% dark token scrim protect the words even if the photograph fails; recheck contrast when changing either. Content determines the height and grows with enlarged text. Focus rings are not clipped. Forced colours remove the decorative image and scrim, leaving system colours and a visible border.
+- **Contextualism.** The surrounding colour scheme determines the background, scrim, text and link tokens. The eyebrow declares the primary brand context for its offer Badge, just as in Banner with image; a promotion does not imply a warning.
+- **Accessible & gatekept.** useId names repeated regions independently. A solid background, full foreground text and an 88% scheme-aware background-token scrim protect the words even if the photograph fails; recheck contrast when changing either. Content determines the height and grows with enlarged text. Focus rings are not clipped. Forced colours remove the decorative image and scrim, leaving system colours and a visible border.
 
 ## Example.tsx
 
@@ -87,7 +87,6 @@ export default function Example() {
       border: 1px solid var(--loam-color-line);
       border-radius: var(--loam-radius-xl);
       color: var(--loam-color-fg);
-      color-scheme: dark;
       container: banner-background-image / inline-size;
       isolation: isolate;
       position: relative;
@@ -132,10 +131,9 @@ export default function Example() {
     }
 
     p.eyebrow {
-      --loam-context: warning;
+      --loam-context: primary;
 
       align-items: center;
-      color: var(--loam-color-fg-muted);
       display: block flex;
       flex-wrap: wrap;
       font-size: var(--loam-text-sm);
@@ -147,7 +145,6 @@ export default function Example() {
     }
 
     p.description {
-      color: var(--loam-color-fg-muted);
       max-inline-size: var(--loam-measure);
     }
 

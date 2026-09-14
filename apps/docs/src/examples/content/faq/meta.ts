@@ -3,23 +3,25 @@ import type { ExampleMeta } from "@/examples/types";
 export const meta: ExampleMeta = {
   title: "FAQ",
   description:
-    "Four questions as one exclusive set of disclosures on a subtle surface, centred under a heading with room that grows with the section's width.",
+    "Four questions with visible answers on a subtle surface, beneath a heading and a direct contact link.",
   whenToUse:
-    "Use for independent questions whose answers can be disclosed on demand. Keep information needed to complete the current task visible instead.",
+    "Use for a short set of questions readers need to scan, search and compare. Keep these answers visible; reserve disclosure controls for genuinely optional supporting detail.",
   category: "content",
-  uses: ["Details"],
+  uses: [],
+  integration:
+    "Replace the sample policies with accurate answers for the organisation and connect the contact destination. Keep essential ordering information in the ordering flow too. Give distinct FAQ sections distinct headings, and use the appropriate heading levels.",
   notes: {
     native:
-      "A section named by its h2 with a header for the intro and a details element per question; the shared name makes them exclusive without a line of script.",
+      "A section is named by its heading. A native list groups four questions, each a heading followed by its answer. The contact link is an ordinary anchor and the content is available without client-side interaction.",
     modern:
-      "The section paints the subtle surface and is its own container: the questions are capped at 44rem and centred, and the padding doubles at 48rem of the section's width, not the viewport's.",
+      "The section measures a readable inner column. Layered, scoped rules use fluid typography and spacing tokens, logical separators, and mutually exclusive container queries for the outer padding.",
     composition:
-      "Four Details on one surface: the tint, the radius and the padding are the section's, and each question keeps the Details' own surface, line and chevron untouched.",
+      "Tokens and element styles provide the surface, type and links. Native HTML supplies all the anatomy this recipe needs; it does not import a component solely to make the answers collapsible.",
     context:
       "The block is a plain neutral surface, not a --loam-context region: questions carry no status, so nothing inside should take a status colour.",
     accessible:
-      "The tint gets a border in forced colours so the block still reads as a block, and each Details keeps its own edge either way.",
+      "All answers remain visible for scanning, browser search and comparison. Headings expose the question structure, the contact link offers a next step, and a forced-colour border preserves the section boundary.",
   },
-  tags: ["faq", "accordion", "questions", "surface", "help"],
+  tags: ["faq", "questions", "surface", "help"],
   order: 2,
 };

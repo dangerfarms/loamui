@@ -8,6 +8,48 @@ afterEach(cleanup);
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };
 
 describe("sign-in-with-errors", () => {
+  it("renders a rejected POST with preserved email and session choice, but no password", async () => {
+    const initialResponse = {
+      values: { email: "grower@example.com", remember: true },
+      errors: { form: "Email address and password do not match" },
+    };
+    const html = new DOMParser().parseFromString(
+      renderToString(<Example initialResponse={initialResponse} />),
+      "text/html",
+    );
+    expect(html.querySelector('[name="email"]')?.getAttribute("value")).toBe("grower@example.com");
+    expect(html.querySelector('[name="password"]')?.hasAttribute("value")).toBe(false);
+    expect(html.querySelector('[name="remember"]')?.hasAttribute("checked")).toBe(true);
+    expect(html.body.textContent).toContain(initialResponse.errors.form);
+
+    const { container } = render(<Example initialResponse={initialResponse} />);
+    expect(screen.getByRole("group", { name: "There is a problem" })).toHaveFocus();
+    expect(screen.getByLabelText("Email address")).toHaveValue("grower@example.com");
+    expect(screen.getByLabelText("Password")).toHaveValue("");
+    expect(screen.getByRole("checkbox", { name: "Keep me signed in" })).toBeChecked();
+    expect(screen.getByLabelText("Email address")).not.toHaveAttribute("aria-invalid", "true");
+    expect(await axe(container, axeOptions)).toHaveNoViolations();
+
+    fireEvent.input(screen.getByLabelText("Password"), { target: { value: "another passphrase" } });
+    expect(fireEvent.submit(screen.getByRole("form", { name: "Sign in" }))).toBe(true);
+    expect(screen.queryByRole("group")).not.toBeInTheDocument();
+  });
+
+  it("connects server field errors to the corresponding controls", async () => {
+    render(
+      <Example
+        initialResponse={{
+          values: { email: "grower@", remember: false },
+          errors: { email: "Enter an email address in the correct format, like name@example.com" },
+        }}
+      />,
+    );
+    const email = screen.getByLabelText("Email address");
+    expect(email).toHaveAttribute("aria-invalid", "true");
+    fireEvent.click(within(screen.getByRole("group")).getByRole("link"));
+    await waitFor(() => expect(email).toHaveFocus());
+  });
+
   it("uses native invalid events to summarise errors and removes corrected fields on retry", () => {
     render(<Example action="/account/session" />);
     const form = screen.getByRole("form", { name: "Sign in" });

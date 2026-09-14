@@ -23,12 +23,26 @@ const failures = [];
 const fail = (msg) => failures.push(msg);
 
 // 1. references in sync -----------------------------------------------------
+function referenceSnapshot(dir, prefix = "") {
+  const files = new Map();
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const key = prefix + entry.name;
+    const path = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      for (const [nested, content] of referenceSnapshot(path, `${key}/`)) files.set(nested, content);
+    } else files.set(key, readFileSync(path, "utf8"));
+  }
+  return files;
+}
+const before = referenceSnapshot(join(SKILL_DIR, "references"));
 execSync("npx tsx --tsconfig scripts/tsconfig.export.json scripts/export-markdown.mts", {
   cwd: join(ROOT, "apps", "docs"),
   stdio: "pipe",
 });
-const drift = execSync("git status --porcelain -- skills/loamui/references", { cwd: ROOT }).toString().trim();
-if (drift) fail(`references/ is stale — commit the regenerated files:\n${drift}`);
+const after = referenceSnapshot(join(SKILL_DIR, "references"));
+const drift = [...new Set([...before.keys(), ...after.keys()])]
+  .filter((file) => before.get(file) !== after.get(file));
+if (drift.length) fail(`references/ was stale — review the regenerated files:\n${drift.join("\n")}`);
 
 // 2. named components exist ----------------------------------------------
 const md = readFileSync(SKILL, "utf8");

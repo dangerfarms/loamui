@@ -4,39 +4,6 @@ import { useId } from "react";
 import { Badge, Card, Carousel, SignpostLink } from "@loamui/core";
 import "./example.css";
 
-const ARTICLES = [
-  {
-    slug: "picking-french-beans",
-    category: "Growing guide",
-    title: "Picking French beans at their best",
-    seed: 627,
-  },
-  {
-    slug: "haymaking",
-    category: "Harvest",
-    title: "Haymaking on the member fields",
-    seed: 729,
-  },
-  {
-    slug: "spring-buds",
-    category: "Plant life",
-    title: "A closer look at spring buds",
-    seed: 400,
-  },
-  {
-    slug: "woodland-tulips",
-    category: "Spring colour",
-    title: "Tulips at the woodland edge",
-    seed: 976,
-  },
-  {
-    slug: "changing-weather",
-    category: "Field notes",
-    title: "Reading the weather over the fields",
-    seed: 542,
-  },
-];
-
 export default function Example() {
   const instanceId = useId();
   return (
@@ -58,36 +25,184 @@ export default function Example() {
         </div>
       </div>
       <Carousel.Track>
-        {ARTICLES.map((article) => (
-          <Carousel.Item key={article.slug}>
-            <Card
-              render={
-                <article
-                  className="article"
-                  aria-labelledby={`${instanceId}-article-carousel-${article.slug}`}
-                />
-              }
-            >
+        <Carousel.Item>
+          <Card
+            render={
+              <article
+                className="article"
+                aria-labelledby={`${instanceId}-article-carousel-picking-french-beans`}
+              />
+            }
+          >
+            <div className="body">
               <img
                 className="media"
-                src={`https://picsum.photos/id/${article.seed}/640/400`}
+                src="https://picsum.photos/id/627/640/400"
                 alt=""
                 width="640"
                 height="400"
+                sizes="auto, 100vw"
+                srcSet="https://picsum.photos/id/627/320/200 320w, https://picsum.photos/id/627/640/400 640w"
                 loading="lazy"
               />
               <p className="meta">
-                <Badge>{article.category}</Badge>
+                <Badge>Guide</Badge>
               </p>
-              <h3 id={`${instanceId}-article-carousel-${article.slug}`}>{article.title}</h3>
+              <h3 id={`${instanceId}-article-carousel-picking-french-beans`}>
+                Picking French beans at their best
+              </h3>
               <div className="foot">
-                <SignpostLink href={`/journal/${article.slug}`}>
-                  Read article<span className="loam-VisuallyHidden"> – {article.title}</span>
+                <SignpostLink href="/journal/picking-french-beans">
+                  Read article
+                  <span className="loam-VisuallyHidden"> – Picking French beans at their best</span>
                 </SignpostLink>
               </div>
-            </Card>
-          </Carousel.Item>
-        ))}
+            </div>
+          </Card>
+        </Carousel.Item>
+        <Carousel.Item>
+          <Card
+            render={
+              <article
+                className="article"
+                aria-labelledby={`${instanceId}-article-carousel-haymaking`}
+              />
+            }
+          >
+            <div className="body">
+              <img
+                className="media"
+                src="https://picsum.photos/id/729/640/400"
+                alt=""
+                width="640"
+                height="400"
+                sizes="auto, 100vw"
+                srcSet="https://picsum.photos/id/729/320/200 320w, https://picsum.photos/id/729/640/400 640w"
+                loading="lazy"
+              />
+              <p className="meta">
+                <Badge>Harvest</Badge>
+              </p>
+              <h3 id={`${instanceId}-article-carousel-haymaking`}>
+                Haymaking on the member fields
+              </h3>
+              <div className="foot">
+                <SignpostLink href="/journal/haymaking">
+                  Read article
+                  <span className="loam-VisuallyHidden"> – Haymaking on the member fields</span>
+                </SignpostLink>
+              </div>
+            </div>
+          </Card>
+        </Carousel.Item>
+        <Carousel.Item>
+          <Card
+            render={
+              <article
+                className="article"
+                aria-labelledby={`${instanceId}-article-carousel-spring-buds`}
+              />
+            }
+          >
+            <div className="body">
+              <img
+                className="media"
+                src="https://picsum.photos/id/400/640/400"
+                alt=""
+                width="640"
+                height="400"
+                sizes="auto, 100vw"
+                srcSet="https://picsum.photos/id/400/320/200 320w, https://picsum.photos/id/400/640/400 640w"
+                loading="lazy"
+              />
+              <p className="meta">
+                <Badge>Plants</Badge>
+              </p>
+              <h3 id={`${instanceId}-article-carousel-spring-buds`}>
+                A closer look at spring buds
+              </h3>
+              <div className="foot">
+                <SignpostLink href="/journal/spring-buds">
+                  Read article
+                  <span className="loam-VisuallyHidden"> – A closer look at spring buds</span>
+                </SignpostLink>
+              </div>
+            </div>
+          </Card>
+        </Carousel.Item>
+        <Carousel.Item>
+          <Card
+            render={
+              <article
+                className="article"
+                aria-labelledby={`${instanceId}-article-carousel-woodland-tulips`}
+              />
+            }
+          >
+            <div className="body">
+              <img
+                className="media"
+                src="https://picsum.photos/id/976/640/400"
+                alt=""
+                width="640"
+                height="400"
+                sizes="auto, 100vw"
+                srcSet="https://picsum.photos/id/976/320/200 320w, https://picsum.photos/id/976/640/400 640w"
+                loading="lazy"
+              />
+              <p className="meta">
+                <Badge>Spring</Badge>
+              </p>
+              <h3 id={`${instanceId}-article-carousel-woodland-tulips`}>
+                Tulips at the woodland edge
+              </h3>
+              <div className="foot">
+                <SignpostLink href="/journal/woodland-tulips">
+                  Read article
+                  <span className="loam-VisuallyHidden"> – Tulips at the woodland edge</span>
+                </SignpostLink>
+              </div>
+            </div>
+          </Card>
+        </Carousel.Item>
+        <Carousel.Item>
+          <Card
+            render={
+              <article
+                className="article"
+                aria-labelledby={`${instanceId}-article-carousel-changing-weather`}
+              />
+            }
+          >
+            <div className="body">
+              <img
+                className="media"
+                src="https://picsum.photos/id/542/640/400"
+                alt=""
+                width="640"
+                height="400"
+                sizes="auto, 100vw"
+                srcSet="https://picsum.photos/id/542/320/200 320w, https://picsum.photos/id/542/640/400 640w"
+                loading="lazy"
+              />
+              <p className="meta">
+                <Badge>Notes</Badge>
+              </p>
+              <h3 id={`${instanceId}-article-carousel-changing-weather`}>
+                Reading the weather over the fields
+              </h3>
+              <div className="foot">
+                <SignpostLink href="/journal/changing-weather">
+                  Read article
+                  <span className="loam-VisuallyHidden">
+                    {" "}
+                    – Reading the weather over the fields
+                  </span>
+                </SignpostLink>
+              </div>
+            </div>
+          </Card>
+        </Carousel.Item>
       </Carousel.Track>
       <Carousel.Indicators />
     </Carousel.Root>

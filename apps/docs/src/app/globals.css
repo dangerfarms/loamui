@@ -3,6 +3,7 @@
    ahead-of-toolchain CSS the app bundler can't parse yet. */
 
 @layer site.reset, site.base, site.util;
+@layer loamui.tokens, loamui.elements, loamui.components;
 
 @layer site.reset {
   *,

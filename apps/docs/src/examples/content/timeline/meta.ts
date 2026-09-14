@@ -8,11 +8,13 @@ export const meta: ExampleMeta = {
     "Use for dated events in chronological order. Choose the Stepper component for progress through a task rather than adapting this history layout.",
   category: "content",
   uses: [],
+  integration:
+    "Replace the fictional history with chronological events and valid machine-readable dates. Select heading levels to fit the surrounding section. This is a static history, not an interactive progress indicator.",
   notes: {
     native:
       "An ol carries the order and a time element carries each date with its machine-readable value; the dots and the line are pseudo-elements, so nothing decorative is in the accessibility tree.",
     modern:
-      "Each event is a grid with named areas, the dot centred on the date's line with lh, and the connector run across the list's gap with a negative margin rather than absolute positioning.",
+      "Layered scoped CSS measures the list through its outer wrapper, so each event and its connector resolve the same spacing tokens. Named grid areas position the content; lh centres the decorative dot on the date line and a negative margin joins the gaps.",
     composition:
       "Element styles alone: an ordered list, headings, paragraphs and time, so no component is imported and no Stepper is bent into a history.",
     accessible:

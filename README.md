@@ -171,8 +171,11 @@ npx skills add dangerfarms/loamui
 ```
 
 Or point an agent at [`https://loamui.com/llms.txt`](https://loamui.com/llms.txt):
-every docs page has a markdown twin at the same URL with `.md` appended, and
-[`llms-full.txt`](https://loamui.com/llms-full.txt) has them all in one file.
+the single entry point for the environment workflow and documentation. Every
+docs page has a markdown twin at the same URL with `.md` appended. The skill
+bundles these references, including complete recipes, for offline use. Recipe
+cards also offer a **Copy prompt** action with the selected implementation
+and its relevant guidance.
 The [Composing components](https://loamui.com/docs/composing/) guide shows how
 to build your own components (a hero, a pricing table, a carousel) from the
 three primitives, the same way the [recipes](https://loamui.com/recipes/)

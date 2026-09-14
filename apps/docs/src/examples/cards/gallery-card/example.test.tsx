@@ -14,7 +14,7 @@ describe("gallery-card", () => {
     expect(photos).toHaveAttribute("aria-roledescription", "carousel");
     expect(photos.querySelectorAll("ul.track > li img")).toHaveLength(3);
     expect(
-      screen.getByAltText("The cabin at the edge of the orchard in evening light"),
+      screen.getByAltText("A timber building among orchard trees in low sunlight"),
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Previous photo" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Go to photo 2 of 3" })).toBeInTheDocument();

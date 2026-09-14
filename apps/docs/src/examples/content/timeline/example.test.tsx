@@ -11,7 +11,7 @@ describe("timeline", () => {
     const { container } = render(<Example />);
     const list = screen.getByRole("list");
     expect(list.tagName).toBe("OL");
-    expect(list).toHaveClass("timeline");
+    expect(list.parentElement).toHaveClass("timeline");
     const items = screen.getAllByRole("listitem");
     expect(items).toHaveLength(5);
     for (const item of items) {

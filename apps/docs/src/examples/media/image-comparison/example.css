@@ -1,71 +1,81 @@
 @scope (.image-comparison) to ([class*="loam-"]) {
-  :scope {
-    /* The script writes the position onto the figure; 50% is the fallback
-       before it runs. */
-    --_position: 50%;
-    --_ratio: 16 / 9;
+  @layer loamui.components {
+    :scope {
+      --_position: 50%;
 
-    container-type: inline-size;
-    display: block grid;
-    gap: var(--loam-space-sm);
-    grid-template-columns: minmax(0, 1fr);
-    margin: 0;
+      container-type: inline-size;
+    }
 
-    &::after {
-      background: var(--loam-color-on-strong);
-      box-shadow: 0 0 0 1px var(--loam-color-fg);
-      content: "";
-      grid-area: 1 / 1;
-      inline-size: var(--loam-ring-width);
-      justify-self: start;
-      margin-inline-start: calc(var(--_position) - var(--loam-ring-width) / 2);
-      pointer-events: none;
+    figure {
+      display: block grid;
+      font-size: var(--loam-text-md);
+      gap: var(--loam-space-sm);
+      grid-template-columns: minmax(0, 1fr);
+      margin-block: 0;
+      margin-inline: 0;
+      overflow-wrap: anywhere;
 
-      @media (forced-colors: active) {
-        background: CanvasText;
-        forced-color-adjust: none;
+      &::after {
+        background: var(--loam-color-on-strong);
+        border-inline: 1px solid var(--loam-color-fg-strong);
+        content: "";
+        grid-area: 1 / 1;
+        inline-size: var(--loam-ring-width);
+        justify-self: start;
+        margin-inline-start: clamp(
+          0px,
+          calc(var(--_position) - var(--loam-ring-width) / 2),
+          calc(100% - var(--loam-ring-width))
+        );
+        pointer-events: none;
+        z-index: 1;
+
+        @media (forced-colors: active) {
+          background: CanvasText;
+          forced-color-adjust: none;
+        }
       }
     }
-  }
 
-  div.before,
-  /* The inset is physical, so it flips under :dir(rtl), where the Range runs
-     the other way. */
-  div.after {
-    aspect-ratio: var(--_ratio);
-    border-radius: var(--loam-radius-md);
-    grid-area: 1 / 1;
-    inline-size: 100%;
-    overflow: hidden;
-
-    img {
-      block-size: 100%;
-      display: block flow;
+    div.before,
+    div.after {
+      aspect-ratio: 16 / 9;
+      border-radius: var(--loam-radius-md);
+      grid-area: 1 / 1;
       inline-size: 100%;
-      object-fit: cover;
+      overflow: hidden;
+
+      img {
+        block-size: 100%;
+        display: block flow;
+        inline-size: 100%;
+        object-fit: cover;
+      }
     }
-  }
 
-  div.before img {
-    filter: grayscale(1);
-  }
-
-  div.after {
-    clip-path: inset(0 calc(100% - var(--_position)) 0 0);
-
-    &:dir(rtl) {
-      clip-path: inset(0 0 0 calc(100% - var(--_position)));
+    div.before img {
+      filter: grayscale(1);
     }
-  }
 
-  p.value {
-    font-variant-numeric: tabular-nums;
-    margin: 0;
-  }
+    div.after {
+      &:dir(ltr) {
+        clip-path: inset(0 calc(100% - var(--_position)) 0 0);
+      }
 
-  figcaption {
-    color: var(--loam-color-fg-muted);
-    font-size: var(--loam-text-sm);
-    margin: 0;
+      &:dir(rtl) {
+        clip-path: inset(0 0 0 calc(100% - var(--_position)));
+      }
+    }
+
+    p.value {
+      font-variant-numeric: tabular-nums;
+      margin-block: 0;
+    }
+
+    figcaption {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-sm);
+      margin-block: 0;
+    }
   }
 }

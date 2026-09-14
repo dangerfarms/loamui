@@ -5,7 +5,6 @@
       border: 1px solid var(--loam-color-line);
       border-radius: var(--loam-radius-xl);
       color: var(--loam-color-fg);
-      color-scheme: dark;
       container: banner-background-image / inline-size;
       isolation: isolate;
       position: relative;
@@ -50,10 +49,9 @@
     }
 
     p.eyebrow {
-      --loam-context: warning;
+      --loam-context: primary;
 
       align-items: center;
-      color: var(--loam-color-fg-muted);
       display: block flex;
       flex-wrap: wrap;
       font-size: var(--loam-text-sm);
@@ -65,7 +63,6 @@
     }
 
     p.description {
-      color: var(--loam-color-fg-muted);
       max-inline-size: var(--loam-measure);
     }
 

@@ -20,7 +20,7 @@ A recipe in **Content**: a component and a stylesheet built from `@loamui/core`,
 
 Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
 
-Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+Replace the fictional history with chronological events and valid machine-readable dates. Select heading levels to fit the surrounding section. This is a static history, not an interactive progress indicator.
 
 ## When to use
 
@@ -31,7 +31,7 @@ Use for dated events in chronological order. Choose the Stepper component for pr
 These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** An ol carries the order and a time element carries each date with its machine-readable value; the dots and the line are pseudo-elements, so nothing decorative is in the accessibility tree.
-- **Modern CSS.** Each event is a grid with named areas, the dot centred on the date's line with lh, and the connector run across the list's gap with a negative margin rather than absolute positioning.
+- **Modern CSS.** Layered scoped CSS measures the list through its outer wrapper, so each event and its connector resolve the same spacing tokens. Named grid areas position the content; lh centres the decorative dot on the date line and a negative margin joins the gaps.
 - **Composition.** Element styles alone: an ordered list, headings, paragraphs and time, so no component is imported and no Stepper is bent into a history.
 - **Accessible & gatekept.** The list keeps role=list so its count survives list-style: none, and in forced colours the dot keeps an outline and the connector its ink where the fills would vanish.
 
@@ -40,55 +40,49 @@ These notes explain the design. The included tests cover structure and selected 
 ```tsx
 import "./example.css";
 
-const EVENTS = [
-  {
-    date: "2014-04",
-    label: "April 2014",
-    title: "Three allotments and a kitchen table",
-    description:
-      "Five growers on the Ludlow allotments pool the seed they have saved and post packets to friends who ask.",
-  },
-  {
-    date: "2016-01",
-    label: "January 2016",
-    title: "The first catalogue",
-    description:
-      "Forty varieties in a photocopied booklet, sold from a trestle table at the winter market.",
-  },
-  {
-    date: "2019-03",
-    label: "March 2019",
-    title: "Registered as a co-operative",
-    description:
-      "Hedgerow becomes a community benefit society: one member, one vote, and the surplus goes back into growing.",
-  },
-  {
-    date: "2022-05",
-    label: "May 2022",
-    title: "The nursery opens at Bromfield",
-    description:
-      "Two acres, a polytunnel and a drying barn, with trial beds any member can walk on open days.",
-  },
-  {
-    date: "2025-09",
-    label: "September 2025",
-    title: "A thousand members",
-    description:
-      "The thousandth member joins the week the catalogue passes four hundred varieties.",
-  },
-];
-
 export default function Example() {
   return (
-    <ol className="timeline" role="list">
-      {EVENTS.map((event) => (
-        <li key={event.date}>
-          <time dateTime={event.date}>{event.label}</time>
-          <h3>{event.title}</h3>
-          <p>{event.description}</p>
+    <div className="timeline">
+      <ol role="list">
+        <li>
+          <time dateTime="2014-04">April 2014</time>
+          <h3>Three allotments and a kitchen table</h3>
+          <p>
+            Five growers on the Ludlow allotments pool the seed they have saved and post packets to
+            friends who ask.
+          </p>
         </li>
-      ))}
-    </ol>
+        <li>
+          <time dateTime="2016-01">January 2016</time>
+          <h3>The first catalogue</h3>
+          <p>
+            Forty varieties in a photocopied booklet, sold from a trestle table at the winter
+            market.
+          </p>
+        </li>
+        <li>
+          <time dateTime="2019-03">March 2019</time>
+          <h3>Registered as a co-operative</h3>
+          <p>
+            Hedgerow becomes a community benefit society: one member, one vote, and the surplus goes
+            back into growing.
+          </p>
+        </li>
+        <li>
+          <time dateTime="2022-05">May 2022</time>
+          <h3>The nursery opens at Bromfield</h3>
+          <p>
+            Two acres, a polytunnel and a drying barn, with trial beds any member can walk on open
+            days.
+          </p>
+        </li>
+        <li>
+          <time dateTime="2025-09">September 2025</time>
+          <h3>A thousand members</h3>
+          <p>The thousandth member joins the week the catalogue passes four hundred varieties.</p>
+        </li>
+      </ol>
+    </div>
   );
 }
 ```
@@ -97,83 +91,86 @@ export default function Example() {
 
 ```css
 @scope (.timeline) to ([class*="loam-"]) {
-  :scope {
-    --_dot: 0.875rem;
-    --_gap: var(--loam-space-lg);
-
-    container-type: inline-size;
-    display: block grid;
-    gap: var(--_gap);
-    grid-template-columns: minmax(0, 1fr);
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  li {
-    display: block grid;
-    gap: var(--loam-space-xs) var(--loam-space-md);
-    grid-template-areas:
-      "dot date"
-      "dot title"
-      "dot description";
-    grid-template-columns: var(--_dot) minmax(0, 1fr);
-    margin: 0;
-
-    /* Takes the date's type, so 1lh is that line. */
-    &::before {
-      background: var(--loam-color-primary-strong);
-      block-size: var(--_dot);
-      border-radius: var(--loam-radius-full);
-      box-shadow: 0 0 0 3px var(--loam-color-bg);
-      content: "";
-      font-size: var(--loam-text-sm);
-      grid-area: dot;
-      inline-size: var(--_dot);
-      margin-block-start: calc((1lh - var(--_dot)) / 2);
-      z-index: 1;
+  @layer loamui.components {
+    :scope {
+      container-type: inline-size;
     }
 
-    /* The negative end margin runs the hairline across the list's gap. */
-    &:not(:last-child)::after {
-      border-inline-start: 1px solid var(--loam-color-line-strong);
-      content: "";
-      grid-area: dot;
-      justify-self: center;
-      margin-block: var(--_dot) calc(-1 * var(--_gap));
+    ol {
+      --_dot: 0.875rem;
+      --_gap: var(--loam-space-lg);
+
+      display: block grid;
+      font-size: var(--loam-text-md);
+      gap: var(--_gap);
+      grid-template-columns: minmax(0, 1fr);
+      list-style: none;
+      margin-block: 0;
+      overflow-wrap: anywhere;
+      padding: 0;
     }
-  }
 
-  time {
-    color: var(--loam-color-fg-muted);
-    font-size: var(--loam-text-sm);
-    font-variant-numeric: lining-nums tabular-nums;
-    grid-area: date;
-  }
-
-  h3 {
-    font-size: var(--loam-text-lg);
-    grid-area: title;
-    margin: 0;
-  }
-
-  p {
-    color: var(--loam-color-fg-muted);
-    grid-area: description;
-    margin: 0;
-    max-inline-size: var(--loam-measure);
-    text-wrap: pretty;
-  }
-
-  /* Forced colours drop the fill; the dot keeps an outline. */
-  @media (forced-colors: active) {
     li {
+      display: block grid;
+      gap: var(--loam-space-xs) var(--loam-space-md);
+      grid-template-areas:
+        "dot date"
+        "dot title"
+        "dot description";
+      grid-template-columns: var(--_dot) minmax(0, 1fr);
+      margin-block: 0;
+
       &::before {
-        border: 1px solid CanvasText;
+        background: var(--loam-color-primary-strong);
+        block-size: var(--_dot);
+        border-radius: var(--loam-radius-full);
+        box-shadow: 0 0 0 3px var(--loam-color-bg);
+        content: "";
+        font-size: var(--loam-text-sm);
+        grid-area: dot;
+        inline-size: var(--_dot);
+        margin-block-start: calc((1lh - var(--_dot)) / 2);
+        z-index: 1;
       }
 
-      &::after {
-        border-color: CanvasText;
+      &:not(:last-child)::after {
+        border-inline-start: 1px solid var(--loam-color-line-strong);
+        content: "";
+        grid-area: dot;
+        justify-self: center;
+        margin-block: var(--_dot) calc(-1 * var(--_gap));
+      }
+    }
+
+    time {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-sm);
+      font-variant-numeric: lining-nums tabular-nums;
+      grid-area: date;
+    }
+
+    h3 {
+      grid-area: title;
+      margin-block: 0;
+    }
+
+    p {
+      color: var(--loam-color-fg-muted);
+      grid-area: description;
+      margin-block: 0;
+      max-inline-size: var(--loam-measure);
+      text-wrap: pretty;
+    }
+
+    @media (forced-colors: active) {
+      li {
+        &::before {
+          border: 1px solid CanvasText;
+        }
+
+        &::after {
+          border-color: CanvasText;
+        }
       }
     }
   }

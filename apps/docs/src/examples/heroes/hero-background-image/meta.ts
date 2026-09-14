@@ -14,14 +14,14 @@ export const meta: ExampleMeta = {
     native:
       "A section named by its h1, with a native header and an eagerly discoverable img. The image sits behind the content, so the header supplies the minimum height and grows when text needs more room. Element styles own heading typography and link states.",
     modern:
-      "Styles sit in loamui.components inside a donut scope. The section measures its header’s fluid padding, type and minimum height; there are no viewport layout breakpoints. A token-based scrim protects the text, and a solid background keeps it readable if the image fails.",
+      "Styles sit in loamui.components inside a donut scope. The section measures its header’s fluid padding, type and minimum height; there are no viewport layout breakpoints. A token-based scrim and full foreground text protect readability in either scheme, and a solid background keeps it readable if the image fails.",
     composition:
-      "SignpostLink inherits the region’s dark scheme; the secondary film destination is an ordinary link.",
+      "SignpostLink follows the surrounding colour scheme through core tokens; the secondary film destination is an ordinary link.",
     context:
-      "One declaration on the region decides the scheme for everything in it; the SignpostLink takes its dark-scheme paint without a prop.",
+      "The section inherits the surrounding colour scheme. Background, overlay, text and link tokens adapt together, with no fixed dark region or appearance props.",
     accessible:
       "The photograph is decoration behind the words, so its alt is empty. useId ties repeated regions to their own headings. Native links retain visible text and focus rings; enlarged text can grow the section. Forced colours remove both the picture and scrim, leaving native system colours and a visible border.",
   },
-  tags: ["landing", "marketing", "photo", "cover", "dark"],
+  tags: ["landing", "marketing", "photo", "cover"],
   order: 21,
 };

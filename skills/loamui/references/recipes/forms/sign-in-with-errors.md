@@ -20,7 +20,7 @@ A recipe in **Forms**: a component and a stylesheet built from `@loamui/core`, t
 
 Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
 
-Submit the empty form or a mistyped email to try the error flow. Pass an action URL to use your own POST endpoint; the sample defaults to /sign-in. Valid input navigates to that endpoint without storing credentials in React state. Implement authentication and server validation there, including validation when JavaScript is unavailable. Native required and email checks remain active before hydration. Return authentication failures without revealing whether an account exists, and prefix the response page title with Error:. Preserve the email and persistent-session choice after server rejection, but never echo the password into response HTML. Provide the recovery and registration routes and implement the optional persistent session. This recipe does not authenticate anyone or store credentials.
+Submit the empty form or a mistyped email to try local validation. Pass action for your native POST endpoint; the default is /sign-in. On rejection, render a fresh Example with initialResponse: { values: { email, remember }, errors: { form: 'Email address and password do not match' } }. Use errors.email or errors.password for server field-validation messages. General authentication or service errors belong in errors.form; never reveal whether an account exists. The response restores email and the session choice, focuses the summary after hydration and never accepts or echoes a password. initialResponse initializes a new POST response, not an asynchronous update to a mounted form. Implement authentication and server validation at the endpoint; after success, establish the session and redirect to the signed-in destination. Set an Error: page-title prefix on rejection. Implement the recovery, registration and persistent-session routes. The recipe does not simulate authentication; test the real endpoint with password managers and mobile keyboards.
 
 ## When to use
 
@@ -32,7 +32,7 @@ These notes explain the design. The included tests cover structure and selected 
 
 - **Native CSS.** A native POST form retains username and current-password autocomplete. Native validation blocks invalid submissions before and after hydration. React handles invalid events to replace browser popups with the error summary, reading built-in validity states without an email regex or additional password rules.
 - **Modern CSS.** Recipe styles sit in loamui.components inside donut scopes. The outer container lets Card and the form resolve fluid tokens locally; element styles supply the heading typography, while grid gap owns form spacing.
-- **Composition.** Card supplies the surface without structural overrides. ErrorSummary, Field.Error, Input and PasswordInput retain their own styling and behavior. Each error string is shared between its summary link and field message.
+- **Composition.** Card supplies the surface without structural overrides. ErrorSummary, Field.Error, Input and PasswordInput retain their own styling and behavior. Each field error is shared between its summary link and field message. A general server failure is summary text, not a fabricated field error.
 - **Contextualism.** The action region declares --loam-context: primary. Rendering Field.Error makes the field invalid through the primitive's detection; the recipe neither sets aria-invalid manually nor repaints an input border.
 - **Accessible & gatekept.** The form stays enabled while people enter details; errors are reported after a validation attempt, without validating each keystroke. A failed submit mounts a focused ErrorSummary; each further failed attempt focuses it again. Its links focus the corresponding controls through core's wiring. useId keeps the targets unique, values remain entered, and the persistent-session checkbox starts unchecked.
 
@@ -45,9 +45,25 @@ import { useId, useState, type FormEvent } from "react";
 import { Button, Card, Checkbox, ErrorSummary, Field, Input, PasswordInput } from "@loamui/core";
 import "./example.css";
 
-export default function Example({ action = "/sign-in" }: { action?: string }) {
+type SignInResponse = {
+  values: { email: string; remember: boolean };
+  errors: { email?: string; password?: string; form?: string };
+};
+
+export default function Example({
+  action = "/sign-in",
+  initialResponse,
+}: {
+  action?: string;
+  initialResponse?: SignInResponse;
+}) {
   const id = useId();
-  const [validation, setValidation] = useState({ email: "", password: "", attempt: 0 });
+  const [validation, setValidation] = useState({
+    email: initialResponse?.errors.email ?? "",
+    password: initialResponse?.errors.password ?? "",
+    form: initialResponse?.errors.form ?? "",
+    attempt: 0,
+  });
 
   function handleValidation(event: FormEvent<HTMLFormElement>) {
     const fields = event.currentTarget.elements;
@@ -64,6 +80,7 @@ export default function Example({ action = "/sign-in" }: { action?: string }) {
     setValidation((previous) => ({
       email: emailError,
       password: passwordError,
+      form: "",
       attempt: previous.attempt + 1,
     }));
   }
@@ -79,19 +96,22 @@ export default function Example({ action = "/sign-in" }: { action?: string }) {
           onSubmit={handleValidation}
         >
           <h1 id={`${id}-title`}>Sign in</h1>
-          {(validation.email || validation.password) && (
+          {(validation.email || validation.password || validation.form) && (
             <ErrorSummary.Root key={validation.attempt}>
               <ErrorSummary.Title />
-              <ErrorSummary.List>
-                {validation.email && (
-                  <ErrorSummary.Item href={`#${id}-email`}>{validation.email}</ErrorSummary.Item>
-                )}
-                {validation.password && (
-                  <ErrorSummary.Item href={`#${id}-password`}>
-                    {validation.password}
-                  </ErrorSummary.Item>
-                )}
-              </ErrorSummary.List>
+              {validation.form && <p>{validation.form}</p>}
+              {(validation.email || validation.password) && (
+                <ErrorSummary.List>
+                  {validation.email && (
+                    <ErrorSummary.Item href={`#${id}-email`}>{validation.email}</ErrorSummary.Item>
+                  )}
+                  {validation.password && (
+                    <ErrorSummary.Item href={`#${id}-password`}>
+                      {validation.password}
+                    </ErrorSummary.Item>
+                  )}
+                </ErrorSummary.List>
+              )}
             </ErrorSummary.Root>
           )}
           <Field.Root id={`${id}-email`}>
@@ -99,6 +119,7 @@ export default function Example({ action = "/sign-in" }: { action?: string }) {
             {validation.email && <Field.Error>{validation.email}</Field.Error>}
             <Input
               name="email"
+              defaultValue={initialResponse?.values.email}
               type="email"
               dir="ltr"
               autoComplete="username"
@@ -114,7 +135,11 @@ export default function Example({ action = "/sign-in" }: { action?: string }) {
             <PasswordInput name="password" autoComplete="current-password" required />
           </Field.Root>
           <a href="/forgot-password">Forgot your password?</a>
-          <Checkbox name="remember" label="Keep me signed in" />
+          <Checkbox
+            name="remember"
+            label="Keep me signed in"
+            defaultChecked={initialResponse?.values.remember ?? false}
+          />
           <div className="actions">
             <Button type="submit">Sign in</Button>
           </div>

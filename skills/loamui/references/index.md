@@ -8,6 +8,7 @@
 
 - [Introduction](guides/introduction.md) — Modern UI primitives for agent-assisted developers: contextual tokens, element styles and React components built on Google's Modern Web Guidance. · [live](https://loamui.com/docs.md)
 - [Installation](guides/installation.md) — Install LoamUI in any React framework. · [live](https://loamui.com/docs/installation.md)
+- [Building with an agent](guides/agent-workflow.md) — Check the environment, compose from the three primitives, and verify the five pillars in the result. · [live](https://loamui.com/docs/agent-workflow.md)
 - [Tokens](guides/tokens.md) — The token primitive: a handful of semantic decisions, everything else derived, and the theming that falls out of it. · [live](https://loamui.com/docs/tokens.md)
 - [Element styles](guides/element-styles.md) — The element-styles primitive: enhanced default styles for native HTML, page-wide. Plain markup is already styled before any component appears. · [live](https://loamui.com/docs/element-styles.md)
 - [Components](guides/components.md) — The third primitive: a small, curated set of accessible components composed from tokens and element styles. · [live](https://loamui.com/docs/components.md)
@@ -92,7 +93,7 @@
 ## Recipes: Cards
 
 - [Article card](recipes/cards/article-card.md) — One article in a Card: a picture, a category and date, a linked title, its opening lines and the author at the foot. · [live](https://loamui.com/recipes/cards/article-card.md)
-- [Profile card](recipes/cards/profile-card.md) — One member on a card: their picture over their name and role, three figures about them, and a Follow toggle that updates the displayed follower count. · [live](https://loamui.com/recipes/cards/profile-card.md)
+- [Profile card](recipes/cards/profile-card.md) — One member on a card: initials, a name and role, three labelled figures, and a link to their profile. · [live](https://loamui.com/recipes/cards/profile-card.md)
 - [Gallery card](recipes/cards/gallery-card.md) — A stay in a Card: a Carousel of three photos with its controls beneath, the name and a Rating with the review count, a description and the Price per night. · [live](https://loamui.com/recipes/cards/gallery-card.md)
 
 ## Recipes: Media
@@ -107,7 +108,7 @@
 
 ## Recipes: Content
 
-- [FAQ](recipes/content/faq.md) — Four questions as one exclusive set of disclosures on a subtle surface, centred under a heading with room that grows with the section's width. · [live](https://loamui.com/recipes/content/faq.md)
+- [FAQ](recipes/content/faq.md) — Four questions with visible answers on a subtle surface, beneath a heading and a direct contact link. · [live](https://loamui.com/recipes/content/faq.md)
 - [Timeline](recipes/content/timeline.md) — Five dated events in order, each with a marker, a date, a title and a line, joined by a hairline. · [live](https://loamui.com/recipes/content/timeline.md)
 
 ## Recipes: Forms

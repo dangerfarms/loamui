@@ -76,6 +76,7 @@ export default async function ExamplePage({
 
         {example.meta.whenToUse && <p className={c.sectionNote}>{example.meta.whenToUse}</p>}
 
+        <h2 className="loam-VisuallyHidden">Preview</h2>
         <ExampleStage title={example.meta.title}>
           <example.Example />
         </ExampleStage>

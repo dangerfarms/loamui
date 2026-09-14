@@ -1,55 +1,67 @@
 @scope (.article-carousel) to ([class*="loam-"]) {
-  :scope {
-    --loam-carousel-item-size: 18rem;
-  }
+  @layer loamui.components {
+    :scope {
+      --loam-carousel-item-size: 18rem;
+    }
 
-  div.head {
-    align-items: center;
-    display: block flex;
-    flex-wrap: wrap;
-    gap: var(--loam-space-sm) var(--loam-space-md);
-    justify-content: space-between;
-  }
+    div.head {
+      align-items: center;
+      display: block flex;
+      flex-wrap: wrap;
+      font-size: var(--loam-text-md);
+      gap: var(--loam-space-sm) var(--loam-space-md);
+      justify-content: space-between;
+      overflow-wrap: anywhere;
+    }
 
-  h2 {
-    font-size: var(--loam-text-2xl);
-    margin: 0;
-  }
+    h2 {
+      margin-block: 0;
+    }
 
-  div.controls {
-    display: block flex;
-    gap: var(--loam-space-xs);
+    div.controls {
+      display: block flex;
+      gap: var(--loam-space-xs);
+    }
   }
 }
 
 @scope (.article-carousel article.article) to ([class*="loam-"]) {
-  :scope {
-    display: block flex;
-    flex-direction: column;
-    gap: var(--loam-space-sm);
-  }
+  @layer loamui.components {
+    :scope {
+      container-type: inline-size;
+      display: block grid;
+      grid-template-columns: minmax(0, 1fr);
+    }
 
-  img.media {
-    aspect-ratio: 16 / 10;
-    block-size: auto;
-    border-radius: var(--loam-radius-md);
-    inline-size: 100%;
-    object-fit: cover;
-  }
+    div.body {
+      display: block flex;
+      flex-direction: column;
+      font-size: var(--loam-text-md);
+      gap: var(--loam-space-sm);
+      overflow-wrap: anywhere;
+    }
 
-  p.meta {
-    margin: 0;
-  }
+    img.media {
+      aspect-ratio: 16 / 10;
+      block-size: auto;
+      border-radius: var(--loam-radius-md);
+      inline-size: 100%;
+      object-fit: cover;
+    }
 
-  h3 {
-    font-size: var(--loam-text-lg);
-    margin: 0;
-    text-wrap: balance;
-  }
+    p.meta {
+      margin-block: 0;
+    }
 
-  div.foot {
-    display: block flex;
-    margin-block-start: auto;
-    padding-block-start: var(--loam-space-sm);
+    h3 {
+      margin-block: 0;
+      text-wrap: balance;
+    }
+
+    div.foot {
+      display: block flex;
+      margin-block-start: auto;
+      padding-block-start: var(--loam-space-sm);
+    }
   }
 }

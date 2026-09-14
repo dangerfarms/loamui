@@ -20,7 +20,7 @@ A recipe in **Grids**: a component and a stylesheet built from `@loamui/core`, t
 
 Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
 
-Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.
+Replace the sample workshops and booking destinations, including the dates and local times. State the venue and time zone in the surrounding event information. Use heading levels appropriate to that page.
 
 ## When to use
 
@@ -31,69 +31,93 @@ Use when cards with different amounts of text need aligned headings, description
 These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
 - **Native CSS.** A list of three items, each a card named by its h3, so the row of workshops is a list to a screen reader and each card says what it is.
-- **Modern CSS.** The list is the grid and each card spans three of its rows with grid-template-rows: subgrid, so the tallest description sets the row for all three and every action lands on one line without a fixed height or a JavaScript measure.
+- **Modern CSS.** A measuring wrapper contains an intrinsic grid. Each Card spans three parent rows and inherits them with subgrid, including the shared row gaps. The three content regions measure their own text; the subgrid itself has no size containment, which would break row sharing. No fixed heights or JavaScript measurements are needed.
 - **Composition.** Card is rendered as the list item through its render prop, which is what lets the Card be the grid item that subgrids; the SignpostLink inside is past the donut and the Card's padding becomes the gutter of its tracks.
-- **Accessible & gatekept.** The date is set in the strong primary token, the pair the audit checks as text, and the action is a SignpostLink to the workshop’s booking page; each card’s link is in the same place three times.
+- **Accessible & gatekept.** Workshops have named list items, dates with machine-readable local date-times and booking links that include the workshop title in their accessible names. Source order stays heading, description, then action as the grid reflows.
 
 ## Example.tsx
 
 ```tsx
-"use client";
-
 import { useId } from "react";
 import { Card, SignpostLink } from "@loamui/core";
 import "./example.css";
 
-const WORKSHOPS = [
-  {
-    slug: "seed-saving",
-    title: "Seed saving",
-    when: "Saturday 19 September, 10am",
-    description:
-      "Which crops to save from first, isolation distances, and cleaning, drying and storing what you gather. Bring a crop you want to keep.",
-  },
-  {
-    slug: "grafting",
-    title: "Grafting fruit trees",
-    when: "Saturday 6 February, 10am",
-    description:
-      "Whip-and-tongue grafting onto local rootstocks. Everyone takes home two trees on the rootstock of their choice, labelled and wrapped.",
-  },
-  {
-    slug: "winter-pruning",
-    title: "Winter pruning",
-    when: "Sunday 17 January, 1pm",
-    description: "Apples and pears in the member orchard, in the cold, with a flask.",
-  },
-];
-
 export default function Example() {
   const instanceId = useId();
   return (
-    <ul className="grid-subgrid" role="list">
-      {WORKSHOPS.map((workshop) => (
+    <div className="grid-subgrid">
+      <ul role="list">
         <Card
-          key={workshop.slug}
+          render={
+            <li className="workshop" aria-labelledby={`${instanceId}-grid-subgrid-seed-saving`} />
+          }
+        >
+          <div className="head">
+            <h3 id={`${instanceId}-grid-subgrid-seed-saving`}>Seed saving</h3>
+            <p className="when">
+              <time dateTime="2026-09-19T10:00">Saturday 19 September 2026, 10am</time>
+            </p>
+          </div>
+          <div className="description">
+            <p>
+              Which crops to save from first, isolation distances, and cleaning, drying and storing
+              what you gather. Bring a crop you want to keep.
+            </p>
+          </div>
+          <div className="actions">
+            <SignpostLink href="/workshops/seed-saving">
+              Book a place<span className="loam-VisuallyHidden"> – Seed saving</span>
+            </SignpostLink>
+          </div>
+        </Card>
+        <Card
+          render={
+            <li className="workshop" aria-labelledby={`${instanceId}-grid-subgrid-grafting`} />
+          }
+        >
+          <div className="head">
+            <h3 id={`${instanceId}-grid-subgrid-grafting`}>Grafting fruit trees</h3>
+            <p className="when">
+              <time dateTime="2027-02-06T10:00">Saturday 6 February 2027, 10am</time>
+            </p>
+          </div>
+          <div className="description">
+            <p>
+              Whip-and-tongue grafting onto local rootstocks. Everyone takes home two trees on the
+              rootstock of their choice, labelled and wrapped.
+            </p>
+          </div>
+          <div className="actions">
+            <SignpostLink href="/workshops/grafting">
+              Book a place<span className="loam-VisuallyHidden"> – Grafting fruit trees</span>
+            </SignpostLink>
+          </div>
+        </Card>
+        <Card
           render={
             <li
               className="workshop"
-              aria-labelledby={`${instanceId}-grid-subgrid-${workshop.slug}`}
+              aria-labelledby={`${instanceId}-grid-subgrid-winter-pruning`}
             />
           }
         >
           <div className="head">
-            <h3 id={`${instanceId}-grid-subgrid-${workshop.slug}`}>{workshop.title}</h3>
-            <p className="when">{workshop.when}</p>
+            <h3 id={`${instanceId}-grid-subgrid-winter-pruning`}>Winter pruning</h3>
+            <p className="when">
+              <time dateTime="2027-01-17T13:00">Sunday 17 January 2027, 1pm</time>
+            </p>
           </div>
-          <p className="description">{workshop.description}</p>
+          <div className="description">
+            <p>Apples and pears in the member orchard, in the cold, with a flask.</p>
+          </div>
           <div className="actions">
-            <SignpostLink href={`/workshops/${workshop.slug}`}>
-              Book a place<span className="loam-VisuallyHidden"> – {workshop.title}</span>
+            <SignpostLink href="/workshops/winter-pruning">
+              Book a place<span className="loam-VisuallyHidden"> – Winter pruning</span>
             </SignpostLink>
           </div>
         </Card>
-      ))}
-    </ul>
+      </ul>
+    </div>
   );
 }
 ```
@@ -102,55 +126,70 @@ export default function Example() {
 
 ```css
 @scope (.grid-subgrid) to ([class*="loam-"]) {
-  :scope {
-    container-type: inline-size;
-    display: block grid;
-    gap: var(--loam-space-md);
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  @layer loamui.components {
+    :scope {
+      container-type: inline-size;
+    }
+
+    ul {
+      display: block grid;
+      font-size: var(--loam-text-md);
+      gap: var(--loam-space-md);
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+      list-style: none;
+      margin-block: 0;
+      padding: 0;
+    }
   }
 }
 
 @scope (.grid-subgrid li.workshop) to ([class*="loam-"]) {
-  :scope {
-    display: block grid;
-    grid-row: span 3;
-    grid-template-rows: subgrid;
-    margin: 0;
-    row-gap: var(--loam-space-sm);
-  }
+  @layer loamui.components {
+    :scope {
+      display: block grid;
+      grid-row: span 3;
+      grid-template-rows: subgrid;
+      margin-block: 0;
+      overflow-wrap: anywhere;
+    }
 
-  div.head {
-    display: block grid;
-    gap: var(--loam-space-xs);
-  }
+    div.head,
+    div.description,
+    div.actions {
+      container-type: inline-size;
+    }
 
-  h3 {
-    font-size: var(--loam-text-lg);
-    margin: 0;
-  }
+    div.head {
+      align-content: start;
+      display: block grid;
+      gap: var(--loam-space-xs);
+    }
 
-  p.when {
-    color: var(--loam-color-primary-strong);
-    font-size: var(--loam-text-sm);
-    font-weight: 600;
-    margin: 0;
-  }
+    h3 {
+      margin-block: 0;
+    }
 
-  p.description {
-    color: var(--loam-color-fg-muted);
-    margin: 0;
-    text-wrap: pretty;
-  }
+    p.when {
+      color: var(--loam-color-primary-strong);
+      font-size: var(--loam-text-sm);
+      font-weight: 600;
+      margin-block: 0;
+    }
 
-  div.actions {
-    align-self: end;
-    display: block flex;
-    flex-wrap: wrap;
-    gap: var(--loam-space-sm);
-    padding-block-start: var(--loam-space-xs);
+    div.description > p {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-md);
+      margin-block: 0;
+      text-wrap: pretty;
+    }
+
+    div.actions {
+      align-self: end;
+      display: block flex;
+      flex-wrap: wrap;
+      gap: var(--loam-space-sm);
+      padding-block-start: var(--loam-space-xs);
+    }
   }
 }
 ```
