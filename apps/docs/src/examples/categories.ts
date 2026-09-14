@@ -89,11 +89,6 @@ export const EXAMPLE_CATEGORIES: ExampleCategory[] = [
     blurb: "A value from a range: marks, a live readout, and a number box beside it.",
   },
   {
-    slug: "carousels",
-    title: "Carousels",
-    blurb: "A run of cards or images paged through on a scroll-snap track.",
-  },
-  {
     slug: "faq",
     title: "FAQ",
     blurb: "Questions and answers as native disclosures, alone or with a header and an image.",
