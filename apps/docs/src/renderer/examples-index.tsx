@@ -1,7 +1,5 @@
 "use client";
 
-import { ExamplePreview } from "./examples-preview";
-
 import { Suspense, useId, useMemo, useState } from "react";
 import Link from "next/link";
 import { Badge, Button, Search, Select } from "@loamui/core";
@@ -10,6 +8,7 @@ import { EXAMPLE_PREVIEWS } from "@/examples/generated-previews";
 import type { ExampleMetaEntry } from "@/examples/types";
 import classes from "./examples-index.module.css";
 import { LazyThumb } from "./examples-thumb";
+import { RecipePromptButton } from "./recipe-prompt-button";
 import { ExampleLoadBoundary } from "./examples-load-boundary";
 
 function matches(e: ExampleMetaEntry, term: string, uses: string): boolean {
@@ -27,7 +26,7 @@ function matches(e: ExampleMetaEntry, term: string, uses: string): boolean {
  * preview is the real example at two fifths of its size, inert and hidden
  * from assistive technology, so the card can never show something the
  * code does not.
- * Browsing links disable prefetch so offscreen examples stay unloaded.
+ * Browsing links disable prefetch so offscreen recipes stay unloaded.
  */
 export function ExamplesIndex() {
   const [query, setQuery] = useState("");
@@ -58,13 +57,13 @@ export function ExamplesIndex() {
     <div className={classes.index}>
       <div className={classes.filters}>
         <Search.Root
-          aria-label="Search examples"
+          aria-label="Search recipes"
           className={classes.search}
           onSubmit={(e) => e.preventDefault()}
         >
-          <Search.Label className="loam-VisuallyHidden">Search examples</Search.Label>
+          <Search.Label className="loam-VisuallyHidden">Search recipes</Search.Label>
           <Search.Input
-            placeholder="Search examples…"
+            placeholder="Search recipes…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
@@ -89,13 +88,13 @@ export function ExamplesIndex() {
           </Select>
         </div>
         <p className={classes.status} role="status">
-          {filtered ? `${shown} of ${total}` : `${total} examples`}
+          {filtered ? `${shown} of ${total}` : `${total} recipes`}
         </p>
       </div>
 
       {groups.length === 0 && (
         <div className={classes.empty}>
-          <p className={classes.emptyTitle}>No example matches.</p>
+          <p className={classes.emptyTitle}>No recipe matches.</p>
           <p className={classes.emptyText}>
             Try a shorter word, or build it from the primitives with the{" "}
             <Link href="/docs/composing">Composing guide</Link>.
@@ -117,11 +116,7 @@ export function ExamplesIndex() {
             <h2 id={`${category.slug}-heading`} className={classes.groupTitle}>
               {category.title}
             </h2>
-            <Link
-              href={`/examples/${category.slug}`}
-              className={classes.groupLink}
-              prefetch={false}
-            >
+            <Link href={`/recipes/${category.slug}`} className={classes.groupLink} prefetch={false}>
               {filtered ? "View all" : `All ${items.length}`}
               <span className="loam-VisuallyHidden"> in {category.title}</span>
               <span aria-hidden> →</span>
@@ -139,9 +134,7 @@ export function ExamplesIndex() {
                     <div className={classes.thumbInner}>
                       <ExampleLoadBoundary fallback={<p>Preview unavailable</p>}>
                         <Suspense fallback={null}>
-                          <ExamplePreview slug={e.slug}>
-                            <Preview />
-                          </ExamplePreview>
+                          <Preview />
                         </Suspense>
                       </ExampleLoadBoundary>
                     </div>
@@ -160,6 +153,10 @@ export function ExamplesIndex() {
                       </ul>
                     )}
                   </div>
+                  <RecipePromptButton
+                    title={e.meta.title}
+                    href={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/recipe-prompts/${e.category}/${e.slug}.txt`}
+                  />
                 </li>
               );
             })}

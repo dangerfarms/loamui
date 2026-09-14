@@ -397,14 +397,14 @@
       color-mix(in oklab, var(--loam-color-fg) 55%, oklch(100% 0 0deg))
     );
     cursor: pointer;
-    font-size: var(--loam-text-sm);
+    font-size: var(--loam-text-md);
     font-weight: 600;
-    line-height: 1.2;
-    padding-block: var(--loam-space-sm);
+    line-height: 1.5;
+    padding-block: var(--loam-space-md);
     padding-inline: var(--loam-space-lg);
     text-align: center;
     user-select: none;
-    white-space: nowrap;
+    white-space: normal;
 
     &:active:not(:disabled) {
       box-shadow: var(--loam-shadow-sm);
@@ -442,9 +442,9 @@
     background: var(--loam-color-surface);
     border: 1px solid var(--loam-color-line-strong);
     border-radius: var(--loam-radius-md);
-    font-size: var(--loam-text-sm);
-    line-height: 1.2;
-    padding-block: var(--loam-space-sm);
+    font-size: var(--loam-text-md);
+    line-height: 1.5;
+    padding-block: var(--loam-space-md);
     padding-inline: var(--loam-space-md);
   }
 

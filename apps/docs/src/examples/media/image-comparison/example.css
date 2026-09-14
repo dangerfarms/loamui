@@ -1,0 +1,81 @@
+@scope (.image-comparison) to ([class*="loam-"]) {
+  @layer loamui.components {
+    :scope {
+      --_position: 50%;
+
+      container-type: inline-size;
+    }
+
+    figure {
+      display: block grid;
+      font-size: var(--loam-text-md);
+      gap: var(--loam-space-sm);
+      grid-template-columns: minmax(0, 1fr);
+      margin-block: 0;
+      margin-inline: 0;
+      overflow-wrap: anywhere;
+
+      &::after {
+        background: var(--loam-color-on-strong);
+        border-inline: 1px solid var(--loam-color-fg-strong);
+        content: "";
+        grid-area: 1 / 1;
+        inline-size: var(--loam-ring-width);
+        justify-self: start;
+        margin-inline-start: clamp(
+          0px,
+          calc(var(--_position) - var(--loam-ring-width) / 2),
+          calc(100% - var(--loam-ring-width))
+        );
+        pointer-events: none;
+        z-index: 1;
+
+        @media (forced-colors: active) {
+          background: CanvasText;
+          forced-color-adjust: none;
+        }
+      }
+    }
+
+    div.before,
+    div.after {
+      aspect-ratio: 16 / 9;
+      border-radius: var(--loam-radius-md);
+      grid-area: 1 / 1;
+      inline-size: 100%;
+      overflow: hidden;
+
+      img {
+        block-size: 100%;
+        display: block flow;
+        inline-size: 100%;
+        object-fit: cover;
+      }
+    }
+
+    div.before img {
+      filter: grayscale(1);
+    }
+
+    div.after {
+      &:dir(ltr) {
+        clip-path: inset(0 calc(100% - var(--_position)) 0 0);
+      }
+
+      &:dir(rtl) {
+        clip-path: inset(0 0 0 calc(100% - var(--_position)));
+      }
+    }
+
+    p.value {
+      font-variant-numeric: tabular-nums;
+      margin-block: 0;
+    }
+
+    figcaption {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-sm);
+      margin-block: 0;
+    }
+  }
+}

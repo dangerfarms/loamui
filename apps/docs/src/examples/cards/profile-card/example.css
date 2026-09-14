@@ -1,0 +1,68 @@
+@scope (.profile-card) to ([class*="loam-"]) {
+  @layer loamui.components {
+    :scope {
+      --loam-avatar-size: 5rem;
+
+      container-type: inline-size;
+      inline-size: min(100%, 20rem);
+    }
+
+    div.body {
+      display: block grid;
+      font-size: var(--loam-text-md);
+      gap: var(--loam-space-xs);
+      grid-template-columns: minmax(0, 1fr);
+      justify-items: center;
+      overflow-wrap: anywhere;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: var(--loam-text-xl);
+      margin-block: var(--loam-space-sm) 0;
+    }
+
+    p.role {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-sm);
+      margin-block: 0;
+    }
+
+    dl.stats {
+      display: block grid;
+      gap: var(--loam-space-sm);
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 5rem), 1fr));
+      inline-size: 100%;
+      margin-block: var(--loam-space-md) var(--loam-space-sm);
+
+      div {
+        align-content: start;
+        display: block grid;
+        gap: calc(var(--loam-space-xs) / 2);
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      dt {
+        color: var(--loam-color-fg-muted);
+        font-size: var(--loam-text-xs);
+        order: 1;
+      }
+
+      dd {
+        color: var(--loam-color-fg-strong);
+        font-family: var(--loam-font-display);
+        font-size: var(--loam-text-lg);
+        font-variant-numeric: lining-nums tabular-nums;
+        font-weight: 700;
+        line-height: 1.1;
+        margin-block: 0;
+      }
+    }
+
+    div.actions {
+      display: block grid;
+      grid-template-columns: minmax(0, 1fr);
+      inline-size: 100%;
+    }
+  }
+}

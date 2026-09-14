@@ -18,6 +18,7 @@ jobs:
         env:
           PAGES: "true"
       - run: pnpm check:skill
+      - run: pnpm check:prompts
       - run: pnpm check:strings
       - run: pnpm check:scope
       - run: pnpm check:examples

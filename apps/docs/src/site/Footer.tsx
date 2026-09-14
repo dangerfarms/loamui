@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Logo } from "./Logo";
 import { GitHubIcon } from "./Icons";
-import { EXAMPLE_CATEGORIES } from "../examples/categories";
+import { examplesByCategory } from "../examples/catalog";
 import classes from "./Footer.module.css";
 
 const GITHUB_URL = "https://github.com/dangerfarms/loamui";
@@ -26,13 +26,15 @@ const COLUMNS = [
     ],
   },
   {
-    title: "Examples",
+    title: "Recipes",
     links: [
-      { label: "All examples", href: "/examples" },
-      ...EXAMPLE_CATEGORIES.slice(0, 4).map((c) => ({
-        label: c.title,
-        href: `/examples/${c.slug}`,
-      })),
+      { label: "All recipes", href: "/recipes" },
+      ...examplesByCategory()
+        .slice(0, 4)
+        .map(({ category: c }) => ({
+          label: c.title,
+          href: `/recipes/${c.slug}`,
+        })),
     ],
   },
   {

@@ -26,7 +26,7 @@ pnpm dev        # runs the docs site
   component has several roots); parts inside the scope are type selectors or
   short classes (`label`, `p.description`). The encapsulation is `@scope`'s
   job, not the class name's.
-- `apps/docs/src/examples`: the copy-paste examples at `/examples`, one folder
+- `apps/docs/src/examples`: the copy-paste recipes at `/recipes`, one folder
   each, built from core alone and gated by `check:examples`.
 - `apps/docs`: the Next.js marketing + documentation site. Every page of the
   docs site has a markdown twin at the same URL with `.md` appended, and
@@ -204,7 +204,7 @@ component (never invent synonyms):
 | `data-label-position`                                                     | Switch                                                                   | display hook (see Sanctioned exceptions)                                                               |
 | `data-striped` / `data-hover` / `data-col-borders` / `data-sticky-header` | Table                                                                    | display hooks (see Sanctioned exceptions)                                                              |
 | `data-striped` / `data-animated`                                          | Progress (root)                                                          | display hooks (see Sanctioned exceptions)                                                              |
-| `data-show-label`                                                         | Rating (and the scheme-toggle example)                                   | display hook (see Sanctioned exceptions)                                                               |
+| `data-show-label`                                                         | Rating                                                                   | display hook (see Sanctioned exceptions)                                                               |
 | `data-read-only`                                                          | Rating                                                                   | display mode: a picture of the value, not inputs                                                       |
 | `data-dragging`                                                           | `FileInput.Root`                                                         | a drag carrying files is over the box; detected from the drag events, never a prop                     |
 
@@ -238,10 +238,13 @@ components inside it; never blur them:
   drives the fluid `cqi` tokens and Button's narrow-container full-width
   behaviour.
 
-**The control alignment contract**: buttons and form controls share one
-derived anatomy (`padding-block: var(--loam-space-sm)` +
-`font-size: var(--loam-text-sm)` × `line-height: 1.2` + 1px borders), so they
-height-align by construction at every container width. There are no
+**The control alignment contract**: body-sized text and generous padding support
+legibility and touch use. Buttons and form controls share one
+derived anatomy (`padding-block: var(--loam-space-md)` +
+`font-size: var(--loam-text-md)` × `line-height: 1.5` + 1px borders), so they
+height-align for single-line labels at every container width. Labels may wrap
+and controls grow when content needs more room. Native inputs and textareas own
+their padding so the padded area accepts taps. There are no
 control-height tokens and no size props on form controls; a control that
 must match this height renders Button, or adopts the same stack.
 Glyph controls (Checkbox, Radio, Switch, Range) size their geometry in `em`
@@ -278,7 +281,7 @@ a maintainer decides otherwise.
 - RadioGroup `orientation`: emits `data-orientation`; the layout of a set, not
   a control.
 - Switch `labelPosition`: emits `data-label-position`.
-- Rating `showLabel` (and the scheme-toggle example): emits
+- Rating `showLabel`: emits
   `data-show-label`; whether the
   group's name is painted as well as read. Rating `readOnly` emits
   `data-read-only` for display mode.
@@ -304,16 +307,26 @@ The essentials either way:
 3. Keep everything accessible: correct roles, keyboard support, focus-visible rings.
 4. Add or update the component's docs entry in `apps/docs/src/content/components/`.
 
-## Examples (`/examples`)
+## Recipes (`/recipes`)
 
-Core holds primitives; the docs site's examples section holds sections built
-from them the way any consumer would: a hero, a header with dropdowns, a
-sign-in form, a basket. An example is copied and changed, never installed, so
+Core holds primitives; the docs site’s Recipes collection holds selected
+compositions: heroes, cards, timelines and layouts. A recipe is copied and
+changed, never installed, so
 it is written as the markup a reader will paste. Each lives in
 `apps/docs/src/examples/<category>/<slug>/` as four files, and
 `pnpm check:examples` refuses one that breaks the rules below.
 
-1. **It solves a real problem, honestly.** The title and description say
+Recipes are grouped by purpose: Heroes, Banners, Cards, Media, Grids, Content
+and Forms. A hero introduces a page, a banner promotes one message within
+it, and a card represents one item. Each published recipe's `whenToUse` explains
+its distinct purpose and how to choose it over nearby patterns.
+
+Only entries enabled in `apps/docs/src/examples/recipes.ts` are published.
+Keep other entries commented out until reviewed. The generator applies this
+selection to pages, previews, source and agent references; source folders and
+their tests remain available.
+
+1. **It solves a real problem.** The title and description say
    exactly what it does; the content is specific (one fictional organisation,
    Hedgerow, throughout; never lorem); siblings in a category are told apart
    at a glance. A near-duplicate is merged, not added.
@@ -325,8 +338,10 @@ it is written as the markup a reader will paste. Each lives in
    and `./example.css` only. Every rule in `example.css` sits inside
    `@scope (.<slug>…) to ([class*="loam-"])`; a second scope may be rooted at
    a core element to place it (grid area, flex basis, a public `--loam-*`
-   property), never to change how it looks. Tokens only; logical properties;
-   container queries, not media queries.
+   property), never to change how it looks. Use tokens for design values and
+   ordinary CSS for structural geometry. Container queries handle layout;
+   media queries handle user preferences. A query measures an ancestor of
+   the element it styles, independent of the docs preview container.
 4. **The pillars in the copy.** Real elements and the element styles for bare
    markup; `:has()` detection over declared state; status through
    `--loam-context`, remembering that `primary` is the brand slot and
@@ -334,15 +349,30 @@ it is written as the markup a reader will paste. Each lives in
    opt-in; every icon-only control named by hidden text; `role="list"` on a
    list whose markers are stripped.
 5. **Idiomatic, current React.** `"use client"` only where the module needs
-   it (compound parts, hooks, a function passed as a prop; the gate checks);
+   it (compound parts, client hooks, a function passed as a prop; the gate checks);
+   `useId` works in a synchronous Server Component without that directive;
    no effects deriving state; `useId` for ids on a unit that repeats on a
    page; native form attributes over handlers.
 6. **It says why.** `meta.ts` carries one sentence per pillar that applies,
    stating the specific judgment the example encodes, and a comment in the
    stylesheet only where it names a trap, in three lines or fewer.
 7. **It proves one promise.** `example.test.tsx` renders, runs axe, and
-   asserts the one thing the example promises: a landmark's name, a current
-   link, a described-by association.
+   asserts the recipe’s promised behaviour. Check repeated instances, narrow
+   and wide plain parents, both schemes and keyboard interaction. Record
+   visual and contrast checks separately; axe does not verify every pillar.
+
+For a static composition, use [Hero with image](apps/docs/src/examples/heroes/hero-with-image/Example.tsx)
+and its [stylesheet](apps/docs/src/examples/heroes/hero-with-image/example.css)
+as the reference: scoped element selectors, an intrinsic grid, fluid tokens
+resolved inside the measuring container, and core components left to own their
+internals. Recipe CSS declares `@layer loamui.components` inside its donut
+scope: the library’s CSS orchestrator cannot assign a layer to a consumer’s
+stylesheet. The [background-image hero](apps/docs/src/examples/heroes/hero-background-image/Example.tsx)
+shows the corresponding decorative-image pattern with inherited colour scheme
+and content-driven height. Keep classes for meaningful editorial roles such as
+eyebrow and
+lede; a class on every element is unnecessary. Adapt the heading level, content
+and image delivery to the destination page.
 
 ## Before opening a PR
 

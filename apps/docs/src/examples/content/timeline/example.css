@@ -1,0 +1,85 @@
+@scope (.timeline) to ([class*="loam-"]) {
+  @layer loamui.components {
+    :scope {
+      container-type: inline-size;
+    }
+
+    ol {
+      --_dot: 0.875rem;
+      --_gap: var(--loam-space-lg);
+
+      display: block grid;
+      font-size: var(--loam-text-md);
+      gap: var(--_gap);
+      grid-template-columns: minmax(0, 1fr);
+      list-style: none;
+      margin-block: 0;
+      overflow-wrap: anywhere;
+      padding: 0;
+    }
+
+    li {
+      display: block grid;
+      gap: var(--loam-space-xs) var(--loam-space-md);
+      grid-template-areas:
+        "dot date"
+        "dot title"
+        "dot description";
+      grid-template-columns: var(--_dot) minmax(0, 1fr);
+      margin-block: 0;
+
+      &::before {
+        background: var(--loam-color-primary-strong);
+        block-size: var(--_dot);
+        border-radius: var(--loam-radius-full);
+        box-shadow: 0 0 0 3px var(--loam-color-bg);
+        content: "";
+        font-size: var(--loam-text-sm);
+        grid-area: dot;
+        inline-size: var(--_dot);
+        margin-block-start: calc((1lh - var(--_dot)) / 2);
+        z-index: 1;
+      }
+
+      &:not(:last-child)::after {
+        border-inline-start: 1px solid var(--loam-color-line-strong);
+        content: "";
+        grid-area: dot;
+        justify-self: center;
+        margin-block: var(--_dot) calc(-1 * var(--_gap));
+      }
+    }
+
+    time {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-sm);
+      font-variant-numeric: lining-nums tabular-nums;
+      grid-area: date;
+    }
+
+    h3 {
+      grid-area: title;
+      margin-block: 0;
+    }
+
+    p {
+      color: var(--loam-color-fg-muted);
+      grid-area: description;
+      margin-block: 0;
+      max-inline-size: var(--loam-measure);
+      text-wrap: pretty;
+    }
+
+    @media (forced-colors: active) {
+      li {
+        &::before {
+          border: 1px solid CanvasText;
+        }
+
+        &::after {
+          border-color: CanvasText;
+        }
+      }
+    }
+  }
+}

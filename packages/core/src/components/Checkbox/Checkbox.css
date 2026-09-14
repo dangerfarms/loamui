@@ -50,10 +50,11 @@
   }
 
   label {
-    align-items: flex-start;
+    align-items: center;
     cursor: pointer;
     display: block flex;
     gap: var(--loam-space-sm);
+    min-block-size: 2.75rem;
 
     &:has(input:disabled) {
       cursor: not-allowed;
@@ -67,7 +68,7 @@
   }
 
   span.label {
-    font-size: var(--loam-text-sm);
+    font-size: var(--loam-text-md);
     font-weight: 500;
   }
 

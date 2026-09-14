@@ -14,7 +14,7 @@ export const meta: ExampleMeta = {
     composition:
       "Price writes the amount and dresses the qualifier written as its child; Badge and SignpostLink come as they are, and the example only arranges the column between them.",
     context:
-      "The flag is an info region, so the Badge takes the colour from where it sits, not from a prop; change the region to success for a sale and nothing else moves.",
+      "The flag is an info region, so the Badge takes the colour from where it sits, not from a prop; the words explain the category as well as its colour.",
     accessible:
       "The product link names its destination, the photo describes the actual planting, and decorative feature icons are hidden from assistive technology.",
   },

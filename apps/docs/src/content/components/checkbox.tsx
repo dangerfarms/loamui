@@ -86,7 +86,7 @@ const doc: ComponentContent = {
   howItWorks: [
     {
       title: "A native checkbox, styled by accent-color",
-      body: 'This is a plain <input type="checkbox">. No custom SVG box. The elements layer paints it with the platform\'s own accent-color (the neutral primary), so the checked and indeterminate marks, keyboard behaviour and forced-colours support all come from the browser. The component adds only the label/description wiring and the invalid affordance. A context region recolours it because accent-color follows the primary token.',
+      body: 'This is a plain <input type="checkbox">. No custom SVG box. The elements layer paints it with the platform\'s own accent-color (the neutral primary), so the checked and indeterminate marks, keyboard behaviour and forced-colours support all come from the browser. The component adds label/description wiring, the invalid affordance and a label target at least 2.75rem tall. Clicking that label toggles the native control. A context region recolours it because accent-color follows the primary token.',
     },
     {
       title: "One box or a group",

@@ -8,7 +8,7 @@ const LINKS = [
   { name: "Tokens", href: "/docs/tokens" },
   { name: "Element styles", href: "/docs/element-styles" },
   { name: "Components", href: "/docs/components" },
-  { name: "Examples", href: "/examples" },
+  { name: "Recipes", href: "/recipes" },
 ];
 
 /**

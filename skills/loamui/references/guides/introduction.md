@@ -18,7 +18,7 @@ Agent-assisted developers want solid primitives their agents can build bespoke c
 - **[Element styles](/docs/element-styles).** Enhanced default styles for native HTML, page-wide: responsive, accessible, and respecting the reader's light or dark preference. Plain markup is presentable before any component appears.
 - **[Components](/docs/components).** 47 carefully chosen, contextually styled components, and no more. No size, variant or colour props (display components that size an intrinsic glyph, Badge, Loader and Progress, keep `size`): a region declares what it means and everything inside adapts.
 
-Above the primitives sit the [examples](/examples): sections (a hero, pricing, a carousel) built from them the way any consumer would, held to the same pillars, and copied rather than installed. The [Composing guide](/docs/composing) is the recipe for your own.
+Above the primitives sit the [recipes](/recipes): sections (a hero, a timeline, a carousel) built from them the way any consumer would, held to the same pillars, and copied rather than installed. The [Composing guide](/docs/composing) is the recipe for your own.
 
 ## Five pillars
 

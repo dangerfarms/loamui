@@ -8,7 +8,7 @@ afterEach(() => {
   localStorage.clear();
 });
 
-describe("copyable examples", () => {
+describe("copyable recipes", () => {
   it.each(EXAMPLES)("$category/$slug has independent identities when repeated", ({ Example }) => {
     const { container } = render(
       <>

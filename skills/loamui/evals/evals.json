@@ -1,5 +1,5 @@
 {
-  "$comment": "Behavioural evals for the loamui skill. Run each prompt with and without the skill loaded; grade against `expect` and `forbid`. The delta is the skill's value — iterate the SKILL.md wording on whatever fails. See README.md.",
+  "$comment": "Behavioural eval definitions, run in clean consumer projects with and without the skill. Grade generated artifacts and browser behaviour; these definitions are not an automated runner. See README.md.",
   "evals": [
     {
       "id": "danger-button",
@@ -9,12 +9,7 @@
         "Uses <Button> from @loamui/core, not a styled <a> or a div",
         "Does not invent a variant, color, or intent prop"
       ],
-      "forbid": [
-        "variant=",
-        "color=\"danger\"",
-        "className=\"loam-Button",
-        "!important"
-      ]
+      "forbid": ["variant=", "color=\"danger\"", "className=\"loam-Button", "!important"]
     },
     {
       "id": "signup-form",
@@ -22,15 +17,10 @@
       "expect": [
         "Each text control sits inside Field.Root with Field.Label and Field.Error",
         "The optional field uses <Field.Label optional> rather than marking required fields",
-        "No manual id / aria-describedby / aria-invalid on the controls",
+        "Field supplies default relationships; any explicit IDs or descriptions resolve correctly without duplicate IDs",
         "Error messages say what to do in the question's words (e.g. 'Enter your email address')"
       ],
-      "forbid": [
-        " *",
-        "This field is required",
-        "aria-describedby=",
-        "Please enter"
-      ]
+      "forbid": ["This field is required", "Please enter"]
     },
     {
       "id": "wide-modal",
@@ -95,6 +85,89 @@
         "Uses the documented parts and wiring from that reference rather than guessing props"
       ],
       "forbid": ["type=\"date\""]
+    },
+    {
+      "id": "responsive-editorial-grid",
+      "prompt": "Use LoamUI to build an editorial section with one large featured article and two smaller articles. I need to reuse it in a full-width page and a narrow sidebar.",
+      "expect": [
+        "Uses a semantic collection and existing core parts, preserving their surfaces",
+        "At 224px and 1000px in a plain parent there is no page overflow",
+        "Any size query measures an ancestor of the changing layout, with consistent thresholds for tracks and spans",
+        "Links identify their article destinations; no inert buttons or docs-site imports"
+      ],
+      "forbid": ["!important", "className=\"loam-Card\""]
+    },
+    {
+      "id": "independent-faqs",
+      "prompt": "Build a LoamUI FAQ for delivery and another for returns. Show both on the same page.",
+      "expect": [
+        "Keeps primary FAQ answers visible; uses Details only when there is a reason to hide secondary information",
+        "IDs are unique across instances and headings name the correct sections",
+        "If disclosures are exclusive, opening delivery does not close returns",
+        "Provides keyboard and repeated-instance verification results or states what could not be run"
+      ],
+      "forbid": []
+    },
+    {
+      "id": "adapt-recipe",
+      "prompt": "Adapt the LoamUI Article card recipe for a pottery journal with an author, publication date and a link to read the article.",
+      "expect": [
+        "Reads the published recipe and relevant component references",
+        "Changes the article copy, author, image alternative text, date and destination coherently",
+        "Uses a link for article navigation and retains Card surface ownership",
+        "Keeps copied React and CSS independent of the docs catalog and preview machinery",
+        "Uses tokens for design values while allowing structural dimensions",
+        "Checks the reference against the workflow and verifies the adaptation rather than assuming publication certifies conformance",
+        "Declares scoped recipe rules in loamui.components and resolves fluid type within its measuring region"
+      ],
+      "forbid": ["@/renderer/", "@/examples/"]
+    },
+    {
+      "id": "choose-banner-recipe",
+      "prompt": "Use LoamUI to add a short seed-sale promotion halfway down an existing page. The photograph should fill the background and there should be one link to the sale.",
+      "expect": [
+        "Reads the Banner with background image recipe and its When to use guidance",
+        "Uses a compact named section with an appropriate heading, one navigation link and a decorative image",
+        "Does not turn the promotion into a page-opening hero or force it into the Card primitive",
+        "Checks narrow layout and text contrast against the image overlay in the consuming theme"
+      ],
+      "forbid": ["<h1", "variant=", "fullWidth="]
+    },
+    {
+      "id": "consumer-setup-approval",
+      "prompt": "Use LoamUI to add an image hero to this existing React application. Ask me before changing shared setup.",
+      "environment": "React 19 project without @loamui/core, with an unlayered img height:auto rule; existing package manager and app root provided.",
+      "expect": [
+        "Inspects dependencies, stylesheet order and relevant global CSS before editing",
+        "Explains the missing package and specific CSS conflict and proposes minimal affected files",
+        "Waits for setup approval; does not migrate unrelated application styling",
+        "After approval uses real package exports and verifies image height on a direct load and client navigation"
+      ],
+      "forbid": ["className=\"loam-Button"]
+    },
+    {
+      "id": "chat-source-only",
+      "prompt": "Use LoamUI to make a sign-in form with validation errors.",
+      "environment": "No repo, package installation, network or renderer; provide the skill with its bundled references.",
+      "expect": [
+        "Uses offline component and recipe contracts",
+        "Provides real package imports, complete React and CSS plus required integration",
+        "States that rendering and runtime tests could not run",
+        "Does not emulate core or claim the result is verified"
+      ],
+      "forbid": []
+    },
+    {
+      "id": "recipe-clipboard",
+      "prompt": "Paste the exact generated Hero with image recipe prompt, without extra implementation hints.",
+      "environment": "Fresh React 19 project with core and its stylesheet installed; no skill or network access. Give the agent only the generated prompt and project.",
+      "expect": [
+        "Uses the embedded workflow, recipe source and contracts without needing live documentation",
+        "Preserves real LoamUI components and standalone recipe files",
+        "Checks layer order and verifies content-driven image containment, parent widths and keyboard behaviour",
+        "Reports actual checks and gaps instead of blanket certification"
+      ],
+      "forbid": ["@/examples/", "@/renderer/"]
     }
   ]
 }

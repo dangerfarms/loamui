@@ -4,8 +4,8 @@ import Link from "next/link";
 import { Breadcrumbs } from "@loamui/core";
 
 /**
- * The trail above a category (Examples → the category) or an example
- * (Examples → its category → the example). The items are built as a list
+ * The trail above a category (Recipes → the category) or an example
+ * (Recipes → its category → the example). The items are built as a list
  * so the root never sees a false child, which would draw a separator
  * after the current item.
  */
@@ -18,11 +18,11 @@ export function ExampleCrumbs({
   title?: string;
 }) {
   const items = [
-    <Breadcrumbs.Item key="examples" render={<Link href="/examples" />}>
-      Examples
+    <Breadcrumbs.Item key="recipes" render={<Link href="/recipes" />}>
+      Recipes
     </Breadcrumbs.Item>,
     title ? (
-      <Breadcrumbs.Item key="category" render={<Link href={`/examples/${category.slug}`} />}>
+      <Breadcrumbs.Item key="category" render={<Link href={`/recipes/${category.slug}`} />}>
         {category.title}
       </Breadcrumbs.Item>
     ) : (

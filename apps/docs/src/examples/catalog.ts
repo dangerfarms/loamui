@@ -23,5 +23,5 @@ export function componentsUsed(): { name: string; count: number }[] {
 }
 
 export function exampleHref(e: Pick<ExampleMetaEntry, "category" | "slug">): string {
-  return `/examples/${e.category}/${e.slug}`;
+  return `/recipes/${e.category}/${e.slug}`;
 }

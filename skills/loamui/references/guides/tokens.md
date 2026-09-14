@@ -198,14 +198,28 @@ Start here when theming:
 The type (`--loam-text-xs`…`3xl`) and spacing (`--loam-space-xs`…`xl`) scales are fluid `clamp()`
 values in container units (`cqi`), generated with [Utopia](https://utopia.fyi); the calculator
 parameters are committed as comments in `tokens.css`. Without a container they respond to the
-viewport; declare one on any region to make its LoamUI typography respond to _that region's_
-width instead:
+viewport. A container affects values resolved on its descendants; it does not
+recompute a font size inherited from outside. Resolve the body font token on a
+content element inside the measuring region:
 
 ```css
-.sidebar {
-  container-type: inline-size; /* LoamUI text in here now scales to the sidebar */
+@scope (.sidebar) to ([class*="loam-"]) {
+  @layer loamui.components {
+    :scope {
+      container-type: inline-size;
+    }
+
+    > div {
+      font-size: var(--loam-text-md);
+      padding: var(--loam-space-md);
+    }
+  }
 }
 ```
+
+The container itself measures an ancestor when it uses `cqi`. Put locally
+responsive type and spacing on its content, and test the composition in a
+plain parent without a preview wrapper.
 
 Corner radii are deliberately _not_ fluid: rounding shouldn't breathe. Control heights aren't
 tokens at all: buttons and form controls share one derived anatomy (padding + line-height +
@@ -213,61 +227,61 @@ border), so they align by construction at every container width.
 
 > Because tokens cascade, you can theme per-brand or per-section by setting variables on any wrapper element; the whole theme is just values in the cascade.
 
-## Extending & overriding styles
+## Extending styles through public contracts
 
-Tokens cover most theming. When you need to change something a token doesn't expose, LoamUI gives
-you three escape hatches, and none of them need `!important`.
+Theme with semantic tokens, and use the documented public custom properties for
+component-specific adjustments. Inspect the component reference before using a
+hook; the internal `--_*` variables and `loam-*` classes are not an application
+styling API. Do not bypass the component by copying its class onto raw HTML.
 
-### 1. Target the class names
-
-Every component's scope root has a stable, prefixed class: `.loam-Button`, `.loam-Card`,
-`.loam-Input-field`, and so on. The parts inside are plain elements and short classes, shown in
-each component's CSS tab. Because LoamUI's styles live inside a CSS `@layer`, any rule you write
-_outside_ a layer automatically beats them; you never fight specificity:
-
-```css
-/* Unlayered CSS always wins over LoamUI's layered CSS: no !important */
-.loam-Button {
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.loam-Card {
-  box-shadow: 0 10px 40px -12px rgb(0 0 0 / 0.25);
-}
-```
-
-### 2. Add your own className
-
-Every component forwards `className` and `style` (and all native DOM props) to its root element,
-so you can scope overrides to specific instances:
+For example, a wider Modal uses its public sizing property:
 
 ```tsx
-<Button className="cta">Subscribe</Button>
+<Modal.Popup style={{ "--loam-modal-size": "48rem" }}>
+  <Modal.Title>Release notes</Modal.Title>
+  <p>Changes in this release.</p>
+</Modal.Popup>
+```
+
+Compose it inside `Modal.Root` with a `Modal.Trigger`, following the
+[Modal reference](/docs/components/modal). This is a documented geometry hook;
+it does not require a new appearance prop or a selector into the popup.
+
+Your own root class can own layout. Keep the core surface, padding and internals
+intact, and use a scope limit for embedded components:
+
+```tsx
+<section className="plans">
+  <ul>
+    <Card render={<li />}>
+      <h2>Team plan</h2>
+      <p>A shared workspace for your team.</p>
+      <SignpostLink href="/plans/team">Explore the team plan</SignpostLink>
+    </Card>
+  </ul>
+</section>
 ```
 
 ```css
-.cta {
-  border-radius: 999px;
-  padding-inline: 2rem;
-}
-```
+@scope (.plans) to ([class*="loam-"]) {
+  @layer loamui.components {
+    :scope {
+      container-type: inline-size;
+    }
 
-### 3. Order your own layer
-
-Prefer explicit control over the cascade? Declare a layer _after_ LoamUI's and put your overrides
-there; they win by layer order, no matter the selector specificity:
-
-```css
-/* Declare the full order once: correct wherever it appears,
-   before or after importing LoamUI's stylesheet. */
-@layer loamui.tokens, loamui.elements, loamui.components, app;
-
-@layer app {
-  .loam-Tabs .tab {
-    font-weight: 600;
+    ul {
+      display: block grid;
+      gap: var(--loam-space-lg);
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+      list-style: none;
+      padding-inline-start: 0;
+    }
   }
 }
 ```
 
-> The class names are a stable, documented API; the exact selectors for every component are in its real stylesheet, under the **CSS** tab on its docs page.
+Import `Card` and `SignpostLink` from `@loamui/core`. The list owns layout; Card
+owns its surface. There is no extra app layer that overrides private core
+selectors. Establish `loamui.tokens`, `loamui.elements`, `loamui.components`
+in that order before any styles register them, as described in
+[installation](/docs/installation).

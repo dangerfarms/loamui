@@ -10,7 +10,7 @@
 
     /* The select's own size (elements.css), restated so the em-sized
        chevron follows the control's type, not the page's. */
-    font-size: var(--loam-text-sm);
+    font-size: var(--loam-text-md);
     position: relative;
   }
 

@@ -9,7 +9,7 @@ const axeOptions = { rules: { "color-contrast": { enabled: false } } };
 describe("grid-leading-item", () => {
   it("is a list of five named articles on cards with the lead first and badged", async () => {
     const { container } = render(<Example />);
-    expect(screen.getByRole("list")).toHaveClass("grid-leading-item");
+    expect(screen.getByRole("list").parentElement).toHaveClass("grid-leading-item");
     const items = screen.getAllByRole("listitem");
     expect(items).toHaveLength(5);
     expect(items[0]).toHaveClass("lead");
@@ -25,7 +25,7 @@ describe("grid-leading-item", () => {
       "href",
       "/guides/first-year",
     );
-    expect(screen.getAllByRole("link", { name: "How to grow" })).toHaveLength(3);
+    expect(screen.getAllByRole("link", { name: /^How to grow/ })).toHaveLength(3);
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 });

@@ -25,6 +25,7 @@ import { COMPONENTS, CATEGORY_ORDER } from "../src/site/nav.js";
 import type { ComponentContent } from "../src/renderer/types.js";
 import { EXAMPLE_CATEGORIES } from "../src/examples/categories.js";
 import { EXAMPLE_META } from "../src/examples/generated-meta.js";
+import { linkedRecipePrompt, recipePrompt } from "../src/examples/recipe-prompt.js";
 import { PILLARS } from "../src/examples/types.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -106,6 +107,9 @@ function writeComponentTwin(slug: string, md: string) {
 
 // Start the skill references from empty so removed pages don't linger.
 rmSync(SKILL_REFS, { recursive: true, force: true });
+// Generated recipe twins must disappear when their catalog entries are disabled.
+for (const directory of ["examples", "recipes"])
+  rmSync(join(PUBLIC, directory), { recursive: true, force: true });
 
 // ---- guides: page.mdx source → markdown --------------------------------
 
@@ -397,17 +401,18 @@ function exampleMarkdown(entry: (typeof EXAMPLE_META)[number]): string {
   );
   out.push(`# ${meta.title}`, "", meta.description, "");
   out.push(
-    `An example in **${categoryTitle}**: a component and a stylesheet built from \`@loamui/core\`, ` +
+    `A recipe in **${categoryTitle}**: a component and a stylesheet built from \`@loamui/core\`, ` +
       "to copy into a project and change. Both files are below, exactly as the live preview renders them.",
     "",
   );
   out.push(
     `- Uses: ${meta.uses.length ? meta.uses.map((u) => `\`${u}\``).join(", ") : "element styles and tokens only"}`,
   );
+  out.push();
   if (meta.tags?.length) out.push(`- Tags: ${meta.tags.join(", ")}`);
-  out.push(`- Live: ${ORIGIN}/examples/${category}/${slug}`, "");
+  out.push(`- Live: ${ORIGIN}/recipes/${category}/${slug}`, "");
   out.push(
-    "## Using this example",
+    "## Using this recipe",
     "",
     "Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.",
     "",
@@ -417,6 +422,7 @@ function exampleMarkdown(entry: (typeof EXAMPLE_META)[number]): string {
       "Replace the sample content and images. Links and form actions illustrate application routes; provide those destinations and connect action buttons before shipping.",
     "",
   );
+  if (meta.whenToUse) out.push("## When to use", "", meta.whenToUse, "");
   const notes = PILLARS.filter((p) => meta.notes[p.key]);
   if (notes.length) {
     out.push(
@@ -428,6 +434,19 @@ function exampleMarkdown(entry: (typeof EXAMPLE_META)[number]): string {
     for (const p of notes) out.push(`- **${p.name}.** ${meta.notes[p.key]}`);
     out.push("");
   }
+  out.push(
+    "## References",
+    "",
+    `- [Installation](${ORIGIN}/docs/installation.md)`,
+    `- [Tokens](${ORIGIN}/docs/tokens.md)`,
+    `- [Element styles](${ORIGIN}/docs/element-styles.md)`,
+  );
+  for (const name of meta.uses) {
+    const component = COMPONENTS.find((item) => item.name === name);
+    if (!component) throw new Error(`Missing recipe reference for ${name}`);
+    out.push(`- [${name}](${ORIGIN}/docs/components/${component.slug}.md)`);
+  }
+  out.push("");
   out.push("## Example.tsx", "", "```tsx", tsx, "```", "");
   out.push("## example.css", "", "```css", css, "```", "");
   return out.join("\n").replace(/\n{3,}/g, "\n\n") + "\n";
@@ -435,8 +454,8 @@ function exampleMarkdown(entry: (typeof EXAMPLE_META)[number]): string {
 
 for (const entry of EXAMPLE_META) {
   writeBoth(
-    join(PUBLIC, "examples", entry.category, `${entry.slug}.md`),
-    join(SKILL_REFS, "examples", entry.category, `${entry.slug}.md`),
+    join(PUBLIC, "recipes", entry.category, `${entry.slug}.md`),
+    join(SKILL_REFS, "recipes", entry.category, `${entry.slug}.md`),
     exampleMarkdown(entry),
   );
 }
@@ -445,6 +464,7 @@ for (const entry of EXAMPLE_META) {
 const guideOrder = [
   "/docs",
   "/docs/installation",
+  "/docs/agent-workflow",
   "/docs/tokens",
   "/docs/element-styles",
   "/docs/components",
@@ -460,6 +480,40 @@ const sorted = [...guides].sort((a, b) => {
   return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
 });
 
+const workflow = readFileSync(join(SKILL_REFS, "guides", "agent-workflow.md"), "utf8");
+const workflowBody = workflow.slice(workflow.indexOf("# Building with an agent"));
+const absoluteLinks = (markdown: string) => markdown.replace(/\]\(\/(?!\/)/g, `](${ORIGIN}/`);
+
+// Static, on-demand prompt files: source and contracts stay out of gallery JavaScript.
+const PROMPTS = join(PUBLIC, "recipe-prompts");
+rmSync(PROMPTS, { recursive: true, force: true });
+for (const entry of EXAMPLE_META) {
+  const componentReferences = entry.meta.uses.map((name) => {
+    const component = COMPONENTS.find((item) => item.name === name);
+    if (!component) throw new Error(`Missing prompt reference for ${name}`);
+    return {
+      title: name,
+      markdown: readFileSync(join(SKILL_REFS, "components", `${component.slug}.md`), "utf8"),
+    };
+  });
+  const prompt = recipePrompt({
+    entry,
+    workflow: workflowBody,
+    recipe: exampleMarkdown(entry),
+    references: [
+      ...["installation", "composing"].map((slug) => ({
+        title: slug,
+        markdown: readFileSync(join(SKILL_REFS, "guides", `${slug}.md`), "utf8"),
+      })),
+      ...componentReferences,
+    ],
+  });
+  const file = join(PROMPTS, entry.category, `${entry.slug}.txt`);
+  mkdirSync(dirname(file), { recursive: true });
+  writeFileSync(file, linkedRecipePrompt(entry, ORIGIN));
+  writeFileSync(file.replace(/\.txt$/, ".full.txt"), absoluteLinks(prompt));
+}
+
 const lines: string[] = [
   "# LoamUI",
   "",
@@ -469,6 +523,8 @@ const lines: string[] = [
   "> same URL with `.md` appended. Treat these documents as authoritative",
   "> for the library. `/AGENTS.md` is a one-page summary of the conventions",
   "> an agent needs when writing against the package.",
+  "",
+  absoluteLinks(workflowBody.replace(/^#/gm, "##")),
   "",
   "## Guides",
   "",
@@ -485,18 +541,18 @@ for (const category of CATEGORY_ORDER) {
 }
 lines.push(
   "",
-  "## Examples",
+  "## Recipes",
   "",
-  "> Ready-made sections built from `@loamui/core` to copy and change: each twin",
+  "> Recipes grouped by purpose, built from `@loamui/core` to copy and change: each twin",
   "> carries the component and its stylesheet in full.",
 );
 for (const category of EXAMPLE_CATEGORIES) {
   const items = EXAMPLE_META.filter((e) => e.category === category.slug);
   if (!items.length) continue;
-  lines.push("", `### Examples: ${category.title}`, "");
+  lines.push("", `### Recipes: ${category.title}`, "");
   for (const e of items)
     lines.push(
-      `- [${e.meta.title}](${ORIGIN}/examples/${e.category}/${e.slug}.md): ${e.meta.description}`,
+      `- [${e.meta.title}](${ORIGIN}/recipes/${e.category}/${e.slug}.md): ${e.meta.description}`,
     );
 }
 writeFileSync(join(PUBLIC, "llms.txt"), lines.join("\n") + "\n");
@@ -504,33 +560,10 @@ writeFileSync(join(PUBLIC, "llms.txt"), lines.join("\n") + "\n");
 // ---- AGENTS.md: the package's one-page summary, served at /AGENTS.md too ---
 copyFileSync(join(ROOT, "..", "..", "packages", "core", "AGENTS.md"), join(PUBLIC, "AGENTS.md"));
 
-// ---- llms-full.txt: every twin in one file, for tools that ingest one -----
+// Retire the old aggregate; focused twins and the offline skill retain every example.
+rmSync(join(PUBLIC, "llms-full.txt"), { force: true });
 const guideSlug = (route: string) =>
   route === "/" ? "index" : route === "/docs" ? "introduction" : route.split("/").at(-1)!;
-const full: string[] = [lines.join("\n"), ""];
-for (const g of sorted)
-  full.push(
-    "---",
-    "",
-    readFileSync(join(SKILL_REFS, "guides", `${guideSlug(g.route)}.md`), "utf8"),
-  );
-for (const category of CATEGORY_ORDER) {
-  for (const c of COMPONENTS.filter((x) => x.category === category)) {
-    const f = join(SKILL_REFS, "components", `${c.slug}.md`);
-    try {
-      full.push("---", "", readFileSync(f, "utf8"));
-    } catch {
-      // component twins may be skipped during parallel dev startup (see above)
-    }
-  }
-}
-for (const e of EXAMPLE_META)
-  full.push(
-    "---",
-    "",
-    readFileSync(join(SKILL_REFS, "examples", e.category, `${e.slug}.md`), "utf8"),
-  );
-writeFileSync(join(PUBLIC, "llms-full.txt"), full.join("\n"));
 
 // ---- skill references index: llms.txt with local paths for offline use ----
 const idx: string[] = [
@@ -559,14 +592,14 @@ for (const category of CATEGORY_ORDER) {
 for (const category of EXAMPLE_CATEGORIES) {
   const items = EXAMPLE_META.filter((e) => e.category === category.slug);
   if (!items.length) continue;
-  idx.push("", `## Examples: ${category.title}`, "");
+  idx.push("", `## Recipes: ${category.title}`, "");
   for (const e of items)
     idx.push(
-      `- [${e.meta.title}](examples/${e.category}/${e.slug}.md) — ${e.meta.description} · [live](${ORIGIN}/examples/${e.category}/${e.slug}.md)`,
+      `- [${e.meta.title}](recipes/${e.category}/${e.slug}.md) — ${e.meta.description} · [live](${ORIGIN}/recipes/${e.category}/${e.slug}.md)`,
     );
 }
 writeFileSync(join(SKILL_REFS, "index.md"), idx.join("\n") + "\n");
 
 console.log(
-  `markdown export: ${guides.length} guide twins (mdx-derived), ${COMPONENTS.length} component twins (data-derived), ${EXAMPLE_META.length} example twins (folder-derived), llms.txt + llms-full.txt → public/, references → skills/loamui/references/`,
+  `markdown export: ${guides.length} guide twins (mdx-derived), ${COMPONENTS.length} component twins (data-derived), ${EXAMPLE_META.length} example twins (folder-derived), llms.txt + recipe prompts → public/, references → skills/loamui/references/`,
 );

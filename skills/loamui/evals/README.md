@@ -9,11 +9,17 @@ skill's wording is edited against evidence, not taste.
    depends on `@loamui/core`.
 2. For each eval, run the prompt **twice**: once with the `loamui` skill
    installed (`npx skills add dangerfarms/loamui`), once without.
-3. Grade both outputs against `expect` (all should hold) and `forbid` (none
-   should appear). Record pass/fail per run.
-4. The delta between the two runs is the skill's value. Anything the skill
-   run fails is a wording problem in `SKILL.md`: fix the rule or gotcha that
-   should have caught it, then re-run that eval.
+3. Repeat each condition and record the agent/model, package and skill versions,
+   prompt, transcript, generated files and checks performed. Verify whether the
+   skill activated and which references the agent read.
+4. Grade the generated artifacts against every `expect` item. Treat `forbid`
+   strings as review signals in executable code, not failures in quoted
+   explanations. Run types and interaction checks and inspect browser output.
+5. Record first-attempt success separately from success after a bounded repair.
+   Classify failures as activation, retrieval, conflicting guidance, implementation
+   or grading errors before changing instructions. Fix the demonstrated cause
+   and rerun the affected cases. A skill pass rate is evidence for those trials,
+   not a guarantee for all prompts.
 
 ## Writing a new eval
 
@@ -22,3 +28,21 @@ words a developer would actually type), `expect` items a grader can verify in
 the output, and `forbid` strings whose presence is a definite failure. Keep the
 prompt free of hints that give the answer away — the point is to test the
 skill, not the prompt.
+
+These are manual evaluation definitions. `check:skill` verifies documentation
+drift and reference integrity; it does not run an agent or establish generation
+quality. Browser checks and human visual review remain separate from type checks.
+
+## Environment and clipboard trials
+
+Run `consumer-setup-approval` in a clean consumer project and record the proposed
+setup before granting approval. Run `chat-source-only` with no network or runtime.
+For `recipe-clipboard`, paste the exact generated prompt rather than paraphrasing
+it or adding hints. Repeat with Sign in with errors to exercise Field wiring,
+native validation, value preservation and application submission boundaries.
+
+`pnpm check:prompts` checks the generated prompt source against the real recipe
+files and verifies included component references. Run the docs export first.
+This is an artifact integrity check, not an LLM generation trial. Record actual
+model runs separately; do not report these scenarios as passed merely because
+the generated files or unit tests pass.

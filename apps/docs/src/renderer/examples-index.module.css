@@ -135,7 +135,7 @@
   border: 1px solid var(--loam-color-line);
   border-radius: var(--loam-radius-lg);
   display: block grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto 1fr auto;
   margin: 0;
   overflow: clip;
   position: relative;

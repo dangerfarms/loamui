@@ -13,13 +13,13 @@ afterEach(cleanup);
 
 const props = {
   source: { tsx: "export default function Example() {}", css: "" },
-  href: "/examples/forms/sign-in",
+  href: "/recipes/forms/sign-in",
 };
 
 describe("ExampleCodePanel", () => {
   it("serves a source link without JavaScript or highlighted code", () => {
     const html = renderToString(<ExampleCodePanel {...props} />);
-    expect(html).toContain("/examples/forms/sign-in#code");
+    expect(html).toContain("/recipes/forms/sign-in#code");
     expect(html).not.toContain("<pre");
     expect(loadCode).not.toHaveBeenCalled();
   });

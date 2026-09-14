@@ -8,7 +8,7 @@ description: Install LoamUI in any React framework.
 
 # Installation
 
-LoamUI works in any React 19 setup. There's no provider and no build plugin: just a package and a stylesheet.
+LoamUI targets React 19 and ESM. There is no provider. Before changing an existing application, check its package version, CSS pipeline and stylesheet order with the [agent workflow](/docs/agent-workflow).
 
 ## 1. Install the package
 
@@ -22,21 +22,35 @@ Import the stylesheet **once** at the root of your app. It carries all three pri
 `--loam-*` tokens, the element styles, and the component styles.
 
 ```tsx
-// Next.js App Router: app/layout.tsx
+// A bundler entry that accepts the stylesheet, for example Vite main.tsx
 import "@loamui/core/styles.css";
 ```
+
+Declare the layer order in your earliest application stylesheet, before any recipe CSS:
+
+```css
+@layer loamui.tokens, loamui.elements, loamui.components;
+```
+
+Layer order is established on first appearance. Loading this declaration later cannot reorder layers already created by recipe styles. Check a direct page load and client navigation; bundlers can load their CSS before manually linked stylesheets.
 
 ## 3. Use a component
 
 ```tsx
-import { Button, Field, Input } from "@loamui/core";
+"use client";
+
+import { Button, Field, Input, PasswordInput } from "@loamui/core";
 
 export function SignIn() {
   return (
-    <form>
+    <form action="/sign-in" method="post">
       <Field.Root>
         <Field.Label>Email</Field.Label>
-        <Input type="email" autoComplete="email" />
+        <Input name="email" type="email" autoComplete="username" required />
+      </Field.Root>
+      <Field.Root>
+        <Field.Label>Password</Field.Label>
+        <PasswordInput name="password" autoComplete="current-password" required />
       </Field.Root>
       <Button type="submit">Sign in</Button>
     </form>
@@ -44,26 +58,28 @@ export function SignIn() {
 }
 ```
 
+Connect `/sign-in` to your authentication endpoint. For error handling and layout, use the complete [Sign in with errors recipe](/recipes/forms/sign-in-with-errors).
+
 ## Framework notes
 
 ### Next.js
 
-LoamUI components are React Server Component friendly. Interactive components mark themselves
-`"use client"` as needed, so you can drop them anywhere.
+Use client boundaries for interactive compositions, including compound Field parts; keep static compositions on the server where supported.
 
-Next's CSS pipeline (lightningcss) does not yet parse two features the stylesheet uses,
-`@container anchored()` and `position-try`, so importing `@loamui/core/styles.css` fails the
-build. Serve it as a static file instead: copy it to `public/` in a `prebuild` script and add
+Some Next.js CSS toolchains reject features such as `@container anchored()` and `position-try`. Test the installed toolchain rather than assuming support from the framework name. If the stylesheet import fails, preserve the finished library CSS and serve it as a static file instead: copy it to `public/` in a `prebuild` script and add
 `<link rel="stylesheet" href="/loamui-core.css" />` to the root layout's `<head>`.
 
 ```js
 // scripts/sync-loamui-css.mjs — run from "prebuild" and "predev"
-import { copyFileSync } from "node:fs";
+import { copyFileSync, mkdirSync } from "node:fs";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
+mkdirSync("public", { recursive: true });
 copyFileSync(require.resolve("@loamui/core/styles.css"), "public/loamui-core.css");
 ```
+
+The earliest application stylesheet still declares the layer order above. Keep the static copy synchronized in development and production; version its URL or configure revalidation so deployments cannot keep serving an old stylesheet.
 
 ### Vite
 

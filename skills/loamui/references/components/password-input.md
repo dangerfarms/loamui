@@ -20,7 +20,7 @@ import { Field, PasswordInput } from "@loamui/core";
 
 ### Signing in
 
-The library's Input with type password, beside a Button that shows the text. Inside Field.Root the input reads its id from the field, so Field.Label is wired without any props; autoComplete tells a password manager which password this is.
+The library's Input with type password, with a Button that shows the text. The toggle sits beside the input when both fit and below it in narrower spaces. Inside Field.Root the input reads its id from the field, so Field.Label is wired without any props; autoComplete tells a password manager which password this is.
 
 ```tsx
 <Field.Root>
@@ -79,7 +79,7 @@ The toggle's words come from labels; the rest is the page's own.
 ## When not to
 
 - For a one-time code or a PIN sent to the user: it is not a secret they chose, so use Input with inputMode numeric and autoComplete one-time-code.
-- For the whole of a sign-up form's password step, with a strength reading and a list of rules ticked as they are met: that is the Password strength example (/examples/forms/password-strength), built on this control.
+- Password policy belongs to your application. Explain its actual requirements beside the field and avoid strength claims based only on length.
 
 ## How it works
 

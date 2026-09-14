@@ -11,23 +11,23 @@ import classes from "./examples-rail.module.css";
 export function ExamplesRail({ current }: { current?: string }) {
   const groups = examplesByCategory();
   return (
-    <nav className={classes.rail} aria-label="Example categories">
+    <nav className={classes.rail} aria-label="Recipe categories">
       <ul className={classes.list}>
         <li>
           <Link
-            href="/examples"
+            href="/recipes"
             prefetch={false}
             className={classes.link}
             aria-current={current ? undefined : "page"}
           >
-            <span>All examples</span>
+            <span>All recipes</span>
             <span className={classes.count}>{EXAMPLE_META.length}</span>
           </Link>
         </li>
         {groups.map(({ category, items }) => (
           <li key={category.slug}>
             <Link
-              href={`/examples/${category.slug}`}
+              href={`/recipes/${category.slug}`}
               prefetch={false}
               className={classes.link}
               aria-current={current === category.slug ? "page" : undefined}
