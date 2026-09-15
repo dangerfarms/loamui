@@ -3,7 +3,7 @@
     container-type: inline-size;
     display: block flex;
     flex-direction: column;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     max-inline-size: 36rem;
   }
 
@@ -19,7 +19,7 @@
     align-items: start;
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     justify-content: space-between;
   }
 
@@ -45,7 +45,7 @@
   ul.features {
     display: block grid;
     font-size: var(--loam-text-sm);
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     list-style: none;
     margin: 0;
     padding: 0;
@@ -53,7 +53,7 @@
     > li {
       align-items: center;
       display: block flex;
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
       margin: 0;
     }
 
@@ -70,10 +70,10 @@
     border-block-start: 1px solid var(--loam-color-line);
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     justify-content: space-between;
     margin-block-start: auto;
-    padding-block-start: var(--loam-space-md);
+    padding-block-start: var(--loam-space-xs);
   }
 
   p.price {

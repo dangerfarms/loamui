@@ -1,11 +1,9 @@
 "use client";
 
-import { useId, useState, type ReactNode } from "react";
-import { CopyButton } from "@loamui/core";
+import { type ReactNode } from "react";
+import { CopyButton, Tabs } from "@loamui/core";
 import { CodeBlock } from "@/renderer/CodeBlock";
-import classes from "./AgentShowcase.module.css";
-
-type Tab = "result" | "tsx" | "css";
+import "./AgentShowcase.css";
 
 /**
  * The homepage's "ask, get, look under the hood" panel: the prompt a
@@ -32,26 +30,23 @@ export function AgentShowcase({
   caption: string;
   children: ReactNode;
 }) {
-  const [tab, setTab] = useState<Tab>("result");
-  const baseId = useId();
-
   return (
-    <div className={classes.grid}>
-      <div className={classes.ask}>
-        <h3 className={classes.step}>Ask</h3>
+    <div className="site-AgentShowcase">
+      <div className="ask">
+        <h3 className="step">Ask</h3>
         {skillCommand && (
           <>
-            <p className={classes.label}>
-              <a href="/docs/composing">Read the recipe</a> or add the skill:
-              {skillNote && <span className={classes.note}>{skillNote}</span>}
+            <p className="label">
+              Add the skill:
+              {skillNote && <span className="note">{skillNote}</span>}
             </p>
-            <div className={classes.command}>
-              <span className={classes.prompt} aria-hidden>
+            <div className="command">
+              <span className="prompt" aria-hidden>
                 $
               </span>
               <code>{skillCommand}</code>
               <CopyButton
-                className={classes.copy}
+                className="copy"
                 value={skillCommand}
                 aria-label="Copy the skill install command"
               >
@@ -60,50 +55,42 @@ export function AgentShowcase({
             </div>
           </>
         )}
-        <p className={classes.label}>
-          {skillCommand ? "Or point the agent at " : "Point the agent at "}
-          <a href="/llms.txt">llms.txt</a>:
+        <p className="label">
+          {skillCommand ? (
+            "And then write a prompt using it:"
+          ) : (
+            <>
+              Point the agent at <a href="/llms.txt">llms.txt</a>:
+            </>
+          )}
         </p>
-        <div className={classes.promptBox}>
+        <div className="promptBox">
           <p>{prompt}</p>
-          <CopyButton className={classes.copy} value={prompt} aria-label="Copy the prompt">
+          <CopyButton className="copy" value={prompt} aria-label="Copy the prompt">
             Copy
           </CopyButton>
         </div>
       </div>
 
-      <div className={classes.code}>
-        <div className={classes.codeHead}>
-          <h3 className={classes.step}>Under the hood</h3>
-          <div role="tablist" aria-label="Generated code" className={classes.tabs}>
-            {(["result", "tsx", "css"] as const).map((t) => (
-              <button
-                key={t}
-                type="button"
-                role="tab"
-                id={`${baseId}-tab-${t}`}
-                aria-selected={tab === t}
-                aria-controls={`${baseId}-panel-${t}`}
-                tabIndex={tab === t ? 0 : -1}
-                className={classes.tab}
-                onClick={() => setTab(t)}
-              >
-                {t === "result" ? "Result" : t === "tsx" ? "Component" : "Stylesheet"}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div
-          role="tabpanel"
-          id={`${baseId}-panel-${tab}`}
-          aria-labelledby={`${baseId}-tab-${tab}`}
-          className={classes.panel}
-        >
-          {tab === "result" && <div className={classes.stage}>{children}</div>}
-          {tab === "tsx" && <CodeBlock code={tsx} language="tsx" />}
-          {tab === "css" && <CodeBlock code={css} language="css" />}
-        </div>
-        <p className={classes.caption}>{caption}</p>
+      <div className="code">
+        <h3 className="step">Under the hood</h3>
+        <Tabs.Root defaultValue="result">
+          <Tabs.List aria-label="Generated code">
+            <Tabs.Tab value="result">Preview</Tabs.Tab>
+            <Tabs.Tab value="tsx">React</Tabs.Tab>
+            <Tabs.Tab value="css">CSS</Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panel value="result">
+            <div className="site-AgentShowcase-stage">{children}</div>
+          </Tabs.Panel>
+          <Tabs.Panel value="tsx">
+            <CodeBlock code={tsx} language="tsx" />
+          </Tabs.Panel>
+          <Tabs.Panel value="css">
+            <CodeBlock code={css} language="css" />
+          </Tabs.Panel>
+        </Tabs.Root>
+        <p className="caption">{caption}</p>
       </div>
     </div>
   );

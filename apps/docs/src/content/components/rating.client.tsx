@@ -5,7 +5,7 @@ import { Rating } from "@loamui/core";
 /** Function-valued `labels` cannot cross the server/client boundary, so this demo is a client component. */
 export function RatingLabelsDemo() {
   return (
-    <div style={{ display: "grid", gap: "var(--loam-space-sm)", justifyItems: "start" }}>
+    <div style={{ display: "grid", gap: "var(--loam-space-2xs)", justifyItems: "start" }}>
       <Rating
         label="Notez cette recette"
         labels={{

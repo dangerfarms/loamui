@@ -12,7 +12,7 @@
     div.body {
       display: block grid;
       font-size: var(--loam-text-md);
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
       grid-template-columns: minmax(0, 1fr);
       overflow-wrap: anywhere;
     }
@@ -21,7 +21,7 @@
       align-items: baseline;
       display: block flex;
       flex-wrap: wrap;
-      gap: var(--loam-space-xs) var(--loam-space-md);
+      gap: var(--loam-space-3xs) var(--loam-space-xs);
       justify-content: space-between;
     }
 
@@ -36,7 +36,7 @@
       flex-wrap: wrap;
       font-size: var(--loam-text-sm);
       font-variant-numeric: lining-nums tabular-nums;
-      gap: var(--loam-space-xs);
+      gap: var(--loam-space-3xs);
       margin-block: 0;
     }
 
@@ -70,7 +70,7 @@
       align-items: center;
       display: block flex;
       flex-wrap: wrap;
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
       justify-content: center;
     }
   }

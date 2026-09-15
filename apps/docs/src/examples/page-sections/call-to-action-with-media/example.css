@@ -3,19 +3,19 @@
     background: var(--loam-color-bg-subtle);
     border-radius: var(--loam-radius-xl);
     container-type: inline-size;
-    padding: var(--loam-space-xl);
+    padding: var(--loam-space-l);
   }
 
   /* The inner element is the grid: an element cannot answer its own
      container query. */
   div.inner {
     display: block grid;
-    gap: var(--loam-space-lg);
+    gap: var(--loam-space-s);
   }
 
   div.text {
     display: block grid;
-    gap: var(--loam-space-lg);
+    gap: var(--loam-space-s);
   }
 
   h2 {
@@ -37,7 +37,7 @@
     align-items: center;
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-lg);
+    gap: var(--loam-space-s);
   }
 
   img.media {

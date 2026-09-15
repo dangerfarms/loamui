@@ -108,7 +108,7 @@ export const WithIcons: Story = {
 export const Nested: Story = {
   render: (args) => (
     <div style={{ maxInlineSize: "16rem" }}>
-      <Nav.Root {...args} style={{ "--loam-nav-indent": "var(--loam-space-lg)" } as CSSProperties}>
+      <Nav.Root {...args} style={{ "--loam-nav-indent": "var(--loam-space-s)" } as CSSProperties}>
         <Nav.Title>Guides</Nav.Title>
         <Nav.List>
           <Nav.Item>
@@ -175,7 +175,7 @@ export const InlineRecipe: Story = {
       aria-label="Site"
       style={{ "--loam-nav-current-edge": "block-end" } as CSSProperties}
     >
-      <Nav.List style={{ display: "flex", flexWrap: "wrap", gap: "var(--loam-space-xs)" }}>
+      <Nav.List style={{ display: "flex", flexWrap: "wrap", gap: "var(--loam-space-3xs)" }}>
         <Nav.Item>
           <Nav.Link href="#docs" current>
             Docs

@@ -215,7 +215,7 @@ export function NavSectionsDemo() {
 export function NavInlineDemo() {
   return (
     <Nav.Root aria-label="Site" style={{ "--loam-nav-current-edge": "block-end" } as CSSProperties}>
-      <Nav.List style={{ display: "flex", flexWrap: "wrap", gap: "var(--loam-space-xs)" }}>
+      <Nav.List style={{ display: "flex", flexWrap: "wrap", gap: "var(--loam-space-3xs)" }}>
         <Nav.Item>
           <Nav.Link href="#docs" current>
             Docs
@@ -251,7 +251,7 @@ function Chevron() {
   );
 }
 
-const row: CSSProperties = { display: "flex", flexWrap: "wrap", gap: "var(--loam-space-xs)" };
+const row: CSSProperties = { display: "flex", flexWrap: "wrap", gap: "var(--loam-space-3xs)" };
 
 /**
  * A header with two dropdowns of links: a column of them, and a wide panel
@@ -292,7 +292,7 @@ export function NavDropdownDemo() {
               <div
                 style={{
                   display: "grid",
-                  gap: "var(--loam-space-md)",
+                  gap: "var(--loam-space-xs)",
                   gridTemplateColumns: "repeat(auto-fit, minmax(12rem, 1fr))",
                 }}
               >
@@ -381,7 +381,7 @@ export function NavScrollSpyDemo() {
     <div
       style={{
         display: "grid",
-        gap: "var(--loam-space-lg)",
+        gap: "var(--loam-space-s)",
         gridTemplateColumns: "minmax(0, 1fr) 11rem",
         inlineSize: "100%",
       }}
@@ -392,7 +392,7 @@ export function NavScrollSpyDemo() {
           border: "1px solid var(--loam-color-line)",
           borderRadius: "var(--loam-radius-md)",
           overflowY: "auto",
-          paddingInline: "var(--loam-space-lg)",
+          paddingInline: "var(--loam-space-s)",
         }}
       >
         {SECTIONS.map((section) => (

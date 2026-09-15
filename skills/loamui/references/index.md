@@ -8,12 +8,12 @@
 
 - [Introduction](guides/introduction.md) — Modern UI primitives for agent-assisted developers: contextual tokens, element styles and React components built on Google's Modern Web Guidance. · [live](https://loamui.com/docs.md)
 - [Installation](guides/installation.md) — Install LoamUI in any React framework. · [live](https://loamui.com/docs/installation.md)
-- [Building with an agent](guides/agent-workflow.md) — Check the environment, compose from the three primitives, and verify the five pillars in the result. · [live](https://loamui.com/docs/agent-workflow.md)
+- [Building with an agent](guides/agent-workflow.md) — Check the environment, compose from the three primitives, and verify the two pillars in the result. · [live](https://loamui.com/docs/agent-workflow.md)
 - [Tokens](guides/tokens.md) — The token primitive: a handful of semantic decisions, everything else derived, and the theming that falls out of it. · [live](https://loamui.com/docs/tokens.md)
 - [Element styles](guides/element-styles.md) — The element-styles primitive: enhanced default styles for native HTML, page-wide. Plain markup is already styled before any component appears. · [live](https://loamui.com/docs/element-styles.md)
 - [Components](guides/components.md) — The third primitive: a small, curated set of accessible components composed from tokens and element styles. · [live](https://loamui.com/docs/components.md)
-- [Contextualism](guides/contextualism.md) — Why LoamUI components have no variant or size props: context decides appearance, identity is the last resort. · [live](https://loamui.com/docs/contextualism.md)
-- [Composing components](guides/composing.md) — Build portable React components from LoamUI’s tokens, element styles and components, using the Recipes as worked references. · [live](https://loamui.com/docs/composing.md)
+- [Contextualism](guides/contextualism.md) — The paradigm shift under all three primitives: context decides appearance, and identity is the last resort. · [live](https://loamui.com/docs/contextualism.md)
+- [Building your own recipes](guides/guide.md) — Build portable React components from LoamUI’s tokens, element styles and components, using the Recipes as worked references. · [live](https://loamui.com/recipes/guide.md)
 - [Layout](guides/layout.md) — Layout is native CSS. Pick the module that fits the shape of the content, and space it with the space tokens. · [live](https://loamui.com/docs/layout.md)
 - [Typography](guides/typography.md) — How the type scale, rhythm and figures work, and how to build your own domain-specific typography on top of them. · [live](https://loamui.com/docs/typography.md)
 - [Accessibility](guides/accessibility.md) — What LoamUI guarantees: platform semantics, APG keyboard patterns, engineered WCAG specifics, and user preferences as the baseline. · [live](https://loamui.com/docs/accessibility.md)
@@ -79,6 +79,10 @@
 - [Breadcrumbs](components/breadcrumbs.md) — Show the current page's location. · [live](https://loamui.com/docs/components/breadcrumbs.md)
 - [Pagination](components/pagination.md) — Navigate between pages of content. · [live](https://loamui.com/docs/components/pagination.md)
 - [Nav](components/nav.md) — Lists of links with the current one marked. · [live](https://loamui.com/docs/components/nav.md)
+
+## Components: Utilities
+
+- [VisuallyHidden](components/visually-hidden.md) — Name a control for assistive technology alone. · [live](https://loamui.com/docs/components/visually-hidden.md)
 
 ## Recipes: Heroes
 

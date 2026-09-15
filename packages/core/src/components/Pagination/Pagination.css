@@ -3,14 +3,14 @@
   :scope {
     /* The Button anatomy's height (incl. 1px borders), so the ellipsis cell
        stands in step with the links. */
-    --_control-h: calc(1.2 * var(--loam-text-sm) + 2 * var(--loam-space-sm) + 2px);
+    --_control-h: calc(1.2 * var(--loam-text-sm) + 2 * var(--loam-space-2xs) + 2px);
   }
 
   ul {
     align-items: center;
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     list-style: none;
     margin: 0;
     padding: 0;

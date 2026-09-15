@@ -26,7 +26,7 @@
     display: inline flex;
     font-size: var(--_fz, var(--loam-text-xs));
     font-weight: 600;
-    gap: var(--_gap, var(--loam-space-xs));
+    gap: var(--_gap, var(--loam-space-3xs));
     inline-size: fit-content;
     letter-spacing: 0.01em;
     line-height: 1;
@@ -42,7 +42,7 @@
 
     &[data-size="lg"] {
       --_fz: var(--loam-text-sm);
-      --_gap: var(--loam-space-sm);
+      --_gap: var(--loam-space-2xs);
     }
 
     @media (prefers-reduced-motion: no-preference) {
@@ -68,7 +68,7 @@
   }
 
   :scope:has(svg) {
-    gap: var(--_gap, var(--loam-space-xs));
+    gap: var(--_gap, var(--loam-space-3xs));
 
     svg {
       block-size: auto;

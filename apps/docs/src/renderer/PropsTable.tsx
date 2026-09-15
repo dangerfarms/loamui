@@ -1,6 +1,6 @@
 import type { PropRow } from "./types";
 import { ScrollRegion } from "./ScrollRegion";
-import classes from "./PropsTable.module.css";
+import "./PropsTable.css";
 
 export function PropsTable({
   rows,
@@ -15,8 +15,8 @@ export function PropsTable({
   label?: string;
 }) {
   return (
-    <ScrollRegion className={classes.scroll} label={label ?? `${nameLabel} table`}>
-      <table className={classes.table}>
+    <ScrollRegion className="site-PropsTable" label={label ?? `${nameLabel} table`}>
+      <table className="table">
         <thead>
           <tr>
             <th scope="col">{nameLabel}</th>
@@ -29,16 +29,16 @@ export function PropsTable({
           {rows.map((r) => (
             <tr key={r.name}>
               <td>
-                <code className={classes.name}>{r.name}</code>
+                <code className="name">{r.name}</code>
               </td>
               <td>
-                <code className={classes.type}>{r.type}</code>
+                <code className="type">{r.type}</code>
               </td>
               <td>
                 {r.default ? (
-                  <code className={classes.default}>{r.default}</code>
+                  <code className="default">{r.default}</code>
                 ) : (
-                  <span className={classes.dim} aria-label="none">
+                  <span className="dim" aria-label="none">
                     —
                   </span>
                 )}

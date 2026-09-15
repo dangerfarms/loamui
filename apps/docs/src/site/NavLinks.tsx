@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { GETTING_STARTED, PRIMITIVES, componentsByCategory } from "./nav";
-import classes from "./Sidebar.module.css";
+import "./NavLinks.css";
 
 /**
  * The documentation navigation: Getting started, then a Primitives section
@@ -25,7 +25,7 @@ export function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
     <li key={href}>
       <Link
         href={href}
-        className={classes.link}
+        className="link"
         aria-current={isActive(href) ? "page" : undefined}
         onClick={onNavigate}
       >
@@ -36,25 +36,23 @@ export function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
 
   return (
     <>
-      <div className={classes.group}>
-        <p className={classes.groupTitle}>Getting started</p>
+      <div className="group">
+        <p className="groupTitle">Getting started</p>
         <ul>{GETTING_STARTED.map((g) => renderLink(g.href, g.name))}</ul>
       </div>
 
-      <div className={classes.section}>
-        <p className={classes.sectionTitle}>Primitives</p>
+      <div className="section">
+        <p className="sectionTitle">Primitives</p>
 
         {/* The three primitives as peer links; Components is the last of them
             and the parent of the category tree that follows. */}
-        <ul className={classes.primitiveList}>
-          {PRIMITIVES.map((p) => renderLink(p.href, p.name))}
-        </ul>
+        <ul className="primitiveList">{PRIMITIVES.map((p) => renderLink(p.href, p.name))}</ul>
 
-        <div className={classes.componentTree}>
+        <div className="componentTree">
           {groups.map((group) => (
-            <div key={group.category} className={classes.subgroup}>
-              <p className={classes.categoryTitle}>{group.category}</p>
-              <ul className={classes.itemList}>
+            <div key={group.category} className="subgroup">
+              <p className="categoryTitle">{group.category}</p>
+              <ul className="itemList">
                 {group.items.map((item) => renderLink(`/docs/components/${item.slug}`, item.name))}
               </ul>
             </div>

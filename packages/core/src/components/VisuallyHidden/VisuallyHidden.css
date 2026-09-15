@@ -1,0 +1,18 @@
+@scope (.loam-VisuallyHidden) {
+  /* One pixel, clipped, still rendered: a screen reader reaches text that is
+     in the layout, and display: none or visibility: hidden would take it out
+     of the accessibility tree along with the eye. The negative margin keeps
+     that pixel from nudging anything, and nowrap stops a long name being
+     broken one character per line before it is clipped. */
+  :scope {
+    block-size: 1px;
+    border: 0;
+    clip-path: inset(50%);
+    inline-size: 1px;
+    margin: -1px;
+    overflow: clip;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+  }
+}

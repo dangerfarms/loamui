@@ -124,7 +124,7 @@ const doc: ComponentContent = {
   whenNotToUse: [
     "A set of things with no order between them: that is a list, or a grid of cards.",
     "A single step: one action with an explanation is a heading and a paragraph, not a list of one.",
-    "Progress through a quantity rather than through stages: how much of an upload is done is a Progress bar, not a stepper.",
+    "For a quantity such as the amount uploaded, use Progress. Stepper describes discrete stages.",
   ],
   howItWorks: [
     {

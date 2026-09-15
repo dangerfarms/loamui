@@ -15,7 +15,7 @@ const doc: ComponentContent = {
       code: `<Meter value={0.6} label="Storage used" />
 <Meter value={60} max={100} label="Storage used" />`,
       render: () => (
-        <div style={{ display: "grid", gap: "1rem", inlineSize: "100%" }}>
+        <div style={{ display: "grid", gap: "var(--loam-space-s)", inlineSize: "100%" }}>
           <Example label="Fraction of 1" style={{ justifyItems: "stretch" }}>
             <Meter value={0.6} label="Storage used" />
           </Example>
@@ -33,7 +33,7 @@ const doc: ComponentContent = {
 <Meter value={55} max={100} low={40} high={75} optimum={100} label="Fair password" />
 <Meter value={90} max={100} low={40} high={75} optimum={100} label="Strong password" />`,
       render: () => (
-        <div style={{ display: "grid", gap: "1rem", inlineSize: "100%" }}>
+        <div style={{ display: "grid", gap: "var(--loam-space-s)", inlineSize: "100%" }}>
           <Example label="Weak: below low" style={{ justifyItems: "stretch" }}>
             <Meter value={25} max={100} low={40} high={75} optimum={100} label="Weak password" />
           </Example>
@@ -53,7 +53,7 @@ const doc: ComponentContent = {
 <Meter value={0.6} size="md" label="Medium" />
 <Meter value={0.6} size="lg" label="Large" />`,
       render: () => (
-        <div style={{ display: "grid", gap: "1rem", inlineSize: "100%" }}>
+        <div style={{ display: "grid", gap: "var(--loam-space-s)", inlineSize: "100%" }}>
           <Example label="Small" style={{ justifyItems: "stretch" }}>
             <Meter value={0.6} size="sm" label="Small" />
           </Example>
@@ -78,7 +78,7 @@ const doc: ComponentContent = {
   <Meter value={0.98} label="Quota used" />
 </div>`,
       render: () => (
-        <div style={{ display: "grid", gap: "0.75rem", inlineSize: "100%" }}>
+        <div style={{ display: "grid", gap: "var(--loam-space-xs)", inlineSize: "100%" }}>
           <Meter value={0.4} label="Quota used" />
           <div style={{ "--loam-context": "warning" } as CSSProperties}>
             <Meter value={0.85} label="Quota used" />
@@ -91,7 +91,7 @@ const doc: ComponentContent = {
     },
   ],
   whenToUse: [
-    "To show a static quantity against its range: storage used, a quota, a battery, one segment's share of a whole. The value is a fact about now, not a step toward finishing.",
+    "To show a static quantity against its range: storage used, a quota, a battery, one segment's share of a whole. The value describes a current measurement within a known range.",
     "To grade a value against thresholds (password strength, a score, a risk level): pass low, high and optimum and the colour says which band the value is in without a colour prop.",
   ],
   whenNotToUse: [

@@ -36,7 +36,7 @@ const doc: ComponentContent = {
       code: `<Rating label="Rate this recipe" showLabel defaultValue={2} />
 <Rating readOnly label="Average rating" showLabel value={4} />`,
       render: () => (
-        <div style={{ display: "grid", gap: "var(--loam-space-sm)", justifyItems: "start" }}>
+        <div style={{ display: "grid", gap: "var(--loam-space-2xs)", justifyItems: "start" }}>
           <Rating label="Rate this recipe" showLabel defaultValue={2} />
           <Rating readOnly label="Average rating" showLabel value={4} />
         </div>

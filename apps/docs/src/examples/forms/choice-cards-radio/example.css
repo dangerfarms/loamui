@@ -2,7 +2,7 @@
   div.cards {
     container-type: inline-size;
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
   }
 }
@@ -13,7 +13,7 @@
     align-items: start;
     cursor: pointer;
     display: block grid;
-    gap: var(--loam-space-xs) var(--loam-space-md);
+    gap: var(--loam-space-3xs) var(--loam-space-xs);
     grid-template-columns: auto minmax(0, 1fr);
 
     /* Inset by the Card's 1px line, so the edge takes the line's place. */

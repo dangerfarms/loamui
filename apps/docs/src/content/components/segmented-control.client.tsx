@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
-import { SegmentedControl } from "@loamui/core";
+import { SegmentedControl, VisuallyHidden } from "@loamui/core";
 
 const frame: CSSProperties = {
   display: "grid",
-  gap: "var(--loam-space-md)",
+  gap: "var(--loam-space-xs)",
   justifyItems: "start",
 };
 
@@ -84,20 +84,18 @@ export function SegmentedControlSchemeDemo() {
   };
   return (
     <SegmentedControl.Root value={scheme} onValueChange={choose}>
-      <SegmentedControl.Legend className="loam-VisuallyHidden">
-        Colour scheme
-      </SegmentedControl.Legend>
+      <VisuallyHidden render={<SegmentedControl.Legend />}>Colour scheme</VisuallyHidden>
       <SegmentedControl.Item value="system">
         <SystemIcon />
-        <span className="loam-VisuallyHidden">System</span>
+        <VisuallyHidden>System</VisuallyHidden>
       </SegmentedControl.Item>
       <SegmentedControl.Item value="light">
         <LightIcon />
-        <span className="loam-VisuallyHidden">Light</span>
+        <VisuallyHidden>Light</VisuallyHidden>
       </SegmentedControl.Item>
       <SegmentedControl.Item value="dark">
         <DarkIcon />
-        <span className="loam-VisuallyHidden">Dark</span>
+        <VisuallyHidden>Dark</VisuallyHidden>
       </SegmentedControl.Item>
     </SegmentedControl.Root>
   );

@@ -31,7 +31,15 @@ const doc: ComponentContent = {
   <li><Price value={1250.25} currency="GBP" /></li>
 </ul>`,
       render: () => (
-        <ul style={{ display: "grid", gap: "0.25rem", listStyle: "none", margin: 0, padding: 0 }}>
+        <ul
+          style={{
+            display: "grid",
+            gap: "var(--loam-space-3xs)",
+            listStyle: "none",
+            margin: 0,
+            padding: 0,
+          }}
+        >
           <li>
             <Price value={9.5} currency="GBP" />
           </li>
@@ -52,7 +60,15 @@ const doc: ComponentContent = {
 <Price value={1250.5} currency="EUR" locale="fr-FR" />
 <Price value={1250} currency="JPY" locale="ja-JP" />`,
       render: () => (
-        <ul style={{ display: "grid", gap: "0.25rem", listStyle: "none", margin: 0, padding: 0 }}>
+        <ul
+          style={{
+            display: "grid",
+            gap: "var(--loam-space-3xs)",
+            listStyle: "none",
+            margin: 0,
+            padding: 0,
+          }}
+        >
           <li>
             <Price value={1250.5} currency="EUR" locale="de-DE" />
           </li>
@@ -79,7 +95,7 @@ const doc: ComponentContent = {
         <dl
           style={{
             display: "grid",
-            gap: "0.25rem var(--loam-space-lg)",
+            gap: "var(--loam-space-3xs) var(--loam-space-s)",
             gridTemplateColumns: "auto auto",
             margin: 0,
           }}

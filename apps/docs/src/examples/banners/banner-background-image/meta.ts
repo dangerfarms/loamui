@@ -11,17 +11,13 @@ export const meta: ExampleMeta = {
   category: "banners",
   uses: ["Badge", "SignpostLink"],
   notes: {
-    native:
-      "A section named by its h2 promotes one destination; the decorative photograph is an img with empty alt and explicit dimensions, lazy-loaded for a promotion further down the page.",
     modern:
-      "Styles belong to loamui.components inside a donut scope. The container measures the header’s fluid token spacing and type. The content keeps the same spacing and content width as Banner with image from 44rem, with the text in the leading column of a 3:2 grid; below that it fills one column, and the photograph covers the entire section.",
-    composition:
-      "The section owns the photograph and scrim instead of overriding a Card surface; Badge and SignpostLink are composed unchanged, beyond the scope boundary.",
-    context:
-      "The surrounding colour scheme determines the background, scrim, text and link tokens. The eyebrow declares the primary brand context for its offer Badge, just as in Banner with image; a promotion does not imply a warning.",
+      "A section named by its h2 promotes one destination, and the decorative photograph is an img with empty alt, explicit dimensions and lazy loading for a promotion below the fold. Its stylesheet lives in loamui.components inside a donut scope, measuring the header’s fluid token spacing and type through container queries rather than the viewport: the text takes the leading column of a 3:2 grid from 44rem and fills one column below that, with the photograph covering the whole section. Contextualism carries the rest — the surrounding colour scheme resolves the background, scrim, text and link tokens together, and the eyebrow declares the primary brand context so the offer Badge inherits it without a prop, because a promotion does not imply a warning.",
     accessible:
       "useId names repeated regions independently. A solid background, full foreground text and an 88% scheme-aware background-token scrim protect the words even if the photograph fails; recheck contrast when changing either. Content determines the height and grows with enlarged text. Focus rings are not clipped. Forced colours remove the decorative image and scrim, leaving system colours and a visible border.",
   },
+  composition:
+    "The section owns the photograph and scrim instead of overriding a Card surface; Badge and SignpostLink are composed unchanged, beyond the scope boundary.",
   tags: ["promotion", "background", "image", "full-width", "call to action"],
   order: 2,
 };

@@ -1,0 +1,126 @@
+@layer loamui.ui {
+  @scope (.site-AgentShowcase) to ([class*="loam-"], [class*="site-"]) {
+    :scope {
+      display: block grid;
+      gap: var(--loam-space-m);
+      grid-template-areas: "ask code";
+      grid-template-columns: minmax(18rem, 2fr) minmax(0, 3fr);
+
+      @container (width <= 56rem) {
+        grid-template-areas:
+          "ask"
+          "code";
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .ask,
+    .code {
+      background: var(--loam-color-surface);
+      border: 1px solid var(--loam-color-line);
+      border-radius: var(--loam-radius-lg);
+      min-inline-size: 0;
+      padding: var(--loam-space-m);
+    }
+
+    .ask {
+      align-self: start;
+      grid-area: ask;
+    }
+
+    .code {
+      grid-area: code;
+    }
+
+    /* A panel heading set as a label, not at the h3 scale. */
+    .step {
+      color: var(--loam-color-primary);
+      display: block flow;
+      font-size: var(--loam-text-xs);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      line-height: 1.4;
+      margin-block-end: var(--loam-space-xs);
+      text-transform: uppercase;
+    }
+
+    .label {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-sm);
+      margin-block: var(--loam-space-xs) var(--loam-space-2xs);
+
+      a {
+        color: var(--loam-color-link);
+        text-decoration: underline;
+      }
+    }
+
+    .note {
+      background: var(--loam-color-bg-subtle);
+      border: 1px solid var(--loam-color-line);
+      border-radius: var(--loam-radius-full);
+      font-size: var(--loam-text-xs);
+      margin-inline-start: var(--loam-space-2xs);
+      padding: 0.1em 0.6em;
+      text-transform: uppercase;
+    }
+
+    .command {
+      align-items: center;
+      background: var(--loam-color-bg-subtle);
+      border: 1px solid var(--loam-color-line);
+      border-radius: var(--loam-radius-md);
+      display: block flex;
+      font-family: var(--loam-font-mono);
+      font-size: var(--loam-text-sm);
+      gap: var(--loam-space-xs);
+      padding: var(--loam-space-2xs) var(--loam-space-xs);
+
+      code {
+        background: none;
+        flex: 1;
+        min-inline-size: 0;
+        overflow-wrap: anywhere;
+        padding: 0;
+      }
+    }
+
+    .prompt {
+      color: var(--loam-color-fg-dim);
+    }
+
+    .promptBox {
+      background: var(--loam-color-bg-subtle);
+      border: 1px solid var(--loam-color-line);
+      border-radius: var(--loam-radius-md);
+      display: block grid;
+      gap: var(--loam-space-xs);
+      padding: var(--loam-space-xs) var(--loam-space-s);
+
+      p {
+        font-size: var(--loam-text-sm);
+        hyphens: manual;
+        margin: 0;
+      }
+    }
+
+    .caption {
+      color: var(--loam-color-fg-dim);
+      font-size: var(--loam-text-xs);
+      margin-block: var(--loam-space-xs) 0;
+    }
+  }
+
+  @scope (.site-AgentShowcase-stage) to ([class*="loam-"], :scope > *) {
+    :scope {
+      container-type: inline-size;
+      padding-block: var(--loam-space-2xs);
+    }
+  }
+
+  @scope (.site-AgentShowcase .copy) {
+    :scope {
+      justify-self: end;
+    }
+  }
+}

@@ -21,7 +21,7 @@
     margin: 0;
     max-inline-size: min(var(--_size), 90vi);
     min-inline-size: calc(var(--_size) * 0.6);
-    padding: var(--loam-space-xs);
+    padding: var(--loam-space-3xs);
 
     /* Enhanced: top layer + anchor positioning, tethered to the trigger. */
     @supports (anchor-name: --loam-probe) {
@@ -33,11 +33,11 @@
       position-try: flip-block;
 
       &[data-side="bottom"] {
-        inset-block-start: calc(anchor(end) + var(--loam-space-xs));
+        inset-block-start: calc(anchor(end) + var(--loam-space-3xs));
       }
 
       &[data-side="top"] {
-        inset-block-end: calc(anchor(start) + var(--loam-space-xs));
+        inset-block-end: calc(anchor(start) + var(--loam-space-3xs));
       }
 
       @media (prefers-reduced-motion: no-preference) {
@@ -82,11 +82,11 @@
       z-index: var(--loam-z-popup);
 
       &[data-side="bottom"] {
-        inset-block-start: calc(100% + var(--loam-space-xs));
+        inset-block-start: calc(100% + var(--loam-space-3xs));
       }
 
       &[data-side="top"] {
-        inset-block-end: calc(100% + var(--loam-space-xs));
+        inset-block-end: calc(100% + var(--loam-space-3xs));
       }
     }
   }
@@ -102,14 +102,14 @@
     display: block flex;
     font: inherit;
     font-size: var(--loam-text-sm);
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     inline-size: 100%;
 
     /* Focus IS the highlight in a menu (roving focus, APG pattern); the
        elements-layer ring is for tabbable controls, not menu items. */
     outline: none;
-    padding-block: var(--loam-space-sm);
-    padding-inline: var(--loam-space-sm);
+    padding-block: var(--loam-space-2xs);
+    padding-inline: var(--loam-space-2xs);
     text-align: start;
     text-decoration: none;
     user-select: none;
@@ -165,16 +165,16 @@
     font-size: var(--loam-text-xs);
     font-weight: 600;
     letter-spacing: 0.02em;
-    padding-block: var(--loam-space-xs);
-    padding-inline: var(--loam-space-sm);
+    padding-block: var(--loam-space-3xs);
+    padding-inline: var(--loam-space-2xs);
     text-transform: uppercase;
   }
 
   hr {
     border: 0;
     border-block-start: 1px solid var(--loam-color-line);
-    margin-block: var(--loam-space-xs);
-    margin-inline: calc(-1 * var(--loam-space-xs));
+    margin-block: var(--loam-space-3xs);
+    margin-inline: calc(-1 * var(--loam-space-3xs));
   }
 
   /* Forced colors: the roving highlight is background-only, and

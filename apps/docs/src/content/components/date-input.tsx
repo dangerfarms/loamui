@@ -15,7 +15,7 @@ const doc: ComponentContent = {
     {
       title: "Basic usage",
       description:
-        "A memorable date is typed, not picked: Day, Month and Year are separate Fields in a fieldset named by the legend, each a core Field around a core Input sized to its answer. Day and year raise a numeric keypad on touch devices; the month keeps the full keyboard so names like Mar are accepted too.",
+        "Type a memorable date into separate Day, Month and Year Fields in a fieldset named by the legend, each a core Field around a core Input sized to its answer. Day and year raise a numeric keypad on touch devices; the month keeps the full keyboard so names like Mar are accepted too.",
       code: `<DateInput.Root name="date-of-birth" autoComplete="bday">
   <DateInput.Legend>Date of birth</DateInput.Legend>
   <DateInput.Description>For example, 27 3 2007</DateInput.Description>

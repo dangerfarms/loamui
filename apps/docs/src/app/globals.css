@@ -3,28 +3,31 @@
    ahead-of-toolchain CSS the app bundler can't parse yet. */
 
 @layer site.reset, site.base, site.util;
-@layer loamui.tokens, loamui.elements, loamui.components;
+@layer loamui.tokens, loamui.elements, loamui.components, loamui.ui;
 
 @layer site.reset {
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
+  /* No blanket margin reset. The element styles are built on additive
+     margins — a block carries a block-end margin and the space before a
+     heading comes from an adjacent-sibling rule — and loamui.elements sits
+     above site.reset in the cascade, so zeroing everything here only fought
+     the rhythm the library ships.
 
-  /* Exclude dialog: a modal <dialog> centres itself with auto margins, which a
-     blanket margin reset would clobber (pinning it to a corner). */
-  *:not(dialog) {
+     What remains is the short list the library has no opinion about, where
+     the UA default is actively unwanted: figure's 40px inline margin, the
+     indents on dd and fieldset, and the margin browsers put under a form. */
+  figure,
+  dl,
+  dd,
+  fieldset,
+  form,
+  legend {
     margin: 0;
   }
 
+  /* Only the header offset is the site's own: core's html rule already
+     carries smooth scrolling behind prefers-reduced-motion. */
   html {
     scroll-padding-block-start: 5rem;
-    text-size-adjust: 100%;
-
-    @media (prefers-reduced-motion: no-preference) {
-      scroll-behavior: smooth;
-    }
   }
 
   body {
@@ -32,11 +35,11 @@
     text-rendering: optimizelegibility;
   }
 
+  /* Core already caps these to their container; the block display is ours. */
   img,
   svg,
   video {
     display: block flow;
-    max-inline-size: 100%;
   }
 
   a {
@@ -60,17 +63,14 @@
     hyphens: manual;
   }
 
+  /* Core sets the letter-spacing and balanced wrapping; only the tighter
+     marketing leading is the site's own. `p` needs nothing: core sets
+     text-wrap: pretty on body and it inherits. */
   h1,
   h2,
   h3,
   h4 {
-    letter-spacing: -0.02em;
     line-height: 1.1;
-    text-wrap: balance;
-  }
-
-  p {
-    text-wrap: pretty;
   }
 }
 
@@ -171,21 +171,9 @@
     display: inline flex;
     font-size: var(--loam-text-xs);
     font-weight: 600;
-    gap: 0.4rem;
+    gap: var(--loam-space-2xs);
     letter-spacing: 0.04em;
     text-transform: uppercase;
-  }
-
-  .visually-hidden {
-    block-size: 1px;
-    border: 0;
-    clip-path: inset(50%);
-    inline-size: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    white-space: nowrap;
   }
 }
 

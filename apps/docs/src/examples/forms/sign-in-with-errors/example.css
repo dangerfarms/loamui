@@ -14,7 +14,7 @@
     :scope {
       display: block grid;
       font-size: var(--loam-text-md);
-      gap: var(--loam-space-lg);
+      gap: var(--loam-space-s);
       grid-template-columns: minmax(0, 1fr);
       overflow-wrap: anywhere;
     }

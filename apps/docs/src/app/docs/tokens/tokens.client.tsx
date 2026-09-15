@@ -45,23 +45,18 @@ const GROUPS: TokenGroup[] = [
   },
   {
     title: "Derived",
-    note: "Recipes, not decisions: every hue derives the same soft tint, solid fill and focus ring. Rebrand a hue and its family follows.",
+    note: "Each hue derives its soft tint and solid fill through the same formulas. The focus ring uses the solid fill. Rebrand a hue and its family follows.",
     tokens: [
       "--loam-color-primary-soft",
       "--loam-color-primary-strong",
-      "--loam-color-primary-ring",
       "--loam-color-success-soft",
       "--loam-color-success-strong",
-      "--loam-color-success-ring",
       "--loam-color-danger-soft",
       "--loam-color-danger-strong",
-      "--loam-color-danger-ring",
       "--loam-color-warning-soft",
       "--loam-color-warning-strong",
-      "--loam-color-warning-ring",
       "--loam-color-info-soft",
       "--loam-color-info-strong",
-      "--loam-color-info-ring",
       "--loam-color-surface-hover",
       "--loam-color-ring",
     ],
@@ -87,13 +82,33 @@ const GROUPS: TokenGroup[] = [
   },
   {
     title: "Spacing",
-    note: "The same fluid construction; minimums are the fixed values, so nothing shrinks below them.",
+    note: "The same fluid construction, growing against the container rather than the viewport; minimums are the fixed values, so nothing shrinks below them.",
     tokens: [
+      "--loam-space-4xs",
+      "--loam-space-3xs",
+      "--loam-space-2xs",
       "--loam-space-xs",
-      "--loam-space-sm",
-      "--loam-space-md",
-      "--loam-space-lg",
+      "--loam-space-s",
+      "--loam-space-m",
+      "--loam-space-l",
       "--loam-space-xl",
+      "--loam-space-2xl",
+      "--loam-space-3xl",
+      "--loam-space-4xl",
+    ],
+  },
+  {
+    title: "Fixed spacing",
+    note: "The deliberate opposite: for a hairline, a ring inset, the gap beside an icon. Reach for the fluid scale first.",
+    tokens: [
+      "--loam-space-fixed-1",
+      "--loam-space-fixed-2",
+      "--loam-space-fixed-4",
+      "--loam-space-fixed-8",
+      "--loam-space-fixed-12",
+      "--loam-space-fixed-16",
+      "--loam-space-fixed-24",
+      "--loam-space-fixed-32",
     ],
   },
   {
@@ -140,11 +155,15 @@ export function ComputedTokens() {
   }, []);
 
   return (
-    <div style={{ display: "grid", gap: "2rem" }}>
+    <div style={{ display: "grid", gap: "var(--loam-space-xl)" }}>
       {GROUPS.map((g) => (
         <section key={g.title} style={{ minInlineSize: 0 }}>
-          <h3 style={{ marginBlockEnd: "0.25rem" }}>{g.title}</h3>
-          <p style={{ color: "var(--loam-color-fg-muted)", marginBlockEnd: "0.75rem" }}>{g.note}</p>
+          <h3 style={{ marginBlockEnd: "var(--loam-space-3xs)" }}>{g.title}</h3>
+          <p
+            style={{ color: "var(--loam-color-fg-muted)", marginBlockEnd: "var(--loam-space-xs)" }}
+          >
+            {g.note}
+          </p>
           <div
             style={{
               border: "1px solid var(--loam-color-line)",
@@ -161,8 +180,8 @@ export function ComputedTokens() {
                   display: "flex",
                   fontFamily: "var(--loam-font-mono)",
                   fontSize: "var(--loam-text-sm)",
-                  gap: "0.75rem",
-                  padding: "0.5rem 0.75rem",
+                  gap: "var(--loam-space-xs)",
+                  padding: "var(--loam-space-2xs) var(--loam-space-xs)",
                 }}
               >
                 {g.swatch && (

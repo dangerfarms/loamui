@@ -1,0 +1,38 @@
+@scope (.site-NotFound) {
+  :scope {
+    display: block grid;
+    gap: var(--loam-space-s);
+    justify-items: start;
+    max-inline-size: var(--site-column);
+    padding-block: clamp(3rem, 2.286rem + 3.571vi, 6rem);
+  }
+
+  .title {
+    font-size: var(--site-h1);
+    font-weight: 800;
+    text-wrap: balance;
+  }
+
+  .lead {
+    color: var(--loam-color-fg-muted);
+    font-size: var(--loam-text-lg);
+    max-inline-size: var(--site-measure);
+    text-wrap: pretty;
+  }
+
+  .actions {
+    align-items: center;
+    display: block flex;
+    flex-wrap: wrap;
+    gap: var(--loam-space-xs) var(--loam-space-l);
+    margin-block-start: var(--loam-space-2xs);
+  }
+
+  .plainLink {
+    color: var(--loam-color-fg);
+    font-weight: 600;
+    padding-block: var(--loam-space-xs);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+}

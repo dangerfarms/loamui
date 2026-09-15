@@ -13,10 +13,18 @@
 
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { basename, dirname, join, relative } from "node:path";
+import postcss from "postcss";
+import { pathToFileURL } from "node:url";
 
 const ROOT = new URL("..", import.meta.url).pathname;
-const ROOTS = ["packages/core/src/components", "apps/docs/src/examples"].map((p) => join(ROOT, p));
-const DONUT = /to \(\[class\*="loam-"\]\)/;
+const ROOTS = [
+  "packages/core/src/components",
+  "apps/docs/src/examples",
+  "apps/docs/src/app",
+  "apps/docs/src/site",
+  "apps/docs/src/renderer",
+].map((p) => join(ROOT, p));
+const DONUT = /to\s*\([^)]*\[class\*="loam-"\]/;
 
 function walk(dir, out = []) {
   for (const entry of readdirSync(dir)) {
@@ -95,47 +103,135 @@ function donutRules(css) {
   return rules;
 }
 
-const findings = [];
-for (const root of ROOTS) {
-  for (const file of walk(root)) {
-    const dir = dirname(file);
-    const tsx = readdirSync(dir)
-      .filter((f) => f.endsWith(".tsx") && !/\.(stories|test)\.tsx$/.test(f))
-      .map((f) => readFileSync(join(dir, f), "utf8"))
-      .join("\n");
-    for (const rule of donutRules(readFileSync(file, "utf8"))) {
-      for (const sel of splitList(rule.selector)) {
-        const subj = subject(sel);
-        if (!subj || subj.startsWith(":scope") || subj === "&" || subj === "*") continue;
-        if (/\.loam-/.test(subj)) {
-          findings.push({ file, line: rule.line, sel, why: "names a loam- class, which the donut excludes" });
-          continue;
-        }
-        const el = subj.match(/^([a-z][a-z0-9]*)(?![\w-])/)?.[1];
-        if (!el) continue;
-        // The selector's own classes (`div.body` → ["body"]); a rule with none
-        // (`li`) applies to every such element the component renders.
-        const classes = [...subj.matchAll(/\.([\w-]+)/g)].map((m) => m[1]);
-        // Every <el …> tag the component renders, with its attribute text.
-        const tags = [...tsx.matchAll(new RegExp(`<${el}\\b([^>]*)>`, "gs"))].map((m) => m[1]);
-        const hit = tags.some((attrs) => {
-          if (!/className=/.test(attrs) || !/loam-/.test(attrs)) return false;
-          return classes.length === 0 || classes.every((c) => new RegExp(`["'\`\\s]${c}["'\`\\s]`).test(attrs));
-        });
-        if (hit) {
-          findings.push({ file, line: rule.line, sel, why: `the <${el}> it targets carries a loam- class, which the donut excludes` });
+export function nakedScopes(css) {
+  const out = [];
+  postcss.parse(css).walkAtRules("scope", (scope) => {
+    if (DONUT.test(scope.params)) return;
+    const bare = new Set();
+    scope.walkRules((rule) => {
+      let parent = rule.parent;
+      while (parent !== scope) {
+        if (
+          parent.type === "atrule" &&
+          (parent.name === "scope" || parent.name.endsWith("keyframes"))
+        )
+          return;
+        parent = parent.parent;
+      }
+      for (const match of rule.selector.matchAll(
+        /(?:^|[\s>,+~(])([a-z][a-z0-9-]*)(?=[\s.#:[>+~),]|$)/g,
+      ))
+        bare.add(match[1]);
+    });
+    if (bare.size) out.push({ root: scope.params, line: scope.source.start.line, bare: [...bare] });
+  });
+  return out;
+}
+
+export function proseBoundaryFindings(css) {
+  const findings = [];
+  postcss.parse(css).walkAtRules("scope", (scope) => {
+    if (!/^\(\.site-prose\)(?:\s|$)/.test(scope.params)) return;
+    if (!/to\s*\([^)]*\.block(?:[\s,)]|$)/.test(scope.params) || !DONUT.test(scope.params))
+      findings.push("article scope must exclude preview blocks and core roots");
+    let parent = scope.parent;
+    while (parent && !(parent.type === "atrule" && parent.name === "layer")) parent = parent.parent;
+    if (!parent) findings.push("article styles must have an explicit cascade layer");
+  });
+  return findings;
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  const findings = [];
+  const proseFile = join(ROOT, "apps/docs/src/app/docs/prose.css");
+  for (const why of proseBoundaryFindings(readFileSync(proseFile, "utf8")))
+    findings.push({ file: proseFile, line: 1, sel: ".site-prose", why });
+
+  for (const root of ROOTS) {
+    for (const file of walk(root)) {
+      const dir = dirname(file);
+      const tsx = readdirSync(dir)
+        .filter((f) => f.endsWith(".tsx") && !/\.(stories|test)\.tsx$/.test(f))
+        .map((f) => readFileSync(join(dir, f), "utf8"))
+        .join("\n");
+      for (const rule of donutRules(readFileSync(file, "utf8"))) {
+        for (const sel of splitList(rule.selector)) {
+          const subj = subject(sel);
+          if (!subj || subj.startsWith(":scope") || subj === "&" || subj === "*") continue;
+          if (/\.loam-/.test(subj)) {
+            findings.push({
+              file,
+              line: rule.line,
+              sel,
+              why: "names a loam- class, which the donut excludes",
+            });
+            continue;
+          }
+          const el = subj.match(/^([a-z][a-z0-9]*)(?![\w-])/)?.[1];
+          if (!el) continue;
+          // The selector's own classes (`div.body` → ["body"]); a rule with none
+          // (`li`) applies to every such element the component renders.
+          const classes = [...subj.matchAll(/\.([\w-]+)/g)].map((m) => m[1]);
+          // Every <el …> tag the component renders, with its attribute text.
+          const tags = [...tsx.matchAll(new RegExp(`<${el}\\b([^>]*)>`, "gs"))].map((m) => m[1]);
+          const hit = tags.some((attrs) => {
+            if (!/className=/.test(attrs) || !/loam-/.test(attrs)) return false;
+            return (
+              classes.length === 0 ||
+              classes.every((c) => new RegExp(`["'\`\\s]${c}["'\`\\s]`).test(attrs))
+            );
+          });
+          if (hit) {
+            findings.push({
+              file,
+              line: rule.line,
+              sel,
+              why: `the <${el}> it targets carries a loam- class, which the donut excludes`,
+            });
+          }
         }
       }
     }
   }
-}
 
-if (findings.length) {
-  console.error(`check-scope: ${findings.length} rule(s) inside a donut scope can never match.\n`);
-  for (const f of findings) {
-    console.error(`  ${relative(ROOT, f.file)}:${f.line}  \`${f.sel}\` — ${f.why}`);
+  /**
+   * The inverse fault: a scope that hosts core components but has no donut, with
+   * bare type selectors that will reach into whatever it hosts. The rule is in
+   * CONTRIBUTING and in the agent guidance, and the homepage demo still shipped
+   * without it — so it is checked here rather than trusted to review.
+   */
+
+  for (const root of ROOTS) {
+    for (const file of walk(root)) {
+      const dir = dirname(file);
+      const tsx = readdirSync(dir)
+        .filter((f) => f.endsWith(".tsx") && !/\.(stories|test)\.tsx$/.test(f))
+        .map((f) => readFileSync(join(dir, f), "utf8"))
+        .filter((source) => source.includes(`"./${basename(file)}"`))
+        .join("\n");
+      if (!/from "@loamui\/core"/.test(tsx) && basename(file) !== "prose.css") continue;
+      for (const s of nakedScopes(readFileSync(file, "utf8"))) {
+        findings.push({
+          file,
+          line: s.line,
+          sel: `@scope ${s.root}`,
+          why: `hosts core components but has no donut, and its bare ${s.bare.map((b) => `\`${b}\``).join(", ")} selector(s) reach inside them`,
+        });
+      }
+    }
   }
-  console.error(`\nMove the rule into that element's own @scope block (e.g. @scope (.loam-${"X-part"})).`);
-  process.exit(1);
+
+  if (findings.length) {
+    console.error(`check-scope: ${findings.length} scope problem(s).\n`);
+    for (const f of findings) {
+      console.error(`  ${relative(ROOT, f.file)}:${f.line}  \`${f.sel}\` — ${f.why}`);
+    }
+    console.error(
+      `\nEither move the rule into that element's own @scope block, or add the donut: @scope (root) to ([class*="loam-"]).`,
+    );
+    process.exit(1);
+  }
+  console.log(
+    `check-scope: static scope checks passed (${ROOTS.length} roots). Verify rendered cascade and embedded recipe boundaries in a browser.`,
+  );
 }
-console.log(`check-scope: no dead donut rules (${basename(ROOTS[0])} and the examples scanned).`);

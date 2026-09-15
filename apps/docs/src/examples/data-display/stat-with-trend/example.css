@@ -1,7 +1,7 @@
 @scope (.stat-with-trend) to ([class*="loam-"]) {
   :scope {
     display: block grid;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     inline-size: min(100%, 24rem);
     margin: 0;
   }
@@ -29,7 +29,7 @@
     align-items: center;
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-sm) var(--loam-space-md);
+    gap: var(--loam-space-2xs) var(--loam-space-xs);
     margin: 0;
     order: 2;
   }

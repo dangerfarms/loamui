@@ -17,7 +17,7 @@
      elements-layer :focus-visible ring; the focus ring itself turns
      danger-coloured. Mirrors Switch. */
   .loam-RadioGroup[aria-invalid="true"] :scope {
-    --loam-color-ring: var(--loam-color-danger-ring);
+    --loam-color-ring: var(--loam-color-danger-strong);
 
     box-shadow: 0 0 0 2px var(--loam-color-danger);
   }
@@ -43,7 +43,7 @@
     align-items: flex-start;
     cursor: pointer;
     display: inline flex;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
 
     &:has(input:disabled) {
       cursor: not-allowed;
@@ -74,7 +74,7 @@
    it into a wrapping row and gives the text parts a row of their own. */
 @scope (.loam-RadioGroup) to ([class*="loam-"]) {
   :scope[data-orientation="horizontal"] {
-    column-gap: var(--loam-space-lg);
+    column-gap: var(--loam-space-s);
     flex-flow: row wrap;
   }
 

@@ -17,7 +17,7 @@ export function SearchSiteDemo() {
       style={{
         alignItems: "center",
         display: "flex",
-        gap: "var(--loam-space-lg)",
+        gap: "var(--loam-space-s)",
         inlineSize: "100%",
         justifyContent: "space-between",
       }}

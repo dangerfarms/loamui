@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import classes from "./recipe-prompt-button.module.css";
+import { VisuallyHidden } from "@loamui/core";
+import "./recipe-prompt-button.css";
 
 type Status = "idle" | "copying" | "copied" | "ready" | "failed";
 
@@ -71,8 +72,8 @@ export function RecipePromptButton({ title, href }: { title: string; href: strin
           : "";
 
   return (
-    <div className={classes.actions}>
-      <div className={classes.controls}>
+    <div className="site-RecipePrompt">
+      <div className={"controls"}>
         <button
           type="button"
           onClick={() => void copy()}
@@ -87,13 +88,12 @@ export function RecipePromptButton({ title, href }: { title: string; href: strin
           <span aria-hidden="true"> →</span>
         </a>
       </div>
-      <p
-        role="status"
-        className={
-          status === "failed" || status === "ready" ? classes.message : "loam-VisuallyHidden"
-        }
-      >
-        {message}
+      <p role="status" className="message">
+        {status === "failed" || status === "ready" ? (
+          message
+        ) : (
+          <VisuallyHidden>{message}</VisuallyHidden>
+        )}
       </p>
     </div>
   );

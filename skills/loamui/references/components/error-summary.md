@@ -61,7 +61,7 @@ Each item repeats its field's error message exactly, so the message reads identi
 
 ### Links land the user in the field
 
-Fragment navigation scrolls to the field but does not focus it, so each item also moves focus into the target: the user activates a link and starts typing the correction.
+Each item combines fragment navigation with focus management: activating the link scrolls to the field and focuses it so the user can type a correction.
 
 ### Order follows the form
 

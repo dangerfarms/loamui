@@ -71,7 +71,7 @@ const doc: ComponentContent = {
     "To expand an abbreviation or term in place for pointer and keyboard users.",
   ],
   whenNotToUse: [
-    "For information the user needs in order to proceed: hover does not exist on touch devices, so essential content must be visible in the page.",
+    "For information the user needs to proceed: hover does not exist on touch devices, so essential content must be visible in the page.",
     "For interactive content (links, buttons), use Popover, which is click-invoked and keyboard-operable.",
     "As a replacement for a visible label on a form field, use Field.Label.",
   ],

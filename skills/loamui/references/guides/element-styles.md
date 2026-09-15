@@ -6,23 +6,39 @@ description: The element-styles primitive: enhanced default styles for native HT
 > LoamUI documentation, generated from the same source as the live page —
 > treat it as authoritative for `@loamui/core`.
 
+import "../prose.css";
+
 # Element styles
 
 The second of LoamUI's three primitives: enhanced default styles for the native elements themselves, applied page-wide by the `loamui.elements` layer. Importing the stylesheet opts you in: plain HTML is already styled before a single component appears, and everything on this page is bare markup with no classes.
 
 ## Typography
 
-Headings use the display font (`--loam-font-display`) at the fluid type scale with balanced
-wrapping and the strong text tier (`--loam-color-fg-strong`), so they sit a step darker than body
-copy in light and a step brighter in dark. Body copy rides the same fluid scale (`--loam-text-md`),
-and the OpenType defaults do the fine work: common ligatures and old-style figures in running
-text, lining figures in headings, hanging punctuation, and automatic hyphenation. Every element
-derives its own line-height from its font size (`calc(0.5rem + 2ex)`), so leading tracks the text
-it leads. Margins are additive: blocks carry only a block-end margin, and the extra space before a
-heading comes from an adjacent-sibling rule, so nothing needs unsetting at the top of a container.
-Tables collapse their borders and start-align their headers; inline `code` and `samp` get a
-chip, `kbd` a key cap (a step smaller, with an edge, so a shortcut sits inside the line), and
-`mark` the highlight token, the same yellow as text selection.
+### Rhythm first
+
+Every element derives its own line-height from its own font size
+(`calc(0.5rem + 2ex)`), so leading tracks the text it leads rather than a single number
+set once for the page.
+
+Margins are additive to match: a block carries only a block-end margin, and the extra
+space before a heading comes from an adjacent-sibling rule. Nothing needs unsetting at
+the top of a container.
+
+### The type itself
+
+- **Headings** take the display font (`--loam-font-display`) at the fluid type scale, with
+  balanced wrapping and the strong text tier (`--loam-color-fg-strong`), so they sit a step
+  darker than body copy in light and a step brighter in dark.
+- **Body copy** rides the same fluid scale (`--loam-text-md`).
+- **OpenType defaults** do the fine work: common ligatures and old-style figures in running
+  text, lining figures in headings, hanging punctuation, and automatic hyphenation.
+
+### Small things, already decided
+
+- `code` and `samp` get a chip.
+- `kbd` gets a key cap, a step smaller and with an edge, so a shortcut sits inside the line.
+- `mark` takes the highlight token, the same yellow as text selection.
+- Tables collapse their borders and start-align their headers.
 
 </div>
 
@@ -61,5 +77,3 @@ blockquote {
   border-inline-start-color: var(--loam-color-primary);
 }
 ```
-
-> Element styles are a primitive precisely because downstream work builds on them: new components start from styled native elements, so most of a new component's CSS is already written before its stylesheet exists.

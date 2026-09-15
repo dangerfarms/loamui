@@ -21,7 +21,7 @@
     margin: 0;
 
     &[aria-invalid="true"] {
-      --loam-color-ring: var(--loam-color-danger-ring);
+      --loam-color-ring: var(--loam-color-danger-strong);
     }
 
     &:disabled {
@@ -171,7 +171,7 @@
 @scope (.loam-Range-root) to ([class*="loam-"]) {
   :scope {
     display: block grid;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     inline-size: 100%;
   }
 }
@@ -233,8 +233,8 @@
     justify-self: start;
     margin-inline-start: calc(var(--_thumb) / 2 + (100% - var(--_thumb)) * var(--_value, 0));
     order: -1;
-    padding-block: var(--loam-space-xs);
-    padding-inline: var(--loam-space-sm);
+    padding-block: var(--loam-space-3xs);
+    padding-inline: var(--loam-space-2xs);
     translate: -50%;
     white-space: nowrap;
 

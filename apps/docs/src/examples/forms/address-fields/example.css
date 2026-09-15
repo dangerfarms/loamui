@@ -1,7 +1,7 @@
 @scope (.address-fields) to ([class*="loam-"]) {
   div.lines {
     display: block grid;
-    gap: var(--loam-space-lg);
+    gap: var(--loam-space-s);
   }
 
   div.postcode {

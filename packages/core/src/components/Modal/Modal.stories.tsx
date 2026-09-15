@@ -31,7 +31,7 @@ const meta = {
           style={{
             display: "flex",
             flexWrap: "wrap",
-            gap: "var(--loam-space-sm)",
+            gap: "var(--loam-space-2xs)",
             alignItems: "center",
           }}
         >
@@ -72,7 +72,7 @@ export const AlertDialog: Story = {
           style={{
             display: "flex",
             flexWrap: "wrap",
-            gap: "var(--loam-space-sm)",
+            gap: "var(--loam-space-2xs)",
             alignItems: "center",
           }}
         >
@@ -97,7 +97,7 @@ export const Width: Story = {
       style={{
         display: "flex",
         flexWrap: "wrap",
-        gap: "var(--loam-space-sm)",
+        gap: "var(--loam-space-2xs)",
         alignItems: "center",
       }}
     >
@@ -135,7 +135,7 @@ export const WithHeaderClose: Story = {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBlockEnd: "var(--loam-space-sm)",
+            marginBlockEnd: "var(--loam-space-2xs)",
           }}
         >
           <Modal.Title style={{ margin: 0 }}>Settings</Modal.Title>

@@ -2,7 +2,7 @@
   :scope {
     container-type: inline-size;
     display: block grid;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
   }
 
   header {
@@ -13,7 +13,7 @@
     display: block flex;
     flex-wrap: wrap;
     font-size: var(--loam-text-sm);
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
   }
 
   a.author {
@@ -26,7 +26,7 @@
     max-inline-size: var(--loam-measure);
 
     > * {
-      margin-block: 0 var(--loam-space-sm);
+      margin-block: 0 var(--loam-space-2xs);
     }
 
     > :last-child {
@@ -34,7 +34,7 @@
     }
 
     li + li {
-      margin-block-start: var(--loam-space-xs);
+      margin-block-start: var(--loam-space-3xs);
     }
   }
 }

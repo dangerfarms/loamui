@@ -2,7 +2,7 @@
   :scope {
     display: block flex;
     flex-direction: column;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     max-inline-size: 22rem;
   }
 
@@ -46,7 +46,7 @@
     color: var(--loam-color-fg-muted);
     display: block flex;
     font-size: var(--loam-text-sm);
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
   }
 
   p.price {
@@ -57,7 +57,7 @@
     s {
       color: var(--loam-color-fg-muted);
       font-weight: 400;
-      margin-inline-end: var(--loam-space-xs);
+      margin-inline-end: var(--loam-space-3xs);
     }
   }
 

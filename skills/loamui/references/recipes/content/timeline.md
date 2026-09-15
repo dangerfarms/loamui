@@ -20,7 +20,7 @@ A recipe in **Content**: a component and a stylesheet built from `@loamui/core`,
 
 Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
 
-Replace the fictional history with chronological events and valid machine-readable dates. Select heading levels to fit the surrounding section. This is a static history, not an interactive progress indicator.
+Replace the fictional history with chronological events and valid machine-readable dates. Select heading levels to fit the surrounding section. This presents a static history; use Stepper for progress through an interactive task.
 
 ## When to use
 
@@ -30,10 +30,8 @@ Use for dated events in chronological order. Choose the Stepper component for pr
 
 These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
-- **Native CSS.** An ol carries the order and a time element carries each date with its machine-readable value; the dots and the line are pseudo-elements, so nothing decorative is in the accessibility tree.
-- **Modern CSS.** Layered scoped CSS measures the list through its outer wrapper, so each event and its connector resolve the same spacing tokens. Named grid areas position the content; lh centres the decorative dot on the date line and a negative margin joins the gaps.
-- **Composition.** Element styles alone: an ordered list, headings, paragraphs and time, so no component is imported and no Stepper is bent into a history.
-- **Accessible & gatekept.** The list keeps role=list so its count survives list-style: none, and in forced colours the dot keeps an outline and the connector its ink where the fills would vanish.
+- **Modern.** An ol carries the order and a time element carries each date with its machine-readable value, while the dots and the connecting line are pseudo-elements, so nothing decorative reaches the accessibility tree. Layered scoped CSS measures the list through its outer wrapper, so each event and its connector resolve the same spacing tokens; named grid areas position the content, lh centres the decorative dot on the date line, and a negative margin joins the gaps.
+- **Accessible.** The list keeps role=list so its count survives list-style: none, and in forced colours the dot keeps an outline and the connector its ink where the fills would vanish.
 
 ## References
 
@@ -104,7 +102,7 @@ export default function Example() {
 
     ol {
       --_dot: 0.875rem;
-      --_gap: var(--loam-space-lg);
+      --_gap: var(--loam-space-s);
 
       display: block grid;
       font-size: var(--loam-text-md);
@@ -118,7 +116,7 @@ export default function Example() {
 
     li {
       display: block grid;
-      gap: var(--loam-space-xs) var(--loam-space-md);
+      gap: var(--loam-space-3xs) var(--loam-space-xs);
       grid-template-areas:
         "dot date"
         "dot title"

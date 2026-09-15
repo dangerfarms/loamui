@@ -1,7 +1,7 @@
 @scope (.faq-simple) to ([class*="loam-"]) {
   :scope {
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
   }
 
   h2 {
@@ -18,7 +18,7 @@
 
   div.questions {
     display: block grid;
-    gap: var(--loam-space-sm);
-    margin-block-start: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
+    margin-block-start: var(--loam-space-2xs);
   }
 }

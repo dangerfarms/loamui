@@ -11,17 +11,13 @@ export const meta: ExampleMeta = {
   category: "forms",
   uses: ["Button", "ErrorSummary", "Field", "Input", "Textarea"],
   notes: {
-    native:
-      "An address and description list pair each contact method with its value. Email and phone links use mailto: and tel:. The native POST form uses required fields, email validation and autocomplete. After hydration, native validity supplies the focused summary and inline messages; valid submission remains a normal POST.",
     modern:
-      "Layered donut scopes keep recipe styles local. An intrinsic auto-fit grid stacks the details and form when two columns cannot fit; padding and type tokens resolve inside the section's container. The padding interpolation includes rem as well as cqi so it responds to enlarged root text; long labels and addresses can wrap. Headings inherit the element typography.",
-    composition:
-      "The section supplies one shared surface around the details and native form. Field wires labels, descriptions and errors; ErrorSummary links focus their controls. Input, Textarea and Button keep their own styles. General server failures do not mark valid fields invalid. Avoiding nested padded surfaces leaves room for the form at narrow widths and enlarged text sizes.",
-    context:
-      "The actions region declares --loam-context: primary for its Button. Shared surface, text and border tokens follow the colour scheme; layout and sizing are supplied by the parent rather than configuration props.",
+      "An address and description list pair each contact method with its value, email and phone links use mailto: and tel:, and the native POST form uses required fields, email validation and autocomplete; after hydration, native validity supplies the focused summary and inline messages, while a valid submission remains a normal POST. Layered donut scopes keep recipe styles local: an intrinsic auto-fit grid stacks the details and form when two columns cannot fit, padding and type tokens resolve inside the section’s container, the padding interpolation includes rem as well as cqi so it responds to enlarged root text, long labels and addresses can wrap, and headings inherit the element typography. The actions region declares --loam-context: primary for its Button, and shared surface, text and border tokens follow the colour scheme, so layout and sizing are supplied by the parent rather than configuration props.",
     accessible:
-      "Required fields are identified in visible labels. Error messages appear after an attempt and match the focused summary links; useId keeps repeated forms independent. Failed responses preserve entered values. Confirmed delivery replaces the form with a focused heading and next steps. Decorative icons repeat visible terms and are hidden from assistive technology. Email and telephone values retain left-to-right ordering in RTL pages. Text and DOM order stay intact when the grid stacks, and real borders preserve surface boundaries in forced colours.",
+      "Required fields use native required attributes and follow the unmarked-label convention. Error messages appear after an attempt and match the focused summary links; correcting a native constraint error removes its message and link without moving focus, while server errors remain until another attempt; useId keeps repeated forms independent. Failed responses preserve entered values. Confirmed delivery replaces the form with a focused heading and next steps. Decorative icons repeat visible terms and are hidden from assistive technology. Email and telephone values retain left-to-right ordering in RTL pages. Text and DOM order stay intact when the grid stacks, and real borders preserve surface boundaries in forced colours.",
   },
+  composition:
+    "The section supplies one shared surface around the details and native form. Field wires labels, descriptions and errors; ErrorSummary links focus their controls. Input, Textarea and Button keep their own styles. General server failures do not mark valid fields invalid. Avoiding nested padded surfaces leaves room for the form at narrow widths and enlarged text sizes.",
   tags: ["contact", "enquiry", "address", "form", "support"],
   order: 2,
 };

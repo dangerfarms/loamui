@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Drawer } from "@loamui/core";
+import { Drawer, VisuallyHidden } from "@loamui/core";
 import { NavLinks } from "./NavLinks";
-import classes from "./MobileNav.module.css";
+import "./MobileNav.css";
 
 function MenuIcon() {
   return (
@@ -43,15 +44,22 @@ export function MobileNav() {
     <Drawer.Root open={open} onOpenChange={setOpen}>
       <Drawer.Trigger
         render={
-          <button type="button" className={classes.trigger} aria-label="Open navigation menu">
+          <button
+            type="button"
+            className="site-MobileNav-trigger"
+            aria-label="Open navigation menu"
+          >
             <MenuIcon />
           </button>
         }
       />
-      <Drawer.Popup side="start" className={classes.panel}>
-        <Drawer.Title className={classes.srOnly}>Navigation</Drawer.Title>
-        <div className={classes.nav}>
+      <Drawer.Popup side="start" className="site-MobileNav-panel">
+        <VisuallyHidden render={<Drawer.Title />}> Navigation</VisuallyHidden>
+        <div className="nav site-NavLinks">
           <NavLinks onNavigate={() => setOpen(false)} />
+          <Link href="/recipes" onClick={() => setOpen(false)}>
+            Recipes
+          </Link>
         </div>
       </Drawer.Popup>
     </Drawer.Root>

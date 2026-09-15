@@ -1,0 +1,110 @@
+@layer loamui.ui {
+  @scope (.site-prose) to (.block, [class*="loam-"], [class*="site-"]) {
+    /* The same column and title scale as a component page, so the two page
+     types line up when a reader moves between them. */
+    :scope {
+      max-inline-size: var(--site-column);
+
+      :is(h1, h2, h3) {
+        text-wrap: balance;
+      }
+
+      h1 {
+        font-size: var(--site-h1);
+        font-weight: 800;
+        margin-block-end: var(--loam-space-xs);
+      }
+
+      h2 {
+        font-size: var(--loam-text-xl);
+        font-weight: 700;
+        margin-block: var(--loam-space-2xl) var(--loam-space-s);
+        scroll-margin-block-start: 5rem;
+      }
+
+      h3 {
+        font-size: var(--loam-text-lg);
+        font-weight: 650;
+        margin-block: var(--loam-space-l) var(--loam-space-2xs);
+      }
+
+      /* Running text keeps a reading measure; code, tables and demos take the
+       full column. */
+      p,
+      ul,
+      ol {
+        max-inline-size: var(--site-measure);
+      }
+
+      p {
+        color: var(--loam-color-fg);
+        margin-block-end: var(--loam-space-s);
+        text-wrap: pretty;
+      }
+
+      /* The lead is the paragraph that opens a page (immediately after its
+       h1) — styled by position, no wrapper class. */
+      h1 + p {
+        color: var(--loam-color-fg-muted);
+        font-size: var(--loam-text-lg);
+        hyphens: manual;
+        margin-block-end: var(--loam-space-xl);
+      }
+
+      a {
+        color: var(--loam-color-primary);
+        font-weight: 550;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+
+      ul {
+        display: block flex;
+        flex-direction: column;
+        gap: var(--loam-space-2xs);
+        margin-block-end: var(--loam-space-s);
+        padding-inline-start: var(--loam-space-m);
+      }
+
+      li {
+        color: var(--loam-color-fg);
+      }
+
+      code {
+        background: var(--loam-color-bg-subtle);
+        border: 1px solid var(--loam-color-line);
+        border-radius: var(--loam-radius-sm);
+        font-family: var(--loam-font-mono);
+        font-size: 0.85em;
+        padding: var(--loam-space-4xs) var(--loam-space-3xs);
+      }
+    }
+  }
+
+  @scope (.site-callout) to ([class*="loam-"], [class*="site-"]) {
+    :scope {
+      background: var(--loam-color-info-soft);
+      border: 1px solid color-mix(in oklab, var(--loam-color-info), transparent 65%);
+      border-radius: var(--loam-radius-md);
+      font-size: var(--loam-text-sm);
+      margin-block: var(--loam-space-l);
+      padding: var(--loam-space-s);
+
+      /* The last block's own margin would stack under the padding, making the
+       bottom gap larger than the top — reset it so the padding reads even. */
+      > :last-child {
+        margin-block-end: 0;
+      }
+
+      code {
+        background: color-mix(in oklch, var(--loam-color-bg) 60%, transparent);
+      }
+    }
+  }
+
+  @scope (.site-prose .block) {
+    :scope {
+      margin-block: var(--loam-space-m) var(--loam-space-l);
+    }
+  }
+}

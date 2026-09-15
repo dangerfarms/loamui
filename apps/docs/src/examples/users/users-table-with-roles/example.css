@@ -1,7 +1,7 @@
 @scope (.users-table-with-roles) to ([class*="loam-"]) {
   :scope {
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     margin: 0;
   }
 
@@ -22,11 +22,11 @@
   span.member {
     align-items: center;
     display: block flex;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
 
     span.text {
       display: block grid;
-      gap: calc(var(--loam-space-xs) / 2);
+      gap: calc(var(--loam-space-3xs) / 2);
 
       strong {
         color: var(--loam-color-fg-strong);

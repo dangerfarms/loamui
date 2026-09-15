@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { SunIcon, MoonIcon } from "./Icons";
-import classes from "./ThemeToggle.module.css";
+import "./ThemeToggle.css";
 
 type Theme = "light" | "dark";
 
@@ -57,17 +57,17 @@ export function ThemeToggle() {
   return (
     <button
       type="button"
-      className={classes.btn}
+      className="site-ThemeToggle"
       onClick={toggle}
       aria-label={theme === "dark" ? "Switch to light" : "Switch to dark"}
       title={theme === "dark" ? "Switch to light" : "Switch to dark"}
     >
       {/* Both icons ship; the stylesheet shows the one for the scheme in
           force, so the first paint is right before hydration. */}
-      <span className={classes.sun}>
+      <span className="sun">
         <SunIcon />
       </span>
-      <span className={classes.moon}>
+      <span className="moon">
         <MoonIcon />
       </span>
     </button>

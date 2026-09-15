@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { SearchIcon } from "./Icons";
 import { COMPONENTS, EXAMPLES_NAV, GETTING_STARTED, PRIMITIVES } from "./nav";
 import { EXAMPLE_META } from "@/examples/generated-meta";
-import classes from "./CommandMenu.module.css";
+import "./CommandMenu.css";
 
 interface Result {
   label: string;
@@ -148,30 +148,30 @@ export function CommandMenu() {
     <>
       <button
         type="button"
-        className={classes.trigger}
+        className="site-CommandMenu-trigger"
         onClick={openPalette}
         aria-label="Search documentation"
         aria-keyshortcuts="Meta+K Control+K"
       >
         <SearchIcon width={16} height={16} />
-        <span className={classes.triggerLabel}>Search…</span>
-        <kbd className={classes.kbd} aria-hidden>
+        <span className="triggerLabel">Search…</span>
+        <kbd className="kbd" aria-hidden>
           ⌘K
         </kbd>
       </button>
 
       <dialog
         ref={dialogRef}
-        className={classes.panel}
+        className="site-CommandMenu-panel"
         aria-label="Search documentation"
         onClose={() => setOpen(false)}
         {...({ closedby: "any" } as object)}
       >
-        <div className={classes.searchRow}>
+        <div className="searchRow">
           <SearchIcon width={18} height={18} />
           <input
             ref={inputRef}
-            className={classes.input}
+            className="input"
             type="text"
             role="combobox"
             aria-label="Search components, guides and recipes"
@@ -191,7 +191,7 @@ export function CommandMenu() {
           />
         </div>
         {results.length === 0 && (
-          <p className={classes.empty} role="status">
+          <p className="empty" role="status">
             No results for “{q}”. Try a component name, a guide or an example.
           </p>
         )}
@@ -200,7 +200,7 @@ export function CommandMenu() {
             tabindex and no key handler of their own. */}
         <ul
           id={listId}
-          className={classes.results}
+          className="results"
           aria-label="Results"
           hidden={results.length === 0}
           {...{ role: "listbox" }}
@@ -216,9 +216,9 @@ export function CommandMenu() {
               onClick: () => go(r.href),
             };
             return (
-              <li key={r.href} className={classes.result} {...option}>
+              <li key={r.href} className="result" {...option}>
                 <span>{r.label}</span>
-                <span className={classes.hint}>{r.hint}</span>
+                <span className="hint">{r.hint}</span>
               </li>
             );
           })}

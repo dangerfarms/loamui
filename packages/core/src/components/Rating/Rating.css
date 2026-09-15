@@ -21,7 +21,7 @@
     &[data-read-only] {
       align-items: center;
       display: inline flex;
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
     }
 
     &:disabled {

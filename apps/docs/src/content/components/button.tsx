@@ -1,4 +1,4 @@
-import { Button, Checkbox, Loader } from "@loamui/core";
+import { Button, Checkbox, Loader, VisuallyHidden } from "@loamui/core";
 import type { CSSProperties } from "react";
 import type { ComponentContent } from "@/renderer/types";
 import { Example } from "@/renderer/Example";
@@ -22,7 +22,14 @@ const doc: ComponentContent = {
   <Button>Delete</Button>
 </div>`,
       render: () => (
-        <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "var(--loam-space-xs)",
+            flexWrap: "wrap",
+            alignItems: "center",
+          }}
+        >
           <Button>Neutral</Button>
           <div style={{ "--loam-context": "primary" } as CSSProperties}>
             <Button>Save changes</Button>
@@ -48,7 +55,7 @@ const doc: ComponentContent = {
             {
               "--loam-context": "danger",
               display: "flex",
-              gap: "1rem",
+              gap: "var(--loam-space-s)",
               flexWrap: "wrap",
               alignItems: "center",
             } as CSSProperties
@@ -72,18 +79,18 @@ const doc: ComponentContent = {
   <Button>Save changes</Button>
 </div>
 
-<div style={{ display: "grid", gap: "0.75rem", inlineSize: "min(100%, 18rem)" }}>
+<div style={{ display: "grid", gap: "var(--loam-space-xs)", inlineSize: "min(100%, 18rem)" }}>
   <Button>Save changes</Button>
   <Button>Cancel</Button>
 </div>`,
       render: () => (
-        <div style={{ display: "grid", gap: "1.25rem", inlineSize: "100%" }}>
+        <div style={{ display: "grid", gap: "var(--loam-space-m)", inlineSize: "100%" }}>
           <Example label="Container of 16rem or less: the button spans it">
             <div
               style={{
                 containerType: "inline-size",
                 inlineSize: "min(100%, 14rem)",
-                padding: "0.75rem",
+                padding: "var(--loam-space-xs)",
                 border: "1px dashed var(--loam-color-line)",
                 borderRadius: "var(--loam-radius-md)",
               }}
@@ -96,7 +103,7 @@ const doc: ComponentContent = {
               style={{
                 containerType: "inline-size",
                 inlineSize: "min(100%, 24rem)",
-                padding: "0.75rem",
+                padding: "var(--loam-space-xs)",
                 border: "1px dashed var(--loam-color-line)",
                 borderRadius: "var(--loam-radius-md)",
               }}
@@ -108,7 +115,13 @@ const doc: ComponentContent = {
             label="A stacked region stretches its buttons"
             style={{ justifyItems: "stretch" }}
           >
-            <div style={{ display: "grid", gap: "0.75rem", inlineSize: "min(100%, 18rem)" }}>
+            <div
+              style={{
+                display: "grid",
+                gap: "var(--loam-space-xs)",
+                inlineSize: "min(100%, 18rem)",
+              }}
+            >
               <Button>Save changes</Button>
               <Button>Cancel</Button>
             </div>
@@ -119,7 +132,7 @@ const doc: ComponentContent = {
     {
       title: "Icons, composed as children",
       description:
-        "There are no leftSection or rightSection props. An svg child is detected via :has() and gets flex layout, a gap and 1em sizing. Icon-only is detected from the accessible name: the aria-label (or aria-labelledby) an icon-only button needs anyway, or hidden text beside the icon in the shared loam-VisuallyHidden class, and it becomes square.",
+        "There are no leftSection or rightSection props. An svg child is detected via :has() and gets flex layout, a gap and 1em sizing. Icon-only is detected from the accessible name: the aria-label (or aria-labelledby) an icon-only button needs anyway, or a VisuallyHidden child beside the icon, and it becomes square.",
       code: `<Button>
   <svg viewBox="0 -0.5 25 25" fill="none" aria-hidden>
     <path d="M5.5 12.5L10.167 17L19.5 8" stroke="currentColor"
@@ -134,10 +147,10 @@ const doc: ComponentContent = {
 
 <Button>
   <svg>…</svg>
-  <span className="loam-VisuallyHidden">Approve</span>
+  <VisuallyHidden>Approve</VisuallyHidden>
 </Button>`,
       render: () => (
-        <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "var(--loam-space-l)", flexWrap: "wrap" }}>
           <Example label="With a label">
             <Button>
               <svg viewBox="0 -0.5 25 25" fill="none" aria-hidden>
@@ -176,7 +189,7 @@ const doc: ComponentContent = {
                   strokeLinejoin="round"
                 />
               </svg>
-              <span className="loam-VisuallyHidden">Approve</span>
+              <VisuallyHidden>Approve</VisuallyHidden>
             </Button>
           </Example>
         </div>
@@ -193,7 +206,7 @@ const doc: ComponentContent = {
       render: () => (
         <details>
           <Button render={<summary />}>Show details</Button>
-          <p style={{ marginBlockStart: "0.75rem" }}>
+          <p style={{ marginBlockStart: "var(--loam-space-xs)" }}>
             The disclosure is native; the summary wears the button.
           </p>
         </details>
@@ -244,8 +257,8 @@ const doc: ComponentContent = {
     },
   ],
   accessibility: [
-    "Always renders a real <button>, so keyboard focus, Enter/Space activation and the button role come from the platform for free.",
-    'Write a specific label: the text should make sense out of context ("Save changes", not "OK"). Icon-only buttons need a name: aria-label, aria-labelledby, or hidden text in the loam-VisuallyHidden class beside the icon; any of the three also makes the button square.',
+    "Always renders a real <button>, so keyboard focus, Enter/Space activation and the button role come from the platform.",
+    'Write a specific label: the text should make sense out of context ("Save changes", not "OK"). Icon-only buttons need a name: aria-label, aria-labelledby, or a VisuallyHidden child beside the icon; any of the three also makes the button square.',
     "For a loading state, add disabled and compose a Loader (marked aria-hidden) into the children so it isn't announced as content.",
     "Focus is shown with a :focus-visible ring (never removed without a replacement), and colour is never the only signal of state.",
   ],

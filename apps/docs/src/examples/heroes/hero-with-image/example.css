@@ -7,15 +7,15 @@
         align-items: center;
         display: block grid;
         font-size: var(--loam-text-md);
-        gap: var(--loam-space-xl);
+        gap: var(--loam-space-l);
         grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
-        padding-block: var(--loam-space-xl);
+        padding-block: var(--loam-space-l);
       }
     }
 
     header {
       display: block grid;
-      gap: var(--loam-space-lg);
+      gap: var(--loam-space-s);
       grid-template-columns: minmax(0, 1fr);
       overflow-wrap: anywhere;
     }
@@ -33,7 +33,7 @@
       display: block flex;
       flex-wrap: wrap;
       font-size: var(--loam-text-sm);
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
     }
 
     h1 {
@@ -50,12 +50,12 @@
       align-items: center;
       display: block flex;
       flex-wrap: wrap;
-      gap: var(--loam-space-md);
+      gap: var(--loam-space-xs);
 
       > a {
         align-items: center;
         display: inline flex;
-        gap: var(--loam-space-xs);
+        gap: var(--loam-space-3xs);
 
         svg {
           block-size: 1em;

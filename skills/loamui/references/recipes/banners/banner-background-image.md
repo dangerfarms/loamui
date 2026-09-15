@@ -30,11 +30,8 @@ Use for one short promotion within a page, with a decorative image filling the s
 
 These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
-- **Native CSS.** A section named by its h2 promotes one destination; the decorative photograph is an img with empty alt and explicit dimensions, lazy-loaded for a promotion further down the page.
-- **Modern CSS.** Styles belong to loamui.components inside a donut scope. The container measures the header’s fluid token spacing and type. The content keeps the same spacing and content width as Banner with image from 44rem, with the text in the leading column of a 3:2 grid; below that it fills one column, and the photograph covers the entire section.
-- **Composition.** The section owns the photograph and scrim instead of overriding a Card surface; Badge and SignpostLink are composed unchanged, beyond the scope boundary.
-- **Contextualism.** The surrounding colour scheme determines the background, scrim, text and link tokens. The eyebrow declares the primary brand context for its offer Badge, just as in Banner with image; a promotion does not imply a warning.
-- **Accessible & gatekept.** useId names repeated regions independently. A solid background, full foreground text and an 88% scheme-aware background-token scrim protect the words even if the photograph fails; recheck contrast when changing either. Content determines the height and grows with enlarged text. Focus rings are not clipped. Forced colours remove the decorative image and scrim, leaving system colours and a visible border.
+- **Modern.** A section named by its h2 promotes one destination, and the decorative photograph is an img with empty alt, explicit dimensions and lazy loading for a promotion below the fold. Its stylesheet lives in loamui.components inside a donut scope, measuring the header’s fluid token spacing and type through container queries rather than the viewport: the text takes the leading column of a 3:2 grid from 44rem and fills one column below that, with the photograph covering the whole section. Contextualism carries the rest — the surrounding colour scheme resolves the background, scrim, text and link tokens together, and the eyebrow declares the primary brand context so the offer Badge inherits it without a prop, because a promotion does not imply a warning.
+- **Accessible.** useId names repeated regions independently. A solid background, full foreground text and an 88% scheme-aware background-token scrim protect the words even if the photograph fails; recheck contrast when changing either. Content determines the height and grows with enlarged text. Focus rings are not clipped. Forced colours remove the decorative image and scrim, leaving system colours and a visible border.
 
 ## References
 
@@ -127,10 +124,10 @@ export default function Example() {
       align-content: center;
       display: block grid;
       font-size: var(--loam-text-md);
-      gap: var(--loam-space-md);
+      gap: var(--loam-space-xs);
       grid-template-columns: minmax(0, 1fr);
       overflow-wrap: anywhere;
-      padding: var(--loam-space-xl);
+      padding: var(--loam-space-l);
     }
 
     h2,
@@ -145,7 +142,7 @@ export default function Example() {
       display: block flex;
       flex-wrap: wrap;
       font-size: var(--loam-text-sm);
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
     }
 
     h2 {
@@ -159,7 +156,7 @@ export default function Example() {
     div.actions {
       display: block flex;
       flex-wrap: wrap;
-      gap: var(--loam-space-md);
+      gap: var(--loam-space-xs);
     }
 
     @container banner-background-image (inline-size < 44rem) {

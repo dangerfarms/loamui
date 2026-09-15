@@ -110,13 +110,13 @@ A Field.Error before the control marks the field invalid and is announced: the m
 
 - For a small set of options the user should see at once: use Radio, which shows every choice up front.
 - For yes/no or on/off: use Checkbox or Switch.
-- For free-form input: use Input.
+- For unrestricted text entry: use Input.
 
 ## How it works
 
 ### Start without a value
 
-Make the first child a disabled option with an empty value, so the field starts unanswered and required validation catches an untouched select. With no such option the first real one is pre-selected, and users who skip the field silently submit an answer they never chose. The prompt is an option, not a prop: the platform already has the element for it.
+Make the first child a disabled option with an empty value, so the field starts unanswered and required validation catches an untouched select. With no such option the first real one is pre-selected, and users who skip the field silently submit an answer they never chose. Write the prompt as a native option element.
 
 ### Order the options
 

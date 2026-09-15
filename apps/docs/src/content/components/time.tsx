@@ -1,7 +1,13 @@
 import { Time } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
 
-const list = { display: "grid", gap: "0.25rem", listStyle: "none", margin: 0, padding: 0 };
+const list = {
+  display: "grid",
+  gap: "var(--loam-space-3xs)",
+  listStyle: "none",
+  margin: 0,
+  padding: 0,
+};
 
 const doc: ComponentContent = {
   slug: "time",
@@ -108,7 +114,7 @@ const doc: ComponentContent = {
     "Where a distance reads better than a date, such as activity feeds and comment threads, with relative and a reference moment the page already knows.",
   ],
   whenNotToUse: [
-    'For a duration ("2 h 15 min", "3 days"). A duration is a length, not a point in time, and has no moment to be relative to. Write it as text, or on a <time> element of your own with a duration in its datetime attribute.',
+    'For a duration ("2 h 15 min", "3 days"). A duration measures elapsed time; use Time for a specific point in time. Write it as text, or on a <time> element of your own with a duration in its datetime attribute.',
     "For a countdown or a clock that ticks. A value that changes while the page is open is a live region that must announce itself politely; this element writes a moment once and leaves it.",
   ],
   howItWorks: [

@@ -10,7 +10,7 @@
 
     div.details {
       display: block grid;
-      gap: var(--loam-space-md);
+      gap: var(--loam-space-xs);
       min-inline-size: 0;
       overflow-wrap: anywhere;
 
@@ -26,11 +26,11 @@
 
     dl {
       display: block grid;
-      gap: var(--loam-space-md);
+      gap: var(--loam-space-xs);
 
       > div {
         display: block grid;
-        gap: var(--loam-space-xs);
+        gap: var(--loam-space-3xs);
       }
     }
 
@@ -39,7 +39,7 @@
       color: var(--loam-color-fg-muted);
       display: block flex;
       font-size: var(--loam-text-sm);
-      gap: var(--loam-space-xs);
+      gap: var(--loam-space-3xs);
 
       svg {
         block-size: 1em;
@@ -56,7 +56,7 @@
     div.confirmation {
       align-content: start;
       display: block grid;
-      gap: var(--loam-space-lg);
+      gap: var(--loam-space-s);
       grid-template-columns: minmax(0, 1fr);
       overflow-wrap: anywhere;
     }
@@ -78,9 +78,9 @@
         border-radius: var(--loam-radius-xl);
         display: block grid;
         font-size: var(--loam-text-md);
-        gap: var(--loam-space-xl);
+        gap: var(--loam-space-l);
         grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr));
-        padding: clamp(var(--loam-space-md), 0.5rem + 2cqi, var(--loam-space-xl));
+        padding: clamp(var(--loam-space-xs), 0.5rem + 2cqi, var(--loam-space-l));
       }
     }
   }

@@ -4,10 +4,10 @@
     container-type: inline-size;
     display: block flex;
     flex-direction: column;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     justify-content: center;
     min-block-size: 24rem;
-    padding-block: var(--loam-space-xl);
+    padding-block: var(--loam-space-l);
     text-align: center;
   }
 
@@ -57,8 +57,8 @@
     align-items: center;
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-md) var(--loam-space-lg);
+    gap: var(--loam-space-xs) var(--loam-space-s);
     justify-content: center;
-    margin-block-start: var(--loam-space-sm);
+    margin-block-start: var(--loam-space-2xs);
   }
 }

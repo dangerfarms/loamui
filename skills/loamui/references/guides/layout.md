@@ -6,20 +6,22 @@ description: Layout is native CSS. Pick the module that fits the shape of the co
 > LoamUI documentation, generated from the same source as the live page —
 > treat it as authoritative for `@loamui/core`.
 
+import "../prose.css";
+
 # Layout
 
-LoamUI ships no layout components. Layout is a native CSS concern, and the platform already has four layout modules that cover the cases a UI runs into. Pick the one that fits the shape of the content, write it in the component that owns that content, and reach for the space tokens for every gap. This page is itself laid out this way.
+LoamUI ships no layout components. Layout is a native CSS concern, and the platform already has four layout modules that cover the cases a UI runs into. Pick the one that fits the shape of the content, write it in the component that owns that content, and reach for the space tokens for every gap.
 
 ## Pick the module by the shape of the content
 
 Each module answers a different question. Match it to what you are arranging, not to a breakpoint.
 
-| The content | The module | The core declaration |
-| --- | --- | --- |
-| A page of prose | Flow | nothing; block layout is the default |
-| A dense dashboard | Grid | `display: grid` with `subgrid` for alignment |
-| A row of controls | Flex | `display: flex` |
-| A long article | Multi-column | `columns` |
+| The content       | The module   | The core declaration                         |
+| ----------------- | ------------ | -------------------------------------------- |
+| A page of prose   | Flow         | nothing; block layout is the default         |
+| A dense dashboard | Grid         | `display: grid` with `subgrid` for alignment |
+| A row of controls | Flex         | `display: flex`                              |
+| A long article    | Multi-column | `columns`                                    |
 
 ### Flow, for a documentation page
 
@@ -33,7 +35,7 @@ Grid is the two-dimensional module: use it when rows and columns both matter. Pr
 @scope (.dashboard) {
   :scope {
     display: grid;
-    gap: var(--loam-space-lg);
+    gap: var(--loam-space-s);
     grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
   }
 }
@@ -50,7 +52,7 @@ Flex is the one-dimensional module: a row (or column) of items that share a line
   :scope {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     align-items: safe center;
   }
 }
@@ -64,7 +66,7 @@ Multi-column flows a single stream of text across balanced columns, the way a ne
 @scope (.article) {
   :scope {
     columns: 18rem;
-    gap: var(--loam-space-xl);
+    gap: var(--loam-space-l);
   }
 }
 ```
@@ -75,11 +77,9 @@ Whichever module you pick, the gaps come from the fluid space scale, not hard-co
 
 ```css
 /* the scale, smallest to largest */
-gap: var(--loam-space-xs); /* 4px  → 4.5px  */
-gap: var(--loam-space-sm); /* 8px  → 9px    */
-gap: var(--loam-space-md); /* 12px → 13.5px */
-gap: var(--loam-space-lg); /* 16px → 18px   */
-gap: var(--loam-space-xl); /* 24px → 27px   */
+gap: var(--loam-space-3xs); /* 4px  → 4.5px  */
+gap: var(--loam-space-2xs); /* 8px  → 9px    */
+gap: var(--loam-space-xs); /* 12px → 13.5px */
+gap: var(--loam-space-s); /* 16px → 18px   */
+gap: var(--loam-space-l); /* 24px → 27px   */
 ```
-
-> The same discipline the components use is available to your own layouts: a native module for structure, a space token for every gap, and a container query where a piece needs to respond to its own width rather than the viewport's.

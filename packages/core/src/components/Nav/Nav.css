@@ -7,14 +7,14 @@
 @scope (.loam-Nav) to ([class*="loam-"]) {
   :scope {
     display: block grid;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
   }
 
   /* A sidebar with several titled sections is one Root per section,
      stacked; the space between them is the nav's own, so the stack reads
      as one column without a wrapper rule. */
   .loam-Nav + :scope {
-    margin-block-start: var(--loam-space-lg);
+    margin-block-start: var(--loam-space-s);
   }
 
   /* A small label above the lists, set the same whatever element it
@@ -28,13 +28,13 @@
     letter-spacing: 0.08em;
     line-height: 1.4;
     margin: 0;
-    padding-inline: var(--loam-space-sm);
+    padding-inline: var(--loam-space-2xs);
     text-transform: uppercase;
   }
 
   ul {
     display: block grid;
-    gap: 2px;
+    gap: var(--loam-space-fixed-2);
     list-style: none;
     margin: 0;
     padding: 0;
@@ -43,7 +43,7 @@
        group: a group's list is a nested list too, so the two indents are
        one value, the public --loam-nav-indent. */
     ul {
-      padding-inline-start: var(--loam-nav-indent, var(--loam-space-md));
+      padding-inline-start: var(--loam-nav-indent, var(--loam-space-xs));
     }
   }
 
@@ -86,11 +86,11 @@
     display: block flex;
     font-size: var(--loam-text-md);
     font-weight: 400;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     line-height: 1.4;
     min-block-size: var(--loam-nav-link-size, 2.25rem);
-    padding-block: var(--loam-space-xs);
-    padding-inline: var(--loam-space-sm);
+    padding-block: var(--loam-space-3xs);
+    padding-inline: var(--loam-space-2xs);
     text-align: start;
     text-decoration: none;
     white-space: normal;
@@ -236,7 +236,7 @@
     box-shadow: var(--loam-shadow-lg);
     inline-size: min(var(--_size), 90vi);
     margin: 0;
-    padding: var(--loam-space-xs);
+    padding: var(--loam-space-3xs);
 
     /* Enhanced: top layer + anchor positioning, tethered to the trigger by
        the per-instance anchor-name the two parts share through inline
@@ -246,7 +246,7 @@
       /* The UA gives [popover] `inset: 0`; clear it so the area alone
          places the box. */
       inset: auto;
-      margin-block: var(--loam-space-xs);
+      margin-block: var(--loam-space-3xs);
       position: fixed;
       position-area: block-end span-inline-end;
       position-try-fallbacks: flip-block, flip-inline;
@@ -275,7 +275,7 @@
     /* Fallback: no anchor positioning (and no top layer), so the panel is
        an ordinary absolutely positioned box under its Item. */
     @supports not (anchor-name: --loam-probe) {
-      inset-block-start: calc(100% + var(--loam-space-xs));
+      inset-block-start: calc(100% + var(--loam-space-3xs));
       inset-inline-start: 0;
       position: absolute;
       z-index: var(--loam-z-popup);
@@ -292,7 +292,7 @@
      List inside it is set here the same way. */
   ul {
     display: block grid;
-    gap: 2px;
+    gap: var(--loam-space-fixed-2);
     list-style: none;
     margin: 0;
     padding: 0;

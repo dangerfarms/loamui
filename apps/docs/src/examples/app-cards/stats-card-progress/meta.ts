@@ -7,15 +7,13 @@ export const meta: ExampleMeta = {
   category: "app-cards",
   uses: ["Card", "Progress"],
   notes: {
-    native:
-      "The bar is the native progress element with its label as its accessible name, and the count is text a reader can select and copy, not a number drawn into a canvas.",
     modern:
-      "The count is set in tabular lining numerals from the display face so it holds its width as it changes; the thick track is the Progress's own large size, the one size a track can carry.",
-    composition:
-      "Card and Progress are dropped in as they come; the example writes the figures around the bar and never reaches into it.",
+      "The bar is the native progress element with its label as its accessible name, and the count is text a reader can select and copy, not a number drawn into a canvas. The count is set in tabular lining numerals from the display face so it holds its width as it changes, and the thick track is the Progress’s own large size, the one size a track can carry.",
     accessible:
       "The bar speaks 70% packed through labels.value, and the count, the total and what is left are all written out, so the fill is never the only thing saying how far along the week is.",
   },
+  composition:
+    "Card and Progress are dropped in as they come; the example writes the figures around the bar and never reaches into it.",
   tags: ["progress", "kpi", "figure", "dashboard", "goal"],
   order: 5,
 };

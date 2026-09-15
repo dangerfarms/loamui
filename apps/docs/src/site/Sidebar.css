@@ -1,0 +1,9 @@
+@scope (.site-Sidebar) {
+  :scope {
+    display: block flex;
+    flex-direction: column;
+    gap: var(--loam-space-l);
+    padding-block: var(--loam-space-xl);
+    padding-inline-end: var(--loam-space-s);
+  }
+}

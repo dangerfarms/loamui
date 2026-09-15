@@ -10,7 +10,7 @@
     div.body {
       display: block grid;
       font-size: var(--loam-text-md);
-      gap: var(--loam-space-xs);
+      gap: var(--loam-space-3xs);
       grid-template-columns: minmax(0, 1fr);
       justify-items: center;
       overflow-wrap: anywhere;
@@ -19,7 +19,7 @@
 
     h2 {
       font-size: var(--loam-text-xl);
-      margin-block: var(--loam-space-sm) 0;
+      margin-block: var(--loam-space-2xs) 0;
     }
 
     p.role {
@@ -30,15 +30,15 @@
 
     dl.stats {
       display: block grid;
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 5rem), 1fr));
       inline-size: 100%;
-      margin-block: var(--loam-space-md) var(--loam-space-sm);
+      margin-block: var(--loam-space-xs) var(--loam-space-2xs);
 
       div {
         align-content: start;
         display: block grid;
-        gap: calc(var(--loam-space-xs) / 2);
+        gap: calc(var(--loam-space-3xs) / 2);
         grid-template-columns: minmax(0, 1fr);
       }
 

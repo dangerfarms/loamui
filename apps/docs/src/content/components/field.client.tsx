@@ -68,7 +68,7 @@ export function FieldFormDemo() {
     <form
       onSubmit={onSubmit}
       noValidate
-      style={{ display: "grid", gap: "1rem", maxInlineSize: "22rem" }}
+      style={{ display: "grid", gap: "var(--loam-space-s)", maxInlineSize: "22rem" }}
     >
       <Field.Root>
         <Field.Label>Full name</Field.Label>

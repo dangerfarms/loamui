@@ -1,15 +1,16 @@
 import type { ComponentType } from "react";
 
 /**
- * The five pillars, keyed the way an example's `meta.notes` names them.
- * The order is the README's, and the page renders the rows in it.
+ * The two pillars, keyed the way an example's `meta.notes` names them.
+ * Modern gathers the platform, the CSS and contextualism, which is the
+ * paradigm running through all three primitives rather than a thing beside
+ * them. Accessible gathers the UX and accessibility practice. Composition is
+ * not a pillar: it is specific to components, and a recipe explains its own
+ * in `meta.composition`.
  */
 export const PILLARS = [
-  { key: "native", name: "Native CSS" },
-  { key: "modern", name: "Modern CSS" },
-  { key: "composition", name: "Composition" },
-  { key: "context", name: "Contextualism" },
-  { key: "accessible", name: "Accessible & gatekept" },
+  { key: "modern", name: "Modern" },
+  { key: "accessible", name: "Accessible" },
 ] as const;
 
 export type PillarKey = (typeof PILLARS)[number]["key"];
@@ -39,10 +40,16 @@ export interface ExampleMeta {
    */
   uses: string[];
   /**
-   * One sentence per pillar on the judgment this example encodes. Only the
+   * One paragraph per pillar on the judgment this example encodes. Only the
    * pillars with a specific decision to explain; these are rationale, not certification.
    */
   notes: Partial<Record<PillarKey, string>>;
+  /**
+   * How this recipe composes the primitives. Not a pillar, and rendered apart
+   * from them: composition is the components' own concern, and the Components
+   * page carries the general argument.
+   */
+  composition?: string;
   /** Application data, actions or services needed when using this recipe. */
   integration?: string;
   /** Free-text search terms beyond the title ("landing", "marketing"). */

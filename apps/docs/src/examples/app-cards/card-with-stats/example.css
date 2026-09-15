@@ -2,7 +2,7 @@
   :scope {
     display: block flex;
     flex-direction: column;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     max-inline-size: 36rem;
   }
 
@@ -27,7 +27,7 @@
 
   div.goal {
     display: block grid;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
   }
 
   p.figures {
@@ -50,15 +50,15 @@
   dl.stats {
     border-block-start: 1px solid var(--loam-color-line);
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     grid-template-columns: repeat(3, minmax(0, 1fr));
     margin: 0;
-    padding-block-start: var(--loam-space-md);
+    padding-block-start: var(--loam-space-xs);
 
     > div {
       display: block grid;
-      gap: var(--loam-space-xs);
-      padding-inline-start: var(--loam-space-md);
+      gap: var(--loam-space-3xs);
+      padding-inline-start: var(--loam-space-xs);
 
       &:first-child {
         padding-inline-start: 0;

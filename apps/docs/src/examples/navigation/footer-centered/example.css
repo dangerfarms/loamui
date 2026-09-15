@@ -4,9 +4,9 @@
     color: var(--loam-color-fg-muted);
     display: block grid;
     font-size: var(--loam-text-sm);
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     justify-items: center;
-    padding-block: var(--loam-space-xl);
+    padding-block: var(--loam-space-l);
     text-align: center;
   }
 
@@ -17,7 +17,7 @@
     font-family: var(--loam-font-display);
     font-size: var(--loam-text-lg);
     font-weight: 700;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     letter-spacing: -0.02em;
     text-decoration: none;
 
@@ -31,7 +31,7 @@
     ul {
       display: block flex;
       flex-wrap: wrap;
-      gap: var(--loam-space-xs) var(--loam-space-md);
+      gap: var(--loam-space-3xs) var(--loam-space-xs);
       justify-content: center;
       list-style: none;
       margin: 0;

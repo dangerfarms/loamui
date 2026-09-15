@@ -1,0 +1,23 @@
+/* The footer sits outside main, so it is its own container. */
+@scope (.site-Footer) {
+  :scope {
+    background: var(--loam-color-bg-subtle);
+    border-block-start: 1px solid var(--loam-color-line);
+    container-type: inline-size;
+    margin-block-start: var(--loam-space-4xl);
+    padding-block: var(--loam-space-xl);
+  }
+
+  .bottom {
+    color: var(--loam-color-fg-dim);
+    display: block flex;
+    flex-wrap: wrap;
+    font-size: var(--loam-text-sm);
+    gap: var(--loam-space-s);
+    justify-content: space-between;
+
+    code {
+      font-size: 0.9em;
+    }
+  }
+}

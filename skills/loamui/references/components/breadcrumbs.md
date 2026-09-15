@@ -64,7 +64,7 @@ import Link from "next/link";
 ## When not to
 
 - As a substitute for primary navigation, or on shallow sites where every page is one step from home.
-- For linear multi-step flows, show progress instead: breadcrumbs describe structure, not position in a sequence.
+- For linear multi-step flows, use Stepper to show progress. Breadcrumbs describe the site hierarchy.
 
 ## How it works
 

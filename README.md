@@ -9,20 +9,19 @@ for quickly building bespoke UIs that are accessible, adaptable and fast.
 
 ## Why LoamUI?
 
-Agent-assisted developers want solid primitives their agents can build bespoke
-components and interfaces from, not hundreds of pre-made components locked
-into last decade's paradigms. LoamUI offers three primitives, each following
-the Chrome team's guidance for the modern web and steeped in UX best
-practices:
+LoamUI provides three primitives and an agent skill for building interfaces
+for your product. The primitives follow the Chrome team's guidance for the
+modern web and established accessibility and UX practices:
 
 - **Tokens.** A handful of semantic decisions (four hues, eight neutrals,
   fluid scales); everything else is derived by recipe and audited in CI.
 - **Element styles.** Enhanced default styles for native HTML, page-wide:
   responsive, accessible, and respecting the reader's light or dark
   preference. Plain markup is presentable before any component appears.
-- **Components.** A small set of carefully chosen, contextually styled
-  components. No size, variant or colour props: a region declares what it
-  means (`--loam-context`) and everything inside adapts.
+- **Components.** A small set of composable React components. A region declares
+  what it means (`--loam-context`), and its contents adapt through the tokens.
+  Component references document their APIs, including the intrinsic sizing
+  exceptions described in Standards below.
 
 All of it is plain, static CSS (cascade layers, `@scope`, `light-dark()`,
 container queries, anchor positioning), so no styling runtime ships to your
@@ -30,54 +29,44 @@ users: the components are ordinary React, and the stylesheet is one file.
 
 ## Philosophy
 
-Five ideas hold the library together. Each is grounded in a reference and
+Two ideas hold the library together. Each is grounded in a reference and
 enforced somewhere (by the cascade, a lint rule, a CI gate, or review), not
 just asserted.
 
-1. **Native CSS.** Real HTML elements carry the semantics; native CSS carries
-   the styling. A button is a `<button>`, a dialog is a `<dialog>` opened with
-   `showModal()`. It is plain, static CSS: nothing runs at runtime, no
-   CSS-in-JS, no styling engine. Grounded in [Google Chrome's Modern Web
-   Guidance](https://github.com/GoogleChrome/modern-web-guidance).
-2. **Modern CSS.** `@layer` for order, `@scope` for encapsulation, `light-dark()`
-   and container queries for adaptation: additive styles that lean on the
-   cascade instead of fighting it. No BEM, no specificity battles. The
+1. **Modern.** Real HTML elements carry the semantics; native CSS carries the
+   styling. A button is a `<button>`, a dialog is a `<dialog>` opened with
+   `showModal()`. Static CSS supplies the styling without a JavaScript styling
+   runtime. Grounded in [Google Chrome's
+   Modern Web Guidance](https://github.com/GoogleChrome/modern-web-guidance).
+
+   On top of that sits modern CSS itself: `@layer` for order, `@scope` for
+   encapsulation, `light-dark()` and container queries for adaptation. These
+   are additive styles that lean on the cascade instead of fighting it, with no
+   BEM and no specificity battles, following the
    [ModernCSS](https://moderncss.ai/) rule set.
-3. **Composition.** Parts, not prop soup. A modal is assembled from its own
-   named parts (`Modal.Root`, `Modal.Trigger`, `Modal.Popup`) that you arrange
-   in your markup, rather than one component configured through a wall of props.
-   You swap the rendered element through a `render` prop, and icons and loaders
-   are ordinary children the component detects. The structure stays where you
-   can see it and rearrange it.
-4. **Contextualism.** A region declares what it means (`--loam-context` for
-   status, a container query for size) and every control inside adapts. This is
-   the whole status-and-size API: set once on a region, never repeated as a prop
-   on each control.
-5. **Accessible & gatekept.** Semantic HTML, managed focus, keyboard support,
-   and the reader's colour-scheme and motion preferences as the baseline. The
-   palette is contrast-audited in CI, every component has an
+
+   Underneath both runs
+   [contextualism](https://css-day-2026.netlify.app/00.02-contextualism/), the
+   paradigm shift. A region declares what it means (`--loam-context` for
+   status, a container query for size) and the tokens, element styles and
+   components inside all adapt. That is the whole status-and-size API: set once
+   on a region, never repeated as a prop on each control.
+
+2. **Accessible.** Semantic HTML, managed focus, keyboard support, and the
+   reader's colour-scheme and motion preferences as the baseline, distilled
+   from long-established public practice and running through all three
+   primitives. The palette is contrast-audited in CI, every component has an
    [axe](https://github.com/dequelabs/axe-core) (automated accessibility
    checker) test, and the interactive ones have interaction tests. What a
    tool can verify, a tool verifies.
 
-Each pillar has somewhere to learn it from and a mechanism that keeps it honest:
-
-| Pillar                | Learn more                                                                                                                                      | Enforced by                                                     |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| Native CSS            | [Modern Web Guidance](https://github.com/GoogleChrome/modern-web-guidance) · `modern-web-guidance` skill                                        | A static-CSS build: no styling runtime ships                    |
-| Modern CSS            | [ModernCSS](https://moderncss.ai/) · `modern-css` skill                                                                                         | stylelint (nesting, `loam-` class patterns, token validation)   |
-| Composition           | [API conventions](./CONTRIBUTING.md#component-api-conventions)                                                                                  | The no-config-props doctrine, checked in review                 |
-| Contextualism         | [CSS Day: Contextualism](https://css-day-2026.netlify.app/00.02-contextualism/) · [Contextualism guide](https://loamui.com/docs/contextualism/) | Contrast audit in CI + the no-`size`/`variant`/`color` doctrine |
-| Accessible & gatekept | [Accessibility guide](https://loamui.com/docs/accessibility/) · [ARIA APG](https://www.w3.org/WAI/ARIA/apg/)                                    | axe + contrast audit in CI; forced-colors treatment             |
-
-Two of those references are installed as agent skills in this repo,
-`modern-web-guidance` (behind _Native CSS_) and `modern-css` (behind _Modern
-CSS_), under `.agents/skills/` and pinned by `skills-lock.json`, so an agent
-working here inherits them. Composition and Contextualism lean on the guides
-above rather than a skill of their own; a dedicated contextualism skill is a
-considered next step if those pages prove not enough for agents. The full
-reading behind every convention is collected in
-[CONTRIBUTING → References](./CONTRIBUTING.md).
+Composition is not a pillar — tokens and element styles have nothing to
+compose — but it is how the components are used. Parts, not prop soup: a modal
+is assembled from its own named parts (`Modal.Root`, `Modal.Trigger`,
+`Modal.Popup`) that you arrange in your markup, rather than one component
+configured through a wall of props. You swap the rendered element through a
+`render` prop, and icons and loaders are ordinary children the component
+detects. The structure stays where you can see it and rearrange it.
 
 ## Standards
 
@@ -102,11 +91,13 @@ the authority for everything it covers: run it and believe it.
   per-project structural overrides to be reused is a downstream recipe, not a
   core primitive. Token overrides are the sanctioned theming surface; overriding
   spacing, layout or structure is the smell that says a component is too
-  specific to live here. Larger sections live as copy-paste recipes on the
-  docs site: built on core the way any consumer would, held to the same
-  pillars and gates, and never a reason to change a primitive.
+  specific to live here. Larger sections live as worked recipes on the docs
+  site: product-specific compositions to study and adapt, built on core the
+  way any consumer would, and held to the same pillars and gates.
 - **Composition.** Compound components expose parts; element swap goes through
-  `render`; icons and loaders are detected children, never slot props. Bare form
+  `render`; Button icons and loaders are children. Input's documented
+  `startSection` and `endSection` props supply adornments inside its field box.
+  Bare form
   controls (Input, Select, Textarea, Range, QuantityInput, `FileInput.Control`,
   `Search.Input`) self-wire from `Field`; Checkbox / Radio / Switch keep an
   inline label because the control lives inside it.
@@ -176,11 +167,11 @@ docs page has a markdown twin at the same URL with `.md` appended. The skill
 bundles these references, including complete recipes, for offline use. Recipe
 cards also offer a **Copy prompt** action with the selected implementation
 and its relevant guidance.
-The [Composing components](https://loamui.com/docs/composing/) guide shows how
-to build your own components (a hero, a pricing table, a carousel) from the
-three primitives, the same way the [recipes](https://loamui.com/recipes/)
-are built, and the package ships an `AGENTS.md`, a one-page summary of the
-conventions an agent needs when writing against it.
+The [example recipes](https://loamui.com/recipes/) show how to build your own
+components (a hero, a pricing table, a carousel) from the three primitives,
+each opened up with the prompt that made it, and the package ships an
+`AGENTS.md`, a one-page summary of the conventions an agent needs when writing
+against it.
 
 ## Repository layout
 
@@ -188,7 +179,7 @@ This is a pnpm + Turborepo monorepo:
 
 - [`packages/core`](./packages/core): `@loamui/core`, the component library.
 - [`apps/docs`](./apps/docs): the marketing site and documentation (Next.js).
-- [`apps/docs/src/examples`](./apps/docs/src/examples): the copy-paste recipes
+- [`apps/docs/src/examples`](./apps/docs/src/examples): the worked recipes
   shown at `/recipes` on the docs site.
 
 ## Development

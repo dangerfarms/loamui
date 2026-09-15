@@ -132,7 +132,7 @@ export function ComboboxFormDemo() {
     <form
       style={{
         display: "grid",
-        gap: "var(--loam-space-md)",
+        gap: "var(--loam-space-xs)",
         inlineSize: "100%",
         maxInlineSize: "20rem",
       }}

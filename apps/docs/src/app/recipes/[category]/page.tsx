@@ -9,7 +9,7 @@ import { ExampleStage } from "@/renderer/examples-stage";
 import { ExampleCodePanel } from "@/renderer/examples-code-panel";
 import { ExampleCrumbs } from "@/renderer/examples-crumbs";
 import { ExamplePager } from "@/renderer/examples-pager";
-import c from "@/renderer/examples-page.module.css";
+import "@/renderer/examples-page.css";
 
 export function generateStaticParams() {
   return categoryRouteParams();
@@ -42,35 +42,35 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
     cat ? { href: `/recipes/${cat.slug}`, title: cat.title } : undefined;
 
   return (
-    <div className={c.page}>
-      <header className={c.hero}>
+    <div className="site-RecipePage">
+      <header className="hero">
         <ExampleCrumbs category={category} />
-        <h1 className={c.title}>{category.title}</h1>
-        <p className={c.lead}>
+        <h1 className="title">{category.title}</h1>
+        <p className="lead">
           {category.blurb} {items.length} {items.length === 1 ? "recipe" : "recipes"}.
         </p>
       </header>
-      <div className={c.shell}>
-        <aside className={c.aside}>
+      <div className="shell">
+        <aside className="aside">
           <ExamplesRail current={category.slug} />
         </aside>
-        <div className={c.content}>
+        <div className="content">
           {items.map((e) => {
             const source = EXAMPLE_SOURCE[e.slug];
             return (
-              <article key={e.slug} id={e.slug} className={c.entry}>
-                <div className={c.entryHead}>
-                  <h2 className={c.entryTitle}>
+              <article key={e.slug} id={e.slug} className="entry">
+                <div className="entryHead">
+                  <h2 className="entryTitle">
                     <Link href={exampleHref(e)}>{e.meta.title}</Link>
                     <a
                       href={`#${e.slug}`}
-                      className={c.anchor}
+                      className="anchor"
                       aria-label={`Link to ${e.meta.title}`}
                     >
                       #
                     </a>
                   </h2>
-                  <p className={c.entryDesc}>{e.meta.description}</p>
+                  <p className="entryDesc">{e.meta.description}</p>
                 </div>
                 <ExampleStage title={e.meta.title} href={exampleHref(e)}>
                   <e.Example />

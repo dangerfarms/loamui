@@ -2,7 +2,7 @@
   :scope {
     container-type: inline-size;
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
     list-style: none;
     margin: 0;
@@ -27,7 +27,7 @@
   :scope {
     display: block flex;
     flex-direction: column;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
   }
 
   p.eyebrow {
@@ -54,14 +54,14 @@
 
   ul.features {
     display: block grid;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     list-style: none;
     margin: 0;
     padding: 0;
 
     > li {
       display: block grid;
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
       grid-template-columns: 1.25em 1fr;
       margin: 0;
 
@@ -88,7 +88,7 @@
   div.actions {
     display: block grid;
     margin-block-start: auto;
-    padding-block-start: var(--loam-space-sm);
+    padding-block-start: var(--loam-space-2xs);
   }
 
   /* Answered by the list item, an ancestor of both. */

@@ -7,7 +7,7 @@
     color: var(--loam-color-fg-strong);
     display: inline flex;
     font-weight: 600;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     max-inline-size: fit-content;
     text-decoration: none;
   }

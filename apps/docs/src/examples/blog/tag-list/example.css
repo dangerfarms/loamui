@@ -2,7 +2,7 @@
   :scope {
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     list-style: none;
     margin: 0;
     padding: 0;

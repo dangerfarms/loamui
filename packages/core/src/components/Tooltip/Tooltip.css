@@ -9,7 +9,7 @@
    own scope. */
 @scope (.loam-Tooltip-popup) to ([class*="loam-"]) {
   :scope {
-    --_gap: var(--loam-space-xs);
+    --_gap: var(--loam-space-3xs);
     --_arrow: 0.4em;
 
     background: var(--loam-color-fg);
@@ -25,8 +25,8 @@
     /* The UA gives [popover] `overflow: auto`, which would clip the arrow
        poking outside the bubble. Tooltips never scroll. */
     overflow: visible;
-    padding-block: var(--loam-space-xs);
-    padding-inline: var(--loam-space-sm);
+    padding-block: var(--loam-space-3xs);
+    padding-inline: var(--loam-space-2xs);
     text-align: center;
     white-space: normal;
 

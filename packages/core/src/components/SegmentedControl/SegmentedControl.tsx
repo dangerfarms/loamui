@@ -20,7 +20,7 @@ import { useRequiredContext } from "../../context";
  * ```
  *
  * The Legend names the group and is painted inside the pill before the
- * segments; give it `className="loam-VisuallyHidden"` when the segments
+ * segments; render it inside `VisuallyHidden` when the segments
  * say it themselves. The arrow keys move the choice, as on any radio
  * group, and the chosen segment is drawn by the stylesheet from the
  * radio's own `:checked`.
@@ -96,7 +96,7 @@ export interface SegmentedControlLegendProps extends PartProps<"legend"> {}
 
 /**
  * The group's name, a `legend`, painted inside the pill before the
- * segments. Hide it visually with `className="loam-VisuallyHidden"`; it
+ * segments. Hide it visually with `VisuallyHidden`; it
  * still names the group.
  */
 function SegmentedControlLegend({

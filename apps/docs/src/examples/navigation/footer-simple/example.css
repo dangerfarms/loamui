@@ -7,8 +7,8 @@
     display: block flex;
     flex-wrap: wrap;
     font-size: var(--loam-text-sm);
-    gap: var(--loam-space-sm) var(--loam-space-lg);
-    padding-block: var(--loam-space-lg);
+    gap: var(--loam-space-2xs) var(--loam-space-s);
+    padding-block: var(--loam-space-s);
   }
 
   a.brand {
@@ -18,7 +18,7 @@
     font-family: var(--loam-font-display);
     font-size: var(--loam-text-lg);
     font-weight: 700;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     letter-spacing: -0.02em;
     text-decoration: none;
 
@@ -34,7 +34,7 @@
     ul {
       display: block flex;
       flex-wrap: wrap;
-      gap: var(--loam-space-xs) var(--loam-space-md);
+      gap: var(--loam-space-3xs) var(--loam-space-xs);
       list-style: none;
       margin: 0;
       padding: 0;

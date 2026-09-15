@@ -26,12 +26,12 @@ export function InputDisabledDemo() {
 
 export function InputContainersDemo() {
   return (
-    <div style={{ display: "grid", gap: "1rem", inlineSize: "100%" }}>
+    <div style={{ display: "grid", gap: "var(--loam-space-s)", inlineSize: "100%" }}>
       <div
         style={{
           containerType: "inline-size",
           inlineSize: "min(100%, 16rem)",
-          padding: "0.75rem",
+          padding: "var(--loam-space-xs)",
           border: "1px dashed var(--loam-color-line)",
           borderRadius: "var(--loam-radius-md)",
         }}
@@ -45,7 +45,7 @@ export function InputContainersDemo() {
         style={{
           containerType: "inline-size",
           inlineSize: "min(100%, 30rem)",
-          padding: "0.75rem",
+          padding: "var(--loam-space-xs)",
           border: "1px dashed var(--loam-color-line)",
           borderRadius: "var(--loam-radius-md)",
         }}
@@ -88,7 +88,12 @@ export function InputErrorDemo() {
 export function InputNativeValidationDemo() {
   return (
     <form
-      style={{ display: "grid", gap: "0.75rem", maxInlineSize: "20rem", inlineSize: "100%" }}
+      style={{
+        display: "grid",
+        gap: "var(--loam-space-xs)",
+        maxInlineSize: "20rem",
+        inlineSize: "100%",
+      }}
       onSubmit={(event) => event.preventDefault()}
     >
       <Field.Root>
@@ -105,7 +110,7 @@ export function InputNumericDemo() {
     <div
       style={{
         display: "grid",
-        gap: "0.75rem",
+        gap: "var(--loam-space-xs)",
         maxInlineSize: "20rem",
         inlineSize: "100%",
       }}
@@ -127,7 +132,7 @@ export function InputSectionsDemo() {
     <div
       style={{
         display: "grid",
-        gap: "0.75rem",
+        gap: "var(--loam-space-xs)",
         maxInlineSize: "20rem",
         inlineSize: "100%",
       }}

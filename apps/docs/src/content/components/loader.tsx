@@ -24,7 +24,14 @@ const doc: ComponentContent = {
 <Loader size="lg" />
 <span style={{ "--loam-loader-size": "3rem" }}><Loader /></span>`,
       render: () => (
-        <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap", alignItems: "end" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "var(--loam-space-l)",
+            flexWrap: "wrap",
+            alignItems: "end",
+          }}
+        >
           <Example label="Small">
             <Loader size="sm" />
           </Example>

@@ -1,7 +1,7 @@
 export const metadata = {
   title: "Building with an agent",
   description:
-    "Check the environment, compose from the three primitives, and verify the five pillars in the result.",
+    "Check the environment, compose from the three primitives, and verify the two pillars in the result.",
 };
 
 # Building with an agent
@@ -24,7 +24,7 @@ Place that declaration in the application's earliest stylesheet. A later declara
 
 Look for existing resets, unlayered element rules, theme declarations and browser targets that affect the new UI. Assess the integration region; do not require an unrelated application-wide migration. State the specific conflict and affected files. Before installing packages or changing shared infrastructure, present the minimal proposed changes and obtain approval unless that setup has already been authorized. Continue independent inspection and prepare a concrete proposal while approval is pending. Do not treat silence as approval.
 
-A useful setup report states: installed package/version; how styles load; layer order; relevant conflicts; available build/browser checks; and any proposed changes. If setup is already correct, proceed without another approval round.
+A useful setup report states: installed package/version; how styles load; layer order; relevant conflicts; available build/browser checks; and any proposed changes. If the consumer has no formatter, CSS lint or browser checks, propose the smallest suitable setup and identify which checks need approval or additional tooling. If setup is already correct, proceed without another approval round.
 
 ## When there is no repository
 
@@ -40,17 +40,22 @@ Never recreate fake `@loamui/core` exports, borrow `loam-*` classes on raw eleme
 
 The three primitives are **tokens**, **element styles**, and **components**. Use semantic HTML and the existing element defaults first. Use `--loam-*` tokens for visual decisions. Compose core parts when they supply needed behaviour or anatomy; there is no requirement to import a component just to demonstrate a primitive.
 
-1. **Native CSS:** use semantic elements and static styles. Actions are buttons; destinations are links. Native `<button>`, `<dialog>` opened with `showModal()`, and `<details>` supply platform behaviour; use documented LoamUI components when composing those behaviours. Do not recreate controls with clickable divs or use a styling runtime.
-2. **Modern CSS:** put recipe rules in `loamui.components` within `@scope (.recipe) to ([class*="loam-"])`. Use type selectors and short classes for real distinctions. Use nesting, logical properties and additive conditions. Use container queries, intrinsic grid/flex and subgrid where appropriate. Tokens already supply `clamp()`, `oklch()` and `light-dark()`; do not duplicate their palette or force every CSS feature into a recipe. Avoid `!important`, BEM and private core selectors.
-3. **Composition:** read the relevant component contract before using parts or props. Keep core internals intact. Use `render` for supported element substitution. Button icons are children; Input has documented adornment props. Supply real application actions through a clear integration boundary.
-4. **Contextualism:** put `--loam-context` on the region that carries the meaning. Leave ordinary content neutral. Layout and available space govern sizing; do not invent `variant`, `color` or `fullWidth` props. Documented intrinsic sizes and native HTML attributes are exceptions. Resolve fluid font tokens on content inside its measuring container: inherited computed font sizes do not re-evaluate when a new container is introduced.
-5. **Accessible & gatekept:** preserve native labels, keyboard behaviour, focus, readable contrast and user preferences. Keep primary information visible; use Details for secondary information. Use Field's label, description, error, control order. Required fields are unmarked; mark optional fields in words. Errors say how to fix the value. A screenshot or axe pass cannot certify these requirements.
+### Modern
+
+- **Native platform:** use semantic elements and static styles. Actions are buttons; destinations are links. Native `<button>`, `<dialog>` opened with `showModal()`, and `<details>` supply platform behaviour; use documented LoamUI components when composing those behaviours. Do not recreate controls with clickable divs or use a styling runtime.
+- **Modern CSS:** put recipe rules in `loamui.components` within `@scope (.recipe) to ([class*="loam-"])`. Limit article styles at embedded previews as well as core roots, so documentation cannot restyle a recipe. Use type selectors and short classes for real distinctions. Combine nesting, logical properties and additive conditions with container queries, intrinsic grid/flex and subgrid where appropriate. Tokens already supply `clamp()`, `oklch()` and `light-dark()`; do not duplicate their palette or force every CSS feature into a recipe. Avoid `!important`, BEM and private core selectors.
+- **Composition through components:** read the relevant component contract before using parts or props. Keep core internals intact. Use `render` for supported element substitution. Button icons are children; Input has documented adornment props. Supply real application actions through a clear integration boundary.
+- **Contextualism throughout the primitives:** put `--loam-context` on the region that carries the meaning. Leave ordinary content neutral. Layout and available space govern sizing; do not invent `variant`, `color` or `fullWidth` props. Documented intrinsic sizes and native HTML attributes are exceptions. Resolve fluid font tokens on content inside its measuring container: inherited computed font sizes do not re-evaluate when a new container is introduced.
 
 An element cannot size-query itself. Put the measuring container outside the layout it controls. A recipe may use ordinary geometry such as a border width, aspect ratio or column threshold; design colours, spacing and typography come from tokens. A translucent image overlay needs contrast measured over the rendered photograph. Images may crop with `object-fit: cover` while text determines the component height; do not fix the text area's height or measure it with JavaScript.
 
+### Accessible
+
+Preserve native labels, keyboard behaviour, focus, readable contrast and user preferences. Keep primary information visible; use Details for secondary information. Use Field's label, description, error, control order. Required fields are unmarked; mark optional fields in words. Errors say how to fix the value. After a submission attempt, clear a displayed native constraint error once its value is valid, keeping focus in the field and the summary in sync. Do not create new errors during typing or treat native validity as proof that server errors are resolved. A screenshot or axe pass cannot certify these requirements.
+
 ## Read and adapt a reference
 
-Read the [composing guide](/docs/composing.md), the selected recipe's complete TSX and CSS, and the reference for each core component used. Skill users can read these offline in `references/`. Each recipe card offers a short prompt linking to these references. If your assistant cannot open links, follow the complete-prompt link inside it and attach that text instead: it includes the selected source, workflow and component references for use without browsing.
+Read the [recipe guide](/recipes/guide.md), the selected recipe's complete TSX and CSS, and the reference for each core component used. Skill users can read these offline in `references/`. Each recipe card offers a short prompt linking to these references. If your assistant cannot open links, follow the complete-prompt link inside it and attach that text instead: it includes the selected source, workflow and component references for use without browsing.
 
 Use the published recipes as worked references for this contract. Publication and design notes are not certification: verify every adaptation in its consuming environment.
 
@@ -59,6 +64,8 @@ Preserve the recipe's role: a hero introduces a page; a banner promotes one mess
 Use idiomatic React 19. Keep state for user interaction, and effects for external synchronisation. `useId` is for actual relationships that must remain unique across instances; it is not a required decoration. Do not add a client directive solely because a synchronous component uses `useId`; observe the framework's client boundaries for interactive parts. Keep code concise; explain decisions outside the copied files.
 
 ## Verify, repair, and report
+
+Gatekeeping is how we establish trust in agent work, separate from the two pillars. Checks have a defined scope; passing them is evidence for what they check, not certification of the whole interface.
 
 Run the consuming project's formatter, type checker, lint and relevant tests. Render the composition outside the documentation site. Exercise narrow and wide parents, long copy, enlarged text, two instances, both schemes, keyboard and focus, forced colours and reduced motion. Check RTL when direction matters. Test image containment after content grows and on both cold and client navigations. Check form validation, value preservation and actual submission boundaries when relevant.
 

@@ -88,7 +88,7 @@ Tooltip.Provider shares the hover delay across a group: after the first bubble o
 
 ## When not to
 
-- For information the user needs in order to proceed: hover does not exist on touch devices, so essential content must be visible in the page.
+- For information the user needs to proceed: hover does not exist on touch devices, so essential content must be visible in the page.
 - For interactive content (links, buttons), use Popover, which is click-invoked and keyboard-operable.
 - As a replacement for a visible label on a form field, use Field.Label.
 

@@ -1,7 +1,7 @@
 import type { MDXComponents } from "mdx/types";
 import type { ReactElement, ReactNode } from "react";
 import { CodeBlock } from "@/renderer/CodeBlock";
-import prose from "@/app/docs/prose.module.css";
+import "@/app/docs/prose.css";
 
 /** Native fences render through the site's CodeBlock. */
 function Pre({ children }: { children?: ReactNode }) {
@@ -9,7 +9,7 @@ function Pre({ children }: { children?: ReactNode }) {
   const language = code?.props?.className?.replace("language-", "") ?? "tsx";
   const text = typeof code?.props?.children === "string" ? code.props.children.trimEnd() : "";
   return (
-    <div className={prose.block}>
+    <div className="block">
       <CodeBlock code={text} language={language} />
     </div>
   );
@@ -18,7 +18,7 @@ function Pre({ children }: { children?: ReactNode }) {
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     wrapper: ({ children }: { children?: ReactNode }) => (
-      <div className={prose.prose}>{children}</div>
+      <div className="site-prose">{children}</div>
     ),
     pre: Pre,
     ...components,

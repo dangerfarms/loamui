@@ -278,7 +278,7 @@ for (const scheme of ["light", "dark"]) {
   // background — a non-text object, so the 1.4.11 3:1 bar applies.
   check("accent indicator on bg", scheme, t("--loam-color-accent"), t("--loam-color-bg"), 3.0);
   for (const s of ["primary", "success", "danger", "warning", "info"]) {
-    check(`${s} focus ring vs bg`, scheme, t(`--loam-color-${s}-ring`), t("--loam-color-bg"), 3.0);
+    check(`${s} focus ring vs bg`, scheme, t(`--loam-color-${s}-strong`), t("--loam-color-bg"), 3.0);
   }
 }
 

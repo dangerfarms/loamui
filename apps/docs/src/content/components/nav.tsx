@@ -185,7 +185,7 @@ const doc: ComponentContent = {
   ul {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
   }
 }
 
@@ -220,7 +220,7 @@ const doc: ComponentContent = {
   ul {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
   }
 }
 
@@ -229,7 +229,7 @@ const doc: ComponentContent = {
 
   .columns {
     display: grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
   }
 }
@@ -566,7 +566,7 @@ function TableOfContents() {
     {
       name: "--loam-nav-indent",
       syntax: "CSS length",
-      default: "var(--loam-space-md)",
+      default: "var(--loam-space-xs)",
       description:
         "How far a nested List indents, whether it sits in an Item or in a Group. Set it on the Root or any ancestor.",
     },

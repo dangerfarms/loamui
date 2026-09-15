@@ -11,7 +11,7 @@ metadata:
 > A new component is a promise the library has to keep forever. Earn it:
 > argue yourself out of it first, then build it in the library's shape.
 
-**Ground yourself before writing code.** Read the five pillars in
+**Ground yourself before writing code.** Read the two pillars (Modern and Accessible) in
 [`README.md`](../../../README.md) — they are the direction for every decision
 below — and load two companion skills for the craft:
 
@@ -65,16 +65,16 @@ the tokens already hold, stop.
 
 Copy the structure of the closest existing component rather than inventing one:
 
-| Shape                                                   | Model                                |
-| ------------------------------------------------------- | ------------------------------------ |
-| Bare form control (self-wires from `Field`)             | `Input`, `Select`, `Textarea`        |
-| Control with an inline label + a bare `*Control` export | `Checkbox`, `Switch`                 |
-| A set participating via context (never `cloneElement`)  | `RadioGroup`+`Radio`, `Tabs`         |
-| Compound overlay (Root/Trigger/Popup parts)             | `Modal`, `Popover`, `Menu`, `Drawer` |
-| Native disclosure                                       | `Details`                            |
-| Display element that keeps `size`                       | `Badge`, `Loader`, `Progress`, `Meter` |
+| Shape                                                   | Model                                   |
+| ------------------------------------------------------- | --------------------------------------- |
+| Bare form control (self-wires from `Field`)             | `Input`, `Select`, `Textarea`           |
+| Control with an inline label + a bare `*Control` export | `Checkbox`, `Switch`                    |
+| A set participating via context (never `cloneElement`)  | `RadioGroup`+`Radio`, `Tabs`            |
+| Compound overlay (Root/Trigger/Popup parts)             | `Modal`, `Popover`, `Menu`, `Drawer`    |
+| Native disclosure                                       | `Details`                               |
+| Display element that keeps `size`                       | `Badge`, `Loader`, `Progress`, `Meter`  |
 | Composed from other components, behind the donut        | `Search`, `QuantityInput`, `CopyButton` |
-| Text derived by `Intl` from a value (`<time>`, a price)  | `Time`, `Price`                      |
+| Text derived by `Intl` from a value (`<time>`, a price) | `Time`, `Price`                         |
 
 ## Step 4 — Hold the API and CSS doctrine
 
@@ -131,7 +131,11 @@ The CSS and TSX are the easy part; these are the steps low-risk additions miss:
       to use the component, when _not_ to, and the reasoning behind its defaults.
       Distil that from long-established practice (GOV.UK, Polaris) but state it on
       the library's own authority; the guidance _is_ the differentiator, not
-      filler, and the prose never names those sources.
+      filler, and a component page never names those sources — a page about a
+      Button should not borrow someone else's authority for its own advice. The
+      marketing and overview pages are the exception: there, citing what the
+      accessibility pillar is distilled from is a credibility signal, and the
+      attribution is deliberate.
 - [ ] **JSX that uses compound parts lives in `<slug>.client.tsx` with
       `"use client"`; the server content page imports it.** The core bundle is
       one client reference, so `Search.Root` or `FileInput.Control` is
@@ -160,6 +164,7 @@ so the registry picks it up, and `pnpm check:examples` refuses anything that
 breaks the rules. Only when an example needs behaviour that is not an
 arrangement (a carousel's paging, a nav's dropdown) does a new core primitive
 follow, through Steps 1 to 6.
+
 ## Step 6 — Done means gates + eyes
 
 Run the full suite and believe it, then verify what no tool can:

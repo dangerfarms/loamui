@@ -11,7 +11,7 @@
   div.controls {
     align-items: center;
     display: block flex;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     justify-content: center;
 
     svg {
@@ -24,7 +24,7 @@
 @scope (.testimonial-carousel figure.quote) to ([class*="loam-"]) {
   :scope {
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     margin: 0;
   }
 
@@ -45,7 +45,7 @@
     align-items: center;
     display: block flex;
     font-size: var(--loam-text-sm);
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     margin: auto 0 0;
   }
 

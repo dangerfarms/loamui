@@ -1,7 +1,7 @@
 @scope (.button-with-progress) to ([class*="loam-"]) {
   :scope {
     display: block grid;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     justify-items: start;
   }
 
@@ -16,8 +16,8 @@
   span.bar {
     align-self: end;
     grid-area: 1 / 1;
-    padding-block-end: var(--loam-space-xs);
-    padding-inline: var(--loam-space-sm);
+    padding-block-end: var(--loam-space-3xs);
+    padding-inline: var(--loam-space-2xs);
     pointer-events: none;
   }
 

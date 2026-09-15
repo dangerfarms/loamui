@@ -17,7 +17,7 @@ export function Example({
   style?: CSSProperties;
 }) {
   return (
-    <div style={{ display: "grid", gap: "0.5rem", justifyItems: "start", ...style }}>
+    <div style={{ display: "grid", gap: "var(--loam-space-2xs)", justifyItems: "start", ...style }}>
       <span
         style={{
           color: "var(--loam-color-fg-muted)",

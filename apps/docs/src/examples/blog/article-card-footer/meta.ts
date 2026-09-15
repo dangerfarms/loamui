@@ -7,15 +7,13 @@ export const meta: ExampleMeta = {
   category: "blog",
   uses: ["Avatar", "Badge", "Card", "Time"],
   notes: {
-    native:
-      'The Card is an article with a footer element for its byline; the author is an address with rel="author", and the date is a time with a machine-readable dateTime.',
     modern:
-      "A flex column whose footer takes the slack with an auto margin, so in a row of cards the byline lands at the bottom of each; the likes count is set in tabular numerals so it holds its width.",
-    composition:
-      "Card, Badge, Time and Avatar are used as they come; the avatar size is its public property set on the footer, and the example's rule stops at each root.",
+      'The Card is an article with a footer element for its byline; the author is an address with rel="author", and the date is a time with a machine-readable dateTime. A flex column whose footer takes the slack with an auto margin, so in a row of cards the byline lands at the bottom of each, and the likes count is set in tabular numerals so it holds its width.',
     accessible:
       "The title is the link and the card is not, so the link's name is the title alone; the heart is hidden and the count finishes in a hidden word, so a reader hears 124 likes.",
   },
+  composition:
+    "Card, Badge, Time and Avatar are used as they come; the avatar size is its public property set on the footer, and the example's rule stops at each root.",
   tags: ["post", "news", "teaser", "blog card", "likes"],
   order: 8,
 };

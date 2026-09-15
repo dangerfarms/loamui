@@ -16,7 +16,7 @@ export function ModalDemo() {
           style={{
             display: "flex",
             flexWrap: "wrap",
-            gap: "var(--loam-space-sm)",
+            gap: "var(--loam-space-2xs)",
             alignItems: "center",
           }}
         >
@@ -45,7 +45,7 @@ export function ModalAlertDemo() {
           style={{
             display: "flex",
             flexWrap: "wrap",
-            gap: "var(--loam-space-sm)",
+            gap: "var(--loam-space-2xs)",
             alignItems: "center",
           }}
         >
@@ -65,7 +65,7 @@ export function ModalWidthDemo() {
       style={{
         display: "flex",
         flexWrap: "wrap",
-        gap: "var(--loam-space-sm)",
+        gap: "var(--loam-space-2xs)",
         alignItems: "center",
       }}
     >
@@ -102,7 +102,7 @@ export function ModalHeaderCloseDemo() {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBlockEnd: "var(--loam-space-sm)",
+            marginBlockEnd: "var(--loam-space-2xs)",
           }}
         >
           <Modal.Title style={{ margin: 0 }}>Settings</Modal.Title>

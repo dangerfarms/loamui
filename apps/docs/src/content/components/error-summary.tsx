@@ -46,7 +46,7 @@ const doc: ComponentContent = {
     },
     {
       title: "Links land the user in the field",
-      body: "Fragment navigation scrolls to the field but does not focus it, so each item also moves focus into the target: the user activates a link and starts typing the correction.",
+      body: "Each item combines fragment navigation with focus management: activating the link scrolls to the field and focuses it so the user can type a correction.",
     },
     {
       title: "Order follows the form",

@@ -30,10 +30,8 @@ Use to preview one article with its date, author and reading destination. Choose
 
 These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
-- **Native CSS.** The Card is rendered as an article named by its own heading, the author sits in an address element with rel="author", and the date is a time with a machine-readable dateTime.
-- **Modern CSS.** Layered, donut-scoped CSS preserves the Card surface. A measured inner column resolves fluid type and spacing locally; an auto margin aligns bylines in equal-height cards without truncating the description. Responsive, lazy images reserve their aspect ratio.
-- **Composition.** Card, Badge, Time and Avatar are used as they come; the example's rule stops at each root and only arranges the column between them.
-- **Accessible & gatekept.** The title is the link and the card is not, so the link's name is the title alone; the picture illustrates the title, so its alt is empty; the avatar is hidden because the name is printed beside it.
+- **Modern.** The Card is rendered as an article named by its own heading, the author sits in an address element with rel="author", and the date is a time with a machine-readable dateTime. Layered, donut-scoped CSS preserves the Card surface while a measured inner column resolves fluid type and spacing locally; an auto margin aligns bylines in equal-height cards without truncating the description, and responsive, lazy images reserve their aspect ratio.
+- **Accessible.** The title is the link and the card is not, so the link's name is the title alone; the picture illustrates the title, so its alt is empty; the avatar is hidden because the name is printed beside it.
 
 ## References
 
@@ -109,7 +107,7 @@ export default function Example() {
       display: block flex;
       flex-direction: column;
       font-size: var(--loam-text-md);
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
       overflow-wrap: anywhere;
     }
 
@@ -127,7 +125,7 @@ export default function Example() {
       display: block flex;
       flex-wrap: wrap;
       font-size: var(--loam-text-sm);
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
       margin-block: 0;
     }
 
@@ -145,9 +143,9 @@ export default function Example() {
 
       align-items: center;
       display: block flex;
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
       margin-block-start: auto;
-      padding-block-start: var(--loam-space-sm);
+      padding-block-start: var(--loam-space-2xs);
     }
 
     address {

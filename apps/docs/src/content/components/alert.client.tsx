@@ -7,7 +7,14 @@ import type { CSSProperties } from "react";
 export function AlertDismissibleDemo() {
   const [open, setOpen] = useState(true);
   return (
-    <div style={{ display: "grid", gap: "0.75rem", inlineSize: "100%", justifyItems: "start" }}>
+    <div
+      style={{
+        display: "grid",
+        gap: "var(--loam-space-xs)",
+        inlineSize: "100%",
+        justifyItems: "start",
+      }}
+    >
       {open ? (
         <Alert title="Draft restored" onClose={() => setOpen(false)}>
           We recovered the draft you were editing.
@@ -27,7 +34,7 @@ export function AlertComposedDemo() {
         {
           "--loam-context": "warning",
           display: "grid",
-          gap: "0.75rem",
+          gap: "var(--loam-space-xs)",
           inlineSize: "100%",
           justifyItems: "start",
         } as CSSProperties

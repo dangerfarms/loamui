@@ -51,6 +51,17 @@ export default function Example({
     }));
   }
 
+  function handleCorrection(event: FormEvent<HTMLFormElement>) {
+    const control = event.target;
+    if (!(control instanceof HTMLInputElement || control instanceof HTMLTextAreaElement)) return;
+    if (!control.validity.valid) return;
+    const { name } = control;
+    if (name !== "email" && name !== "message") return;
+    setValidation((previous) =>
+      previous.attempt > 0 && previous[name] ? { ...previous, [name]: "" } : previous,
+    );
+  }
+
   return (
     <section className="contact-us-with-details">
       <div>
@@ -163,6 +174,7 @@ export default function Example({
             aria-labelledby={`${id}-title`}
             onInvalid={handleValidation}
             onSubmit={handleValidation}
+            onInput={handleCorrection}
           >
             <h3 id={`${id}-title`}>Send a message</h3>
             {(validation.email || validation.message || validation.form) && (
@@ -186,7 +198,7 @@ export default function Example({
               </ErrorSummary.Root>
             )}
             <Field.Root id={`${id}-email`}>
-              <Field.Label>Email address (required)</Field.Label>
+              <Field.Label>Email address</Field.Label>
               <Field.Description>We’ll reply to this address.</Field.Description>
               {validation.email && <Field.Error>{validation.email}</Field.Error>}
               <Input
@@ -202,7 +214,7 @@ export default function Example({
               />
             </Field.Root>
             <Field.Root id={`${id}-message`}>
-              <Field.Label>Message (required)</Field.Label>
+              <Field.Label>Message</Field.Label>
               {validation.message && <Field.Error>{validation.message}</Field.Error>}
               <Textarea name="message" defaultValue={failure?.values.message} rows={5} required />
             </Field.Root>

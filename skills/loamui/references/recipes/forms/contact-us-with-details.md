@@ -30,11 +30,8 @@ Use when people should be able to choose between sending a message and contactin
 
 These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
-- **Native CSS.** An address and description list pair each contact method with its value. Email and phone links use mailto: and tel:. The native POST form uses required fields, email validation and autocomplete. After hydration, native validity supplies the focused summary and inline messages; valid submission remains a normal POST.
-- **Modern CSS.** Layered donut scopes keep recipe styles local. An intrinsic auto-fit grid stacks the details and form when two columns cannot fit; padding and type tokens resolve inside the section's container. The padding interpolation includes rem as well as cqi so it responds to enlarged root text; long labels and addresses can wrap. Headings inherit the element typography.
-- **Composition.** The section supplies one shared surface around the details and native form. Field wires labels, descriptions and errors; ErrorSummary links focus their controls. Input, Textarea and Button keep their own styles. General server failures do not mark valid fields invalid. Avoiding nested padded surfaces leaves room for the form at narrow widths and enlarged text sizes.
-- **Contextualism.** The actions region declares --loam-context: primary for its Button. Shared surface, text and border tokens follow the colour scheme; layout and sizing are supplied by the parent rather than configuration props.
-- **Accessible & gatekept.** Required fields are identified in visible labels. Error messages appear after an attempt and match the focused summary links; useId keeps repeated forms independent. Failed responses preserve entered values. Confirmed delivery replaces the form with a focused heading and next steps. Decorative icons repeat visible terms and are hidden from assistive technology. Email and telephone values retain left-to-right ordering in RTL pages. Text and DOM order stay intact when the grid stacks, and real borders preserve surface boundaries in forced colours.
+- **Modern.** An address and description list pair each contact method with its value, email and phone links use mailto: and tel:, and the native POST form uses required fields, email validation and autocomplete; after hydration, native validity supplies the focused summary and inline messages, while a valid submission remains a normal POST. Layered donut scopes keep recipe styles local: an intrinsic auto-fit grid stacks the details and form when two columns cannot fit, padding and type tokens resolve inside the section’s container, the padding interpolation includes rem as well as cqi so it responds to enlarged root text, long labels and addresses can wrap, and headings inherit the element typography. The actions region declares --loam-context: primary for its Button, and shared surface, text and border tokens follow the colour scheme, so layout and sizing are supplied by the parent rather than configuration props.
+- **Accessible.** Required fields use native required attributes and follow the unmarked-label convention. Error messages appear after an attempt and match the focused summary links; correcting a native constraint error removes its message and link without moving focus, while server errors remain until another attempt; useId keeps repeated forms independent. Failed responses preserve entered values. Confirmed delivery replaces the form with a focused heading and next steps. Decorative icons repeat visible terms and are hidden from assistive technology. Email and telephone values retain left-to-right ordering in RTL pages. Text and DOM order stay intact when the grid stacks, and real borders preserve surface boundaries in forced colours.
 
 ## References
 
@@ -101,6 +98,17 @@ export default function Example({
       form: "",
       attempt: previous.attempt + 1,
     }));
+  }
+
+  function handleCorrection(event: FormEvent<HTMLFormElement>) {
+    const control = event.target;
+    if (!(control instanceof HTMLInputElement || control instanceof HTMLTextAreaElement)) return;
+    if (!control.validity.valid) return;
+    const { name } = control;
+    if (name !== "email" && name !== "message") return;
+    setValidation((previous) =>
+      previous.attempt > 0 && previous[name] ? { ...previous, [name]: "" } : previous,
+    );
   }
 
   return (
@@ -215,6 +223,7 @@ export default function Example({
             aria-labelledby={`${id}-title`}
             onInvalid={handleValidation}
             onSubmit={handleValidation}
+            onInput={handleCorrection}
           >
             <h3 id={`${id}-title`}>Send a message</h3>
             {(validation.email || validation.message || validation.form) && (
@@ -238,7 +247,7 @@ export default function Example({
               </ErrorSummary.Root>
             )}
             <Field.Root id={`${id}-email`}>
-              <Field.Label>Email address (required)</Field.Label>
+              <Field.Label>Email address</Field.Label>
               <Field.Description>We’ll reply to this address.</Field.Description>
               {validation.email && <Field.Error>{validation.email}</Field.Error>}
               <Input
@@ -254,7 +263,7 @@ export default function Example({
               />
             </Field.Root>
             <Field.Root id={`${id}-message`}>
-              <Field.Label>Message (required)</Field.Label>
+              <Field.Label>Message</Field.Label>
               {validation.message && <Field.Error>{validation.message}</Field.Error>}
               <Textarea name="message" defaultValue={failure?.values.message} rows={5} required />
             </Field.Root>
@@ -284,7 +293,7 @@ export default function Example({
 
     div.details {
       display: block grid;
-      gap: var(--loam-space-md);
+      gap: var(--loam-space-xs);
       min-inline-size: 0;
       overflow-wrap: anywhere;
 
@@ -300,11 +309,11 @@ export default function Example({
 
     dl {
       display: block grid;
-      gap: var(--loam-space-md);
+      gap: var(--loam-space-xs);
 
       > div {
         display: block grid;
-        gap: var(--loam-space-xs);
+        gap: var(--loam-space-3xs);
       }
     }
 
@@ -313,7 +322,7 @@ export default function Example({
       color: var(--loam-color-fg-muted);
       display: block flex;
       font-size: var(--loam-text-sm);
-      gap: var(--loam-space-xs);
+      gap: var(--loam-space-3xs);
 
       svg {
         block-size: 1em;
@@ -330,7 +339,7 @@ export default function Example({
     div.confirmation {
       align-content: start;
       display: block grid;
-      gap: var(--loam-space-lg);
+      gap: var(--loam-space-s);
       grid-template-columns: minmax(0, 1fr);
       overflow-wrap: anywhere;
     }
@@ -352,9 +361,9 @@ export default function Example({
         border-radius: var(--loam-radius-xl);
         display: block grid;
         font-size: var(--loam-text-md);
-        gap: var(--loam-space-xl);
+        gap: var(--loam-space-l);
         grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr));
-        padding: clamp(var(--loam-space-md), 0.5rem + 2cqi, var(--loam-space-xl));
+        padding: clamp(var(--loam-space-xs), 0.5rem + 2cqi, var(--loam-space-l));
       }
     }
   }

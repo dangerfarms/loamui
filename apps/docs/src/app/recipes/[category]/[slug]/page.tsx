@@ -6,13 +6,12 @@ import { Badge } from "@loamui/core";
 import { exampleHref, examplesIn, getCategory, getExample } from "@/examples";
 import { EXAMPLE_SOURCE } from "@/examples/generated-source";
 import { COMPONENTS } from "@/site/nav";
-import { ExampleStage } from "@/renderer/examples-stage";
-import { ExampleCode } from "@/renderer/examples-code";
+import { RecipePlayground } from "@/renderer/recipe-playground";
 import { ExamplePillars } from "@/renderer/examples-pillars";
 import { ExampleCrumbs } from "@/renderer/examples-crumbs";
 import { ExamplePager } from "@/renderer/examples-pager";
-import c from "@/renderer/examples-page.module.css";
-import md from "@/site/MarkdownLink.module.css";
+import "@/renderer/examples-page.css";
+import "@/site/MarkdownLink.css";
 
 export function generateStaticParams() {
   return recipeRouteParams();
@@ -57,54 +56,51 @@ export default async function ExamplePage({
     e ? { href: exampleHref(e), title: e.meta.title } : undefined;
 
   return (
-    <div className={c.page}>
-      <article className={c.single}>
-        <header className={c.singleHead}>
-          <div className={c.crumbRow}>
+    <div className="site-RecipePage">
+      <article className="single">
+        <header className="singleHead">
+          <div className="crumbRow">
             <ExampleCrumbs category={category} title={example.meta.title} />
             <a
-              className={md.link}
+              className="site-MarkdownLink"
               href={`${base}/recipes/${categorySlug}/${slug}.md`}
               title="Read this recipe as Markdown"
             >
               View as Markdown
             </a>
           </div>
-          <h1 className={c.title}>{example.meta.title}</h1>
-          <p className={c.lead}>{example.meta.description}</p>
+          <h1 className="title">{example.meta.title}</h1>
+          <p className="lead">{example.meta.description}</p>
+          {example.meta.whenToUse && <p className="sectionNote">{example.meta.whenToUse}</p>}
         </header>
 
-        {example.meta.whenToUse && <p className={c.sectionNote}>{example.meta.whenToUse}</p>}
-
-        <h2 className="loam-VisuallyHidden">Preview</h2>
-        <ExampleStage title={example.meta.title}>
+        <RecipePlayground title={example.meta.title} source={source}>
           <example.Example />
-        </ExampleStage>
+        </RecipePlayground>
 
-        <section className={c.section} aria-labelledby="code">
-          <h2 id="code" className={c.h2}>
-            Code
+        <section className="section" aria-labelledby="code">
+          <h2 id="code" className="h2">
+            Use this recipe
           </h2>
-          <p className={c.sectionNote}>
+          <p className="sectionNote">
             Copy <code>Example.tsx</code> and <code>example.css</code> side by side into a React 19
             project. Install <code>@loamui/core</code> and load <code>@loamui/core/styles.css</code>{" "}
             once at your application root, as shown in the{" "}
             <Link href="/docs/installation">installation guide</Link>. The component imports its own
             stylesheet.
           </p>
-          <p className={c.sectionNote}>
+          <p className="sectionNote">
             {example.meta.integration ??
               "Replace the sample content and images with your own. Links and form actions illustrate application routes; provide those destinations and connect any action buttons to your application before shipping."}
           </p>
-          <ExampleCode source={source} />
         </section>
 
-        <section className={c.section} aria-labelledby="uses">
-          <h2 id="uses" className={c.h2}>
+        <section className="section" aria-labelledby="uses">
+          <h2 id="uses" className="h2">
             Uses
           </h2>
           {example.meta.uses.length > 0 ? (
-            <ul className={c.uses}>
+            <ul className="uses">
               {example.meta.uses.map((name) => {
                 const href = docHref(name);
                 return (
@@ -119,23 +115,24 @@ export default async function ExamplePage({
               })}
             </ul>
           ) : (
-            <p className={c.usesNone}>
+            <p className="usesNone">
               No components: the <Link href="/docs/element-styles">element styles</Link> and the
               tokens carry this one on their own.
             </p>
           )}
         </section>
 
-        <section className={c.section} aria-labelledby="pillars">
-          <h2 id="pillars" className={c.h2}>
+        <section className="section" aria-labelledby="pillars">
+          <h2 id="pillars" className="h2">
             Design decisions
           </h2>
-          <p className={c.sectionNote}>
-            How this recipe applies the <Link href="/docs">five pillars</Link>. These notes explain
-            the design. The included tests cover structure and selected interactions; check
-            contrast, keyboard behavior and assistive technology support in your application.
+          <p className="sectionNote">
+            How this recipe answers the <Link href="/docs">two pillars</Link>, and how it composes
+            the primitives. These notes explain the design. The included tests cover structure and
+            selected interactions; check contrast, keyboard behaviour and assistive technology
+            support in your application.
           </p>
-          <ExamplePillars notes={example.meta.notes} />
+          <ExamplePillars notes={example.meta.notes} composition={example.meta.composition} />
         </section>
 
         <ExamplePager

@@ -2,7 +2,7 @@
   :scope {
     container-type: inline-size;
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     max-inline-size: 36rem;
   }
 
@@ -34,7 +34,7 @@
       color: var(--loam-color-fg-muted);
       font-size: var(--loam-text-sm);
       grid-column: 1 / -1;
-      margin-block-start: var(--loam-space-xs);
+      margin-block-start: var(--loam-space-3xs);
     }
 
     &.change {
@@ -46,15 +46,15 @@
 
   div.row {
     border-block-end: 1px solid var(--loam-color-line);
-    column-gap: var(--loam-space-lg);
+    column-gap: var(--loam-space-s);
     display: block grid;
     grid-column: 1 / -1;
     grid-template-columns: subgrid;
-    padding-block: var(--loam-space-sm);
+    padding-block: var(--loam-space-2xs);
 
     &.total {
       border-block-start: var(--loam-ring-width) solid var(--loam-color-line-strong);
-      margin-block-start: var(--loam-space-xs);
+      margin-block-start: var(--loam-space-3xs);
 
       dt,
       dd.value {
@@ -69,8 +69,8 @@
     align-items: center;
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-md) var(--loam-space-lg);
-    margin-block-start: var(--loam-space-xs);
+    gap: var(--loam-space-xs) var(--loam-space-s);
+    margin-block-start: var(--loam-space-3xs);
   }
 
   /* A container query is answered by an ancestor, never by the element that
