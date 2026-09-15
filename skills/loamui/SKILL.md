@@ -28,28 +28,27 @@ metadata:
 - The references match the library at the same commit; check the installed
   version in `node_modules/@loamui/core/package.json` if behaviour differs.
 - **Recipes:** the curated `/recipes` collection contains portable React and CSS
-  with design decisions. Find the relevant entry in [the reference
-  index](references/index.md);
-  only published recipes ship under `references/recipes/`. Verify each adaptation;
-  publication is not certification. Choose by the user's
-  purpose and the recipe's **When to use** guidance, then read the recipe and
-  [composing guide](references/guides/composing.md). The sections are Heroes,
-  Banners, Cards, Media, Grids, Content and Forms.
-  A hero introduces a page; a banner promotes one message within it;
-  a card represents one item.
-  Gallery card browses photos of one item; Article carousel browses several
-  items. Match that role before adapting the appearance.
+  with design decisions; only published recipes ship under `references/recipes/`.
+  Choose by the user's purpose and the recipe's **When to use**, then read the
+  recipe and the [composing guide](references/guides/composing.md). A hero
+  introduces a page; a banner promotes one message within it; a card represents
+  one item. Gallery card browses photos of one item; Article carousel browses
+  several items. Match that role before adapting the appearance. Verify each
+  adaptation; publication is not certification.
 
 ## Start by checking the environment
 
 Read [Building with an agent](references/guides/agent-workflow.md) before
 implementation. It defines the repository and chat-only workflows, setup
 approval boundary, five-pillar acceptance criteria and verification report.
-Inspect the installed package, stylesheet delivery and initial layer order;
-do not install or change shared infrastructure without existing authorization
-or an approved concrete proposal. In chat, probe actual package and rendering
-capabilities. Never substitute fake LoamUI components or claim unrun checks.
-The complete recipe and component examples remain bundled for offline use.
+Then read [Conformance](references/guides/conformance.md): the page skeleton
+every deliverable needs, the lint gate, and the deliberate departures from the
+modern-css and Modern Web Guidance references, so a review against either
+raises nothing. Inspect the installed package, stylesheet delivery and initial
+layer order; do not install or change shared infrastructure without existing
+authorization or an approved concrete proposal. In chat, probe actual package
+and rendering capabilities. Never substitute fake LoamUI components or claim
+unrun checks.
 
 ## The three primitives
 
@@ -110,14 +109,11 @@ No layout components (use native grid, flex or flow with the space tokens), no
 2. **Read before composing.** Check the installed package version and read
    [the composing guide](references/guides/composing.md), the nearest published
    recipe, and each component reference you will use. Prefer installed types
-   when
-   a reference describes a different version. For platform features, consult
-   [Google Chrome’s
-   guidance](https://github.com/GoogleChrome/modern-web-guidance);
+   when a reference describes a different version. For platform features,
+   consult [Google Chrome’s guidance](https://github.com/GoogleChrome/modern-web-guidance);
    use its search/retrieve tool if available, otherwise read the relevant
-   official
-   guide. LoamUI uses Baseline Newly/Widely Available features natively, with
-   progressive enhancement for features outside Baseline.
+   official guide. LoamUI uses Baseline Newly/Widely Available features
+   natively, with progressive enhancement for features outside Baseline.
 3. **Compose.** Parts inside a `Root`; bare form controls (`Input`, `Select`,
    `Textarea`, `Range`, `QuantityInput`, `FileInput.Control`, `Search.Input`)
    inside `Field.Root` wire their label, description, error, and `aria-*`
@@ -129,18 +125,21 @@ No layout components (use native grid, flex or flow with the space tokens), no
    genuinely identity (a brand-coloured wrapper), never per element.
 5. **Lay out with native CSS.** Grid, flex, flow, or multi-column per the
    content's shape; space with `var(--loam-space-*)`; cap prose at
-   `var(--loam-measure)`.
-6. **Theme with tokens.** Override `--loam-*` at `:root` or on any scope;
-   never touch a component's internals or its private `--_*` properties.
+   `var(--loam-measure)`. The page shell (max width, gutter) is one scoped
+   rule shared by header, main and footer, not utility classes.
+6. **Theme with tokens.** Override `--loam-*` in the `brand` layer or on any
+   scope; never touch a component's internals or its private `--_*` properties.
    A recipe may own private properties for its own state or geometry, such as
    the image comparison’s reveal position; these are not core theming hooks.
 7. **Verify and repair.** Run the consuming project’s formatter, type checker,
-   lint and relevant interaction tests. Render outside the docs site, in narrow
-   and wide parents and with two instances. Check keyboard and focus, long copy,
-   both schemes, reduced motion and forced colours; check RTL for directional
-   interactions. Fix failures and repeat affected checks. Report what actually
-   ran and what remains unverified; never award blanket pillar or accessibility
-   conformance from imports, screenshots or an axe pass alone.
+   lint (including `stylelint` on `@loamui/core/stylelint-config`) and relevant
+   interaction tests. Render outside the docs site, in narrow and wide parents
+   and with two instances. Check keyboard and focus, long copy, both schemes,
+   reduced motion and forced colours; check RTL for directional interactions.
+   Walk the Conformance page skeleton. Fix failures and repeat affected checks.
+   Report what actually ran and what remains unverified; never award blanket
+   pillar or accessibility conformance from imports, screenshots or an axe pass
+   alone.
 8. **Keep the deliverable portable.** Supply React and CSS plus explicit
    application integration needs. Exclude catalog metadata, preview frames,
    gallery loading and docs-only utilities. Keep real actions functional; use
@@ -148,15 +147,18 @@ No layout components (use native grid, flex or flow with the space tokens), no
 
 ## Theming
 
-Set the inputs; everything derived follows.
+Set the inputs; everything derived follows. Overrides live in the `brand`
+layer, declared last in the layer order (see installation).
 
 ```css
-:root {
-  --loam-color-primary: oklch(45% 0.12 250);
-  --loam-color-accent: oklch(70% 0.18 305);
-  --loam-font: "Inter", system-ui, sans-serif;
-  --loam-font-display: "Fraunces", serif;
-  --loam-radius-md: 0.5rem;
+@layer brand {
+  :root {
+    --loam-color-primary: oklch(45% 0.12 250);
+    --loam-color-accent: oklch(70% 0.18 305);
+    --loam-font: "Inter", system-ui, sans-serif;
+    --loam-font-display: "Fraunces", serif;
+    --loam-radius-md: 0.5rem;
+  }
 }
 ```
 
@@ -182,8 +184,8 @@ Each of these has been seen in real migrations. Check your output against them.
   Modal and Drawer width: `--loam-modal-size` / `--loam-drawer-size`. The
   exceptions are a glyph or track (`Badge`, `Loader`, `Progress`, `Meter`
   keep `size`), Input’s native HTML `size`, and the platform's own numbers
-  (`Meter` bounds,
-  `QuantityInput` `min`/`max`/`step`), which are semantics, not sizing.
+  (`Meter` bounds, `QuantityInput` `min`/`max`/`step`), which are semantics,
+  not sizing.
 - **`type="number"` for a count.** A count nudged by one is `QuantityInput`;
   any other number is `Input` with `inputMode="numeric"` or `"decimal"`.
 - **Borrowing `loam-*` classes on raw elements** (`<a class="loam-Button">`,
@@ -196,7 +198,8 @@ Each of these has been seen in real migrations. Check your output against them.
   only for a real relationship, and verify the combined references. Use `useId`
   for repeated recipes, including native disclosure and radio group names.
 - **Required asterisks.** Required is the unmarked default; mark the optional
-  field in words with `<Field.Label optional>`.
+  field in words with `<Field.Label optional>`, and keep `required` on the
+  control so assistive technology hears it.
 - **Error copy like "This field is required" or "Please enter a valid…".**
   Say what happened and how to fix it, in the words of the question:
   "Enter your email address", "Select a country". No "please", "invalid",
@@ -207,6 +210,12 @@ Each of these has been seen in real migrations. Check your output against them.
   element styles are the baseline. Build on them.
 - **`!important`, BEM, physical properties, viewport units for sizing.** The
   library uses none; neither should styles around it.
+- **Utility classes or inline `style` for layout.** Padding, width and margin
+  are scoped CSS in `loamui.components`; `style` carries only custom-property
+  data (`--loam-context`, a documented size hook).
+- **A page without its skeleton.** `SkipLink` to a focusable `main`, one `h1`,
+  landmarks, `role="list"` on a list styled without markers, a pause control
+  on anything that moves by itself. The Conformance page lists them.
 - **Importing the stylesheet through a bundler that cannot parse it** (including
   affected Next.js toolchains). Serve it statically; see the installation guide.
 - **A `Heading` or `Text` component.** Typography is domain-specific:
@@ -224,8 +233,10 @@ Each of these has been seen in real migrations. Check your output against them.
 
 For responsive composition, keep the measuring container outside the element
 whose layout changes; name queries that must measure a particular recipe region.
-Protect embedded core roots with `@scope (.recipe) to ([class*="loam-"])`.
-Tokens express design decisions; structural dimensions, aspect ratios and zero
-values remain ordinary CSS. A recipe built only from native elements and tokens
-is valid: do not add imports or status regions just to demonstrate every
+Protect embedded core roots with `@scope (.recipe) to ([class*="loam-"])`; a
+rule that must beat a core root's own declaration in the same layer raises
+specificity with a type selector (`nav:scope`), never `!important`. Tokens
+express design decisions; structural dimensions, aspect ratios and zero values
+remain ordinary CSS. A recipe built only from native elements and tokens is
+valid: do not add imports or status regions just to demonstrate every
 primitive.

@@ -93,14 +93,26 @@ The panel sizes to its content between a floor and a readable cap: a confirmatio
 
 ### Header with a close button
 
-A header row with an × is a composition pattern, not configuration: compose Modal.Title and Modal.Close however your design needs.
+A header row with an × is a composition pattern, not configuration: compose Modal.Title and Modal.Close however your design needs, and lay the row out from your stylesheet rather than an inline style.
 
 ```tsx
+/* modal.css */
+.modal-head {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-block-end: var(--loam-space-sm);
+
+  h2 {
+    margin: 0;
+  }
+}
+
 <Modal.Root>
   <Modal.Trigger>Open settings</Modal.Trigger>
   <Modal.Popup>
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBlockEnd: "var(--loam-space-sm)" }}>
-      <Modal.Title style={{ margin: 0 }}>Settings</Modal.Title>
+    <div className="modal-head">
+      <Modal.Title>Settings</Modal.Title>
       <Modal.Close aria-label="Close">×</Modal.Close>
     </div>
     <Modal.Description>Manage your workspace settings.</Modal.Description>

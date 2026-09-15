@@ -9,7 +9,12 @@
         "Uses <Button> from @loamui/core, not a styled <a> or a div",
         "Does not invent a variant, color, or intent prop"
       ],
-      "forbid": ["variant=", "color=\"danger\"", "className=\"loam-Button", "!important"]
+      "forbid": [
+        "variant=",
+        "color=\"danger\"",
+        "className=\"loam-Button",
+        "!important"
+      ]
     },
     {
       "id": "signup-form",
@@ -20,7 +25,10 @@
         "Field supplies default relationships; any explicit IDs or descriptions resolve correctly without duplicate IDs",
         "Error messages say what to do in the question's words (e.g. 'Enter your email address')"
       ],
-      "forbid": ["This field is required", "Please enter"]
+      "forbid": [
+        "This field is required",
+        "Please enter"
+      ]
     },
     {
       "id": "wide-modal",
@@ -29,7 +37,11 @@
         "Sets --loam-modal-size (style prop or scoped CSS) where the modal is used",
         "Does not look for or add a size prop"
       ],
-      "forbid": ["size=\"lg\"", "size={", "width: 900px"]
+      "forbid": [
+        "size=\"lg\"",
+        "size={",
+        "width: 900px"
+      ]
     },
     {
       "id": "cta-link",
@@ -38,7 +50,11 @@
         "Uses SignpostLink (navigation), optionally with render={<Link/>} for a router link",
         "Explains that Button is for actions and a link should not be dressed as a button"
       ],
-      "forbid": ["<Button", "className=\"loam-Button", "role=\"button\""]
+      "forbid": [
+        "<Button",
+        "className=\"loam-Button",
+        "role=\"button\""
+      ]
     },
     {
       "id": "faq-accordion",
@@ -47,7 +63,11 @@
         "Uses Details.Root / Details.Summary / Details.Content per question",
         "Does not hand-roll a details element with loam-Details classes or a custom chevron"
       ],
-      "forbid": ["Accordion", "className=\"loam-Details", "<summary>"]
+      "forbid": [
+        "Accordion",
+        "className=\"loam-Details",
+        "<summary>"
+      ]
     },
     {
       "id": "theme-brand",
@@ -56,7 +76,11 @@
         "Overrides --loam-color-primary and --loam-font-display at :root (or a scope), in oklch()",
         "Does not edit component CSS, private --_ properties, or add !important"
       ],
-      "forbid": ["#0", "!important", "--_"]
+      "forbid": [
+        "#0",
+        "!important",
+        "--_"
+      ]
     },
     {
       "id": "nextjs-install",
@@ -65,7 +89,10 @@
         "Installs @loamui/core and serves styles.css as a static file (copy to public/ + <link>) rather than importing it, citing the CSS-pipeline limitation",
         "No provider or plugin is added"
       ],
-      "forbid": ["ThemeProvider", "LoamProvider"]
+      "forbid": [
+        "ThemeProvider",
+        "LoamProvider"
+      ]
     },
     {
       "id": "page-layout",
@@ -75,7 +102,12 @@
         "Uses Card for the stat surfaces",
         "Does not look for Grid, Stack, or Container components"
       ],
-      "forbid": ["<Grid", "<Stack", "<Container", "<Flex"]
+      "forbid": [
+        "<Grid",
+        "<Stack",
+        "<Container",
+        "<Flex"
+      ]
     },
     {
       "id": "unknown-component",
@@ -84,7 +116,9 @@
         "Reads references/components/date-input.md (or the live .md) before writing code",
         "Uses the documented parts and wiring from that reference rather than guessing props"
       ],
-      "forbid": ["type=\"date\""]
+      "forbid": [
+        "type=\"date\""
+      ]
     },
     {
       "id": "responsive-editorial-grid",
@@ -95,7 +129,10 @@
         "Any size query measures an ancestor of the changing layout, with consistent thresholds for tracks and spans",
         "Links identify their article destinations; no inert buttons or docs-site imports"
       ],
-      "forbid": ["!important", "className=\"loam-Card\""]
+      "forbid": [
+        "!important",
+        "className=\"loam-Card\""
+      ]
     },
     {
       "id": "independent-faqs",
@@ -120,7 +157,10 @@
         "Checks the reference against the workflow and verifies the adaptation rather than assuming publication certifies conformance",
         "Declares scoped recipe rules in loamui.components and resolves fluid type within its measuring region"
       ],
-      "forbid": ["@/renderer/", "@/examples/"]
+      "forbid": [
+        "@/renderer/",
+        "@/examples/"
+      ]
     },
     {
       "id": "choose-banner-recipe",
@@ -131,7 +171,11 @@
         "Does not turn the promotion into a page-opening hero or force it into the Card primitive",
         "Checks narrow layout and text contrast against the image overlay in the consuming theme"
       ],
-      "forbid": ["<h1", "variant=", "fullWidth="]
+      "forbid": [
+        "<h1",
+        "variant=",
+        "fullWidth="
+      ]
     },
     {
       "id": "consumer-setup-approval",
@@ -143,7 +187,9 @@
         "Waits for setup approval; does not migrate unrelated application styling",
         "After approval uses real package exports and verifies image height on a direct load and client navigation"
       ],
-      "forbid": ["className=\"loam-Button"]
+      "forbid": [
+        "className=\"loam-Button"
+      ]
     },
     {
       "id": "chat-source-only",
@@ -167,7 +213,59 @@
         "Checks layer order and verifies content-driven image containment, parent widths and keyboard behaviour",
         "Reports actual checks and gaps instead of blanket certification"
       ],
-      "forbid": ["@/examples/", "@/renderer/"]
+      "forbid": [
+        "@/examples/",
+        "@/renderer/"
+      ]
+    },
+    {
+      "id": "sticky-header",
+      "prompt": "Add a sticky site header with our logo on the left and About, Events and Contact links on the right. On phones the links should move into a drawer behind a menu button.",
+      "expect": [
+        "The page skeleton is present: a SkipLink to a focusable main (id and tabindex=-1) and a header landmark",
+        "Links are Nav parts (Nav.Root, Nav.List, Nav.Link) with the current page marked; the drawer is Drawer parts on a native dialog",
+        "The row and the drawer trigger switch through a named container query on the header, written additively (each display set once under exclusive ranges)",
+        "Layout comes from scoped CSS in loamui.components; no utility classes or inline style for padding, width or margin",
+        "Any override of a core part's display uses a higher-specificity selector (e.g. nav:scope) rather than !important"
+      ],
+      "forbid": [
+        "!important",
+        "className=\"loam-",
+        "style={{ margin",
+        "max-w-"
+      ]
+    },
+    {
+      "id": "logo-marquee",
+      "prompt": "Add a marquee band under the hero that scrolls our ten partner names across the screen in a loop.",
+      "expect": [
+        "The names are a real list (ol or ul) with role=\"list\" when list-style is removed, and the duplicate copy that makes the loop seamless is aria-hidden",
+        "The animation exists only inside prefers-reduced-motion: no-preference; at rest the list wraps and every name is readable",
+        "A visible pause control (a button with aria-pressed) stops the movement for keyboard and touch users, not only hover",
+        "The keyframes and every rule live inside the recipe's scope and the loamui.components layer",
+        "The band's colours are tokens; text on a brand colour re-declares color and color-scheme for contrast"
+      ],
+      "forbid": [
+        "prefers-reduced-motion: reduce",
+        "<marquee",
+        "animation-duration: 0.01ms"
+      ]
+    },
+    {
+      "id": "brand-theme",
+      "prompt": "Rebrand the site: primary near-black, accent yellow. Keep light and dark mode working.",
+      "expect": [
+        "Overrides target --loam-color-primary and --loam-color-accent only; derived tokens (-soft, -strong, -ring) are not hand-set",
+        "The overrides sit in the brand layer declared last in the layer order, not as unlayered :root rules",
+        "Colours are oklch() (light-dark() pairs, or a media-query fallback where the CSS pipeline rewrites light-dark)",
+        "On-brand regions that flip scheme (a dark header on a light page) set color-scheme and re-declare color, primary and ring"
+      ],
+      "forbid": [
+        "#",
+        "rgb(",
+        "hsl(",
+        "--loam-color-primary-strong:"
+      ]
     }
   ]
 }

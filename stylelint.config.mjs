@@ -1,30 +1,17 @@
 /**
- * One stylelint config for the whole repo (the shared modern-CSS config
- * shape: standard + modern + alphabetical order, strict disable
- * reporting, core reference-file custom-property checking, nesting
- * enforced). Package differences are handled with overrides only.
+ * One stylelint config for the whole repo: the shared config that ships to
+ * consumers (packages/core/stylelint-config.mjs), plus the repo's own
+ * conventions for class and custom-property names. Package differences are
+ * handled with overrides only.
  */
+import shared from "./packages/core/stylelint-config.mjs";
 
 /** @type {import("stylelint").Config} */
 export default {
-  extends: [
-    "stylelint-config-standard",
-    "stylelint-config-modern",
-    "stylelint-config-alphabetical-order",
-  ],
-  plugins: ["stylelint-use-nesting"],
-  reportDescriptionlessDisables: true,
-  reportInvalidScopeDisables: true,
-  reportNeedlessDisables: true,
+  ...shared,
   referenceFiles: ["packages/core/src/tokens.css"],
   rules: {
-    "csstools/use-nesting": "always",
-    "no-unknown-custom-properties": true,
-    "no-unknown-animations": true,
-    "no-unknown-custom-media": true,
-    "media-feature-range-notation": "context",
-    "unit-disallowed-list": [["vw", "vh"]],
-    "declaration-no-important": true,
+    ...shared.rules,
     // Scope roots are `loam-` + PascalCase (optionally a semantic root
     // suffix); everything else is a short kebab-case part class.
     "selector-class-pattern": [

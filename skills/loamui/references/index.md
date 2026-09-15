@@ -9,6 +9,7 @@
 - [Introduction](guides/introduction.md) — Modern UI primitives for agent-assisted developers: contextual tokens, element styles and React components built on Google's Modern Web Guidance. · [live](https://loamui.com/docs.md)
 - [Installation](guides/installation.md) — Install LoamUI in any React framework. · [live](https://loamui.com/docs/installation.md)
 - [Building with an agent](guides/agent-workflow.md) — Check the environment, compose from the three primitives, and verify the five pillars in the result. · [live](https://loamui.com/docs/agent-workflow.md)
+- [Conformance](guides/conformance.md) — The page skeleton, the lint gate, and the deliberate departures from the modern-css and Modern Web Guidance references. · [live](https://loamui.com/docs/conformance.md)
 - [Tokens](guides/tokens.md) — The token primitive: a handful of semantic decisions, everything else derived, and the theming that falls out of it. · [live](https://loamui.com/docs/tokens.md)
 - [Element styles](guides/element-styles.md) — The element-styles primitive: enhanced default styles for native HTML, page-wide. Plain markup is already styled before any component appears. · [live](https://loamui.com/docs/element-styles.md)
 - [Components](guides/components.md) — The third primitive: a small, curated set of accessible components composed from tokens and element styles. · [live](https://loamui.com/docs/components.md)

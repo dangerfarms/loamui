@@ -16,6 +16,7 @@ export interface NavItem {
 export const GETTING_STARTED: { name: string; href: string }[] = [
   { name: "Introduction", href: "/docs" },
   { name: "Installation", href: "/docs/installation" },
+  { name: "Conformance", href: "/docs/conformance" },
   { name: "Contextualism", href: "/docs/contextualism" },
   { name: "Composing components", href: "/docs/composing" },
   { name: "Layout", href: "/docs/layout" },

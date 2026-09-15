@@ -88,8 +88,14 @@ overlay enter/exit and large movement, with `--loam-ease`
 (`--loam-ease-elastic` for sparing playful accents). Always inside
 `@media (prefers-reduced-motion: no-preference)`.
 
-Guardrails enforce this: `pnpm lint` runs oxlint + stylelint
-(`stylelint-config-modern` + token validation).
+Guardrails enforce this: `pnpm lint` runs oxlint + stylelint. The stylelint
+rules live in `packages/core/stylelint-config.mjs` and ship to consumers as
+`@loamui/core/stylelint-config`, so a project built with the skill runs the
+same gate the library does; the root config only adds the repo's naming
+conventions. Where the library deliberately departs from one of the two
+references, the departure and its reason are recorded in the
+[Conformance](https://loamui.com/docs/conformance) guide, which the skill
+reads; add to that list rather than to a comment.
 
 ## Browser support policy
 

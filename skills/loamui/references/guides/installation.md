@@ -29,10 +29,10 @@ import "@loamui/core/styles.css";
 Declare the layer order in your earliest application stylesheet, before any recipe CSS:
 
 ```css
-@layer loamui.tokens, loamui.elements, loamui.components;
+@layer loamui.tokens, loamui.elements, loamui.components, brand;
 ```
 
-Layer order is established on first appearance. Loading this declaration later cannot reorder layers already created by recipe styles. Check a direct page load and client navigation; bundlers can load their CSS before manually linked stylesheets.
+The three `loamui` layers are the library's; `brand` is the application's, declared last so theme overrides of `--loam-*` tokens win without leaving the cascade layers. Layer order is established on first appearance. Loading this declaration later cannot reorder layers already created by recipe styles. Check a direct page load and client navigation; bundlers can load their CSS before manually linked stylesheets.
 
 ## 3. Use a component
 
@@ -60,6 +60,31 @@ export function SignIn() {
 
 Connect `/sign-in` to your authentication endpoint. For error handling and layout, use the complete [Sign in with errors recipe](/recipes/forms/sign-in-with-errors).
 
+## 4. Lint the CSS
+
+The library lints its own stylesheets with a configuration it ships, so a project can run the same gate over its recipes:
+
+```bash
+pnpm add -D stylelint stylelint-config-standard stylelint-config-modern stylelint-config-alphabetical-order stylelint-use-nesting stylelint-use-logical
+```
+
+```js
+// stylelint.config.mjs
+import loamui from "@loamui/core/stylelint-config";
+
+export default {
+  ...loamui,
+  // The shipped tokens are already referenced; add the project's own.
+  referenceFiles: [...loamui.referenceFiles, "src/app/globals.css"],
+};
+```
+
+```json
+"lint:css": "stylelint \"src/**/*.css\""
+```
+
+What the gate checks, and what it cannot, is on the [Conformance](/docs/conformance) page.
+
 ## Framework notes
 
 ### Next.js
@@ -86,4 +111,4 @@ The earliest application stylesheet still declares the layer order above. Keep t
 Import `@loamui/core/styles.css` in your `main.tsx` entry. No plugin required; the styles are
 plain CSS.
 
-> LoamUI ships static CSS with cascade layers. If you use your own ` @layer` order, the LoamUI layers are named `loamui.tokens`, `loamui.elements` and `loamui.components`.
+> LoamUI ships static CSS with cascade layers. If you use your own ` @layer` order, the LoamUI layers are named `loamui.tokens`, `loamui.elements` and `loamui.components`; keep `brand` after them.

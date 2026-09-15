@@ -77,14 +77,26 @@ The panel is 24rem on its short axis by default: the width for start / end, the 
 
 ### Header with a close button
 
-A header row with an × is a composition pattern, not configuration: compose Drawer.Title and Drawer.Close however your design needs.
+A header row with an × is a composition pattern, not configuration: compose Drawer.Title and Drawer.Close however your design needs, and lay the row out from your stylesheet rather than an inline style.
 
 ```tsx
+/* drawer.css */
+.drawer-head {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-block-end: var(--loam-space-sm);
+
+  h2 {
+    margin: 0;
+  }
+}
+
 <Drawer.Root>
   <Drawer.Trigger>Filters</Drawer.Trigger>
   <Drawer.Popup side="end">
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBlockEnd: "var(--loam-space-sm)" }}>
-      <Drawer.Title style={{ margin: 0 }}>Filters</Drawer.Title>
+    <div className="drawer-head">
+      <Drawer.Title>Filters</Drawer.Title>
       <Drawer.Close aria-label="Close">×</Drawer.Close>
     </div>
     <Drawer.Description>Refine the results shown in the list.</Drawer.Description>
