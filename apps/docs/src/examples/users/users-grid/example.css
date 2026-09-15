@@ -1,7 +1,7 @@
 @scope (.users-grid) to ([class*="loam-"]) {
   :scope {
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
     list-style: none;
     margin: 0;
@@ -18,13 +18,13 @@
   :scope {
     align-items: center;
     display: block grid;
-    gap: var(--loam-space-sm) var(--loam-space-md);
+    gap: var(--loam-space-2xs) var(--loam-space-xs);
     grid-template-columns: auto minmax(0, 1fr);
   }
 
   div.text {
     display: block grid;
-    gap: calc(var(--loam-space-xs) / 2);
+    gap: calc(var(--loam-space-3xs) / 2);
     min-inline-size: 0;
   }
 
@@ -41,15 +41,15 @@
 
   dl {
     display: block grid;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     grid-column: 1 / -1;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
-    margin-block: var(--loam-space-xs) 0;
+    margin-block: var(--loam-space-3xs) 0;
     margin-inline: 0;
 
     div {
       display: block grid;
-      gap: calc(var(--loam-space-xs) / 2);
+      gap: calc(var(--loam-space-3xs) / 2);
       min-inline-size: 0;
     }
 

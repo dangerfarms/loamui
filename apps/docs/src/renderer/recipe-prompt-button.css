@@ -1,0 +1,42 @@
+@layer loamui.components {
+  @scope (.site-RecipePrompt) to ([class*="loam-"]) {
+    :scope {
+      border-block-start: 1px solid var(--loam-color-line);
+      container-type: inline-size;
+      position: relative;
+      z-index: 1;
+    }
+
+    .controls {
+      align-items: center;
+      display: block flex;
+      flex-wrap: wrap;
+      gap: var(--loam-space-2xs) var(--loam-space-s);
+      padding-block: var(--loam-space-2xs);
+      padding-inline: var(--loam-space-s);
+
+      button {
+        font-size: var(--loam-text-sm);
+        min-block-size: 2.75rem;
+        padding-block: var(--loam-space-3xs);
+        padding-inline: var(--loam-space-xs);
+      }
+
+      a {
+        align-items: center;
+        display: inline flex;
+        font-size: var(--loam-text-sm);
+        gap: var(--loam-space-3xs);
+        min-block-size: 2.75rem;
+        text-underline-offset: 0.2em;
+      }
+    }
+
+    .message {
+      font-size: var(--loam-text-sm);
+      overflow-wrap: anywhere;
+      padding-block-end: var(--loam-space-2xs);
+      padding-inline: var(--loam-space-s);
+    }
+  }
+}

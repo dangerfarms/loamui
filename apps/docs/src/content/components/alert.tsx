@@ -25,7 +25,7 @@ const doc: ComponentContent = {
   <Alert title="Deploy failed">Check the build logs.</Alert>
 </div>`,
       render: () => (
-        <div style={{ display: "grid", gap: "0.75rem", inlineSize: "100%" }}>
+        <div style={{ display: "grid", gap: "var(--loam-space-xs)", inlineSize: "100%" }}>
           <div style={{ "--loam-context": "info" } as CSSProperties}>
             <Alert title="Heads up">A new version is available.</Alert>
           </div>
@@ -57,7 +57,7 @@ const doc: ComponentContent = {
             {
               "--loam-context": "danger",
               display: "grid",
-              gap: "0.75rem",
+              gap: "var(--loam-space-xs)",
               justifyItems: "start",
               inlineSize: "100%",
             } as CSSProperties

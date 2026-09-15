@@ -12,6 +12,7 @@
 @import url("./components/Details/Details.css") layer(loamui.components);
 @import url("./components/SignpostLink/SignpostLink.css") layer(loamui.components);
 @import url("./components/SkipLink/SkipLink.css") layer(loamui.components);
+@import url("./components/VisuallyHidden/VisuallyHidden.css") layer(loamui.components);
 @import url("./components/Alert/Alert.css") layer(loamui.components);
 @import url("./components/Avatar/Avatar.css") layer(loamui.components);
 @import url("./components/Badge/Badge.css") layer(loamui.components);

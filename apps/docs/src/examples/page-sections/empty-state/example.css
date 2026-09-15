@@ -3,9 +3,9 @@
     align-content: center;
     container-type: inline-size;
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     justify-items: center;
-    padding-block: var(--loam-space-xl);
+    padding-block: var(--loam-space-l);
     text-align: center;
   }
 
@@ -30,7 +30,7 @@
   div.actions {
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     justify-content: center;
   }
 }

@@ -7,15 +7,13 @@ export const meta: ExampleMeta = {
   category: "page-sections",
   uses: [],
   notes: {
-    native:
-      "A section named by its h2, a header for the intro and a list of six items with h3 headings, so the outline reads the way the page looks.",
     modern:
-      "The list is an auto-fit grid answering the section's own width, and the icon square is sized in em on the heading's type so it rides the fluid scale.",
-    composition:
-      "No card and no component: a feature is scanned, not compared, so each is an icon, a heading and a muted line set apart by space.",
+      "A section named by its h2, a header for the intro and a list of six items with h3 headings, so the outline reads the way the page looks. The list is an auto-fit grid answering the section’s own width, and the icon square is sized in em on the heading’s type so it rides the fluid scale.",
     accessible:
       "The icons are aria-hidden because the headings carry the meaning, and the list keeps role=list so the count survives list-style: none in every browser.",
   },
+  composition:
+    "No card and no component: a feature is scanned, not compared, so each is an icon, a heading and a muted line set apart by space.",
   tags: ["features", "benefits", "grid", "icons", "marketing"],
   order: 8,
 };

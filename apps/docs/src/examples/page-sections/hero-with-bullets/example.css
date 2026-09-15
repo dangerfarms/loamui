@@ -1,19 +1,19 @@
 @scope (.hero-with-bullets) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
-    padding-block: var(--loam-space-xl);
+    padding-block: var(--loam-space-l);
   }
 
   /* The inner element is the grid: an element cannot answer its own
      container query. */
   div.inner {
     display: block grid;
-    gap: var(--loam-space-xl);
+    gap: var(--loam-space-l);
   }
 
   div.text {
     display: block grid;
-    gap: var(--loam-space-lg);
+    gap: var(--loam-space-s);
   }
 
   h1 {
@@ -33,7 +33,7 @@
 
   ul.points {
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     list-style: none;
     margin: 0;
     padding: 0;
@@ -41,7 +41,7 @@
     > li {
       align-items: start;
       display: block grid;
-      gap: var(--loam-space-md);
+      gap: var(--loam-space-xs);
       grid-template-columns: auto minmax(0, 1fr);
       margin: 0;
     }
@@ -77,7 +77,7 @@
   div.actions {
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
   }
 
   img.media {

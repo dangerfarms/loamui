@@ -2,7 +2,7 @@
 
 import { useId, useRef, useState, type ReactNode } from "react";
 import { CodeBlock } from "./CodeBlock";
-import classes from "./Preview.module.css";
+import "./Preview.css";
 
 type Tab = "preview" | "code" | "css";
 
@@ -44,11 +44,11 @@ export function Preview({
   };
 
   return (
-    <div className={classes.wrap}>
+    <div className="site-Preview">
       {/* interactive-supports-focus is off for this file (.oxlintrc):
           focus roves between the tabs; the list is never a stop */}
       <div
-        className={classes.tabs}
+        className="tabs"
         role="tablist"
         aria-label="Example view"
         ref={listRef}
@@ -62,7 +62,7 @@ export function Preview({
             aria-selected={tab === t}
             aria-controls={`${baseId}-panel-${t}`}
             tabIndex={tab === t ? 0 : -1}
-            className={classes.tab}
+            className="tab"
             onClick={() => setTab(t)}
             type="button"
           >
@@ -72,9 +72,9 @@ export function Preview({
       </div>
 
       <div role="tabpanel" id={`${baseId}-panel-${tab}`} aria-labelledby={`${baseId}-tab-${tab}`}>
-        {tab === "preview" && <div className={classes.stage}>{children}</div>}
-        {tab === "code" && <CodeBlock code={code} className={classes.code} />}
-        {tab === "css" && css && <CodeBlock code={css} language="css" className={classes.code} />}
+        {tab === "preview" && <div className="stage">{children}</div>}
+        {tab === "code" && <CodeBlock code={code} className="code" />}
+        {tab === "css" && css && <CodeBlock code={css} language="css" className="code" />}
       </div>
     </div>
   );

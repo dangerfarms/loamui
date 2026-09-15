@@ -10,10 +10,10 @@
     color: var(--loam-color-fg);
     font-size: var(--loam-text-sm);
     font-weight: 600;
-    inset-block-start: var(--loam-space-sm);
-    inset-inline-start: var(--loam-space-sm);
-    padding-block: var(--loam-space-sm);
-    padding-inline: var(--loam-space-lg);
+    inset-block-start: var(--loam-space-2xs);
+    inset-inline-start: var(--loam-space-2xs);
+    padding-block: var(--loam-space-2xs);
+    padding-inline: var(--loam-space-s);
     position: fixed;
     text-decoration: none;
     z-index: var(--loam-z-skip-link);

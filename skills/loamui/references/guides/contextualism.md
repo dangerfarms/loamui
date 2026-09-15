@@ -1,16 +1,31 @@
 ---
 title: Contextualism
-description: Why LoamUI components have no variant or size props: context decides appearance, identity is the last resort.
+description: The paradigm shift under all three primitives: context decides appearance, and identity is the last resort.
 ---
 
 > LoamUI documentation, generated from the same source as the live page —
 > treat it as authoritative for `@loamui/core`.
 
+import "../prose.css";
+
 # Contextualism
 
-In most component libraries you tell each component what to look like: `variant="outline"`, `size="lg"`, `color="danger"`. LoamUI inverts that. Components read their _context_ (what the surrounding region means, how much space it has, what the component contains) and adapt themselves. Identity props are the last resort, not the default.
+In most component libraries you tell each component what to look like: `variant="outline"`, `size="lg"`, `color="danger"`. LoamUI inverts that. Everything it ships reads its _context_ (what the surrounding region means, how much space it has, what it contains) and adapts itself. Identity props are the last resort, not the default.
 
-## The paradigm
+## A paradigm shift
+
+This is a genuine paradigm shift, and an unfamiliar one: the decision moves from the
+instance to the region, and from your markup into the cascade. It is also where the CSS
+language itself is going, which is why it runs under **all three primitives** rather than
+sitting beside the components as a feature of theirs.
+
+- **Tokens are contextual.** `--loam-color-primary` resolves to the colour supplied by its region. The type scale adapts to the available container space.
+- **Element styles are contextual, because they use those tokens.** A native control
+  inside a LoamUI region takes the region's channel for its caret and its
+  `accent-color` without a class of its own, and the typographic rhythm answers the
+  width of the column it sits in.
+- **Components are contextual, which is why they have no props for it.** A Button inside
+  that region is already the right colour before its own stylesheet is consulted.
 
 A button doesn't know it's dangerous; the _delete-account panel_ is
 dangerous, and every control inside it should say so. A button doesn't know it should
@@ -115,7 +130,8 @@ region, or inherited from an ancestor that already means something):
 
 ## One colour channel, derived looks
 
-Button has no `filled`/`outline`/`subtle` variants. It has
+The same channel serves a token, a bare element and a component alike. Button has no
+`filled`/`outline`/`subtle` variants. It has
 one colour channel, and every look is derived from it. Background and border come via
 `color-mix()` toward the page background, hover and active via relative-colour
 lightness shifts:
@@ -151,12 +167,7 @@ component:
 ```tsx
 // Specialization is a wrapper, not a prop
 export function BrandButton(props: ButtonProps) {
-  return (
-    <Button
-      {...props}
-      style={{ "--loam-button-color": "light-dark(darkblue, lightblue)" }}
-    />
-  );
+  return <Button {...props} style={{ "--loam-button-color": "light-dark(darkblue, lightblue)" }} />;
 }
 ```
 
@@ -164,7 +175,11 @@ export function BrandButton(props: ButtonProps) {
 
 ## The size of the space
 
-There is no size prop. Padding and font are fluid container-relative tokens, and in a
+The size tokens are container-relative, so element styles and components respond to the
+space they are given. Badge, Loader, Progress and Meter expose intrinsic size options;
+Input also preserves the native HTML `size` attribute. Their component references describe
+these exceptions.
+Padding and font are fluid container-relative tokens, and in a
 container of 16rem or less a button takes the full width. The layout decides, per instance
 of the layout, not per instance of the button:
 
@@ -185,7 +200,7 @@ asking you to repeat it as a prop. An icon inside a button is detected (no
 ```css
 .loam-Button:has(svg) {
   display: inline flex;
-  gap: var(--loam-space-sm);
+  gap: var(--loam-space-2xs);
 
   svg {
     inline-size: 1em;

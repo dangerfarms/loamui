@@ -4,12 +4,12 @@
 
     align-items: start;
     display: block flex;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
   }
 
   div.text {
     display: block grid;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     min-inline-size: 0;
   }
 
@@ -30,15 +30,15 @@
 
   dl {
     display: block grid;
-    gap: var(--loam-space-xs);
-    margin-block: var(--loam-space-sm) 0;
+    gap: var(--loam-space-3xs);
+    margin-block: var(--loam-space-2xs) 0;
     margin-inline: 0;
 
     dd {
       align-items: center;
       display: block flex;
       font-size: var(--loam-text-sm);
-      gap: var(--loam-space-xs);
+      gap: var(--loam-space-3xs);
       margin: 0;
       min-inline-size: 0;
     }

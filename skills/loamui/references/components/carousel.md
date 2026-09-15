@@ -119,7 +119,7 @@ labels replaces every default string: the region's name, the buttons' names, the
 ## When to use it
 
 - A run of similar items, cards, images or quotes, where the reader is invited to browse and any one of them is a fine place to stop.
-- When the page must work without JavaScript: the track is a native scroller, and the buttons, indicators and status are additions to it, not what makes it move.
+- When the page must work without JavaScript: the track supports native scrolling, with buttons, indicators and status added after hydration.
 
 ## When not to
 

@@ -102,7 +102,7 @@ const [guests, setGuests] = useState(2);
 
 ### The input is the value of record
 
-Nothing is held in React: the count lives in the native input, so a form posts it under its name, a reset restores its default, and value with onChange controls it exactly as they control an Input. The buttons are conveniences on the side of that input, not a second source of truth.
+Nothing is held in React: the count lives in the native input, so a form posts it under its name, a reset restores its default, and value with onChange controls it exactly as they control an Input. The buttons adjust the value of that same input.
 
 ### The buttons step the native value
 

@@ -9,7 +9,7 @@ import {
 const doc: ComponentContent = {
   slug: "segmented-control",
   lead: "A set of mutually exclusive options drawn as one row of segments: a native radio group in a pill, so it submits like a form control and switches views like a toolbar, with the arrow keys moving the choice either way.",
-  importLine: `import { SegmentedControl } from "@loamui/core";`,
+  importLine: `import { SegmentedControl, VisuallyHidden } from "@loamui/core";`,
   demos: [
     {
       title: "As a view switcher",
@@ -53,18 +53,18 @@ const doc: ComponentContent = {
       code: `const [scheme, setScheme] = useState("system");
 
 <SegmentedControl.Root value={scheme} onValueChange={choose}>
-  <SegmentedControl.Legend className="loam-VisuallyHidden">Colour scheme</SegmentedControl.Legend>
+  <VisuallyHidden render={<SegmentedControl.Legend />}> Colour scheme</VisuallyHidden>
   <SegmentedControl.Item value="system">
     <SystemIcon />
-    <span className="loam-VisuallyHidden">System</span>
+    <VisuallyHidden>System</VisuallyHidden>
   </SegmentedControl.Item>
   <SegmentedControl.Item value="light">
     <LightIcon />
-    <span className="loam-VisuallyHidden">Light</span>
+    <VisuallyHidden>Light</VisuallyHidden>
   </SegmentedControl.Item>
   <SegmentedControl.Item value="dark">
     <DarkIcon />
-    <span className="loam-VisuallyHidden">Dark</span>
+    <VisuallyHidden>Dark</VisuallyHidden>
   </SegmentedControl.Item>
 </SegmentedControl.Root>`,
       render: () => <SegmentedControlSchemeDemo />,
@@ -107,11 +107,11 @@ const doc: ComponentContent = {
     },
     {
       title: "The legend is the name",
-      body: 'The Legend names the group, and a screen reader announces it with each option, so write it as the question the segments answer: “View”, “Range”, “Colour scheme”. It is painted inside the pill before the segments. When the segments say it themselves (three scheme icons under a heading that already reads “Appearance”), hide it with className="loam-VisuallyHidden": the name stays, the paint goes.',
+      body: "The Legend names the group, and a screen reader announces it with each option, so write it as the question the segments answer: “View”, “Range”, “Colour scheme”. It is painted inside the pill before the segments. When the segments say it themselves (three scheme icons under a heading that already reads “Appearance”), compose it with VisuallyHidden using render={<SegmentedControl.Legend />}: the name stays, the paint goes.",
     },
     {
       title: "Icon-only segments keep their words",
-      body: "An icon is an svg child, aria-hidden and sized on the text. A segment that shows only an icon still needs a name, so put the words beside it in a loam-VisuallyHidden span; the stylesheet detects that shape and draws the segment as a circle. A segment with no words is unnamed, and a set of unnamed radios is a set of unanswerable questions.",
+      body: "An icon is an svg child, aria-hidden and sized on the text. A segment that shows only an icon still needs a name, so put the words beside it in a VisuallyHidden component; the stylesheet detects that shape and draws the segment as a circle. A segment with no words is unnamed, and a set of unnamed radios is a set of unanswerable questions.",
     },
     {
       title: "A form control and a view switcher are the same control",
@@ -125,9 +125,9 @@ const doc: ComponentContent = {
   accessibility: [
     'The Root is a native <fieldset> carrying role="radiogroup", named by its Legend; each segment is a native <input type="radio"> inside a <label>, so the segment is its target and its name.',
     "Keyboard: Tab reaches the checked segment, ArrowLeft/ArrowRight and ArrowUp/ArrowDown move the choice and check it, Space checks a focused one. Disabled segments are skipped. All of it is the browser's own radio behaviour.",
-    "The focus ring is drawn on the segment, not the hidden radio, in the ring colour and width every control uses.",
-    "The chosen segment is carried by a line-strong edge and a surface, not colour alone; under forced colours it is painted in Highlight and HighlightText, the focus ring in the system focus colour and a disabled segment in GrayText.",
-    'A Legend given className="loam-VisuallyHidden" still names the group; only its paint is removed.',
+    "The visible segment carries the focus ring, using the shared ring colour and width.",
+    "A line-strong edge and a raised surface identify the chosen segment; under forced colours it is painted in Highlight and HighlightText, the focus ring in the system focus colour and a disabled segment in GrayText.",
+    "A Legend rendered through VisuallyHidden still names the group; only its paint is removed.",
   ],
   parts: [
     {
@@ -161,7 +161,7 @@ const doc: ComponentContent = {
     {
       name: "SegmentedControl.Legend",
       description:
-        'The group\'s name, a <legend> painted inside the pill before the segments; native <legend> props and ref are forwarded. Hide it with className="loam-VisuallyHidden".',
+        "The group's name, a <legend> painted inside the pill before the segments; native <legend> props and ref are forwarded. Compose it with VisuallyHidden using render={<SegmentedControl.Legend />}.",
     },
     {
       name: "SegmentedControl.Item",

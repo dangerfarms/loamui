@@ -7,15 +7,13 @@ export const meta: ExampleMeta = {
   category: "page-sections",
   uses: ["SignpostLink"],
   notes: {
-    native:
-      "A section named by its h2, with the four points as a list of h3 headings, so the outline holds the argument and its evidence in order.",
     modern:
-      "Two grids, each answering the section's own width: the inner element splits 2:3 at 48rem, and the list of points fits two across whenever its column has 28rem to give them.",
-    composition:
-      "One SignpostLink to the fuller account; the points are the example's own markup, an icon, a heading and a line, with no component between.",
+      "A section named by its h2, with the four points as a list of h3 headings, so the outline holds the argument and its evidence in order. Two grids each answer the section’s own width: the inner element splits 2:3 at 48rem, and the list of points fits two across whenever its column has 28rem to give them.",
     accessible:
       "The icons are aria-hidden because the headings carry the meaning, the list keeps role=list so its count survives list-style: none, and the tint behind each glyph gets a border in forced colours.",
   },
+  composition:
+    "One SignpostLink to the fuller account; the points are the example's own markup, an icon, a heading and a line, with no component between.",
   tags: ["features", "benefits", "split", "icons", "about"],
   order: 25,
 };

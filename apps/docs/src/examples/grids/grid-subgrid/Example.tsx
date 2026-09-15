@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { Card, SignpostLink } from "@loamui/core";
+import { Card, SignpostLink, VisuallyHidden } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
@@ -26,7 +26,7 @@ export default function Example() {
           </div>
           <div className="actions">
             <SignpostLink href="/workshops/seed-saving">
-              Book a place<span className="loam-VisuallyHidden"> – Seed saving</span>
+              Book a place<VisuallyHidden> – Seed saving</VisuallyHidden>
             </SignpostLink>
           </div>
         </Card>
@@ -49,7 +49,7 @@ export default function Example() {
           </div>
           <div className="actions">
             <SignpostLink href="/workshops/grafting">
-              Book a place<span className="loam-VisuallyHidden"> – Grafting fruit trees</span>
+              Book a place<VisuallyHidden> – Grafting fruit trees</VisuallyHidden>
             </SignpostLink>
           </div>
         </Card>
@@ -72,7 +72,7 @@ export default function Example() {
           </div>
           <div className="actions">
             <SignpostLink href="/workshops/winter-pruning">
-              Book a place<span className="loam-VisuallyHidden"> – Winter pruning</span>
+              Book a place<VisuallyHidden> – Winter pruning</VisuallyHidden>
             </SignpostLink>
           </div>
         </Card>

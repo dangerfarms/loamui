@@ -6,19 +6,29 @@ description: How the type scale, rhythm and figures work, and how to build your 
 > LoamUI documentation, generated from the same source as the live page —
 > treat it as authoritative for `@loamui/core`.
 
+import "../prose.css";
+
 # Typography
 
 Type is set by two primitives working together: the [tokens](/docs/tokens) supply a fluid scale, and the [element styles](/docs/element-styles) apply it to native headings and text. You get a readable, rhythmic page before writing a line of CSS, and a small vocabulary to build your own type on top.
 
 ## A fluid scale, tuned per container
 
-Every size is a `clamp()` that grows with the container, so the scale itself changes shape as space allows. On a narrow container the steps follow a 1.125 ratio (a "major second"), a gentle progression that keeps headings close to body copy where width is tight. On a wide container the same steps open up to a 1.25 ratio (a "major third"), giving headings more presence when there is room to spend. Because the size is driven by container width rather than the viewport, a heading in a sidebar and a heading in the main column each pick the rhythm that suits their own measure, which is what makes both comfortable to read.
+Every size is a `clamp()` that grows with its container, so the scale itself changes shape as space allows.
+
+Narrow, the steps follow a 1.125 ratio (a "major second"): a gentle progression that keeps headings close to body copy where width is tight. Wide, the same steps open to 1.25 (a "major third"), giving headings more presence when there is room to spend.
+
+The driver is container width, not the viewport. So a heading in a sidebar and a heading in the main column each take the rhythm that suits their own measure, and both stay comfortable to read.
+
+</div>
 
 The rhythm is not only horizontal. Leading is derived from each element's own size (`calc(0.5rem + 2ex)`), so larger type gets proportionally tighter line-height without a table of values. Vertical spacing is additive: every block carries a block-end margin, and the extra room before a heading comes from an adjacent-sibling rule, so nothing needs unsetting.
 
 ## Two families, and considered figures
 
-Body text uses `--loam-font`; headings use `--loam-font-display`, so a design can pin two complementary typefaces without touching a component. The element styles also switch on the OpenType features that make text read well: old-style proportional figures in running prose, lining figures in headings, common ligatures, and hanging punctuation. Where numbers must align in a column, a data context can ask for tabular figures, and the machinery is already there to answer.
+Body text uses `--loam-font` and headings use `--loam-font-display`, so a design can pin two complementary typefaces without touching a component.
+
+The element styles also switch on the OpenType features that make text read well: old-style proportional figures in running prose, lining figures in headings, common ligatures, and hanging punctuation. Where numbers must align in a column, ask for tabular figures — the machinery is already there to answer.
 
 ## Typography components are yours to name
 
@@ -40,4 +50,4 @@ There is no `Heading` or `Text` component, because meaningful typography is doma
 }
 ```
 
-> Reach for a scoped class on a semantic element, style it with tokens, and you have a typography component that themes through the cascade and works outside React. The primitives do the reading research; you supply the vocabulary.
+</div>

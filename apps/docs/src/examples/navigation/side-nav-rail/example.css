@@ -6,11 +6,11 @@
 
     border-inline-end: 1px solid var(--loam-color-line);
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     inline-size: fit-content;
     justify-items: center;
-    padding-block: var(--loam-space-md);
-    padding-inline: var(--loam-space-sm);
+    padding-block: var(--loam-space-xs);
+    padding-inline: var(--loam-space-2xs);
   }
 
   a.brand {

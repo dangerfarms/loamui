@@ -4,6 +4,6 @@
     border: 1px solid var(--loam-color-line);
     border-radius: var(--_radius, var(--loam-radius-lg));
     display: block flow;
-    padding: var(--loam-space-lg);
+    padding: var(--loam-space-s);
   }
 }

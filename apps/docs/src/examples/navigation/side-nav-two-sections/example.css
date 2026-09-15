@@ -1,7 +1,7 @@
 @scope (.side-nav-two-sections) to ([class*="loam-"]) {
   :scope {
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     grid-template-rows: auto 1fr;
     inline-size: min(100%, 18rem);
     min-block-size: 32rem;
@@ -14,9 +14,9 @@
     font-family: var(--loam-font-display);
     font-size: var(--loam-text-lg);
     font-weight: 700;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     letter-spacing: -0.02em;
-    padding-inline: var(--loam-space-sm);
+    padding-inline: var(--loam-space-2xs);
     text-decoration: none;
 
     svg {
@@ -33,13 +33,13 @@
   div.main {
     align-self: start;
     display: block grid;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
   }
 
   ul.account {
     align-self: end;
     border-block-start: 1px solid var(--loam-color-line);
-    padding-block-start: var(--loam-space-sm);
+    padding-block-start: var(--loam-space-2xs);
   }
 
   form {

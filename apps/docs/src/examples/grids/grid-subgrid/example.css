@@ -7,7 +7,7 @@
     ul {
       display: block grid;
       font-size: var(--loam-text-md);
-      gap: var(--loam-space-md);
+      gap: var(--loam-space-xs);
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
       list-style: none;
       margin-block: 0;
@@ -35,7 +35,7 @@
     div.head {
       align-content: start;
       display: block grid;
-      gap: var(--loam-space-xs);
+      gap: var(--loam-space-3xs);
     }
 
     h3 {
@@ -60,8 +60,8 @@
       align-self: end;
       display: block flex;
       flex-wrap: wrap;
-      gap: var(--loam-space-sm);
-      padding-block-start: var(--loam-space-xs);
+      gap: var(--loam-space-2xs);
+      padding-block-start: var(--loam-space-3xs);
     }
   }
 }

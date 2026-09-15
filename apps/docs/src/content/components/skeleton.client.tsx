@@ -6,7 +6,7 @@ import { Avatar, Button, Skeleton } from "@loamui/core";
 export function SkeletonSwapDemo() {
   const [loading, setLoading] = useState(true);
   return (
-    <div style={{ display: "grid", gap: "1rem", justifyItems: "start" }}>
+    <div style={{ display: "grid", gap: "var(--loam-space-s)", justifyItems: "start" }}>
       <Skeleton visible={loading}>
         <Avatar name="Ada Lovelace" />
       </Skeleton>

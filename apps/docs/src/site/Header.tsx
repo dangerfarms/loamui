@@ -4,24 +4,25 @@ import { CommandMenu } from "./CommandMenu";
 import { MobileNav } from "./MobileNav";
 import { HeaderNav } from "./HeaderNav";
 import { GitHubIcon } from "./Icons";
-import classes from "./Header.module.css";
+import "./Header.css";
 
 const GITHUB_URL = "https://github.com/dangerfarms/loamui";
 
 export function Header() {
   return (
-    <header className={classes.header}>
-      <div className={classes.inner}>
-        <div className={classes.left}>
+    <header className="site-Header">
+      <div className="inner">
+        <div className="left">
           <MobileNav />
           <Logo />
           <HeaderNav />
         </div>
 
-        <div className={classes.right}>
+        <div className="right">
+          <HeaderNav recipes />
           <CommandMenu />
           <a
-            className={classes.stars}
+            className="stars"
             href={GITHUB_URL}
             target="_blank"
             rel="noreferrer"

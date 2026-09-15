@@ -9,7 +9,7 @@
       display: block flex;
       flex-wrap: wrap;
       font-size: var(--loam-text-md);
-      gap: var(--loam-space-sm) var(--loam-space-md);
+      gap: var(--loam-space-2xs) var(--loam-space-xs);
       justify-content: space-between;
       overflow-wrap: anywhere;
     }
@@ -20,7 +20,7 @@
 
     div.controls {
       display: block flex;
-      gap: var(--loam-space-xs);
+      gap: var(--loam-space-3xs);
     }
   }
 }
@@ -37,7 +37,7 @@
       display: block flex;
       flex-direction: column;
       font-size: var(--loam-text-md);
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
       overflow-wrap: anywhere;
     }
 
@@ -61,7 +61,7 @@
     div.foot {
       display: block flex;
       margin-block-start: auto;
-      padding-block-start: var(--loam-space-sm);
+      padding-block-start: var(--loam-space-2xs);
     }
   }
 }

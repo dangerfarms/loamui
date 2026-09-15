@@ -110,7 +110,7 @@ A pre-ticked box gets submitted by everyone who never read it, so the data recor
 ## Accessibility
 
 - Renders a real <input type="checkbox"> wrapped by its label, so clicking the text toggles it and the state is announced natively.
-- Supports an indeterminate (mixed) visual for a 'select all' parent, set on the DOM node. It is a display state, not a third value.
+- Supports an indeterminate (mixed) visual for a 'select all' parent, set on the DOM node. It describes the display while the submitted value remains checked or unchecked.
 - When placed inside a Field it reads its id, aria-describedby and aria-invalid from context, in the labelled form too: a Field.Label in the same Field points at the box, and the Field's description and error join the row's own description. Standalone it wires its own label and description.
 - Disabled is detected on the native input (:has(input:disabled) on the row), never declared on a wrapper.
 - Errors come from Field composition: wrap the checkbox in a Field.Root and add a Field.Error before the control, which marks it invalid and announces the message.

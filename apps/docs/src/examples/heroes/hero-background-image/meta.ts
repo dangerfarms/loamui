@@ -11,17 +11,13 @@ export const meta: ExampleMeta = {
   category: "heroes",
   uses: ["SignpostLink"],
   notes: {
-    native:
-      "A section named by its h1, with a native header and an eagerly discoverable img. The image sits behind the content, so the header supplies the minimum height and grows when text needs more room. Element styles own heading typography and link states.",
     modern:
-      "Styles sit in loamui.components inside a donut scope. The section measures its header’s fluid padding, type and minimum height; there are no viewport layout breakpoints. A token-based scrim and full foreground text protect readability in either scheme, and a solid background keeps it readable if the image fails.",
-    composition:
-      "SignpostLink follows the surrounding colour scheme through core tokens; the secondary film destination is an ordinary link.",
-    context:
-      "The section inherits the surrounding colour scheme. Background, overlay, text and link tokens adapt together, with no fixed dark region or appearance props.",
+      "A section named by its h1, with a native header and an eagerly discoverable img that sits behind the content, so the header supplies the minimum height and grows when the text needs more room. Its styles sit in loamui.components inside a donut scope, measuring the header’s fluid padding, type and minimum height with no viewport layout breakpoints, and element styles own the heading typography and link states. The section inherits the surrounding colour scheme rather than fixing a dark region or taking appearance props: background, overlay, text and link tokens adapt together, with a token-based scrim and full foreground text protecting readability in either scheme and a solid background keeping the words legible if the image fails.",
     accessible:
       "The photograph is decoration behind the words, so its alt is empty. useId ties repeated regions to their own headings. Native links retain visible text and focus rings; enlarged text can grow the section. Forced colours remove both the picture and scrim, leaving native system colours and a visible border.",
   },
+  composition:
+    "SignpostLink follows the surrounding colour scheme through core tokens; the secondary film destination is an ordinary link.",
   tags: ["landing", "marketing", "photo", "cover"],
   order: 21,
 };

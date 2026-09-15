@@ -12,7 +12,7 @@ Three cards whose heading, description and action rows line up across the grid, 
 
 A recipe in **Grids**: a component and a stylesheet built from `@loamui/core`, to copy into a project and change. Both files are below, exactly as the live preview renders them.
 
-- Uses: `Card`, `SignpostLink`
+- Uses: `Card`, `SignpostLink`, `VisuallyHidden`
 - Tags: grid, subgrid, layout, cards, align
 - Live: https://loamui.com/recipes/grids/grid-subgrid
 
@@ -30,10 +30,8 @@ Use when cards with different amounts of text need aligned headings, description
 
 These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
-- **Native CSS.** A list of three items, each a card named by its h3, so the row of workshops is a list to a screen reader and each card says what it is.
-- **Modern CSS.** A measuring wrapper contains an intrinsic grid. Each Card spans three parent rows and inherits them with subgrid, including the shared row gaps. The three content regions measure their own text; the subgrid itself has no size containment, which would break row sharing. No fixed heights or JavaScript measurements are needed.
-- **Composition.** Card is rendered as the list item through its render prop, which is what lets the Card be the grid item that subgrids; the SignpostLink inside is past the donut and the Card's padding becomes the gutter of its tracks.
-- **Accessible & gatekept.** Workshops have named list items, dates with machine-readable local date-times and booking links that include the workshop title in their accessible names. Source order stays heading, description, then action as the grid reflows.
+- **Modern.** A list of three items, each a card named by its h3, so the row of workshops is a list to a screen reader and each card says what it is. A measuring wrapper contains an intrinsic grid: each Card spans three parent rows and inherits them with subgrid, including the shared row gaps, and the three content regions measure their own text. The subgrid itself has no size containment, which would break row sharing, so no fixed heights or JavaScript measurements are needed.
+- **Accessible.** Workshops have named list items, dates with machine-readable local date-times and booking links that include the workshop title in their accessible names. Source order stays heading, description, then action as the grid reflows.
 
 ## References
 
@@ -42,12 +40,13 @@ These notes explain the design. The included tests cover structure and selected 
 - [Element styles](https://loamui.com/docs/element-styles.md)
 - [Card](https://loamui.com/docs/components/card.md)
 - [SignpostLink](https://loamui.com/docs/components/signpost-link.md)
+- [VisuallyHidden](https://loamui.com/docs/components/visually-hidden.md)
 
 ## Example.tsx
 
 ```tsx
 import { useId } from "react";
-import { Card, SignpostLink } from "@loamui/core";
+import { Card, SignpostLink, VisuallyHidden } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
@@ -74,7 +73,7 @@ export default function Example() {
           </div>
           <div className="actions">
             <SignpostLink href="/workshops/seed-saving">
-              Book a place<span className="loam-VisuallyHidden"> – Seed saving</span>
+              Book a place<VisuallyHidden> – Seed saving</VisuallyHidden>
             </SignpostLink>
           </div>
         </Card>
@@ -97,7 +96,7 @@ export default function Example() {
           </div>
           <div className="actions">
             <SignpostLink href="/workshops/grafting">
-              Book a place<span className="loam-VisuallyHidden"> – Grafting fruit trees</span>
+              Book a place<VisuallyHidden> – Grafting fruit trees</VisuallyHidden>
             </SignpostLink>
           </div>
         </Card>
@@ -120,7 +119,7 @@ export default function Example() {
           </div>
           <div className="actions">
             <SignpostLink href="/workshops/winter-pruning">
-              Book a place<span className="loam-VisuallyHidden"> – Winter pruning</span>
+              Book a place<VisuallyHidden> – Winter pruning</VisuallyHidden>
             </SignpostLink>
           </div>
         </Card>
@@ -142,7 +141,7 @@ export default function Example() {
     ul {
       display: block grid;
       font-size: var(--loam-text-md);
-      gap: var(--loam-space-md);
+      gap: var(--loam-space-xs);
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
       list-style: none;
       margin-block: 0;
@@ -170,7 +169,7 @@ export default function Example() {
     div.head {
       align-content: start;
       display: block grid;
-      gap: var(--loam-space-xs);
+      gap: var(--loam-space-3xs);
     }
 
     h3 {
@@ -195,8 +194,8 @@ export default function Example() {
       align-self: end;
       display: block flex;
       flex-wrap: wrap;
-      gap: var(--loam-space-sm);
-      padding-block-start: var(--loam-space-xs);
+      gap: var(--loam-space-2xs);
+      padding-block-start: var(--loam-space-3xs);
     }
   }
 }

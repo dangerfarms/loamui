@@ -270,6 +270,10 @@ for (const file of mdxFiles(APP)) {
   guides.push({ route, title, description });
 }
 
+// Old agents and bookmarks still receive the maintained guide at its former URL.
+// Only the new route is advertised in llms.txt and the skill's index.
+copyFileSync(join(PUBLIC, "recipes", "guide.md"), join(PUBLIC, "docs", "composing.md"));
+
 // ---- component pages: registry data → markdown -------------------------
 
 function componentMarkdown(doc: ComponentContent, name: string, description: string): string {
@@ -469,7 +473,7 @@ const guideOrder = [
   "/docs/element-styles",
   "/docs/components",
   "/docs/contextualism",
-  "/docs/composing",
+  "/recipes/guide",
   "/docs/layout",
   "/docs/typography",
   "/docs/accessibility",
@@ -501,7 +505,7 @@ for (const entry of EXAMPLE_META) {
     workflow: workflowBody,
     recipe: exampleMarkdown(entry),
     references: [
-      ...["installation", "composing"].map((slug) => ({
+      ...["installation", "guide"].map((slug) => ({
         title: slug,
         markdown: readFileSync(join(SKILL_REFS, "guides", `${slug}.md`), "utf8"),
       })),

@@ -9,7 +9,7 @@
     figure {
       display: block grid;
       font-size: var(--loam-text-md);
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
       grid-template-columns: minmax(0, 1fr);
       margin-block: 0;
       margin-inline: 0;

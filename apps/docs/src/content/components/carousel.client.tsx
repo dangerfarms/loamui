@@ -4,7 +4,7 @@ import type { CSSProperties } from "react";
 import { Card, Carousel } from "@loamui/core";
 
 const frame = { inlineSize: "100%", maxInlineSize: "44rem" } as const;
-const row = { display: "flex", gap: "var(--loam-space-sm)" } as const;
+const row = { display: "flex", gap: "var(--loam-space-2xs)" } as const;
 
 const GUIDES = [
   ["Tokens", "Four hues, eight neutrals and two fluid scales; everything else is derived."],

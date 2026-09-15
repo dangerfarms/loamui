@@ -18,11 +18,11 @@
     /* Set explicitly, not left to the UA default, so a host `* { margin: 0 }`
        reset can't stop the auto margins centring the dialog. */
     margin: auto;
-    max-block-size: calc(100dvb - 2 * var(--loam-space-xl));
-    max-inline-size: min(100% - 2 * var(--loam-space-lg), var(--_cap));
-    min-inline-size: min(24rem, var(--_floor), 100% - 2 * var(--loam-space-lg));
+    max-block-size: calc(100dvb - 2 * var(--loam-space-l));
+    max-inline-size: min(100% - 2 * var(--loam-space-s), var(--_cap));
+    min-inline-size: min(24rem, var(--_floor), 100% - 2 * var(--loam-space-s));
     overflow-block: auto;
-    padding: var(--loam-space-lg);
+    padding: var(--loam-space-s);
 
     &::backdrop {
       background: color-mix(in oklch, var(--loam-color-fg) 45%, transparent);
@@ -80,11 +80,11 @@
   h2.title {
     font-size: var(--loam-text-lg);
     font-weight: 600;
-    margin-block: 0 var(--loam-space-sm);
+    margin-block: 0 var(--loam-space-2xs);
   }
 
   p.description {
     color: var(--loam-color-fg-muted);
-    margin-block: 0 var(--loam-space-md);
+    margin-block: 0 var(--loam-space-xs);
   }
 }

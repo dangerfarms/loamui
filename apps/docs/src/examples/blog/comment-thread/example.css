@@ -2,7 +2,7 @@
   :scope,
   article {
     display: block grid;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
   }
 
   :scope {
@@ -17,7 +17,7 @@
     display: block flex;
     flex-wrap: wrap;
     font-size: var(--loam-text-sm);
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
   }
 
   a.author {
@@ -37,17 +37,17 @@
   div.actions {
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
   }
 
   ul.replies {
     border-inline-start: 1px solid var(--loam-color-line);
     display: block grid;
-    gap: var(--loam-space-lg);
+    gap: var(--loam-space-s);
     list-style: none;
-    margin-block: var(--loam-space-xs) 0;
+    margin-block: var(--loam-space-3xs) 0;
     margin-inline: 0;
-    padding-inline-start: var(--loam-space-lg);
+    padding-inline-start: var(--loam-space-s);
 
     > li {
       margin: 0;

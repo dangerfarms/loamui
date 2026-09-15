@@ -41,7 +41,7 @@ export function TableSortDemo() {
   }, [query, sort]);
 
   return (
-    <div style={{ display: "grid", gap: "var(--loam-space-md)", inlineSize: "100%" }}>
+    <div style={{ display: "grid", gap: "var(--loam-space-xs)", inlineSize: "100%" }}>
       <Field.Root>
         <Field.Label>Filter people</Field.Label>
         <Input

@@ -6,29 +6,30 @@ description: Modern UI primitives for agent-assisted developers: contextual toke
 > LoamUI documentation, generated from the same source as the live page —
 > treat it as authoritative for `@loamui/core`.
 
+import "./prose.css";
+
 # Introduction
 
 LoamUI is modern UI primitives for agent-assisted developers: contextual tokens, element styles and React components, built on Google's Modern Web Guidance, for quickly building bespoke UIs that are accessible, adaptable and fast.
 
 ## Three primitives
 
-Agent-assisted developers want solid primitives their agents can build bespoke components and interfaces from, not hundreds of pre-made components locked into last decade's paradigms. LoamUI offers three, shipped in one stylesheet and applied by cascade order:
+LoamUI provides three primitives and an agent skill for building interfaces for your product. All three primitives ship in one package, with a shared stylesheet that establishes their cascade order:
 
 - **[Tokens](/docs/tokens).** A handful of semantic decisions (four hues, eight neutrals, fluid scales); everything else is derived by recipe and audited in CI.
 - **[Element styles](/docs/element-styles).** Enhanced default styles for native HTML, page-wide: responsive, accessible, and respecting the reader's light or dark preference. Plain markup is presentable before any component appears.
-- **[Components](/docs/components).** 47 carefully chosen, contextually styled components, and no more. No size, variant or colour props (display components that size an intrinsic glyph, Badge, Loader and Progress, keep `size`): a region declares what it means and everything inside adapts.
+- **[Components](/docs/components).** 48 composable React components. A region declares its meaning and the components inside adapt. Component references document their APIs, including intrinsic sizing for Badge, Loader, Progress and Meter.
 
-Above the primitives sit the [recipes](/recipes): sections (a hero, a timeline, a carousel) built from them the way any consumer would, held to the same pillars, and copied rather than installed. The [Composing guide](/docs/composing) is the recipe for your own.
+The [recipes](/recipes) are product-specific compositions of the primitives: heroes, timelines, carousels and other patterns to study and adapt. [Building your own recipes](/recipes/guide) explains how to choose a pattern and build it for your content.
 
-## Five pillars
+## Two pillars
 
 The ideas that hold the primitives together. Each is grounded in a reference and enforced somewhere, by the cascade, a lint rule, a CI gate, or review.
 
-1. **Native CSS.** Real elements carry the semantics, plain static CSS carries the styling. No CSS-in-JS, no styling engine.
-2. **Modern CSS.** `@layer` for order, `@scope` for encapsulation, `light-dark()` and container queries for adaptation.
-3. **Composition.** Parts, not prop soup: `Modal.Root`, `Modal.Trigger`, `Modal.Popup`. Element swap goes through `render`.
-4. **[Contextualism](/docs/contextualism).** A region declares what it means (`--loam-context`) and every control inside adapts. This is the whole status-and-size API, and the paradigm shift.
-5. **[Accessible & gatekept](/docs/accessibility).** Semantic HTML, managed focus, keyboard support and the reader's preferences as the baseline; contrast, axe and interaction tests run in CI.
+1. **Modern.** Real elements carry the semantics and plain, static CSS carries the styling: no CSS-in-JS, no styling engine. `@layer` for order, `@scope` for encapsulation, `light-dark()` and container queries for adaptation. Underneath both sits [contextualism](/docs/contextualism), the paradigm shift: a region declares what it means (`--loam-context`) and the tokens, element styles and components inside all adapt. Component references explain the public APIs and their exceptions.
+2. **[Accessible](/docs/accessibility).** Semantic HTML, managed focus, keyboard support and the reader's preferences as the baseline, distilled from the GOV.UK and Polaris design systems and running through all three primitives.
+
+Trust in the agents is a separate question, answered by gatekeeping rather than by a pillar: contrast, axe and interaction tests run in CI, and Stylelint holds the CSS to the rules above.
 
 ## Installation
 
@@ -48,17 +49,15 @@ export default function Page() {
 }
 ```
 
-> That's the whole setup. No provider, no config. See the [installation guide](/docs/installation) for framework specifics.
-
 </div>
 
 ## Working with an agent
 
-Every page of this site has a markdown twin at the same URL with `.md` appended, and [/llms.txt](/llms.txt) indexes them all. Point your agent there. The [Composing components](/docs/composing) guide shows how to build your own components from the primitives; the [Contextualism](/docs/contextualism) guide alone is enough to explain how status and size work.
+Every page of this site has a markdown twin at the same URL with `.md` appended, and [/llms.txt](/llms.txt) indexes them all. Point your agent there. The [Building your own recipes](/recipes/guide) guide shows how to build your own components from the primitives; the [Contextualism](/docs/contextualism) guide alone is enough to explain how status and size work.
 
 ## Next steps
 
 - [Installation](/docs/installation): framework guides for Next.js and Vite.
 - [Tokens](/docs/tokens): the token surface, and the theming that falls out of it.
-- [Contextualism](/docs/contextualism): why components have no variant or size props.
-- [Composing components](/docs/composing): build a hero from the primitives.
+- [Contextualism](/docs/contextualism): how regions shape colour, size and layout.
+- [Building your own recipes](/recipes/guide): build a hero from the primitives.

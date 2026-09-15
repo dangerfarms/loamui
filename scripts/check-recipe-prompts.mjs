@@ -17,7 +17,7 @@ for (const category of readdirSync(join(root, prompts))) {
     for (const path of [
       `/recipes/${category}/${slug}.md`,
       "/docs/agent-workflow.md",
-      "/docs/composing.md",
+      "/recipes/guide.md",
       `/recipe-prompts/${category}/${slug}.full.txt`,
     ]) {
       assert.ok(short.includes(`https://loamui.com${path}`), `${slug}: missing ${path}`);

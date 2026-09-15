@@ -2,37 +2,37 @@
 
 import { useState } from "react";
 import type { CSSProperties } from "react";
-import { Avatar, Badge, Button, CopyButton, Field, Input, Switch } from "@loamui/core";
-import classes from "./home.module.css";
-
-const INSTALL = "pnpm add @loamui/core";
-
-export function InstallSnippet() {
-  return (
-    <div className={classes.install}>
-      <span className={classes.installPrompt} aria-hidden>
-        $
-      </span>
-      <code>{INSTALL}</code>
-      <CopyButton className={classes.installCopy} value={INSTALL} aria-label="Copy install command">
-        Copy
-      </CopyButton>
-    </div>
-  );
-}
+import { Avatar, Badge, Button, Checkbox, Field, Input } from "@loamui/core";
+import "./home.css";
 
 /** Interactive "settings" card that shows real LoamUI components in the hero. */
 export function HeroShowcase() {
   const [notify, setNotify] = useState(true);
   const [name, setName] = useState("jamie@acme.com");
+  const [saved, setSaved] = useState({ name: "jamie@acme.com", notify: true });
+  const [message, setMessage] = useState("");
 
   return (
-    <div className={classes.showcaseCard}>
-      <div className={classes.showcaseHead}>
+    <form
+      className="showcaseCard"
+      aria-label="Demo account settings"
+      onSubmit={(event) => {
+        event.preventDefault();
+        setSaved({ name, notify });
+        setMessage("Changes saved for this demo.");
+      }}
+      onReset={(event) => {
+        event.preventDefault();
+        setName(saved.name);
+        setNotify(saved.notify);
+        setMessage("Unsaved changes discarded.");
+      }}
+    >
+      <div className="showcaseHead">
         <Avatar name="Jamie Rivera" />
         <div>
-          <div className={classes.showcaseName}>Jamie Rivera</div>
-          <div className={classes.showcaseHandle}>Product designer</div>
+          <div className="showcaseName">Jamie Rivera</div>
+          <div className="showcaseHandle">Product designer</div>
         </div>
         <div
           style={
@@ -48,38 +48,53 @@ export function HeroShowcase() {
 
       <Field.Root>
         <Field.Label>Work email</Field.Label>
-        <Input value={name} onChange={(e) => setName(e.target.value)} />
+        <Input
+          name="email"
+          type="email"
+          required
+          value={name}
+          onChange={(event) => {
+            setName(event.currentTarget.value);
+            setMessage("");
+          }}
+        />
       </Field.Root>
 
-      <div className={classes.showcaseRow}>
-        <Switch
+      <div className="showcaseRow">
+        <Checkbox
           label="Email notifications"
-          labelPosition="start"
-          wrapperProps={{ className: classes.showcaseSwitch }}
+          name="notifications"
           checked={notify}
-          onChange={(e) => setNotify(e.currentTarget.checked)}
+          onChange={(event) => {
+            setNotify(event.currentTarget.checked);
+            setMessage("");
+          }}
         />
       </div>
-      <div className={classes.showcaseRow}>
-        <span className={classes.showcaseLabel}>Notifications</span>
+      <div className="showcaseRow">
+        <span className="showcaseLabel">Notifications</span>
         <span
           style={
             {
-              "--loam-context": notify ? "primary" : undefined,
+              "--loam-context": saved.notify ? "primary" : undefined,
             } as CSSProperties
           }
         >
           <Badge>
             <Badge.Dot />
-            {notify ? "Notifications on" : "Muted"}
+            {saved.notify ? "Notifications on" : "Muted"}
           </Badge>
         </span>
       </div>
 
-      <div style={{ display: "flex", gap: "0.6rem", marginBlockStart: "0.25rem" }}>
-        <Button>Save changes</Button>
-        <Button>Cancel</Button>
+      <div className="showcaseActions">
+        <Button type="submit">Save changes</Button>
+        <Button type="reset">Cancel</Button>
       </div>
-    </div>
+      <p className="showcaseNote">Try the controls. Changes stay on this page.</p>
+      <p className="showcaseStatus" role="status">
+        {message}
+      </p>
+    </form>
   );
 }

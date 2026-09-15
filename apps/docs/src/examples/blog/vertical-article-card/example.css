@@ -2,7 +2,7 @@
   :scope {
     display: block flex;
     flex-direction: column;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     max-inline-size: 18rem;
   }
 
@@ -45,9 +45,9 @@
 
     align-items: center;
     display: block flex;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     margin-block-start: auto;
-    padding-block-start: var(--loam-space-sm);
+    padding-block-start: var(--loam-space-2xs);
   }
 
   div.byline {

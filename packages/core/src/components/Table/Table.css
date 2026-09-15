@@ -28,7 +28,7 @@
   caption {
     color: var(--loam-color-fg-muted);
     font-size: var(--loam-text-xs);
-    padding-block: var(--loam-space-sm);
+    padding-block: var(--loam-space-2xs);
     text-align: start;
   }
 
@@ -39,8 +39,8 @@
     /* The page hyphenates prose; a squeezed data cell should wrap at spaces
        or scroll, never break "desk-top" or "HW-1042". */
     hyphens: manual;
-    padding-block: var(--loam-space-md);
-    padding-inline: var(--loam-space-lg);
+    padding-block: var(--loam-space-xs);
+    padding-inline: var(--loam-space-s);
     vertical-align: middle;
   }
 
@@ -61,7 +61,7 @@
   /* A sortable header holds a Button, which brings its own padding; the
      cell gives some of its own back so the row stays near header height. */
   thead th[aria-sort] {
-    padding-block: var(--loam-space-xs);
+    padding-block: var(--loam-space-3xs);
   }
 
   /* A sticky header: the column names stay at the top of the scroller (the
@@ -118,7 +118,7 @@
 @scope (.loam-Table-sort) {
   :scope::after {
     content: "\2195";
-    margin-inline-start: var(--loam-space-xs);
+    margin-inline-start: var(--loam-space-3xs);
   }
 
   th[aria-sort="ascending"] > :scope::after {

@@ -33,9 +33,9 @@ Stack skeletons to stand in for text while it loads. A bare Skeleton is one line
 An avatar-and-text placeholder for a list item. The circle is a wrapped Avatar: the child sizes and shapes the placeholder, so there is no circle prop and nothing to keep in step with the avatar's size.
 
 ```tsx
-<div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+<div style={{ display: "flex", gap: "var(--loam-space-xs)", alignItems: "center" }}>
   <Skeleton><Avatar /></Skeleton>
-  <div style={{ display: "grid", gap: "0.4rem", flex: 1 }}>
+  <div style={{ display: "grid", gap: "var(--loam-space-2xs)", flex: 1 }}>
     <Skeleton style={{ "--loam-skeleton-inline-size": "40%" }} />
     <Skeleton style={{ "--loam-skeleton-inline-size": "70%" }} />
   </div>

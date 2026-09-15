@@ -7,6 +7,25 @@
  * else is derived from them.
  */
 
+/* Registered channels (must live outside a layer). The radius channel is
+   set inline by several components; without inherits: false it would
+   cascade into everything nested inside them. The contextualism channel
+   inherits by design — nearest ancestor that sets it wins. */
+@property --_radius {
+  inherits: false;
+  syntax: "*";
+}
+
+@property --loam-context {
+  inherits: true;
+  syntax: "*";
+}
+
+@property --loam-button-color {
+  inherits: true;
+  syntax: "*";
+}
+
 @layer loamui.tokens {
   :root {
     /* ── 1. Inputs — the decisions a theme makes ───────────────────── */
@@ -67,10 +86,10 @@
        fills stay raw) — the only pairing all statuses hold AA with. */
     --loam-color-on-strong: light-dark(oklch(99% 0 0deg), oklch(17% 0.01 60deg));
 
-    /* ── 3. Derived — recipes, never hand-tuned per status ─────────── */
+    /* ── 3. Derived — formulas, never hand-tuned per status ────────── */
 
     /* Soft tints: pinned lightness and chroma, the colour's own hue —
-       relative colour keeps every soft on one recipe, so a rebrand or a
+       relative colour keeps every soft on one formula, so a rebrand or a
        new status derives its tint for free. */
     --loam-color-primary-soft: light-dark(
       oklch(from var(--loam-color-primary) 96% 0.02 h),
@@ -117,14 +136,6 @@
       var(--loam-color-info)
     );
 
-    /* Status focus rings alias the solid fills — one audited family covers
-       both jobs, and an opaque ring holds its contrast on any surface. */
-    --loam-color-primary-ring: var(--loam-color-primary-strong);
-    --loam-color-success-ring: var(--loam-color-success-strong);
-    --loam-color-danger-ring: var(--loam-color-danger-strong);
-    --loam-color-warning-ring: var(--loam-color-warning-strong);
-    --loam-color-info-ring: var(--loam-color-info-strong);
-
     /* Hover lift for surfaces: derived, so a re-themed surface keeps its
        own hover for free. */
     --loam-color-surface-hover: light-dark(
@@ -133,9 +144,11 @@
     );
 
     /* Active focus-ring colour, remapped contextually (e.g. fields with a
-       detected error switch it to the danger ring). Pairs with the fixed
-       --loam-ring-width below. */
-    --loam-color-ring: var(--loam-color-primary-ring);
+       detected error switch it to the danger fill). There is no separate ring
+       family: a ring is the status's own solid fill, which is already audited
+       to 3:1 against the background. Pairs with the fixed --loam-ring-width
+       below. */
+    --loam-color-ring: var(--loam-color-primary-strong);
 
     /* ── 4. Scales & fixed constants ───────────────────────────────── */
 
@@ -151,13 +164,35 @@
     --loam-text-3xl: clamp(1.6018rem, 1.2036rem + 1.9909cqi, 2.7466rem);
 
     /* Fluid spacing scale — minimums are the fixed values, so nothing
-       shrinks below them. Regenerate, don't hand-edit:
-       https://utopia.fyi/space/calculator/?c=320,16,1.125,1240,18,1.25&s=0.25|0.5|0.75,1.5 */
-    --loam-space-xs: clamp(0.25rem, 0.2391rem + 0.0543cqi, 0.2813rem);
-    --loam-space-sm: clamp(0.5rem, 0.4783rem + 0.1087cqi, 0.5625rem);
-    --loam-space-md: clamp(0.75rem, 0.7174rem + 0.163cqi, 0.8438rem);
-    --loam-space-lg: clamp(1rem, 0.9565rem + 0.2174cqi, 1.125rem);
-    --loam-space-xl: clamp(1.5rem, 1.4348rem + 0.3261cqi, 1.6875rem);
+       shrinks below them. Every step grows 12.5% between a 20rem container
+       and a 77.5rem one, and grows against the CONTAINER (cqi), never the
+       viewport: a gap in a sidebar answers the sidebar. Regenerate, don't
+       hand-edit:
+       https://utopia.fyi/space/calculator/?c=320,16,1.125,1240,18,1.25&s=0.125|0.25|0.5|0.75,1.25|1.5|2|3|4|6 */
+    --loam-space-4xs: clamp(0.125rem, 0.1196rem + 0.0272cqi, 0.1406rem);
+    --loam-space-3xs: clamp(0.25rem, 0.2391rem + 0.0543cqi, 0.2812rem);
+    --loam-space-2xs: clamp(0.5rem, 0.4783rem + 0.1087cqi, 0.5625rem);
+    --loam-space-xs: clamp(0.75rem, 0.7174rem + 0.163cqi, 0.8438rem);
+    --loam-space-s: clamp(1rem, 0.9565rem + 0.2174cqi, 1.125rem);
+    --loam-space-m: clamp(1.25rem, 1.1957rem + 0.2717cqi, 1.4062rem);
+    --loam-space-l: clamp(1.5rem, 1.4348rem + 0.3261cqi, 1.6875rem);
+    --loam-space-xl: clamp(2rem, 1.913rem + 0.4348cqi, 2.25rem);
+    --loam-space-2xl: clamp(3rem, 2.8696rem + 0.6522cqi, 3.375rem);
+    --loam-space-3xl: clamp(4rem, 3.8261rem + 0.8696cqi, 4.5rem);
+    --loam-space-4xl: clamp(6rem, 5.7391rem + 1.3043cqi, 6.75rem);
+
+    /* Fixed spacing — the deliberate opposite of the scale above, for the
+       things that must not breathe: a hairline, the inset of a focus ring,
+       the gap between an icon and its own label. Reach for the fluid scale
+       first; use these only where growth would be wrong. */
+    --loam-space-fixed-1: 1px;
+    --loam-space-fixed-2: 2px;
+    --loam-space-fixed-4: 4px;
+    --loam-space-fixed-8: 8px;
+    --loam-space-fixed-12: 12px;
+    --loam-space-fixed-16: 16px;
+    --loam-space-fixed-24: 24px;
+    --loam-space-fixed-32: 32px;
 
     /* Reading measure — the comfortable line length for body copy (~66
        characters). Cap a prose column with `max-inline-size:
@@ -218,7 +253,7 @@
     color-scheme: light dark;
 
     /* No control-sizing tokens: inputs and buttons align by a shared derived
-       anatomy (padding-block --loam-space-md + --loam-text-md × 1.5 + 1px
+       anatomy (padding-block --loam-space-xs + --loam-text-md × 1.5 + 1px
        borders). Do not add height tokens. */
   }
 
@@ -236,52 +271,54 @@
    * Contexts — `--loam-context: success|warning|info|danger` on any region
    * re-answers the semantic tokens via container style queries. Colour
    * tokens ONLY — never spacing, sizing, or layout.
+   *
+   * The remap reaches EVERY element inside the region, not only LoamUI's
+   * own: a region declares what it means, so a bare control's accent, and a
+   * consumer's own rule reading --loam-color-primary, answer it too. That is
+   * what makes contextualism a property of all three primitives rather than
+   * a feature of the components.
    */
   @container (style(--loam-context: danger)) {
-    :where([class*="loam-"], [class*="loam-"] *) {
+    :where(*) {
       --loam-color-primary: var(--loam-color-danger);
       --loam-color-accent: var(--loam-color-danger);
       --loam-color-primary-soft: var(--loam-color-danger-soft);
-      --loam-color-primary-ring: var(--loam-color-danger-ring);
 
       /* --loam-color-ring and --loam-color-primary-strong bake their var()s AT
          :root — custom properties resolve var() where declared, so both
          must be re-answered directly here or focus rings and solid fills
          would stay brand-coloured. */
-      --loam-color-ring: var(--loam-color-danger-ring);
+      --loam-color-ring: var(--loam-color-danger-strong);
       --loam-color-primary-strong: var(--loam-color-danger-strong);
     }
   }
 
   @container (style(--loam-context: success)) {
-    :where([class*="loam-"], [class*="loam-"] *) {
+    :where(*) {
       --loam-color-primary: var(--loam-color-success);
       --loam-color-accent: var(--loam-color-success);
       --loam-color-primary-soft: var(--loam-color-success-soft);
-      --loam-color-primary-ring: var(--loam-color-success-ring);
-      --loam-color-ring: var(--loam-color-success-ring);
+      --loam-color-ring: var(--loam-color-success-strong);
       --loam-color-primary-strong: var(--loam-color-success-strong);
     }
   }
 
   @container (style(--loam-context: warning)) {
-    :where([class*="loam-"], [class*="loam-"] *) {
+    :where(*) {
       --loam-color-primary: var(--loam-color-warning);
       --loam-color-accent: var(--loam-color-warning);
       --loam-color-primary-soft: var(--loam-color-warning-soft);
-      --loam-color-primary-ring: var(--loam-color-warning-ring);
-      --loam-color-ring: var(--loam-color-warning-ring);
+      --loam-color-ring: var(--loam-color-warning-strong);
       --loam-color-primary-strong: var(--loam-color-warning-strong);
     }
   }
 
   @container (style(--loam-context: info)) {
-    :where([class*="loam-"], [class*="loam-"] *) {
+    :where(*) {
       --loam-color-primary: var(--loam-color-info);
       --loam-color-accent: var(--loam-color-info);
       --loam-color-primary-soft: var(--loam-color-info-soft);
-      --loam-color-primary-ring: var(--loam-color-info-ring);
-      --loam-color-ring: var(--loam-color-info-ring);
+      --loam-color-ring: var(--loam-color-info-strong);
       --loam-color-primary-strong: var(--loam-color-info-strong);
     }
   }

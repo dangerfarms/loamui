@@ -8,7 +8,7 @@
      is out of flow, so it takes no track. */
   :scope {
     display: block grid;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     grid-auto-columns: max-content;
     grid-auto-flow: column;
     grid-template-columns: minmax(0, 1fr);
@@ -27,7 +27,7 @@
     max-block-size: min(var(--loam-combobox-list-size, 16rem), 50vb);
     overflow: auto;
     overscroll-behavior: contain;
-    padding: var(--loam-space-xs);
+    padding: var(--loam-space-3xs);
     z-index: var(--loam-z-popup);
 
     /* Enhanced: tethered to the box (the Input's wrapper carries the anchor
@@ -35,7 +35,7 @@
     @supports (anchor-name: --loam-probe) {
       inline-size: anchor-size(inline);
       inset: auto;
-      inset-block-start: calc(anchor(end) + var(--loam-space-xs));
+      inset-block-start: calc(anchor(end) + var(--loam-space-3xs));
       inset-inline-start: anchor(start);
       position: fixed;
       position-try: flip-block;
@@ -43,7 +43,7 @@
 
     /* Fallback: under the whole row, as wide as it. */
     @supports not (anchor-name: --loam-probe) {
-      inset-block-start: calc(100% + var(--loam-space-xs));
+      inset-block-start: calc(100% + var(--loam-space-3xs));
       inset-inline: 0;
       position: absolute;
     }
@@ -68,8 +68,8 @@
     border-radius: var(--loam-radius-sm);
     cursor: default;
     font-size: var(--loam-text-sm);
-    padding-block: var(--loam-space-sm);
-    padding-inline: var(--loam-space-sm);
+    padding-block: var(--loam-space-2xs);
+    padding-inline: var(--loam-space-2xs);
     user-select: none;
 
     /* The highlight follows the keyboard and the pointer alike; focus
@@ -94,8 +94,8 @@
   li.empty {
     color: var(--loam-color-fg-muted);
     font-size: var(--loam-text-sm);
-    padding-block: var(--loam-space-sm);
-    padding-inline: var(--loam-space-sm);
+    padding-block: var(--loam-space-2xs);
+    padding-inline: var(--loam-space-2xs);
   }
 
   /* Forced colours: the highlight is background-only, and aria-disabled

@@ -11,7 +11,7 @@ metadata:
 > Risk here is not lines changed — it is which PRIMITIVE the change touches.
 > Grade first, then review at the depth the grade demands.
 
-**Ground the review in the pillars.** The five pillars in
+**Ground the review in the pillars.** The two pillars (Modern and Accessible) in
 [`README.md`](../../../README.md) are the bar; the [README Standards
 section](../../../README.md) and [`CONTRIBUTING.md`](../../../CONTRIBUTING.md)
 hold the rules. For CSS judgment load the **`modern-css`** skill; for "is this
@@ -67,7 +67,9 @@ tool checks:
   behind its defaults (this guidance is the differentiator, so a component that
   ships without it is under-reviewed). Plus code-tab ↔ preview parity (copy
   included), one concept per Preview panel, demos that actually demonstrate their
-  stated claim, and no external design-system names in the prose.
+  stated claim, and no external design-system names in a component page's prose
+  (the marketing and overview pages deliberately cite what the accessibility
+  pillar is distilled from, and that attribution stays).
 
 For HIGH diffs, review what ISN'T in the diff: the components and pages that
 inherit the changed primitive.

@@ -240,7 +240,7 @@ components inside it; never blur them:
 
 **The control alignment contract**: body-sized text and generous padding support
 legibility and touch use. Buttons and form controls share one
-derived anatomy (`padding-block: var(--loam-space-md)` +
+derived anatomy (`padding-block: var(--loam-space-xs)` +
 `font-size: var(--loam-text-md)` × `line-height: 1.5` + 1px borders), so they
 height-align for single-line labels at every container width. Labels may wrap
 and controls grow when content needs more room. Native inputs and textareas own
@@ -309,7 +309,7 @@ The essentials either way:
 
 ## Recipes (`/recipes`)
 
-Core holds primitives; the docs site’s Recipes collection holds selected
+Core holds primitives; the docs site's Recipes collection holds selected
 compositions: heroes, cards, timelines and layouts. A recipe is copied and
 changed, never installed, so
 it is written as the markup a reader will paste. Each lives in
@@ -357,7 +357,7 @@ their tests remain available.
    stating the specific judgment the example encodes, and a comment in the
    stylesheet only where it names a trap, in three lines or fewer.
 7. **It proves one promise.** `example.test.tsx` renders, runs axe, and
-   asserts the recipe’s promised behaviour. Check repeated instances, narrow
+   asserts the recipe's promised behaviour. Check repeated instances, narrow
    and wide plain parents, both schemes and keyboard interaction. Record
    visual and contrast checks separately; axe does not verify every pillar.
 
@@ -366,7 +366,7 @@ and its [stylesheet](apps/docs/src/examples/heroes/hero-with-image/example.css)
 as the reference: scoped element selectors, an intrinsic grid, fluid tokens
 resolved inside the measuring container, and core components left to own their
 internals. Recipe CSS declares `@layer loamui.components` inside its donut
-scope: the library’s CSS orchestrator cannot assign a layer to a consumer’s
+scope: the library's CSS orchestrator cannot assign a layer to a consumer's
 stylesheet. The [background-image hero](apps/docs/src/examples/heroes/hero-background-image/Example.tsx)
 shows the corresponding decorative-image pattern with inherited colour scheme
 and content-driven height. Keep classes for meaningful editorial roles such as
@@ -393,6 +393,24 @@ All of them should pass cleanly. `pnpm format` fixes formatting;
 the a11y and interaction suites, `pnpm --filter @loamui/core audit:contrast`
 checks the contrast ratio of every token pair the components use, and
 `pnpm lint:md` runs the rumdl Markdown linter over the hand-authored docs.
+
+### What the additional checks cover
+
+- `pnpm check:scope` detects excluded selectors, nested type rules without core
+  boundaries in directly associated stylesheets, and the documentation preview
+  boundary. It does not prove the rendered cascade; check embedded recipes in
+  a browser against the same recipe outside the article.
+- `pnpm check:spacing` reads CSS and literal React style objects in core, the
+  site and published recipes. It inspects function fallbacks. Fluid `calc()` /
+  `clamp()` ramps, `em` geometry and `-1px` overlap remain deliberate exceptions;
+  computed properties and runtime values require review.
+- `pnpm lint:prose` checks the top-level Markdown and the generated documentation
+  references, plus literal TSX copy on the site. Run the documentation export
+  first (`pnpm check:skill` also verifies it). The site pass normalises quotation
+  typography for linting and excludes narrative movement, repeated-word,
+  fragment and paragraph-length heuristics: these misclassify UI terms and API
+  names. Dynamic runtime copy still needs editorial review.
+- `pnpm test:checks` exercises these scanners against known failure cases.
 
 Please use
 [Conventional Commits](https://www.conventionalcommits.org/) for commit messages

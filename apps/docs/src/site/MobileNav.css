@@ -1,0 +1,46 @@
+@scope (.site-MobileNav-trigger) {
+  :scope {
+    background: transparent;
+    block-size: 2.5rem;
+    border: 1px solid var(--loam-color-line);
+    border-radius: var(--loam-radius-md);
+    box-shadow: none;
+    color: var(--loam-color-fg-muted);
+    cursor: pointer;
+    display: none;
+    inline-size: 2.5rem;
+    padding: 0;
+    place-items: center;
+
+    &:hover {
+      background: var(--loam-color-surface-hover);
+      border-color: var(--loam-color-line-strong);
+      color: var(--loam-color-fg);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition:
+        color var(--loam-duration-md) var(--loam-ease),
+        border-color var(--loam-duration-md) var(--loam-ease),
+        background var(--loam-duration-md) var(--loam-ease);
+    }
+
+    /* Shown where the header's own nav has collapsed (the header is the
+       container). */
+    @container (width <= 62rem) {
+      display: block grid;
+    }
+  }
+}
+
+@scope (.site-MobileNav-panel) {
+  :scope {
+    --loam-drawer-size: 18rem;
+  }
+
+  .nav {
+    display: block flex;
+    flex-direction: column;
+    gap: var(--loam-space-l);
+  }
+}

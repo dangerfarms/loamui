@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { EXAMPLE_META, examplesByCategory } from "@/examples/catalog";
-import classes from "./examples-rail.module.css";
+import "./examples-rail.css";
 
 /**
  * The category rail: every category with its count, the current one
@@ -11,17 +11,27 @@ import classes from "./examples-rail.module.css";
 export function ExamplesRail({ current }: { current?: string }) {
   const groups = examplesByCategory();
   return (
-    <nav className={classes.rail} aria-label="Recipe categories">
-      <ul className={classes.list}>
+    <nav className="site-ExamplesRail" aria-label="Recipe categories">
+      <ul className="list">
+        <li>
+          <Link
+            href="/recipes/guide"
+            prefetch={false}
+            className="link"
+            aria-current={current === "guide" ? "page" : undefined}
+          >
+            Building your own recipes
+          </Link>
+        </li>
         <li>
           <Link
             href="/recipes"
             prefetch={false}
-            className={classes.link}
+            className="link"
             aria-current={current ? undefined : "page"}
           >
             <span>All recipes</span>
-            <span className={classes.count}>{EXAMPLE_META.length}</span>
+            <span className="count">{EXAMPLE_META.length}</span>
           </Link>
         </li>
         {groups.map(({ category, items }) => (
@@ -29,11 +39,11 @@ export function ExamplesRail({ current }: { current?: string }) {
             <Link
               href={`/recipes/${category.slug}`}
               prefetch={false}
-              className={classes.link}
+              className="link"
               aria-current={current === category.slug ? "page" : undefined}
             >
               <span>{category.title}</span>
-              <span className={classes.count}>{items.length}</span>
+              <span className="count">{items.length}</span>
             </Link>
           </li>
         ))}

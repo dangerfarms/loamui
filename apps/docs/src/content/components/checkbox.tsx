@@ -45,7 +45,7 @@ const doc: ComponentContent = {
       code: `<Checkbox label="Email receipts" disabled />
 <Checkbox label="Two-factor authentication" defaultChecked disabled />`,
       render: () => (
-        <div style={{ display: "grid", gap: "0.75rem" }}>
+        <div style={{ display: "grid", gap: "var(--loam-space-xs)" }}>
           <Checkbox label="Email receipts" disabled />
           <Checkbox label="Two-factor authentication" defaultChecked disabled />
         </div>
@@ -117,7 +117,7 @@ const doc: ComponentContent = {
   ],
   accessibility: [
     'Renders a real <input type="checkbox"> wrapped by its label, so clicking the text toggles it and the state is announced natively.',
-    "Supports an indeterminate (mixed) visual for a 'select all' parent, set on the DOM node. It is a display state, not a third value.",
+    "Supports an indeterminate (mixed) visual for a 'select all' parent, set on the DOM node. It describes the display while the submitted value remains checked or unchecked.",
     "When placed inside a Field it reads its id, aria-describedby and aria-invalid from context, in the labelled form too: a Field.Label in the same Field points at the box, and the Field's description and error join the row's own description. Standalone it wires its own label and description.",
     "Disabled is detected on the native input (:has(input:disabled) on the row), never declared on a wrapper.",
     "Errors come from Field composition: wrap the checkbox in a Field.Root and add a Field.Error before the control, which marks it invalid and announces the message.",

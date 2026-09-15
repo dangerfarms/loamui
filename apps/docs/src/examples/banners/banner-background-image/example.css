@@ -37,10 +37,10 @@
       align-content: center;
       display: block grid;
       font-size: var(--loam-text-md);
-      gap: var(--loam-space-md);
+      gap: var(--loam-space-xs);
       grid-template-columns: minmax(0, 1fr);
       overflow-wrap: anywhere;
-      padding: var(--loam-space-xl);
+      padding: var(--loam-space-l);
     }
 
     h2,
@@ -55,7 +55,7 @@
       display: block flex;
       flex-wrap: wrap;
       font-size: var(--loam-text-sm);
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
     }
 
     h2 {
@@ -69,7 +69,7 @@
     div.actions {
       display: block flex;
       flex-wrap: wrap;
-      gap: var(--loam-space-md);
+      gap: var(--loam-space-xs);
     }
 
     @container banner-background-image (inline-size < 44rem) {

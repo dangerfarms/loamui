@@ -157,7 +157,7 @@ export const InAForm: Story = {
     const [submitted, setSubmitted] = useState<string | null>(null);
     return (
       <form
-        style={{ display: "grid", gap: "var(--loam-space-md)", maxInlineSize: "20rem" }}
+        style={{ display: "grid", gap: "var(--loam-space-xs)", maxInlineSize: "20rem" }}
         onSubmit={(e) => {
           e.preventDefault();
           setSubmitted(String(new FormData(e.currentTarget).get("country") ?? ""));

@@ -3,7 +3,7 @@
 import { Highlight, type PrismTheme } from "prism-react-renderer";
 import { CopyButton } from "@loamui/core";
 import { useScrollable } from "./scrollable";
-import classes from "./CodeBlock.module.css";
+import "./CodeBlock.css";
 
 /**
  * The highlighter's palette, drawn from the library's own tokens: every
@@ -79,15 +79,18 @@ export function CodeBlock({
   const scroll = useScrollable<HTMLPreElement>(`${name} code`);
 
   return (
-    <div className={`${classes.wrap} ${className ?? ""}`}>
-      <CopyButton className={classes.copy} value={code.trim()} aria-label={`Copy ${name} code`}>
-        Copy
-      </CopyButton>
+    <div className={`site-CodeBlock ${className ?? ""}`}>
+      <div className="bar">
+        <span>{name}</span>
+        <CopyButton value={code.trim()} aria-label={`Copy ${name} code`}>
+          Copy
+        </CopyButton>
+      </div>
       <Highlight code={code.trim()} language={language} theme={THEME}>
         {({ tokens, getLineProps, getTokenProps }) => (
-          <pre className={classes.pre} {...scroll}>
+          <pre className="pre" {...scroll}>
             {tokens.map((line, i) => (
-              <span key={i} {...getLineProps({ line })} className={classes.line}>
+              <span key={i} {...getLineProps({ line })} className="line">
                 {line.map((token, key) => (
                   <span key={key} {...getTokenProps({ token })} />
                 ))}

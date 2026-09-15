@@ -3,14 +3,14 @@
     align-items: center;
     container-type: inline-size;
     display: block grid;
-    gap: var(--loam-space-xl);
+    gap: var(--loam-space-l);
     min-block-size: 24rem;
-    padding-block: var(--loam-space-xl);
+    padding-block: var(--loam-space-l);
   }
 
   div.text {
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     justify-items: start;
   }
 
@@ -40,7 +40,7 @@
 
   div.actions {
     display: block flex;
-    margin-block-start: var(--loam-space-sm);
+    margin-block-start: var(--loam-space-2xs);
   }
 
   svg.illustration {

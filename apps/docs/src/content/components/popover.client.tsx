@@ -41,7 +41,10 @@ export function PopoverFormDemo() {
     <Popover.Root>
       <Popover.Trigger>Add product</Popover.Trigger>
       <Popover.Popup>
-        <form style={{ display: "grid", gap: "0.75rem" }} onSubmit={(e) => e.preventDefault()}>
+        <form
+          style={{ display: "grid", gap: "var(--loam-space-xs)" }}
+          onSubmit={(e) => e.preventDefault()}
+        >
           <Field.Root>
             <Field.Label>Name</Field.Label>
             <Input />

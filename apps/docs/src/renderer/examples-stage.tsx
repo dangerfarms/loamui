@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useId, useState, type ReactNode } from "react";
 import Link from "next/link";
-import { Button } from "@loamui/core";
+import { VisuallyHidden } from "@loamui/core";
 import { useSiteScheme } from "./examples-scheme";
-import classes from "./examples-stage.module.css";
+import "./examples-stage.css";
 
 type Scheme = "light" | "dark";
 type Width = "narrow" | "medium" | "wide" | "full";
@@ -115,15 +115,6 @@ function WidthIcon({ value }: { value: Width }) {
   }
 }
 
-function RtlIcon() {
-  return (
-    <svg {...icon}>
-      <path d="M20 12H8M13 6l-6 6 6 6" />
-      <path d="M4 5v14" />
-    </svg>
-  );
-}
-
 function OpenIcon() {
   return (
     <svg {...icon}>
@@ -156,6 +147,7 @@ export function ExampleStage({
 }) {
   const [state, setState] = useState<StageState>(DEFAULT);
   const site = useSiteScheme();
+  const widthName = useId();
   const scheme = state.scheme ?? site;
 
   useEffect(() => {
@@ -180,45 +172,53 @@ export function ExampleStage({
   const schemeLabel = scheme === "dark" ? "Show the frame in light" : "Show the frame in dark";
 
   return (
-    <div className={classes.wrap}>
-      <div className={classes.toolbar} role="group" aria-label={`Preview controls for ${title}`}>
-        <div className={classes.presets} role="group" aria-label="Frame width">
+    <div className="site-ExampleStage">
+      <div className="toolbar" role="group" aria-label={`Preview controls for ${title}`}>
+        <fieldset className="widths">
+          <VisuallyHidden render={<legend />}>Preview width</VisuallyHidden>
           {WIDTHS.map((w) => (
-            <Button
-              key={w.value}
-              className={classes.control}
-              aria-pressed={state.width === w.value}
-              title={w.label}
-              onClick={() => update({ width: w.value })}
-            >
+            <label key={w.value} title={w.label}>
+              <VisuallyHidden
+                render={
+                  <input
+                    type="radio"
+                    name={widthName}
+                    value={w.value}
+                    checked={state.width === w.value}
+                    onChange={() => update({ width: w.value })}
+                  />
+                }
+              />
               <WidthIcon value={w.value} />
-              <span className="loam-VisuallyHidden">{w.label}</span>
-            </Button>
+              <VisuallyHidden>{w.label}</VisuallyHidden>
+            </label>
           ))}
+        </fieldset>
+        <div className="options">
+          <button
+            type="button"
+            aria-pressed={state.rtl}
+            onClick={() => update({ rtl: !state.rtl })}
+            title="Right-to-left layout"
+            aria-label="Right-to-left layout"
+          >
+            RTL
+          </button>
+          <button type="button" title={schemeLabel} onClick={flipScheme}>
+            {scheme === "dark" ? <MoonIcon /> : <SunIcon />}
+            <VisuallyHidden>{schemeLabel}</VisuallyHidden>
+          </button>
         </div>
-        <Button
-          className={classes.control}
-          aria-pressed={state.rtl}
-          title="Right-to-left"
-          onClick={() => update({ rtl: !state.rtl })}
-        >
-          <RtlIcon />
-          <span className="loam-VisuallyHidden">Right-to-left</span>
-        </Button>
-        <Button className={classes.control} title={schemeLabel} onClick={flipScheme}>
-          {scheme === "dark" ? <MoonIcon /> : <SunIcon />}
-          <span className="loam-VisuallyHidden">{schemeLabel}</span>
-        </Button>
         {href && (
-          <Link href={href} className={classes.open} title="Open on its own page">
+          <Link href={href} className="open" title="Open on its own page">
             <OpenIcon />
-            <span className="loam-VisuallyHidden">Open {title} on its own page</span>
+            <VisuallyHidden>Open {title} on its own page</VisuallyHidden>
           </Link>
         )}
       </div>
-      <div className={classes.stage} data-width={state.width}>
+      <div className="stage" data-width={state.width}>
         <div
-          className={classes.frame}
+          className="frame"
           data-theme={state.scheme ?? undefined}
           dir={state.rtl ? "rtl" : undefined}
         >

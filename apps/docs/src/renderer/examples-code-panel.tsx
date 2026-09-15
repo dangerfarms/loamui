@@ -5,7 +5,7 @@ import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ExampleLoadBoundary } from "./examples-load-boundary";
 import type { ExampleSource } from "@/examples/types";
-import classes from "./examples-code-panel.module.css";
+import "./examples-code-panel.css";
 
 const ExampleCode = lazy(() => import("./examples-code").then((m) => ({ default: m.ExampleCode })));
 
@@ -23,7 +23,7 @@ export function ExampleCodePanel({ source, href }: { source: ExampleSource; href
   }, []);
 
   const sourceLink = (
-    <p className={classes.message}>
+    <p className="message">
       <Link href={`${href}#code`} prefetch={false}>
         View code on the example page
       </Link>
@@ -33,18 +33,18 @@ export function ExampleCodePanel({ source, href }: { source: ExampleSource; href
   return (
     <Details.Root
       ref={ref}
-      className={classes.details}
+      className="site-ExampleCodePanel"
       onToggle={(event) => {
         if (event.currentTarget.open) setRequested(true);
       }}
     >
       <Details.Summary>Code</Details.Summary>
-      <Details.Content className={classes.content}>
+      <Details.Content className="content">
         {requested ? (
           <ExampleLoadBoundary fallback={sourceLink}>
             <Suspense
               fallback={
-                <p className={classes.message} role="status">
+                <p className="message" role="status">
                   Loading code…
                 </p>
               }

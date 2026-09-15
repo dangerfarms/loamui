@@ -7,7 +7,7 @@
     display: block flex;
     flex-wrap: wrap;
     font-size: var(--loam-text-sm);
-    gap: var(--loam-space-xs) var(--loam-space-sm);
+    gap: var(--loam-space-3xs) var(--loam-space-2xs);
   }
 
   address {
@@ -23,7 +23,7 @@
   /* The empty alternative keeps the dot out of the accessibility tree. */
   address ~ span::before {
     content: "·" / "";
-    margin-inline-end: var(--loam-space-sm);
+    margin-inline-end: var(--loam-space-2xs);
     user-select: none;
   }
 }

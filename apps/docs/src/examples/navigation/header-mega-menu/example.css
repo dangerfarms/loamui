@@ -5,8 +5,8 @@
     container-type: inline-size;
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-sm) var(--loam-space-lg);
-    padding-block: var(--loam-space-md);
+    gap: var(--loam-space-2xs) var(--loam-space-s);
+    padding-block: var(--loam-space-xs);
   }
 
   a.brand {
@@ -16,7 +16,7 @@
     font-family: var(--loam-font-display);
     font-size: var(--loam-text-lg);
     font-weight: 700;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     letter-spacing: -0.02em;
     text-decoration: none;
 
@@ -29,7 +29,7 @@
   div.actions {
     align-items: center;
     display: block flex;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     margin-inline-start: auto;
 
     /* Underlined at rest, lightly: a link is known by more than its place. */
@@ -64,7 +64,7 @@
     align-items: center;
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
   }
 
   @container (inline-size < 48rem) {
@@ -80,7 +80,7 @@
    link, and the strip at the foot. The links themselves are Nav's lines. */
 @scope (.header-mega-menu .loam-Nav-dropdown) to ([class*="loam-"]) {
   ul.guides {
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
 
     svg {
@@ -91,7 +91,7 @@
 
   span.text {
     display: block grid;
-    gap: calc(var(--loam-space-xs) / 2);
+    gap: calc(var(--loam-space-3xs) / 2);
 
     > span {
       color: var(--loam-color-fg-muted);
@@ -111,11 +111,11 @@
     border-radius: var(--loam-radius-sm);
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-sm) var(--loam-space-md);
+    gap: var(--loam-space-2xs) var(--loam-space-xs);
     justify-content: space-between;
-    margin-block-start: var(--loam-space-xs);
-    padding-block: var(--loam-space-sm);
-    padding-inline: var(--loam-space-md);
+    margin-block-start: var(--loam-space-3xs);
+    padding-block: var(--loam-space-2xs);
+    padding-inline: var(--loam-space-xs);
 
     p {
       color: var(--loam-color-fg-muted);

@@ -44,6 +44,16 @@ export default function Example({
     }));
   }
 
+  function handleCorrection(event: FormEvent<HTMLFormElement>) {
+    const control = event.target;
+    if (!(control instanceof HTMLInputElement) || !control.validity.valid) return;
+    const { name } = control;
+    if (name !== "email" && name !== "password") return;
+    setValidation((previous) =>
+      previous.attempt > 0 && previous[name] ? { ...previous, [name]: "" } : previous,
+    );
+  }
+
   return (
     <div className="sign-in-with-errors">
       <Card>
@@ -53,6 +63,7 @@ export default function Example({
           aria-labelledby={`${id}-title`}
           onInvalid={handleValidation}
           onSubmit={handleValidation}
+          onInput={handleCorrection}
         >
           <h1 id={`${id}-title`}>Sign in</h1>
           {(validation.email || validation.password || validation.form) && (

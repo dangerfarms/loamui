@@ -27,7 +27,7 @@ const doc: ComponentContent = {
       code: `<Switch label="Enable notifications" />
 <Switch label="Marketing emails" labelPosition="start" />`,
       render: () => (
-        <div style={{ display: "grid", gap: "0.75rem" }}>
+        <div style={{ display: "grid", gap: "var(--loam-space-xs)" }}>
           <Example label="Label at the end (default)">
             <Switch label="Enable notifications" />
           </Example>
@@ -44,7 +44,7 @@ const doc: ComponentContent = {
       code: `<Switch label="Usage analytics" disabled />
 <Switch label="Security alerts" defaultChecked disabled />`,
       render: () => (
-        <div style={{ display: "grid", gap: "0.75rem" }}>
+        <div style={{ display: "grid", gap: "var(--loam-space-xs)" }}>
           <Switch label="Usage analytics" disabled />
           <Switch label="Security alerts" defaultChecked disabled />
         </div>

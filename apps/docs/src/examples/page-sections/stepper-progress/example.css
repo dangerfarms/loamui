@@ -2,12 +2,12 @@
   :scope {
     container-type: inline-size;
     display: block grid;
-    gap: var(--loam-space-lg);
+    gap: var(--loam-space-s);
   }
 
   header {
     display: block grid;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
 
     > p {
       color: var(--loam-color-fg-muted);

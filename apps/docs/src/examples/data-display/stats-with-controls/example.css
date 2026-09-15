@@ -2,13 +2,13 @@
   :scope {
     container-type: inline-size;
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
   }
 
   div.controls {
     align-items: center;
     display: block grid;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     grid-template-columns: auto minmax(0, 1fr) auto;
   }
 
@@ -20,7 +20,7 @@
 
   dl.figures {
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
     margin: 0;
   }
@@ -29,7 +29,7 @@
 @scope (.stats-with-controls div.figure) to ([class*="loam-"]) {
   :scope {
     display: block grid;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
   }
 
   dt {

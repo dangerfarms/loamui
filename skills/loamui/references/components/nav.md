@@ -193,7 +193,7 @@ The primitive is vertical; a horizontal nav is your flex row on the List, and --
   ul {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
   }
 }
 
@@ -229,7 +229,7 @@ A Dropdown in an Item: the DropdownTrigger is a button set like the links beside
   ul {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
   }
 }
 
@@ -238,7 +238,7 @@ A Dropdown in an Item: the DropdownTrigger is a button set like the links beside
 
   .columns {
     display: grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
   }
 }
@@ -499,7 +499,7 @@ A <div popover="auto"> anchored under the trigger, holding a List of Items and L
 
 | Property | Syntax | Default | Description |
 | --- | --- | --- | --- |
-| `--loam-nav-indent` | `CSS length` | `var(--loam-space-md)` | How far a nested List indents, whether it sits in an Item or in a Group. Set it on the Root or any ancestor. |
+| `--loam-nav-indent` | `CSS length` | `var(--loam-space-xs)` | How far a nested List indents, whether it sits in an Item or in a Group. Set it on the Root or any ancestor. |
 | `--loam-nav-current-edge` | `inline-start \| block-end` | `inline-start` | Which edge the current marker's bar is drawn on: the start edge for a column, block-end (under the link) for a horizontal row. Read by a style query, so set it on the Root or an ancestor, never on the link. |
 | `--loam-nav-dropdown-size` | `CSS length` | `16rem` | A DropdownPanel's width, capped to 90% of the viewport. Raise it on the panel (or an ancestor) for a wide panel with a grid of lists inside. |
 | `--loam-nav-link-size` | `CSS length` | `2.25rem` | The minimum height of each line (a Link or a GroupTitle). Raise it to 2.75rem where a thumb is the pointer, as in a mobile menu. |

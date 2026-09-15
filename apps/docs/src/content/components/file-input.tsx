@@ -79,7 +79,7 @@ const doc: ComponentContent = {
   ],
   whenNotToUse: [
     "For a photo the user is expected to take now: the native picker on a phone already offers the camera, so keep the plain control rather than building a capture flow.",
-    "For a large or long-running upload that needs progress and cancel: this is the choice, not the transfer. Pair it with Progress, or hand the transfer to a dedicated uploader once the file is chosen.",
+    "For a large or long-running upload that needs progress and cancel: FileInput selects files; the application owns the transfer. Pair it with Progress, or hand the transfer to a dedicated uploader once the file is chosen.",
   ],
   howItWorks: [
     {

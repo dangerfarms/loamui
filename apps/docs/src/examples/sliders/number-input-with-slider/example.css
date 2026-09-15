@@ -6,7 +6,7 @@
   div.row {
     align-items: center;
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     grid-template-columns: auto minmax(0, 1fr);
   }
 }

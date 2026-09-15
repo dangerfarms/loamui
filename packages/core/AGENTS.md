@@ -33,7 +33,7 @@ that uses parts lives in a `"use client"` file; callable forms (`<Button>`,
 - **Element styles**: native HTML is already styled page-wide (headings,
   links, code, forms, tables). Write semantic markup first; reach for a
   component only when the element needs structure it does not have.
-- **Components**: 47 low-level parts. Their look comes from context, not
+- **Components**: 48 low-level components. Their look comes from context, not
   props.
 
   | Category     | Components                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
@@ -43,19 +43,32 @@ that uses parts lives in a `"use client"` file; callable forms (`<Button>`,
   | Feedback     | `Alert` (draw attention to an important message), `Progress` (show completion of a task), `Meter` (a measurement within a known range), `Skeleton` (placeholder while content loads), `Loader` (indicate an ongoing process), `Toast` (transient notifications)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
   | Disclosures  | `Details` (native disclosure for secondary content), `Tooltip` (reveal info on hover or focus), `Modal` (a focused dialog over the page), `Drawer` (an edge-anchored panel that slides in), `Popover` (floating content anchored to a trigger), `Menu` (a list of actions opened from a trigger)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
   | Navigation   | `Tabs` (switch between related views), `SignpostLink` (signpost the way into a task), `SkipLink` (jump straight to the main content), `Breadcrumbs` (show the current page's location), `Pagination` (navigate between pages of content), `Nav` (lists of links with the current one marked)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+  | Utilities    | `VisuallyHidden` (text available to assistive technology without visible layout)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+
+## Two pillars
+
+**Modern**: use the native platform and scoped, layered CSS; contextual tokens,
+element defaults and component composition work together. **Accessible**:
+labels, keyboard and focus support, readable contrast and user preferences run
+through all three primitives. Gatekeeping establishes trust in agent work
+separately; passing a check proves only the behaviour it covers.
 
 ## The rules that matter
 
-1. **Do not invent `size`, `variant`, `color` or `fullWidth` props.** Use the
-   documented exceptions below.
+1. **Do not invent `size`, `variant`, `color` or `fullWidth` props.**
    Status comes from a region: `<div style={{ "--loam-context": "danger" }}>`.
    A style query is answered by ancestors, so wrap even a single control.
-   Contexts: `primary | success | warning | info | danger`. The exceptions:
-   Badge, Loader, Progress and Meter keep `size` for an intrinsic glyph or
-   track, Input supports the native HTML `size`, and numeric bounds (Meter's
-   `min`/`max`/`low`/`high`/`optimum`,
-   QuantityInput's `min`/`max`/`step`) are the platform's own semantics, not
-   sizing.
+   Contexts: `primary | success | warning | info | danger`.
+
+   The documented exceptions:
+
+   - Badge, Loader, Progress and Meter keep `size`, for an intrinsic glyph or
+     track.
+   - Input supports the native HTML `size`.
+   - Numeric bounds pass straight through as the platform's own semantics:
+     Meter's `min`/`max`/`low`/`high`/`optimum`, QuantityInput's
+     `min`/`max`/`step`.
+
 2. **Size comes from the container.** Declare `container-type: inline-size`
    on a region and resolve fluid tokens on its descendants. Inherited computed
    font sizes do not re-evaluate inside a new container. A size query styles descendants,
@@ -63,18 +76,22 @@ that uses parts lives in a `"use client"` file; callable forms (`<Button>`,
    a Button spans the full width.
 3. **Width comes from layout.** A grid or stacked flex region stretches its
    buttons; a flex row shrink-wraps them. There is no layout prop.
-4. **Compose, don't configure.** `Field.Root > Field.Label, Field.Description,
-Field.Error, Input` in that order; the controls (`Input`, `Select`,
-   `Textarea`, `Range`, `QuantityInput`, `FileInput.Control`, `Search.Input`)
-   self-wire. Overlays are
-   `Modal.Root > Modal.Trigger + Modal.Popup`. Swap the rendered element with
-   `render={<a href="…" />}`.
+4. **Compose, don't configure.** `Field.Root > Field.Label,
+Field.Description, Field.Error, Input` in that order.
+
+   - The controls self-wire: `Input`, `Select`, `Textarea`, `Range`,
+     `QuantityInput`, `FileInput.Control`, `Search.Input`.
+   - Overlays are `Modal.Root > Modal.Trigger + Modal.Popup`.
+   - Swap the rendered element with `render={<a href="…" />}`.
+
 5. **Icons are children.** `<Button><Icon /> Save</Button>`; the component
    detects the `svg`. Input adornments use its documented `startSection` /
-   `endSection` props instead.
+   `endSection` props.
 6. **Errors are detected.** Render `<Field.Error>` and the field is invalid;
    there is no `invalid` prop. Write the message in the words of the question
-   ("Enter your first name"), never "required" or "invalid".
+   ("Enter your first name"), never "required" or "invalid". Show new errors
+   after submission; clear displayed native constraint errors when corrected.
+   Native validity cannot resolve server failures such as rejected credentials.
 7. **Your own components** are a semantic element with a scoped rule:
 
    ```css
@@ -84,7 +101,7 @@ Field.Error, Input` in that order; the controls (`Input`, `Select`,
          background: var(--loam-color-surface);
          border: 1px solid var(--loam-color-line);
          border-radius: var(--loam-radius-lg);
-         padding: var(--loam-space-lg);
+         padding: var(--loam-space-l);
        }
      }
    }

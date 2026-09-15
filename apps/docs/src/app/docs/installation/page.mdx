@@ -1,4 +1,4 @@
-import prose from "../prose.module.css";
+import "../prose.css";
 
 export const metadata = {
   title: "Installation",
@@ -85,7 +85,7 @@ The earliest application stylesheet still declares the layer order above. Keep t
 Import `@loamui/core/styles.css` in your `main.tsx` entry. No plugin required; the styles are
 plain CSS.
 
-<div className={prose.callout}>
+<div className="site-callout">
   LoamUI ships static CSS with cascade layers. If you use your own
   <code> @layer</code> order, the LoamUI layers are named <code>loamui.tokens</code>,{" "}
   <code>loamui.elements</code> and <code>loamui.components</code>.

@@ -8,7 +8,7 @@
   div.row {
     align-items: end;
     display: block grid;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     grid-template-columns: minmax(0, 1fr) auto;
   }
 }

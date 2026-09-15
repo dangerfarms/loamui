@@ -2,7 +2,7 @@
   ul {
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     list-style: none;
     margin: 0;
     padding: 0;
@@ -21,7 +21,7 @@
     justify-content: center;
     min-block-size: 1.5rem;
     min-inline-size: 1.5rem;
-    padding: var(--loam-space-xs);
+    padding: var(--loam-space-3xs);
 
     @media (hover: hover) {
       &:hover {

@@ -5,8 +5,8 @@
     container-type: inline-size;
     display: block grid;
     font-size: var(--loam-text-sm);
-    gap: var(--loam-space-xl) var(--loam-space-lg);
-    padding-block: var(--loam-space-xl);
+    gap: var(--loam-space-l) var(--loam-space-s);
+    padding-block: var(--loam-space-l);
   }
 
   nav a {
@@ -28,7 +28,7 @@
   div.brand {
     align-content: start;
     display: block grid;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
 
     > a {
       align-items: center;
@@ -37,7 +37,7 @@
       font-family: var(--loam-font-display);
       font-size: var(--loam-text-lg);
       font-weight: 700;
-      gap: var(--loam-space-xs);
+      gap: var(--loam-space-3xs);
       inline-size: fit-content;
       letter-spacing: -0.02em;
       text-decoration: none;
@@ -56,7 +56,7 @@
 
   div.columns {
     display: block grid;
-    gap: var(--loam-space-lg);
+    gap: var(--loam-space-s);
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
   }
 
@@ -67,12 +67,12 @@
       font-size: var(--loam-text-sm);
       font-weight: 600;
       letter-spacing: 0;
-      margin-block: 0 var(--loam-space-sm);
+      margin-block: 0 var(--loam-space-2xs);
     }
 
     ul {
       display: block grid;
-      gap: var(--loam-space-xs);
+      gap: var(--loam-space-3xs);
       list-style: none;
       margin: 0;
       padding: 0;
@@ -88,10 +88,10 @@
     border-block-start: 1px solid var(--loam-color-line);
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-sm) var(--loam-space-lg);
+    gap: var(--loam-space-2xs) var(--loam-space-s);
     grid-column: 1 / -1;
     justify-content: space-between;
-    padding-block-start: var(--loam-space-lg);
+    padding-block-start: var(--loam-space-s);
 
     small {
       font-size: inherit;
@@ -100,7 +100,7 @@
     ul {
       display: block flex;
       flex-wrap: wrap;
-      gap: var(--loam-space-xs) var(--loam-space-md);
+      gap: var(--loam-space-3xs) var(--loam-space-xs);
     }
   }
 

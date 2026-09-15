@@ -19,7 +19,7 @@ const doc: ComponentContent = {
         <div
           style={{
             display: "grid",
-            gap: "0.5rem",
+            gap: "var(--loam-space-2xs)",
             inlineSize: "100%",
             maxInlineSize: "22rem",
           }}
@@ -34,9 +34,9 @@ const doc: ComponentContent = {
       title: "Circle + lines",
       description:
         "An avatar-and-text placeholder for a list item. The circle is a wrapped Avatar: the child sizes and shapes the placeholder, so there is no circle prop and nothing to keep in step with the avatar's size.",
-      code: `<div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+      code: `<div style={{ display: "flex", gap: "var(--loam-space-xs)", alignItems: "center" }}>
   <Skeleton><Avatar /></Skeleton>
-  <div style={{ display: "grid", gap: "0.4rem", flex: 1 }}>
+  <div style={{ display: "grid", gap: "var(--loam-space-2xs)", flex: 1 }}>
     <Skeleton style={{ "--loam-skeleton-inline-size": "40%" }} />
     <Skeleton style={{ "--loam-skeleton-inline-size": "70%" }} />
   </div>
@@ -45,7 +45,7 @@ const doc: ComponentContent = {
         <div
           style={{
             display: "flex",
-            gap: "0.75rem",
+            gap: "var(--loam-space-xs)",
             alignItems: "center",
             inlineSize: "100%",
             maxInlineSize: "22rem",
@@ -54,7 +54,7 @@ const doc: ComponentContent = {
           <Skeleton>
             <Avatar />
           </Skeleton>
-          <div style={{ display: "grid", gap: "0.4rem", flex: 1 }}>
+          <div style={{ display: "grid", gap: "var(--loam-space-2xs)", flex: 1 }}>
             <Skeleton style={{ "--loam-skeleton-inline-size": "40%" } as CSSProperties} />
             <Skeleton style={{ "--loam-skeleton-inline-size": "70%" } as CSSProperties} />
           </div>

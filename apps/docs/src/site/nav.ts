@@ -17,7 +17,6 @@ export const GETTING_STARTED: { name: string; href: string }[] = [
   { name: "Introduction", href: "/docs" },
   { name: "Installation", href: "/docs/installation" },
   { name: "Contextualism", href: "/docs/contextualism" },
-  { name: "Composing components", href: "/docs/composing" },
   { name: "Layout", href: "/docs/layout" },
   { name: "Typography", href: "/docs/typography" },
   { name: "Accessibility", href: "/docs/accessibility" },
@@ -40,6 +39,7 @@ export const PRIMITIVES: { name: string; href: string }[] = [
 // docs sidebar, which lists the library, not the gallery built from it.
 export const EXAMPLES_NAV: { name: string; href: string }[] = [
   { name: "All recipes", href: "/recipes" },
+  { name: "Building your own recipes", href: "/recipes/guide" },
   ...examplesByCategory().map(({ category: c }) => ({ name: c.title, href: `/recipes/${c.slug}` })),
 ];
 
@@ -49,6 +49,7 @@ export const CATEGORY_ORDER = [
   "Feedback",
   "Disclosures",
   "Navigation",
+  "Utilities",
 ] as const;
 
 export const COMPONENTS: NavItem[] = [
@@ -338,6 +339,13 @@ export const COMPONENTS: NavItem[] = [
     slug: "nav",
     category: "Navigation",
     description: "Lists of links with the current one marked.",
+  },
+  // Utilities
+  {
+    name: "VisuallyHidden",
+    slug: "visually-hidden",
+    category: "Utilities",
+    description: "Name a control for assistive technology alone.",
   },
 ];
 

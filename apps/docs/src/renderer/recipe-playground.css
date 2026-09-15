@@ -1,0 +1,8 @@
+@layer loamui.ui {
+  @scope (.site-RecipePlayground) to ([class*="loam-"]) {
+    :scope {
+      container-type: inline-size;
+      min-inline-size: 0;
+    }
+  }
+}

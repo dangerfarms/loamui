@@ -5,7 +5,7 @@ import { Field, Price, QuantityInput } from "@loamui/core";
 
 export function QuantityInputCartDemo() {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "var(--loam-space-lg)" }}>
+    <div style={{ display: "flex", alignItems: "center", gap: "var(--loam-space-s)" }}>
       <span>Field notebook</span>
       <Field.Root style={{ inlineSize: "auto" }}>
         <Field.Label>Quantity</Field.Label>

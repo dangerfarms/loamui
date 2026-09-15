@@ -2,7 +2,7 @@
   :scope {
     container-type: inline-size;
     display: block grid;
-    gap: var(--loam-space-xl);
+    gap: var(--loam-space-l);
   }
 
   article {
@@ -25,7 +25,7 @@
 @scope (.table-of-contents .loam-Nav) to ([class*="loam-"]) {
   @container (inline-size >= 48rem) {
     :scope {
-      inset-block-start: var(--loam-space-lg);
+      inset-block-start: var(--loam-space-s);
       order: 1;
       position: sticky;
     }

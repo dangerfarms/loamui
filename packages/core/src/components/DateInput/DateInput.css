@@ -22,7 +22,7 @@
      rule reaching past the donut. */
   div.parts {
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     grid-auto-columns: max-content;
     grid-auto-flow: column;
     justify-content: start;

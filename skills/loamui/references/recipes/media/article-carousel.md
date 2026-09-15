@@ -12,7 +12,7 @@ Five journal articles as Cards on a Carousel track: a photo, a category Badge, a
 
 A recipe in **Media**: a component and a stylesheet built from `@loamui/core`, to copy into a project and change. Both files are below, exactly as the live preview renders them.
 
-- Uses: `Badge`, `Card`, `Carousel`, `SignpostLink`
+- Uses: `Badge`, `Card`, `Carousel`, `SignpostLink`, `VisuallyHidden`
 - Tags: carousel, articles, cards, slider, journal
 - Live: https://loamui.com/recipes/media/article-carousel
 
@@ -30,10 +30,8 @@ Use when readers need to browse several articles in a horizontal collection. Cho
 
 These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
-- **Native CSS.** The track is an ordinary scroll-snap list that supports touch and trackpad scrolling without the paging script. Carousel supplies keyboard paging and button state after hydration. Each Card is an article named by its heading.
-- **Modern CSS.** The public item-size property sets the preferred card width while the track caps it to the available space. Each Card measures its own content, uses layered scoped rules and aligns the final link with an auto margin. Responsive images are lazy and reserve their ratio.
-- **Composition.** Carousel.Root, Track, Item, Previous, Next and Indicators are arranged in the markup: the Buttons sit beside the title and the dots beneath, an arrangement the parts allow because they read one context rather than one layout.
-- **Accessible & gatekept.** The region is named by its heading, the paging Buttons and the dots are named through labels, the status announces Article 2 of 5 once the track settles, and every Read article link finishes with the article's title in hidden text.
+- **Modern.** The track is an ordinary scroll-snap list that supports touch and trackpad scrolling without the paging script, with Carousel supplying keyboard paging and button state after hydration, and each Card an article named by its heading. The public item-size property sets the preferred card width while the track caps it to the available space; each Card measures its own content, uses layered scoped rules and aligns the final link with an auto margin, and responsive images are lazy and reserve their ratio.
+- **Accessible.** The region is named by its heading, the paging Buttons and the dots are named through labels, the status announces Article 2 of 5 once the track settles, and every Read article link finishes with the article's title in hidden text.
 
 ## References
 
@@ -44,6 +42,7 @@ These notes explain the design. The included tests cover structure and selected 
 - [Card](https://loamui.com/docs/components/card.md)
 - [Carousel](https://loamui.com/docs/components/carousel.md)
 - [SignpostLink](https://loamui.com/docs/components/signpost-link.md)
+- [VisuallyHidden](https://loamui.com/docs/components/visually-hidden.md)
 
 ## Example.tsx
 
@@ -51,7 +50,7 @@ These notes explain the design. The included tests cover structure and selected 
 "use client";
 
 import { useId } from "react";
-import { Badge, Card, Carousel, SignpostLink } from "@loamui/core";
+import { Badge, Card, Carousel, SignpostLink, VisuallyHidden } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
@@ -104,7 +103,7 @@ export default function Example() {
               <div className="foot">
                 <SignpostLink href="/journal/picking-french-beans">
                   Read article
-                  <span className="loam-VisuallyHidden"> – Picking French beans at their best</span>
+                  <VisuallyHidden> – Picking French beans at their best</VisuallyHidden>
                 </SignpostLink>
               </div>
             </div>
@@ -139,7 +138,7 @@ export default function Example() {
               <div className="foot">
                 <SignpostLink href="/journal/haymaking">
                   Read article
-                  <span className="loam-VisuallyHidden"> – Haymaking on the member fields</span>
+                  <VisuallyHidden> – Haymaking on the member fields</VisuallyHidden>
                 </SignpostLink>
               </div>
             </div>
@@ -174,7 +173,7 @@ export default function Example() {
               <div className="foot">
                 <SignpostLink href="/journal/spring-buds">
                   Read article
-                  <span className="loam-VisuallyHidden"> – A closer look at spring buds</span>
+                  <VisuallyHidden> – A closer look at spring buds</VisuallyHidden>
                 </SignpostLink>
               </div>
             </div>
@@ -209,7 +208,7 @@ export default function Example() {
               <div className="foot">
                 <SignpostLink href="/journal/woodland-tulips">
                   Read article
-                  <span className="loam-VisuallyHidden"> – Tulips at the woodland edge</span>
+                  <VisuallyHidden> – Tulips at the woodland edge</VisuallyHidden>
                 </SignpostLink>
               </div>
             </div>
@@ -244,10 +243,7 @@ export default function Example() {
               <div className="foot">
                 <SignpostLink href="/journal/changing-weather">
                   Read article
-                  <span className="loam-VisuallyHidden">
-                    {" "}
-                    – Reading the weather over the fields
-                  </span>
+                  <VisuallyHidden> – Reading the weather over the fields</VisuallyHidden>
                 </SignpostLink>
               </div>
             </div>
@@ -274,7 +270,7 @@ export default function Example() {
       display: block flex;
       flex-wrap: wrap;
       font-size: var(--loam-text-md);
-      gap: var(--loam-space-sm) var(--loam-space-md);
+      gap: var(--loam-space-2xs) var(--loam-space-xs);
       justify-content: space-between;
       overflow-wrap: anywhere;
     }
@@ -285,7 +281,7 @@ export default function Example() {
 
     div.controls {
       display: block flex;
-      gap: var(--loam-space-xs);
+      gap: var(--loam-space-3xs);
     }
   }
 }
@@ -302,7 +298,7 @@ export default function Example() {
       display: block flex;
       flex-direction: column;
       font-size: var(--loam-text-md);
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
       overflow-wrap: anywhere;
     }
 
@@ -326,7 +322,7 @@ export default function Example() {
     div.foot {
       display: block flex;
       margin-block-start: auto;
-      padding-block-start: var(--loam-space-sm);
+      padding-block-start: var(--loam-space-2xs);
     }
   }
 }

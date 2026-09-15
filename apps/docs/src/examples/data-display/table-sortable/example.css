@@ -17,6 +17,6 @@
   span.low {
     --loam-context: warning;
 
-    margin-inline-start: var(--loam-space-sm);
+    margin-inline-start: var(--loam-space-2xs);
   }
 }

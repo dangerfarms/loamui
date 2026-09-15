@@ -102,7 +102,7 @@ const doc: ComponentContent = {
     },
     {
       title: "Previous and Next stay put",
-      body: "Sequential movement is what pagination is for, so Pagination.Pages always renders Previous and Next and they keep their visual space. At the first and last page the unavailable direction becomes a disabled Link: an aria-hidden placeholder with no href, not a fake disabled link. The layout stays stable without adding an inert stop to the keyboard or accessibility order.",
+      body: "Sequential movement is what pagination is for, so Pagination.Pages always renders Previous and Next and they keep their visual space. At the first and last page the unavailable direction becomes a disabled Link: an aria-hidden placeholder with no href. The layout stays stable without adding an inert stop to the keyboard or accessibility order.",
     },
     {
       title: "The ends are always visible",

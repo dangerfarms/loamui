@@ -6,7 +6,7 @@
 
     ol {
       --_dot: 0.875rem;
-      --_gap: var(--loam-space-lg);
+      --_gap: var(--loam-space-s);
 
       display: block grid;
       font-size: var(--loam-text-md);
@@ -20,7 +20,7 @@
 
     li {
       display: block grid;
-      gap: var(--loam-space-xs) var(--loam-space-md);
+      gap: var(--loam-space-3xs) var(--loam-space-xs);
       grid-template-areas:
         "dot date"
         "dot title"

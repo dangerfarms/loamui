@@ -6,13 +6,13 @@
     border: 0;
     display: block flex;
     flex-direction: column;
-    gap: var(--loam-space-sm);
-    inline-size: min(var(--loam-toast-size, 22rem), calc(100vi - 2 * var(--loam-space-lg)));
+    gap: var(--loam-space-2xs);
+    inline-size: min(var(--loam-toast-size, 22rem), calc(100vi - 2 * var(--loam-space-s)));
 
     /* Clear the UA's [popover] inset/size defaults. */
     inset: auto;
-    inset-block-end: var(--loam-space-lg);
-    inset-inline-end: var(--loam-space-lg);
+    inset-block-end: var(--loam-space-s);
+    inset-inline-end: var(--loam-space-s);
     margin: 0;
     outline: none;
     overflow: visible;
@@ -32,8 +32,8 @@
     border-radius: var(--loam-radius-md);
     box-shadow: var(--loam-shadow-lg);
     display: block flex;
-    gap: var(--loam-space-sm);
-    padding: var(--loam-space-md);
+    gap: var(--loam-space-2xs);
+    padding: var(--loam-space-xs);
 
     @media (prefers-reduced-motion: no-preference) {
       transition:
@@ -69,7 +69,7 @@
     overflow-wrap: break-word;
 
     div.title + & {
-      margin-block-start: var(--loam-space-xs);
+      margin-block-start: var(--loam-space-3xs);
     }
   }
 

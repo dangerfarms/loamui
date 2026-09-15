@@ -64,6 +64,7 @@ export * from "./components/Tabs/index";
 export * from "./components/Details/index";
 export * from "./components/SignpostLink/index";
 export * from "./components/SkipLink/index";
+export * from "./components/VisuallyHidden/index";
 export * from "./components/Breadcrumbs/index";
 export * from "./components/Pagination/index";
 export * from "./components/Nav/index";

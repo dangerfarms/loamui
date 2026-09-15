@@ -3,7 +3,7 @@
     background: var(--loam-color-bg-subtle);
     border-radius: var(--loam-radius-xl);
     container-type: inline-size;
-    padding: var(--loam-space-xl);
+    padding: var(--loam-space-l);
   }
 
   /* The inner element is the grid: an element cannot answer its own
@@ -11,12 +11,12 @@
   div.inner {
     align-items: center;
     display: block grid;
-    gap: var(--loam-space-xl);
+    gap: var(--loam-space-l);
   }
 
   div.text {
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
 
     > p {
       color: var(--loam-color-fg-muted);
@@ -35,8 +35,8 @@
     align-items: end;
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-sm);
-    margin-block-start: var(--loam-space-xs);
+    gap: var(--loam-space-2xs);
+    margin-block-start: var(--loam-space-3xs);
     max-inline-size: 30rem;
   }
 

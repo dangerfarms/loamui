@@ -92,7 +92,7 @@ export const DisabledSegment: Story = {
 function ViewSwitcher() {
   const [view, setView] = useState("list");
   return (
-    <div style={{ display: "grid", gap: "var(--loam-space-md)", justifyItems: "start" }}>
+    <div style={{ display: "grid", gap: "var(--loam-space-xs)", justifyItems: "start" }}>
       <SegmentedControl.Root value={view} onValueChange={setView}>
         <SegmentedControl.Legend>View</SegmentedControl.Legend>
         <SegmentedControl.Item value="list">List</SegmentedControl.Item>

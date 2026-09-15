@@ -1,0 +1,40 @@
+@scope (.site-DocsShell) {
+  :scope {
+    align-items: start;
+    display: block grid;
+    gap: var(--loam-space-2xl);
+    grid-template-columns: 16rem minmax(0, 1fr);
+    inline-size: min(100% - 2.5rem, 82rem);
+    margin-inline: auto;
+  }
+
+  .aside {
+    block-size: calc(100dvb - var(--site-nav-h));
+    inset-block-start: var(--site-nav-h);
+    overflow: hidden;
+    position: sticky;
+  }
+
+  .asideInner {
+    block-size: 100%;
+    border-inline-end: 1px solid var(--loam-color-line);
+    overflow-block: auto;
+  }
+
+  .content {
+    min-inline-size: 0;
+    padding-block: var(--loam-space-2xl) var(--loam-space-3xl);
+  }
+
+  /* Queried against main, the page's container: below it the sidebar
+     folds into the header's drawer. */
+  @container (width <= 60rem) {
+    :scope {
+      grid-template-columns: 1fr;
+    }
+
+    .aside {
+      display: none;
+    }
+  }
+}

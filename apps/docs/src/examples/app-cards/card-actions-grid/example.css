@@ -7,14 +7,14 @@
      container query. */
   div.inner {
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
   }
 
   div.head {
     align-items: baseline;
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-sm) var(--loam-space-md);
+    gap: var(--loam-space-2xs) var(--loam-space-xs);
     justify-content: space-between;
   }
 
@@ -29,7 +29,7 @@
 
   ul.actions {
     display: block grid;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
     list-style: none;
     margin: 0;

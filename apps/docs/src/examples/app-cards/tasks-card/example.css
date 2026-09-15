@@ -3,7 +3,7 @@
     container-type: inline-size;
     display: block flex;
     flex-direction: column;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
   }
 
   p.due {
@@ -25,8 +25,8 @@
 
   div.progress {
     display: block grid;
-    gap: var(--loam-space-xs);
-    margin-block-start: var(--loam-space-sm);
+    gap: var(--loam-space-3xs);
+    margin-block-start: var(--loam-space-2xs);
   }
 
   p.count {
@@ -48,6 +48,6 @@
 
     display: block flex;
     margin-block-start: auto;
-    padding-block-start: var(--loam-space-sm);
+    padding-block-start: var(--loam-space-2xs);
   }
 }

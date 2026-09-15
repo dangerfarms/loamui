@@ -11,17 +11,13 @@ export const meta: ExampleMeta = {
   category: "heroes",
   uses: ["Badge", "SignpostLink"],
   notes: {
-    native:
-      "A section named by its h1, with a native header and image. Element styles supply heading typography, body leading and link states; the recipe adds only its layout and editorial roles.",
     modern:
-      "An intrinsic auto-fit grid makes two columns when both fit and stacks them otherwise. The section measures its contents' fluid type and spacing. Styles belong to loamui.components inside a donut scope, so element defaults remain the base and selectors stop at LoamUI component boundaries. Classes distinguish the eyebrow, lede and actions.",
-    composition:
-      "Badge identifies the catalogue, SignpostLink goes to the catalogue and an ordinary link opens the seed-saving film.",
-    context:
-      "The eyebrow declares --loam-context: primary, so the Badge inside takes the brand colour without a prop; primary is the brand slot, neutral until a theme fills it, and the eyebrow reads as one by its place above the heading.",
+      "A section named by its h1, with a native header and image; element styles supply the heading typography, body leading and link states, and the recipe adds only its layout and editorial roles. An intrinsic auto-fit grid makes two columns when both fit and stacks them otherwise, measuring the contents’ fluid type and spacing, with styles in loamui.components inside a donut scope so element defaults remain the base and selectors stop at LoamUI component boundaries. The eyebrow declares --loam-context: primary, so the Badge inside takes the brand colour without a prop — primary is the brand slot, neutral until a theme fills it, and the eyebrow reads as one by its place above the heading.",
     accessible:
       "useId keeps each region tied to its own heading. Both destinations are keyboard-operable links with visible text, the play icon is decorative, and the photograph has descriptive alt text. Content order is unchanged when the grid stacks.",
   },
+  composition:
+    "Badge identifies the catalogue, SignpostLink goes to the catalogue and an ordinary link opens the seed-saving film.",
   tags: ["landing", "marketing", "banner"],
   order: 1,
 };

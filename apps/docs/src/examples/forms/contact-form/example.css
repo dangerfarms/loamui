@@ -2,14 +2,14 @@
   :scope {
     container-type: inline-size;
     display: block grid;
-    gap: var(--loam-space-lg);
+    gap: var(--loam-space-s);
     inline-size: 100%;
     max-inline-size: 36rem;
   }
 
   div.intro {
     display: block grid;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
 
     h2 {
       font-size: var(--loam-text-xl);
@@ -29,6 +29,6 @@
     align-items: center;
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
   }
 }

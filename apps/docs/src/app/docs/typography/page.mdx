@@ -1,4 +1,4 @@
-import prose from "../prose.module.css";
+import "../prose.css";
 
 export const metadata = {
   title: "Typography",
@@ -18,15 +18,27 @@ Type is set by two primitives working together: the [tokens](/docs/tokens) suppl
 
 ## A fluid scale, tuned per container
 
-Every size is a `clamp()` that grows with the container, so the scale itself changes shape as space allows. On a narrow container the steps follow a 1.125 ratio (a "major second"), a gentle progression that keeps headings close to body copy where width is tight. On a wide container the same steps open up to a 1.25 ratio (a "major third"), giving headings more presence when there is room to spend. Because the size is driven by container width rather than the viewport, a heading in a sidebar and a heading in the main column each pick the rhythm that suits their own measure, which is what makes both comfortable to read.
+Every size is a `clamp()` that grows with its container, so the scale itself changes shape as space allows.
 
-<div className={prose.block}>
+Narrow, the steps follow a 1.125 ratio (a "major second"): a gentle progression that keeps headings close to body copy where width is tight. Wide, the same steps open to 1.25 (a "major third"), giving headings more presence when there is room to spend.
+
+The driver is container width, not the viewport. So a heading in a sidebar and a heading in the main column each take the rhythm that suits their own measure, and both stay comfortable to read.
+
+<div className="block">
   <div style={stage}>
-    <p style={{ fontSize: "var(--loam-text-3xl)", margin: 0, fontFamily: "var(--loam-font-display)" }}>
+    <p
+      style={{
+        fontSize: "var(--loam-text-3xl)",
+        margin: 0,
+        fontFamily: "var(--loam-font-display)",
+      }}
+    >
       {"Display"}
     </p>
     <p style={{ fontSize: "var(--loam-text-xl)", margin: 0 }}>{"Heading"}</p>
-    <p style={{ fontSize: "var(--loam-text-md)", margin: 0 }}>{"Body copy sits at the base step."}</p>
+    <p style={{ fontSize: "var(--loam-text-md)", margin: 0 }}>
+      {"Body copy sits at the base step."}
+    </p>
     <p style={{ fontSize: "var(--loam-text-sm)", margin: 0, color: "var(--loam-color-fg-muted)" }}>
       {"Small print steps down for secondary text."}
     </p>
@@ -37,7 +49,9 @@ The rhythm is not only horizontal. Leading is derived from each element's own si
 
 ## Two families, and considered figures
 
-Body text uses `--loam-font`; headings use `--loam-font-display`, so a design can pin two complementary typefaces without touching a component. The element styles also switch on the OpenType features that make text read well: old-style proportional figures in running prose, lining figures in headings, common ligatures, and hanging punctuation. Where numbers must align in a column, a data context can ask for tabular figures, and the machinery is already there to answer.
+Body text uses `--loam-font` and headings use `--loam-font-display`, so a design can pin two complementary typefaces without touching a component.
+
+The element styles also switch on the OpenType features that make text read well: old-style proportional figures in running prose, lining figures in headings, common ligatures, and hanging punctuation. Where numbers must align in a column, ask for tabular figures — the machinery is already there to answer.
 
 ## Typography components are yours to name
 
@@ -59,19 +73,29 @@ There is no `Heading` or `Text` component, because meaningful typography is doma
 }
 ```
 
-<div className={prose.block}>
+<div className="block">
   <div style={stage}>
-    <h2 style={{ fontVariantCaps: "small-caps", marginBlockStart: 0 }}>{"The harvest comes early"}</h2>
-    <p style={{ color: "var(--loam-color-fg-muted)", fontSize: "var(--loam-text-sm)", marginBlock: 0 }}>
+    <h2 style={{ fontVariantCaps: "small-caps", marginBlockStart: 0 }}>
+      {"The harvest comes early"}
+    </h2>
+    <p
+      style={{
+        color: "var(--loam-color-fg-muted)",
+        fontSize: "var(--loam-text-sm)",
+        marginBlock: 0,
+      }}
+    >
       {"By a staff reporter"}
     </p>
     <p style={{ marginBlockEnd: 0 }}>
-      {"A lede paragraph carries the opening of the story in plain body type, inheriting the scale and rhythm the primitives already set."}
+      {
+        "A lede paragraph carries the opening of the story in plain body type, inheriting the scale and rhythm the primitives already set."
+      }
     </p>
   </div>
 </div>
 
-<div className={prose.callout}>
+<div className="site-callout">
   Reach for a scoped class on a semantic element, style it with tokens, and you have a typography
   component that themes through the cascade and works outside React. The primitives do the reading
   research; you supply the vocabulary.

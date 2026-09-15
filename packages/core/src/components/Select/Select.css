@@ -23,7 +23,7 @@
 
     /* Room for the chevron on the trailing side: its width plus the
        inset it sits at plus the gap it keeps from the text. */
-    padding-inline-end: calc(1.125em + var(--loam-space-md) * 2);
+    padding-inline-end: calc(1.125em + var(--loam-space-xs) * 2);
 
     &:focus-visible {
       border-color: var(--loam-color-primary);
@@ -62,7 +62,7 @@
 
   /* Invalid after a composed Field.Error or a native submit attempt. */
   select[aria-invalid="true"] {
-    --loam-color-ring: var(--loam-color-danger-ring);
+    --loam-color-ring: var(--loam-color-danger-strong);
 
     border-color: var(--loam-color-danger);
   }
@@ -81,7 +81,7 @@
     /* Fluid: overrides the SVG's 16px width/height attributes. */
     inline-size: 1.125em;
     inset-block-start: 50%;
-    inset-inline-end: var(--loam-space-md);
+    inset-inline-end: var(--loam-space-xs);
     pointer-events: none;
     position: absolute;
     translate: 0 -50%;

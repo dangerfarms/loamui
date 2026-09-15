@@ -14,7 +14,7 @@
        than replaces the elements-layer :focus-visible ring; the focus ring
        itself turns danger-coloured. Mirrors Switch. */
     &[aria-invalid="true"] {
-      --loam-color-ring: var(--loam-color-danger-ring);
+      --loam-color-ring: var(--loam-color-danger-strong);
 
       box-shadow: 0 0 0 2px var(--loam-color-danger);
     }
@@ -42,7 +42,7 @@
   :scope {
     display: block flex;
     flex-direction: column;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
 
     &:has(input:disabled) {
       opacity: var(--loam-disabled-opacity);
@@ -53,7 +53,7 @@
     align-items: center;
     cursor: pointer;
     display: block flex;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     min-block-size: 2.75rem;
 
     &:has(input:disabled) {

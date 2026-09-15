@@ -16,7 +16,7 @@ const doc: ComponentContent = {
       code: `<Progress value={72}>Uploading photos</Progress>
 <Progress value={72} aria-label="Uploading photos" />`,
       render: () => (
-        <div style={{ display: "grid", gap: "1rem", inlineSize: "100%" }}>
+        <div style={{ display: "grid", gap: "var(--loam-space-s)", inlineSize: "100%" }}>
           <Example label="Labelled by its children" style={{ justifyItems: "stretch" }}>
             <Progress value={72}>Uploading photos</Progress>
           </Example>
@@ -53,7 +53,7 @@ const doc: ComponentContent = {
 <Progress value={60} size="md" aria-label="Medium" />
 <Progress value={60} size="lg" aria-label="Large" />`,
       render: () => (
-        <div style={{ display: "grid", gap: "1rem", inlineSize: "100%" }}>
+        <div style={{ display: "grid", gap: "var(--loam-space-s)", inlineSize: "100%" }}>
           <Example label="Small" style={{ justifyItems: "stretch" }}>
             <Progress value={60} size="sm" aria-label="Small" />
           </Example>
@@ -81,7 +81,7 @@ const doc: ComponentContent = {
   <Progress value={100}>Quota used</Progress>
 </div>`,
       render: () => (
-        <div style={{ display: "grid", gap: "0.75rem", inlineSize: "100%" }}>
+        <div style={{ display: "grid", gap: "var(--loam-space-xs)", inlineSize: "100%" }}>
           <Progress value={50}>Quota used</Progress>
           <div style={{ "--loam-context": "warning" } as CSSProperties}>
             <Progress value={88}>Quota used</Progress>
@@ -102,7 +102,7 @@ const doc: ComponentContent = {
       code: `<Progress value={65} striped aria-label="Striped" />
 <Progress value={65} animated aria-label="Animated" />`,
       render: () => (
-        <div style={{ display: "grid", gap: "1rem", inlineSize: "100%" }}>
+        <div style={{ display: "grid", gap: "var(--loam-space-s)", inlineSize: "100%" }}>
           <Example label="Striped" style={{ justifyItems: "stretch" }}>
             <Progress value={65} striped aria-label="Striped" />
           </Example>

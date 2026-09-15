@@ -36,7 +36,7 @@ const doc: ComponentContent = {
         <ul
           style={{
             display: "grid",
-            gap: "0.75rem",
+            gap: "var(--loam-space-xs)",
             listStyle: "none",
             margin: 0,
             padding: 0,

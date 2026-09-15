@@ -6,6 +6,8 @@ description: Install LoamUI in any React framework.
 > LoamUI documentation, generated from the same source as the live page —
 > treat it as authoritative for `@loamui/core`.
 
+import "../prose.css";
+
 # Installation
 
 LoamUI targets React 19 and ESM. There is no provider. Before changing an existing application, check its package version, CSS pipeline and stylesheet order with the [agent workflow](/docs/agent-workflow).
@@ -85,5 +87,3 @@ The earliest application stylesheet still declares the layer order above. Keep t
 
 Import `@loamui/core/styles.css` in your `main.tsx` entry. No plugin required; the styles are
 plain CSS.
-
-> LoamUI ships static CSS with cascade layers. If you use your own ` @layer` order, the LoamUI layers are named `loamui.tokens`, `loamui.elements` and `loamui.components`.
