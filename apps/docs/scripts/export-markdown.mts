@@ -465,6 +465,7 @@ const guideOrder = [
   "/docs",
   "/docs/installation",
   "/docs/agent-workflow",
+  "/docs/conformance",
   "/docs/tokens",
   "/docs/element-styles",
   "/docs/components",

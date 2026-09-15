@@ -17,10 +17,10 @@ Check that the application loads all three primitives: tokens, element styles an
 The layer order must be established before any recipe or library style registers a layer:
 
 ```css
-@layer loamui.tokens, loamui.elements, loamui.components;
+@layer loamui.tokens, loamui.elements, loamui.components, brand;
 ```
 
-Place that declaration in the application's earliest stylesheet. A later declaration cannot reorder already established layers. If a recipe first creates `loamui.components`, subsequently loading core can put `loamui.elements` above it: default image sizing then defeats the recipe's full-height image. Check direct loads and client navigation, including lazy stylesheet loading.
+Place that declaration in the application's earliest stylesheet; `brand` is the application's theme layer, where `--loam-*` overrides live. A later declaration cannot reorder already established layers. If a recipe first creates `loamui.components`, subsequently loading core can put `loamui.elements` above it: default image sizing then defeats the recipe's full-height image. Check direct loads and client navigation, including lazy stylesheet loading.
 
 Look for existing resets, unlayered element rules, theme declarations and browser targets that affect the new UI. Assess the integration region; do not require an unrelated application-wide migration. State the specific conflict and affected files. Before installing packages or changing shared infrastructure, present the minimal proposed changes and obtain approval unless that setup has already been authorized. Continue independent inspection and prepare a concrete proposal while approval is pending. Do not treat silence as approval.
 

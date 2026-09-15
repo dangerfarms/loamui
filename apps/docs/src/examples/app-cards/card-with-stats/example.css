@@ -58,14 +58,10 @@
     > div {
       display: block grid;
       gap: var(--loam-space-xs);
-      padding-inline-start: var(--loam-space-md);
 
-      &:first-child {
-        padding-inline-start: 0;
-      }
-
-      + div {
+      &:not(:first-child) {
         border-inline-start: 1px solid var(--loam-color-line);
+        padding-inline-start: var(--loam-space-md);
       }
     }
 

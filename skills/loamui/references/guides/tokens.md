@@ -97,10 +97,14 @@ solid fills, focus rings) is _derived_ from it by recipe, so there is nothing el
 sync:
 
 ```css
-:root {
-  --loam-color-primary: light-dark(oklch(0.62 0.2 275), oklch(0.72 0.17 275)); /* violet */
+@layer brand {
+  :root {
+    --loam-color-primary: light-dark(oklch(0.62 0.2 275), oklch(0.72 0.17 275)); /* violet */
+  }
 }
 ```
+
+`brand` is the application's own layer, declared last in the [layer order](/docs/installation#2-declare-the-layer-order) so a theme beats `loamui.tokens` without leaving the cascade layers.
 
 The brand colour appears wherever the design says primary: focus rings, checked states, carets,
 and `primary` context regions. (Buttons are neutral by default; the demo below is

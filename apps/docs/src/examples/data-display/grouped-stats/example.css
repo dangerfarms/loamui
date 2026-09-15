@@ -16,14 +16,8 @@
   }
 
   div.group {
-    border-block-start: 1px solid var(--loam-color-line);
     display: block grid;
     gap: var(--loam-space-xs);
-    padding-block: var(--loam-space-md);
-
-    &:last-child {
-      padding-block-end: 0;
-    }
   }
 
   dt {
@@ -57,27 +51,34 @@
     }
   }
 
+  /* Narrow: the groups stack, a hairline above each. */
+  @container (inline-size < 40rem) {
+    div.group {
+      border-block-start: 1px solid var(--loam-color-line);
+      padding-block-start: var(--loam-space-md);
+
+      &:not(:last-child) {
+        padding-block-end: var(--loam-space-md);
+      }
+    }
+  }
+
+  /* Wide: three columns, a hairline between them. */
   @container (inline-size >= 40rem) {
     dl.groups {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     div.group {
-      border-block-start: 0;
       grid-template-rows: auto auto 1fr auto;
-      padding-block: 0;
-      padding-inline: var(--loam-space-lg);
 
-      &:first-child {
-        padding-inline-start: 0;
-      }
-
-      &:last-child {
-        padding-inline-end: 0;
-      }
-
-      + div.group {
+      &:not(:first-child) {
         border-inline-start: 1px solid var(--loam-color-line);
+        padding-inline-start: var(--loam-space-lg);
+      }
+
+      &:not(:last-child) {
+        padding-inline-end: var(--loam-space-lg);
       }
     }
   }

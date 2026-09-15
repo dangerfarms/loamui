@@ -79,12 +79,24 @@ const doc: ComponentContent = {
     {
       title: "Header with a close button",
       description:
-        "A header row with an × is a composition pattern, not configuration: compose Modal.Title and Modal.Close however your design needs.",
-      code: `<Modal.Root>
+        "A header row with an × is a composition pattern, not configuration: compose Modal.Title and Modal.Close however your design needs, and lay the row out from your stylesheet rather than an inline style.",
+      code: `/* modal.css */
+.modal-head {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-block-end: var(--loam-space-sm);
+
+  h2 {
+    margin: 0;
+  }
+}
+
+<Modal.Root>
   <Modal.Trigger>Open settings</Modal.Trigger>
   <Modal.Popup>
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBlockEnd: "var(--loam-space-sm)" }}>
-      <Modal.Title style={{ margin: 0 }}>Settings</Modal.Title>
+    <div className="modal-head">
+      <Modal.Title>Settings</Modal.Title>
       <Modal.Close aria-label="Close">×</Modal.Close>
     </div>
     <Modal.Description>Manage your workspace settings.</Modal.Description>
