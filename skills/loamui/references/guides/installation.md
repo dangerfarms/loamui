@@ -1,6 +1,6 @@
 ---
 title: Installation
-description: Set up LoamUI in Next.js or React Router, check your first interface, then add the agent skill.
+description: Set up LoamUI in Next.js or TanStack Start, check your first interface, then add the agent skill.
 ---
 
 > LoamUI documentation, generated from the same source as the live page —
@@ -10,7 +10,7 @@ import "../prose.css";
 
 # Installation
 
-Start with a React framework, add LoamUI's three primitives, then build with the skill. LoamUI requires React 19 and an ESM-compatible application. There is no provider to configure.
+Start with a React framework, add LoamUI's three primitives, then build with the skill. Use an ESM-compatible application that meets the package’s peer dependencies. There is no provider to configure.
 
 > **Package availability:** the public npm release of `@loamui/core` is planned but not yet available. The package commands in these guides apply once it is published. Installing the agent skill does not install the library.
 
@@ -19,15 +19,15 @@ Start with a React framework, add LoamUI's three primitives, then build with the
 Use a working framework application before adding LoamUI. These guides cover a fresh project, the package and the stylesheet setup:
 
 - **[Next.js App Router](/docs/installation/nextjs)** — routing, server rendering and React Server Components.
-- **[React Router Framework Mode](/docs/installation/react-router)** — route modules, loaders and actions, built on Vite; supports server rendering and SPA mode.
+- **[TanStack Start](/docs/installation/tanstack-start)** — a full-stack React framework with routing, server rendering and server functions.
 
-The beta setup uses LoamUI as the styling foundation, without Tailwind or another global reset. Vite on its own is a build tool; use it through React Router Framework Mode for this setup. [React recommends starting new applications with a framework](https://react.dev/learn/creating-a-react-app).
+The beta setup uses LoamUI as the styling foundation, without Tailwind or another global reset. [React recommends starting new applications with a framework](https://react.dev/learn/creating-a-react-app).
 
 **Already have a project?** Check its framework, React version, CSS imports and resets first. Tailwind's presence in a manifest alone does not prove a conflict: inspect Preflight, utility classes and global rules that affect the interface. Follow the [existing-project workflow](/docs/agent-workflow#establish-the-environment-first) before changing shared styles or dependencies.
 
 ## 2. Check the foundation
 
-After completing your framework guide, replace its starter page with this small interface. Use `app/page.tsx` in Next.js or `app/routes/home.tsx` in React Router. The client directive is needed for the compound Field parts in Next.js; omit it in React Router.
+After completing your framework guide, replace its starter page with this small interface. Use `app/page.tsx` in Next.js or `src/components/Welcome.tsx` in TanStack Start. The TanStack guide shows how to render it from your index route. The client directive is needed for the compound Field parts in Next.js; omit it in TanStack Start.
 
 ```tsx
 "use client";
@@ -67,20 +67,8 @@ Add `welcome.css` beside that file. The page owns its layout; embedded controls 
 
 Run the development server and the production build. Check that the heading and paragraph have element styles, spacing uses the tokens, and both controls are styled. Tab to the input and checkbox, check visible focus, toggle the checkbox with Space, and try light and dark system preferences. Repeat after a direct page load and a client-side navigation.
 
-## 3. Add the agent skill
+## 3. Build with the skill
 
-Once the application builds and the foundation works, run this from your project:
+Once the application builds and the foundation works, you are ready to create your own interface. The next guide shows you how to install the skill, give your agent a first prompt, and review the result.
 
-```bash
-npx skills add dangerfarms/loamui
-```
-
-Then ask your agent:
-
-> Use the LoamUI skill. Check this project's framework, installed package, stylesheet delivery and layer order. Tell me about any conflicting styles and propose changes before replacing existing infrastructure. Then build a profile form using LoamUI's tokens, element styles and components. Verify the result and report what you checked.
-
-The skill guides composition and verification. It does not replace framework setup or install the package for you. If your tool cannot load skills, give it [llms.txt](/llms.txt) and the [agent workflow](/docs/agent-workflow).
-
-## 4. Build your interface
-
-Start from a [recipe](/recipes), or compose your own UI from [tokens](/docs/tokens), [element styles](/docs/element-styles) and [components](/docs/components). Keep application layout in scoped CSS and read each component's contract before adapting it.
+**Next: [Build with the skill](/docs/agent-workflow).**

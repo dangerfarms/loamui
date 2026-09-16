@@ -18,7 +18,7 @@ A recipe in **Media**: a component and a stylesheet built from `@loamui/core`, t
 
 ## Using this recipe
 
-Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+Copy both files side by side into your React framework project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
 
 Replace the sample articles and destinations with real content. Choose a visible grid when comparison or discovery of every item matters more than a compact horizontal collection. Adjust heading levels to the page; keep the accessible link suffixes unique.
 

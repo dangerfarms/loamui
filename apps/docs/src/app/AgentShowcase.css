@@ -30,24 +30,6 @@
       margin-block: var(--loam-space-l) var(--loam-space-2xs);
     }
 
-    .command {
-      align-items: center;
-      display: block flex;
-      flex-wrap: wrap;
-      gap: var(--loam-space-xs);
-
-      code {
-        flex: 1;
-        font-size: var(--loam-text-sm);
-        min-inline-size: 0;
-        overflow-wrap: anywhere;
-      }
-    }
-
-    .prompt {
-      color: var(--loam-color-fg-muted);
-    }
-
     .promptBox {
       border-block-start: 1px solid var(--loam-color-line);
       display: block grid;

@@ -82,8 +82,6 @@ export default function HomePage() {
           </p>
         </header>
         <AgentShowcase
-          skillCommand="npx skills add dangerfarms/loamui"
-          skillNote={<Link href="/docs/installation">Set up your project first</Link>}
           prompt={prompt}
           tsx={menu.tsx}
           css={menu.css}
@@ -212,7 +210,7 @@ export default function HomePage() {
             </p>
           </li>
         </ol>
-        <Link href="/docs/agent-workflow">Follow the agent workflow</Link>
+        <Link href="/docs/agent-workflow">Build with the skill</Link>
       </section>
 
       <section className="closing">

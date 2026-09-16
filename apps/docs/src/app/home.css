@@ -194,14 +194,30 @@
     }
 
     p {
-      color: var(--loam-color-fg-muted);
+      color: var(--loam-color-fg);
     }
 
     footer {
       border-block-start: 1px solid var(--loam-color-line);
-      color: var(--loam-color-fg-muted);
+      color: var(--loam-color-fg);
       font-size: var(--loam-text-sm);
       padding-block-start: var(--loam-space-s);
+    }
+  }
+}
+
+@layer loamui.components {
+  @scope (.site-Home .primitives) to (.site-Primitive) {
+    :scope > .loam-Card {
+      @media (prefers-reduced-motion: no-preference) {
+        transition: opacity var(--loam-duration-md) var(--loam-ease);
+      }
+    }
+
+    @media (hover: hover) and (pointer: fine) and (forced-colors: none) {
+      :scope:has(> .loam-Card:hover):not(:focus-within) > .loam-Card:not(:hover) {
+        opacity: 0.85;
+      }
     }
   }
 }

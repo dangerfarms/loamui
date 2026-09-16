@@ -42,11 +42,11 @@ metadata:
 
 ## Start by checking the environment
 
-Read [Building with an agent](references/guides/agent-workflow.md) before
+Read [Build with the skill](references/guides/agent-workflow.md) before
 implementation. It defines the repository and chat-only workflows, setup
 approval boundary, two-pillar acceptance criteria and verification report.
-Require a React 19 framework; follow [installation](references/guides/installation.md),
-including checks for existing resets.
+Use a React framework; check peer dependencies and resets in
+[installation](references/guides/installation.md).
 Inspect the installed package, stylesheet delivery and initial layer order;
 do not install or change shared infrastructure without existing authorization
 or an approved concrete proposal. In chat, probe actual package and rendering
@@ -126,7 +126,7 @@ No layout components (use native grid, flex or flow with the space tokens), no
 
 1. **Check setup before changing it.** Follow the environment workflow above.
    If authorized setup is needed, install `@loamui/core` with the project's
-   package manager and load its CSS once. React 19, ESM only, no provider.
+   package manager and load its CSS once. ESM only, no provider.
    Consult [installation](references/guides/installation.md) for CSS pipeline
    failures and establish layer order before recipe styles load.
 2. **Read before composing.** Check the installed package version and read

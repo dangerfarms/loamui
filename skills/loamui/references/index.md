@@ -7,8 +7,8 @@
 ## Guides
 
 - [Introduction](guides/introduction.md) — Modern UI primitives for agent-assisted developers: contextual tokens, element styles and React components built on Google's Modern Web Guidance. · [live](https://loamui.com/docs.md)
-- [Installation](guides/installation.md) — Set up LoamUI in Next.js or React Router, check your first interface, then add the agent skill. · [live](https://loamui.com/docs/installation.md)
-- [Building with an agent](guides/agent-workflow.md) — Check the environment, compose from the three primitives, and verify the two pillars in the result. · [live](https://loamui.com/docs/agent-workflow.md)
+- [Installation](guides/installation.md) — Set up LoamUI in Next.js or TanStack Start, check your first interface, then add the agent skill. · [live](https://loamui.com/docs/installation.md)
+- [Build with the skill](guides/agent-workflow.md) — Install the LoamUI skill, give your agent a first prompt, and review the interface it builds. · [live](https://loamui.com/docs/agent-workflow.md)
 - [Tokens](guides/tokens.md) — The token primitive: a handful of semantic decisions, everything else derived, and the theming that falls out of it. · [live](https://loamui.com/docs/tokens.md)
 - [Element styles](guides/element-styles.md) — The element-styles primitive: enhanced default styles for native HTML, page-wide. Plain markup is already styled before any component appears. · [live](https://loamui.com/docs/element-styles.md)
 - [Components](guides/components.md) — The third primitive: a small, curated set of accessible components composed from tokens and element styles. · [live](https://loamui.com/docs/components.md)
@@ -18,7 +18,7 @@
 - [Typography](guides/typography.md) — How the type scale, rhythm and figures work, and how to build your own domain-specific typography on top of them. · [live](https://loamui.com/docs/typography.md)
 - [Accessibility](guides/accessibility.md) — What LoamUI guarantees: platform semantics, APG keyboard patterns, engineered WCAG specifics, and user preferences as the baseline. · [live](https://loamui.com/docs/accessibility.md)
 - [Install with Next.js](guides/nextjs.md) — Set up LoamUI with Next.js App Router and native CSS. · [live](https://loamui.com/docs/installation/nextjs.md)
-- [Install with React Router](guides/react-router.md) — Set up LoamUI with React Router Framework Mode and native CSS. · [live](https://loamui.com/docs/installation/react-router.md)
+- [Install with TanStack Start](guides/tanstack-start.md) — Set up LoamUI with TanStack Start and native CSS, without Tailwind or a UI kit. · [live](https://loamui.com/docs/installation/tanstack-start.md)
 
 ## Components: Inputs
 

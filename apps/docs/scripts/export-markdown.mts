@@ -437,7 +437,7 @@ function exampleMarkdown(entry: (typeof EXAMPLE_META)[number]): string {
   out.push(
     "## Using this recipe",
     "",
-    "Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.",
+    "Copy both files side by side into your React framework project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.",
     "",
   );
   out.push(
@@ -504,7 +504,7 @@ const sorted = [...guides].sort((a, b) => {
 });
 
 const workflow = readFileSync(join(SKILL_REFS, "guides", "agent-workflow.md"), "utf8");
-const workflowBody = workflow.slice(workflow.indexOf("# Building with an agent"));
+const workflowBody = workflow.slice(workflow.indexOf("\n# ") + 1);
 const absoluteLinks = (markdown: string) => markdown.replace(/\]\(\/(?!\/)/g, `](${ORIGIN}/`);
 
 // Static, on-demand prompt files: source and contracts stay out of gallery JavaScript.

@@ -14,9 +14,9 @@ changes for approval unless already authorized. In chat-only environments,
 use the real package or provide source with explicit runtime verification gaps.
 Never emulate core exports or claim unrun checks.
 
-Repository setup requires a React 19 framework application with ESM support.
+Repository setup requires a React framework application with ESM support.
 Follow <https://loamui.com/docs/installation.md> for Next.js App Router or
-React Router Framework Mode. Load all three primitives through the documented
+TanStack Start. Load all three primitives through the documented
 stylesheet delivery; do not assume the framework's CSS processor accepts the
 finished library CSS. Inspect existing resets and Tailwind Preflight before
 changing them. The skill does not install the package. No provider is needed.

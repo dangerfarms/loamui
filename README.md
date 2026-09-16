@@ -133,9 +133,9 @@ the authority for everything it covers: run it and believe it.
 
 ## Installation
 
-Start with a React 19 framework application. Follow the
+Start with a React framework application. Follow the
 [installation guide](https://loamui.com/docs/installation) for **Next.js App Router**
-or **React Router Framework Mode**: prepare the app, load LoamUI's three
+or **TanStack Start**: prepare the app, load LoamUI's three
 primitives and verify your first interface before adding the skill.
 
 The public npm release of `@loamui/core` is planned but not yet available.

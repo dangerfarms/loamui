@@ -13,9 +13,26 @@ export interface NavItem {
   description: string;
 }
 
-export const GETTING_STARTED: { name: string; href: string }[] = [
+export interface GuideLink {
+  name: string;
+  href: string;
+  children?: GuideLink[];
+}
+
+export const GETTING_STARTED: GuideLink[] = [
   { name: "Introduction", href: "/docs" },
-  { name: "Installation", href: "/docs/installation" },
+  {
+    name: "Installation",
+    href: "/docs/installation",
+    children: [
+      { name: "Next.js", href: "/docs/installation/nextjs" },
+      { name: "TanStack Start", href: "/docs/installation/tanstack-start" },
+    ],
+  },
+  { name: "Build with the skill", href: "/docs/agent-workflow" },
+];
+
+export const GUIDES: GuideLink[] = [
   { name: "Contextualism", href: "/docs/contextualism" },
   { name: "Layout", href: "/docs/layout" },
   { name: "Typography", href: "/docs/typography" },

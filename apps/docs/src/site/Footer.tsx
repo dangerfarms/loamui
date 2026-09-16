@@ -8,7 +8,7 @@ const groups = [
     links: [
       { label: "Introduction", href: "/docs" },
       { label: "Installation", href: "/docs/installation" },
-      { label: "Agent workflow", href: "/docs/agent-workflow" },
+      { label: "Build with the skill", href: "/docs/agent-workflow" },
     ],
   },
   {

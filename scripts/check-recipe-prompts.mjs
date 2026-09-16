@@ -45,7 +45,7 @@ for (const category of readdirSync(join(root, prompts))) {
         `${slug}: missing ${match[1]} contract`,
       );
     }
-    assert.ok(prompt.includes("# Building with an agent"), `${slug}: missing workflow`);
+    assert.ok(prompt.includes("# Build with the skill"), `${slug}: missing workflow`);
     count++;
   }
 }
@@ -57,7 +57,7 @@ assert.ok(
   "Only llms.txt should be exported",
 );
 assert.ok(
-  read("apps/docs/public/llms.txt").includes("# Building with an agent"),
+  read("apps/docs/public/llms.txt").includes("# Build with the skill"),
   "Index must carry essential workflow",
 );
 console.log(

@@ -42,11 +42,6 @@
     display: block flow;
   }
 
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-
   /* Headings, navigation, controls and the site's short marketing measures
      never hyphenate: the element styles hyphenate body copy, which is right
      for prose and wrong for "accessi-ble" in a centred lead or "Segmented-
@@ -61,16 +56,6 @@
   code,
   [data-no-hyphens] {
     hyphens: manual;
-  }
-
-  /* Core sets the letter-spacing and balanced wrapping; only the tighter
-     marketing leading is the site's own. `p` needs nothing: core sets
-     text-wrap: pretty on body and it inherits. */
-  h1,
-  h2,
-  h3,
-  h4 {
-    line-height: 1.1;
   }
 }
 
@@ -124,38 +109,11 @@
       }
     }
   }
-
-  body {
-    background: var(--loam-color-bg);
-    color: var(--loam-color-fg);
-    font-family: var(--loam-font);
-    font-size: var(--loam-text-md);
-
-    /* Fallback fonts render at the webfont's own aspect — no reflow jolt
-       while the pinned font loads. */
-    font-size-adjust: from-font;
-    line-height: 1.6;
-    margin: 0;
-  }
-
-  code,
-  pre,
-  kbd {
-    font-family: var(--loam-font-mono);
-  }
-
-  /* A link inside running text is told apart by more than its colour. */
-  main :is(p, dd) a {
-    color: var(--loam-color-link);
-    text-decoration: underline;
-    text-decoration-thickness: from-font;
-    text-underline-offset: 0.15em;
-  }
 }
 
 @layer site.util {
   .container {
-    inline-size: min(100% - 2.5rem, var(--site-max));
+    inline-size: min(100% - 2 * var(--loam-space-m), var(--site-max));
     margin-inline: auto;
   }
 

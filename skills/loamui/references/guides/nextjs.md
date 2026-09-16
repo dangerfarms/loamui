@@ -10,7 +10,7 @@ import "../../prose.css";
 
 # Install with Next.js
 
-Use Next.js App Router with React 19. You need a Node.js version supported by [Next.js](https://nextjs.org/docs/app/getting-started/installation); these instructions were checked with Node.js 24 and Next.js 16.3.5.
+Use Next.js App Router. Follow [Next.js’s current system requirements](https://nextjs.org/docs/app/getting-started/installation) for your Node.js runtime.
 
 ## Prepare the application
 
@@ -18,11 +18,11 @@ For a new project, create an empty application without Tailwind:
 
 ```bash
 npx create-next-app@latest my-app \
-  --ts --app --no-tailwind \
-  --no-src-dir --empty --eslint \
-  --use-npm --yes
+  --ts --app --empty --no-tailwind --no-src-dir --use-npm --yes
 cd my-app
 ```
+
+This creates an empty application without Tailwind or a UI kit.
 
 Already have an application? Keep its routes and configuration. Check the [existing-project workflow](/docs/agent-workflow#establish-the-environment-first) before changing its styling foundation. The paths below use `app/`; use `src/app/` instead if your project has a `src` directory, including the generated module path in the sync script.
 
@@ -114,4 +114,4 @@ npm run build
 npm start
 ```
 
-The `dev` and `build` commands generate the stylesheet before Next.js runs. After upgrading LoamUI, restart development or rebuild. Then [add the agent skill](/docs/installation#3-add-the-agent-skill).
+The `dev` and `build` commands generate the stylesheet before Next.js runs. After upgrading LoamUI, restart development or rebuild. Then [build with the skill](/docs/agent-workflow).

@@ -18,7 +18,7 @@ A recipe in **Grids**: a component and a stylesheet built from `@loamui/core`, t
 
 ## Using this recipe
 
-Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+Copy both files side by side into your React framework project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
 
 Replace the sample workshops and booking destinations, including the dates and local times. State the venue and time zone in the surrounding event information. Use heading levels appropriate to that page.
 

@@ -37,7 +37,7 @@ Each module answers a different question. Match it to what you are arranging, no
 
 ### Flow, for a documentation page
 
-Normal flow stacks blocks in source order, and the element styles already give every block its own block-end margin, so a column of prose needs no layout code at all. Where you want to tune the rhythm, set the gap with a space token on the container rather than adding margins.
+Normal flow stacks blocks in source order. LoamUI’s element styles provide the spacing between headings, paragraphs and other content. For custom spacing, use space tokens in scoped margin rules. Use `gap` when arranging children with grid or flexbox.
 
 <div className="block">
   <div style={{ ...stage, display: "flow-root" }}>

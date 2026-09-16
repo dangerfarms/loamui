@@ -6,9 +6,9 @@ with modern CSS.
 
 ## Set up your application
 
-Use a React 19 framework application. Follow the
+Use a React framework application. Follow the
 [installation guide](https://loamui.com/docs/installation) for Next.js App Router
-or React Router Framework Mode, including stylesheet delivery and layer order.
+or TanStack Start, including stylesheet delivery and layer order.
 The guide also describes package availability. There is no LoamUI provider.
 
 Once the foundation is loaded, compose native elements and components:

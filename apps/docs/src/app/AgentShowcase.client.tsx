@@ -1,7 +1,8 @@
 "use client";
 
 import { type ReactNode } from "react";
-import { Card, CopyButton, Tabs } from "@loamui/core";
+import Link from "next/link";
+import { Card, CopyButton, SignpostLink, Tabs } from "@loamui/core";
 import { CodeBlock } from "@/renderer/CodeBlock";
 import "./AgentShowcase.css";
 
@@ -12,18 +13,12 @@ import "./AgentShowcase.css";
  * (scripts/sync-agent-demo.mjs), so the tabs cannot drift from the render.
  */
 export function AgentShowcase({
-  skillCommand,
-  skillNote,
   prompt,
   tsx,
   css,
   caption,
   children,
 }: {
-  /** The consumer skill's install command; omit to hide the row. */
-  skillCommand?: string;
-  /** Optional guidance shown beside the command. */
-  skillNote?: ReactNode;
   prompt: string;
   tsx: string;
   css: string;
@@ -34,42 +29,22 @@ export function AgentShowcase({
     <div className="site-AgentShowcase">
       <Card>
         <div className="site-AgentAsk">
-          <h3>Add the skill and ask</h3>
-          {skillCommand && (
-            <>
-              <p className="label">
-                Add the skill: {skillNote && <span className="note">{skillNote}</span>}
-              </p>
-              <div className="command">
-                <span className="prompt" aria-hidden>
-                  $
-                </span>
-                <code>{skillCommand}</code>
-                <CopyButton
-                  className="copy"
-                  value={skillCommand}
-                  aria-label="Copy the skill install command"
-                >
-                  Copy
-                </CopyButton>
-              </div>
-            </>
-          )}
-          <p className="label">
-            {skillCommand ? (
-              "And then write a prompt using it:"
-            ) : (
-              <>
-                Point the agent at <a href="/llms.txt">llms.txt</a>:
-              </>
-            )}
-          </p>
+          <h3>Start with a prompt</h3>
+          <p className="label">Use this prompt with the LoamUI skill:</p>
           <div className="promptBox">
             <p>{prompt}</p>
             <CopyButton className="copy" value={prompt} aria-label="Copy the prompt">
               Copy
             </CopyButton>
           </div>
+          <p>
+            <SignpostLink render={<Link href="/docs/agent-workflow" />}>
+              Build with the skill
+            </SignpostLink>
+          </p>
+          <p className="label">
+            New to LoamUI? <Link href="/docs/installation">Set up your project first</Link>.
+          </p>
         </div>
       </Card>
       <Card>

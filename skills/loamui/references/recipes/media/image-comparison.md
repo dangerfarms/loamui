@@ -18,7 +18,7 @@ A recipe in **Media**: a component and a stylesheet built from `@loamui/core`, t
 
 ## Using this recipe
 
-Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+Copy both files side by side into your React framework project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
 
 Use photographs of the same subject with matching dimensions and framing, and update both descriptions and the caption. This sample compares grayscale and colour treatments of one photo. React hydration is required to update the reveal; the initial images and caption remain available before it.
 

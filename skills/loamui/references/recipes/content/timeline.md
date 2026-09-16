@@ -18,7 +18,7 @@ A recipe in **Content**: a component and a stylesheet built from `@loamui/core`,
 
 ## Using this recipe
 
-Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+Copy both files side by side into your React framework project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
 
 Replace the fictional history with chronological events and valid machine-readable dates. Select heading levels to fit the surrounding section. This presents a static history; use Stepper for progress through an interactive task.
 

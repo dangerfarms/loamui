@@ -6,6 +6,7 @@
     font-weight: 800;
     gap: var(--loam-space-2xs);
     letter-spacing: -0.03em;
+    text-decoration: none;
   }
 
   span.mark {
