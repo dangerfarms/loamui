@@ -4,30 +4,37 @@ Modern UI primitives for agent-assisted developers. LoamUI combines contextual
 tokens, enhanced native element styles, and composable React components built
 with modern CSS.
 
-```bash
-npm install @loamui/core
-```
+## Set up your application
+
+Use a React 19 framework application. Follow the
+[installation guide](https://loamui.com/docs/installation) for Next.js App Router
+or React Router Framework Mode, including stylesheet delivery and layer order.
+The guide also describes package availability. There is no LoamUI provider.
+
+Once the foundation is loaded, compose native elements and components:
 
 ```tsx
-import "@loamui/core/styles.css";
-import { Button, Field, Input } from "@loamui/core";
+"use client";
 
-export function SignIn() {
+import { Checkbox, Field, Input } from "@loamui/core";
+
+export function Preferences() {
   return (
-    <form>
+    <section>
+      <h2>Your preferences</h2>
       <Field.Root>
-        <Field.Label>Email</Field.Label>
-        <Input type="email" autoComplete="email" required />
+        <Field.Label>Your name</Field.Label>
+        <Input name="name" autoComplete="name" />
       </Field.Root>
-      <Button type="submit">Sign in</Button>
-    </form>
+      <Checkbox label="Send me product updates" />
+    </section>
   );
 }
 ```
 
 - **Contextual**: regions express intent and the components inside adapt.
 - **Static styles**: plain CSS organized with cascade layers and `@scope`.
-- **Themeable**: override `--loam-*` CSS variables; no provider, no config.
+- **Themeable**: override `--loam-*` CSS variables; no theme provider.
 - **Native dark mode**: `light-dark()` follows `color-scheme` (or set
   `data-theme="dark"` / `"light"` on `<html>`).
 - **Accessible and semantic**: native elements carry the platform behavior.

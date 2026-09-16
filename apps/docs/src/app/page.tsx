@@ -43,7 +43,7 @@ export default function HomePage() {
             Use our agent skill to quickly build bespoke, accessible UIs on top of our contextual
             tokens, element styles, and React components.
           </p>
-          <SignpostLink render={<Link href="/docs" />}>Get started</SignpostLink>
+          <SignpostLink render={<Link href="/docs/installation" />}>Get started</SignpostLink>
         </div>
         <div className="specimen">
           <HeroShowcase />
@@ -77,12 +77,13 @@ export default function HomePage() {
           <p className="eyebrow">Build with the skill</p>
           <h2>Describe your UI. Build on the primitives.</h2>
           <p>
-            Add the LoamUI skill to your agent, then describe what you need. Here’s a restaurant
-            menu built from the same parts you’ll use in your own project.
+            Set up your framework and LoamUI first, then add the skill and describe what you need.
+            Here’s a restaurant menu built from the same parts you’ll use in your own project.
           </p>
         </header>
         <AgentShowcase
           skillCommand="npx skills add dangerfarms/loamui"
+          skillNote={<Link href="/docs/installation">Set up your project first</Link>}
           prompt={prompt}
           tsx={menu.tsx}
           css={menu.css}
@@ -224,7 +225,7 @@ export default function HomePage() {
               skill to bring them together. Modern web foundations and considered UX, ready for your
               next project.
             </p>
-            <SignpostLink render={<Link href="/docs" />}>Get started</SignpostLink>
+            <SignpostLink render={<Link href="/docs/installation" />}>Get started</SignpostLink>
           </div>
         </Card>
       </section>

@@ -14,7 +14,11 @@ Use this workflow when generating or reviewing UI with LoamUI, in a repository o
 
 Inspect what is available before changing anything. In a repository, read its instructions, package manifest, lockfile, app entry, stylesheet entry and relevant existing components. Check the installed `@loamui/core` version and its public exports/types. Use the existing package manager. Do not assume that the documentation and installed package are the same version.
 
-Check that the application loads all three primitives: tokens, element styles and components. Import the core stylesheet once, using the [installation guide](/docs/installation.md). Inspect the build pipeline and the rendered cascade; a successful import alone does not establish correct styling.
+Repository setup requires a React 19 framework application. The beta installation paths are Next.js App Router and React Router Framework Mode; Vite alone is not the framework setup. If no framework exists, propose one of those paths before generating application files. For another framework, establish its React and stylesheet integration before claiming support. Follow the [installation guide](/docs/installation.md) and check package availability; the skill is not the package.
+
+For a fresh beta project, use LoamUI without Tailwind or another global reset. In an existing project, inspect Tailwind's Preflight import, utility usage and competing element rules. Do not silently delete a dependency or rewrite the site's styling foundation. Identify the affected files and propose an integration or migration before proceeding.
+
+Check that the application loads all three primitives: tokens, element styles and components. Load the core stylesheet once, using the [installation guide](/docs/installation.md). Inspect the build pipeline and the rendered cascade; a successful import alone does not establish correct styling.
 
 The layer order must be established before any recipe or library style registers a layer:
 

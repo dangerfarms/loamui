@@ -45,6 +45,8 @@ metadata:
 Read [Building with an agent](references/guides/agent-workflow.md) before
 implementation. It defines the repository and chat-only workflows, setup
 approval boundary, two-pillar acceptance criteria and verification report.
+Require a React 19 framework; follow [installation](references/guides/installation.md),
+including checks for existing resets.
 Inspect the installed package, stylesheet delivery and initial layer order;
 do not install or change shared infrastructure without existing authorization
 or an approved concrete proposal. In chat, probe actual package and rendering

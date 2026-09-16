@@ -64,7 +64,7 @@ const LANGUAGE_NAMES: Record<string, string> = {
 /**
  * A highlighted code listing with the library's own CopyButton (which
  * announces the copy, and its failure). Long lines scroll inside the
- * block; once they do, the block is a named region in the Tab order.
+ * block; once they do, the block is a named group in the Tab order.
  */
 export function CodeBlock({
   code,
@@ -76,7 +76,7 @@ export function CodeBlock({
   className?: string;
 }) {
   const name = LANGUAGE_NAMES[language] ?? language;
-  const scroll = useScrollable<HTMLPreElement>(`${name} code`);
+  const scroll = useScrollable<HTMLPreElement>(`${name} code`, "group");
 
   return (
     <div className={`site-CodeBlock ${className ?? ""}`}>

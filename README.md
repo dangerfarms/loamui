@@ -133,28 +133,19 @@ the authority for everything it covers: run it and believe it.
 
 ## Installation
 
-```bash
-npm install @loamui/core
-```
+Start with a React 19 framework application. Follow the
+[installation guide](https://loamui.com/docs/installation) for **Next.js App Router**
+or **React Router Framework Mode**: prepare the app, load LoamUI's three
+primitives and verify your first interface before adding the skill.
 
-Import the stylesheet once at your app root, then use any component:
-
-```tsx
-import "@loamui/core/styles.css";
-import { Button } from "@loamui/core";
-
-export default function App() {
-  return <Button>Get started</Button>;
-}
-```
-
-That's the whole setup: no provider, no config. See the
-[documentation](https://loamui.com/) for every component, live examples and the
-theming guide.
+The public npm release of `@loamui/core` is planned but not yet available.
+The guide's package commands apply once it is published. Installing the skill
+does not install the library.
 
 ## Use it with an AI agent
 
-LoamUI ships a skill that teaches agents the library: the primitives, the
+After completing the application setup, add the skill that teaches agents
+the library: the primitives, the
 pillars, every component's reference, and the mistakes people make by default:
 
 ```bash

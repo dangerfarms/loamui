@@ -9,7 +9,10 @@ import { useEffect, useRef, useState } from "react";
  * it. Detected with a ResizeObserver rather than declared, so a table that
  * fits on a wide screen adds no tab stop there.
  */
-export function useScrollable<T extends HTMLElement>(label: string) {
+export function useScrollable<T extends HTMLElement>(
+  label: string,
+  role: "region" | "group" = "region",
+) {
   const ref = useRef<T>(null);
   const [scrolls, setScrolls] = useState(false);
 
@@ -25,6 +28,6 @@ export function useScrollable<T extends HTMLElement>(label: string) {
 
   return {
     ref,
-    ...(scrolls ? { tabIndex: 0, role: "region" as const, "aria-label": label } : {}),
+    ...(scrolls ? { tabIndex: 0, role, "aria-label": label } : {}),
   };
 }

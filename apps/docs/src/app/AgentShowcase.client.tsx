@@ -22,8 +22,8 @@ export function AgentShowcase({
 }: {
   /** The consumer skill's install command; omit to hide the row. */
   skillCommand?: string;
-  /** A short status shown beside the command, e.g. "soon". */
-  skillNote?: string;
+  /** Optional guidance shown beside the command. */
+  skillNote?: ReactNode;
   prompt: string;
   tsx: string;
   css: string;
@@ -38,8 +38,7 @@ export function AgentShowcase({
           {skillCommand && (
             <>
               <p className="label">
-                Add the skill:
-                {skillNote && <span className="note">{skillNote}</span>}
+                Add the skill: {skillNote && <span className="note">{skillNote}</span>}
               </p>
               <div className="command">
                 <span className="prompt" aria-hidden>

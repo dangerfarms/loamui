@@ -127,9 +127,24 @@ function jsxToText(s: string): string {
     .trim();
 }
 
+/** Ignore fenced examples when locating MDX module exports. */
+function moduleSource(src: string): string {
+  let fence = false;
+  return src
+    .split("\n")
+    .map((line) => {
+      if (/^\s*```/.test(line)) {
+        fence = !fence;
+        return " ".repeat(line.length);
+      }
+      return fence ? " ".repeat(line.length) : line;
+    })
+    .join("\n");
+}
+
 /** Serialize an .mdx source file to plain markdown. */
 function mdxToMarkdown(src: string): { md: string; title: string; description: string } {
-  const meta = src.match(
+  const meta = moduleSource(src).match(
     /export const metadata = \{[\s\S]*?title: "([^"]+)"[\s\S]*?description:\s*\n?\s*"([^"]+)"/,
   );
   const title = meta?.[1] ?? "";
@@ -140,7 +155,7 @@ function mdxToMarkdown(src: string): { md: string; title: string; description: s
   // a multi-line regex here once swallowed everything between an `import`
   // inside one fence and the next `from "…"` in another.
   let s = src;
-  const mi = s.indexOf("export const metadata");
+  const mi = moduleSource(s).indexOf("export const metadata");
   if (mi > -1) {
     let depth = 0,
       j = s.indexOf("{", mi),
@@ -158,7 +173,11 @@ function mdxToMarkdown(src: string): { md: string; title: string; description: s
   // Other top-level exports (helper components/styles) — drop line blocks.
   // Other top-level exports (helper components, icons): drop each one by
   // scanning to the bracket that closes it, whatever bracket opened it.
-  for (let ei = s.indexOf("\nexport const "); ei > -1; ei = s.indexOf("\nexport const ")) {
+  for (
+    let ei = moduleSource(s).indexOf("\nexport const ");
+    ei > -1;
+    ei = moduleSource(s).indexOf("\nexport const ")
+  ) {
     const start = ei + 1;
     const open = s.slice(start).search(/[({[]/);
     if (open === -1) break;

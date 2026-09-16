@@ -31,25 +31,9 @@ The ideas that hold the primitives together. Each is grounded in a reference and
 
 Trust in the agents is a separate question, answered by gatekeeping rather than by a pillar: contrast, axe and interaction tests run in CI, and Stylelint holds the CSS to the rules above.
 
-## Installation
+## Get started
 
-Add the package and import the stylesheet once at your app root:
-
-```bash
-pnpm add @loamui/core
-```
-
-```tsx
-// app/layout.tsx
-import "@loamui/core/styles.css";
-import { Button } from "@loamui/core";
-
-export default function Page() {
-  return <Button>Get started</Button>;
-}
-```
-
-</div>
+Set up a React framework, load LoamUI's three primitives, and check your first interface. The [installation guide](/docs/installation) covers Next.js App Router and React Router Framework Mode, then shows you how to add the agent skill.
 
 ## Working with an agent
 
@@ -57,7 +41,7 @@ Every page of this site has a markdown twin at the same URL with `.md` appended,
 
 ## Next steps
 
-- [Installation](/docs/installation): framework guides for Next.js and Vite.
+- [Installation](/docs/installation): framework guides for Next.js and React Router.
 - [Tokens](/docs/tokens): the token surface, and the theming that falls out of it.
 - [Contextualism](/docs/contextualism): how regions shape colour, size and layout.
 - [Building your own recipes](/recipes/guide): build a hero from the primitives.

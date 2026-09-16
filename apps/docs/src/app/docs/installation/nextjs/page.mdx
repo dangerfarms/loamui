@@ -1,0 +1,114 @@
+import "../../prose.css";
+
+export const metadata = {
+  title: "Install with Next.js",
+  description: "Set up LoamUI with Next.js App Router and native CSS.",
+};
+
+# Install with Next.js
+
+Use Next.js App Router with React 19. You need a Node.js version supported by [Next.js](https://nextjs.org/docs/app/getting-started/installation); these instructions were checked with Node.js 24 and Next.js 16.3.5.
+
+## Prepare the application
+
+For a new project, create an empty application without Tailwind:
+
+```bash
+npx create-next-app@latest my-app \
+  --ts --app --no-tailwind \
+  --no-src-dir --empty --eslint \
+  --use-npm --yes
+cd my-app
+```
+
+Already have an application? Keep its routes and configuration. Check the [existing-project workflow](/docs/agent-workflow#establish-the-environment-first) before changing its styling foundation. The paths below use `app/`; use `src/app/` instead if your project has a `src` directory, including the generated module path in the sync script.
+
+Install the package when the [public npm release is available](/docs/installation):
+
+```bash
+npm install @loamui/core
+```
+
+## Load the three primitives
+
+LoamUI ships finished CSS containing its tokens, element styles and component styles. Serve that file unchanged: current CSS processors can reject some of its native syntax. The script below gives the file a content-hashed URL, so a package update cannot reuse stale CSS.
+
+Create `scripts/sync-loamui-css.mjs`:
+
+```js
+import { createHash } from "node:crypto";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+const css = readFileSync(require.resolve("@loamui/core/styles.css"));
+const hash = createHash("sha256").update(css).digest("hex").slice(0, 12);
+const filename = `loamui-${hash}.css`;
+mkdirSync("public", { recursive: true });
+writeFileSync(`public/${filename}`, css);
+writeFileSync("app/loamui-styles.ts", `export const loamuiStyles = "/${filename}";\n`);
+```
+
+Add these generated paths to `.gitignore`:
+
+```text
+/public/loamui-*.css
+/app/loamui-styles.ts
+```
+
+Run the sync script before development and production builds. In an existing project, extend its commands rather than replacing other setup steps.
+
+```json
+{
+  "scripts": {
+    "dev": "node scripts/sync-loamui-css.mjs && next dev",
+    "build": "node scripts/sync-loamui-css.mjs && next build",
+    "start": "next start"
+  }
+}
+```
+
+Create `app/globals.css`. Declare the order here before any recipe stylesheet can establish a layer:
+
+```css
+@layer loamui.tokens, loamui.elements, loamui.components;
+```
+
+Load the global stylesheet and generated CSS URL in `app/layout.tsx`:
+
+```tsx
+import "./globals.css";
+import { loamuiStyles } from "./loamui-styles";
+
+export const metadata = { title: "My app" };
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <link rel="stylesheet" href={loamuiStyles} />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+Keep any existing metadata, providers and document attributes when integrating this into an application. The generated URL assumes the app is hosted at `/`; prefix it with your configured `basePath` when deploying under a subpath. Import application and recipe CSS normally; do not also import `@loamui/core/styles.css` through Next.js.
+
+## Check your first interface
+
+Copy the [foundation example](/docs/installation#2-check-the-foundation) into `app/page.tsx` and put its CSS alongside it. Compound exports such as `Field.Root` require a client boundary because the package exports them from a client bundle. Keep `"use client"` on that composition; the root layout stays a server component.
+
+```bash
+npm run dev
+```
+
+Check the interface, then stop that server and run:
+
+```bash
+npm run build
+npm start
+```
+
+The `dev` and `build` commands generate the stylesheet before Next.js runs. After upgrading LoamUI, restart development or rebuild. Then [add the agent skill](/docs/installation#3-add-the-agent-skill).

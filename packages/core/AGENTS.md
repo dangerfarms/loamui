@@ -14,12 +14,14 @@ changes for approval unless already authorized. In chat-only environments,
 use the real package or provide source with explicit runtime verification gaps.
 Never emulate core exports or claim unrun checks.
 
-```tsx
-import "@loamui/core/styles.css"; // once, at the app root
-import { Button, Field, Input } from "@loamui/core";
-```
+Repository setup requires a React 19 framework application with ESM support.
+Follow <https://loamui.com/docs/installation.md> for Next.js App Router or
+React Router Framework Mode. Load all three primitives through the documented
+stylesheet delivery; do not assume the framework's CSS processor accepts the
+finished library CSS. Inspect existing resets and Tailwind Preflight before
+changing them. The skill does not install the package. No provider is needed.
 
-No provider, no config. React 19, ESM only. In React Server Components every
+In React Server Components every
 compound part (`Field.Root`, `Modal.Trigger`) is a client reference, so JSX
 that uses parts lives in a `"use client"` file; callable forms (`<Button>`,
 `<Alert title>`) work from server modules.
