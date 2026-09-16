@@ -30,7 +30,7 @@ Your agent checks the package, stylesheet and existing tools. It proposes missin
 
 Describe the content and behaviour you need. The skill supplies the implementation guidance: it reads the relevant recipes and component contracts, composes the primitives, and checks the result. For actions such as saving a profile, provide your application's endpoint or ask the agent to identify the integration it needs.
 
-You can also choose a [recipe](/recipes) and copy the short prompt shown on its card. Add the content or behaviour you want to change; you do not need to list CSS techniques or accessibility rules in the prompt.
+You can also choose a [recipe](/recipes) and copy the short prompt at the top of its page. Add the content or behaviour you want to change; you do not need to list CSS techniques or accessibility rules in the prompt.
 
 ## 4. Review the result
 
@@ -42,7 +42,7 @@ Review the interface in your application, including keyboard use, a narrow layou
 
 ## Using a chat tool
 
-If your tool cannot install a skill, provide [llms.txt](/llms.txt) and a recipe prompt. When it cannot open links, attach the **Full reference** linked on the recipe card. A chat preview needs access to the real package and stylesheet; when that is unavailable, ask for source files to use in your configured application. Preview and runtime behaviour still need checking there.
+If your tool cannot install a skill, provide [llms.txt](/llms.txt) and a recipe prompt. If it cannot read the documentation, provide the relevant recipe source and component documentation before asking it to implement the recipe. A chat preview needs access to the real package and stylesheet; when that is unavailable, ask for source files to use in your configured application. Preview and runtime behaviour still need checking there.
 
 <details>
 <summary id="project-setup">Project setup reference</summary>
@@ -53,7 +53,7 @@ The following reference guides the agent through setup. Setup is complete when t
 
 ### Inspect and propose
 
-Read the project instructions, package manifest, lockfile, framework entry and styles. Check the installed LoamUI exports, stylesheet import and layer order. Identify existing formatting, type checking, CSS linting, interaction tests and CI commands. Check which agent is running and whether it supports project-local skills and browser tools.
+Read the project instructions, package manifest, lockfile, framework entry and styles. Check the installed LoamUI exports, stylesheet import and layer order. Identify existing formatting, type checking, CSS linting, interaction tests and CI commands. Check which agent is running and whether it supports project-local skills and browser tools. Confirm that LoamUI, Modern CSS and Google Chrome’s Modern Web Guidance skills are available to that agent; a folder on disk alone does not establish availability. Check the Stylelint configuration and composition checks as well as their installed dependencies.
 
 Keep the user's framework, package manager and browser support policy. Explain specific conflicts with resets or global rules; do not silently remove Tailwind or rewrite unrelated styles. If the framework or library is missing, follow Installation before composing UI.
 
@@ -166,7 +166,7 @@ The following guidance defines the environment checks, composition rules and ver
 
 ### Establish the environment first
 
-For a setup request or missing quality tools, follow [Set up your project](/docs/agent-workflow#project-setup). It supplies the maintained CSS configuration and companion-skill workflow. Reuse existing tools; do not install the repository’s entire development stack.
+Every recipe request starts with the environment checks below, even when the prompt only names the recipe. For missing quality tools, follow [Set up your project](/docs/agent-workflow#project-setup). It supplies the maintained CSS configuration and companion-skill workflow. Reuse existing tools; do not install the repository’s entire development stack.
 
 Inspect what is available before changing anything. In a repository, read its instructions, package manifest, lockfile, app entry, stylesheet entry and relevant existing components. Check the installed `@loamui/core` version and its public exports/types. Use the existing package manager. Do not assume that the documentation and installed package are the same version.
 
@@ -219,7 +219,7 @@ Preserve native labels, keyboard behaviour, focus, readable contrast and user pr
 
 ### Read and adapt a reference
 
-Read the [recipe guide](/recipes/guide), the selected recipe's complete TSX and CSS, and the reference for each core component used. Skill users can read these offline in `references/`. Each recipe card shows a short prompt that names the LoamUI skill and recipe. Resolve the name through the bundled reference index; do not ask the user to restate the implementation rules. The card also links to a complete reference for assistants without skills or browsing: it includes the selected source, workflow and component contracts.
+Read the [recipe guide](/recipes/guide), the selected recipe's complete TSX and CSS, and the reference for each core component used. Skill users can read these offline in `references/`. Each recipe page shows a short prompt that names the LoamUI skill and recipe. Resolve the name through the bundled reference index; do not ask the user to restate the implementation rules or supply a combined reference document. Run the environment checks first, propose any missing shared setup, then adapt the source and verify the result. An existing setup needs inspection, not another installation.
 
 Use the published recipes as worked references for this contract. Publication and design notes are not certification: verify every adaptation in its consuming environment.
 

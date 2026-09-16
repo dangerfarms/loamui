@@ -53,14 +53,13 @@ style delivery, layer order and existing tools. An authorized setup request
 can include missing dependencies; propose shared changes before applying them
 unless already approved. Preserve existing tools and unrelated styles.
 
-For setup or missing checks, follow
-[Project setup](references/guides/agent-workflow.md#project-setup).
-The maintained Stylelint and composition checks ship in `assets/`; copy them
-into the project, use its source paths and run the configured commands.
-Arrange companion skills for the active agent when supported and authorized,
-then read the relevant guidance. Their absence does not remove LoamUI's rules:
-use the bundled examples and official platform references. Installing a skill
-is not evidence it was used. Report unavailable guidance and unrun checks.
+On every recipe request, check LoamUI, Modern CSS and Google Chrome's Modern
+Web Guidance skills are available to the active agent, plus Stylelint and the
+composition checks. For gaps, follow [Project setup](references/guides/agent-workflow.md#project-setup).
+Reuse working tools; propose missing shared setup. When authorized, configure
+it from `assets/` for the project's paths and run the checks. Read companion
+guidance, not just its installation status. If unavailable, use bundled rules
+and official references; report missing guidance and unrun checks.
 
 For a named recipe prompt, resolve the title in [the index](references/index.md)
 and read that recipe's source and component contracts. Do not require a long

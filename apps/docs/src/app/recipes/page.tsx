@@ -20,10 +20,10 @@ export default function ExamplesPage() {
           components. Inspect the preview and source, then adapt a recipe to your own content.
         </p>
         <p className="lead">
-          Copy a prompt below to build with your agent.{" "}
-          <a href="/docs/agent-workflow">Add the LoamUI skill</a> first, then adapt the prompt to
-          your content. <a href="/recipes/guide">Building your own recipes</a> explains the
-          composition techniques.
+          Open a recipe for its demo, React, CSS and a short prompt to build it with the{" "}
+          <a href="/docs/agent-workflow">LoamUI skill</a>.{" "}
+          <a href="/recipes/guide">Building your own recipes</a> explains the composition
+          techniques.
         </p>
       </header>
       <div className="shell">

@@ -160,9 +160,10 @@
     {
       "id": "recipe-clipboard",
       "prompt": "Paste the exact generated Hero with image recipe prompt, without extra implementation hints.",
-      "environment": "Fresh supported framework project with core, its stylesheet and the LoamUI skill installed; no network. Give the agent the exact short prompt shown on the card.",
+      "environment": "Fresh supported framework project with core, its stylesheet and the LoamUI skill installed; no network. Give the agent the exact short prompt shown on the recipe page.",
       "expect": [
         "Resolves the named recipe in the skill index and reads bundled source and component contracts without extra implementation hints",
+        "Checks companion skill availability, Stylelint and composition checks; proposes missing shared setup before installing it",
         "Preserves real LoamUI components and standalone recipe files",
         "Checks layer order and verifies content-driven image containment, parent widths and keyboard behaviour",
         "Reports actual checks and gaps instead of blanket certification"
@@ -196,16 +197,6 @@
         "Runs relevant checks and repairs failures without weakening the rules"
       ],
       "forbid": ["!important", "className=\"loam-Card\""]
-    },
-    {
-      "id": "recipe-full-reference",
-      "prompt": "Build the Hero with image recipe using the attached full reference.",
-      "environment": "Supported framework app with core and its stylesheet, but no skill or network. Attach the exact generated .full.txt reference.",
-      "expect": [
-        "Uses the supplied source and contracts without inventing APIs",
-        "Delivers portable React and CSS and reports actual verification"
-      ],
-      "forbid": ["@/examples/", "@/renderer/"]
     }
   ]
 }

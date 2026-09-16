@@ -23,6 +23,7 @@
     gap: var(--loam-space-xs);
     justify-content: space-between;
     padding: var(--loam-space-3xs) var(--loam-space-2xs);
+    text-decoration: none;
     white-space: nowrap;
 
     &:hover {

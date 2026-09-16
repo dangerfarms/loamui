@@ -9,10 +9,10 @@ const prompts = "apps/docs/public/recipe-prompts";
 let count = 0;
 for (const category of readdirSync(join(root, prompts))) {
   for (const file of readdirSync(join(root, prompts, category))) {
-    if (file.endsWith(".full.txt")) continue;
+    assert.ok(!file.endsWith(".full.txt"), "Combined reference prompts should not be exported");
     const slug = file.replace(/\.txt$/, "");
     const short = read(`${prompts}/${category}/${file}`);
-    const prompt = read(`${prompts}/${category}/${slug}.full.txt`);
+    const twin = read(`skills/loamui/references/recipes/${category}/${slug}.md`);
     assert.ok(short.trim().split(/\s+/).length <= 40, `${slug}: default prompt is too long`);
     assert.ok(
       short.startsWith("Use the LoamUI skill to build the “"),
@@ -23,7 +23,6 @@ for (const category of readdirSync(join(root, prompts))) {
       `/recipes/${category}/${slug}.md`,
       "/docs/agent-workflow.md",
       "/recipes/guide.md",
-      `/recipe-prompts/${category}/${slug}.full.txt`,
     ]) {
       assert.ok(existsSync(join(root, "apps/docs/public", path)), `${slug}: broken ${path}`);
     }
@@ -33,11 +32,10 @@ for (const category of readdirSync(join(root, prompts))) {
     ]) {
       const code = read(`apps/docs/src/examples/${category}/${slug}/${source}`).trim();
       assert.ok(
-        prompt.includes(`\`\`\`${language}\n${code}\n\`\`\``),
+        twin.includes(`\`\`\`${language}\n${code}\n\`\`\``),
         `${category}/${slug}: ${source} drift`,
       );
     }
-    const twin = read(`skills/loamui/references/recipes/${category}/${slug}.md`);
     const title = twin.match(/^# (.+)$/m)?.[1];
     assert.ok(title && short.includes(`“${title}”`), `${slug}: prompt must name its recipe`);
     const uses = twin.match(/^- Uses: (.+)$/m)?.[1] ?? "";
@@ -46,12 +44,7 @@ for (const category of readdirSync(join(root, prompts))) {
         twin.includes(`- [${match[1]}](https://loamui.com/docs/components/`),
         `${slug}: missing ${match[1]} link`,
       );
-      assert.ok(
-        prompt.includes(`# Reference: ${match[1]}\n`),
-        `${slug}: missing ${match[1]} contract`,
-      );
     }
-    assert.ok(prompt.includes("# Build with the skill"), `${slug}: missing workflow`);
     count++;
   }
 }
@@ -67,5 +60,5 @@ assert.ok(
   "Index must carry the essential implementation brief",
 );
 console.log(
-  `check-recipe-prompts: OK (${count} short skill prompts and complete offline references, exact recipe source, component contracts, one llms.txt)`,
+  `check-recipe-prompts: OK (${count} short skill prompts, bundled recipe sources and component links, one llms.txt)`,
 );

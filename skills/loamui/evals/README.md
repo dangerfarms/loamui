@@ -38,13 +38,13 @@ quality. Browser checks and human visual review remain separate from type checks
 Run `consumer-setup-approval` in a clean consumer project and record the proposed
 setup before granting approval. Run `chat-source-only` with no network or runtime.
 For `recipe-clipboard`, install the skill and paste the exact short prompt shown
-on the card, without adding hints. Run `recipe-full-reference` separately with
-the attached complete reference and no installed skill. Repeat with Sign in with
-errors to exercise Field wiring,
+on the recipe page, without adding hints. Confirm that the agent inspects the
+project and proposes missing quality tools before building. Repeat with Sign in
+with errors to exercise Field wiring,
 native validation, value preservation and application submission boundaries.
 
-`pnpm check:prompts` checks the generated prompt source against the real recipe
-files and verifies included component references. Run the docs export first.
+`pnpm check:prompts` checks the short prompts, bundled recipe sources against the real
+recipe files, and links to component references. Run the docs export first.
 This is an artifact integrity check, not an LLM generation trial. Record actual
 model runs separately; do not report these scenarios as passed merely because
 the generated files or unit tests pass.

@@ -25,7 +25,7 @@ import { COMPONENTS, CATEGORY_ORDER } from "../src/site/nav.js";
 import type { ComponentContent } from "../src/renderer/types.js";
 import { EXAMPLE_CATEGORIES } from "../src/examples/categories.js";
 import { EXAMPLE_META } from "../src/examples/generated-meta.js";
-import { linkedRecipePrompt, recipePrompt } from "../src/examples/recipe-prompt.js";
+import { linkedRecipePrompt } from "../src/examples/recipe-prompt.js";
 import { PILLARS } from "../src/examples/types.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -534,41 +534,13 @@ const implementationBrief = workflowBody
   );
 const absoluteLinks = (markdown: string) => markdown.replace(/\]\(\/(?!\/)/g, `](${ORIGIN}/`);
 
-// Static, on-demand prompt files: source and contracts stay out of gallery JavaScript.
+// Short prompts mirror the recipe pages; detailed references ship separately with the skill.
 const PROMPTS = join(PUBLIC, "recipe-prompts");
 rmSync(PROMPTS, { recursive: true, force: true });
 for (const entry of EXAMPLE_META) {
-  const componentReferences = entry.meta.uses.map((name) => {
-    const component = COMPONENTS.find((item) => item.name === name);
-    if (!component) throw new Error(`Missing prompt reference for ${name}`);
-    return {
-      title: name,
-      markdown: readFileSync(join(SKILL_REFS, "components", `${component.slug}.md`), "utf8"),
-    };
-  });
-  const prompt = recipePrompt({
-    entry,
-    workflow: workflowBody,
-    recipe: exampleMarkdown(entry),
-    references: [
-      ...SETUP_ASSETS.map((file) => ({
-        title: `Setup asset: ${file}`,
-        markdown:
-          "```js\n" +
-          readFileSync(join(ROOT, "..", "..", "skills", "loamui", "assets", file), "utf8") +
-          "```",
-      })),
-      ...["installation", "guide"].map((slug) => ({
-        title: slug,
-        markdown: readFileSync(join(SKILL_REFS, "guides", `${slug}.md`), "utf8"),
-      })),
-      ...componentReferences,
-    ],
-  });
   const file = join(PROMPTS, entry.category, `${entry.slug}.txt`);
   mkdirSync(dirname(file), { recursive: true });
   writeFileSync(file, linkedRecipePrompt(entry) + "\n");
-  writeFileSync(file.replace(/\.txt$/, ".full.txt"), absoluteLinks(prompt));
 }
 
 const lines: string[] = [

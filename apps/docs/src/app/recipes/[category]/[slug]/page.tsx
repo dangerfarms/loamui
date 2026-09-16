@@ -7,6 +7,8 @@ import { exampleHref, examplesIn, getCategory, getExample } from "@/examples";
 import { EXAMPLE_SOURCE } from "@/examples/generated-source";
 import { COMPONENTS } from "@/site/nav";
 import { RecipePlayground } from "@/renderer/recipe-playground";
+import { linkedRecipePrompt } from "@/examples/recipe-prompt";
+import { RecipePromptButton } from "@/renderer/recipe-prompt-button";
 import { ExamplePillars } from "@/renderer/examples-pillars";
 import { ExampleCrumbs } from "@/renderer/examples-crumbs";
 import { ExamplePager } from "@/renderer/examples-pager";
@@ -48,6 +50,7 @@ export default async function ExamplePage({
   const source = EXAMPLE_SOURCE[slug];
   if (!example || !category || !source) notFound();
   const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+  const prompt = linkedRecipePrompt(example);
 
   // Previous and next within the category, in its display order.
   const siblings = examplesIn(categorySlug);
@@ -73,6 +76,22 @@ export default async function ExamplePage({
           <p className="lead">{example.meta.description}</p>
           {example.meta.whenToUse && <p className="sectionNote">{example.meta.whenToUse}</p>}
         </header>
+
+        <section className="site-RecipePrompt" aria-labelledby="build-with-skill">
+          <h2 id="build-with-skill">Build with the LoamUI skill</h2>
+          <p>
+            Already added the LoamUI skill? Copy the prompt below. Your agent will check your
+            project and help complete any missing setup before building.
+          </p>
+          <div className="instruction">
+            <p className="prompt">{prompt}</p>
+            <RecipePromptButton title={example.meta.title} prompt={prompt} />
+          </div>
+          <p className="help">
+            Add your content or describe what you want to change. New to the skill?{" "}
+            <Link href="/docs/agent-workflow">Add it to your project</Link>.
+          </p>
+        </section>
 
         <RecipePlayground title={example.meta.title} source={source}>
           <example.Example />
