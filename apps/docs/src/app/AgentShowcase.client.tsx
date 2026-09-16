@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode } from "react";
-import { CopyButton, Tabs } from "@loamui/core";
+import { Card, CopyButton, Tabs } from "@loamui/core";
 import { CodeBlock } from "@/renderer/CodeBlock";
 import "./AgentShowcase.css";
 
@@ -32,66 +32,69 @@ export function AgentShowcase({
 }) {
   return (
     <div className="site-AgentShowcase">
-      <div className="ask">
-        <h3 className="step">Ask</h3>
-        {skillCommand && (
-          <>
-            <p className="label">
-              Add the skill:
-              {skillNote && <span className="note">{skillNote}</span>}
-            </p>
-            <div className="command">
-              <span className="prompt" aria-hidden>
-                $
-              </span>
-              <code>{skillCommand}</code>
-              <CopyButton
-                className="copy"
-                value={skillCommand}
-                aria-label="Copy the skill install command"
-              >
-                Copy
-              </CopyButton>
-            </div>
-          </>
-        )}
-        <p className="label">
-          {skillCommand ? (
-            "And then write a prompt using it:"
-          ) : (
+      <Card>
+        <div className="site-AgentAsk">
+          <h3>Add the skill and ask</h3>
+          {skillCommand && (
             <>
-              Point the agent at <a href="/llms.txt">llms.txt</a>:
+              <p className="label">
+                Add the skill:
+                {skillNote && <span className="note">{skillNote}</span>}
+              </p>
+              <div className="command">
+                <span className="prompt" aria-hidden>
+                  $
+                </span>
+                <code>{skillCommand}</code>
+                <CopyButton
+                  className="copy"
+                  value={skillCommand}
+                  aria-label="Copy the skill install command"
+                >
+                  Copy
+                </CopyButton>
+              </div>
             </>
           )}
-        </p>
-        <div className="promptBox">
-          <p>{prompt}</p>
-          <CopyButton className="copy" value={prompt} aria-label="Copy the prompt">
-            Copy
-          </CopyButton>
+          <p className="label">
+            {skillCommand ? (
+              "And then write a prompt using it:"
+            ) : (
+              <>
+                Point the agent at <a href="/llms.txt">llms.txt</a>:
+              </>
+            )}
+          </p>
+          <div className="promptBox">
+            <p>{prompt}</p>
+            <CopyButton className="copy" value={prompt} aria-label="Copy the prompt">
+              Copy
+            </CopyButton>
+          </div>
         </div>
-      </div>
-
-      <div className="code">
-        <h3 className="step">Under the hood</h3>
-        <Tabs.Root defaultValue="result">
-          <Tabs.List aria-label="Generated code">
-            <Tabs.Tab value="result">Preview</Tabs.Tab>
-            <Tabs.Tab value="tsx">React</Tabs.Tab>
-            <Tabs.Tab value="css">CSS</Tabs.Tab>
-          </Tabs.List>
-          <Tabs.Panel value="result">
-            <div className="site-AgentShowcase-stage">{children}</div>
-          </Tabs.Panel>
-          <Tabs.Panel value="tsx">
-            <CodeBlock code={tsx} language="tsx" />
-          </Tabs.Panel>
-          <Tabs.Panel value="css">
-            <CodeBlock code={css} language="css" />
-          </Tabs.Panel>
-        </Tabs.Root>
-        <p className="caption">{caption}</p>
-      </div>
+      </Card>
+      <Card>
+        <div className="site-AgentResult">
+          <p className="eyebrow">Explore the result</p>
+          <Tabs.Root defaultValue="result">
+            <Tabs.List aria-label="Generated code">
+              <Tabs.Tab value="result">Preview</Tabs.Tab>
+              <Tabs.Tab value="tsx">React</Tabs.Tab>
+              <Tabs.Tab value="css">CSS</Tabs.Tab>
+            </Tabs.List>
+            <Tabs.Panel value="result">
+              <div className="site-AgentShowcase-stage">{children}</div>
+            </Tabs.Panel>
+            <Tabs.Panel value="tsx">
+              <CodeBlock code={tsx} language="tsx" />
+            </Tabs.Panel>
+            <Tabs.Panel value="css">
+              <CodeBlock code={css} language="css" />
+            </Tabs.Panel>
+          </Tabs.Root>
+          <p className="caption">{caption}</p>
+        </div>
+      </Card>
     </div>
   );
 }

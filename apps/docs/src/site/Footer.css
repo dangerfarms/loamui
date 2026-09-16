@@ -1,23 +1,62 @@
-/* The footer sits outside main, so it is its own container. */
-@scope (.site-Footer) {
-  :scope {
-    background: var(--loam-color-bg-subtle);
-    border-block-start: 1px solid var(--loam-color-line);
-    container-type: inline-size;
-    margin-block-start: var(--loam-space-4xl);
-    padding-block: var(--loam-space-xl);
-  }
+@layer loamui.components {
+  @scope (.site-Footer) to ([class*="loam-"], [class*="site-"]) {
+    :scope {
+      background: var(--loam-color-bg-subtle);
+      border-block-start: 1px solid var(--loam-color-line);
+      container-type: inline-size;
+      margin-block-start: var(--loam-space-2xl);
+      padding-block: var(--loam-space-2xl) var(--loam-space-xl);
+    }
 
-  .bottom {
-    color: var(--loam-color-fg-dim);
-    display: block flex;
-    flex-wrap: wrap;
-    font-size: var(--loam-text-sm);
-    gap: var(--loam-space-s);
-    justify-content: space-between;
+    .links {
+      display: block grid;
+      gap: var(--loam-space-xl);
+      grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr));
+    }
 
-    code {
-      font-size: 0.9em;
+    .brand p {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-sm);
+      margin-block: var(--loam-space-s) 0;
+      max-inline-size: 32ch;
+    }
+
+    nav {
+      display: block grid;
+      gap: var(--loam-space-l);
+      grid-template-columns: repeat(auto-fit, minmax(min(8rem, 100%), 1fr));
+
+      h2 {
+        font-size: var(--loam-text-sm);
+      }
+
+      ul {
+        display: block grid;
+        gap: var(--loam-space-xs);
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        margin: 0;
+      }
+
+      a {
+        font-size: var(--loam-text-sm);
+      }
+    }
+
+    .bottom {
+      border-block-start: 1px solid var(--loam-color-line);
+      color: var(--loam-color-fg-muted);
+      display: block flex;
+      flex-wrap: wrap;
+      font-size: var(--loam-text-sm);
+      gap: var(--loam-space-s);
+      justify-content: space-between;
+      margin-block-start: var(--loam-space-xl);
+      padding-block-start: var(--loam-space-l);
     }
   }
 }

@@ -7,7 +7,7 @@
       grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
     }
 
-    h2,
+    :scope > :is(h2, h3),
     p.demo-note,
     p.selection {
       grid-column: 1 / -1;
@@ -38,7 +38,7 @@
       display: block grid;
     }
 
-    h3 {
+    :is(h3, h4) {
       align-items: baseline;
       display: block flex;
       flex-wrap: wrap;

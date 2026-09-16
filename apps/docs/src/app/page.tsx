@@ -1,369 +1,232 @@
 import Link from "next/link";
-import { SignpostLink } from "@loamui/core";
-import { CodeBlock } from "@/renderer/CodeBlock";
-import { BoltIcon, CheckIcon } from "@/site/Icons";
-import { HeroShowcase } from "./home.client";
+import { Badge, Card, SignpostLink } from "@loamui/core";
+import { HeroShowcase, ContextShowcase } from "./home.client";
 import { AgentShowcase } from "./AgentShowcase.client";
 import { RestaurantMenu } from "./agent-demo/menu";
 import { menu } from "./agent-demo/generated";
 import "./home.css";
 
-const TENETS = [
-  {
-    title: "Modern APIs, features and elements",
-    body: (
-      <>
-        Real <code>&lt;dialog&gt;</code>, <code>&lt;details&gt;</code>, the Popover API, anchor
-        positioning, container queries. The platform&rsquo;s own widgets, styled, not
-        reimplementations of them.
-      </>
-    ),
-  },
-  {
-    title: "Progressive enhancement",
-    body: (
-      <>
-        The native element is the baseline: forms, disclosures and links work before JavaScript, and
-        overlays open from server-rendered markup once it hydrates. Motion and newer platform
-        features are layered on top, inside <code>prefers-reduced-motion: no-preference</code> and{" "}
-        <code>@supports</code>.
-      </>
-    ),
-  },
-  {
-    title: "Baseline browser support",
-    body: (
-      <>
-        Features are adopted once they are{" "}
-        <a href="https://web.dev/baseline" target="_blank" rel="noreferrer">
-          Baseline
-        </a>{" "}
-        (supported in every major engine); anything newer ships as an enhancement behind{" "}
-        <code>@supports</code>. Support claims come from compatibility data, not optimism.
-      </>
-    ),
-  },
-];
-
-const AGENT_PROMPT =
-  "Build a restaurant menu using LoamUI: two cards, Starter and Dessert. Each card lists three dishes with a one-line description and a price, has one status badge (Vegetarian, Sold out) and one action button.";
-
-const PRIMITIVES = [
+const primitives = [
   {
     title: "Tokens",
     href: "/docs/tokens",
-    body: "A handful of semantic decisions — a small palette of colours, a neutral ramp, fluid scales — with everything else derived from them.",
+    body: "Colour, type and spacing that adapt to their surroundings. A few design decisions, with the rest derived from them.",
+    example: "The values your design is built on.",
   },
   {
     title: "Element styles",
     href: "/docs/element-styles",
-    body: "Enhanced default styles for native HTML, page-wide: responsive, accessible, and answering the user's own preferences.",
+    body: "Native HTML with considered defaults for typography, forms and links, respecting the user’s preferences.",
+    example: "A foundation before you add a component.",
   },
   {
     title: "Components",
     href: "/docs/components",
-    body: "A small set of carefully chosen, easily composed components, not hundreds.",
+    body: "Low-level React parts for behaviour and interaction. Compose them with your own markup to make what your product needs.",
+    example: "The parts, with the arrangement left to you.",
   },
 ];
 
-const UX_RULES = [
-  "Form fields read label, description, error, control, so the fix is read before the answer is given",
-  "Optional is marked in words, never with asterisks",
-  "Buttons act; links go, and the docs hold the line between them",
-  "A switch acts now; a checkbox acts on submit",
-  "Disclosure exists to shorten a long page, not to hide what everyone needs",
-];
-
-const A11Y_RULES = [
-  "Semantics come from the platform, so ARIA is derived rather than declared",
-  "Keyboard patterns follow the APG, including focus return and light dismiss",
-  "The user's preferences are the baseline: colour scheme, reduced motion, forced colours, zoom and browser font size",
-  "Contrast is engineered into the token recipes, not checked once and hoped for",
-];
-
-const GATES = [
-  "Stylelint: standard, modern and alphabetical configs, nothing switched off",
-  "Contrast audit reads the recipes out of the real stylesheets",
-  "axe, the automated accessibility checker, runs on every component",
-  "Interaction tests on real markup",
-  "TypeScript-first",
-  "Zero styling runtime",
-];
-
-const TECHNIQUES = [
-  {
-    name: "light-dark()",
-    desc: "One value, both themes: no duplicated theme objects.",
-    code: "color: light-dark(\n  oklch(24% 0.02 60deg), oklch(96% 0.006 60deg)\n);",
-  },
-  {
-    name: "color-mix()",
-    desc: "Derive every hover and tint from a single token.",
-    code: "color-mix(\n  in oklab, var(--_color), #0000\n)",
-  },
-  {
-    name: "@container",
-    desc: "Components respond to their container, not the viewport.",
-    code: "@container (width > 20rem) { … }",
-  },
-  {
-    name: ":has()",
-    desc: "Style a parent from the state of its children.",
-    code: ".loam-Field:has(> p.error) { … }",
-  },
-  {
-    name: "logical properties",
-    desc: "RTL-ready by default, with no hardcoded left / right.",
-    code: "padding-inline: 1rem; margin-block: 0.5rem;",
-  },
-  {
-    name: "@layer",
-    desc: "A predictable cascade: no specificity wars, no !important.",
-    code: "@layer loamui.components { … }",
-  },
-  {
-    name: "clamp()",
-    desc: "Fluid type and spacing without a single media query.",
-    code: "font-size: clamp(1rem, 0.93rem + 0.35cqi, 1.25rem);",
-  },
-  {
-    name: "@scope",
-    desc: "Encapsulation in the browser, so parts keep plain names.",
-    code: "@scope (.loam-Field) { label { … } }",
-  },
-];
+const prompt =
+  "Build a restaurant menu using LoamUI: two cards, Starter and Dessert. Each card lists three dishes with a one-line description and a price, has one status badge (Vegetarian, Sold out) and one action button.";
 
 export default function HomePage() {
   return (
-    <div className="site-Home">
-      {/* Hero */}
-      <section className="hero" data-no-hyphens>
-        <div className="heroBg" />
-        <div className="container heroGrid">
-          <div>
-            <span className="badgeRow">
-              <span className="badgePill">v0.1 Beta</span>
-            </span>
-            <h1 className="title">
-              Modern UI primitives for <span className="brandText">agent-assisted developers.</span>
-            </h1>
-            <p className="subtitle">
-              Use our agent skill to quickly build bespoke, accessible UIs on top of our contextual
-              tokens, element styles, and React components.
-            </p>
-            <div className="ctaRow">
-              <SignpostLink render={<Link href="/docs" />}>Get started</SignpostLink>
-            </div>
-          </div>
-          <div className="heroArt">
-            <HeroShowcase />
-          </div>
+    <div className="site-Home" data-no-hyphens>
+      <section className="hero">
+        <div className="intro">
+          <Badge>v0.1 Beta</Badge>
+          <h1>
+            Modern UI primitives for <span>agent-assisted developers.</span>
+          </h1>
+          <p className="lede">
+            Use our agent skill to quickly build bespoke, accessible UIs on top of our contextual
+            tokens, element styles, and React components.
+          </p>
+          <SignpostLink render={<Link href="/docs" />}>Get started</SignpostLink>
+        </div>
+        <div className="specimen">
+          <HeroShowcase />
+          <p>Real primitives. Try the controls.</p>
         </div>
       </section>
 
-      {/* The three primitives */}
-      <section className="container section" data-no-hyphens>
-        <div className="sectionHead center">
-          <span className="eyebrow">Three primitives</span>
-          <h2 className="sectionTitle">Tokens. Element styles. Components.</h2>
-          <p className="sectionSub">
-            Tokens and element styles matter as much as the components: they are what agents build
-            downstream components and whole apps from. All three ship in one package.
-          </p>
-        </div>
-        <div className="cats">
-          {PRIMITIVES.map((p) => (
-            <Link key={p.title} href={p.href} className="cat">
-              <span className="catTitle">{p.title}</span>
-              <span className="catItems">{p.body}</span>
-            </Link>
+      <section>
+        <header>
+          <p className="eyebrow">The foundation</p>
+          <h2>Three primitives. One package.</h2>
+          <p>Use them together to build your own UI, from a single form to a whole product.</p>
+        </header>
+        <div className="primitives">
+          {primitives.map(({ title, href, body, example }) => (
+            <Card key={title}>
+              <article className="site-Primitive">
+                <h3>
+                  <Link href={href}>{title}</Link>
+                </h3>
+                <p>{body}</p>
+                <footer>{example}</footer>
+              </article>
+            </Card>
           ))}
         </div>
       </section>
 
-      {/* Ask an agent: prompt, result, code */}
-      <section className="container section" data-no-hyphens>
-        <div className="sectionHead center">
-          <span className="eyebrow">Built with an agent</span>
-          <h2 className="sectionTitle">Ask for a component. Get one built on the primitives.</h2>
-          <p className="sectionSub">
-            LoamUI&rsquo;s core ships low-level parts and no more. Larger sections, such as a hero
-            or a grid of cards, are compositions: your agent builds one from the three primitives.
+      <section>
+        <header>
+          <p className="eyebrow">Build with the skill</p>
+          <h2>Describe your UI. Build on the primitives.</h2>
+          <p>
+            Add the LoamUI skill to your agent, then describe what you need. Here’s a restaurant
+            menu built from the same parts you’ll use in your own project.
           </p>
-        </div>
+        </header>
         <AgentShowcase
           skillCommand="npx skills add dangerfarms/loamui"
-          prompt={AGENT_PROMPT}
+          prompt={prompt}
           tsx={menu.tsx}
           css={menu.css}
-          caption="A restaurant menu composed from LoamUI’s tokens, element styles and components. Each card declares its status, and its controls respond to that context. Explore the React and CSS, or use the prompt to build your own."
+          caption="The cards compose tokens, native element styles, Badge and Button. Open the React or CSS tab to see how they fit together."
         >
-          <RestaurantMenu />
+          <RestaurantMenu headingLevel={3} />
         </AgentShowcase>
       </section>
 
-      {/* Pillar 1: Modern */}
-      <section className="container section" data-no-hyphens>
-        <div className="sectionHead center">
-          <span className="eyebrow">
-            <BoltIcon width={14} height={14} /> Pillar 1: Modern Web
-          </span>
-          <h2 className="sectionTitle">Built on Google&rsquo;s Modern Web Guidance.</h2>
-          <p className="sectionSub">
-            Semantic HTML and modern CSS underpin all three primitives, following Google’s Modern
-            Web Guidance. Three tenets shape their implementation:
+      <section>
+        <header>
+          <p className="eyebrow">Pillar 1 · Modern Web</p>
+          <h2>Let the platform do the work.</h2>
+          <p>
+            <a href="https://developer.chrome.com/docs/modern-web-guidance">
+              Google’s Modern Web Guidance
+            </a>{" "}
+            and <a href="https://moderncss.ai/">Modern CSS</a> inform how we build all three
+            primitives. Native behaviour comes first, with enhancements where the browser supports
+            them.
           </p>
-        </div>
-        <div className="features">
-          {TENETS.map((t) => (
-            <div key={t.title} className="feature">
-              <span className="featureIcon" aria-hidden>
-                <BoltIcon width={18} height={18} />
-              </span>
-              <h3 className="featureTitle">{t.title}</h3>
-              <p className="featureText">{t.body}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Modern CSS, a part of Modern Web */}
-        <div className="sectionHead center subHead">
-          <h3 className="sectionTitle">Modern CSS, put to work.</h3>
-          <p className="sectionSub">
-            LoamUI ships static CSS built on the platform’s own features, with no JavaScript styling
-            runtime.
-          </p>
-        </div>
-        <ul className="tech">
-          {TECHNIQUES.map((t) => (
-            <li key={t.name} className="techCard">
-              <code className="techName">{t.name}</code>
-              <p className="techDesc">{t.desc}</p>
-              <pre className="techCode">{t.code}</pre>
-            </li>
-          ))}
-        </ul>
-
-        {/* Contextualism, the paradigm shift underneath */}
-        <div className="split">
-          <div>
-            <h3 className="sectionTitle">A paradigm shift: context decides, props don&rsquo;t.</h3>
-            <p className="sectionSub">
-              Contextualism runs through all three primitives. Tokens respond to the surrounding
-              region; element styles and components use those tokens. Declare a region’s meaning
-              once, and its contents adapt. Explore the{" "}
-              <Link href="/docs/contextualism">Contextualism guide</Link> to see how colour,
-              available space and content shape the result.
+        </header>
+        <div className="principles">
+          <article>
+            <h3>Native foundations</h3>
+            <p>Real buttons, inputs and dialogs supply their semantics and platform behaviour.</p>
+          </article>
+          <article>
+            <h3>Progressive enhancement</h3>
+            <p>
+              New capabilities build on usable defaults. Motion is added when the user permits it.
             </p>
-            <ul className="splitList">
-              {[
-                "One region declaration recolours buttons, checkboxes, focus rings, selection",
-                "Fluid tokens size controls to their container, with no size props",
-                "Width is the parent's layout: rows shrink-wrap, stacks stretch",
-              ].map((item) => (
-                <li key={item} className="splitItem">
-                  <span className="splitCheck" aria-hidden>
-                    <CheckIcon width={13} height={13} />
-                  </span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <CodeBlock
-            language="css"
-            code={`/* a named region declares its meaning */
-.danger-zone {
-  --loam-context: danger;
-}
-
-/* every LoamUI component inside adopts it:
-   buttons, checked states, carets, focus
-   rings. No props, no wrappers */`}
-          />
+          </article>
+          <article>
+            <h3>Baseline browser support</h3>
+            <p>Baseline guides feature adoption. Newer capabilities have a usable fallback.</p>
+          </article>
         </div>
-      </section>
-
-      {/* Pillar 2: Accessibility & UX best practice */}
-      <section className="container section" data-no-hyphens>
-        <div className="sectionHead center">
-          <span className="eyebrow">Pillar 2: Accessibility &amp; UX best practice</span>
-          <h2 className="sectionTitle">The hard-earned rules, already in the primitives.</h2>
-          <p className="sectionSub">
-            Distilled from the GOV.UK and Polaris design systems and running through tokens, element
-            styles and components alike. The{" "}
-            <Link href="/docs/accessibility">Accessibility guide</Link> sets out what is engineered
-            and what still needs your judgment.
-          </p>
-        </div>
-        <ul className="pillars">
-          {A11Y_RULES.map((item) => (
-            <li key={item} className="pillar">
-              <p className="pillarBody">{item}</p>
-            </li>
-          ))}
-        </ul>
-        <ul className="shouts">
-          {UX_RULES.map((item) => (
-            <li key={item} className="shout">
-              {item}
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {/* Gatekeeping: can you trust the agents? */}
-      <section className="container section" data-no-hyphens>
-        <div className="split">
+        <div className="context">
           <div>
-            <h2 className="sectionTitle">
-              Quality that doesn&rsquo;t depend on who wrote the code.
-            </h2>
-            <p className="sectionSub">
-              Stylelint, contrast audits, automated accessibility checks and interaction tests run
-              in CI. Together, they check the conventions and behaviours that keep the primitives
-              consistent as the code changes.
+            <h3>A paradigm shift: design responds to context.</h3>
+            <p>
+              Declare a region’s meaning once. Its tokens adapt, and the native elements and
+              components using them follow. Available space shapes type and spacing in the same way.
             </p>
-            <ul className="splitList">
-              {GATES.map((item) => (
-                <li key={item} className="splitItem">
-                  <span className="splitCheck" aria-hidden>
-                    <CheckIcon width={13} height={13} />
-                  </span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+            <p>
+              Change the context in this example. The same markup stays in place; the region’s
+              colour tokens change.
+            </p>
+            <Link href="/docs/contextualism">Explore contextualism</Link>
           </div>
-          <CodeBlock
-            language="css"
-            code={`/* the audit reads these weights from the
-   stylesheet and asserts every derived
-   pairing holds its contrast. Change a
-   recipe and CI tells you what broke */
---loam-color-primary-strong: light-dark(
-  color-mix(in oklab, var(--loam-color-primary),
-    oklch(0% 0 0deg) 22%),
-  var(--loam-color-primary)
-);`}
-          />
+          <ContextShowcase />
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="container" data-no-hyphens>
-        <div className="cta">
-          <h2 className="ctaTitle">Start building</h2>
-          <p className="ctaSub">
-            Three primitives in one package: contextual tokens, enhanced element styles and a small
-            set of composable React components. An agent skill to build with them. Two pillars,
-            Modern and Accessible, holding all three together, and deterministic gates keeping them
-            there.
+      <section className="accessibility">
+        <header>
+          <p className="eyebrow">Pillar 2 · Accessibility &amp; UX</p>
+          <h2>Considered defaults. Everyday differences.</h2>
+          <p>
+            We draw on the GOV.UK and Polaris design systems for decisions that help people use your
+            interface. Each component’s documentation explains when to use it and why.
           </p>
-          <div className="ctaRowCenter">
+          <Link href="/docs/accessibility">Read the accessibility guidance</Link>
+        </header>
+        <dl>
+          <div>
+            <dt>Forms that help people recover</dt>
+            <dd>
+              Labels, hints and errors appear before the control. Optional fields are marked in
+              words.
+            </dd>
+          </div>
+          <div>
+            <dt>Controls that mean what they say</dt>
+            <dd>
+              Buttons perform actions. Links navigate. A switch acts immediately; a checkbox can
+              wait for submission.
+            </dd>
+          </div>
+          <div>
+            <dt>Preferences that carry through</dt>
+            <dd>
+              Colour scheme, reduced motion, forced colours and browser text size inform the
+              defaults.
+            </dd>
+          </div>
+          <div>
+            <dt>Keyboard use built into the interaction</dt>
+            <dd>
+              Named controls, visible focus and appropriate focus management support navigation
+              without a pointer.
+            </dd>
+          </div>
+        </dl>
+      </section>
+
+      <section>
+        <header>
+          <p className="eyebrow">Confidence in the result</p>
+          <h2>Check what your agent builds.</h2>
+          <p>
+            The skill guides the work; checks help you review it. Our primitives are tested in CI.
+            Your composition still needs validation with its own content, layout and interactions.
+          </p>
+        </header>
+        <ol className="workflow">
+          <li>
+            <h3>Establish the foundations</h3>
+            <p>
+              The skill checks the package, stylesheet and project setup before composing your UI.
+            </p>
+          </li>
+          <li>
+            <h3>Run the project’s checks</h3>
+            <p>
+              Use TypeScript, Stylelint and automated accessibility checks, then exercise the
+              interactions.
+            </p>
+          </li>
+          <li>
+            <h3>Review it in the browser</h3>
+            <p>
+              Inspect narrow layouts, both themes and keyboard use. Judge the copy and visual
+              result.
+            </p>
+          </li>
+        </ol>
+        <Link href="/docs/agent-workflow">Follow the agent workflow</Link>
+      </section>
+
+      <section className="closing">
+        <Card>
+          <div className="site-Closing">
+            <p className="eyebrow">Build with LoamUI</p>
+            <h2>Your product. Your compositions.</h2>
+            <p>
+              Contextual tokens, native element styles and composable React parts, with an agent
+              skill to bring them together. Modern web foundations and considered UX, ready for your
+              next project.
+            </p>
             <SignpostLink render={<Link href="/docs" />}>Get started</SignpostLink>
           </div>
-        </div>
+        </Card>
       </section>
     </div>
   );
