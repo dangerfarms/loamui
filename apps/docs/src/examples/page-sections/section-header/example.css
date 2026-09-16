@@ -7,7 +7,7 @@
      container query. */
   div.inner {
     display: block grid;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
   }
 
   p.eyebrow {
@@ -37,13 +37,13 @@
     align-items: center;
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
   }
 
   @container (inline-size >= 40rem) {
     div.inner {
       align-items: center;
-      column-gap: var(--loam-space-lg);
+      column-gap: var(--loam-space-s);
       grid-template-areas:
         "eyebrow actions"
         "title actions"

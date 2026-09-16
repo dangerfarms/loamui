@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Badge, Button, Card } from "@loamui/core";
 import "./menu.css";
 
@@ -24,28 +27,48 @@ const courses = [
   },
 ] as const;
 
-export function RestaurantMenu() {
+export function RestaurantMenu({ headingLevel = 2 }: { headingLevel?: 2 | 3 }) {
+  const Heading = headingLevel === 2 ? "h2" : "h3";
+  const CourseHeading = headingLevel === 2 ? "h3" : "h4";
+  const [starterSelected, setStarterSelected] = useState(false);
   return (
     <section className="menu">
-      <h2>Menu</h2>
+      <Heading>Menu</Heading>
+      <p className="demo-note">Try a selection. This demo does not place an order.</p>
       {courses.map(({ title, status, label, dishes }) => (
-        <Card key={title} className={`menu-card ${status}`}>
-          <h3>
-            {title} <Badge>{label}</Badge>
-          </h3>
-          <dl>
-            {dishes.map(([name, description, price]) => (
-              <div key={name}>
-                <dt>
-                  {name} <data value={price.slice(1)}>{price}</data>
-                </dt>
-                <dd>{description}</dd>
-              </div>
-            ))}
-          </dl>
-          <Button disabled={status === "sold-out"}>Order {title.toLowerCase()}</Button>
+        <Card key={title}>
+          <div className={`menu-card ${status}`}>
+            <CourseHeading>
+              {title} <Badge>{label}</Badge>
+            </CourseHeading>
+            <dl>
+              {dishes.map(([name, description, price]) => (
+                <div key={name}>
+                  <dt>
+                    {name} <data value={price.slice(1)}>{price}</data>
+                  </dt>
+                  <dd>{description}</dd>
+                </div>
+              ))}
+            </dl>
+            <footer>
+              <Button
+                disabled={status === "sold-out"}
+                onClick={() => setStarterSelected((selected) => !selected)}
+              >
+                {status === "sold-out"
+                  ? "Dessert unavailable"
+                  : starterSelected
+                    ? "Remove starter"
+                    : "Add starter"}
+              </Button>
+            </footer>
+          </div>
         </Card>
       ))}
+      <p className="selection" role="status">
+        {starterSelected ? "Starter added to your demo selection." : "No courses selected."}
+      </p>
     </section>
   );
 }

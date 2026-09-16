@@ -33,7 +33,7 @@ A real <hr>: the platform's separator role, no ARIA required.
 Divides items in a row; adds aria-orientation="vertical" and stretches to the row's height.
 
 ```tsx
-<div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+<div style={{ display: "flex", gap: "var(--loam-space-xs)", alignItems: "center" }}>
   <span>Cut</span>
   <Separator orientation="vertical" />
   <span>Copy</span>

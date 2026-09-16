@@ -26,7 +26,14 @@ const doc: ComponentContent = {
 <span style={{ "--loam-context": "info" }}><Avatar name="Amara Okafor" /></span>
 <span style={{ "--loam-context": "success" }}><Avatar name="Sam Reed" /></span>`,
       render: () => (
-        <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap", alignItems: "start" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "var(--loam-space-l)",
+            flexWrap: "wrap",
+            alignItems: "start",
+          }}
+        >
           <Example label="Initials from the name">
             <Avatar name="Jane Doe" />
           </Example>
@@ -58,7 +65,7 @@ const doc: ComponentContent = {
 <Avatar name="Jane Doe" />
 <Avatar name="Jane Doe" style={{ "--loam-avatar-size": "4rem" }} />`,
       render: () => (
-        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "var(--loam-space-s)", alignItems: "center" }}>
           <Avatar name="Jane Doe" style={{ "--loam-avatar-size": "1.5rem" } as CSSProperties} />
           <Avatar name="Jane Doe" />
           <Avatar name="Jane Doe" style={{ "--loam-avatar-size": "4rem" } as CSSProperties} />

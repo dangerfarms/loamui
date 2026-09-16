@@ -63,7 +63,7 @@ There is no colour prop. Without bands the fill is the primary token, so declare
 
 ## When to use it
 
-- To show a static quantity against its range: storage used, a quota, a battery, one segment's share of a whole. The value is a fact about now, not a step toward finishing.
+- To show a static quantity against its range: storage used, a quota, a battery, one segment's share of a whole. The value describes a current measurement within a known range.
 - To grade a value against thresholds (password strength, a score, a risk level): pass low, high and optimum and the colour says which band the value is in without a colour prop.
 
 ## When not to

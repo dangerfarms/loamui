@@ -7,7 +7,7 @@
     --_h: 0.625rem;
 
     display: block grid;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     inline-size: 100%;
 
     &[data-size="sm"] {

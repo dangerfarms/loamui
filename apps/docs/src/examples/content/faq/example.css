@@ -9,7 +9,7 @@
     div.inner {
       display: block grid;
       font-size: var(--loam-text-md);
-      gap: var(--loam-space-xl);
+      gap: var(--loam-space-l);
       grid-template-columns: minmax(0, 1fr);
       margin-inline: auto;
       max-inline-size: 44rem;
@@ -18,7 +18,7 @@
 
     header {
       display: block grid;
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
       grid-template-columns: minmax(0, 1fr);
       justify-items: center;
       text-align: center;
@@ -39,7 +39,7 @@
 
     ul.questions {
       display: block grid;
-      gap: var(--loam-space-lg);
+      gap: var(--loam-space-s);
       grid-template-columns: minmax(0, 1fr);
       list-style: none;
       margin-block: 0;
@@ -48,13 +48,13 @@
 
     li {
       display: block grid;
-      gap: var(--loam-space-xs);
+      gap: var(--loam-space-3xs);
       grid-template-columns: minmax(0, 1fr);
       margin-block: 0;
 
       + li {
         border-block-start: 1px solid var(--loam-color-line);
-        padding-block-start: var(--loam-space-lg);
+        padding-block-start: var(--loam-space-s);
       }
     }
 
@@ -65,13 +65,13 @@
 
     @container faq (inline-size < 48rem) {
       div.inner {
-        padding: var(--loam-space-xl) var(--loam-space-lg);
+        padding: var(--loam-space-l) var(--loam-space-s);
       }
     }
 
     @container faq (inline-size >= 48rem) {
       div.inner {
-        padding: calc(var(--loam-space-xl) * 2) var(--loam-space-xl);
+        padding: calc(var(--loam-space-l) * 2) var(--loam-space-l);
       }
     }
 

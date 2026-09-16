@@ -21,6 +21,12 @@ const basePath = process.env.BASE_PATH || "";
 const nextConfig = {
   pageExtensions: ["ts", "tsx", "mdx"],
   reactStrictMode: true,
+  experimental: {
+    // Dev cache has no disk-size bound; keep compilation caching in memory.
+    turbopackFileSystemCacheForDev: false,
+    // Next 16.2 server HMR can retain async-operation chains indefinitely.
+    turbopackServerFastRefresh: false,
+  },
   env: { NEXT_PUBLIC_BASE_PATH: basePath },
   turbopack: {
     root: path.join(__dirname, "..", ".."),

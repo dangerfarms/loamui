@@ -2,7 +2,7 @@
   :scope {
     container-type: inline-size;
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
   }
 }
@@ -10,7 +10,7 @@
 @scope (.stats-with-diff dl.stat) to ([class*="loam-"]) {
   :scope {
     display: block grid;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     margin: 0;
   }
 
@@ -36,7 +36,7 @@
     display: block flex;
     font-size: var(--loam-text-sm);
     font-variant-numeric: lining-nums tabular-nums;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     margin: 0;
 
     svg {

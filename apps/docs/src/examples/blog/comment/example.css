@@ -2,7 +2,7 @@
   :scope {
     container-type: inline-size;
     display: block grid;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
   }
 
   header {
@@ -13,7 +13,7 @@
     display: block flex;
     flex-wrap: wrap;
     font-size: var(--loam-text-sm);
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
   }
 
   a.author {
@@ -33,6 +33,6 @@
   div.actions {
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
   }
 }

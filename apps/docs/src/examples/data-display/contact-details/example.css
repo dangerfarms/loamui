@@ -23,7 +23,7 @@
      declares it. */
   @container (inline-size >= 22rem) {
     dl {
-      gap: var(--loam-space-sm) var(--loam-space-lg);
+      gap: var(--loam-space-2xs) var(--loam-space-s);
       grid-template-columns: max-content 1fr;
     }
 
@@ -38,13 +38,13 @@
 
   @container (inline-size < 22rem) {
     dl {
-      gap: var(--loam-space-md);
+      gap: var(--loam-space-xs);
       grid-template-columns: 1fr;
     }
 
     div.pair {
       display: block grid;
-      gap: var(--loam-space-xs);
+      gap: var(--loam-space-3xs);
     }
   }
 }

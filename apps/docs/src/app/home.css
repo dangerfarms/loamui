@@ -1,0 +1,223 @@
+@layer loamui.components {
+  @scope (.site-Home) to ([class*="loam-"], [class*="site-"]) {
+    :scope {
+      container-type: inline-size;
+      inline-size: min(100% - 2 * var(--loam-space-m), var(--site-max));
+      margin-inline: auto;
+    }
+
+    h1 {
+      font-size: var(--loam-text-3xl);
+      max-inline-size: 19ch;
+
+      > span {
+        color: var(--loam-color-accent);
+      }
+    }
+
+    h2 {
+      max-inline-size: 26ch;
+    }
+
+    .hero {
+      align-items: center;
+      display: block grid;
+      gap: var(--loam-space-2xl);
+      grid-template-columns: repeat(auto-fit, minmax(min(27rem, 100%), 1fr));
+      padding-block: var(--loam-space-4xl);
+    }
+
+    .intro {
+      > h1 {
+        margin-block-start: var(--loam-space-l);
+      }
+    }
+
+    .lede {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-lg);
+      margin-block: var(--loam-space-l);
+      max-inline-size: 42ch;
+    }
+
+    .specimen {
+      inline-size: 100%;
+      justify-self: center;
+      max-inline-size: 30rem;
+
+      > p {
+        color: var(--loam-color-fg-muted);
+        font-size: var(--loam-text-sm);
+        margin-block: var(--loam-space-s) 0;
+        text-align: center;
+      }
+    }
+
+    .primitives,
+    .principles,
+    .workflow {
+      display: block grid;
+      gap: var(--loam-space-l);
+      grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+    }
+
+    .principles {
+      h3 {
+        font-size: var(--loam-text-lg);
+      }
+
+      p {
+        color: var(--loam-color-fg-muted);
+      }
+    }
+
+    .context {
+      align-items: start;
+      background: var(--loam-color-bg-subtle);
+      border-radius: var(--loam-radius-lg);
+      display: block grid;
+      gap: var(--loam-space-xl);
+      grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr));
+      margin-block-start: var(--loam-space-xl);
+      padding: var(--loam-space-l);
+
+      p {
+        color: var(--loam-color-fg-muted);
+        max-inline-size: var(--loam-measure);
+      }
+    }
+
+    .accessibility {
+      align-items: start;
+      display: block grid;
+      gap: var(--loam-space-xl);
+      grid-template-columns: repeat(auto-fit, minmax(min(24rem, 100%), 1fr));
+
+      dl {
+        margin: 0;
+
+        > :not(:last-child) {
+          border-block-end: 1px solid var(--loam-color-line);
+          margin-block-end: var(--loam-space-l);
+          padding-block-end: var(--loam-space-l);
+        }
+      }
+
+      dt {
+        font-weight: 650;
+        margin-block-end: var(--loam-space-2xs);
+      }
+
+      dd {
+        color: var(--loam-color-fg-muted);
+        margin-inline-start: 0;
+      }
+    }
+
+    .workflow {
+      list-style-position: inside;
+      margin-block-end: var(--loam-space-l);
+      padding: 0;
+
+      li {
+        border-block-start: 2px solid var(--loam-color-line-strong);
+        padding-block-start: var(--loam-space-s);
+      }
+
+      h3 {
+        font-size: var(--loam-text-lg);
+        margin-block-start: var(--loam-space-xs);
+      }
+
+      p {
+        color: var(--loam-color-fg-muted);
+      }
+    }
+
+    section {
+      &:not(.hero, .closing) {
+        padding-block: var(--loam-space-3xl);
+      }
+
+      &:not(:first-child, .closing) {
+        border-block-start: 1px solid var(--loam-color-line);
+      }
+
+      > header {
+        margin-block-end: var(--loam-space-xl);
+        max-inline-size: 46rem;
+
+        > p:not(.eyebrow) {
+          color: var(--loam-color-fg-muted);
+          font-size: var(--loam-text-lg);
+        }
+      }
+    }
+
+    .closing {
+      padding-block: var(--loam-space-2xl);
+    }
+  }
+
+  @scope (.site-Closing) to ([class*="loam-"]) {
+    :scope {
+      padding-block: var(--loam-space-xl);
+      padding-inline: var(--loam-space-xs);
+      text-align: center;
+    }
+
+    h2 {
+      margin-inline: auto;
+      max-inline-size: 26ch;
+    }
+
+    p:not(.eyebrow) {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-lg);
+      margin-block-end: var(--loam-space-l);
+      margin-inline: auto;
+      max-inline-size: 52ch;
+    }
+  }
+
+  @scope (.site-Primitive) to ([class*="loam-"]) {
+    :scope {
+      block-size: 100%;
+      container-type: inline-size;
+      display: block grid;
+      gap: var(--loam-space-xs);
+      grid-template-rows: auto 1fr auto;
+    }
+
+    h3 {
+      font-size: var(--loam-text-xl);
+    }
+
+    p {
+      color: var(--loam-color-fg);
+    }
+
+    footer {
+      border-block-start: 1px solid var(--loam-color-line);
+      color: var(--loam-color-fg);
+      font-size: var(--loam-text-sm);
+      padding-block-start: var(--loam-space-s);
+    }
+  }
+}
+
+@layer loamui.components {
+  @scope (.site-Home .primitives) to (.site-Primitive) {
+    :scope > .loam-Card {
+      @media (prefers-reduced-motion: no-preference) {
+        transition: opacity var(--loam-duration-md) var(--loam-ease);
+      }
+    }
+
+    @media (hover: hover) and (pointer: fine) and (forced-colors: none) {
+      :scope:has(> .loam-Card:hover):not(:focus-within) > .loam-Card:not(:hover) {
+        opacity: 0.85;
+      }
+    }
+  }
+}

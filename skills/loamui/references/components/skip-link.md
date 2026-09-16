@@ -38,7 +38,7 @@ Click into the preview and press Tab: the link appears fixed at the top corner o
 ## When not to
 
 - Pages with no header to skip: if the first Tab stop is already the main content, the link only adds a step.
-- As a general-purpose anchor link: it is an escape hatch past repeated chrome, not in-page navigation. Use ordinary links for tables of contents.
+- For general in-page navigation: use ordinary anchor links. SkipLink bypasses repeated navigation to reach the main content. Use ordinary links for tables of contents.
 
 ## How it works
 

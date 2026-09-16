@@ -1,32 +1,36 @@
 import type { Metadata } from "next";
 import { ExamplesRail } from "@/renderer/examples-rail";
 import { ExamplesIndex } from "@/renderer/examples-index";
-import c from "@/renderer/examples-page.module.css";
+import "@/renderer/examples-page.css";
 
 export const metadata: Metadata = {
-  title: "Recipes",
+  title: "Example recipes",
   description:
-    "Explore copyable cards, image treatments and responsive layouts built with LoamUI’s tokens, element styles and React components.",
+    "Example recipes we built for our own products with LoamUI’s tokens, element styles and React components: worked references to take inspiration from.",
 };
 
 export default function ExamplesPage() {
   return (
-    <div className={c.page}>
-      <header className={c.hero}>
-        <span className="eyebrow">Recipes</span>
-        <h1 className={c.title}>Recipes to make your own.</h1>
-        <p className={c.lead}>
-          Explore cards, image treatments and responsive layouts built with LoamUI’s tokens, element
-          styles and React components. Preview each recipe, read the design decisions, and copy the
-          React and CSS into your project. Start with the{" "}
-          <a href="/docs/composing">Composing guide</a>.
+    <div className="site-RecipePage">
+      <header className="hero">
+        <span className="eyebrow">Example recipes</span>
+        <h1 className="title">Recipes we built for our own products.</h1>
+        <p className="lead">
+          Explore product-specific compositions of LoamUI’s tokens, element styles and React
+          components. Inspect the preview and source, then adapt a recipe to your own content.
+        </p>
+        <p className="lead">
+          Open a recipe for its demo, React, CSS and a short prompt to build it with the{" "}
+          <a href="/docs/agent-workflow">LoamUI skill</a>.{" "}
+          <a href="/recipes/guide">Building your own recipes</a> explains the composition
+          techniques.
         </p>
       </header>
-      <div className={c.shell}>
-        <aside className={c.aside}>
+      <div className="shell">
+        <aside className="aside">
           <ExamplesRail />
         </aside>
-        <div className={c.content}>
+        <div className="content">
           <ExamplesIndex />
         </div>
       </div>

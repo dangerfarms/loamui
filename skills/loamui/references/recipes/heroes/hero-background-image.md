@@ -18,7 +18,7 @@ A recipe in **Heroes**: a component and a stylesheet built from `@loamui/core`, 
 
 ## Using this recipe
 
-Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+Copy both files side by side into your React framework project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
 
 Use this h1 as the page’s main heading and replace the sample photograph and routes. The image is decorative: keep meaningful information in the text and its alt empty. Native srcSet supplies three renditions; sizes="100vw" is a conservative upper bound for a portable hero, so tailor that hint to your page’s layout and image pipeline. fetchPriority="high" is intended for the page’s critical above-the-fold image, which should not be lazy-loaded. The content reserves the section’s height; an absolutely positioned photograph does not reserve space through its dimensions. Recheck overlay contrast if you change the tokens or scrim. This synchronous component needs no client directive.
 
@@ -30,11 +30,8 @@ Use for a prominent page introduction over an atmospheric photograph. Choose a b
 
 These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
-- **Native CSS.** A section named by its h1, with a native header and an eagerly discoverable img. The image sits behind the content, so the header supplies the minimum height and grows when text needs more room. Element styles own heading typography and link states.
-- **Modern CSS.** Styles sit in loamui.components inside a donut scope. The section measures its header’s fluid padding, type and minimum height; there are no viewport layout breakpoints. A token-based scrim and full foreground text protect readability in either scheme, and a solid background keeps it readable if the image fails.
-- **Composition.** SignpostLink follows the surrounding colour scheme through core tokens; the secondary film destination is an ordinary link.
-- **Contextualism.** The section inherits the surrounding colour scheme. Background, overlay, text and link tokens adapt together, with no fixed dark region or appearance props.
-- **Accessible & gatekept.** The photograph is decoration behind the words, so its alt is empty. useId ties repeated regions to their own headings. Native links retain visible text and focus rings; enlarged text can grow the section. Forced colours remove both the picture and scrim, leaving native system colours and a visible border.
+- **Modern.** A section named by its h1, with a native header and an eagerly discoverable img that sits behind the content, so the header supplies the minimum height and grows when the text needs more room. Its styles sit in loamui.components inside a donut scope, measuring the header’s fluid padding, type and minimum height with no viewport layout breakpoints, and element styles own the heading typography and link states. The section inherits the surrounding colour scheme rather than fixing a dark region or taking appearance props: background, overlay, text and link tokens adapt together, with a token-based scrim and full foreground text protecting readability in either scheme and a solid background keeping the words legible if the image fails.
+- **Accessible.** The photograph is decoration behind the words, so its alt is empty. useId ties repeated regions to their own headings. Native links retain visible text and focus rings; enlarged text can grow the section. Forced colours remove both the picture and scrim, leaving native system colours and a visible border.
 
 ## References
 
@@ -121,11 +118,11 @@ export default function Example() {
       align-content: end;
       display: block grid;
       font-size: var(--loam-text-md);
-      gap: var(--loam-space-lg);
+      gap: var(--loam-space-s);
       grid-template-columns: minmax(0, 1fr);
       min-block-size: clamp(28rem, 20rem + 20cqi, 34rem);
       overflow-wrap: anywhere;
-      padding: clamp(var(--loam-space-lg), var(--loam-space-md) + 3cqi, var(--loam-space-xl) * 1.5);
+      padding: clamp(var(--loam-space-s), var(--loam-space-xs) + 3cqi, var(--loam-space-l) * 1.5);
     }
 
     h1,
@@ -146,12 +143,12 @@ export default function Example() {
       align-items: center;
       display: block flex;
       flex-wrap: wrap;
-      gap: var(--loam-space-md);
+      gap: var(--loam-space-xs);
 
       > a {
         align-items: center;
         display: inline flex;
-        gap: var(--loam-space-xs);
+        gap: var(--loam-space-3xs);
 
         svg {
           block-size: 1em;

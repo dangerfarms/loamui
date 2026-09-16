@@ -8,7 +8,7 @@ description: The token primitive: a handful of semantic decisions, everything el
 
 # Tokens
 
-The first of LoamUI's three primitives: a handful of semantic custom properties that every component reads. A small palette of colours and neutrals, plus fluid scales: everything else is derived by recipe, so theming is overriding `--loam-*` values at any scope. No `ThemeProvider`, no JavaScript.
+The first of LoamUI's three primitives: a handful of semantic custom properties that every component reads. A small palette of colours and neutrals, plus fluid scales: everything else is derived by formula, so theming is overriding `--loam-*` values at any scope. No `ThemeProvider`, no JavaScript.
 
 ## The surface
 
@@ -49,13 +49,8 @@ arithmetic:
 | `--loam-color-danger-strong` | `light-dark( color-mix(in oklab, var(--loam-color-danger), oklch(0% 0 0deg) 22%), var(--loam-color-danger) )` |
 | `--loam-color-warning-strong` | `light-dark( color-mix(in oklab, var(--loam-color-warning), oklch(0% 0 0deg) 22%), var(--loam-color-warning) )` |
 | `--loam-color-info-strong` | `light-dark( color-mix(in oklab, var(--loam-color-info), oklch(0% 0 0deg) 22%), var(--loam-color-info) )` |
-| `--loam-color-primary-ring` | `var(--loam-color-primary-strong)` |
-| `--loam-color-success-ring` | `var(--loam-color-success-strong)` |
-| `--loam-color-danger-ring` | `var(--loam-color-danger-strong)` |
-| `--loam-color-warning-ring` | `var(--loam-color-warning-strong)` |
-| `--loam-color-info-ring` | `var(--loam-color-info-strong)` |
 | `--loam-color-surface-hover` | `light-dark( oklch(from var(--loam-color-surface) 97% c h), oklch(from var(--loam-color-surface) 27% c h) )` |
-| `--loam-color-ring` | `var(--loam-color-primary-ring)` |
+| `--loam-color-ring` | `var(--loam-color-primary-strong)` |
 | `--loam-text-xs` | `clamp(0.72rem, 0.8145rem - 0.122cqi, 0.7901rem)` |
 | `--loam-text-sm` | `clamp(0.8889rem, 0.885rem + 0.0193cqi, 0.9rem)` |
 | `--loam-text-md` | `clamp(1rem, 0.9565rem + 0.2174cqi, 1.125rem)` |
@@ -63,11 +58,25 @@ arithmetic:
 | `--loam-text-xl` | `clamp(1.2656rem, 1.0944rem + 0.856cqi, 1.7578rem)` |
 | `--loam-text-2xl` | `clamp(1.4238rem, 1.1548rem + 1.3451cqi, 2.1973rem)` |
 | `--loam-text-3xl` | `clamp(1.6018rem, 1.2036rem + 1.9909cqi, 2.7466rem)` |
-| `--loam-space-xs` | `clamp(0.25rem, 0.2391rem + 0.0543cqi, 0.2813rem)` |
-| `--loam-space-sm` | `clamp(0.5rem, 0.4783rem + 0.1087cqi, 0.5625rem)` |
-| `--loam-space-md` | `clamp(0.75rem, 0.7174rem + 0.163cqi, 0.8438rem)` |
-| `--loam-space-lg` | `clamp(1rem, 0.9565rem + 0.2174cqi, 1.125rem)` |
-| `--loam-space-xl` | `clamp(1.5rem, 1.4348rem + 0.3261cqi, 1.6875rem)` |
+| `--loam-space-4xs` | `clamp(0.125rem, 0.1196rem + 0.0272cqi, 0.1406rem)` |
+| `--loam-space-3xs` | `clamp(0.25rem, 0.2391rem + 0.0543cqi, 0.2812rem)` |
+| `--loam-space-2xs` | `clamp(0.5rem, 0.4783rem + 0.1087cqi, 0.5625rem)` |
+| `--loam-space-xs` | `clamp(0.75rem, 0.7174rem + 0.163cqi, 0.8438rem)` |
+| `--loam-space-s` | `clamp(1rem, 0.9565rem + 0.2174cqi, 1.125rem)` |
+| `--loam-space-m` | `clamp(1.25rem, 1.1957rem + 0.2717cqi, 1.4062rem)` |
+| `--loam-space-l` | `clamp(1.5rem, 1.4348rem + 0.3261cqi, 1.6875rem)` |
+| `--loam-space-xl` | `clamp(2rem, 1.913rem + 0.4348cqi, 2.25rem)` |
+| `--loam-space-2xl` | `clamp(3rem, 2.8696rem + 0.6522cqi, 3.375rem)` |
+| `--loam-space-3xl` | `clamp(4rem, 3.8261rem + 0.8696cqi, 4.5rem)` |
+| `--loam-space-4xl` | `clamp(6rem, 5.7391rem + 1.3043cqi, 6.75rem)` |
+| `--loam-space-fixed-1` | `1px` |
+| `--loam-space-fixed-2` | `2px` |
+| `--loam-space-fixed-4` | `4px` |
+| `--loam-space-fixed-8` | `8px` |
+| `--loam-space-fixed-12` | `12px` |
+| `--loam-space-fixed-16` | `16px` |
+| `--loam-space-fixed-24` | `24px` |
+| `--loam-space-fixed-32` | `32px` |
 | `--loam-measure` | `66ch` |
 | `--loam-radius-sm` | `0.375rem` |
 | `--loam-radius-md` | `0.5rem` |
@@ -93,14 +102,20 @@ arithmetic:
 ## Rebrand in one line
 
 One token carries the brand: `--loam-color-primary`. Everything else (the soft tint, hover, active,
-solid fills, focus rings) is _derived_ from it by recipe, so there is nothing else to keep in
+solid fills, focus rings) is _derived_ from it by formula, so there is nothing else to keep in
 sync:
 
 ```css
-:root {
-  --loam-color-primary: light-dark(oklch(0.62 0.2 275), oklch(0.72 0.17 275)); /* violet */
+@layer loamui.tokens {
+  :root {
+    --loam-color-primary: light-dark(oklch(0.62 0.2 275), oklch(0.72 0.17 275)); /* violet */
+  }
 }
 ```
+
+Load this theme stylesheet after the core stylesheet so its token declaration follows
+the default in the same layer. App-wide tokens belong on `:root`; a composition's
+layout and treatment belong in scoped `loamui.components` rules.
 
 The brand colour appears wherever the design says primary: focus rings, checked states, carets,
 and `primary` context regions. (Buttons are neutral by default; the demo below is
@@ -149,8 +164,6 @@ The same mechanism gives you an inverted "on-dark" section: set `data-theme="dar
 resolved values and don't re-resolve, so the inverted region must also re-declare `color` (e.g.
 `color: var(--loam-color-fg)`) for descendants to pick up the flipped value.
 
-> This is one instance of LoamUI's baseline posture: **the user's stated preferences are the default.** Colour scheme is followed natively, motion exists only inside `prefers-reduced-motion: no-preference`, and forced colour palettes are honoured rather than overridden. Everything beyond that baseline (a saved theme, an animation) is an explicit opt-in layered on top.
-
 ## Contexts
 
 A **context** declares what a region _means_, as a custom property (`--loam-context`) that every
@@ -162,10 +175,12 @@ with everything on this page:
 </div>
 
 ```css
-/* the idiomatic form: a named region declares its meaning in
-   its own stylesheet (a style attribute works for one-offs) */
-.danger-zone {
-  --loam-context: danger;
+@scope (.danger-zone) to ([class*="loam-"]) {
+  @layer loamui.components {
+    :scope {
+      --loam-context: danger;
+    }
+  }
 }
 ```
 
@@ -177,8 +192,6 @@ with everything on this page:
   <Button>Delete</Button>
 </section>
 ```
-
-> Theme, context, and instance are one mechanism at three scopes: remap tokens on `:root` to set a brand, declare a context on a region to give it meaning, set a property on an instance to override one control.
 
 ## Most useful to override
 
@@ -195,7 +208,7 @@ Start here when theming:
 
 ## Fluid type & spacing
 
-The type (`--loam-text-xs`…`3xl`) and spacing (`--loam-space-xs`…`xl`) scales are fluid `clamp()`
+The type (`--loam-text-xs`…`3xl`) and spacing (`--loam-space-3xs`…`xl`) scales are fluid `clamp()`
 values in container units (`cqi`), generated with [Utopia](https://utopia.fyi); the calculator
 parameters are committed as comments in `tokens.css`. Without a container they respond to the
 viewport. A container affects values resolved on its descendants; it does not
@@ -211,7 +224,7 @@ content element inside the measuring region:
 
     > div {
       font-size: var(--loam-text-md);
-      padding: var(--loam-space-md);
+      padding: var(--loam-space-xs);
     }
   }
 }
@@ -224,8 +237,6 @@ plain parent without a preview wrapper.
 Corner radii are deliberately _not_ fluid: rounding shouldn't breathe. Control heights aren't
 tokens at all: buttons and form controls share one derived anatomy (padding + line-height +
 border), so they align by construction at every container width.
-
-> Because tokens cascade, you can theme per-brand or per-section by setting variables on any wrapper element; the whole theme is just values in the cascade.
 
 ## Extending styles through public contracts
 
@@ -271,7 +282,7 @@ intact, and use a scope limit for embedded components:
 
     ul {
       display: block grid;
-      gap: var(--loam-space-lg);
+      gap: var(--loam-space-s);
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
       list-style: none;
       padding-inline-start: 0;

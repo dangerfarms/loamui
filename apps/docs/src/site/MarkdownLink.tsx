@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import classes from "./MarkdownLink.module.css";
+import "./MarkdownLink.css";
 
 /**
  * Links each docs page to its machine-readable twin — the sibling URL with
@@ -16,7 +16,7 @@ export function MarkdownLink() {
   const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
   const href = `${base}${pathname.replace(/\/$/, "")}.md`;
   return (
-    <a className={classes.link} href={href} title="Read this page as Markdown">
+    <a className="site-MarkdownLink" href={href} title="Read this page as Markdown">
       View as Markdown
     </a>
   );

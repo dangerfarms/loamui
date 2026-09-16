@@ -37,7 +37,7 @@ export interface ButtonProps extends PartProps<"button"> {
  * detected (`:has(svg)`) — compose them as children, no slot props. An
  * icon-only button is detected from its accessible name: give it an
  * `aria-label` or `aria-labelledby` (required for accessibility anyway), or
- * name it with hidden text (`<span className="loam-VisuallyHidden">`)
+ * name it with hidden text (`<VisuallyHidden>`)
  * beside the icon, and it becomes square.
  * For a one-off colour set the public `--loam-button-color` property; for a
  * house style, wrap it (the SecondaryButton pattern).

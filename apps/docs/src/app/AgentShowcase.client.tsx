@@ -1,11 +1,10 @@
 "use client";
 
-import { useId, useState, type ReactNode } from "react";
-import { CopyButton } from "@loamui/core";
+import { type ReactNode } from "react";
+import Link from "next/link";
+import { Card, CopyButton, SignpostLink, Tabs } from "@loamui/core";
 import { CodeBlock } from "@/renderer/CodeBlock";
-import classes from "./AgentShowcase.module.css";
-
-type Tab = "result" | "tsx" | "css";
+import "./AgentShowcase.css";
 
 /**
  * The homepage's "ask, get, look under the hood" panel: the prompt a
@@ -14,97 +13,66 @@ type Tab = "result" | "tsx" | "css";
  * (scripts/sync-agent-demo.mjs), so the tabs cannot drift from the render.
  */
 export function AgentShowcase({
-  skillCommand,
-  skillNote,
   prompt,
   tsx,
   css,
   caption,
   children,
 }: {
-  /** The consumer skill's install command; omit to hide the row. */
-  skillCommand?: string;
-  /** A short status shown beside the command, e.g. "soon". */
-  skillNote?: string;
   prompt: string;
   tsx: string;
   css: string;
   caption: string;
   children: ReactNode;
 }) {
-  const [tab, setTab] = useState<Tab>("result");
-  const baseId = useId();
-
   return (
-    <div className={classes.grid}>
-      <div className={classes.ask}>
-        <h3 className={classes.step}>Ask</h3>
-        {skillCommand && (
-          <>
-            <p className={classes.label}>
-              <a href="/docs/composing">Read the recipe</a> or add the skill:
-              {skillNote && <span className={classes.note}>{skillNote}</span>}
-            </p>
-            <div className={classes.command}>
-              <span className={classes.prompt} aria-hidden>
-                $
-              </span>
-              <code>{skillCommand}</code>
-              <CopyButton
-                className={classes.copy}
-                value={skillCommand}
-                aria-label="Copy the skill install command"
-              >
+    <div className="site-AgentShowcase">
+      <Card>
+        <div className="site-AgentAsk">
+          <h3>Add the skill</h3>
+          <CodeBlock code="npx skills add dangerfarms/loamui --skill loamui" language="bash" />
+          <div className="promptBox">
+            <div className="bar">
+              <span>Then try a prompt</span>
+              <CopyButton value={prompt} aria-label="Copy the prompt">
                 Copy
               </CopyButton>
             </div>
-          </>
-        )}
-        <p className={classes.label}>
-          {skillCommand ? "Or point the agent at " : "Point the agent at "}
-          <a href="/llms.txt">llms.txt</a>:
-        </p>
-        <div className={classes.promptBox}>
-          <p>{prompt}</p>
-          <CopyButton className={classes.copy} value={prompt} aria-label="Copy the prompt">
-            Copy
-          </CopyButton>
-        </div>
-      </div>
-
-      <div className={classes.code}>
-        <div className={classes.codeHead}>
-          <h3 className={classes.step}>Under the hood</h3>
-          <div role="tablist" aria-label="Generated code" className={classes.tabs}>
-            {(["result", "tsx", "css"] as const).map((t) => (
-              <button
-                key={t}
-                type="button"
-                role="tab"
-                id={`${baseId}-tab-${t}`}
-                aria-selected={tab === t}
-                aria-controls={`${baseId}-panel-${t}`}
-                tabIndex={tab === t ? 0 : -1}
-                className={classes.tab}
-                onClick={() => setTab(t)}
-              >
-                {t === "result" ? "Result" : t === "tsx" ? "Component" : "Stylesheet"}
-              </button>
-            ))}
+            <p>{prompt}</p>
           </div>
+          <p>
+            <SignpostLink render={<Link href="/docs/agent-workflow" />}>
+              Build with the skill
+            </SignpostLink>
+          </p>
+          <p className="label">
+            New project? <Link href="/docs/installation">Install LoamUI</Link>. For setup help,
+            follow <Link href="/docs/agent-workflow">Build with the skill</Link>.
+          </p>
         </div>
-        <div
-          role="tabpanel"
-          id={`${baseId}-panel-${tab}`}
-          aria-labelledby={`${baseId}-tab-${tab}`}
-          className={classes.panel}
-        >
-          {tab === "result" && <div className={classes.stage}>{children}</div>}
-          {tab === "tsx" && <CodeBlock code={tsx} language="tsx" />}
-          {tab === "css" && <CodeBlock code={css} language="css" />}
+      </Card>
+      <Card>
+        <div className="site-AgentResult">
+          <p className="eyebrow">Explore the result</p>
+          <Tabs.Root defaultValue="result">
+            <Tabs.List aria-label="Generated code">
+              <Tabs.Tab value="result">Preview</Tabs.Tab>
+              <Tabs.Tab value="tsx">React</Tabs.Tab>
+              <Tabs.Tab value="css">CSS</Tabs.Tab>
+            </Tabs.List>
+            <Tabs.Panel value="result" className="site-AgentShowcase-panel">
+              <div className="site-AgentShowcase-stage">{children}</div>
+            </Tabs.Panel>
+            <Tabs.Panel value="tsx" className="site-AgentShowcase-panel">
+              <CodeBlock code={tsx} language="tsx" />
+            </Tabs.Panel>
+            <Tabs.Panel value="css" className="site-AgentShowcase-panel">
+              <CodeBlock code={css} language="css" />
+            </Tabs.Panel>
+          </Tabs.Root>
+          <p className="caption">{caption}</p>
         </div>
-        <p className={classes.caption}>{caption}</p>
-      </div>
+      </Card>
     </div>
   );
 }

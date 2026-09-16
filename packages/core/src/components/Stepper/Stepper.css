@@ -8,7 +8,7 @@
 @scope (.loam-Stepper) to ([class*="loam-"]) {
   :scope {
     --_marker-size: var(--loam-stepper-marker-size, calc(2 * var(--loam-text-md)));
-    --_gap: var(--loam-space-lg);
+    --_gap: var(--loam-space-s);
 
     container-type: inline-size;
     counter-reset: step;
@@ -27,7 +27,7 @@
     counter-increment: step;
     display: block grid;
     flex: 1 1 100%;
-    gap: var(--loam-space-xs) var(--loam-space-md);
+    gap: var(--loam-space-3xs) var(--loam-space-xs);
     grid-template:
       "marker title" max-content
       "marker description" 1fr
@@ -70,7 +70,7 @@
     justify-content: center;
     line-height: 1;
     min-inline-size: var(--_marker-size);
-    padding-inline: var(--loam-space-sm);
+    padding-inline: var(--loam-space-2xs);
     white-space: nowrap;
 
     /* The number is drawn only into an empty marker; children take its place. */

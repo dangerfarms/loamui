@@ -1,6 +1,6 @@
 import { Button, Checkbox } from "@loamui/core";
 import { ComputedTokens } from "./tokens.client";
-import prose from "../prose.module.css";
+import "../prose.css";
 
 export const metadata = {
   title: "Tokens",
@@ -10,7 +10,7 @@ export const metadata = {
 
 # Tokens
 
-The first of LoamUI's three primitives: a handful of semantic custom properties that every component reads. A small palette of colours and neutrals, plus fluid scales: everything else is derived by recipe, so theming is overriding `--loam-*` values at any scope. No `ThemeProvider`, no JavaScript.
+The first of LoamUI's three primitives: a handful of semantic custom properties that every component reads. A small palette of colours and neutrals, plus fluid scales: everything else is derived by formula, so theming is overriding `--loam-*` values at any scope. No `ThemeProvider`, no JavaScript.
 
 ## The surface
 
@@ -18,21 +18,27 @@ Small enough to read in full. A component library that mints thousands of tokens
 a decision nobody can audit; here the decisions are the hues and neutrals, and the rest is
 arithmetic:
 
-<div className={prose.block}>
+<div className="block">
   <ComputedTokens />
 </div>
 
 ## Rebrand in one line
 
 One token carries the brand: `--loam-color-primary`. Everything else (the soft tint, hover, active,
-solid fills, focus rings) is _derived_ from it by recipe, so there is nothing else to keep in
+solid fills, focus rings) is _derived_ from it by formula, so there is nothing else to keep in
 sync:
 
 ```css
-:root {
-  --loam-color-primary: light-dark(oklch(0.62 0.2 275), oklch(0.72 0.17 275)); /* violet */
+@layer loamui.tokens {
+  :root {
+    --loam-color-primary: light-dark(oklch(0.62 0.2 275), oklch(0.72 0.17 275)); /* violet */
+  }
 }
 ```
+
+Load this theme stylesheet after the core stylesheet so its token declaration follows
+the default in the same layer. App-wide tokens belong on `:root`; a composition's
+layout and treatment belong in scoped `loamui.components` rules.
 
 The brand colour appears wherever the design says primary: focus rings, checked states, carets,
 and `primary` context regions. (Buttons are neutral by default; the demo below is
@@ -53,12 +59,12 @@ CSS and differ only in where the token is set:
 </div>
 ```
 
-<div className={prose.block}>
-  <div style={{ display: "flex", gap: "var(--loam-space-md)", flexWrap: "wrap" }}>
+<div className="block">
+  <div style={{ display: "flex", gap: "var(--loam-space-xs)", flexWrap: "wrap" }}>
     <div
       style={{
         "--loam-context": "primary",
-        padding: "var(--loam-space-xl)",
+        padding: "var(--loam-space-l)",
         border: "1px solid var(--loam-color-line)",
         borderRadius: "var(--loam-radius-lg)",
       }}
@@ -69,7 +75,7 @@ CSS and differ only in where the token is set:
       style={{
         "--loam-color-primary": "light-dark(oklch(0.62 0.2 275), oklch(0.72 0.17 275))",
         "--loam-context": "primary",
-        padding: "var(--loam-space-xl)",
+        padding: "var(--loam-space-l)",
         border: "1px solid var(--loam-color-line)",
         borderRadius: "var(--loam-radius-lg)",
       }}
@@ -104,7 +110,7 @@ The same mechanism gives you an inverted "on-dark" section: set `data-theme="dar
 resolved values and don't re-resolve, so the inverted region must also re-declare `color` (e.g.
 `color: var(--loam-color-fg)`) for descendants to pick up the flipped value.
 
-<div className={prose.callout}>
+<div className="site-callout">
   This is one instance of LoamUI's baseline posture:{" "}
   <strong>the user's stated preferences are the default.</strong> Colour scheme is followed
   natively, motion exists only inside <code>prefers-reduced-motion: no-preference</code>, and forced
@@ -120,12 +126,12 @@ property lives on an ancestor) are the [Contextualism guide](/docs/contextualism
 what matters for theming is that a context remaps _semantic colour tokens only_, so it composes
 with everything on this page:
 
-<div className={prose.block}>
+<div className="block">
   <div
     style={{
       "--loam-context": "danger",
       display: "grid",
-      gap: "var(--loam-space-md)",
+      gap: "var(--loam-space-xs)",
       padding: "1.25rem",
       border: "1px solid var(--loam-color-line)",
       borderRadius: "var(--loam-radius-lg)",
@@ -134,7 +140,7 @@ with everything on this page:
   >
     <strong>Delete workspace</strong>
     <Checkbox label="I understand this is permanent" />
-    <div style={{ display: "flex", gap: "var(--loam-space-md)" }}>
+    <div style={{ display: "flex", gap: "var(--loam-space-xs)" }}>
       <Button>Delete</Button>
       <Button>Cancel</Button>
     </div>
@@ -142,10 +148,12 @@ with everything on this page:
 </div>
 
 ```css
-/* the idiomatic form: a named region declares its meaning in
-   its own stylesheet (a style attribute works for one-offs) */
-.danger-zone {
-  --loam-context: danger;
+@scope (.danger-zone) to ([class*="loam-"]) {
+  @layer loamui.components {
+    :scope {
+      --loam-context: danger;
+    }
+  }
 }
 ```
 
@@ -158,7 +166,7 @@ with everything on this page:
 </section>
 ```
 
-<div className={prose.callout}>
+<div className="site-callout">
   Theme, context, and instance are one mechanism at three scopes: remap tokens on <code>:root</code>{" "}
   to set a brand, declare a context on a region to give it meaning, set a property on an instance to
   override one control.
@@ -179,7 +187,7 @@ Start here when theming:
 
 ## Fluid type & spacing
 
-The type (`--loam-text-xs`…`3xl`) and spacing (`--loam-space-xs`…`xl`) scales are fluid `clamp()`
+The type (`--loam-text-xs`…`3xl`) and spacing (`--loam-space-3xs`…`xl`) scales are fluid `clamp()`
 values in container units (`cqi`), generated with [Utopia](https://utopia.fyi); the calculator
 parameters are committed as comments in `tokens.css`. Without a container they respond to the
 viewport. A container affects values resolved on its descendants; it does not
@@ -195,7 +203,7 @@ content element inside the measuring region:
 
     > div {
       font-size: var(--loam-text-md);
-      padding: var(--loam-space-md);
+      padding: var(--loam-space-xs);
     }
   }
 }
@@ -209,7 +217,7 @@ Corner radii are deliberately _not_ fluid: rounding shouldn't breathe. Control h
 tokens at all: buttons and form controls share one derived anatomy (padding + line-height +
 border), so they align by construction at every container width.
 
-<div className={prose.callout}>
+<div className="site-callout">
   Because tokens cascade, you can theme per-brand or per-section by setting variables on any wrapper
   element; the whole theme is just values in the cascade.
 </div>
@@ -258,7 +266,7 @@ intact, and use a scope limit for embedded components:
 
     ul {
       display: block grid;
-      gap: var(--loam-space-lg);
+      gap: var(--loam-space-s);
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
       list-style: none;
       padding-inline-start: 0;

@@ -24,22 +24,21 @@ LoamUI is three layers, shipped in one stylesheet and applied by cascade order:
    appears.
 3. **Components**: the React parts, composed on top of the two primitives.
 
-## Five pillars
+## Two pillars
 
 The ideas that hold the primitives together, each explained on the
 [Principles](?path=/docs/foundations-principles--docs) page:
 
-- **[Native CSS](?path=/docs/foundations-principles--docs#1-native-css)**: real
-  elements carry the semantics; plain, static CSS carries the styling.
-- **[Modern CSS](?path=/docs/foundations-principles--docs#2-modern-css)**:
-  `@layer`, `@scope`, `light-dark()` and container queries; additive styles that
-  lean on the cascade.
-- **[Composition](?path=/docs/foundations-principles--docs#3-composition)**:
-  parts you arrange in your markup, not a wall of props.
-- **[Contextualism](?path=/docs/foundations-principles--docs#4-contextualism)**:
-  a region declares what it means and every control inside adapts.
-- **[Accessible & gatekept](?path=/docs/foundations-principles--docs#5-accessible--gatekept)**:
+- **[Modern](?path=/docs/foundations-principles--docs#1-modern)**: real elements
+  carry the semantics and plain, static CSS carries the styling; `@layer`,
+  `@scope`, `light-dark()` and container queries give additive styles that lean
+  on the cascade; and contextualism runs underneath, a region declaring what it
+  means so the tokens, element styles and components inside all adapt.
+- **[Accessible](?path=/docs/foundations-principles--docs#2-accessible)**:
   semantic HTML, preferences as the baseline, contrast and keyboard tests in CI.
+
+Composition is not a pillar but remains how the components are used: parts you
+arrange in your markup, not a wall of props.
 
 Browse the component groups in the sidebar for live, tested examples.
 

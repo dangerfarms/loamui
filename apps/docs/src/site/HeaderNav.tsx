@@ -2,13 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import classes from "./Header.module.css";
+import "./Header.css";
 
 const LINKS = [
   { name: "Tokens", href: "/docs/tokens" },
   { name: "Element styles", href: "/docs/element-styles" },
   { name: "Components", href: "/docs/components" },
-  { name: "Recipes", href: "/recipes" },
 ];
 
 /**
@@ -17,12 +16,18 @@ const LINKS = [
  * (`/docs/components/button` marks Components), so the header always says
  * where in the site the reader is.
  */
-export function HeaderNav() {
+export function HeaderNav({ resources = false }: { resources?: boolean }) {
   const pathname = usePathname() ?? "";
   const current = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
   return (
-    <nav className={classes.nav} aria-label="Primary">
-      {LINKS.map((l) => (
+    <nav className="nav" aria-label={resources ? "Resources" : "Primitives"}>
+      {(resources
+        ? [
+            { name: "Documentation", href: "/docs" },
+            { name: "Recipes", href: "/recipes" },
+          ]
+        : LINKS
+      ).map((l) => (
         <Link key={l.href} href={l.href} aria-current={current(l.href) ? "page" : undefined}>
           {l.name}
         </Link>

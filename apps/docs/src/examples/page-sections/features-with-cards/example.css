@@ -2,12 +2,12 @@
   :scope {
     container-type: inline-size;
     display: block grid;
-    gap: var(--loam-space-xl);
+    gap: var(--loam-space-l);
   }
 
   header {
     display: block grid;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     justify-items: center;
     text-align: center;
   }
@@ -37,7 +37,7 @@
 
   ul {
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
     list-style: none;
     margin: 0;
@@ -49,7 +49,7 @@
   :scope {
     align-content: start;
     display: block grid;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     margin: 0;
   }
 
@@ -63,7 +63,7 @@
     font-size: var(--loam-text-lg);
     inline-size: 2.25em;
     justify-content: center;
-    margin-block-end: var(--loam-space-xs);
+    margin-block-end: var(--loam-space-3xs);
 
     svg {
       block-size: auto;

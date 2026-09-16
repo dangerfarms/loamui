@@ -6,7 +6,7 @@
   :scope {
     container-type: inline-size;
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
   }
 
   /* A column grid inside a scrollport. Every item snaps to the start, and
@@ -18,7 +18,7 @@
      item's own inside the scrollport. */
   ul.track {
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     grid-auto-columns: min(100%, var(--loam-carousel-item-size, 20rem));
     grid-auto-flow: column;
     list-style: none;
@@ -28,12 +28,12 @@
        not yet Baseline, and the track would not scroll in some browsers. */
     overflow: auto;
     overscroll-behavior-inline: contain;
-    padding: var(--loam-space-xs);
+    padding: var(--loam-space-3xs);
 
     /* A containing block for hidden text inside an item, so it cannot
        escape the scroller and widen the page. */
     position: relative;
-    scroll-padding-inline: var(--loam-space-xs);
+    scroll-padding-inline: var(--loam-space-3xs);
     scroll-snap-type: inline mandatory;
 
     /* A grid, so a Card or an image stretches to the row's height. */
@@ -56,7 +56,7 @@
   ul.indicators {
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     justify-content: center;
     list-style: none;
     margin: 0;

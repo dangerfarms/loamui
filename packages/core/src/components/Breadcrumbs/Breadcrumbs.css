@@ -8,7 +8,7 @@
       align-items: center;
       display: block flex;
       flex-wrap: wrap;
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
       list-style: none;
       margin: 0;
       padding: 0;
@@ -32,7 +32,7 @@
 
       /* The empty alt keeps the glyph out of the accessibility tree. */
       content: var(--loam-breadcrumbs-separator, "/") / "";
-      margin-inline-end: var(--loam-space-sm);
+      margin-inline-end: var(--loam-space-2xs);
       user-select: none;
     }
 

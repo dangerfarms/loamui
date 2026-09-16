@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { NavLinks } from "./NavLinks";
-import classes from "./Sidebar.module.css";
+import "./Sidebar.css";
 
 /**
  * The docs sidebar. On every navigation the current link is brought into
@@ -30,7 +30,7 @@ export function Sidebar() {
   }, [pathname]);
 
   return (
-    <nav ref={ref} className={classes.sidebar} aria-label="Documentation">
+    <nav ref={ref} className="site-Sidebar site-NavLinks" aria-label="Documentation">
       <NavLinks />
     </nav>
   );

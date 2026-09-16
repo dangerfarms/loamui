@@ -1,0 +1,42 @@
+@layer loamui.components {
+  @scope (.site-CodeBlock) to ([class*="loam-"]) {
+    :scope {
+      background: var(--loam-color-surface);
+      border: 1px solid var(--loam-color-line);
+      border-radius: var(--loam-radius-md);
+      container-type: inline-size;
+      min-inline-size: 0;
+      overflow: clip;
+    }
+
+    .bar {
+      align-items: center;
+      border-block-end: 1px solid var(--loam-color-line);
+      color: var(--loam-color-fg-muted);
+      display: block flex;
+      font-size: var(--loam-text-xs);
+      justify-content: space-between;
+      padding: var(--loam-space-3xs) var(--loam-space-xs);
+    }
+
+    .pre {
+      background: transparent;
+      font-size: var(--loam-text-sm);
+      line-height: 1.6;
+      margin: 0;
+      overflow: auto;
+      padding: var(--loam-space-s);
+      tab-size: 2;
+      white-space: pre;
+
+      &:focus-visible {
+        outline: var(--loam-ring-width) solid var(--loam-color-ring);
+        outline-offset: -2px;
+      }
+    }
+
+    .line {
+      display: block flow;
+    }
+  }
+}

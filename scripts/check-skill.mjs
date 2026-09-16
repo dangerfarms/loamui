@@ -29,7 +29,8 @@ function referenceSnapshot(dir, prefix = "") {
     const key = prefix + entry.name;
     const path = join(dir, entry.name);
     if (entry.isDirectory()) {
-      for (const [nested, content] of referenceSnapshot(path, `${key}/`)) files.set(nested, content);
+      for (const [nested, content] of referenceSnapshot(path, `${key}/`))
+        files.set(nested, content);
     } else files.set(key, readFileSync(path, "utf8"));
   }
   return files;
@@ -40,30 +41,43 @@ execSync("npx tsx --tsconfig scripts/tsconfig.export.json scripts/export-markdow
   stdio: "pipe",
 });
 const after = referenceSnapshot(join(SKILL_DIR, "references"));
-const drift = [...new Set([...before.keys(), ...after.keys()])]
-  .filter((file) => before.get(file) !== after.get(file));
-if (drift.length) fail(`references/ was stale — review the regenerated files:\n${drift.join("\n")}`);
+const drift = [...new Set([...before.keys(), ...after.keys()])].filter(
+  (file) => before.get(file) !== after.get(file),
+);
+if (drift.length)
+  fail(`references/ was stale — review the regenerated files:\n${drift.join("\n")}`);
 
 // 2. named components exist ----------------------------------------------
 const md = readFileSync(SKILL, "utf8");
 const existing = new Set(readdirSync(COMPONENTS_DIR));
 const table = md.split("## Components")[1]?.split("\n## ")[0] ?? "";
-for (const row of table.split("\n").filter((l) => l.startsWith("| ") && !l.startsWith("| Category") && !l.startsWith("| ---"))) {
-  const names = row.split("|")[2]?.split(",").map((s) => s.trim()).filter(Boolean) ?? [];
-  for (const name of names) if (!existing.has(name)) fail(`SKILL.md names "${name}" but packages/core/src/components/${name} does not exist`);
+for (const row of table
+  .split("\n")
+  .filter((l) => l.startsWith("| ") && !l.startsWith("| Category") && !l.startsWith("| ---"))) {
+  const names =
+    row
+      .split("|")[2]
+      ?.split(",")
+      .map((s) => s.trim())
+      .filter(Boolean) ?? [];
+  for (const name of names)
+    if (!existing.has(name))
+      fail(`SKILL.md names "${name}" but packages/core/src/components/${name} does not exist`);
 }
 
 // 3. local links resolve ----------------------------------------------------
-for (const m of md.matchAll(/\]\((references\/[^)#]+)\)/g)) {
+for (const m of md.matchAll(/\]\(((?:references|assets)\/[^)#]+)\)/g)) {
   if (!existsSync(join(SKILL_DIR, m[1]))) fail(`SKILL.md links to missing file ${m[1]}`);
 }
-for (const m of md.matchAll(/`(references\/[a-z/-]+\.md)`/g)) {
+for (const m of md.matchAll(/`((?:references|assets)\/[a-z/.-]+\.(?:md|mjs))`/g)) {
   if (!existsSync(join(SKILL_DIR, m[1]))) fail(`SKILL.md mentions missing file ${m[1]}`);
 }
 
 // 4. budget -----------------------------------------------------------------
 if (md.length > BUDGET_CHARS)
-  fail(`SKILL.md is ${md.length} chars; budget is ${BUDGET_CHARS} (≈4k tokens). Move depth into references/.`);
+  fail(
+    `SKILL.md is ${md.length} chars; budget is ${BUDGET_CHARS} (≈4k tokens). Move depth into references/.`,
+  );
 
 // optional: live URLs -------------------------------------------------------
 if (process.argv.includes("--urls")) {
@@ -78,4 +92,6 @@ if (failures.length) {
   console.error(`check-skill: ${failures.length} problem(s)\n- ` + failures.join("\n- "));
   process.exit(1);
 }
-console.log(`check-skill: OK (${md.length} chars, ${existing.size} components, references in sync)`);
+console.log(
+  `check-skill: OK (${md.length} chars, ${existing.size} components, references in sync)`,
+);

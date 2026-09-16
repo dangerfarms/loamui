@@ -25,7 +25,7 @@ import { COMPONENTS, CATEGORY_ORDER } from "../src/site/nav.js";
 import type { ComponentContent } from "../src/renderer/types.js";
 import { EXAMPLE_CATEGORIES } from "../src/examples/categories.js";
 import { EXAMPLE_META } from "../src/examples/generated-meta.js";
-import { linkedRecipePrompt, recipePrompt } from "../src/examples/recipe-prompt.js";
+import { linkedRecipePrompt } from "../src/examples/recipe-prompt.js";
 import { PILLARS } from "../src/examples/types.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -38,6 +38,13 @@ const ORIGIN = process.env.SITE_ORIGIN ?? "https://loamui.com";
 // references (skills/loamui/references/), regenerated here so they can't
 // drift from the site. `check:skill` fails CI if the committed copy is stale.
 const SKILL_REFS = join(ROOT, "..", "..", "skills", "loamui", "references");
+const SETUP_ASSETS = [
+  "stylelint-base.mjs",
+  "stylelint.config.mjs",
+  "check-composition.mjs",
+  "scope-rules.mjs",
+  "spacing-rules.mjs",
+];
 
 /** Write the same markdown to public/ (served) and the skill references (committed). */
 function writeBoth(publicFile: string, refFile: string, md: string) {
@@ -111,6 +118,9 @@ rmSync(SKILL_REFS, { recursive: true, force: true });
 for (const directory of ["examples", "recipes"])
   rmSync(join(PUBLIC, directory), { recursive: true, force: true });
 
+// Remove the retired standalone setup twin; its content is in agent-workflow.
+rmSync(join(PUBLIC, "docs", "project-setup.md"), { force: true });
+
 // ---- guides: page.mdx source → markdown --------------------------------
 
 /** Strip JSX tags to their markdown-ish text content. */
@@ -127,9 +137,24 @@ function jsxToText(s: string): string {
     .trim();
 }
 
+/** Ignore fenced examples when locating MDX module exports. */
+function moduleSource(src: string): string {
+  let fence = false;
+  return src
+    .split("\n")
+    .map((line) => {
+      if (/^\s*```/.test(line)) {
+        fence = !fence;
+        return " ".repeat(line.length);
+      }
+      return fence ? " ".repeat(line.length) : line;
+    })
+    .join("\n");
+}
+
 /** Serialize an .mdx source file to plain markdown. */
 function mdxToMarkdown(src: string): { md: string; title: string; description: string } {
-  const meta = src.match(
+  const meta = moduleSource(src).match(
     /export const metadata = \{[\s\S]*?title: "([^"]+)"[\s\S]*?description:\s*\n?\s*"([^"]+)"/,
   );
   const title = meta?.[1] ?? "";
@@ -140,7 +165,7 @@ function mdxToMarkdown(src: string): { md: string; title: string; description: s
   // a multi-line regex here once swallowed everything between an `import`
   // inside one fence and the next `from "…"` in another.
   let s = src;
-  const mi = s.indexOf("export const metadata");
+  const mi = moduleSource(s).indexOf("export const metadata");
   if (mi > -1) {
     let depth = 0,
       j = s.indexOf("{", mi),
@@ -158,7 +183,11 @@ function mdxToMarkdown(src: string): { md: string; title: string; description: s
   // Other top-level exports (helper components/styles) — drop line blocks.
   // Other top-level exports (helper components, icons): drop each one by
   // scanning to the bracket that closes it, whatever bracket opened it.
-  for (let ei = s.indexOf("\nexport const "); ei > -1; ei = s.indexOf("\nexport const ")) {
+  for (
+    let ei = moduleSource(s).indexOf("\nexport const ");
+    ei > -1;
+    ei = moduleSource(s).indexOf("\nexport const ")
+  ) {
     const start = ei + 1;
     const open = s.slice(start).search(/[({[]/);
     if (open === -1) break;
@@ -206,7 +235,14 @@ function mdxToMarkdown(src: string): { md: string; title: string; description: s
       i++;
       continue;
     }
-    if (/^import .* from "[^"]+";\s*$/.test(line)) {
+    if (/^import (?:.* from )?"[^"]+";\s*$/.test(line)) {
+      i++;
+      continue;
+    }
+    if (
+      /^\s*<\/?details(?:\s[^>]*)?>\s*$/.test(line) ||
+      /^\s*<summary\b.*<\/summary>\s*$/.test(line)
+    ) {
       i++;
       continue;
     }
@@ -269,6 +305,10 @@ for (const file of mdxFiles(APP)) {
   writeGuideTwin(route, md);
   guides.push({ route, title, description });
 }
+
+// Old agents and bookmarks still receive the maintained guide at its former URL.
+// Only the new route is advertised in llms.txt and the skill's index.
+copyFileSync(join(PUBLIC, "recipes", "guide.md"), join(PUBLIC, "docs", "composing.md"));
 
 // ---- component pages: registry data → markdown -------------------------
 
@@ -414,7 +454,7 @@ function exampleMarkdown(entry: (typeof EXAMPLE_META)[number]): string {
   out.push(
     "## Using this recipe",
     "",
-    "Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.",
+    "Copy both files side by side into your React framework project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.",
     "",
   );
   out.push(
@@ -469,7 +509,7 @@ const guideOrder = [
   "/docs/element-styles",
   "/docs/components",
   "/docs/contextualism",
-  "/docs/composing",
+  "/recipes/guide",
   "/docs/layout",
   "/docs/typography",
   "/docs/accessibility",
@@ -481,37 +521,26 @@ const sorted = [...guides].sort((a, b) => {
 });
 
 const workflow = readFileSync(join(SKILL_REFS, "guides", "agent-workflow.md"), "utf8");
-const workflowBody = workflow.slice(workflow.indexOf("# Building with an agent"));
+const workflowBody = workflow.slice(workflow.indexOf("\n# ") + 1);
+const briefHeading = "## Reference: how the agent should work";
+if (!workflowBody.includes(briefHeading))
+  throw new Error("Missing implementation brief in agent workflow");
+const implementationBrief = workflowBody
+  .slice(workflowBody.indexOf(briefHeading))
+  .replace(briefHeading, "## Implementation brief")
+  .replace(
+    "The following guidance defines the environment checks, composition rules and verification expected from an agent. It also ships with the skill and the documentation for LLMs.",
+    "Use this brief even when the LoamUI skill is not installed. Follow the essential rules below, then read the selected recipe and component contracts before implementation. If you cannot retrieve them, use bundled skill references or request the needed material; do not invent APIs.",
+  );
 const absoluteLinks = (markdown: string) => markdown.replace(/\]\(\/(?!\/)/g, `](${ORIGIN}/`);
 
-// Static, on-demand prompt files: source and contracts stay out of gallery JavaScript.
+// Short prompts mirror the recipe pages; detailed references ship separately with the skill.
 const PROMPTS = join(PUBLIC, "recipe-prompts");
 rmSync(PROMPTS, { recursive: true, force: true });
 for (const entry of EXAMPLE_META) {
-  const componentReferences = entry.meta.uses.map((name) => {
-    const component = COMPONENTS.find((item) => item.name === name);
-    if (!component) throw new Error(`Missing prompt reference for ${name}`);
-    return {
-      title: name,
-      markdown: readFileSync(join(SKILL_REFS, "components", `${component.slug}.md`), "utf8"),
-    };
-  });
-  const prompt = recipePrompt({
-    entry,
-    workflow: workflowBody,
-    recipe: exampleMarkdown(entry),
-    references: [
-      ...["installation", "composing"].map((slug) => ({
-        title: slug,
-        markdown: readFileSync(join(SKILL_REFS, "guides", `${slug}.md`), "utf8"),
-      })),
-      ...componentReferences,
-    ],
-  });
   const file = join(PROMPTS, entry.category, `${entry.slug}.txt`);
   mkdirSync(dirname(file), { recursive: true });
-  writeFileSync(file, linkedRecipePrompt(entry, ORIGIN));
-  writeFileSync(file.replace(/\.txt$/, ".full.txt"), absoluteLinks(prompt));
+  writeFileSync(file, linkedRecipePrompt(entry) + "\n");
 }
 
 const lines: string[] = [
@@ -524,7 +553,22 @@ const lines: string[] = [
   "> for the library. `/AGENTS.md` is a one-page summary of the conventions",
   "> an agent needs when writing against the package.",
   "",
-  absoluteLinks(workflowBody.replace(/^#/gm, "##")),
+  "## Start here",
+  "",
+  "The package supplies tokens, element styles and React components. The skill guides project setup, composition and verification; installing the skill does not install the package.",
+  "",
+  `- Set up a framework and LoamUI: [Installation](${ORIGIN}/docs/installation.md).`,
+  `- Prepare a project or add the skill: [Build with the skill](${ORIGIN}/docs/agent-workflow.md).`,
+  `- Build a named recipe: find it below, read its React/CSS and the contracts of the components it uses. For a new pattern, read the [recipe guide](${ORIGIN}/recipes/guide.md) and the nearest relevant recipe.`,
+  "- Check the installed package exports/types against these references. The site follows the current source; installed package versions can differ.",
+  "",
+  absoluteLinks(
+    implementationBrief.replace(
+      /\]\((\/(?:docs|recipes)(?:\/[^)#]*)?)(#[^)]*)?\)/g,
+      (_match, path: string, anchor = "") =>
+        `](${path.endsWith(".md") ? path : `${path}.md`}${anchor})`,
+    ),
+  ),
   "",
   "## Guides",
   "",
@@ -556,6 +600,13 @@ for (const category of EXAMPLE_CATEGORIES) {
     );
 }
 writeFileSync(join(PUBLIC, "llms.txt"), lines.join("\n") + "\n");
+
+// Publish the same setup assets that ship with the skill.
+const agentAssets = join(PUBLIC, "agent-assets");
+mkdirSync(agentAssets, { recursive: true });
+for (const file of SETUP_ASSETS) {
+  copyFileSync(join(ROOT, "..", "..", "skills", "loamui", "assets", file), join(agentAssets, file));
+}
 
 // ---- AGENTS.md: the package's one-page summary, served at /AGENTS.md too ---
 copyFileSync(join(ROOT, "..", "..", "packages", "core", "AGENTS.md"), join(PUBLIC, "AGENTS.md"));

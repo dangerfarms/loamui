@@ -6,14 +6,14 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 The first primitive: a small set of semantic custom properties every component
 reads. A handful of decisions and some fluid scales; everything else is derived
-by recipe. Theming is overriding `--loam-*` at any scope: no `ThemeProvider`,
+by formula. Theming is overriding `--loam-*` at any scope: no `ThemeProvider`,
 no JavaScript.
 
 ## The surface
 
 Tokens are grouped into four bands: **inputs → neutrals → derived → scales**.
 The inputs are the decisions a theme makes; the neutrals are surfaces, text and
-borders; the derived band holds recipes (soft tints, solid fills, focus rings)
+borders; the derived band holds formulas (soft tints, solid fills, focus rings)
 computed from the inputs; the scales are the fluid type and space steps.
 
 The brand is carried by **one** input token. Its default is neutral (near-black
@@ -61,13 +61,14 @@ value and won't re-resolve, so an inverted region must re-declare `color: var(--
   `--loam-color-link` and `--loam-color-highlight` (platform defaults).
 - **Neutrals**: `--loam-color-bg`, `-bg-subtle`, `-surface`, `-fg`, `-fg-strong`,
   `-fg-muted`, `-fg-dim`, `-line`, `-line-strong`, `-on-strong`.
-- **Derived** (recipes, not decisions; rebrand primary and these follow):
+- **Derived** (formulas, not decisions; rebrand primary and these follow):
   `--loam-color-primary-soft`, `-primary-strong`, the per-status soft/strong
-  pairs, `--loam-color-surface-hover`, `--loam-color-ring`.
+  pairs, `--loam-color-surface-hover`, and `--loam-color-ring` (the focus ring,
+  which is the current status's solid fill).
 - **Fonts**: `--loam-font` and `--loam-font-display` (both `system-ui` by
   default), plus `--loam-font-mono` (a monospace stack).
 - **Type scale**: `--loam-text-xs` … `-3xl`, fluid `clamp()` in container units.
-- **Spacing**: `--loam-space-xs` … `-xl`, fluid; the minimum is the fixed value.
+- **Spacing**: `--loam-space-3xs` … `-xl`, fluid; the minimum is the fixed value.
 - **Radius & motion** (deliberately fixed): `--loam-radius-sm` … `-full`,
   `--loam-duration-sm/md/lg`, `--loam-ease`, `--loam-ease-elastic`.
 - **Elevation**: layered `light-dark()` shadows; in dark the drop goes

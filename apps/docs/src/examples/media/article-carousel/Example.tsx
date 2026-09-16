@@ -1,7 +1,7 @@
 "use client";
 
 import { useId } from "react";
-import { Badge, Card, Carousel, SignpostLink } from "@loamui/core";
+import { Badge, Card, Carousel, SignpostLink, VisuallyHidden } from "@loamui/core";
 import "./example.css";
 
 export default function Example() {
@@ -54,7 +54,7 @@ export default function Example() {
               <div className="foot">
                 <SignpostLink href="/journal/picking-french-beans">
                   Read article
-                  <span className="loam-VisuallyHidden"> – Picking French beans at their best</span>
+                  <VisuallyHidden> – Picking French beans at their best</VisuallyHidden>
                 </SignpostLink>
               </div>
             </div>
@@ -89,7 +89,7 @@ export default function Example() {
               <div className="foot">
                 <SignpostLink href="/journal/haymaking">
                   Read article
-                  <span className="loam-VisuallyHidden"> – Haymaking on the member fields</span>
+                  <VisuallyHidden> – Haymaking on the member fields</VisuallyHidden>
                 </SignpostLink>
               </div>
             </div>
@@ -124,7 +124,7 @@ export default function Example() {
               <div className="foot">
                 <SignpostLink href="/journal/spring-buds">
                   Read article
-                  <span className="loam-VisuallyHidden"> – A closer look at spring buds</span>
+                  <VisuallyHidden> – A closer look at spring buds</VisuallyHidden>
                 </SignpostLink>
               </div>
             </div>
@@ -159,7 +159,7 @@ export default function Example() {
               <div className="foot">
                 <SignpostLink href="/journal/woodland-tulips">
                   Read article
-                  <span className="loam-VisuallyHidden"> – Tulips at the woodland edge</span>
+                  <VisuallyHidden> – Tulips at the woodland edge</VisuallyHidden>
                 </SignpostLink>
               </div>
             </div>
@@ -194,10 +194,7 @@ export default function Example() {
               <div className="foot">
                 <SignpostLink href="/journal/changing-weather">
                   Read article
-                  <span className="loam-VisuallyHidden">
-                    {" "}
-                    – Reading the weather over the fields
-                  </span>
+                  <VisuallyHidden> – Reading the weather over the fields</VisuallyHidden>
                 </SignpostLink>
               </div>
             </div>

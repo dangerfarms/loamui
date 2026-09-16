@@ -5,8 +5,8 @@ import { Preview } from "./Preview";
 import { CodeBlock } from "./CodeBlock";
 import { PropsTable } from "./PropsTable";
 import { ScrollRegion } from "./ScrollRegion";
-import classes from "./DocPage.module.css";
-import tableClasses from "./PropsTable.module.css";
+import "./DocPage.css";
+import "./PropsTable.css";
 
 function slugify(s: string) {
   return s
@@ -43,33 +43,33 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
   const css = readComponentCss(doc.name, doc.pkg ?? "core");
 
   return (
-    <article className={classes.page}>
-      <header className={classes.header}>
-        <p className={classes.category}>{doc.category}</p>
-        <h1 className={classes.title}>{doc.name}</h1>
-        <p className={classes.lead}>{doc.lead ?? doc.description}</p>
+    <article className="site-DocPage">
+      <header className="header">
+        <p className="category">{doc.category}</p>
+        <h1 className="title">{doc.name}</h1>
+        <p className="lead">{doc.lead ?? doc.description}</p>
       </header>
 
-      <section className={classes.section}>
-        <h2 id="import" className={classes.h2}>
+      <section className="section">
+        <h2 id="import" className="h2">
           Import
         </h2>
         <CodeBlock code={doc.importLine} />
       </section>
 
-      <section className={classes.section}>
-        <h2 id="usage" className={classes.h2}>
+      <section className="section">
+        <h2 id="usage" className="h2">
           Usage
         </h2>
-        <p className={classes.usageNote}>
+        <p className="usageNote">
           Every example has a <strong>CSS</strong>&#32;tab. That&rsquo;s the real, complete
           stylesheet for the component: plain, static CSS, with nothing running in the browser.
         </p>
-        <div className={classes.demos}>
+        <div className="demos">
           {doc.demos.map((demo) => (
-            <div key={demo.title} id={slugify(demo.title)} className={classes.demo}>
-              <h3 className={classes.h3}>{demo.title}</h3>
-              {demo.description && <p className={classes.demoDesc}>{demo.description}</p>}
+            <div key={demo.title} id={slugify(demo.title)} className="demo">
+              <h3 className="h3">{demo.title}</h3>
+              {demo.description && <p className="demoDesc">{demo.description}</p>}
               <Preview code={demo.code} css={css}>
                 {demo.render()}
               </Preview>
@@ -79,19 +79,17 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
       </section>
 
       {(doc.whenToUse || doc.whenNotToUse || doc.accessibility) && (
-        <section className={classes.section}>
-          <h2 id="guidance" className={classes.h2}>
+        <section className="section">
+          <h2 id="guidance" className="h2">
             Guidance
           </h2>
-          <div className={classes.guidance}>
+          <div className="guidance">
             {(doc.whenToUse || doc.whenNotToUse) && (
-              <div className={classes.guidanceCols}>
+              <div className="guidanceCols">
                 {doc.whenToUse && (
-                  <div className={classes.guidanceCard}>
-                    <h3 className={`${classes.guidanceHeading} ${classes.guidanceYes}`}>
-                      When to use it
-                    </h3>
-                    <ul className={classes.guidanceList}>
+                  <div className="guidanceCard">
+                    <h3 className={`$"guidanceHeading" $"guidanceYes"`}>When to use it</h3>
+                    <ul className="guidanceList">
                       {doc.whenToUse.map((item) => (
                         <li key={item}>{item}</li>
                       ))}
@@ -99,11 +97,9 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
                   </div>
                 )}
                 {doc.whenNotToUse && (
-                  <div className={classes.guidanceCard}>
-                    <h3 className={`${classes.guidanceHeading} ${classes.guidanceNo}`}>
-                      When not to
-                    </h3>
-                    <ul className={classes.guidanceList}>
+                  <div className="guidanceCard">
+                    <h3 className={`$"guidanceHeading" $"guidanceNo"`}>When not to</h3>
+                    <ul className="guidanceList">
                       {doc.whenNotToUse.map((item) => (
                         <li key={item}>{item}</li>
                       ))}
@@ -113,9 +109,9 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
               </div>
             )}
             {doc.accessibility && (
-              <div className={classes.guidanceCard}>
-                <h3 className={classes.guidanceHeading}>Accessibility</h3>
-                <ul className={classes.a11yList}>
+              <div className="guidanceCard">
+                <h3 className="guidanceHeading">Accessibility</h3>
+                <ul className="a11yList">
                   {doc.accessibility.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
@@ -127,15 +123,15 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
       )}
 
       {doc.howItWorks && (
-        <section className={classes.section}>
-          <h2 id="how-it-works" className={classes.h2}>
+        <section className="section">
+          <h2 id="how-it-works" className="h2">
             How it works
           </h2>
-          <div className={classes.demos}>
+          <div className="demos">
             {doc.howItWorks.map((entry) => (
-              <div key={entry.title} id={slugify(entry.title)} className={classes.demo}>
-                <h3 className={classes.h3}>{entry.title}</h3>
-                <p className={classes.demoDesc}>{entry.body}</p>
+              <div key={entry.title} id={slugify(entry.title)} className="demo">
+                <h3 className="h3">{entry.title}</h3>
+                <p className="demoDesc">{entry.body}</p>
                 {entry.code && entry.render && (
                   <Preview code={entry.code} css={css}>
                     {entry.render()}
@@ -148,11 +144,11 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
       )}
 
       {doc.errors && (
-        <section className={classes.section}>
-          <h2 id="error-messages" className={classes.h2}>
+        <section className="section">
+          <h2 id="error-messages" className="h2">
             Error messages
           </h2>
-          <p className={classes.usageNote}>
+          <p className="usageNote">
             Say what happened and how to fix it, in the words of the question itself. See the
             writing guidance{" "}
             {doc.slug === "field" ? (
@@ -163,8 +159,8 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
               </>
             )}
           </p>
-          <ScrollRegion className={tableClasses.scroll} label="Error messages table">
-            <table className={tableClasses.table}>
+          <ScrollRegion className="site-PropsTable" label="Error messages table">
+            <table className="table">
               <thead>
                 <tr>
                   <th scope="col">Situation</th>
@@ -176,7 +172,7 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
                   <tr key={e.situation}>
                     <td>{e.situation}</td>
                     <td>
-                      <code className={tableClasses.name}>{e.message}</code>
+                      <code className="name">{e.message}</code>
                     </td>
                   </tr>
                 ))}
@@ -187,12 +183,12 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
       )}
 
       {doc.props && doc.props.length > 0 && (
-        <section className={classes.section}>
-          <h2 id="props" className={classes.h2}>
+        <section className="section">
+          <h2 id="props" className="h2">
             Props
           </h2>
           {doc.contextual && (
-            <p className={classes.demoDesc}>
+            <p className="demoDesc">
               Status is not a prop: it comes from the surrounding <code>--loam-context</code>{" "}
               region. See the <a href="/docs/contextualism">Contextualism guide</a>.
             </p>
@@ -202,17 +198,17 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
       )}
 
       {doc.parts && doc.parts.length > 0 && (
-        <section className={classes.section}>
-          <h2 id="parts" className={classes.h2}>
+        <section className="section">
+          <h2 id="parts" className="h2">
             Parts
           </h2>
-          <div className={classes.demos}>
+          <div className="demos">
             {doc.parts.map((part) => (
-              <div key={part.name} id={slugify(part.name)} className={classes.demo}>
-                <h3 className={classes.h3}>
-                  <code className={tableClasses.name}>{part.name}</code>
+              <div key={part.name} id={slugify(part.name)} className="demo">
+                <h3 className="h3">
+                  <code className="name">{part.name}</code>
                 </h3>
-                <p className={classes.demoDesc}>{part.description}</p>
+                <p className="demoDesc">{part.description}</p>
                 {part.props && part.props.length > 0 && (
                   <PropsTable label={`${part.name} props table`} rows={part.props} />
                 )}
@@ -223,8 +219,8 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
       )}
 
       {doc.cssProps && doc.cssProps.length > 0 && (
-        <section className={classes.section}>
-          <h2 id="custom-properties" className={classes.h2}>
+        <section className="section">
+          <h2 id="custom-properties" className="h2">
             Custom properties
           </h2>
           <PropsTable
@@ -242,21 +238,21 @@ export function DocPage({ doc }: { doc: ComponentDoc }) {
       )}
 
       {doc.hooks && doc.hooks.length > 0 && (
-        <section className={classes.section}>
-          <h2 id="hooks" className={classes.h2}>
+        <section className="section">
+          <h2 id="hooks" className="h2">
             Hooks
           </h2>
-          <div className={classes.demos}>
+          <div className="demos">
             {doc.hooks.map((hook) => (
-              <div key={hook.name} id={slugify(hook.name)} className={classes.demo}>
-                <h3 className={classes.h3}>
-                  <code className={tableClasses.name}>{hook.name}</code>
+              <div key={hook.name} id={slugify(hook.name)} className="demo">
+                <h3 className="h3">
+                  <code className="name">{hook.name}</code>
                 </h3>
-                <p className={classes.demoDesc}>{hook.description}</p>
+                <p className="demoDesc">{hook.description}</p>
                 <CodeBlock code={hook.signature} />
                 {hook.options && (
                   <>
-                    <p className={classes.demoDesc}>{hook.options.title}</p>
+                    <p className="demoDesc">{hook.options.title}</p>
                     <PropsTable
                       nameLabel="Option"
                       label={`${hook.name} options table`}

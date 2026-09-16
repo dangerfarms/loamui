@@ -18,7 +18,7 @@ A recipe in **Banners**: a component and a stylesheet built from `@loamui/core`,
 
 ## Using this recipe
 
-Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+Copy both files side by side into your React framework project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
 
 Replace the sample offer, closing date, photograph and destination with your own; use the heading level appropriate to the surrounding page. Keep Badge labels short and put longer details in the adjacent wrapping text. Both banners demonstrate a promotion below the initial viewport: loading="lazy" and sizes="auto, 100vw" let the browser choose a rendition from the rendered image width, with a conservative viewport fallback. For a banner visible on first load, remove lazy loading and auto from sizes; set a layout-appropriate size hint and use high fetch priority only if this is the page’s critical image. Supply appropriately cropped renditions through your own image pipeline. useId only connects each section to its heading; this synchronous component needs no client directive.
 
@@ -30,11 +30,8 @@ Use for one offer or announcement when the photograph deserves its own space bes
 
 These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
-- **Native CSS.** A section named by its h2 with the photograph as an img carrying real alt text, because a picture of the fruit on offer is content, not decoration.
-- **Modern CSS.** Styles belong to loamui.components inside a donut scope. The section measures its inner grid and header’s fluid token spacing and type: one column with the picture on top, then a 2:3 split at 44rem of its own width where the picture grows to the height of the words and is cropped rather than letterboxed.
-- **Composition.** No Card: a Card pads every side and the picture runs to the edge, so the section paints its own surface and line from the same tokens; Badge and SignpostLink are dropped in as they come.
-- **Contextualism.** The eyebrow declares --loam-context: primary, so the offer Badge inherits the brand context without a styling prop. A promotion does not imply a warning; the adjacent text spells out the closing date.
-- **Accessible & gatekept.** useId names each repeated region by its own h2. The photograph has descriptive alt text and reserved space before loading. Enlarged text can grow the layout; rounded image corners do not clip focus rings. The date is written out, the destination is a native link, and the border survives forced colours.
+- **Modern.** A section named by its h2, with the photograph as an img carrying real alt text, because a picture of the fruit on offer is content rather than decoration. Its stylesheet lives in loamui.components inside a donut scope and measures the section’s own inner grid against the header’s fluid token spacing and type: one column with the picture on top, then a 2:3 split at 44rem of its own width, where the picture grows to the height of the words and is cropped rather than letterboxed. The eyebrow declares --loam-context: primary, so the offer Badge inherits the brand context without a styling prop; a promotion does not imply a warning, and the adjacent text spells out the closing date.
+- **Accessible.** useId names each repeated region by its own h2. The photograph has descriptive alt text and reserved space before loading. Enlarged text can grow the layout; rounded image corners do not clip focus rings. The date is written out, the destination is a native link, and the border survives forced colours.
 
 ## References
 
@@ -110,10 +107,10 @@ export default function Example() {
       align-content: center;
       display: block grid;
       font-size: var(--loam-text-md);
-      gap: var(--loam-space-md);
+      gap: var(--loam-space-xs);
       grid-template-columns: minmax(0, 1fr);
       overflow-wrap: anywhere;
-      padding: var(--loam-space-xl);
+      padding: var(--loam-space-l);
     }
 
     h2,
@@ -129,7 +126,7 @@ export default function Example() {
       display: block flex;
       flex-wrap: wrap;
       font-size: var(--loam-text-sm);
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
     }
 
     h2 {
@@ -144,7 +141,7 @@ export default function Example() {
     div.actions {
       display: block flex;
       flex-wrap: wrap;
-      gap: var(--loam-space-md);
+      gap: var(--loam-space-xs);
     }
 
     @container banner-with-image (inline-size < 44rem) {

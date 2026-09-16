@@ -20,10 +20,13 @@ jobs:
       - run: pnpm check:skill
       - run: pnpm check:prompts
       - run: pnpm check:strings
+      - run: pnpm test:checks
       - run: pnpm check:scope
+      - run: pnpm check:spacing
       - run: pnpm check:examples
       - run: pnpm -r lint
       - run: pnpm lint:md
+      - run: pnpm lint:prose
       - run: pnpm format:check
       - run: pnpm --filter @loamui/core exec tsc --noEmit
       - run: npx tsc --noEmit

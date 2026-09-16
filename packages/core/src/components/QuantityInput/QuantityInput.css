@@ -16,7 +16,7 @@
   :scope {
     align-items: center;
     display: block flex;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
 
     /* Shrink-wrapped even as a stretched Field child: a count is a small
        thing, and a wide box would read as a bigger question. */
@@ -44,7 +44,7 @@
     }
 
     &[aria-invalid="true"] {
-      --loam-color-ring: var(--loam-color-danger-ring);
+      --loam-color-ring: var(--loam-color-danger-strong);
 
       border-color: var(--loam-color-danger);
     }

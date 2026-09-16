@@ -5,7 +5,7 @@
 
   header {
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
   }
 
   p.eyebrow {
@@ -38,7 +38,7 @@
     display: block flex;
     flex-wrap: wrap;
     font-size: var(--loam-text-sm);
-    gap: var(--loam-space-xs) var(--loam-space-sm);
+    gap: var(--loam-space-3xs) var(--loam-space-2xs);
 
     address {
       color: var(--loam-color-fg-strong);
@@ -53,14 +53,14 @@
     /* The empty alternative keeps the dot out of the accessibility tree. */
     address ~ span::before {
       content: "·" / "";
-      margin-inline-end: var(--loam-space-sm);
+      margin-inline-end: var(--loam-space-2xs);
     }
   }
 
   ul.tags {
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     list-style: none;
     margin: 0;
     padding: 0;
@@ -72,7 +72,7 @@
   }
 
   figure {
-    margin-block: var(--loam-space-sm) 0;
+    margin-block: var(--loam-space-2xs) 0;
     margin-inline: 0;
 
     img {

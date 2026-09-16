@@ -102,7 +102,7 @@ const [sort, setSort] = useState({ column: "name", direction: "ascending" });
 
 ### Wider than its container
 
-The table scrolls in place instead of stretching the page. Only once it actually overflows does the wrapper become a focusable region named by the caption, so Tab reaches it and the arrow keys scroll it; the same table in a wider container adds no tab stop. Without a caption the region is named by labels.scrollable.
+The table scrolls in place instead of stretching the page. Only once it overflows does the wrapper become a focusable region named by the caption, so Tab reaches it and the arrow keys scroll it; the same table in a wider container adds no tab stop. Without a caption the region is named by labels.scrollable.
 
 ```tsx
 <Table>
@@ -172,11 +172,11 @@ Caption placement is the platform's own caption-side property, set on the <table
 
 ### The markup is yours: keep it semantic
 
-Table styles native thead/tbody/tr/th/td and re-implements nothing, so whatever semantics you write are exactly what assistive tech receives. That cuts both ways: mark header cells <th scope="col"> (or scope="row" for row headers) so each data cell is announced with its headers, and never reach for a table where the content is not actually tabular.
+Table styles native thead/tbody/tr/th/td and re-implements nothing, so whatever semantics you write are exactly what assistive tech receives. That cuts both ways: mark header cells <th scope="col"> (or scope="row" for row headers) so each data cell is announced with its headers, and never reach for a table where the content is not tabular.
 
 ### Wide tables scroll in place
 
-The component's own element is a scroll wrapper (overflow: auto), so an overflowing table scrolls horizontally within its own container instead of stretching the page; only when it actually overflows does the wrapper become a focusable, labelled region, so a page of narrow tables adds no tab stops. The same wrapper scrolls vertically once --loam-table-block-size caps it, and stickyHeader keeps the header row at the top of that scroll. className, ref and the rest land on that wrapper; the <table> takes tableProps. Whether a table should instead reflow into cards or lists on small screens is your layout call. The component keeps the table a table and makes overflow survivable.
+The component's own element is a scroll wrapper (overflow: auto), so an overflowing table scrolls horizontally within its own container instead of stretching the page; only when it overflows does the wrapper become a focusable, labelled region, so a page of narrow tables adds no tab stops. The same wrapper scrolls vertically once --loam-table-block-size caps it, and stickyHeader keeps the header row at the top of that scroll. className, ref and the rest land on that wrapper; the <table> takes tableProps. Whether a table should instead reflow into cards or lists on small screens is your layout call. The component keeps the table a table and makes overflow survivable.
 
 ### Sorting is announced as well as drawn
 

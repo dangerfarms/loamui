@@ -8,6 +8,67 @@ afterEach(cleanup);
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };
 
 describe("sign-in-with-errors", () => {
+  it("clears corrected client errors and summary links without taking focus or validating early", () => {
+    render(<Example />);
+    const email = screen.getByLabelText("Email address");
+    const other = screen.getByLabelText("Password");
+    fireEvent.input(email, { target: { value: "grower@" } });
+    fireEvent.blur(email);
+    expect(screen.queryByRole("group", { name: "There is a problem" })).not.toBeInTheDocument();
+    expect(email).not.toHaveAttribute("aria-invalid", "true");
+
+    fireEvent.click(screen.getByRole("button", { name: "Sign in" }));
+    const summary = screen.getByRole("group", { name: "There is a problem" });
+    expect(summary).toHaveFocus();
+    email.focus();
+    fireEvent.input(email, { target: { value: "grower@." } });
+    expect(email).toHaveAttribute("aria-invalid", "true");
+    expect(within(summary).getAllByRole("link")).toHaveLength(2);
+
+    fireEvent.input(email, { target: { value: "grower@example.com" } });
+    expect(email).not.toHaveAttribute("aria-invalid", "true");
+    expect(document.getElementById(`${email.id}-error`)).not.toBeInTheDocument();
+    expect(screen.getByRole("group", { name: "There is a problem" })).toBe(summary);
+    expect(within(summary).getAllByRole("link")).toHaveLength(1);
+    expect(other).toHaveAttribute("aria-invalid", "true");
+    expect(email).toHaveFocus();
+
+    other.focus();
+    fireEvent.input(other, { target: { value: "A corrected value" } });
+    expect(other).not.toHaveAttribute("aria-invalid", "true");
+    expect(screen.queryByRole("group", { name: "There is a problem" })).not.toBeInTheDocument();
+    expect(other).toHaveFocus();
+
+    fireEvent.input(email, { target: { value: "" } });
+    expect(screen.queryByRole("group", { name: "There is a problem" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Sign in" }));
+    expect(email).toHaveAttribute("aria-invalid", "true");
+    expect(screen.getByRole("group", { name: "There is a problem" })).toHaveFocus();
+  });
+
+  it("does not treat native-valid edits as proof that server errors are resolved", () => {
+    render(
+      <Example
+        initialResponse={{
+          values: { email: "grower@example.com", remember: false },
+          errors: {
+            email: "Use the email address registered with your organisation",
+            form: "The server could not complete this request",
+          },
+        }}
+      />,
+    );
+    const email = screen.getByLabelText("Email address");
+    email.focus();
+    fireEvent.input(email, { target: { value: "another@example.com" } });
+    expect(email).toHaveAttribute("aria-invalid", "true");
+    expect(
+      within(screen.getByRole("group", { name: "There is a problem" })).getByRole("link"),
+    ).toHaveTextContent("Use the email address registered with your organisation");
+    expect(screen.getByText("The server could not complete this request")).toBeInTheDocument();
+    expect(email).toHaveFocus();
+  });
+
   it("renders a rejected POST with preserved email and session choice, but no password", async () => {
     const initialResponse = {
       values: { email: "grower@example.com", remember: true },
@@ -32,7 +93,7 @@ describe("sign-in-with-errors", () => {
 
     fireEvent.input(screen.getByLabelText("Password"), { target: { value: "another passphrase" } });
     expect(fireEvent.submit(screen.getByRole("form", { name: "Sign in" }))).toBe(true);
-    expect(screen.queryByRole("group")).not.toBeInTheDocument();
+    expect(screen.queryByRole("group", { name: "There is a problem" })).not.toBeInTheDocument();
   });
 
   it("connects server field errors to the corresponding controls", async () => {
@@ -46,7 +107,9 @@ describe("sign-in-with-errors", () => {
     );
     const email = screen.getByLabelText("Email address");
     expect(email).toHaveAttribute("aria-invalid", "true");
-    fireEvent.click(within(screen.getByRole("group")).getByRole("link"));
+    fireEvent.click(
+      within(screen.getByRole("group", { name: "There is a problem" })).getByRole("link"),
+    );
     await waitFor(() => expect(email).toHaveFocus());
   });
 
@@ -57,7 +120,9 @@ describe("sign-in-with-errors", () => {
     expect(form).toHaveAttribute("action", "/account/session");
     fireEvent.click(submit);
     expect(screen.getByRole("group", { name: "There is a problem" })).toHaveFocus();
-    expect(within(screen.getByRole("group")).getAllByRole("link")).toHaveLength(2);
+    expect(
+      within(screen.getByRole("group", { name: "There is a problem" })).getAllByRole("link"),
+    ).toHaveLength(2);
     fireEvent.input(screen.getByLabelText("Email address"), {
       target: { value: "grower@example.com" },
     });
@@ -79,7 +144,7 @@ describe("sign-in-with-errors", () => {
     expect(toggle).toHaveAttribute("aria-pressed", "true");
     expect(password).toHaveAttribute("type", "text");
     expect(password).toHaveValue("a pasted passphrase");
-    expect(screen.queryByRole("group")).not.toBeInTheDocument();
+    expect(screen.queryByRole("group", { name: "There is a problem" })).not.toBeInTheDocument();
     fireEvent.click(toggle);
     expect(password).toHaveAttribute("type", "password");
     expect(password).toHaveAttribute("autocomplete", "current-password");
@@ -157,7 +222,9 @@ describe("sign-in-with-errors", () => {
     );
     const forms = screen.getAllByRole("form", { name: "Sign in" });
     fireEvent.submit(forms[1]!);
-    expect(within(forms[0]!).queryByRole("group")).not.toBeInTheDocument();
+    expect(
+      within(forms[0]!).queryByRole("group", { name: "There is a problem" }),
+    ).not.toBeInTheDocument();
     const ids = forms.flatMap((form) => [
       within(form).getByLabelText("Email address").id,
       within(form).getByLabelText("Password").id,

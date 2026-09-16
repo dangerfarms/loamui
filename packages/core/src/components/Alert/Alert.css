@@ -27,9 +27,9 @@
     border-radius: var(--loam-radius-md);
     display: block flex;
     font-size: var(--loam-text-sm);
-    gap: var(--loam-space-md);
-    padding-block: var(--loam-space-md);
-    padding-inline: var(--loam-space-lg);
+    gap: var(--loam-space-xs);
+    padding-block: var(--loam-space-xs);
+    padding-inline: var(--loam-space-s);
   }
 
   span.icon {
@@ -50,7 +50,7 @@
     display: block flex;
     flex: 1 1 auto;
     flex-direction: column;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     min-inline-size: 0;
   }
 

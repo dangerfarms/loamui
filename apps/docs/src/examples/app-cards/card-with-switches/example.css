@@ -8,7 +8,7 @@
   p.description {
     color: var(--loam-color-fg-muted);
     font-size: var(--loam-text-sm);
-    margin: 0 0 var(--loam-space-sm);
+    margin: 0 0 var(--loam-space-2xs);
   }
 
   div.rows {
@@ -19,14 +19,14 @@
     align-items: center;
     border-block-start: 1px solid var(--loam-color-line);
     display: block grid;
-    gap: var(--loam-space-lg);
+    gap: var(--loam-space-s);
     grid-template-columns: minmax(0, 1fr) auto;
-    padding-block: var(--loam-space-md);
+    padding-block: var(--loam-space-xs);
   }
 
   div.text {
     display: block grid;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
 
     label {
       color: var(--loam-color-fg-strong);

@@ -76,7 +76,7 @@ const doc: ComponentContent = {
     },
     {
       title: 'type="search" keeps the platform\'s clear affordance',
-      body: "The box is the library's Input with type set to search, so the browser draws its own clear control once there is text, the on-screen keyboard shows a Search key, and the browser remembers past queries. Nothing is redrawn to look like a search box; the platform's own is the one people know.",
+      body: "The box is the library's Input with type set to search, so the browser draws its own clear control once there is text, the on-screen keyboard shows a Search key, and the browser remembers past queries. The native search input retains those familiar browser behaviours.",
     },
   ],
   accessibility: [

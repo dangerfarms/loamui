@@ -1,13 +1,13 @@
 @scope (.gallery-lightbox) to ([class*="loam-"]) {
   :scope {
-    --loam-modal-size: min(100% - 2 * var(--loam-space-lg), 72rem);
+    --loam-modal-size: min(100% - 2 * var(--loam-space-s), 72rem);
 
     container-type: inline-size;
   }
 
   ul {
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
     list-style: none;
     margin: 0;
@@ -20,7 +20,7 @@
 
   figure {
     display: block grid;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     margin: 0;
   }
 
@@ -56,7 +56,7 @@
 @scope (.gallery-lightbox div.lightbox) to ([class*="loam-"]) {
   :scope {
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     justify-items: center;
   }
 

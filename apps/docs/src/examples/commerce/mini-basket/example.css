@@ -8,13 +8,13 @@
 @scope (.mini-basket div.basket) to ([class*="loam-"]) {
   :scope {
     display: block grid;
-    gap: var(--loam-space-lg);
+    gap: var(--loam-space-s);
   }
 
   div.head {
     align-items: center;
     display: block flex;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     justify-content: space-between;
 
     h2 {
@@ -33,15 +33,15 @@
 
       + li {
         border-block-start: 1px solid var(--loam-color-line);
-        margin-block-start: var(--loam-space-md);
-        padding-block-start: var(--loam-space-md);
+        margin-block-start: var(--loam-space-xs);
+        padding-block-start: var(--loam-space-xs);
       }
     }
   }
 
   article {
     align-items: start;
-    column-gap: var(--loam-space-sm);
+    column-gap: var(--loam-space-2xs);
     display: block grid;
     grid-template-areas:
       "media title total"
@@ -73,12 +73,12 @@
   p.options {
     color: var(--loam-color-fg-muted);
     grid-area: options;
-    margin-block: var(--loam-space-xs) 0;
+    margin-block: var(--loam-space-3xs) 0;
   }
 
   div.control {
     grid-area: control;
-    margin-block-start: var(--loam-space-sm);
+    margin-block-start: var(--loam-space-2xs);
   }
 
   p.total {
@@ -90,13 +90,13 @@
 
   div.remove {
     grid-area: remove;
-    margin-block-start: var(--loam-space-sm);
+    margin-block-start: var(--loam-space-2xs);
     place-self: end;
   }
 
   dl.summary {
     display: block grid;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     margin: 0;
 
     > div {
@@ -107,8 +107,8 @@
         border-block-start: 1px solid var(--loam-color-line);
         font-size: var(--loam-text-md);
         font-weight: 700;
-        margin-block-start: var(--loam-space-xs);
-        padding-block-start: var(--loam-space-sm);
+        margin-block-start: var(--loam-space-3xs);
+        padding-block-start: var(--loam-space-2xs);
       }
     }
 
@@ -123,6 +123,6 @@
 
   div.actions {
     display: block grid;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
   }
 }

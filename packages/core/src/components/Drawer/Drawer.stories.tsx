@@ -22,7 +22,7 @@ const meta = {
       <Drawer.Popup side="start">
         <Drawer.Title>Navigation</Drawer.Title>
         <Drawer.Description>Jump to a section of the app.</Drawer.Description>
-        <nav style={{ display: "flex", flexDirection: "column", gap: "var(--loam-space-md)" }}>
+        <nav style={{ display: "flex", flexDirection: "column", gap: "var(--loam-space-xs)" }}>
           <a href="#dashboard">Dashboard</a>
           <a href="#orders">Orders</a>
           <a href="#customers">Customers</a>
@@ -51,7 +51,7 @@ export const Sides: Story = {
       style={{
         display: "flex",
         flexWrap: "wrap",
-        gap: "var(--loam-space-sm)",
+        gap: "var(--loam-space-2xs)",
         alignItems: "center",
       }}
     >
@@ -82,7 +82,7 @@ export const PopupSize: Story = {
       style={{
         display: "flex",
         flexWrap: "wrap",
-        gap: "var(--loam-space-sm)",
+        gap: "var(--loam-space-2xs)",
         alignItems: "center",
       }}
     >
@@ -111,7 +111,7 @@ export const WithHeaderClose: Story = {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBlockEnd: "var(--loam-space-sm)",
+            marginBlockEnd: "var(--loam-space-2xs)",
           }}
         >
           <Drawer.Title style={{ margin: 0 }}>Filters</Drawer.Title>

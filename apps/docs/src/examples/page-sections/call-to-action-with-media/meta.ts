@@ -7,15 +7,13 @@ export const meta: ExampleMeta = {
   category: "page-sections",
   uses: ["SignpostLink"],
   notes: {
-    native:
-      "A section named by its h2 holding a plain img with real alt text and its intrinsic size, so the layout has the picture's shape before it loads.",
     modern:
-      "The section is the container and the inner element the grid; two columns arrive from the section's own width, never from the viewport.",
-    composition:
-      "One SignpostLink is the whole action row; the example's rule stops at its root and the picture is just an img in a grid cell.",
+      "A section named by its h2 holding a plain img with real alt text and its intrinsic size, so the layout has the picture’s shape before it loads. The section is the container and the inner element the grid; two columns arrive from the section’s own width, never from the viewport.",
     accessible:
       "The words come first in the markup on every width, so the reading order matches what a sighted reader gets even when the picture stacks beneath.",
   },
+  composition:
+    "One SignpostLink is the whole action row; the example's rule stops at its root and the picture is just an img in a grid cell.",
   tags: ["landing", "marketing", "closing", "cta", "image"],
   order: 4,
 };

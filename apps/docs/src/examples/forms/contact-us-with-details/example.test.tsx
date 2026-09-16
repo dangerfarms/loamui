@@ -8,6 +8,68 @@ afterEach(cleanup);
 const axeOptions = { rules: { "color-contrast": { enabled: false } } };
 
 describe("contact-us-with-details", () => {
+  it("clears corrected client errors and summary links without taking focus or validating early", () => {
+    render(<Example />);
+    const email = screen.getByLabelText("Email address");
+    const other = screen.getByLabelText("Message");
+    fireEvent.input(email, { target: { value: "grower@" } });
+    fireEvent.blur(email);
+    expect(screen.queryByRole("group", { name: "There is a problem" })).not.toBeInTheDocument();
+    expect(email).not.toHaveAttribute("aria-invalid", "true");
+
+    fireEvent.click(screen.getByRole("button", { name: "Send message" }));
+    const summary = screen.getByRole("group", { name: "There is a problem" });
+    expect(summary).toHaveFocus();
+    email.focus();
+    fireEvent.input(email, { target: { value: "grower@." } });
+    expect(email).toHaveAttribute("aria-invalid", "true");
+    expect(within(summary).getAllByRole("link")).toHaveLength(2);
+
+    fireEvent.input(email, { target: { value: "grower@example.com" } });
+    expect(email).not.toHaveAttribute("aria-invalid", "true");
+    expect(document.getElementById(`${email.id}-error`)).not.toBeInTheDocument();
+    expect(screen.getByRole("group", { name: "There is a problem" })).toBe(summary);
+    expect(within(summary).getAllByRole("link")).toHaveLength(1);
+    expect(other).toHaveAttribute("aria-invalid", "true");
+    expect(email).toHaveFocus();
+
+    other.focus();
+    fireEvent.input(other, { target: { value: "A corrected value" } });
+    expect(other).not.toHaveAttribute("aria-invalid", "true");
+    expect(screen.queryByRole("group", { name: "There is a problem" })).not.toBeInTheDocument();
+    expect(other).toHaveFocus();
+
+    fireEvent.input(email, { target: { value: "" } });
+    expect(screen.queryByRole("group", { name: "There is a problem" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Send message" }));
+    expect(email).toHaveAttribute("aria-invalid", "true");
+    expect(screen.getByRole("group", { name: "There is a problem" })).toHaveFocus();
+  });
+
+  it("does not treat native-valid edits as proof that server errors are resolved", () => {
+    render(
+      <Example
+        initialResponse={{
+          status: "error",
+          values: { email: "grower@example.com", message: "Can I visit?" },
+          errors: {
+            email: "Use the email address registered with your organisation",
+            form: "The server could not complete this request",
+          },
+        }}
+      />,
+    );
+    const email = screen.getByLabelText("Email address");
+    email.focus();
+    fireEvent.input(email, { target: { value: "another@example.com" } });
+    expect(email).toHaveAttribute("aria-invalid", "true");
+    expect(
+      within(screen.getByRole("group", { name: "There is a problem" })).getByRole("link"),
+    ).toHaveTextContent("Use the email address registered with your organisation");
+    expect(screen.getByText("The server could not complete this request")).toBeInTheDocument();
+    expect(email).toHaveFocus();
+  });
+
   it("preserves a rejected message without mislabelling valid fields as invalid", async () => {
     const initialResponse = {
       status: "error" as const,
@@ -26,11 +88,8 @@ describe("contact-us-with-details", () => {
 
     const { container } = render(<Example initialResponse={initialResponse} />);
     expect(screen.getByRole("group", { name: "There is a problem" })).toHaveFocus();
-    expect(screen.getByLabelText("Message (required)")).toHaveValue(initialResponse.values.message);
-    expect(screen.getByLabelText("Email address (required)")).not.toHaveAttribute(
-      "aria-invalid",
-      "true",
-    );
+    expect(screen.getByLabelText("Message")).toHaveValue(initialResponse.values.message);
+    expect(screen.getByLabelText("Email address")).not.toHaveAttribute("aria-invalid", "true");
     expect(await axe(container, axeOptions)).toHaveNoViolations();
     expect(fireEvent.submit(screen.getByRole("form", { name: "Send a message" }))).toBe(true);
     expect(screen.queryByRole("group", { name: "There is a problem" })).not.toBeInTheDocument();
@@ -46,7 +105,7 @@ describe("contact-us-with-details", () => {
         }}
       />,
     );
-    const message = screen.getByLabelText("Message (required)");
+    const message = screen.getByLabelText("Message");
     expect(message).toHaveAttribute("aria-invalid", "true");
     expect(message).toHaveAccessibleDescription("Error: Enter your message");
     fireEvent.click(
@@ -79,10 +138,10 @@ describe("contact-us-with-details", () => {
     const summary = screen.getByRole("group", { name: "There is a problem" });
     expect(summary).toHaveFocus();
     expect(within(summary).getAllByRole("link")).toHaveLength(2);
-    fireEvent.input(screen.getByLabelText("Email address (required)"), {
+    fireEvent.input(screen.getByLabelText("Email address"), {
       target: { value: "grower@example.com" },
     });
-    fireEvent.input(screen.getByLabelText("Message (required)"), {
+    fireEvent.input(screen.getByLabelText("Message"), {
       target: { value: "Can I visit?" },
     });
     expect(fireEvent.submit(screen.getByRole("form", { name: "Send a message" }))).toBe(true);
@@ -93,8 +152,8 @@ describe("contact-us-with-details", () => {
     render(<Example action="/support/enquiries" />);
     const form = screen.getByRole("button", { name: "Send message" }).closest("form")!;
     expect(form).toHaveAttribute("action", "/support/enquiries");
-    const email = screen.getByLabelText<HTMLInputElement>("Email address (required)");
-    const message = screen.getByLabelText<HTMLTextAreaElement>("Message (required)");
+    const email = screen.getByLabelText<HTMLInputElement>("Email address");
+    const message = screen.getByLabelText<HTMLTextAreaElement>("Message");
     act(() => expect(form.checkValidity()).toBe(false));
     email.value = "grower@example.com";
     act(() => expect(form.checkValidity()).toBe(false));
@@ -131,8 +190,8 @@ describe("contact-us-with-details", () => {
     const form = screen.getByRole("button", { name: "Send message" }).closest("form")!;
     expect(form).toHaveAttribute("action", "/contact");
     expect(form).toHaveAttribute("method", "post");
-    expect(screen.getByLabelText("Email address (required)")).toBeRequired();
-    expect(screen.getByLabelText("Message (required)")).toBeRequired();
+    expect(screen.getByLabelText("Email address")).toBeRequired();
+    expect(screen.getByLabelText("Message")).toBeRequired();
     expect(screen.getByRole("button", { name: "Send message" })).toHaveAttribute("type", "submit");
     expect(screen.getByRole("link", { name: "01588 640210" })).toHaveAttribute(
       "href",
@@ -151,7 +210,7 @@ describe("contact-us-with-details", () => {
       .getAllByRole("button", { name: "Send message" })
       .map((button) => button.closest("form")!);
     const ids = forms.map((form) => {
-      const email = within(form).getByLabelText("Email address (required)");
+      const email = within(form).getByLabelText("Email address");
       expect(email).toHaveAccessibleDescription("We’ll reply to this address.");
       return email.id;
     });

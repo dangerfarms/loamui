@@ -13,12 +13,12 @@
     margin: 0;
     overflow: auto;
     overscroll-behavior: contain;
-    padding: var(--loam-space-lg);
+    padding: var(--loam-space-s);
 
     &[data-side="start"],
     &[data-side="end"] {
       block-size: auto;
-      inline-size: min(var(--_size), 100dvi - var(--loam-space-xl));
+      inline-size: min(var(--_size), 100dvi - var(--loam-space-l));
       inset-block: 0;
       max-block-size: 100dvb;
     }
@@ -41,7 +41,7 @@
 
     &[data-side="top"],
     &[data-side="bottom"] {
-      block-size: min(var(--_size), 100dvb - var(--loam-space-xl));
+      block-size: min(var(--_size), 100dvb - var(--loam-space-l));
       inline-size: auto;
       inset-inline: 0;
       max-inline-size: 100dvi;
@@ -107,11 +107,11 @@
   h2.title {
     font-size: var(--loam-text-lg);
     font-weight: 600;
-    margin-block: 0 var(--loam-space-sm);
+    margin-block: 0 var(--loam-space-2xs);
   }
 
   p.description {
     color: var(--loam-color-fg-muted);
-    margin-block: 0 var(--loam-space-md);
+    margin-block: 0 var(--loam-space-xs);
   }
 }

@@ -5,8 +5,8 @@
     container-type: inline-size;
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-sm) var(--loam-space-lg);
-    padding-block: var(--loam-space-md);
+    gap: var(--loam-space-2xs) var(--loam-space-s);
+    padding-block: var(--loam-space-xs);
   }
 
   a.brand {
@@ -16,7 +16,7 @@
     font-family: var(--loam-font-display);
     font-size: var(--loam-text-lg);
     font-weight: 700;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     letter-spacing: -0.02em;
     text-decoration: none;
 
@@ -29,7 +29,7 @@
   div.actions {
     align-items: center;
     display: block flex;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     margin-inline-start: auto;
   }
 }
@@ -44,7 +44,7 @@
   ul.row {
     display: block flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
   }
 
   @container (inline-size < 48rem) {

@@ -11,17 +11,13 @@ export const meta: ExampleMeta = {
   category: "banners",
   uses: ["Badge", "SignpostLink"],
   notes: {
-    native:
-      "A section named by its h2 with the photograph as an img carrying real alt text, because a picture of the fruit on offer is content, not decoration.",
     modern:
-      "Styles belong to loamui.components inside a donut scope. The section measures its inner grid and header’s fluid token spacing and type: one column with the picture on top, then a 2:3 split at 44rem of its own width where the picture grows to the height of the words and is cropped rather than letterboxed.",
-    composition:
-      "No Card: a Card pads every side and the picture runs to the edge, so the section paints its own surface and line from the same tokens; Badge and SignpostLink are dropped in as they come.",
-    context:
-      "The eyebrow declares --loam-context: primary, so the offer Badge inherits the brand context without a styling prop. A promotion does not imply a warning; the adjacent text spells out the closing date.",
+      "A section named by its h2, with the photograph as an img carrying real alt text, because a picture of the fruit on offer is content rather than decoration. Its stylesheet lives in loamui.components inside a donut scope and measures the section’s own inner grid against the header’s fluid token spacing and type: one column with the picture on top, then a 2:3 split at 44rem of its own width, where the picture grows to the height of the words and is cropped rather than letterboxed. The eyebrow declares --loam-context: primary, so the offer Badge inherits the brand context without a styling prop; a promotion does not imply a warning, and the adjacent text spells out the closing date.",
     accessible:
       "useId names each repeated region by its own h2. The photograph has descriptive alt text and reserved space before loading. Enlarged text can grow the layout; rounded image corners do not clip focus rings. The date is written out, the destination is a native link, and the border survives forced colours.",
   },
+  composition:
+    "No Card: a Card pads every side and the picture runs to the edge, so the section paints its own surface and line from the same tokens; Badge and SignpostLink are dropped in as they come.",
   tags: ["promotion", "offer", "sale", "banner", "photo"],
   order: 1,
 };

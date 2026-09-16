@@ -16,12 +16,24 @@ Reach for a component when a native element needs structure it does not have on 
 
 ## What makes a LoamUI component
 
-- **Context decides, props don't.** No size, variant or colour props, with one exception: display components that size an intrinsic glyph (Badge, Loader, Progress) keep `size`. A region declares its intent and the components inside adapt; the container's width decides how they size.
-- **Compose, don't configure.** Compound components expose their parts, element substitution goes through the `render` prop, and icons and loaders are detected children, not slot props.
+- **Context decides, props don't.** Layout and tokens govern sizing; a region supplies status colour. Badge, Loader, Progress and Meter also expose `size` for intrinsic glyphs or tracks, and Input preserves the native HTML `size` attribute. A region declares its intent and the components inside adapt; the container's width decides how they size.
 - **Accessible by construction.** Real semantics, keyboard support and a shared focus-visible ring come from the platform, then the component wires the ARIA the platform leaves to you.
+
+## Compose, don't configure
+
+Composition is the components' own concern, which is why it lives here rather than beside the pillars: tokens and element styles have nothing to compose. Compound components expose their parts, element substitution goes through the `render` prop, and Button icons and loaders are children. Input’s `startSection` and `endSection` props supply adornments inside its field box. Bespoke variants are compositions in your codebase, not configuration in the library.
+
+```tsx
+<Field.Root>
+  <Field.Label>Work email</Field.Label>
+  <Field.Description>We never share it.</Field.Description>
+  <Field.Error>{errors.email}</Field.Error>
+  <Input type="email" /> {/* self-wires */}
+</Field.Root>
+```
+
+Three rules follow from it. Parts, not prop soup: `Modal.Root`, `Modal.Trigger`, `Modal.Popup`. `render` swaps the element and keeps the wiring. Form controls self-wire from the surrounding `Field`, so there are no `label` or `error` props to keep in step.
 
 ## Finding your way
 
-The components are grouped by job in the sidebar: **Inputs**, **Data display**, **Feedback**, **Disclosures** and **Navigation**. Every page shows live examples, the real CSS that ships, and guidance on when to use it and when not.
-
-> Because components are built from tokens and element styles, your own components can be too. A scoped class on a semantic element, styled with tokens, is a component in your codebase that themes through the cascade and needs no library at all.
+The components are grouped by job in the sidebar: **Inputs**, **Data display**, **Feedback**, **Disclosures**, **Navigation** and **Utilities**. Every page shows live examples, the real CSS that ships, and guidance on when to use it and when not. They are low-level parts by design: a hero, a pricing table or a grid of cards is a composition you own, and the [example recipes](/recipes) are worked references for writing your own.

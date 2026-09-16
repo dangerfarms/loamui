@@ -10,7 +10,7 @@
       block-size: auto;
       display: block flow;
       inline-size: 2rem;
-      margin-block-end: var(--loam-space-sm);
+      margin-block-end: var(--loam-space-2xs);
       margin-inline: auto;
     }
 

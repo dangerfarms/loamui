@@ -1,0 +1,85 @@
+@layer loamui.components {
+  @scope (.site-AgentShowcase) to ([class*="loam-"], [class*="site-"]) {
+    :scope {
+      align-items: start;
+      display: block grid;
+      gap: var(--loam-space-l);
+
+      @container (width > 62rem) {
+        grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      }
+
+      @container (width <= 62rem) {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  }
+
+  @scope (.site-AgentAsk) to ([class*="loam-"], [class*="site-"]) {
+    :scope {
+      container-type: inline-size;
+    }
+
+    h3 {
+      font-size: var(--loam-text-lg);
+    }
+
+    .label {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-sm);
+      margin-block: var(--loam-space-l) var(--loam-space-2xs);
+    }
+
+    .promptBox {
+      background: var(--loam-color-surface);
+      border: 1px solid var(--loam-color-line);
+      border-radius: var(--loam-radius-md);
+      margin-block-start: var(--loam-space-l);
+
+      .bar {
+        align-items: center;
+        border-block-end: 1px solid var(--loam-color-line);
+        color: var(--loam-color-fg-muted);
+        display: block flex;
+        font-size: var(--loam-text-xs);
+        gap: var(--loam-space-xs);
+        justify-content: space-between;
+        padding: var(--loam-space-3xs) var(--loam-space-xs);
+      }
+
+      p {
+        font-size: var(--loam-text-md);
+        margin: 0;
+        padding: var(--loam-space-s);
+      }
+    }
+  }
+
+  @scope (.site-AgentResult) to ([class*="loam-"], [class*="site-"]) {
+    :scope {
+      container-type: inline-size;
+      min-inline-size: 0;
+    }
+
+    .caption {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-sm);
+      margin-block: var(--loam-space-s) 0;
+    }
+  }
+
+  @scope (.site-AgentShowcase-stage) to ([class*="loam-"], :scope > *) {
+    :scope {
+      container-type: inline-size;
+      padding-block: var(--loam-space-2xs);
+    }
+  }
+
+  @scope (.site-AgentShowcase-panel) to (:scope > *) {
+    :scope {
+      max-block-size: min(36rem, 70svb);
+      overflow: auto;
+      scrollbar-gutter: stable;
+    }
+  }
+}

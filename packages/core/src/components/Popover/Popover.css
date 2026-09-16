@@ -21,7 +21,7 @@
     margin: 0;
     max-inline-size: min(var(--_size), 90vi);
     min-inline-size: calc(var(--_size) * 0.6);
-    padding: var(--loam-space-md);
+    padding: var(--loam-space-xs);
 
     /* Enhanced: top layer + anchor positioning, tethered to the trigger.
        position-anchor / anchor-name are set from inline styles with a
@@ -35,11 +35,11 @@
       position-try: flip-block;
 
       &[data-side="bottom"] {
-        inset-block-start: calc(anchor(end) + var(--loam-space-xs));
+        inset-block-start: calc(anchor(end) + var(--loam-space-3xs));
       }
 
       &[data-side="top"] {
-        inset-block-end: calc(anchor(start) + var(--loam-space-xs));
+        inset-block-end: calc(anchor(start) + var(--loam-space-3xs));
       }
 
       @media (prefers-reduced-motion: no-preference) {
@@ -82,11 +82,11 @@
       z-index: var(--loam-z-popup);
 
       &[data-side="bottom"] {
-        inset-block-start: calc(100% + var(--loam-space-xs));
+        inset-block-start: calc(100% + var(--loam-space-3xs));
       }
 
       &[data-side="top"] {
-        inset-block-end: calc(100% + var(--loam-space-xs));
+        inset-block-end: calc(100% + var(--loam-space-3xs));
       }
     }
   }
@@ -107,7 +107,7 @@
     }
 
     h2.title + & {
-      margin-block-start: var(--loam-space-xs);
+      margin-block-start: var(--loam-space-3xs);
     }
   }
 }

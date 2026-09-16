@@ -1,6 +1,6 @@
 {
   "name": "@loamui/docs",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "predev": "node scripts/sync-css.mjs && node scripts/sync-agent-demo.mjs && tsx --tsconfig scripts/tsconfig.export.json scripts/build-examples.mts && tsx --tsconfig scripts/tsconfig.export.json scripts/export-markdown.mts",

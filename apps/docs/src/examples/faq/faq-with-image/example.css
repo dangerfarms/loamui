@@ -1,14 +1,14 @@
 @scope (.faq-with-image) to ([class*="loam-"]) {
   :scope {
     container-type: inline-size;
-    padding-block: var(--loam-space-xl);
+    padding-block: var(--loam-space-l);
   }
 
   /* The inner element is the grid: an element cannot answer its own
      container query. */
   div.inner {
     display: block grid;
-    gap: var(--loam-space-xl);
+    gap: var(--loam-space-l);
   }
 
   svg.illustration {
@@ -25,7 +25,7 @@
 
   div.text {
     display: block grid;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
 
     > p {
       color: var(--loam-color-fg-muted);
@@ -42,8 +42,8 @@
 
   div.questions {
     display: block grid;
-    gap: var(--loam-space-sm);
-    margin-block-start: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
+    margin-block-start: var(--loam-space-2xs);
   }
 
   /* Below the questions it is decoration in the way; it waits for a column. */
@@ -60,7 +60,7 @@
     }
 
     svg.illustration {
-      inset-block-start: var(--loam-space-lg);
+      inset-block-start: var(--loam-space-s);
       max-inline-size: 20rem;
       position: sticky;
     }

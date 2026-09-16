@@ -28,7 +28,7 @@
     align-items: center;
     display: block grid;
     font-variant-numeric: lining-nums tabular-nums;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     grid-template-columns: auto minmax(4rem, 1fr) auto;
   }
 

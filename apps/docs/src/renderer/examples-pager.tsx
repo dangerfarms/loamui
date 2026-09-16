@@ -1,5 +1,5 @@
 import Link from "next/link";
-import classes from "./examples-pager.module.css";
+import "./examples-pager.css";
 
 export interface PagerLink {
   href: string;
@@ -23,19 +23,19 @@ export function ExamplePager({
 }) {
   if (!previous && !next) return null;
   return (
-    <nav className={classes.pager} aria-label={`Previous and next ${label}`}>
+    <nav className="site-ExamplePager" aria-label={`Previous and next ${label}`}>
       {previous ? (
-        <Link href={previous.href} className={classes.link} rel="prev">
-          <span className={classes.eyebrow}>Previous {label}</span>
-          <span className={classes.title}>{previous.title}</span>
+        <Link href={previous.href} className="link" rel="prev">
+          <span className="eyebrow">Previous {label}</span>
+          <span className="title">{previous.title}</span>
         </Link>
       ) : (
         <span />
       )}
       {next && (
-        <Link href={next.href} className={classes.link} data-next rel="next">
-          <span className={classes.eyebrow}>Next {label}</span>
-          <span className={classes.title}>{next.title}</span>
+        <Link href={next.href} className="link" data-next rel="next">
+          <span className="eyebrow">Next {label}</span>
+          <span className="title">{next.title}</span>
         </Link>
       )}
     </nav>

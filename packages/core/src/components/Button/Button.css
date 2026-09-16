@@ -31,8 +31,8 @@
     font-size: var(--loam-text-md);
     font-weight: 600;
     line-height: 1.5;
-    padding-block: var(--loam-space-md);
-    padding-inline: var(--loam-space-lg);
+    padding-block: var(--loam-space-xs);
+    padding-inline: var(--loam-space-s);
     text-align: center;
     text-decoration: none;
 
@@ -89,7 +89,7 @@
 
     align-items: center;
     display: inline flex;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     justify-content: center;
 
     svg {
@@ -108,9 +108,9 @@
       :has(> :is(svg, .loam-Loader):first-child + .loam-VisuallyHidden:last-child),
       :has(> .loam-VisuallyHidden:first-child + :is(svg, .loam-Loader):last-child)
     ) {
-    min-block-size: calc(1.5em + var(--loam-space-md) * 2 + 2px);
-    min-inline-size: calc(1.5em + var(--loam-space-md) * 2 + 2px);
-    padding-inline: var(--loam-space-md);
+    min-block-size: calc(1.5em + var(--loam-space-xs) * 2 + 2px);
+    min-inline-size: calc(1.5em + var(--loam-space-xs) * 2 + 2px);
+    padding-inline: var(--loam-space-xs);
   }
 
   /* Context: within a primary region — THE action of the area. */

@@ -26,7 +26,14 @@ export function DetailsDefaultOpenDemo() {
 
 export function DetailsExclusiveDemo() {
   return (
-    <div style={{ display: "grid", gap: "0.5rem", inlineSize: "100%", maxInlineSize: "30rem" }}>
+    <div
+      style={{
+        display: "grid",
+        gap: "var(--loam-space-2xs)",
+        inlineSize: "100%",
+        maxInlineSize: "30rem",
+      }}
+    >
       <Details.Root name="extras">
         <Details.Summary>Gift options</Details.Summary>
         <Details.Content>Add a gift message or hide prices on the packing slip.</Details.Content>

@@ -110,7 +110,7 @@ const matches = COUNTRIES.filter((c) =>
   ],
   whenNotToUse: [
     "For a list short enough to scan: Select shows it in one gesture with the platform's own picker, and Radio shows every choice up front.",
-    "For free text that happens to have suggestions (a search box, a tag field): use Input, or Search for the page's search. A combobox promises a choice from the list.",
+    "For unrestricted text entry with suggestions (a search box, a tag field): use Input, or Search for the page's search. A combobox promises a choice from the list.",
     "For the page's search: Search is a landmark with a submit; a combobox is a form control that resolves to one value.",
   ],
   howItWorks: [

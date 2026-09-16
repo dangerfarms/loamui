@@ -10,14 +10,14 @@
     align-items: center;
     border-block-end: 1px solid var(--loam-color-line);
     display: block grid;
-    gap: var(--loam-space-xs) var(--loam-space-lg);
+    gap: var(--loam-space-3xs) var(--loam-space-s);
     grid-template-columns: minmax(0, 1fr) auto;
-    padding-block: var(--loam-space-md);
+    padding-block: var(--loam-space-xs);
   }
 
   div.text {
     display: block grid;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     grid-column: 1;
   }
 

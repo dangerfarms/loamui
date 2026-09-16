@@ -18,7 +18,7 @@ A recipe in **Media**: a component and a stylesheet built from `@loamui/core`, t
 
 ## Using this recipe
 
-Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+Copy both files side by side into your React framework project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
 
 Use photographs of the same subject with matching dimensions and framing, and update both descriptions and the caption. This sample compares grayscale and colour treatments of one photo. React hydration is required to update the reveal; the initial images and caption remain available before it.
 
@@ -30,10 +30,8 @@ Use to compare two views of the same subject with a labelled, keyboard-operable 
 
 These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
-- **Native CSS.** The handle is a real range input, so the comparison can be worked with a keyboard and is announced with a name and a value, not a pointer-only drag; the whole thing is a figure with a caption.
-- **Modern CSS.** A measuring wrapper contains the figure so fluid tokens resolve locally. Both images and the bounded divider share a grid cell. Layered scoped CSS clips the second treatment using a state-driven property, with mutually exclusive LTR and RTL rules.
-- **Composition.** Range is dropped in as it comes; the example holds the value in state and writes it onto the figure as a custom property the stylesheet reads.
-- **Accessible & gatekept.** The range is named, describes its current percentage, and references the caption. Both images have descriptive alt text. The server-rendered position shows half of each; the divider remains within the frame at both endpoints and has forced-colour treatment.
+- **Modern.** The handle is a real range input, so the comparison can be worked with a keyboard and is announced with a name and a value rather than a pointer-only drag, and the whole thing is a figure with a caption. A measuring wrapper contains the figure so fluid tokens resolve locally, both images and the bounded divider share a grid cell, and layered scoped CSS clips the second treatment using a state-driven property, with mutually exclusive LTR and RTL rules.
+- **Accessible.** The range is named, describes its current percentage, and references the caption. Both images have descriptive alt text. The server-rendered position shows half of each; the divider remains within the frame at both endpoints and has forced-colour treatment.
 
 ## References
 
@@ -116,7 +114,7 @@ export default function Example() {
     figure {
       display: block grid;
       font-size: var(--loam-text-md);
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
       grid-template-columns: minmax(0, 1fr);
       margin-block: 0;
       margin-inline: 0;

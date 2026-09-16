@@ -58,6 +58,9 @@ import breadcrumbs from "@/content/components/breadcrumbs";
 import pagination from "@/content/components/pagination";
 import nav from "@/content/components/nav";
 
+// Utilities
+import visuallyHidden from "@/content/components/visually-hidden";
+
 // Layout is not a component: compose native CSS layout modules with the space
 // tokens. See the Layout guide (/docs/layout).
 
@@ -109,6 +112,7 @@ const content: ComponentContent[] = [
   breadcrumbs,
   pagination,
   nav,
+  visuallyHidden,
 ];
 
 // Identity lives in the manifest (site/nav.ts), substance in the content

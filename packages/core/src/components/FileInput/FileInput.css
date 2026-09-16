@@ -15,7 +15,7 @@
     cursor: pointer;
     display: block flow;
     font-size: var(--loam-text-sm);
-    padding: var(--loam-space-lg);
+    padding: var(--loam-space-s);
     text-align: center;
 
     /* A file held over the box: the -strong border holds 3:1 on the soft
@@ -35,7 +35,7 @@
     }
 
     :scope:has(input[aria-invalid="true"]) & {
-      --loam-color-ring: var(--loam-color-danger-ring);
+      --loam-color-ring: var(--loam-color-danger-strong);
 
       border-color: var(--loam-color-danger);
     }
@@ -64,7 +64,7 @@
        accessibility tree when its content changes for the change to be
        announced. The list simply has no height until it has items. */
     &:not(:empty) {
-      margin-block-start: var(--loam-space-sm);
+      margin-block-start: var(--loam-space-2xs);
     }
   }
 

@@ -32,7 +32,7 @@
     line-height: 1.2;
     margin: 0;
     padding-block: 0;
-    padding-inline: var(--loam-space-sm) var(--loam-space-xs);
+    padding-inline: var(--loam-space-2xs) var(--loam-space-3xs);
   }
 
   label.segment {
@@ -44,7 +44,7 @@
     display: inline flex;
     font-size: var(--loam-text-sm);
     font-weight: 500;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     justify-content: center;
     line-height: 1.2;
 
@@ -53,10 +53,10 @@
        icon-only segment is a circle and a text one grows from it. */
     min-inline-size: var(
       --loam-segmented-control-segment-size,
-      calc(1.2 * var(--loam-text-sm) + 2 * var(--loam-space-sm) - 2 * var(--_inset))
+      calc(1.2 * var(--loam-text-sm) + 2 * var(--loam-space-2xs) - 2 * var(--_inset))
     );
-    padding-block: calc(var(--loam-space-sm) - var(--_inset) - 1px);
-    padding-inline: var(--loam-space-md);
+    padding-block: calc(var(--loam-space-2xs) - var(--_inset) - 1px);
+    padding-inline: var(--loam-space-xs);
     user-select: none;
     white-space: nowrap;
 

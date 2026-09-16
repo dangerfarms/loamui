@@ -12,8 +12,8 @@ function DrawerNav() {
       style={{
         display: "flex",
         flexDirection: "column",
-        gap: "var(--loam-space-md)",
-        marginBlock: "var(--loam-space-sm)",
+        gap: "var(--loam-space-xs)",
+        marginBlock: "var(--loam-space-2xs)",
       }}
     >
       {navLinks.map((label) => (
@@ -49,7 +49,7 @@ export function DrawerSidesDemo() {
       style={{
         display: "flex",
         flexWrap: "wrap",
-        gap: "var(--loam-space-sm)",
+        gap: "var(--loam-space-2xs)",
         alignItems: "center",
       }}
     >
@@ -75,7 +75,7 @@ export function DrawerPopupSizeDemo() {
       style={{
         display: "flex",
         flexWrap: "wrap",
-        gap: "var(--loam-space-sm)",
+        gap: "var(--loam-space-2xs)",
         alignItems: "center",
       }}
     >
@@ -103,7 +103,7 @@ export function DrawerHeaderCloseDemo() {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBlockEnd: "var(--loam-space-sm)",
+            marginBlockEnd: "var(--loam-space-2xs)",
           }}
         >
           <Drawer.Title style={{ margin: 0 }}>Filters</Drawer.Title>

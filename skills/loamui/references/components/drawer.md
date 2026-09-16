@@ -28,7 +28,7 @@ Compose the drawer from parts. The Popup is a native <dialog> opened with showMo
   <Drawer.Popup side="start">
     <Drawer.Title>Navigation</Drawer.Title>
     <Drawer.Description>Jump to a section of the app.</Drawer.Description>
-    <nav style={{ display: "flex", flexDirection: "column", gap: "var(--loam-space-md)" }}>
+    <nav style={{ display: "flex", flexDirection: "column", gap: "var(--loam-space-xs)" }}>
       <a href="#dashboard">Dashboard</a>
       <a href="#orders">Orders</a>
       <a href="#customers">Customers</a>
@@ -83,7 +83,7 @@ A header row with an × is a composition pattern, not configuration: compose Dra
 <Drawer.Root>
   <Drawer.Trigger>Filters</Drawer.Trigger>
   <Drawer.Popup side="end">
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBlockEnd: "var(--loam-space-sm)" }}>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBlockEnd: "var(--loam-space-2xs)" }}>
       <Drawer.Title style={{ margin: 0 }}>Filters</Drawer.Title>
       <Drawer.Close aria-label="Close">×</Drawer.Close>
     </div>
@@ -100,7 +100,7 @@ A header row with an × is a composition pattern, not configuration: compose Dra
 
 ## When not to
 
-- For a focused, must-answer task or a destructive confirmation, use Modal, a dialog centred on the decision, not parked at an edge.
+- For a focused, must-answer task or a destructive confirmation, use Modal to centre the dialog on the decision.
 - For a small set of actions opened from a control, use Menu; for supplementary content anchored to a trigger, use Popover.
 - For primary navigation that fits on wide screens, use a persistent sidebar or nav bar rather than hiding it behind a trigger.
 

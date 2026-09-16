@@ -1,7 +1,7 @@
 @scope (.table-with-selection) to ([class*="loam-"]) {
   :scope {
     display: block grid;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
   }
 
   p.status {

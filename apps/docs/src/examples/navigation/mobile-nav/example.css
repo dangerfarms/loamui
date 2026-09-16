@@ -3,9 +3,9 @@
     align-items: center;
     border-block-end: 1px solid var(--loam-color-line);
     display: block flex;
-    gap: var(--loam-space-md);
+    gap: var(--loam-space-xs);
     justify-content: space-between;
-    padding-block: var(--loam-space-sm);
+    padding-block: var(--loam-space-2xs);
   }
 
   a.brand {
@@ -15,7 +15,7 @@
     font-family: var(--loam-font-display);
     font-size: var(--loam-text-lg);
     font-weight: 700;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     letter-spacing: -0.02em;
     text-decoration: none;
 
@@ -34,8 +34,8 @@
   div.top {
     align-items: start;
     display: block flex;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     justify-content: space-between;
-    margin-block-end: var(--loam-space-md);
+    margin-block-end: var(--loam-space-xs);
   }
 }

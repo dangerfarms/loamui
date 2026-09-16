@@ -32,11 +32,11 @@
       align-content: end;
       display: block grid;
       font-size: var(--loam-text-md);
-      gap: var(--loam-space-lg);
+      gap: var(--loam-space-s);
       grid-template-columns: minmax(0, 1fr);
       min-block-size: clamp(28rem, 20rem + 20cqi, 34rem);
       overflow-wrap: anywhere;
-      padding: clamp(var(--loam-space-lg), var(--loam-space-md) + 3cqi, var(--loam-space-xl) * 1.5);
+      padding: clamp(var(--loam-space-s), var(--loam-space-xs) + 3cqi, var(--loam-space-l) * 1.5);
     }
 
     h1,
@@ -57,12 +57,12 @@
       align-items: center;
       display: block flex;
       flex-wrap: wrap;
-      gap: var(--loam-space-md);
+      gap: var(--loam-space-xs);
 
       > a {
         align-items: center;
         display: inline flex;
-        gap: var(--loam-space-xs);
+        gap: var(--loam-space-3xs);
 
         svg {
           block-size: 1em;

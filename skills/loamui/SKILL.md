@@ -1,6 +1,6 @@
 ---
 name: loamui
-description: How to build UI with @loamui/core — LoamUI's contextual tokens, element styles and React components on native modern CSS. Use this skill whenever a project depends on @loamui/core, or the user asks to build, style, theme, or review UI with LoamUI, asks about its components, tokens, contextualism, or accessibility, or asks how to do something "in LoamUI". It explains the three primitives and five pillars, points to the authoritative docs (llms.txt and per-page .md twins, mirrored offline in references/), and lists the mistakes people make by default.
+description: Set up, build, adapt recipes, theme or review UI with @loamui/core. Inspect the consuming project, configure missing quality tools when authorized, and compose contextual tokens, native element styles and React components. Includes offline contracts, worked recipes and verification guidance. Use when a project uses LoamUI or a user requests LoamUI setup or UI work.
 metadata:
   library: "@loamui/core"
   docs: https://loamui.com
@@ -33,7 +33,7 @@ metadata:
   only published recipes ship under `references/recipes/`. Verify each adaptation;
   publication is not certification. Choose by the user's
   purpose and the recipe's **When to use** guidance, then read the recipe and
-  [composing guide](references/guides/composing.md). The sections are Heroes,
+  [recipe guide](references/guides/guide.md). The sections are Heroes,
   Banners, Cards, Media, Grids, Content and Forms.
   A hero introduces a page; a banner promotes one message within it;
   a card represents one item.
@@ -42,14 +42,29 @@ metadata:
 
 ## Start by checking the environment
 
-Read [Building with an agent](references/guides/agent-workflow.md) before
-implementation. It defines the repository and chat-only workflows, setup
-approval boundary, five-pillar acceptance criteria and verification report.
-Inspect the installed package, stylesheet delivery and initial layer order;
-do not install or change shared infrastructure without existing authorization
-or an approved concrete proposal. In chat, probe actual package and rendering
-capabilities. Never substitute fake LoamUI components or claim unrun checks.
-The complete recipe and component examples remain bundled for offline use.
+Read [Build with the skill](references/guides/agent-workflow.md) before
+implementation. Users describe their UI; you handle setup, composition and
+verification.
+
+Developers normally start with a React framework, `@loamui/core` and its
+stylesheet installed. Installing this skill installs none of those. Check
+[installation](references/guides/installation.md), the actual package exports,
+style delivery, layer order and existing tools. An authorized setup request
+can include missing dependencies; propose shared changes before applying them
+unless already approved. Preserve existing tools and unrelated styles.
+
+On every recipe request, check LoamUI, Modern CSS and Google Chrome's Modern
+Web Guidance skills are available to the active agent, plus Stylelint and the
+composition checks. For gaps, follow [Project setup](references/guides/agent-workflow.md#project-setup).
+Reuse working tools; propose missing shared setup. When authorized, configure
+it from `assets/` for the project's paths and run the checks. Read companion
+guidance, not just its installation status. If unavailable, use bundled rules
+and official references; report missing guidance and unrun checks.
+
+For a named recipe prompt, resolve the title in [the index](references/index.md)
+and read that recipe's source and component contracts. Do not require a long
+prompt or live docs when the needed references are bundled. In chat, probe
+package and rendering capabilities; never fake LoamUI or claim unrun checks.
 
 ## The three primitives
 
@@ -63,28 +78,47 @@ The complete recipe and component examples remain bundled for offline use.
    components expose parts; appearance normally comes from regions, not props.
    Check component references for the documented exceptions below.
 
-## The five pillars, as rules
+## The two pillars, as rules
 
-1. **Native CSS.** Use real elements for semantics and static CSS for styling.
-   Use native `<button>`, `<dialog>` via `showModal()`, and `<details>` where
-   their semantics fit. Native controls supply platform behaviour; preserve
-   their labels and keyboard support. No CSS-in-JS or styling runtime.
-2. **Modern CSS.** Use scoped, additive rules, logical properties and the
-   library’s responsive tokens. Use `@layer`, `@scope`, nesting, container
-   queries and intrinsic layout; tokens supply `clamp()`, `oklch()` and
-   `light-dark()`. Choose modern features for the problem at hand; they are
-   tools, not a feature checklist. No `!important`, BEM or
-   specificity battles. Follow the host’s cascade-layer arrangement.
-3. **Composition.** Assemble named parts and use `render` when changing the
-   element. Button icons and loaders are children; Input instead documents
-   `startSection` and `endSection`. Read each component’s actual contract.
-4. **Contextualism.** Declare `--loam-context` on the region with that meaning;
-   size follows the available space. Do not invent appearance props. Intrinsic
-   display sizes and native HTML attributes are documented exceptions.
-5. **Accessible & gatekept.** Keep semantic HTML, named controls, keyboard and
-   focus support, and user preferences. Never remove focus rings or convey
-   state only by colour. Core’s automated tests and audited palette do not
-   certify your composition, content or custom theme; verify them separately.
+### Modern
+
+- **Native platform.** Use real elements for semantics and static CSS for styling.
+  Use native `<button>`, `<dialog>` via `showModal()`, and `<details>` where
+  their semantics fit. Native controls supply platform behaviour; preserve
+  their labels and keyboard support. No CSS-in-JS or styling runtime.
+- **Modern CSS.** Use scoped, additive rules, logical properties and the
+  library’s responsive tokens. Use `@layer`, `@scope`, nesting, container
+  queries and intrinsic layout; tokens supply `clamp()`, `oklch()` and
+  `light-dark()`. Choose modern features for the problem at hand; they are
+  tools, not a feature checklist. No `!important`, BEM or specificity battles.
+  Put changing layout values in non-overlapping query ranges; avoid a base
+  value that a breakpoint immediately overrides.
+  Establish the host’s layer order before loading recipes. Limit scopes at
+  embedded content so article styling cannot change a recipe’s layout.
+- **Composition through components.** Assemble named parts and use `render`
+  when changing the element. Button icons and loaders are children; Input
+  instead documents `startSection` and `endSection`. Read each component’s
+  actual contract. Recipes own their layout; core parts own their internals.
+- **Contextualism throughout the primitives.** Declare `--loam-context` on the
+  region with that meaning; size follows the available space. Do not invent
+  appearance props. Intrinsic display sizes and native HTML attributes are
+  documented exceptions.
+
+### Accessible
+
+Keep semantic HTML, named controls, keyboard and focus support, and user
+preferences across tokens, element styles and components. Never remove focus
+rings or convey state only by colour. Use Field’s label, description, error,
+control order. Show new errors after submission; clear a displayed native
+constraint error when its correction is valid. Browser validity cannot resolve
+server errors such as rejected credentials.
+
+### Trust in agents: verification
+
+Gatekeeping supports trust in generated work; it is separate from the two
+pillars. Run the relevant deterministic checks and inspect the rendered result.
+Core’s automated tests and audited palette do not certify your composition,
+content or custom theme; verify them separately and report untested behaviour.
 
 ## Components
 
@@ -95,6 +129,7 @@ The complete recipe and component examples remain bundled for offline use.
 | Feedback     | Alert, Progress, Meter, Skeleton, Loader, Toast                                                                                                                                                            |
 | Disclosures  | Details, Tooltip, Modal, Drawer, Popover, Menu                                                                                                                                                             |
 | Navigation   | Tabs, SignpostLink, SkipLink, Breadcrumbs, Pagination, Nav                                                                                                                                                 |
+| Utilities    | VisuallyHidden                                                                                                                                                                                             |
 
 No layout components (use native grid, flex or flow with the space tokens), no
 `Heading`/`Text` (a semantic element plus a scoped rule), no `Accordion`
@@ -102,22 +137,13 @@ No layout components (use native grid, flex or flow with the space tokens), no
 
 ## How to build with it
 
-1. **Check setup before changing it.** Follow the environment workflow above.
-   If authorized setup is needed, install `@loamui/core` with the project's
-   package manager and load its CSS once. React 19, ESM only, no provider.
-   Consult [installation](references/guides/installation.md) for CSS pipeline
-   failures and establish layer order before recipe styles load.
-2. **Read before composing.** Check the installed package version and read
-   [the composing guide](references/guides/composing.md), the nearest published
-   recipe, and each component reference you will use. Prefer installed types
-   when
-   a reference describes a different version. For platform features, consult
-   [Google Chrome’s
-   guidance](https://github.com/GoogleChrome/modern-web-guidance);
-   use its search/retrieve tool if available, otherwise read the relevant
-   official
-   guide. LoamUI uses Baseline Newly/Widely Available features natively, with
-   progressive enhancement for features outside Baseline.
+1. **Check setup.** Follow the environment workflow above. Load core CSS once,
+   before recipe styles establish layers. ESM only, no provider.
+2. **Read before composing.** Read [the recipe guide](references/guides/guide.md),
+   the nearest recipe and the contracts of the parts you use. Prefer installed
+   types when versions differ. Consult the Modern CSS and
+   Google Chrome guidance for the task. LoamUI uses Baseline Newly/Widely
+   Available features natively; enhance progressively beyond that policy.
 3. **Compose.** Parts inside a `Root`; bare form controls (`Input`, `Select`,
    `Textarea`, `Range`, `QuantityInput`, `FileInput.Control`, `Search.Input`)
    inside `Field.Root` wire their label, description, error, and `aria-*`
@@ -160,14 +186,19 @@ Set the inputs; everything derived follows.
 }
 ```
 
-Key public tokens: `--loam-color-{primary,accent,success,warning,danger,info}`
-(each with `-soft`, `-strong`, `-ring` derivations and `--loam-color-on-strong`
-for text on a strong fill), `--loam-color-{fg,fg-muted,fg-dim,bg,bg-subtle,
-surface,surface-hover,line,line-strong,link,highlight}`,
-`--loam-space-{xs..xl}`,
-`--loam-radius-{sm..xl,full}`, `--loam-shadow-{sm,md,lg}`,
-`--loam-duration-{sm,md,lg}`, `--loam-ease`, `--loam-measure`. Full list and
-recipes: `references/guides/tokens.md`.
+Key public colour inputs are `--loam-color-{primary,accent,success,warning,danger,info}`.
+Primary and status colours derive `-soft` and `-strong`; accent is a standalone
+input. `--loam-color-on-strong` is text on a strong fill. The shared focus colour
+is `--loam-color-ring`; there are no per-status `-ring` aliases. Surface and text
+tokens include `--loam-color-{fg,fg-muted,fg-dim,bg,bg-subtle,surface,surface-hover,
+line,line-strong,link,highlight}`.
+
+Fluid spacing uses `--loam-space-{4xs,3xs,2xs,xs,s,m,l,xl,2xl,3xl,4xl}`;
+fixed geometry uses `--loam-space-fixed-{1,2,4,8,12,16,24,32}`. Do not use the
+removed `--loam-space-sm`, `--loam-space-md` or `--loam-space-lg` names.
+Other public families are `--loam-radius-{sm..xl,full}`,
+`--loam-shadow-{sm,md,lg}`, `--loam-duration-{sm,md,lg}`, `--loam-ease` and
+`--loam-measure`. Full list and recipes: `references/guides/tokens.md`.
 
 Component-level hooks are public custom properties documented per component
 (e.g. `--loam-button-color`, `--loam-modal-size`, `--loam-drawer-size`,
@@ -207,15 +238,13 @@ Each of these has been seen in real migrations. Check your output against them.
   element styles are the baseline. Build on them.
 - **`!important`, BEM, physical properties, viewport units for sizing.** The
   library uses none; neither should styles around it.
-- **Importing the stylesheet through a bundler that cannot parse it** (including
-  affected Next.js toolchains). Serve it statically; see the installation guide.
 - **A `Heading` or `Text` component.** Typography is domain-specific:
   `@scope (h1.headline) { :scope { font-family: var(--loam-font-display) } }`.
 
 ## Worked references
 
-- A composed sign-in form, install to first component:
-  `references/guides/installation.md`.
+- First component: `references/guides/installation.md`.
+- A composed form: `references/recipes/forms/sign-in-with-errors.md`.
 - Regions, identity, and the size of the space:
   `references/guides/contextualism.md`.
 - Tokens, derivation, and dark mode: `references/guides/tokens.md`.

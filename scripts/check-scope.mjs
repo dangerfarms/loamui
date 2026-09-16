@@ -13,10 +13,20 @@
 
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { basename, dirname, join, relative } from "node:path";
+import postcss from "postcss";
+import { pathToFileURL } from "node:url";
+import { scopeFindings } from "../skills/loamui/assets/scope-rules.mjs";
+export { nakedScopes } from "../skills/loamui/assets/scope-rules.mjs";
 
 const ROOT = new URL("..", import.meta.url).pathname;
-const ROOTS = ["packages/core/src/components", "apps/docs/src/examples"].map((p) => join(ROOT, p));
-const DONUT = /to \(\[class\*="loam-"\]\)/;
+const ROOTS = [
+  "packages/core/src/components",
+  "apps/docs/src/examples",
+  "apps/docs/src/app",
+  "apps/docs/src/site",
+  "apps/docs/src/renderer",
+].map((p) => join(ROOT, p));
+const DONUT = /to\s*\([^)]*\[class\*="loam-"\]/;
 
 function walk(dir, out = []) {
   for (const entry of readdirSync(dir)) {
@@ -27,115 +37,55 @@ function walk(dir, out = []) {
   return out;
 }
 
-/** Split a selector list on top-level commas. */
-function splitList(selector) {
-  const parts = [];
-  let depth = 0;
-  let current = "";
-  for (const ch of selector) {
-    if (ch === "(") depth++;
-    if (ch === ")") depth--;
-    if (ch === "," && depth === 0) {
-      parts.push(current.trim());
-      current = "";
-    } else current += ch;
-  }
-  if (current.trim()) parts.push(current.trim());
-  return parts;
+export function proseBoundaryFindings(css) {
+  const findings = [];
+  postcss.parse(css).walkAtRules("scope", (scope) => {
+    if (!/^\(\.site-prose\)(?:\s|$)/.test(scope.params)) return;
+    if (!/to\s*\([^)]*\.block(?:[\s,)]|$)/.test(scope.params) || !DONUT.test(scope.params))
+      findings.push("article scope must exclude preview blocks and core roots");
+    let parent = scope.parent;
+    while (parent && !(parent.type === "atrule" && parent.name === "layer")) parent = parent.parent;
+    if (!parent) findings.push("article styles must have an explicit cascade layer");
+  });
+  return findings;
 }
 
-/** The last compound of a complex selector, ignoring anything inside (). */
-function subject(selector) {
-  let depth = 0;
-  let start = 0;
-  for (let i = 0; i < selector.length; i++) {
-    const ch = selector[i];
-    if (ch === "(") depth++;
-    else if (ch === ")") depth--;
-    else if (depth === 0 && /[\s>+~]/.test(ch)) start = i + 1;
-  }
-  return selector.slice(start).trim();
-}
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  const findings = [];
+  const proseFile = join(ROOT, "apps/docs/src/app/docs/prose.css");
+  for (const why of proseBoundaryFindings(readFileSync(proseFile, "utf8")))
+    findings.push({ file: proseFile, line: 1, sel: ".site-prose", why });
 
-/** Rules nested in a donut, as { selector, line }. */
-function donutRules(css) {
-  const rules = [];
-  const stack = []; // { donut: boolean }
-  let prelude = "";
-  let line = 1;
-  let i = 0;
-  while (i < css.length) {
-    const ch = css[i];
-    if (ch === "/" && css[i + 1] === "*") {
-      const end = css.indexOf("*/", i + 2);
-      const skipped = css.slice(i, end + 2);
-      line += (skipped.match(/\n/g) || []).length;
-      i = end + 2;
-      continue;
-    }
-    if (ch === "\n") line++;
-    if (ch === "{") {
-      const text = prelude.trim();
-      const inDonut = stack.some((b) => b.donut);
-      if (text.startsWith("@scope")) stack.push({ donut: DONUT.test(text) });
-      else if (text.startsWith("@")) stack.push({ donut: false });
-      else {
-        stack.push({ donut: false });
-        if (inDonut) rules.push({ selector: text, line: line - (text.match(/\n/g) || []).length });
-      }
-      prelude = "";
-    } else if (ch === "}") {
-      stack.pop();
-      prelude = "";
-    } else if (ch === ";") {
-      prelude = "";
-    } else prelude += ch;
-    i++;
-  }
-  return rules;
-}
-
-const findings = [];
-for (const root of ROOTS) {
-  for (const file of walk(root)) {
-    const dir = dirname(file);
-    const tsx = readdirSync(dir)
-      .filter((f) => f.endsWith(".tsx") && !/\.(stories|test)\.tsx$/.test(f))
-      .map((f) => readFileSync(join(dir, f), "utf8"))
-      .join("\n");
-    for (const rule of donutRules(readFileSync(file, "utf8"))) {
-      for (const sel of splitList(rule.selector)) {
-        const subj = subject(sel);
-        if (!subj || subj.startsWith(":scope") || subj === "&" || subj === "*") continue;
-        if (/\.loam-/.test(subj)) {
-          findings.push({ file, line: rule.line, sel, why: "names a loam- class, which the donut excludes" });
-          continue;
-        }
-        const el = subj.match(/^([a-z][a-z0-9]*)(?![\w-])/)?.[1];
-        if (!el) continue;
-        // The selector's own classes (`div.body` → ["body"]); a rule with none
-        // (`li`) applies to every such element the component renders.
-        const classes = [...subj.matchAll(/\.([\w-]+)/g)].map((m) => m[1]);
-        // Every <el …> tag the component renders, with its attribute text.
-        const tags = [...tsx.matchAll(new RegExp(`<${el}\\b([^>]*)>`, "gs"))].map((m) => m[1]);
-        const hit = tags.some((attrs) => {
-          if (!/className=/.test(attrs) || !/loam-/.test(attrs)) return false;
-          return classes.length === 0 || classes.every((c) => new RegExp(`["'\`\\s]${c}["'\`\\s]`).test(attrs));
-        });
-        if (hit) {
-          findings.push({ file, line: rule.line, sel, why: `the <${el}> it targets carries a loam- class, which the donut excludes` });
-        }
-      }
+  for (const root of ROOTS) {
+    for (const file of walk(root)) {
+      const dir = dirname(file);
+      const sources = readdirSync(dir)
+        .filter((name) => name.endsWith(".tsx") && !/\.(stories|test)\.tsx$/.test(name))
+        .map((name) => readFileSync(join(dir, name), "utf8"));
+      const hostsCore =
+        basename(file) === "prose.css" ||
+        sources.some(
+          (source) =>
+            source.includes(`"./${basename(file)}"`) && /from "@loamui\/core"/.test(source),
+        );
+      for (const finding of scopeFindings(readFileSync(file, "utf8"), sources.join("\n"), {
+        hostsCore,
+      }))
+        findings.push({ file, ...finding });
     }
   }
-}
 
-if (findings.length) {
-  console.error(`check-scope: ${findings.length} rule(s) inside a donut scope can never match.\n`);
-  for (const f of findings) {
-    console.error(`  ${relative(ROOT, f.file)}:${f.line}  \`${f.sel}\` — ${f.why}`);
+  if (findings.length) {
+    console.error(`check-scope: ${findings.length} scope problem(s).\n`);
+    for (const f of findings) {
+      console.error(`  ${relative(ROOT, f.file)}:${f.line}  \`${f.sel}\` — ${f.why}`);
+    }
+    console.error(
+      `\nEither move the rule into that element's own @scope block, or add the donut: @scope (root) to ([class*="loam-"]).`,
+    );
+    process.exit(1);
   }
-  console.error(`\nMove the rule into that element's own @scope block (e.g. @scope (.loam-${"X-part"})).`);
-  process.exit(1);
+  console.log(
+    `check-scope: static scope checks passed (${ROOTS.length} roots). Verify rendered cascade and embedded recipe boundaries in a browser.`,
+  );
 }
-console.log(`check-scope: no dead donut rules (${basename(ROOTS[0])} and the examples scanned).`);

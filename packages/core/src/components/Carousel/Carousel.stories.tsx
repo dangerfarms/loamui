@@ -13,7 +13,7 @@ const GUIDES = [
   ["Accessibility", "Semantic HTML, managed focus and keyboard support as the baseline."],
 ] as const;
 
-const row = { display: "flex", gap: "var(--loam-space-sm)" } as const;
+const row = { display: "flex", gap: "var(--loam-space-2xs)" } as const;
 
 function Guides(props: { loop?: boolean; indicators?: boolean }) {
   return (

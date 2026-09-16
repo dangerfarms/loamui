@@ -1,20 +1,14 @@
 import Link from "next/link";
 import { Logo } from "./Logo";
-import { GitHubIcon } from "./Icons";
-import { examplesByCategory } from "../examples/catalog";
-import classes from "./Footer.module.css";
+import "./Footer.css";
 
-const GITHUB_URL = "https://github.com/dangerfarms/loamui";
-
-const COLUMNS = [
+const groups = [
   {
-    title: "Getting started",
+    title: "Get started",
     links: [
       { label: "Introduction", href: "/docs" },
       { label: "Installation", href: "/docs/installation" },
-      { label: "Contextualism", href: "/docs/contextualism" },
-      { label: "Composing components", href: "/docs/composing" },
-      { label: "Accessibility", href: "/docs/accessibility" },
+      { label: "Build with the skill", href: "/docs/agent-workflow" },
     ],
   },
   {
@@ -26,81 +20,47 @@ const COLUMNS = [
     ],
   },
   {
-    title: "Recipes",
+    title: "Resources",
     links: [
-      { label: "All recipes", href: "/recipes" },
-      ...examplesByCategory()
-        .slice(0, 4)
-        .map(({ category: c }) => ({
-          label: c.title,
-          href: `/recipes/${c.slug}`,
-        })),
-    ],
-  },
-  {
-    title: "For agents",
-    links: [
-      { label: "llms.txt", href: "/llms.txt" },
-      { label: "Composing components", href: "/docs/composing" },
-      { label: "Contributor skills", href: `${GITHUB_URL}/tree/main/.agents/skills` },
-    ],
-  },
-  {
-    title: "Project",
-    links: [
-      { label: "GitHub", href: GITHUB_URL },
-      { label: "Changelog", href: `${GITHUB_URL}/releases` },
-      { label: "MIT licence", href: `${GITHUB_URL}/blob/main/LICENSE` },
+      { label: "Recipes", href: "/recipes" },
+      { label: "Accessibility", href: "/docs/accessibility" },
+      { label: "GitHub", href: "https://github.com/dangerfarms/loamui" },
     ],
   },
 ];
 
-/** Site links go through the router; external ones are plain anchors. */
-function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
-  if (href.startsWith("http")) {
-    return (
-      <a href={href} target="_blank" rel="noreferrer">
-        {children}
-      </a>
-    );
-  }
-  return <Link href={href}>{children}</Link>;
-}
-
 export function Footer() {
   return (
-    <footer className={classes.footer}>
-      <div className={`container ${classes.inner}`}>
-        <div className={classes.brand}>
-          <Logo />
-          <p className={classes.tagline}>
-            Modern UI primitives for agent-assisted developers. Open source and MIT-licensed.
-          </p>
-          <a className={classes.gh} href={GITHUB_URL} target="_blank" rel="noreferrer">
-            <GitHubIcon width={16} height={16} /> Star on GitHub
-          </a>
+    <footer className="site-Footer">
+      <div className="container">
+        <div className="links">
+          <div className="brand">
+            <Logo />
+            <p>Modern UI primitives for agent-assisted developers. Open source and MIT-licensed.</p>
+          </div>
+          <nav aria-label="Footer">
+            {groups.map(({ title, links }) => (
+              <div key={title}>
+                <h2>{title}</h2>
+                <ul>
+                  {links.map(({ label, href }) => (
+                    <li key={label}>
+                      {href.startsWith("https://") ? (
+                        <a href={href}>{label}</a>
+                      ) : (
+                        <Link href={href}>{label}</Link>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </nav>
         </div>
-
-        <nav className={classes.cols} aria-label="Site map">
-          {COLUMNS.map((col) => (
-            <div key={col.title} className={classes.col}>
-              <h2 className={classes.colTitle}>{col.title}</h2>
-              <ul>
-                {col.links.map((l) => (
-                  <li key={l.label}>
-                    <FooterLink href={l.href}>{l.label}</FooterLink>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </nav>
-      </div>
-      <div className={`container ${classes.bottom}`}>
-        <span>© {new Date().getFullYear()} LoamUI. Built by Danger Farms.</span>
-        <span>
-          Every page has a markdown twin: add <code>.md</code> to its address.
-        </span>
+        <div className="bottom">
+          <span>© {new Date().getFullYear()} LoamUI. Built by Danger Farms.</span>
+          <a href="/llms.txt">Browse the Markdown documentation</a>
+        </div>
       </div>
     </footer>
   );

@@ -9,7 +9,7 @@
   :scope {
     display: block flex;
     flex-direction: column;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     inline-size: 100%;
   }
 }
@@ -27,7 +27,7 @@
     display: block flex;
     font-size: var(--loam-text-sm);
     font-weight: 500;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
   }
 
   span.optional {

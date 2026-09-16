@@ -59,7 +59,7 @@ There are no size or fullWidth props. Body-text and spacing tokens give the butt
   <Button>Save changes</Button>
 </div>
 
-<div style={{ display: "grid", gap: "0.75rem", inlineSize: "min(100%, 18rem)" }}>
+<div style={{ display: "grid", gap: "var(--loam-space-xs)", inlineSize: "min(100%, 18rem)" }}>
   <Button>Save changes</Button>
   <Button>Cancel</Button>
 </div>
@@ -67,7 +67,7 @@ There are no size or fullWidth props. Body-text and spacing tokens give the butt
 
 ### Icons, composed as children
 
-There are no leftSection or rightSection props. An svg child is detected via :has() and gets flex layout, a gap and 1em sizing. Icon-only is detected from the accessible name: the aria-label (or aria-labelledby) an icon-only button needs anyway, or hidden text beside the icon in the shared loam-VisuallyHidden class, and it becomes square.
+There are no leftSection or rightSection props. An svg child is detected via :has() and gets flex layout, a gap and 1em sizing. Icon-only is detected from the accessible name: the aria-label (or aria-labelledby) an icon-only button needs anyway, or a VisuallyHidden child beside the icon, and it becomes square.
 
 ```tsx
 <Button>
@@ -84,7 +84,7 @@ There are no leftSection or rightSection props. An svg child is detected via :ha
 
 <Button>
   <svg>…</svg>
-  <span className="loam-VisuallyHidden">Approve</span>
+  <VisuallyHidden>Approve</VisuallyHidden>
 </Button>
 ```
 
@@ -143,8 +143,8 @@ Emphasis is a property of the region, not the button: wrap the section's single 
 
 ## Accessibility
 
-- Always renders a real <button>, so keyboard focus, Enter/Space activation and the button role come from the platform for free.
-- Write a specific label: the text should make sense out of context ("Save changes", not "OK"). Icon-only buttons need a name: aria-label, aria-labelledby, or hidden text in the loam-VisuallyHidden class beside the icon; any of the three also makes the button square.
+- Always renders a real <button>, so keyboard focus, Enter/Space activation and the button role come from the platform.
+- Write a specific label: the text should make sense out of context ("Save changes", not "OK"). Icon-only buttons need a name: aria-label, aria-labelledby, or a VisuallyHidden child beside the icon; any of the three also makes the button square.
 - For a loading state, add disabled and compose a Loader (marked aria-hidden) into the children so it isn't announced as content.
 - Focus is shown with a :focus-visible ring (never removed without a replacement), and colour is never the only signal of state.
 

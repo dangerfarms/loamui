@@ -18,7 +18,7 @@ A recipe in **Cards**: a component and a stylesheet built from `@loamui/core`, t
 
 ## Using this recipe
 
-Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+Copy both files side by side into your React framework project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
 
 Replace the sample listing destination, photographs, rating, review count and nightly price with real data. The photographs illustrate a fictional stay; keep each alt faithful to the replacement image. Set the heading level for the surrounding page.
 
@@ -30,10 +30,8 @@ Use for one listing whose photographs need browsing alongside its rating and pri
 
 These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
-- **Native CSS.** A native scroll-snap list contains the photographs. Touch and trackpad scrolling work without the paging script; Carousel supplies the buttons, indicator state and keyboard paging after hydration. The rating has an accessible numeric value and Price renders a data element.
-- **Modern CSS.** Layered scopes protect the embedded controls. The Card measures its content, and the public --loam-carousel-item-size hook makes each photograph fill the track. Responsive images reserve their ratio; controls and rating metadata wrap when space is limited.
-- **Composition.** A Carousel sits inside a Card the way any content would, its own region inside the article; Rating and Price are dropped in as they come, and the example reaches into none of them.
-- **Accessible & gatekept.** The article and photo region are named. Each photograph describes the actual view; controls have photo-specific labels and the visible review count says “63 reviews”. The title is a link to the full listing, without making the entire card an interactive wrapper.
+- **Modern.** A native scroll-snap list contains the photographs, so touch and trackpad scrolling work without the paging script, and Carousel supplies the buttons, indicator state and keyboard paging after hydration; the rating has an accessible numeric value and Price renders a data element. Layered scopes protect the embedded controls: the Card measures its content, the public --loam-carousel-item-size hook makes each photograph fill the track, responsive images reserve their ratio, and the controls and rating metadata wrap when space is limited.
+- **Accessible.** The article and photo region are named. Each photograph describes the actual view; controls have photo-specific labels and the visible review count says “63 reviews”. The title is a link to the full listing, without making the entire card an interactive wrapper.
 
 ## References
 
@@ -155,7 +153,7 @@ export default function Example() {
     div.body {
       display: block grid;
       font-size: var(--loam-text-md);
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
       grid-template-columns: minmax(0, 1fr);
       overflow-wrap: anywhere;
     }
@@ -164,7 +162,7 @@ export default function Example() {
       align-items: baseline;
       display: block flex;
       flex-wrap: wrap;
-      gap: var(--loam-space-xs) var(--loam-space-md);
+      gap: var(--loam-space-3xs) var(--loam-space-xs);
       justify-content: space-between;
     }
 
@@ -179,7 +177,7 @@ export default function Example() {
       flex-wrap: wrap;
       font-size: var(--loam-text-sm);
       font-variant-numeric: lining-nums tabular-nums;
-      gap: var(--loam-space-xs);
+      gap: var(--loam-space-3xs);
       margin-block: 0;
     }
 
@@ -213,7 +211,7 @@ export default function Example() {
       align-items: center;
       display: block flex;
       flex-wrap: wrap;
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
       justify-content: center;
     }
   }

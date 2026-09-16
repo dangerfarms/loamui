@@ -7,15 +7,13 @@ export const meta: ExampleMeta = {
   category: "forms",
   uses: ["Field", "Input"],
   notes: {
-    native:
-      'The judgment is the platform\'s ValidityState on a type="email" input with required: valueMissing and typeMismatch are read, never re-implemented with a pattern, so the browser and the message agree. The Field.Error is a rendered element, and the Field marks the box aria-invalid because it is there.',
     modern:
-      "Nothing but a width in its stylesheet: the danger border, the ring and the forced-colours outline are core's, detected from aria-invalid; the example writes no invalid class.",
-    composition:
-      "Field.Root, Label, Description, Error and Input as core ships them; the example's whole contribution is one function from validity to words and the moment to show them.",
+      'The judgment is the platform’s ValidityState on a type="email" input with required: valueMissing and typeMismatch are read, never re-implemented with a pattern, so the browser and the message agree, and the Field marks the box aria-invalid because the Field.Error is a rendered element. Nothing but a width sits in its stylesheet: the danger border, the ring and the forced-colours outline are core’s, detected from aria-invalid, and the example writes no invalid class.',
     accessible:
       "Nothing is said until the field has been left once: an error while the first character is typed is noise. From then on the message follows every edit, as an alert joined to the box by aria-describedby, and clears when the address is right, so the box stops being invalid rather than turning green. The words say what to do (Enter an email address with an @), never invalid or required.",
   },
+  composition:
+    "Field.Root, Label, Description, Error and Input as core ships them; the example's whole contribution is one function from validity to words and the moment to show them.",
   tags: ["validation", "email", "error", "live", "validity", "required"],
   order: 19,
 };

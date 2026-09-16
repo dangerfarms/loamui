@@ -7,7 +7,7 @@ export function ErrorSummaryDemo() {
   const [submitted, setSubmitted] = useState(false);
   return (
     <form
-      style={{ display: "grid", gap: "1rem", inlineSize: "100%" }}
+      style={{ display: "grid", gap: "var(--loam-space-s)", inlineSize: "100%" }}
       onSubmit={(e) => {
         e.preventDefault();
         setSubmitted(true);

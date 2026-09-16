@@ -2,13 +2,12 @@
 
 import { Suspense, useId, useMemo, useState } from "react";
 import Link from "next/link";
-import { Badge, Button, Search, Select } from "@loamui/core";
+import { Badge, Button, Search, Select, VisuallyHidden } from "@loamui/core";
 import { componentsUsed, exampleHref, examplesByCategory } from "@/examples/catalog";
 import { EXAMPLE_PREVIEWS } from "@/examples/generated-previews";
 import type { ExampleMetaEntry } from "@/examples/types";
-import classes from "./examples-index.module.css";
+import "./examples-index.css";
 import { LazyThumb } from "./examples-thumb";
-import { RecipePromptButton } from "./recipe-prompt-button";
 import { ExampleLoadBoundary } from "./examples-load-boundary";
 
 function matches(e: ExampleMetaEntry, term: string, uses: string): boolean {
@@ -54,28 +53,28 @@ export function ExamplesIndex() {
   };
 
   return (
-    <div className={classes.index}>
-      <div className={classes.filters}>
+    <div className="site-ExamplesIndex">
+      <div className="filters">
         <Search.Root
           aria-label="Search recipes"
-          className={classes.search}
+          className="search"
           onSubmit={(e) => e.preventDefault()}
         >
-          <Search.Label className="loam-VisuallyHidden">Search recipes</Search.Label>
+          <VisuallyHidden render={<Search.Label />}> Search recipes</VisuallyHidden>
           <Search.Input
             placeholder="Search recipes…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
         </Search.Root>
-        <div className={classes.usesGroup}>
-          <label className={classes.usesLabel} htmlFor={usesId}>
+        <div className="usesGroup">
+          <label className="usesLabel" htmlFor={usesId}>
             Uses
           </label>
           <Select
             id={usesId}
-            className={classes.uses}
-            wrapperProps={{ className: classes.usesField }}
+            className="uses"
+            wrapperProps={{ className: "usesField" }}
             value={uses}
             onChange={(e) => setUses(e.target.value)}
           >
@@ -87,19 +86,19 @@ export function ExamplesIndex() {
             ))}
           </Select>
         </div>
-        <p className={classes.status} role="status">
-          {filtered ? `${shown} of ${total}` : `${total} recipes`}
+        <p className="status" role="status">
+          {filtered ? `${shown} matching` : ""}
         </p>
       </div>
 
       {groups.length === 0 && (
-        <div className={classes.empty}>
-          <p className={classes.emptyTitle}>No recipe matches.</p>
-          <p className={classes.emptyText}>
-            Try a shorter word, or build it from the primitives with the{" "}
-            <Link href="/docs/composing">Composing guide</Link>.
+        <div className="empty">
+          <p className="emptyTitle">No recipe matches.</p>
+          <p className="emptyText">
+            Try a shorter word, or build it from the <Link href="/docs/components">primitives</Link>{" "}
+            yourself.
           </p>
-          <Button className={classes.emptyClear} onClick={clear}>
+          <Button className="emptyClear" onClick={clear}>
             Clear the search
           </Button>
         </div>
@@ -109,29 +108,29 @@ export function ExamplesIndex() {
         <section
           key={category.slug}
           id={category.slug}
-          className={classes.group}
+          className="group"
           aria-labelledby={`${category.slug}-heading`}
         >
-          <div className={classes.groupHead}>
-            <h2 id={`${category.slug}-heading`} className={classes.groupTitle}>
+          <div className="groupHead">
+            <h2 id={`${category.slug}-heading`} className="groupTitle">
               {category.title}
             </h2>
-            <Link href={`/recipes/${category.slug}`} className={classes.groupLink} prefetch={false}>
-              {filtered ? "View all" : `All ${items.length}`}
-              <span className="loam-VisuallyHidden"> in {category.title}</span>
+            <Link href={`/recipes/${category.slug}`} className="groupLink" prefetch={false}>
+              View all
+              <VisuallyHidden> in {category.title}</VisuallyHidden>
               <span aria-hidden> →</span>
             </Link>
           </div>
-          <ul className={classes.grid}>
+          <ul className="grid">
             {items.map((e) => {
               const Preview = EXAMPLE_PREVIEWS[e.slug]!;
               return (
-                <li key={e.slug} className={classes.card}>
+                <li key={e.slug} className="card">
                   {/* The preview is a live render and may contain links and
                     buttons, so it sits beside the card's link (inert), not
                     inside it; the link's ::after covers the whole card. */}
-                  <LazyThumb className={classes.thumb}>
-                    <div className={classes.thumbInner}>
+                  <LazyThumb className="thumb">
+                    <div className="thumbInner">
                       <ExampleLoadBoundary fallback={<p>Preview unavailable</p>}>
                         <Suspense fallback={null}>
                           <Preview />
@@ -139,12 +138,12 @@ export function ExamplesIndex() {
                       </ExampleLoadBoundary>
                     </div>
                   </LazyThumb>
-                  <div className={classes.cardBody}>
-                    <Link href={exampleHref(e)} className={classes.cardLink} prefetch={false}>
+                  <div className="cardBody">
+                    <Link href={exampleHref(e)} className="cardLink" prefetch={false}>
                       {e.meta.title}
                     </Link>
                     {e.meta.uses.length > 0 && (
-                      <ul className={classes.cardUses} aria-label="Uses">
+                      <ul className="cardUses" aria-label="Uses">
                         {e.meta.uses.map((name) => (
                           <li key={name}>
                             <Badge size="sm">{name}</Badge>
@@ -153,10 +152,6 @@ export function ExamplesIndex() {
                       </ul>
                     )}
                   </div>
-                  <RecipePromptButton
-                    title={e.meta.title}
-                    href={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/recipe-prompts/${e.category}/${e.slug}.txt`}
-                  />
                 </li>
               );
             })}

@@ -30,7 +30,7 @@ align sibling cards' internal rows.
 @scope (.dashboard) {
   :scope {
     display: grid;
-    gap: var(--loam-space-lg);
+    gap: var(--loam-space-s);
     grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
   }
 }
@@ -44,7 +44,7 @@ control. Let it wrap, and align `safe` so a focused item is never clipped.
   :scope {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     align-items: safe center;
   }
 }
@@ -57,7 +57,7 @@ let the browser decide the count.
 @scope (.article) {
   :scope {
     columns: 18rem;
-    gap: var(--loam-space-xl);
+    gap: var(--loam-space-l);
   }
 }
 ```
@@ -67,13 +67,13 @@ let the browser decide the count.
 The space scale is fluid. Each step grows on wide containers and tightens on
 narrow, with no media query:
 
-| Token             | Min → Max     |
-| ----------------- | ------------- |
-| `--loam-space-xs` | 4px → 4.5px   |
-| `--loam-space-sm` | 8px → 9px     |
-| `--loam-space-md` | 12px → 13.5px |
-| `--loam-space-lg` | 16px → 18px   |
-| `--loam-space-xl` | 24px → 27px   |
+| Token              | Min → Max     |
+| ------------------ | ------------- |
+| `--loam-space-3xs` | 4px → 4.5px   |
+| `--loam-space-2xs` | 8px → 9px     |
+| `--loam-space-xs`  | 12px → 13.5px |
+| `--loam-space-s`   | 16px → 18px   |
+| `--loam-space-l`   | 24px → 27px   |
 
 The discipline is the same one the components use: a native module for
 structure, a space token for every gap, and a container query wherever a piece

@@ -61,7 +61,7 @@ export function DateInputMonthYearDemo() {
 
 export function DateInputSummaryDemo() {
   return (
-    <div style={{ display: "grid", gap: "var(--loam-space-md)", inlineSize: "100%" }}>
+    <div style={{ display: "grid", gap: "var(--loam-space-xs)", inlineSize: "100%" }}>
       <ErrorSummary.Root autoFocus={false}>
         <ErrorSummary.Title />
         <ErrorSummary.List>

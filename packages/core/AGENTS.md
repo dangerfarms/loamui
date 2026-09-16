@@ -13,13 +13,21 @@ instructions, installed package version, CSS delivery and layer order. Follow
 changes for approval unless already authorized. In chat-only environments,
 use the real package or provide source with explicit runtime verification gaps.
 Never emulate core exports or claim unrun checks.
+For project setup and missing quality tools, follow
+<https://loamui.com/docs/agent-workflow.md#project-setup>. Reuse existing
+tooling and the skill's maintained CSS configuration; verify the commands
+after setup.
 
-```tsx
-import "@loamui/core/styles.css"; // once, at the app root
-import { Button, Field, Input } from "@loamui/core";
-```
+Repository setup requires a React framework application with ESM support.
+Follow <https://loamui.com/docs/installation.md> for Next.js App Router or
+TanStack Start. Import `@loamui/core/styles.css` once at the application root,
+before application and recipe styles, to load all three primitives. Inspect
+existing resets and Tailwind Preflight before changing them.
 
-No provider, no config. React 19, ESM only. In React Server Components every
+Installing the skill does not install the package. An authorized setup request
+can include missing dependencies. No provider is needed.
+
+In React Server Components every
 compound part (`Field.Root`, `Modal.Trigger`) is a client reference, so JSX
 that uses parts lives in a `"use client"` file; callable forms (`<Button>`,
 `<Alert title>`) work from server modules.
@@ -33,7 +41,7 @@ that uses parts lives in a `"use client"` file; callable forms (`<Button>`,
 - **Element styles**: native HTML is already styled page-wide (headings,
   links, code, forms, tables). Write semantic markup first; reach for a
   component only when the element needs structure it does not have.
-- **Components**: 47 low-level parts. Their look comes from context, not
+- **Components**: 48 low-level components. Their look comes from context, not
   props.
 
   | Category     | Components                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
@@ -43,19 +51,32 @@ that uses parts lives in a `"use client"` file; callable forms (`<Button>`,
   | Feedback     | `Alert` (draw attention to an important message), `Progress` (show completion of a task), `Meter` (a measurement within a known range), `Skeleton` (placeholder while content loads), `Loader` (indicate an ongoing process), `Toast` (transient notifications)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
   | Disclosures  | `Details` (native disclosure for secondary content), `Tooltip` (reveal info on hover or focus), `Modal` (a focused dialog over the page), `Drawer` (an edge-anchored panel that slides in), `Popover` (floating content anchored to a trigger), `Menu` (a list of actions opened from a trigger)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
   | Navigation   | `Tabs` (switch between related views), `SignpostLink` (signpost the way into a task), `SkipLink` (jump straight to the main content), `Breadcrumbs` (show the current page's location), `Pagination` (navigate between pages of content), `Nav` (lists of links with the current one marked)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+  | Utilities    | `VisuallyHidden` (text available to assistive technology without visible layout)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+
+## Two pillars
+
+**Modern**: use the native platform and scoped, layered CSS; contextual tokens,
+element defaults and component composition work together. **Accessible**:
+labels, keyboard and focus support, readable contrast and user preferences run
+through all three primitives. Gatekeeping establishes trust in agent work
+separately; passing a check proves only the behaviour it covers.
 
 ## The rules that matter
 
-1. **Do not invent `size`, `variant`, `color` or `fullWidth` props.** Use the
-   documented exceptions below.
+1. **Do not invent `size`, `variant`, `color` or `fullWidth` props.**
    Status comes from a region: `<div style={{ "--loam-context": "danger" }}>`.
    A style query is answered by ancestors, so wrap even a single control.
-   Contexts: `primary | success | warning | info | danger`. The exceptions:
-   Badge, Loader, Progress and Meter keep `size` for an intrinsic glyph or
-   track, Input supports the native HTML `size`, and numeric bounds (Meter's
-   `min`/`max`/`low`/`high`/`optimum`,
-   QuantityInput's `min`/`max`/`step`) are the platform's own semantics, not
-   sizing.
+   Contexts: `primary | success | warning | info | danger`.
+
+   The documented exceptions:
+
+   - Badge, Loader, Progress and Meter keep `size`, for an intrinsic glyph or
+     track.
+   - Input supports the native HTML `size`.
+   - Numeric bounds pass straight through as the platform's own semantics:
+     Meter's `min`/`max`/`low`/`high`/`optimum`, QuantityInput's
+     `min`/`max`/`step`.
+
 2. **Size comes from the container.** Declare `container-type: inline-size`
    on a region and resolve fluid tokens on its descendants. Inherited computed
    font sizes do not re-evaluate inside a new container. A size query styles descendants,
@@ -63,18 +84,22 @@ that uses parts lives in a `"use client"` file; callable forms (`<Button>`,
    a Button spans the full width.
 3. **Width comes from layout.** A grid or stacked flex region stretches its
    buttons; a flex row shrink-wraps them. There is no layout prop.
-4. **Compose, don't configure.** `Field.Root > Field.Label, Field.Description,
-Field.Error, Input` in that order; the controls (`Input`, `Select`,
-   `Textarea`, `Range`, `QuantityInput`, `FileInput.Control`, `Search.Input`)
-   self-wire. Overlays are
-   `Modal.Root > Modal.Trigger + Modal.Popup`. Swap the rendered element with
-   `render={<a href="…" />}`.
+4. **Compose, don't configure.** `Field.Root > Field.Label,
+Field.Description, Field.Error, Input` in that order.
+
+   - The controls self-wire: `Input`, `Select`, `Textarea`, `Range`,
+     `QuantityInput`, `FileInput.Control`, `Search.Input`.
+   - Overlays are `Modal.Root > Modal.Trigger + Modal.Popup`.
+   - Swap the rendered element with `render={<a href="…" />}`.
+
 5. **Icons are children.** `<Button><Icon /> Save</Button>`; the component
    detects the `svg`. Input adornments use its documented `startSection` /
-   `endSection` props instead.
+   `endSection` props.
 6. **Errors are detected.** Render `<Field.Error>` and the field is invalid;
    there is no `invalid` prop. Write the message in the words of the question
-   ("Enter your first name"), never "required" or "invalid".
+   ("Enter your first name"), never "required" or "invalid". Show new errors
+   after submission; clear displayed native constraint errors when corrected.
+   Native validity cannot resolve server failures such as rejected credentials.
 7. **Your own components** are a semantic element with a scoped rule:
 
    ```css
@@ -84,7 +109,7 @@ Field.Error, Input` in that order; the controls (`Input`, `Select`,
          background: var(--loam-color-surface);
          border: 1px solid var(--loam-color-line);
          border-radius: var(--loam-radius-lg);
-         padding: var(--loam-space-lg);
+         padding: var(--loam-space-l);
        }
      }
    }
@@ -100,7 +125,7 @@ A later declaration cannot reorder existing layers.
 
 ## House style for the CSS you write
 
-The repo's own stylelint config will accept your stylesheet if you: nest
+The shared Stylelint configuration checks these conventions: nest
 child rules with `&` instead of repeating the parent selector; use the
 two-value display syntax (`display: block grid`, `display: block flex`);
 use logical properties (`inline-size`, `margin-block`,
@@ -124,7 +149,7 @@ alphabetical order; and put a blank line before every comment.
 
 Public custom properties are `--loam-*`; anything `--_*` is private.
 
-Read <https://loamui.com/docs/composing/> and the relevant component reference
+Read <https://loamui.com/recipes/guide.md> and the relevant component reference
 before composing. The curated <https://loamui.com/recipes/> collection supplies
 portable React and CSS. Verify your composition in a plain parent, at narrow and
 wide sizes, with two instances and keyboard interaction, in both colour schemes.

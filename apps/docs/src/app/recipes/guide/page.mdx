@@ -1,0 +1,113 @@
+import "@/app/docs/prose.css";
+import HeroRecipe from "@/examples/heroes/hero-with-image/Example";
+import SubgridRecipe from "@/examples/grids/grid-subgrid/Example";
+
+export const metadata = {
+  title: "Building your own recipes",
+  description:
+    "Build portable React components from LoamUI’s tokens, element styles and components, using the Recipes as worked references.",
+};
+
+# Building your own recipes
+
+Use LoamUI’s tokens, element styles and components to build UI for your product. These worked examples explain how to choose a pattern, compose it and adapt it to your content.
+
+Choose a recipe by its **When to use** guidance. Heroes introduce pages; banners promote one message within a page; cards represent one item. Gallery card browses photographs of one listing, while Article carousel browses several articles. The collection is grouped into Heroes, Banners, Cards, Media, Grids, Content and Forms so those roles are easy to find.
+
+## Start with the three primitives
+
+Write semantic HTML first. The [element styles](/docs/element-styles) already provide typography, links and form defaults. Use [tokens](/docs/tokens) for design decisions such as colour, spacing, type and radius. Add a [component](/docs/components) where it supplies the anatomy or interaction you need.
+
+You do not need to import a component to use LoamUI correctly. The [Timeline recipe](/recipes/content/timeline) uses an ordered list, headings and dates with tokens and element styles. A collection of items belongs in native grid or flex layout; it does not need an invented Grid or Stack component.
+
+## Keep ownership visible in CSS
+
+Give the recipe a root class and scope its styles. Stop at embedded LoamUI roots so a rule for your headings, buttons or lists cannot restyle their internals:
+
+```css
+@scope (.feature-section) to ([class*="loam-"]) {
+  @layer loamui.components {
+    :scope {
+      container: feature-section / inline-size;
+    }
+
+    div.items {
+      display: block grid;
+      gap: var(--loam-space-xs);
+    }
+
+    @container feature-section (inline-size < 44rem) {
+      div.items {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @container feature-section (inline-size >= 44rem) {
+      div.items {
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      }
+    }
+  }
+}
+```
+
+When a layout value changes at a breakpoint, assign it in non-overlapping ranges as above. Keep only shared values outside those queries. This makes each condition explicit instead of overriding a base layout.
+
+Establish the layer order before any recipe CSS loads, following [installation](/docs/installation). Resolve `font-size: var(--loam-text-md)` on content inside the measuring container when it must respond locally; an inherited computed font size will not re-evaluate there.
+
+The root measures the available space; its child owns the changing layout. An element cannot query its own size. Named containers keep a nested Card or a host page’s container from changing which region a query measures. Verify the recipe in a plain parent without the docs preview wrapper.
+
+Use semantic tokens for visual design. Structural values such as `0`, a `1px` border, a `44rem` layout threshold, `18ch` of heading measure and image aspect ratios describe geometry; they are not a second design-token palette. Keep grid tracks shrinkable with `minmax(0, 1fr)`, or `minmax(min(100%, 16rem), 1fr)` for an intrinsic card grid.
+
+When a Card supplies the surface, retain its padding, border and radius. A scope on your own class can add layout to the Card root and style the content you own. Use documented public custom properties for component configuration; never reach into a component’s private properties or borrow its classes. Use the `VisuallyHidden` component for text that names an icon-only control; do not borrow its CSS class.
+
+## Let the region make the decision
+
+Declare status on the region that has that meaning: `--loam-context: warning` around an approaching deadline, for example. Do not repeat status props on individual controls. Ordinary content can remain neutral; adding a status region to every recipe would misrepresent its meaning.
+
+Use the component reference for exceptions. Badge, Loader, Progress and Meter have intrinsic `size` APIs; Input supports the native HTML `size` attribute and its documented `startSection` and `endSection` content. Button icons are children. These are different contracts, not interchangeable conventions.
+
+## A hero made from the primitives
+
+<div className="block">
+  <HeroRecipe />
+</div>
+
+[Hero with image](/recipes/heroes/hero-with-image) provides the two files this preview uses. The root owns the container, an inner grid arranges the image and copy, and a small context region supplies the Badge’s meaning. Both calls to action navigate, so both are links.
+
+A page-opening hero uses an `h1`. When reusing it below an existing page heading, choose the appropriate heading level. Keep meaningful images’ alternative text accurate; a decorative image has empty alt text. Reserve image space with dimensions, keep an LCP hero image eager, and set high fetch priority only for the actual LCP candidate. Lazy-load below-the-fold images according to their placement in the consuming page.
+
+## Rows that align through composition
+
+<div className="block">
+  <SubgridRecipe />
+</div>
+
+[Subgrid rows](/recipes/grids/grid-subgrid) renders Cards as list items. Each Card spans the three rows it inherits from its parent grid, so headings, descriptions and actions align without fixed heights or JavaScript measurement. The booking actions are links to workshop pages, with each destination included in its accessible name.
+
+For interactive sequences, compose the existing [Carousel](/docs/components/carousel) parts. Its track, controls and announcements belong to core. Your recipe supplies the content and meaningful labels; avoid rebuilding a second carousel implementation.
+
+## Interaction is part of the recipe
+
+Every apparent action needs a result. Use links for navigation, buttons for actions and native controls for values. Connect application operations through a clear integration boundary. Sample routes need real destinations in the consuming application; a local Follow toggle needs application persistence if following is an account feature.
+
+Use `useId` for relationships when a recipe can appear twice. Native disclosure `name` groups must also be unique per instance, or opening one FAQ can close another. Let Field wire its control’s label, hint and error by default; explicit IDs and additional descriptions are appropriate when the actual relationship requires them. Verify that every reference resolves to the intended element.
+
+Use React 19 conventions. State records user choices; effects synchronise external systems. Keep gallery loading, preview frames, source viewers and site routing out of copied recipe code.
+
+## Verify the result
+
+The two pillars are acceptance criteria, not a badge added by importing core:
+
+- **Modern:** semantic elements and static styles, with navigation and actions carrying the correct semantics; scoped ownership, additive rules, logical properties and responsive layout that works in the recipe’s own container; and status and size following the relevant region, with neutral content left neutral.
+- **Accessible:** named controls, usable keyboard and focus behaviour, readable contrast, and support for colour and motion preferences.
+
+Composition is not a pillar but is still a requirement: use documented parts and public properties, and let embedded components retain their own structure and styling.
+
+Run the consuming project’s formatter, type checker, lint and relevant interaction tests. Exercise two instances, long content, narrow and wide parents, both colour schemes, forced colours, reduced motion and right-to-left layout where relevant. Inspect the rendered result: automated accessibility checks do not establish visual quality or complete accessibility. For text over photographs, measure the final composite; a token audit alone does not verify a translucent overlay.
+
+Consult [Google Chrome’s Modern Web Guidance](https://github.com/GoogleChrome/modern-web-guidance) for the platform features the task uses. LoamUI’s browser policy permits Baseline Newly or Widely Available features natively; features outside Baseline need progressive enhancement. State which checks actually ran and what remains unverified.
+
+## Asking an agent
+
+Begin with the [environment and verification workflow](/docs/agent-workflow). Install the consumer skill with `npx skills add dangerfarms/loamui --skill loamui`, or point the agent at [/llms.txt](/llms.txt). With the skill installed, describe what you want to build or copy the short prompt on a recipe page. The skill reads this guide, the relevant recipe and component contracts before composing. Without an installed skill, ask the agent to follow the implementation brief in `llms.txt` and read the linked references. The output should include portable React and CSS, application integration requirements, and verification results. Treat passing tests as evidence for their specific assertions, rather than a guarantee about every possible use.

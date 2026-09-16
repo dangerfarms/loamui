@@ -13,7 +13,7 @@ A set of mutually exclusive options drawn as one row of segments: a native radio
 ## Import
 
 ```tsx
-import { SegmentedControl } from "@loamui/core";
+import { SegmentedControl, VisuallyHidden } from "@loamui/core";
 ```
 
 ## Usage
@@ -63,18 +63,18 @@ Icon-only segments sit in circles, each with hidden text as its name, and the Le
 const [scheme, setScheme] = useState("system");
 
 <SegmentedControl.Root value={scheme} onValueChange={choose}>
-  <SegmentedControl.Legend className="loam-VisuallyHidden">Colour scheme</SegmentedControl.Legend>
+  <VisuallyHidden render={<SegmentedControl.Legend />}> Colour scheme</VisuallyHidden>
   <SegmentedControl.Item value="system">
     <SystemIcon />
-    <span className="loam-VisuallyHidden">System</span>
+    <VisuallyHidden>System</VisuallyHidden>
   </SegmentedControl.Item>
   <SegmentedControl.Item value="light">
     <LightIcon />
-    <span className="loam-VisuallyHidden">Light</span>
+    <VisuallyHidden>Light</VisuallyHidden>
   </SegmentedControl.Item>
   <SegmentedControl.Item value="dark">
     <DarkIcon />
-    <span className="loam-VisuallyHidden">Dark</span>
+    <VisuallyHidden>Dark</VisuallyHidden>
   </SegmentedControl.Item>
 </SegmentedControl.Root>
 ```
@@ -120,11 +120,11 @@ Each segment is a label around a real radio, hidden visually but not from anythi
 
 ### The legend is the name
 
-The Legend names the group, and a screen reader announces it with each option, so write it as the question the segments answer: “View”, “Range”, “Colour scheme”. It is painted inside the pill before the segments. When the segments say it themselves (three scheme icons under a heading that already reads “Appearance”), hide it with className="loam-VisuallyHidden": the name stays, the paint goes.
+The Legend names the group, and a screen reader announces it with each option, so write it as the question the segments answer: “View”, “Range”, “Colour scheme”. It is painted inside the pill before the segments. When the segments say it themselves (three scheme icons under a heading that already reads “Appearance”), compose it with VisuallyHidden using render={<SegmentedControl.Legend />}: the name stays, the paint goes.
 
 ### Icon-only segments keep their words
 
-An icon is an svg child, aria-hidden and sized on the text. A segment that shows only an icon still needs a name, so put the words beside it in a loam-VisuallyHidden span; the stylesheet detects that shape and draws the segment as a circle. A segment with no words is unnamed, and a set of unnamed radios is a set of unanswerable questions.
+An icon is an svg child, aria-hidden and sized on the text. A segment that shows only an icon still needs a name, so put the words beside it in a VisuallyHidden component; the stylesheet detects that shape and draws the segment as a circle. A segment with no words is unnamed, and a set of unnamed radios is a set of unanswerable questions.
 
 ### A form control and a view switcher are the same control
 
@@ -138,9 +138,9 @@ The pill is built to the same anatomy as Button and the form controls (1px borde
 
 - The Root is a native <fieldset> carrying role="radiogroup", named by its Legend; each segment is a native <input type="radio"> inside a <label>, so the segment is its target and its name.
 - Keyboard: Tab reaches the checked segment, ArrowLeft/ArrowRight and ArrowUp/ArrowDown move the choice and check it, Space checks a focused one. Disabled segments are skipped. All of it is the browser's own radio behaviour.
-- The focus ring is drawn on the segment, not the hidden radio, in the ring colour and width every control uses.
-- The chosen segment is carried by a line-strong edge and a surface, not colour alone; under forced colours it is painted in Highlight and HighlightText, the focus ring in the system focus colour and a disabled segment in GrayText.
-- A Legend given className="loam-VisuallyHidden" still names the group; only its paint is removed.
+- The visible segment carries the focus ring, using the shared ring colour and width.
+- A line-strong edge and a raised surface identify the chosen segment; under forced colours it is painted in Highlight and HighlightText, the focus ring in the system focus colour and a disabled segment in GrayText.
+- A Legend rendered through VisuallyHidden still names the group; only its paint is removed.
 
 ## Parts
 
@@ -157,7 +157,7 @@ The <fieldset> with role="radiogroup"; native <fieldset> props (disabled, form) 
 
 ### SegmentedControl.Legend
 
-The group's name, a <legend> painted inside the pill before the segments; native <legend> props and ref are forwarded. Hide it with className="loam-VisuallyHidden".
+The group's name, a <legend> painted inside the pill before the segments; native <legend> props and ref are forwarded. Compose it with VisuallyHidden using render={<SegmentedControl.Legend />}.
 
 ### SegmentedControl.Item
 

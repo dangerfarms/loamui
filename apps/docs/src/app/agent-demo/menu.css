@@ -1,62 +1,73 @@
-@scope (.menu) {
-  :scope {
-    container-type: inline-size;
-    display: block grid;
-    gap: var(--loam-space-lg);
-    grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+@layer loamui.components {
+  @scope (.menu) to ([class*="loam-"]) {
+    :scope {
+      container-type: inline-size;
+      display: block grid;
+      gap: var(--loam-space-s);
+      grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+    }
+
+    :scope > :is(h2, h3),
+    p.demo-note,
+    p.selection {
+      grid-column: 1 / -1;
+      margin: 0;
+    }
   }
 
-  h2 {
-    grid-column: 1 / -1;
-    margin: 0;
-  }
-}
+  @scope (.menu-card) to ([class*="loam-"]) {
+    :scope {
+      block-size: 100%;
+      container-type: inline-size;
+      display: block grid;
+      gap: var(--loam-space-s);
+      grid-template-rows: auto 1fr auto;
 
-@scope (.menu-card) {
-  :scope {
-    container-type: inline-size;
-    display: block grid;
-    gap: var(--loam-space-md);
-
-    /* The card's status is a fact about the region: the Badge and the
+      /* The card's status is a fact about the region: the Badge and the
        Button inside read it, nothing is passed to them as a prop */
-    &.vegetarian {
-      --loam-context: success;
+      &.vegetarian {
+        --loam-context: success;
+      }
+
+      &.sold-out {
+        --loam-context: danger;
+      }
     }
 
-    &.sold-out {
-      --loam-context: danger;
+    footer {
+      display: block grid;
     }
-  }
 
-  h3 {
-    align-items: baseline;
-    display: block flex;
-    flex-wrap: wrap;
-    gap: var(--loam-space-sm);
-    margin: 0;
-  }
+    :is(h3, h4) {
+      align-items: baseline;
+      display: block flex;
+      flex-wrap: wrap;
+      gap: var(--loam-space-2xs);
+      margin: 0;
+    }
 
-  dl {
-    display: block grid;
-    gap: var(--loam-space-sm);
-    margin: 0;
-  }
+    dl {
+      align-content: start;
+      display: block grid;
+      gap: var(--loam-space-2xs);
+      margin: 0;
+    }
 
-  dt {
-    display: block flex;
-    font-weight: 600;
-    gap: var(--loam-space-sm);
-    justify-content: space-between;
-  }
+    dt {
+      display: block flex;
+      font-weight: 600;
+      gap: var(--loam-space-2xs);
+      justify-content: space-between;
+    }
 
-  dd {
-    color: var(--loam-color-fg-muted);
-    font-size: var(--loam-text-sm);
-    margin: 0;
-  }
+    dd {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-sm);
+      margin: 0;
+    }
 
-  data {
-    font-variant-numeric: lining-nums tabular-nums;
+    data {
+      font-variant-numeric: lining-nums tabular-nums;
+    }
   }
 }

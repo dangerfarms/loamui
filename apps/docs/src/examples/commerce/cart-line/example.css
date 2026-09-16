@@ -2,14 +2,14 @@
   :scope {
     border-block-end: 1px solid var(--loam-color-line);
     container-type: inline-size;
-    padding-block: var(--loam-space-md);
+    padding-block: var(--loam-space-xs);
   }
 
   /* The inner element is the grid: an element cannot answer its own
      container query. */
   div.inner {
     align-items: start;
-    column-gap: var(--loam-space-md);
+    column-gap: var(--loam-space-xs);
     display: block grid;
     grid-template-areas:
       "media title total"
@@ -41,12 +41,12 @@
     color: var(--loam-color-fg-muted);
     font-size: var(--loam-text-sm);
     grid-area: options;
-    margin-block: var(--loam-space-xs) 0;
+    margin-block: var(--loam-space-3xs) 0;
   }
 
   div.control {
     grid-area: control;
-    margin-block-start: var(--loam-space-sm);
+    margin-block-start: var(--loam-space-2xs);
   }
 
   p.total {
@@ -61,13 +61,13 @@
     font-size: var(--loam-text-sm);
     grid-area: each;
     justify-self: end;
-    margin-block: var(--loam-space-xs) 0;
+    margin-block: var(--loam-space-3xs) 0;
   }
 
   div.actions {
     grid-area: actions;
     justify-self: end;
-    margin-block-start: var(--loam-space-sm);
+    margin-block-start: var(--loam-space-2xs);
   }
 
   @container (inline-size < 30rem) {
@@ -86,7 +86,7 @@
     }
 
     p.total {
-      margin-block-start: var(--loam-space-xs);
+      margin-block-start: var(--loam-space-3xs);
     }
   }
 }

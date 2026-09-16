@@ -2,17 +2,17 @@
   :scope {
     container-type: inline-size;
     display: block grid;
-    gap: var(--loam-space-xl);
+    gap: var(--loam-space-l);
   }
 
   header {
     display: block grid;
-    gap: var(--loam-space-lg);
+    gap: var(--loam-space-s);
   }
 
   div.intro {
     display: block grid;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
 
     > p {
       color: var(--loam-color-fg-muted);
@@ -34,13 +34,13 @@
     border-radius: var(--loam-radius-lg);
     display: block grid;
     font-style: normal;
-    gap: var(--loam-space-sm);
-    padding: var(--loam-space-lg);
+    gap: var(--loam-space-2xs);
+    padding: var(--loam-space-s);
   }
 
   ul {
     display: block grid;
-    gap: var(--loam-space-xs);
+    gap: var(--loam-space-3xs);
     list-style: none;
     margin: 0;
     padding: 0;
@@ -49,7 +49,7 @@
   li {
     align-items: center;
     display: block flex;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     margin: 0;
 
     svg {
@@ -69,7 +69,7 @@
 
   div.questions {
     display: block grid;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
   }
 
   @container (inline-size >= 44rem) {

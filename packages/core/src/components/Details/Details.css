@@ -15,12 +15,12 @@
       display: block flex;
       font-size: var(--loam-text-md);
       font-weight: 600;
-      gap: var(--loam-space-md);
+      gap: var(--loam-space-xs);
       justify-content: space-between;
       line-height: 1.4;
       list-style: none;
-      padding-block: var(--loam-space-lg);
-      padding-inline: var(--loam-space-lg);
+      padding-block: var(--loam-space-s);
+      padding-inline: var(--loam-space-s);
       user-select: none;
 
       @media (prefers-reduced-motion: no-preference) {
@@ -66,8 +66,8 @@
     color: var(--loam-color-fg-muted);
     font-size: var(--loam-text-sm);
     line-height: 1.55;
-    padding-block: var(--loam-space-lg);
-    padding-inline: var(--loam-space-lg);
+    padding-block: var(--loam-space-s);
+    padding-inline: var(--loam-space-s);
   }
 
   @media (hover: hover) {

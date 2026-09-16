@@ -18,7 +18,7 @@ A recipe in **Content**: a component and a stylesheet built from `@loamui/core`,
 
 ## Using this recipe
 
-Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+Copy both files side by side into your React framework project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
 
 Replace the sample policies with accurate answers for the organisation and connect the contact destination. Keep essential ordering information in the ordering flow too. Give distinct FAQ sections distinct headings, and use the appropriate heading levels.
 
@@ -30,11 +30,8 @@ Use for a short set of questions readers need to scan, search and compare. Keep 
 
 These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
-- **Native CSS.** A section is named by its heading. A native list groups four questions, each a heading followed by its answer. The contact link is an ordinary anchor and the content is available without client-side interaction.
-- **Modern CSS.** The section measures a readable inner column. Layered, scoped rules use fluid typography and spacing tokens, logical separators, and mutually exclusive container queries for the outer padding.
-- **Composition.** Tokens and element styles provide the surface, type and links. Native HTML supplies all the anatomy this recipe needs; it does not import a component solely to make the answers collapsible.
-- **Contextualism.** The block is a plain neutral surface, not a --loam-context region: questions carry no status, so nothing inside should take a status colour.
-- **Accessible & gatekept.** All answers remain visible for scanning, browser search and comparison. Headings expose the question structure, the contact link offers a next step, and a forced-colour border preserves the section boundary.
+- **Modern.** A section named by its heading, with a native list grouping four questions, each a heading followed by its answer; the contact link is an ordinary anchor and every answer is available without client-side interaction. The section measures a readable inner column through layered, scoped rules that use fluid typography and spacing tokens, logical separators, and mutually exclusive container queries for the outer padding. It stays a plain neutral surface rather than a --loam-context region: questions carry no status, so nothing inside should take a status colour.
+- **Accessible.** All answers remain visible for scanning, browser search and comparison. Headings expose the question structure, the contact link offers a next step, and a forced-colour border preserves the section boundary.
 
 ## References
 
@@ -113,7 +110,7 @@ export default function Example() {
     div.inner {
       display: block grid;
       font-size: var(--loam-text-md);
-      gap: var(--loam-space-xl);
+      gap: var(--loam-space-l);
       grid-template-columns: minmax(0, 1fr);
       margin-inline: auto;
       max-inline-size: 44rem;
@@ -122,7 +119,7 @@ export default function Example() {
 
     header {
       display: block grid;
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
       grid-template-columns: minmax(0, 1fr);
       justify-items: center;
       text-align: center;
@@ -143,7 +140,7 @@ export default function Example() {
 
     ul.questions {
       display: block grid;
-      gap: var(--loam-space-lg);
+      gap: var(--loam-space-s);
       grid-template-columns: minmax(0, 1fr);
       list-style: none;
       margin-block: 0;
@@ -152,13 +149,13 @@ export default function Example() {
 
     li {
       display: block grid;
-      gap: var(--loam-space-xs);
+      gap: var(--loam-space-3xs);
       grid-template-columns: minmax(0, 1fr);
       margin-block: 0;
 
       + li {
         border-block-start: 1px solid var(--loam-color-line);
-        padding-block-start: var(--loam-space-lg);
+        padding-block-start: var(--loam-space-s);
       }
     }
 
@@ -169,13 +166,13 @@ export default function Example() {
 
     @container faq (inline-size < 48rem) {
       div.inner {
-        padding: var(--loam-space-xl) var(--loam-space-lg);
+        padding: var(--loam-space-l) var(--loam-space-s);
       }
     }
 
     @container faq (inline-size >= 48rem) {
       div.inner {
-        padding: calc(var(--loam-space-xl) * 2) var(--loam-space-xl);
+        padding: calc(var(--loam-space-l) * 2) var(--loam-space-l);
       }
     }
 

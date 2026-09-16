@@ -11,12 +11,12 @@
 
   h1 {
     font-size: var(--loam-text-xl);
-    margin-block: 0 var(--loam-space-lg);
+    margin-block: 0 var(--loam-space-s);
   }
 
   form {
     display: block grid;
-    gap: var(--loam-space-lg);
+    gap: var(--loam-space-s);
   }
 
   div.actions {
@@ -28,7 +28,7 @@
   p.footer {
     color: var(--loam-color-fg-muted);
     font-size: var(--loam-text-sm);
-    margin-block: var(--loam-space-lg) 0;
+    margin-block: var(--loam-space-s) 0;
     text-align: center;
   }
 }

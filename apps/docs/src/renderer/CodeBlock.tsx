@@ -3,7 +3,7 @@
 import { Highlight, type PrismTheme } from "prism-react-renderer";
 import { CopyButton } from "@loamui/core";
 import { useScrollable } from "./scrollable";
-import classes from "./CodeBlock.module.css";
+import "./CodeBlock.css";
 
 /**
  * The highlighter's palette, drawn from the library's own tokens: every
@@ -64,7 +64,7 @@ const LANGUAGE_NAMES: Record<string, string> = {
 /**
  * A highlighted code listing with the library's own CopyButton (which
  * announces the copy, and its failure). Long lines scroll inside the
- * block; once they do, the block is a named region in the Tab order.
+ * block; once they do, the block is a named group in the Tab order.
  */
 export function CodeBlock({
   code,
@@ -76,18 +76,21 @@ export function CodeBlock({
   className?: string;
 }) {
   const name = LANGUAGE_NAMES[language] ?? language;
-  const scroll = useScrollable<HTMLPreElement>(`${name} code`);
+  const scroll = useScrollable<HTMLPreElement>(`${name} code`, "group");
 
   return (
-    <div className={`${classes.wrap} ${className ?? ""}`}>
-      <CopyButton className={classes.copy} value={code.trim()} aria-label={`Copy ${name} code`}>
-        Copy
-      </CopyButton>
+    <div className={`site-CodeBlock ${className ?? ""}`}>
+      <div className="bar">
+        <span>{name}</span>
+        <CopyButton value={code.trim()} aria-label={`Copy ${name} code`}>
+          Copy
+        </CopyButton>
+      </div>
       <Highlight code={code.trim()} language={language} theme={THEME}>
         {({ tokens, getLineProps, getTokenProps }) => (
-          <pre className={classes.pre} {...scroll}>
+          <pre className="pre" {...scroll}>
             {tokens.map((line, i) => (
-              <span key={i} {...getLineProps({ line })} className={classes.line}>
+              <span key={i} {...getLineProps({ line })} className="line">
                 {line.map((token, key) => (
                   <span key={key} {...getTokenProps({ token })} />
                 ))}

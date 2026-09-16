@@ -1,5 +1,9 @@
 @scope (.loam-Textarea-field) to ([class*="loam-"]) {
   :scope {
+    /* The inner control's curve, derived here because --_radius does not
+       inherit: computed on the root, handed down as an ordinary property. */
+    --_inner-radius: calc(var(--_radius, var(--loam-radius-md)) - 1px);
+
     background: var(--loam-color-surface);
     border: 1px solid var(--loam-color-line-strong);
     border-radius: var(--_radius, var(--loam-radius-md));
@@ -34,7 +38,7 @@
   }
 
   :scope:has(textarea[aria-invalid="true"]) {
-    --loam-color-ring: var(--loam-color-danger-ring);
+    --loam-color-ring: var(--loam-color-danger-strong);
 
     border-color: var(--loam-color-danger);
   }
@@ -49,12 +53,18 @@
   textarea {
     background: transparent;
     border: none;
+
+    /* Follows the wrapper's inner curve, one border-width tighter (see the
+       root). Read from the inherited private property, not from --_radius:
+       that one is registered inherits: false, so a child always falls back to
+       radius-md and would keep the wrong curve the moment a consumer set it. */
+    border-radius: var(--_inner-radius);
     color: inherit;
     flex: 1;
     font: inherit;
     min-inline-size: 0;
     outline: none;
-    padding: var(--loam-space-md);
+    padding: var(--loam-space-xs);
     resize: block;
   }
 
@@ -86,8 +96,8 @@
   @supports (field-sizing: content) {
     textarea {
       field-sizing: content;
-      max-block-size: calc(max(10lh, var(--_rows, 3) * 1lh) + var(--loam-space-md) * 2);
-      min-block-size: calc(var(--_rows, 3) * 1lh + var(--loam-space-md) * 2);
+      max-block-size: calc(max(10lh, var(--_rows, 3) * 1lh) + var(--loam-space-xs) * 2);
+      min-block-size: calc(var(--_rows, 3) * 1lh + var(--loam-space-xs) * 2);
     }
   }
 

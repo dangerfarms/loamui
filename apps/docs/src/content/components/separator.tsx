@@ -13,7 +13,7 @@ const doc: ComponentContent = {
 <Separator />
 <p>Danger zone</p>`,
       render: () => (
-        <div style={{ display: "grid", gap: "0.75rem", inlineSize: "100%" }}>
+        <div style={{ display: "grid", gap: "var(--loam-space-xs)", inlineSize: "100%" }}>
           <p style={{ margin: 0 }}>Account settings</p>
           <Separator />
           <p>Danger zone</p>
@@ -24,7 +24,7 @@ const doc: ComponentContent = {
       title: "Vertical",
       description:
         'Divides items in a row; adds aria-orientation="vertical" and stretches to the row\'s height.',
-      code: `<div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+      code: `<div style={{ display: "flex", gap: "var(--loam-space-xs)", alignItems: "center" }}>
   <span>Cut</span>
   <Separator orientation="vertical" />
   <span>Copy</span>
@@ -32,7 +32,7 @@ const doc: ComponentContent = {
   <span>Paste</span>
 </div>`,
       render: () => (
-        <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "var(--loam-space-xs)", alignItems: "center" }}>
           <span>Cut</span>
           <Separator orientation="vertical" />
           <span>Copy</span>

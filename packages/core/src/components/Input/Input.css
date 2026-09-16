@@ -1,12 +1,16 @@
 @scope (.loam-Input-field) to ([class*="loam-"]) {
   :scope {
+    /* The inner control's curve, derived here because --_radius does not
+       inherit: computed on the root, handed down as an ordinary property. */
+    --_inner-radius: calc(var(--_radius, var(--loam-radius-md)) - 1px);
+
     align-items: center;
     background: var(--loam-color-surface);
     border: 1px solid var(--loam-color-line-strong);
     border-radius: var(--_radius, var(--loam-radius-md));
     display: block flex;
     font-size: var(--loam-text-md);
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     line-height: 1.5;
 
     &:focus-within {
@@ -44,7 +48,7 @@
 
   /* Invalid after a composed Field.Error or a native submit attempt. */
   :scope:has(input[aria-invalid="true"]) {
-    --loam-color-ring: var(--loam-color-danger-ring);
+    --loam-color-ring: var(--loam-color-danger-strong);
 
     border-color: var(--loam-color-danger);
   }
@@ -57,6 +61,12 @@
   input {
     background: transparent;
     border: none;
+
+    /* Follows the wrapper's inner curve, one border-width tighter (see the
+       root). Read from the inherited private property, not from --_radius:
+       that one is registered inherits: false, so a child always falls back to
+       radius-md and would keep the wrong curve the moment a consumer set it. */
+    border-radius: var(--_inner-radius);
     color: inherit;
     font: inherit;
     min-inline-size: 0;
@@ -64,7 +74,7 @@
 
     /* The native control owns its padding, so the whole text-entry area
        accepts taps. Body type and spacing share Button's derived height. */
-    padding: var(--loam-space-md);
+    padding: var(--loam-space-xs);
   }
 
   /* Without `size` the input takes the box; with it, the platform's own
@@ -101,11 +111,11 @@
     flex-shrink: 0;
 
     &:first-child {
-      padding-inline-start: var(--loam-space-md);
+      padding-inline-start: var(--loam-space-xs);
     }
 
     &:last-child {
-      padding-inline-end: var(--loam-space-md);
+      padding-inline-end: var(--loam-space-xs);
     }
 
     /* Sections must not stretch the derived height. */

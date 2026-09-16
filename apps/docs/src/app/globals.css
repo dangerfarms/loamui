@@ -3,28 +3,31 @@
    ahead-of-toolchain CSS the app bundler can't parse yet. */
 
 @layer site.reset, site.base, site.util;
-@layer loamui.tokens, loamui.elements, loamui.components;
+@layer loamui.tokens, loamui.elements, loamui.components, loamui.ui;
 
 @layer site.reset {
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
+  /* No blanket margin reset. The element styles are built on additive
+     margins — a block carries a block-end margin and the space before a
+     heading comes from an adjacent-sibling rule — and loamui.elements sits
+     above site.reset in the cascade, so zeroing everything here only fought
+     the rhythm the library ships.
 
-  /* Exclude dialog: a modal <dialog> centres itself with auto margins, which a
-     blanket margin reset would clobber (pinning it to a corner). */
-  *:not(dialog) {
+     What remains is the short list the library has no opinion about, where
+     the UA default is actively unwanted: figure's 40px inline margin, the
+     indents on dd and fieldset, and the margin browsers put under a form. */
+  figure,
+  dl,
+  dd,
+  fieldset,
+  form,
+  legend {
     margin: 0;
   }
 
+  /* Only the header offset is the site's own: core's html rule already
+     carries smooth scrolling behind prefers-reduced-motion. */
   html {
     scroll-padding-block-start: 5rem;
-    text-size-adjust: 100%;
-
-    @media (prefers-reduced-motion: no-preference) {
-      scroll-behavior: smooth;
-    }
   }
 
   body {
@@ -32,16 +35,11 @@
     text-rendering: optimizelegibility;
   }
 
+  /* Core already caps these to their container; the block display is ours. */
   img,
   svg,
   video {
     display: block flow;
-    max-inline-size: 100%;
-  }
-
-  a {
-    color: inherit;
-    text-decoration: none;
   }
 
   /* Headings, navigation, controls and the site's short marketing measures
@@ -58,19 +56,6 @@
   code,
   [data-no-hyphens] {
     hyphens: manual;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4 {
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    text-wrap: balance;
-  }
-
-  p {
-    text-wrap: pretty;
   }
 }
 
@@ -124,38 +109,11 @@
       }
     }
   }
-
-  body {
-    background: var(--loam-color-bg);
-    color: var(--loam-color-fg);
-    font-family: var(--loam-font);
-    font-size: var(--loam-text-md);
-
-    /* Fallback fonts render at the webfont's own aspect — no reflow jolt
-       while the pinned font loads. */
-    font-size-adjust: from-font;
-    line-height: 1.6;
-    margin: 0;
-  }
-
-  code,
-  pre,
-  kbd {
-    font-family: var(--loam-font-mono);
-  }
-
-  /* A link inside running text is told apart by more than its colour. */
-  main :is(p, dd) a {
-    color: var(--loam-color-link);
-    text-decoration: underline;
-    text-decoration-thickness: from-font;
-    text-underline-offset: 0.15em;
-  }
 }
 
 @layer site.util {
   .container {
-    inline-size: min(100% - 2.5rem, var(--site-max));
+    inline-size: min(100% - 2 * var(--loam-space-m), var(--site-max));
     margin-inline: auto;
   }
 
@@ -171,21 +129,9 @@
     display: inline flex;
     font-size: var(--loam-text-xs);
     font-weight: 600;
-    gap: 0.4rem;
+    gap: var(--loam-space-2xs);
     letter-spacing: 0.04em;
     text-transform: uppercase;
-  }
-
-  .visually-hidden {
-    block-size: 1px;
-    border: 0;
-    clip-path: inset(50%);
-    inline-size: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    white-space: nowrap;
   }
 }
 

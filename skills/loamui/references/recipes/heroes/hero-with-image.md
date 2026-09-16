@@ -18,7 +18,7 @@ A recipe in **Heroes**: a component and a stylesheet built from `@loamui/core`, 
 
 ## Using this recipe
 
-Copy both files side by side into a React 19 project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+Copy both files side by side into your React framework project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
 
 Use the h1 for the page's main heading; choose the appropriate heading level if adapting this into a subsection. Replace the sample photograph, alt text and routes. Keep the badge label brief and put longer seasonal information in the wrapping text beside it. Its dimensions reserve space and fetchPriority="high" suits an above-the-fold hero image: avoid lazy-loading the page's likely largest-contentful-paint image. The sample srcSet offers three renditions; sizes="100vw" is a conservative upper bound because this portable recipe cannot know its host width. Replace it with an accurate sizes hint for your page and use your own image pipeline. Reserve high priority for the page's critical image. This synchronous component can render on the server; useId does not require a client directive.
 
@@ -30,11 +30,8 @@ Use to introduce a page when the photograph conveys information alongside the he
 
 These notes explain the design. The included tests cover structure and selected interactions; check contrast, keyboard behavior and assistive technology support in your application.
 
-- **Native CSS.** A section named by its h1, with a native header and image. Element styles supply heading typography, body leading and link states; the recipe adds only its layout and editorial roles.
-- **Modern CSS.** An intrinsic auto-fit grid makes two columns when both fit and stacks them otherwise. The section measures its contents' fluid type and spacing. Styles belong to loamui.components inside a donut scope, so element defaults remain the base and selectors stop at LoamUI component boundaries. Classes distinguish the eyebrow, lede and actions.
-- **Composition.** Badge identifies the catalogue, SignpostLink goes to the catalogue and an ordinary link opens the seed-saving film.
-- **Contextualism.** The eyebrow declares --loam-context: primary, so the Badge inside takes the brand colour without a prop; primary is the brand slot, neutral until a theme fills it, and the eyebrow reads as one by its place above the heading.
-- **Accessible & gatekept.** useId keeps each region tied to its own heading. Both destinations are keyboard-operable links with visible text, the play icon is decorative, and the photograph has descriptive alt text. Content order is unchanged when the grid stacks.
+- **Modern.** A section named by its h1, with a native header and image; element styles supply the heading typography, body leading and link states, and the recipe adds only its layout and editorial roles. An intrinsic auto-fit grid makes two columns when both fit and stacks them otherwise, measuring the contents’ fluid type and spacing, with styles in loamui.components inside a donut scope so element defaults remain the base and selectors stop at LoamUI component boundaries. The eyebrow declares --loam-context: primary, so the Badge inside takes the brand colour without a prop — primary is the brand slot, neutral until a theme fills it, and the eyebrow reads as one by its place above the heading.
+- **Accessible.** useId keeps each region tied to its own heading. Both destinations are keyboard-operable links with visible text, the play icon is decorative, and the photograph has descriptive alt text. Content order is unchanged when the grid stacks.
 
 ## References
 
@@ -103,15 +100,15 @@ export default function Example() {
         align-items: center;
         display: block grid;
         font-size: var(--loam-text-md);
-        gap: var(--loam-space-xl);
+        gap: var(--loam-space-l);
         grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
-        padding-block: var(--loam-space-xl);
+        padding-block: var(--loam-space-l);
       }
     }
 
     header {
       display: block grid;
-      gap: var(--loam-space-lg);
+      gap: var(--loam-space-s);
       grid-template-columns: minmax(0, 1fr);
       overflow-wrap: anywhere;
     }
@@ -129,7 +126,7 @@ export default function Example() {
       display: block flex;
       flex-wrap: wrap;
       font-size: var(--loam-text-sm);
-      gap: var(--loam-space-sm);
+      gap: var(--loam-space-2xs);
     }
 
     h1 {
@@ -146,12 +143,12 @@ export default function Example() {
       align-items: center;
       display: block flex;
       flex-wrap: wrap;
-      gap: var(--loam-space-md);
+      gap: var(--loam-space-xs);
 
       > a {
         align-items: center;
         display: inline flex;
-        gap: var(--loam-space-xs);
+        gap: var(--loam-space-3xs);
 
         svg {
           block-size: 1em;

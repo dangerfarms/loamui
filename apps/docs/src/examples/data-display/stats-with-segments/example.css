@@ -22,7 +22,7 @@
   td.share {
     align-items: center;
     display: block flex;
-    gap: var(--loam-space-sm);
+    gap: var(--loam-space-2xs);
     min-inline-size: 10rem;
   }
 
