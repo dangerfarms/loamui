@@ -101,27 +101,70 @@ export function HeroShowcase() {
 
 export function ContextShowcase() {
   const [context, setContext] = useState("primary");
+  const [space, setSpace] = useState("wide");
+  const [selected, setSelected] = useState(true);
+
   return (
     <div className="site-ContextDemo">
-      <Field.Root>
-        <Field.Label>Region context</Field.Label>
-        <Select value={context} onChange={(event) => setContext(event.currentTarget.value)}>
-          <option value="primary">Neutral</option>
-          <option value="success">Success</option>
-          <option value="danger">Danger</option>
-        </Select>
-      </Field.Root>
-      <div style={{ "--loam-context": context } as CSSProperties}>
+      <div className="controls">
+        <Field.Root>
+          <Field.Label>Region meaning</Field.Label>
+          <Select value={context} onChange={(event) => setContext(event.currentTarget.value)}>
+            <option value="primary">Neutral</option>
+            <option value="success">Success</option>
+            <option value="danger">Danger</option>
+          </Select>
+        </Field.Root>
+        <Field.Root>
+          <Field.Label>Available space</Field.Label>
+          <Select value={space} onChange={(event) => setSpace(event.currentTarget.value)}>
+            <option value="wide">Wide</option>
+            <option value="narrow">Narrow</option>
+          </Select>
+        </Field.Root>
+      </div>
+      <div
+        className="site-ContextRegion"
+        style={
+          {
+            "--loam-context": context,
+            "--_preview-size": space === "narrow" ? "14rem" : undefined,
+          } as CSSProperties
+        }
+      >
         <Card>
           <div className="site-ContextSample">
-            <Badge>Context preview</Badge>
-            <p>Native elements and composed controls share the same tokens.</p>
-            <Checkbox label="Example selection" defaultChecked />
-            <a href="/docs/contextualism">Read about this context</a>
+            <header>
+              <Badge>Live example</Badge>
+              <h4>One region, shared styles</h4>
+            </header>
+            <p>The same content adapts to its surroundings.</p>
+            <Checkbox
+              label="Example selection"
+              checked={selected}
+              onChange={(event) => setSelected(event.currentTarget.checked)}
+            />
+            <a href="/docs/contextualism">How contextualism works</a>
+            <footer>
+              <Button
+                type="button"
+                onClick={() => {
+                  setContext("primary");
+                  setSpace("wide");
+                  setSelected(true);
+                }}
+              >
+                Reset demo
+              </Button>
+            </footer>
           </div>
         </Card>
       </div>
-      <code aria-live="polite">{`--loam-context: ${context};`}</code>
+      <p role="status">
+        {space === "narrow" ? "Narrow" : "Wide"} container ·{" "}
+        {context === "primary" ? "Neutral" : context === "success" ? "Success" : "Danger"} context
+      </p>
+      <p className="note">Wide fits the space available on your screen.</p>
     </div>
   );
 }

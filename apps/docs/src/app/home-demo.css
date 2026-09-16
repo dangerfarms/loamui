@@ -60,18 +60,41 @@
       gap: var(--loam-space-s);
     }
 
-    code {
-      background: none;
+    .controls {
+      display: block grid;
+      gap: var(--loam-space-s);
+      grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr));
+    }
+
+    p {
       font-size: var(--loam-text-sm);
-      overflow-wrap: anywhere;
-      padding: 0;
+      margin: 0;
+    }
+
+    .note {
+      color: var(--loam-color-fg-muted);
+    }
+  }
+
+  @scope (.site-ContextRegion) to ([class*="loam-"], [class*="site-"]) {
+    :scope {
+      --_preview-size: 32rem;
+
+      container-type: inline-size;
+      inline-size: min(100%, var(--_preview-size));
     }
   }
 
   @scope (.site-ContextSample) to ([class*="loam-"]) {
     :scope {
       display: block grid;
+      font-size: var(--loam-text-md);
       gap: var(--loam-space-s);
+      overflow-wrap: anywhere;
+    }
+
+    h4 {
+      margin-block: var(--loam-space-xs) 0;
     }
 
     p {

@@ -128,8 +128,8 @@ export default function HomePage() {
               components using them follow. Available space shapes type and spacing in the same way.
             </p>
             <p>
-              Change the context in this example. The same markup stays in place; the region’s
-              colour tokens change.
+              Change the region’s meaning or available space. The same elements and components adapt
+              through LoamUI’s tokens and CSS.
             </p>
             <Link href="/docs/contextualism">Explore contextualism</Link>
           </div>

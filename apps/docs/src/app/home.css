@@ -72,7 +72,7 @@
     }
 
     .context {
-      align-items: center;
+      align-items: start;
       background: var(--loam-color-bg-subtle);
       border-radius: var(--loam-radius-lg);
       display: block grid;
