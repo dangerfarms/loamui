@@ -3,3 +3,4 @@ next-env.d.ts
 public/**/*.md
 public/llms.txt
 public/recipe-prompts/
+public/agent-assets/

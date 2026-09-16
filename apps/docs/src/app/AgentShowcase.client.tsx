@@ -29,8 +29,9 @@ export function AgentShowcase({
     <div className="site-AgentShowcase">
       <Card>
         <div className="site-AgentAsk">
-          <h3>Start with a prompt</h3>
-          <p className="label">Use this prompt with the LoamUI skill:</p>
+          <h3>Install the skill</h3>
+          <CodeBlock code="npx skills add dangerfarms/loamui --skill loamui" language="bash" />
+          <p className="label">Then try a prompt:</p>
           <div className="promptBox">
             <p>{prompt}</p>
             <CopyButton className="copy" value={prompt} aria-label="Copy the prompt">

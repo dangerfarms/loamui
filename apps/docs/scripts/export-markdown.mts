@@ -111,6 +111,9 @@ rmSync(SKILL_REFS, { recursive: true, force: true });
 for (const directory of ["examples", "recipes"])
   rmSync(join(PUBLIC, directory), { recursive: true, force: true });
 
+// Remove the retired standalone setup twin; its content is in agent-workflow.
+rmSync(join(PUBLIC, "docs", "project-setup.md"), { force: true });
+
 // ---- guides: page.mdx source → markdown --------------------------------
 
 /** Strip JSX tags to their markdown-ish text content. */
@@ -524,6 +527,13 @@ for (const entry of EXAMPLE_META) {
     workflow: workflowBody,
     recipe: exampleMarkdown(entry),
     references: [
+      ...["stylelint-base.mjs", "stylelint.config.mjs"].map((file) => ({
+        title: `Setup asset: ${file}`,
+        markdown:
+          "```js\n" +
+          readFileSync(join(ROOT, "..", "..", "skills", "loamui", "assets", file), "utf8") +
+          "```",
+      })),
       ...["installation", "guide"].map((slug) => ({
         title: slug,
         markdown: readFileSync(join(SKILL_REFS, "guides", `${slug}.md`), "utf8"),
@@ -579,6 +589,13 @@ for (const category of EXAMPLE_CATEGORIES) {
     );
 }
 writeFileSync(join(PUBLIC, "llms.txt"), lines.join("\n") + "\n");
+
+// Publish the same setup assets that ship with the skill.
+const agentAssets = join(PUBLIC, "agent-assets");
+mkdirSync(agentAssets, { recursive: true });
+for (const file of ["stylelint-base.mjs", "stylelint.config.mjs"]) {
+  copyFileSync(join(ROOT, "..", "..", "skills", "loamui", "assets", file), join(agentAssets, file));
+}
 
 // ---- AGENTS.md: the package's one-page summary, served at /AGENTS.md too ---
 copyFileSync(join(ROOT, "..", "..", "packages", "core", "AGENTS.md"), join(PUBLIC, "AGENTS.md"));

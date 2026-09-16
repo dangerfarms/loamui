@@ -19,7 +19,7 @@ export function Header() {
         </div>
 
         <div className="right">
-          <HeaderNav recipes />
+          <HeaderNav resources />
           <CommandMenu />
           <a
             className="stars"

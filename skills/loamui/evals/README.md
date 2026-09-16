@@ -46,3 +46,13 @@ files and verifies included component references. Run the docs export first.
 This is an artifact integrity check, not an LLM generation trial. Record actual
 model runs separately; do not report these scenarios as passed merely because
 the generated files or unit tests pass.
+
+## Project setup trials
+
+Run `prepare-project` in both supported frameworks, approving the concrete
+proposal before the setup phase. Check actual lint behaviour with one valid
+composition and one with an unknown token, physical property and `!important`.
+Repeat setup after adding a local override: scripts and instructions should
+not duplicate and the override must survive. Run `existing-checks` separately
+to verify that generating UI reuses the consumer's tools. Record companion
+skill availability and retrieval, not just installation commands.

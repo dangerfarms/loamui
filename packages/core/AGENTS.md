@@ -13,13 +13,17 @@ instructions, installed package version, CSS delivery and layer order. Follow
 changes for approval unless already authorized. In chat-only environments,
 use the real package or provide source with explicit runtime verification gaps.
 Never emulate core exports or claim unrun checks.
+For project setup and missing quality tools, follow
+<https://loamui.com/docs/agent-workflow.md#project-setup>. Reuse existing
+tooling and the skill’s maintained CSS configuration; verify the commands
+after setup.
 
 Repository setup requires a React framework application with ESM support.
 Follow <https://loamui.com/docs/installation.md> for Next.js App Router or
-TanStack Start. Load all three primitives through the documented
-stylesheet delivery; do not assume the framework's CSS processor accepts the
-finished library CSS. Inspect existing resets and Tailwind Preflight before
-changing them. The skill does not install the package. No provider is needed.
+TanStack Start. Import `@loamui/core/styles.css` once at the application root,
+before application and recipe styles, to load all three primitives. Inspect
+existing resets and Tailwind Preflight before changing them. The skill does
+not install the package. No provider is needed.
 
 In React Server Components every
 compound part (`Field.Root`, `Modal.Trigger`) is a client reference, so JSX

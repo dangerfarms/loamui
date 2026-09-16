@@ -16,12 +16,18 @@ const LINKS = [
  * (`/docs/components/button` marks Components), so the header always says
  * where in the site the reader is.
  */
-export function HeaderNav({ recipes = false }: { recipes?: boolean }) {
+export function HeaderNav({ resources = false }: { resources?: boolean }) {
   const pathname = usePathname() ?? "";
   const current = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
   return (
-    <nav className="nav" aria-label={recipes ? "Recipes" : "Primitives"}>
-      {(recipes ? [{ name: "Recipes", href: "/recipes" }] : LINKS).map((l) => (
+    <nav className="nav" aria-label={resources ? "Resources" : "Primitives"}>
+      {(resources
+        ? [
+            { name: "Documentation", href: "/docs" },
+            { name: "Recipes", href: "/recipes" },
+          ]
+        : LINKS
+      ).map((l) => (
         <Link key={l.href} href={l.href} aria-current={current(l.href) ? "page" : undefined}>
           {l.name}
         </Link>

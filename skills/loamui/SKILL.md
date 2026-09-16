@@ -1,6 +1,6 @@
 ---
 name: loamui
-description: How to build UI with @loamui/core — LoamUI's contextual tokens, element styles and React components on native modern CSS. Use this skill whenever a project depends on @loamui/core, or the user asks to build, style, theme, or review UI with LoamUI, asks about its components, tokens, contextualism, or accessibility, or asks how to do something "in LoamUI". It explains the three primitives and two pillars, points to the authoritative docs (llms.txt and per-page .md twins, mirrored offline in references/), and lists the mistakes people make by default.
+description: Set up, build, adapt recipes, theme or review UI with @loamui/core. Inspect the consuming project, configure missing quality tools when authorized, and compose contextual tokens, native element styles and React components. Includes offline contracts, worked recipes and verification guidance. Use when a project uses LoamUI or a user requests LoamUI setup or UI work.
 metadata:
   library: "@loamui/core"
   docs: https://loamui.com
@@ -45,13 +45,19 @@ metadata:
 Read [Build with the skill](references/guides/agent-workflow.md) before
 implementation. It defines the repository and chat-only workflows, setup
 approval boundary, two-pillar acceptance criteria and verification report.
+For setup requests or missing checks, follow
+[Set up your project](references/guides/agent-workflow.md#project-setup).
+The maintained CSS configuration ships in `assets/`; reuse existing tooling
+and run it after
+setup. Install companion skills for the active agent when authorized, then
+read the relevant guidance before implementation. Installing a skill alone
+is not evidence it was used.
 Use a React framework; check peer dependencies and resets in
 [installation](references/guides/installation.md).
 Inspect the installed package, stylesheet delivery and initial layer order;
 do not install or change shared infrastructure without existing authorization
 or an approved concrete proposal. In chat, probe actual package and rendering
 capabilities. Never substitute fake LoamUI components or claim unrun checks.
-The complete recipe and component examples remain bundled for offline use.
 
 ## The three primitives
 
@@ -127,8 +133,8 @@ No layout components (use native grid, flex or flow with the space tokens), no
 1. **Check setup before changing it.** Follow the environment workflow above.
    If authorized setup is needed, install `@loamui/core` with the project's
    package manager and load its CSS once. ESM only, no provider.
-   Consult [installation](references/guides/installation.md) for CSS pipeline
-   failures and establish layer order before recipe styles load.
+   Follow [installation](references/guides/installation.md) for the framework’s
+   stylesheet import; establish layer order before recipe styles load.
 2. **Read before composing.** Check the installed package version and read
    [the recipe guide](references/guides/guide.md), the nearest published
    recipe, and each component reference you will use. Prefer installed types
@@ -234,15 +240,13 @@ Each of these has been seen in real migrations. Check your output against them.
   element styles are the baseline. Build on them.
 - **`!important`, BEM, physical properties, viewport units for sizing.** The
   library uses none; neither should styles around it.
-- **Importing the stylesheet through a bundler that cannot parse it** (including
-  affected Next.js toolchains). Serve it statically; see the installation guide.
 - **A `Heading` or `Text` component.** Typography is domain-specific:
   `@scope (h1.headline) { :scope { font-family: var(--loam-font-display) } }`.
 
 ## Worked references
 
-- A composed sign-in form, install to first component:
-  `references/guides/installation.md`.
+- First component: `references/guides/installation.md`.
+- A composed form: `references/recipes/forms/sign-in-with-errors.md`.
 - Regions, identity, and the size of the space:
   `references/guides/contextualism.md`.
 - Tokens, derivation, and dark mode: `references/guides/tokens.md`.

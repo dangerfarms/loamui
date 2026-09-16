@@ -28,7 +28,7 @@ const primitives = [
 ];
 
 const prompt =
-  "Build a restaurant menu using LoamUI: two cards, Starter and Dessert. Each card lists three dishes with a one-line description and a price, has one status badge (Vegetarian, Sold out) and one action button.";
+  "Use the LoamUI skill to build a restaurant menu with starter and dessert cards. Include three dishes in each, with descriptions and prices. Mark the starters as vegetarian and the desserts as sold out. Let me select the available course.";
 
 export default function HomePage() {
   return (
@@ -77,8 +77,9 @@ export default function HomePage() {
           <p className="eyebrow">Build with the skill</p>
           <h2>Describe your UI. Build on the primitives.</h2>
           <p>
-            Set up your framework and LoamUI first, then add the skill and describe what you need.
-            Here’s a restaurant menu built from the same parts you’ll use in your own project.
+            Already installed your framework and LoamUI? Add the skill, then tell your agent what
+            you want to build. The skill checks your setup and guides your agent as it builds and
+            tests your UI.
           </p>
         </header>
         <AgentShowcase

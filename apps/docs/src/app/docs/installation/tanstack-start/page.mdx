@@ -29,37 +29,17 @@ Install LoamUI when the [public npm release is available](/docs/installation):
 npm install @loamui/core
 ```
 
-## Load the styles
+## Import the styles
 
-In `src/routes/__root.tsx`, import LoamUI’s stylesheet URL alongside the starter’s stylesheet:
-
-```tsx
-import loamCss from "@loamui/core/styles.css?url";
-import appCss from "../styles.css?url";
-```
-
-Add LoamUI to the root route’s existing `head` links, before your application CSS. Keep the rest of the root route, including its metadata, `HeadContent` and `Scripts`:
-
-```tsx
-links: [
-  { rel: "stylesheet", href: loamCss },
-  { rel: "stylesheet", href: appCss },
-],
-```
-
-Replace the blank starter’s `src/styles.css` with the layer order:
+Replace the blank starter’s `src/styles.css` with:
 
 ```css
-@layer loamui.tokens, loamui.elements, loamui.components;
+@import "@loamui/core/styles.css";
 ```
 
-In `vite.config.ts`, add this setting to the existing `defineConfig` object, keeping its plugins and other options:
+This single import loads tokens, element styles and component styles, including their cascade layer order. The starter already loads `src/styles.css` from its root route; keep that setup unchanged. No provider is needed.
 
-```ts
-build: { cssMinify: false },
-```
-
-This preserves LoamUI’s native CSS syntax, which the CSS minifier does not yet accept. Vite still generates the stylesheet URL and handles its cache-busting filename; no copy script is needed. The stylesheet supplies tokens, element styles and component styles together. Import your own component CSS normally.
+Add your application styles below the import. Import recipe styles alongside their components.
 
 ## Check your first interface
 

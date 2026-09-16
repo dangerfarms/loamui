@@ -65,3 +65,64 @@ test("article styles protect embedded recipes as well as core roots", () => {
     0,
   );
 });
+
+test("consumer Stylelint config resolves installed tokens and rejects CSS regressions", async (t) => {
+  const { mkdtemp, mkdir, copyFile, symlink, rm } = await import("node:fs/promises");
+  const { tmpdir } = await import("node:os");
+  const { join } = await import("node:path");
+  const { fileURLToPath } = await import("node:url");
+  const { createRequire } = await import("node:module");
+  const { default: stylelint } = await import("stylelint");
+  const require = createRequire(import.meta.url);
+  const root = fileURLToPath(new URL("..", import.meta.url));
+  const project = await mkdtemp(join(tmpdir(), "loam-consumer-lint-"));
+  t.after(() => rm(project, { recursive: true, force: true }));
+  await mkdir(join(project, "node_modules", "@loamui"), { recursive: true });
+  await symlink(join(root, "packages/core"), join(project, "node_modules/@loamui/core"), "dir");
+  for (const name of [
+    "stylelint-config-standard",
+    "stylelint-config-modern",
+    "stylelint-config-alphabetical-order",
+    "stylelint-use-nesting",
+  ]) {
+    // Resolve each installed package root, without assuming npm's directory layout.
+    const { dirname } = await import("node:path");
+    const { existsSync } = await import("node:fs");
+    let directory = dirname(require.resolve(name));
+    while (!existsSync(join(directory, "package.json"))) directory = dirname(directory);
+    await symlink(directory, join(project, "node_modules", name), "dir");
+  }
+  for (const name of ["stylelint-base.mjs", "stylelint.config.mjs"])
+    await copyFile(join(root, "skills/loamui/assets", name), join(project, name));
+
+  const lint = (declarations) =>
+    stylelint.lint({
+      code: `@layer loamui.components {
+      @scope (.recipe) to ([class*="loam-"]) {
+        :scope {
+          ${declarations}
+        }
+      }
+    }`,
+      codeFilename: join(project, "src/recipe.css"),
+      configFile: join(project, "stylelint.config.mjs"),
+    });
+  const valid = await lint("display: block grid;\ngap: var(--loam-space-m);");
+  assert.equal(
+    valid.errored,
+    false,
+    JSON.stringify(valid.results.map((result) => result.warnings)),
+  );
+  for (const [declarations, rule] of [
+    ["gap: var(--loam-space-does-not-exist);", "no-unknown-custom-properties"],
+    ["margin-left: var(--loam-space-m);", "property-layout-mappings"],
+    ["color: var(--loam-color-fg) !important;", "declaration-no-important"],
+  ]) {
+    const result = await lint(declarations);
+    assert.ok(result.errored);
+    assert.ok(
+      result.results[0].warnings.some((warning) => warning.rule === rule),
+      rule,
+    );
+  }
+});
