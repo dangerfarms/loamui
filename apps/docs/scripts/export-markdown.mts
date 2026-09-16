@@ -38,6 +38,13 @@ const ORIGIN = process.env.SITE_ORIGIN ?? "https://loamui.com";
 // references (skills/loamui/references/), regenerated here so they can't
 // drift from the site. `check:skill` fails CI if the committed copy is stale.
 const SKILL_REFS = join(ROOT, "..", "..", "skills", "loamui", "references");
+const SETUP_ASSETS = [
+  "stylelint-base.mjs",
+  "stylelint.config.mjs",
+  "check-composition.mjs",
+  "scope-rules.mjs",
+  "spacing-rules.mjs",
+];
 
 /** Write the same markdown to public/ (served) and the skill references (committed). */
 function writeBoth(publicFile: string, refFile: string, md: string) {
@@ -228,7 +235,14 @@ function mdxToMarkdown(src: string): { md: string; title: string; description: s
       i++;
       continue;
     }
-    if (/^import .* from "[^"]+";\s*$/.test(line)) {
+    if (/^import (?:.* from )?"[^"]+";\s*$/.test(line)) {
+      i++;
+      continue;
+    }
+    if (
+      /^\s*<\/?details(?:\s[^>]*)?>\s*$/.test(line) ||
+      /^\s*<summary\b.*<\/summary>\s*$/.test(line)
+    ) {
       i++;
       continue;
     }
@@ -508,6 +522,16 @@ const sorted = [...guides].sort((a, b) => {
 
 const workflow = readFileSync(join(SKILL_REFS, "guides", "agent-workflow.md"), "utf8");
 const workflowBody = workflow.slice(workflow.indexOf("\n# ") + 1);
+const briefHeading = "## Reference: how the agent should work";
+if (!workflowBody.includes(briefHeading))
+  throw new Error("Missing implementation brief in agent workflow");
+const implementationBrief = workflowBody
+  .slice(workflowBody.indexOf(briefHeading))
+  .replace(briefHeading, "## Implementation brief")
+  .replace(
+    "The following guidance defines the environment checks, composition rules and verification expected from an agent. It also ships with the skill and the documentation for LLMs.",
+    "Use this brief even when the LoamUI skill is not installed. Follow the essential rules below, then read the selected recipe and component contracts before implementation. If you cannot retrieve them, use bundled skill references or request the needed material; do not invent APIs.",
+  );
 const absoluteLinks = (markdown: string) => markdown.replace(/\]\(\/(?!\/)/g, `](${ORIGIN}/`);
 
 // Static, on-demand prompt files: source and contracts stay out of gallery JavaScript.
@@ -527,7 +551,7 @@ for (const entry of EXAMPLE_META) {
     workflow: workflowBody,
     recipe: exampleMarkdown(entry),
     references: [
-      ...["stylelint-base.mjs", "stylelint.config.mjs"].map((file) => ({
+      ...SETUP_ASSETS.map((file) => ({
         title: `Setup asset: ${file}`,
         markdown:
           "```js\n" +
@@ -543,7 +567,7 @@ for (const entry of EXAMPLE_META) {
   });
   const file = join(PROMPTS, entry.category, `${entry.slug}.txt`);
   mkdirSync(dirname(file), { recursive: true });
-  writeFileSync(file, linkedRecipePrompt(entry, ORIGIN));
+  writeFileSync(file, linkedRecipePrompt(entry) + "\n");
   writeFileSync(file.replace(/\.txt$/, ".full.txt"), absoluteLinks(prompt));
 }
 
@@ -557,7 +581,22 @@ const lines: string[] = [
   "> for the library. `/AGENTS.md` is a one-page summary of the conventions",
   "> an agent needs when writing against the package.",
   "",
-  absoluteLinks(workflowBody.replace(/^#/gm, "##")),
+  "## Start here",
+  "",
+  "The package supplies tokens, element styles and React components. The skill guides project setup, composition and verification; installing the skill does not install the package.",
+  "",
+  `- Set up a framework and LoamUI: [Installation](${ORIGIN}/docs/installation.md).`,
+  `- Prepare a project or add the skill: [Build with the skill](${ORIGIN}/docs/agent-workflow.md).`,
+  `- Build a named recipe: find it below, read its React/CSS and the contracts of the components it uses. For a new pattern, read the [recipe guide](${ORIGIN}/recipes/guide.md) and the nearest relevant recipe.`,
+  "- Check the installed package exports/types against these references. The site follows the current source; installed package versions can differ.",
+  "",
+  absoluteLinks(
+    implementationBrief.replace(
+      /\]\((\/(?:docs|recipes)(?:\/[^)#]*)?)(#[^)]*)?\)/g,
+      (_match, path: string, anchor = "") =>
+        `](${path.endsWith(".md") ? path : `${path}.md`}${anchor})`,
+    ),
+  ),
   "",
   "## Guides",
   "",
@@ -593,7 +632,7 @@ writeFileSync(join(PUBLIC, "llms.txt"), lines.join("\n") + "\n");
 // Publish the same setup assets that ship with the skill.
 const agentAssets = join(PUBLIC, "agent-assets");
 mkdirSync(agentAssets, { recursive: true });
-for (const file of ["stylelint-base.mjs", "stylelint.config.mjs"]) {
+for (const file of SETUP_ASSETS) {
   copyFileSync(join(ROOT, "..", "..", "skills", "loamui", "assets", file), join(agentAssets, file));
 }
 

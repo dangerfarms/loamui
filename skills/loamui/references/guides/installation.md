@@ -6,11 +6,9 @@ description: Set up LoamUI in Next.js or TanStack Start, check your first interf
 > LoamUI documentation, generated from the same source as the live page —
 > treat it as authoritative for `@loamui/core`.
 
-import "../prose.css";
-
 # Installation
 
-Create a framework application, install `@loamui/core`, and import its stylesheet. One stylesheet includes all three primitives: tokens, element styles and component styles. There is no provider to configure. Then add the skill to start building.
+Create a framework application, install `@loamui/core`, and import its stylesheet. One import loads tokens, element styles and component styles; no provider is needed. Then add the skill and describe what you want to build.
 
 > **Package availability:** the public npm release of `@loamui/core` is planned but not yet available. The package commands in these guides apply once it is published. Installing the agent skill does not install the library.
 
@@ -27,7 +25,9 @@ The beta setup uses LoamUI as the styling foundation, without Tailwind or anothe
 
 ## 2. Check the foundation
 
-After completing your framework guide, replace its starter page with this small interface. Use `app/page.tsx` in Next.js or `src/components/Welcome.tsx` in TanStack Start. The TanStack guide shows how to render it from your index route. The client directive is needed for the compound Field parts in Next.js; omit it in TanStack Start.
+After completing your framework guide, confirm the application builds and the LoamUI styles load. You can use this small interface to check the foundation.
+
+Replace the starter page with this interface. Use `app/page.tsx` in Next.js or `src/components/Welcome.tsx` in TanStack Start. The TanStack guide shows how to render it from your index route. The client directive is needed for the compound Field parts in Next.js; omit it in TanStack Start.
 
 ```tsx
 "use client";

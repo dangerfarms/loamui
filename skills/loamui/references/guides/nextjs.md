@@ -6,8 +6,6 @@ description: Set up LoamUI with Next.js App Router and native CSS.
 > LoamUI documentation, generated from the same source as the live page —
 > treat it as authoritative for `@loamui/core`.
 
-import "../../prose.css";
-
 # Install with Next.js
 
 Use Next.js App Router. Follow [Next.js’s current system requirements](https://nextjs.org/docs/app/getting-started/installation) for your Node.js runtime.

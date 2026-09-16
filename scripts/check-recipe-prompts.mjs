@@ -13,14 +13,18 @@ for (const category of readdirSync(join(root, prompts))) {
     const slug = file.replace(/\.txt$/, "");
     const short = read(`${prompts}/${category}/${file}`);
     const prompt = read(`${prompts}/${category}/${slug}.full.txt`);
-    assert.ok(short.split(/\s+/).length < 350, `${slug}: default prompt is too long`);
+    assert.ok(short.trim().split(/\s+/).length <= 40, `${slug}: default prompt is too long`);
+    assert.ok(
+      short.startsWith("Use the LoamUI skill to build the “"),
+      `${slug}: must invoke the skill`,
+    );
+    assert.ok(!short.includes("\n\n"), `${slug}: expected one short prompt`);
     for (const path of [
       `/recipes/${category}/${slug}.md`,
       "/docs/agent-workflow.md",
       "/recipes/guide.md",
       `/recipe-prompts/${category}/${slug}.full.txt`,
     ]) {
-      assert.ok(short.includes(`https://loamui.com${path}`), `${slug}: missing ${path}`);
       assert.ok(existsSync(join(root, "apps/docs/public", path)), `${slug}: broken ${path}`);
     }
     for (const [source, language] of [
@@ -34,6 +38,8 @@ for (const category of readdirSync(join(root, prompts))) {
       );
     }
     const twin = read(`skills/loamui/references/recipes/${category}/${slug}.md`);
+    const title = twin.match(/^# (.+)$/m)?.[1];
+    assert.ok(title && short.includes(`“${title}”`), `${slug}: prompt must name its recipe`);
     const uses = twin.match(/^- Uses: (.+)$/m)?.[1] ?? "";
     for (const match of uses.matchAll(/`([^`]+)`/g)) {
       assert.ok(
@@ -57,9 +63,9 @@ assert.ok(
   "Only llms.txt should be exported",
 );
 assert.ok(
-  read("apps/docs/public/llms.txt").includes("# Build with the skill"),
-  "Index must carry essential workflow",
+  read("apps/docs/public/llms.txt").includes("## Implementation brief"),
+  "Index must carry the essential implementation brief",
 );
 console.log(
-  `check-recipe-prompts: OK (${count} short prompts with valid references and complete offline prompts, exact recipe source, component contracts, one llms.txt)`,
+  `check-recipe-prompts: OK (${count} short skill prompts and complete offline references, exact recipe source, component contracts, one llms.txt)`,
 );

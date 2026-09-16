@@ -6,7 +6,15 @@ import "./recipe-prompt-button.css";
 
 type Status = "idle" | "copying" | "copied" | "ready" | "failed";
 
-export function RecipePromptButton({ title, href }: { title: string; href: string }) {
+export function RecipePromptButton({
+  title,
+  href,
+  prompt,
+}: {
+  title: string;
+  href: string;
+  prompt: string;
+}) {
   const [status, setStatus] = useState<Status>("idle");
   const text = useRef<string | null>(null);
   const request = useRef<AbortController | null>(null);
@@ -68,11 +76,12 @@ export function RecipePromptButton({ title, href }: { title: string; href: strin
       : status === "ready"
         ? "Prompt loaded. Press Copy prompt again to copy it."
         : status === "failed"
-          ? "Could not copy. Try again, or open the prompt and copy its text."
+          ? "Could not copy. Select and copy the prompt above."
           : "";
 
   return (
     <div className="site-RecipePrompt">
+      <p className="prompt">{prompt}</p>
       <div className={"controls"}>
         <button
           type="button"
@@ -83,8 +92,8 @@ export function RecipePromptButton({ title, href }: { title: string; href: strin
         >
           {status === "copying" ? "Copying…" : status === "copied" ? "Copied" : "Copy prompt"}
         </button>
-        <a href={href} aria-label={`Open prompt for ${title}`}>
-          Open prompt
+        <a href={href.replace(/\.txt$/, ".full.txt")} aria-label={`Full reference for ${title}`}>
+          Full reference
           <span aria-hidden="true"> →</span>
         </a>
       </div>

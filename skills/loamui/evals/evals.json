@@ -160,9 +160,9 @@
     {
       "id": "recipe-clipboard",
       "prompt": "Paste the exact generated Hero with image recipe prompt, without extra implementation hints.",
-      "environment": "Fresh Next.js App Router or TanStack Start project with core and its stylesheet installed; no skill or network access. Give the agent only the generated prompt and project.",
+      "environment": "Fresh supported framework project with core, its stylesheet and the LoamUI skill installed; no network. Give the agent the exact short prompt shown on the card.",
       "expect": [
-        "Uses the embedded workflow, recipe source and contracts without needing live documentation",
+        "Resolves the named recipe in the skill index and reads bundled source and component contracts without extra implementation hints",
         "Preserves real LoamUI components and standalone recipe files",
         "Checks layer order and verifies content-driven image containment, parent widths and keyboard behaviour",
         "Reports actual checks and gaps instead of blanket certification"
@@ -171,12 +171,13 @@
     },
     {
       "id": "prepare-project",
-      "prompt": "Use the LoamUI skill to check this project’s setup and add the tools needed to follow LoamUI’s standards. Explain any changes before making them.",
+      "prompt": "Use the LoamUI skill to set up this project for LoamUI development.",
       "environment": "Run separately in Next.js App Router and TanStack Start applications with @loamui/core installed. Existing formatter and type checker; no CSS lint. Approve the concrete proposal, then repeat the same task.",
       "expect": [
         "Inspects package exports, stylesheet order, existing commands, agent capabilities and browser policy",
         "Explains the missing checks, proposed dependencies and exact configuration files before editing",
         "Uses the maintained skill assets and resolves token references from the installed package, without monorepo paths",
+        "Configures the shared scope and spacing checks for actual composition directories alongside Stylelint",
         "Reuses the existing formatter and type checker and scopes CSS lint to actual authored styles",
         "Offers project-local companion skills, reads relevant guidance and records whether they are available",
         "Runs the configured checks and reports failures or unavailable verification accurately",
@@ -195,6 +196,16 @@
         "Runs relevant checks and repairs failures without weakening the rules"
       ],
       "forbid": ["!important", "className=\"loam-Card\""]
+    },
+    {
+      "id": "recipe-full-reference",
+      "prompt": "Build the Hero with image recipe using the attached full reference.",
+      "environment": "Supported framework app with core and its stylesheet, but no skill or network. Attach the exact generated .full.txt reference.",
+      "expect": [
+        "Uses the supplied source and contracts without inventing APIs",
+        "Delivers portable React and CSS and reports actual verification"
+      ],
+      "forbid": ["@/examples/", "@/renderer/"]
     }
   ]
 }

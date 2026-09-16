@@ -37,8 +37,10 @@ quality. Browser checks and human visual review remain separate from type checks
 
 Run `consumer-setup-approval` in a clean consumer project and record the proposed
 setup before granting approval. Run `chat-source-only` with no network or runtime.
-For `recipe-clipboard`, paste the exact generated prompt rather than paraphrasing
-it or adding hints. Repeat with Sign in with errors to exercise Field wiring,
+For `recipe-clipboard`, install the skill and paste the exact short prompt shown
+on the card, without adding hints. Run `recipe-full-reference` separately with
+the attached complete reference and no installed skill. Repeat with Sign in with
+errors to exercise Field wiring,
 native validation, value preservation and application submission boundaries.
 
 `pnpm check:prompts` checks the generated prompt source against the real recipe
@@ -52,6 +54,8 @@ the generated files or unit tests pass.
 Run `prepare-project` in both supported frameworks, approving the concrete
 proposal before the setup phase. Check actual lint behaviour with one valid
 composition and one with an unknown token, physical property and `!important`.
+Check the composition command with literal spacing and an unbounded scope around
+core components. Confirm it uses the selected consumer paths.
 Repeat setup after adding a local override: scripts and instructions should
 not duplicate and the override must survive. Run `existing-checks` separately
 to verify that generating UI reuses the consumer's tools. Record companion

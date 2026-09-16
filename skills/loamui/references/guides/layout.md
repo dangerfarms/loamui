@@ -6,8 +6,6 @@ description: Layout is native CSS. Pick the module that fits the shape of the co
 > LoamUI documentation, generated from the same source as the live page —
 > treat it as authoritative for `@loamui/core`.
 
-import "../prose.css";
-
 # Layout
 
 LoamUI ships no layout components. Layout is a native CSS concern, and the platform already has four layout modules that cover the cases a UI runs into. Pick the one that fits the shape of the content, write it in the component that owns that content, and reach for the space tokens for every gap.

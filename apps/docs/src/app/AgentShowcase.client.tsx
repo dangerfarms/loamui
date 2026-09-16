@@ -29,7 +29,7 @@ export function AgentShowcase({
     <div className="site-AgentShowcase">
       <Card>
         <div className="site-AgentAsk">
-          <h3>Install the skill</h3>
+          <h3>Add the skill</h3>
           <CodeBlock code="npx skills add dangerfarms/loamui --skill loamui" language="bash" />
           <p className="label">Then try a prompt:</p>
           <div className="promptBox">
@@ -44,7 +44,8 @@ export function AgentShowcase({
             </SignpostLink>
           </p>
           <p className="label">
-            New to LoamUI? <Link href="/docs/installation">Set up your project first</Link>.
+            New project? <Link href="/docs/installation">Install LoamUI</Link>. For setup help,
+            follow <Link href="/docs/agent-workflow">Build with the skill</Link>.
           </p>
         </div>
       </Card>

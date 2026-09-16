@@ -6,8 +6,6 @@ description: The token primitive: a handful of semantic decisions, everything el
 > LoamUI documentation, generated from the same source as the live page —
 > treat it as authoritative for `@loamui/core`.
 
-import "../prose.css";
-
 # Tokens
 
 The first of LoamUI's three primitives: a handful of semantic custom properties that every component reads. A small palette of colours and neutrals, plus fluid scales: everything else is derived by formula, so theming is overriding `--loam-*` values at any scope. No `ThemeProvider`, no JavaScript.

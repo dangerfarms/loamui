@@ -6,8 +6,6 @@ description: The third primitive: a small, curated set of accessible components 
 > LoamUI documentation, generated from the same source as the live page —
 > treat it as authoritative for `@loamui/core`.
 
-import "../prose.css";
-
 # Components
 
 The third of LoamUI's three primitives, built on the two beneath it. [Tokens](/docs/tokens) supply the colour and scale; [element styles](/docs/element-styles) supply the native baseline. Most of a component's look is decided before its own stylesheet exists, which is why the set stays small: components add the anatomy a bare element cannot, and nothing more.

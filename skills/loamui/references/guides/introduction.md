@@ -6,8 +6,6 @@ description: Modern UI primitives for agent-assisted developers: contextual toke
 > LoamUI documentation, generated from the same source as the live page —
 > treat it as authoritative for `@loamui/core`.
 
-import "./prose.css";
-
 # Introduction
 
 LoamUI is modern UI primitives for agent-assisted developers: contextual tokens, element styles and React components, built on Google's Modern Web Guidance, for quickly building bespoke UIs that are accessible, adaptable and fast.

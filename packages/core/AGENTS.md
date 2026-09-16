@@ -22,8 +22,9 @@ Repository setup requires a React framework application with ESM support.
 Follow <https://loamui.com/docs/installation.md> for Next.js App Router or
 TanStack Start. Import `@loamui/core/styles.css` once at the application root,
 before application and recipe styles, to load all three primitives. Inspect
-existing resets and Tailwind Preflight before changing them. The skill does
-not install the package. No provider is needed.
+existing resets and Tailwind Preflight before changing them. Installing the
+skill does not install the package. An authorized setup request can include
+missing dependencies. No provider is needed.
 
 In React Server Components every
 compound part (`Field.Root`, `Modal.Trigger`) is a client reference, so JSX
@@ -123,7 +124,7 @@ A later declaration cannot reorder existing layers.
 
 ## House style for the CSS you write
 
-The repo's own stylelint config will accept your stylesheet if you: nest
+The shared Stylelint configuration checks these conventions: nest
 child rules with `&` instead of repeating the parent selector; use the
 two-value display syntax (`display: block grid`, `display: block flex`);
 use logical properties (`inline-size`, `margin-block`,
@@ -147,7 +148,7 @@ alphabetical order; and put a blank line before every comment.
 
 Public custom properties are `--loam-*`; anything `--_*` is private.
 
-Read <https://loamui.com/docs/composing/> and the relevant component reference
+Read <https://loamui.com/recipes/guide.md> and the relevant component reference
 before composing. The curated <https://loamui.com/recipes/> collection supplies
 portable React and CSS. Verify your composition in a plain parent, at narrow and
 wide sizes, with two instances and keyboard interaction, in both colour schemes.

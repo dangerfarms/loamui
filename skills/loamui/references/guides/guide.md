@@ -6,8 +6,6 @@ description: Build portable React components from LoamUI’s tokens, element sty
 > LoamUI documentation, generated from the same source as the live page —
 > treat it as authoritative for `@loamui/core`.
 
-import "@/app/docs/prose.css";
-
 # Building your own recipes
 
 Use LoamUI’s tokens, element styles and components to build UI for your product. These worked examples explain how to choose a pattern, compose it and adapt it to your content.
@@ -102,4 +100,4 @@ Consult [Google Chrome’s Modern Web Guidance](https://github.com/GoogleChrome/
 
 ## Asking an agent
 
-Begin with the [environment and verification workflow](/docs/agent-workflow). Install the consumer skill with `npx skills add dangerfarms/loamui`, or point the agent at [/llms.txt](/llms.txt). Ask it to read this guide, the nearest recipe and each component’s reference before composing. The output should include portable React and CSS, application integration requirements, and verification results. Treat passing tests as evidence for their specific assertions, rather than a guarantee about every possible use.
+Begin with the [environment and verification workflow](/docs/agent-workflow). Install the consumer skill with `npx skills add dangerfarms/loamui --skill loamui`, or point the agent at [/llms.txt](/llms.txt). With the skill installed, describe what you want to build or copy a recipe card’s short prompt. The skill reads this guide, the relevant recipe and component contracts before composing. Without an installed skill, ask the agent to follow the implementation brief in `llms.txt` and read the linked references. The output should include portable React and CSS, application integration requirements, and verification results. Treat passing tests as evidence for their specific assertions, rather than a guarantee about every possible use.

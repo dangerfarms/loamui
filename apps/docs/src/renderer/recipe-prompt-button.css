@@ -7,6 +7,13 @@
       z-index: 1;
     }
 
+    .prompt {
+      font-size: var(--loam-text-sm);
+      overflow-wrap: anywhere;
+      padding-block-start: var(--loam-space-s);
+      padding-inline: var(--loam-space-s);
+    }
+
     .controls {
       align-items: center;
       display: block flex;

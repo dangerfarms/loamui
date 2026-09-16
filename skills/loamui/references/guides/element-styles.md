@@ -6,8 +6,6 @@ description: The element-styles primitive: enhanced default styles for native HT
 > LoamUI documentation, generated from the same source as the live page —
 > treat it as authoritative for `@loamui/core`.
 
-import "../prose.css";
-
 # Element styles
 
 The second of LoamUI's three primitives: enhanced default styles for the native elements themselves, applied page-wide by the `loamui.elements` layer. Importing the stylesheet opts you in: plain HTML is already styled before a single component appears, and everything on this page is bare markup with no classes.

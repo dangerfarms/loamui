@@ -77,9 +77,8 @@ export default function HomePage() {
           <p className="eyebrow">Build with the skill</p>
           <h2>Describe your UI. Build on the primitives.</h2>
           <p>
-            Already installed your framework and LoamUI? Add the skill, then tell your agent what
-            you want to build. The skill checks your setup and guides your agent as it builds and
-            tests your UI.
+            Start with a framework and LoamUI installed. Add the skill, then describe what you want
+            to build. Your agent checks the setup, composes the primitives and tests the result.
           </p>
         </header>
         <AgentShowcase

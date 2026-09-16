@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { RecipePromptButton } from "./recipe-prompt-button";
 
-const prompt = "Build the image hero.\n\n```tsx\nexport default function Hero() {}\n```";
+const prompt = "Use the LoamUI skill to build the “Hero with image” recipe for my application.";
 const href = "/recipe-prompts/heroes/hero-with-image.txt";
 
 function setup() {
@@ -21,7 +21,7 @@ function setup() {
   });
   const writeText = vi.fn().mockResolvedValue(undefined);
   vi.stubGlobal("navigator", { ...navigator, clipboard: { write, writeText } });
-  render(<RecipePromptButton title="Hero with image" href={href} />);
+  render(<RecipePromptButton title="Hero with image" href={href} prompt={prompt} />);
   return { fetchMock, write, writeText };
 }
 
@@ -51,16 +51,16 @@ describe("recipe prompt copying", () => {
     expect(fetchMock).toHaveBeenCalledOnce();
   });
 
-  it("offers the actual prompt when the clipboard refuses", async () => {
+  it("keeps the visible prompt and full reference available when the clipboard refuses", async () => {
     const { write } = setup();
     write.mockRejectedValueOnce(new Error("Permission denied"));
     fireEvent.click(screen.getByRole("button"));
     await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Could not copy"));
-    expect(screen.getByRole("link", { name: "Open prompt for Hero with image" })).toHaveAttribute(
-      "href",
-      href,
-    );
+    expect(
+      screen.getByRole("link", { name: "Full reference for Hero with image" }),
+    ).toHaveAttribute("href", href.replace(/\.txt$/, ".full.txt"));
     expect(screen.getByRole("button")).toHaveTextContent("Copy prompt");
+    expect(screen.getByText(prompt)).toBeVisible();
   });
 
   it("does not copy a missing prompt or an HTML error page as source", async () => {

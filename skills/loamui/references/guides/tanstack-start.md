@@ -6,8 +6,6 @@ description: Set up LoamUI with TanStack Start and native CSS, without Tailwind 
 > LoamUI documentation, generated from the same source as the live page —
 > treat it as authoritative for `@loamui/core`.
 
-import "../../prose.css";
-
 # Install with TanStack Start
 
 TanStack Start is a full-stack React framework with routing, server rendering and server functions. Follow its [current setup requirements](https://tanstack.com/start/latest/docs/framework/react/getting-started) for your Node.js runtime.

@@ -6,8 +6,6 @@ description: How the type scale, rhythm and figures work, and how to build your 
 > LoamUI documentation, generated from the same source as the live page —
 > treat it as authoritative for `@loamui/core`.
 
-import "../prose.css";
-
 # Typography
 
 Type is set by two primitives working together: the [tokens](/docs/tokens) supply a fluid scale, and the [element styles](/docs/element-styles) apply it to native headings and text. You get a readable, rhythmic page before writing a line of CSS, and a small vocabulary to build your own type on top.

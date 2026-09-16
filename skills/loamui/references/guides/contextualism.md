@@ -6,8 +6,6 @@ description: The paradigm shift under all three primitives: context decides appe
 > LoamUI documentation, generated from the same source as the live page —
 > treat it as authoritative for `@loamui/core`.
 
-import "../prose.css";
-
 # Contextualism
 
 In most component libraries you tell each component what to look like: `variant="outline"`, `size="lg"`, `color="danger"`. LoamUI inverts that. Everything it ships reads its _context_ (what the surrounding region means, how much space it has, what it contains) and adapts itself. Identity props are the last resort, not the default.

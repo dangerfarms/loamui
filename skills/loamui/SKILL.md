@@ -43,21 +43,29 @@ metadata:
 ## Start by checking the environment
 
 Read [Build with the skill](references/guides/agent-workflow.md) before
-implementation. It defines the repository and chat-only workflows, setup
-approval boundary, two-pillar acceptance criteria and verification report.
-For setup requests or missing checks, follow
-[Set up your project](references/guides/agent-workflow.md#project-setup).
-The maintained CSS configuration ships in `assets/`; reuse existing tooling
-and run it after
-setup. Install companion skills for the active agent when authorized, then
-read the relevant guidance before implementation. Installing a skill alone
-is not evidence it was used.
-Use a React framework; check peer dependencies and resets in
-[installation](references/guides/installation.md).
-Inspect the installed package, stylesheet delivery and initial layer order;
-do not install or change shared infrastructure without existing authorization
-or an approved concrete proposal. In chat, probe actual package and rendering
-capabilities. Never substitute fake LoamUI components or claim unrun checks.
+implementation. Users describe their UI; you handle setup, composition and
+verification.
+
+Developers normally start with a React framework, `@loamui/core` and its
+stylesheet installed. Installing this skill installs none of those. Check
+[installation](references/guides/installation.md), the actual package exports,
+style delivery, layer order and existing tools. An authorized setup request
+can include missing dependencies; propose shared changes before applying them
+unless already approved. Preserve existing tools and unrelated styles.
+
+For setup or missing checks, follow
+[Project setup](references/guides/agent-workflow.md#project-setup).
+The maintained Stylelint and composition checks ship in `assets/`; copy them
+into the project, use its source paths and run the configured commands.
+Arrange companion skills for the active agent when supported and authorized,
+then read the relevant guidance. Their absence does not remove LoamUI's rules:
+use the bundled examples and official platform references. Installing a skill
+is not evidence it was used. Report unavailable guidance and unrun checks.
+
+For a named recipe prompt, resolve the title in [the index](references/index.md)
+and read that recipe's source and component contracts. Do not require a long
+prompt or live docs when the needed references are bundled. In chat, probe
+package and rendering capabilities; never fake LoamUI or claim unrun checks.
 
 ## The three primitives
 
@@ -130,22 +138,13 @@ No layout components (use native grid, flex or flow with the space tokens), no
 
 ## How to build with it
 
-1. **Check setup before changing it.** Follow the environment workflow above.
-   If authorized setup is needed, install `@loamui/core` with the project's
-   package manager and load its CSS once. ESM only, no provider.
-   Follow [installation](references/guides/installation.md) for the framework’s
-   stylesheet import; establish layer order before recipe styles load.
-2. **Read before composing.** Check the installed package version and read
-   [the recipe guide](references/guides/guide.md), the nearest published
-   recipe, and each component reference you will use. Prefer installed types
-   when
-   a reference describes a different version. For platform features, consult
-   [Google Chrome’s
-   guidance](https://github.com/GoogleChrome/modern-web-guidance);
-   use its search/retrieve tool if available, otherwise read the relevant
-   official
-   guide. LoamUI uses Baseline Newly/Widely Available features natively, with
-   progressive enhancement for features outside Baseline.
+1. **Check setup.** Follow the environment workflow above. Load core CSS once,
+   before recipe styles establish layers. ESM only, no provider.
+2. **Read before composing.** Read [the recipe guide](references/guides/guide.md),
+   the nearest recipe and the contracts of the parts you use. Prefer installed
+   types when versions differ. Consult the Modern CSS and
+   Google Chrome guidance for the task. LoamUI uses Baseline Newly/Widely
+   Available features natively; enhance progressively beyond that policy.
 3. **Compose.** Parts inside a `Root`; bare form controls (`Input`, `Select`,
    `Textarea`, `Range`, `QuantityInput`, `FileInput.Control`, `Search.Input`)
    inside `Field.Root` wire their label, description, error, and `aria-*`

@@ -8,6 +8,7 @@ import { EXAMPLE_PREVIEWS } from "@/examples/generated-previews";
 import type { ExampleMetaEntry } from "@/examples/types";
 import "./examples-index.css";
 import { LazyThumb } from "./examples-thumb";
+import { linkedRecipePrompt } from "@/examples/recipe-prompt";
 import { RecipePromptButton } from "./recipe-prompt-button";
 import { ExampleLoadBoundary } from "./examples-load-boundary";
 
@@ -155,6 +156,7 @@ export function ExamplesIndex() {
                   </div>
                   <RecipePromptButton
                     title={e.meta.title}
+                    prompt={linkedRecipePrompt(e)}
                     href={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/recipe-prompts/${e.category}/${e.slug}.txt`}
                   />
                 </li>

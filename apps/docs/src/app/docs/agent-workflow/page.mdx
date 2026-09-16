@@ -6,11 +6,11 @@ export const metadata = {
 
 # Build with the skill
 
-Use the LoamUI skill to turn a description of your interface into React and CSS built from the three primitives. The package supplies the tokens, element styles and components; the skill guides your agent in composing them.
+The package supplies the tokens, element styles and React components. The skill helps your agent check your project, compose those primitives and verify what it builds.
 
-**Before you start:** complete [Installation](/docs/installation) and check that your framework application builds with LoamUI. Installing the skill does not install the package or set up the framework.
+**Before you start:** create your framework application, install LoamUI and import its stylesheet using [Installation](/docs/installation). Installing the skill does not install LoamUI. Your agent can help complete missing setup when you ask it to.
 
-## 1. Install the skill
+## 1. Add the skill
 
 Run this from your application directory and select your coding agent when prompted:
 
@@ -18,37 +18,34 @@ Run this from your application directory and select your coding agent when promp
 npx skills add dangerfarms/loamui --skill loamui
 ```
 
-## 2. Set up your project
+## 2. Prepare your project
 
-Ask your agent:
+> Use the LoamUI skill to set up this project for LoamUI development.
 
-> Use the LoamUI skill to check this project’s setup and add the tools needed to follow LoamUI’s standards. Explain any changes before making them.
-
-The skill checks your installation and existing tools. It can configure CSS linting, reuse your formatter and tests, and install the Modern CSS and Google Chrome Modern Web Guidance skills for your agent. It proposes missing tools before installing them and keeps your existing configuration. If everything is ready, it moves on.
-
-The [project setup reference](/docs/agent-workflow#project-setup) explains the checking configuration and what the agent should verify. You do not need to configure each tool by hand.
+Your agent checks the package, stylesheet and existing tools. It proposes missing setup before making shared changes, reuses your configuration, and runs the agreed checks. If the project is already ready, it moves on. You do not need to configure each tool by hand.
 
 ## 3. Describe what you want to build
 
-Tell the agent what the interface is for, what it contains and how it should behave. For example:
+> Use the LoamUI skill to build a profile form with name and email fields and a Save changes button.
 
-> Use the LoamUI skill to build a profile form with name and email fields and a Save changes button. Keep my entries if saving fails and explain what I need to fix. Ask me where to send the saved profile.
+Describe the content and behaviour you need. The skill supplies the implementation guidance: it reads the relevant recipes and component contracts, composes the primitives, and checks the result. For actions such as saving a profile, provide your application's endpoint or ask the agent to identify the integration it needs.
 
-You can also start with a [recipe](/recipes). Choose a pattern, select **Copy prompt**, and add the content and behaviour you want to change. The recipe's source and component references give the agent a concrete starting point.
+You can also choose a [recipe](/recipes) and copy the short prompt shown on its card. Add the content or behaviour you want to change; you do not need to list CSS techniques or accessibility rules in the prompt.
 
-## 4. Review and refine
+## 4. Review the result
 
-Run the interface in your application. Check its content and layout, then use it with the keyboard, at a narrow width and in both colour schemes. For a form, try invalid values and confirm that submission reaches your application's actual endpoint.
+Expect the component, its stylesheet, any application integration and a short account of what the agent checked. Ask for refinements in terms of the outcome: “Keep the action below the fields when the form appears in a narrow sidebar.”
 
-Ask the agent what it tested and what remains unverified. When requesting a change, describe the outcome: for example, “Keep the action below the fields when this form appears in a narrow sidebar.” The agent should adapt the composition using the same primitives.
+Review the interface in your application, including keyboard use, a narrow layout and both colour schemes. For a form, try errors and confirm submission reaches the real endpoint. The skill guides implementation and verification; it cannot certify an interface from its appearance alone.
 
-**Next: [Choose a recipe](/recipes)** or read [Building your own recipes](/recipes/guide) to understand how a composition is put together.
+**Next: [Choose a recipe](/recipes).** The [recipe guide](/recipes/guide) explains the composition techniques in more detail.
 
 ## Using a chat tool
 
-If your tool cannot install a skill, provide [llms.txt](/llms.txt) and a recipe prompt. When it cannot open links, attach the complete prompt linked from the copied text. A chat preview needs access to the real package and stylesheet; when that is unavailable, ask for source files to use in your configured application. Preview and runtime behaviour still need checking there.
+If your tool cannot install a skill, provide [llms.txt](/llms.txt) and a recipe prompt. When it cannot open links, attach the **Full reference** linked on the recipe card. A chat preview needs access to the real package and stylesheet; when that is unavailable, ask for source files to use in your configured application. Preview and runtime behaviour still need checking there.
 
-<span id="project-setup" />
+<details>
+<summary id="project-setup">Project setup reference</summary>
 
 ## Project setup
 
@@ -64,7 +61,7 @@ Propose the missing pieces with their packages, files and commands. Distinguish 
 
 ### Configure CSS checks
 
-LoamUI maintains two files, bundled under `assets/` in the skill and available here:
+LoamUI maintains these Stylelint files, bundled under `assets/` in the skill and available here:
 
 - [Shared Stylelint rules](/agent-assets/stylelint-base.mjs)
 - [Consumer Stylelint configuration](/agent-assets/stylelint.config.mjs)
@@ -95,9 +92,41 @@ Use the actual paths, such as `app/**/*.css` and `components/**/*.css`, when the
 
 The files are project-owned copies. On a later setup or update request, compare them with the skill's maintained assets, explain changes and preserve local customizations. Re-running setup must not append duplicate scripts, rules or instructions.
 
+### Check scope boundaries and spacing
+
+Stylelint covers CSS syntax and conventions. The following checks share their rule implementation with this repository and inspect composition mistakes that Stylelint does not cover:
+
+- [Composition checker](/agent-assets/check-composition.mjs)
+- [Scope rules](/agent-assets/scope-rules.mjs)
+- [Spacing rules](/agent-assets/spacing-rules.mjs)
+
+Copy all three files into the same project-owned directory, such as `scripts/loamui/`. Use the project's package manager to add their dependencies if missing:
+
+```bash
+npm install --save-dev postcss postcss-value-parser typescript
+```
+
+Add a command using the actual authored source directories. For a project with `src/`:
+
+```json
+{
+  "scripts": {
+    "check:composition": "node scripts/loamui/check-composition.mjs src"
+  }
+}
+```
+
+For a Next.js project without `src/`, pass its existing directories, for example `app components`. Pass directories or individual files, not glob patterns. In an existing application, start with the LoamUI composition directories; do not make adopting LoamUI require a styling migration elsewhere.
+
+The checker examines CSS and literal JSX/TSX style objects for spacing that bypasses tokens. It also detects excluded selectors inside core-limited scopes, and unbounded type selectors in scopes whose sibling JSX/TSX imports both the stylesheet and LoamUI. It skips generated directories, dependencies, symlinks and test/story files. Missing paths and empty selections fail rather than reporting an empty pass.
+
+These are focused static checks. Dynamic styles, indirect or aliased imports, CSS ownership across directories, `calc()`/`clamp()` spacing, contrast and rendered behaviour still need review. The checks do not require every native-only composition to import a core component or introduce a status region.
+
+Keep these files together when updating them from the skill and preserve project customizations. Run CSS lint and composition checks alongside the existing type check and build. Never suppress a finding simply to obtain a passing result.
+
 ### Add the companion skills
 
-When the coding agent supports skills, offer these project-local additions using the supported installer and the active agent's target:
+The LoamUI skill carries the essential composition rules and worked examples. Users do not need to invoke companion skills separately. When the coding agent supports skills, offer these project-local additions using the supported installer and the active agent's target:
 
 ```bash
 npx skills add moderncss/skills --skill modern-css
@@ -112,17 +141,22 @@ If companion installation is unavailable or declined, use LoamUI's bundled compo
 
 ### Run and record the checks
 
-Run the formatter, CSS lint, type check and production build using the application's commands. Classify pre-existing failures separately from setup failures, repair issues within scope and rerun affected checks. Never disable checks or report a failed build as successful.
+Run the formatter, CSS lint, composition checks, type check and production build using the application's commands. Classify pre-existing failures separately from setup failures, repair issues within scope and rerun affected checks. Never disable checks or report a failed build as successful.
 
 Use existing browser and interaction tooling to check the first composition. If none exists, propose the smallest suitable addition, such as Playwright with axe for interaction and automated accessibility checks. Do not install another test runner when the existing one can do the job, or add screenshot archives and generated browser files to the project. Keep temporary inspection artifacts outside the repository.
 
 Review the rendered UI as well as test results. For a recipe, check narrow and wide parents, enlarged text, long content, both colour schemes, keyboard and focus. Exercise repeated instances and directional interactions where relevant. Check form errors and submission boundaries for forms; measure contrast over photographs for image overlays. Respect reduced motion and forced colours.
 
-Stylelint does not establish scope ownership, complete token usage, accessible interactions or good visual design. Review those against the [composition contract](/docs/agent-workflow#the-contract-for-every-implementation) and recipe source. A passing automated accessibility scan is only one part of verification.
+The supplied checks do not establish complete scope ownership, token usage, accessible interactions or good visual design. Review those against the [composition contract](/docs/agent-workflow#the-contract-for-every-implementation) and recipe source. A passing automated accessibility scan is only one part of verification.
 
 Add a short LoamUI section to the project's existing agent instructions when that is part of the agreed setup. Record the stylesheet entry, composition directories, browser policy, skill/reference locations and commands that actually ran. Preserve unrelated instructions; use the host's existing instruction file rather than creating competing copies.
 
 Report what was configured, what passed and what remains unverified. If CI changes were included in the agreed setup, connect the existing checks there. Otherwise, report that checks currently run locally. Subsequent UI tasks should read the relevant recipe and component contracts, implement, verify and repair without repeating setup unnecessarily.
+
+</details>
+
+<details>
+<summary>Implementation reference</summary>
 
 ## Reference: how the agent should work
 
@@ -136,7 +170,7 @@ For a setup request or missing quality tools, follow [Set up your project](/docs
 
 Inspect what is available before changing anything. In a repository, read its instructions, package manifest, lockfile, app entry, stylesheet entry and relevant existing components. Check the installed `@loamui/core` version and its public exports/types. Use the existing package manager. Do not assume that the documentation and installed package are the same version.
 
-Repository setup requires a React framework application. The beta installation paths are Next.js App Router and TanStack Start; Vite alone is not a framework. If no framework exists, propose one of those paths before generating application files. For another framework, establish its React and stylesheet integration before claiming support. Follow the [installation guide](/docs/installation) and check package availability; the skill is not the package.
+Repository setup requires a React framework application. The beta installation paths are Next.js App Router and TanStack Start; Vite alone is not a framework. If no framework exists, propose one of those paths before generating application files. Installing the skill alone installs neither the framework nor LoamUI; an authorized setup request can include missing dependencies. For another framework, establish its React and stylesheet integration before claiming support. Follow the [installation guide](/docs/installation) and check package availability; the skill is not the package.
 
 For a fresh beta project, use LoamUI without Tailwind or another global reset. In an existing project, inspect Tailwind's Preflight import, utility usage and competing element rules. Do not silently delete a dependency or rewrite the site's styling foundation. Identify the affected files and propose an integration or migration before proceeding.
 
@@ -185,7 +219,7 @@ Preserve native labels, keyboard behaviour, focus, readable contrast and user pr
 
 ### Read and adapt a reference
 
-Read the [recipe guide](/recipes/guide), the selected recipe's complete TSX and CSS, and the reference for each core component used. Skill users can read these offline in `references/`. Each recipe card offers a short prompt linking to these references. If your assistant cannot open links, follow the complete-prompt link inside it and attach that text instead: it includes the selected source, workflow and component references for use without browsing.
+Read the [recipe guide](/recipes/guide), the selected recipe's complete TSX and CSS, and the reference for each core component used. Skill users can read these offline in `references/`. Each recipe card shows a short prompt that names the LoamUI skill and recipe. Resolve the name through the bundled reference index; do not ask the user to restate the implementation rules. The card also links to a complete reference for assistants without skills or browsing: it includes the selected source, workflow and component contracts.
 
 Use the published recipes as worked references for this contract. Publication and design notes are not certification: verify every adaptation in its consuming environment.
 
@@ -202,3 +236,5 @@ Run the consuming project's formatter, type checker, lint and relevant tests. Re
 Inspect the result visually as well as structurally. Core's token contrast and component tests do not verify the new content, theme, image overlay or composition. Repair failures and rerun affected checks. Report what ran, what failed, and what remains unverified. Do not label generated code fully conformant when required evidence is missing.
 
 Before implementation, read the relevant Modern CSS skill guidance when installed, then consult [Google Chrome's Modern Web Guidance](https://github.com/GoogleChrome/modern-web-guidance), or the relevant official platform documentation when its tool is unavailable. LoamUI permits Baseline Newly or Widely Available features; features outside that policy need progressive enhancement. Do not silently change a consumer's browser policy.
+
+</details>
