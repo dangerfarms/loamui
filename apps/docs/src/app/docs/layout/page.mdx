@@ -24,16 +24,21 @@ export const stage = {
 
 LoamUI ships no layout components. Layout is a native CSS concern, and the platform already has four layout modules that cover the cases a UI runs into. Pick the one that fits the shape of the content, write it in the component that owns that content, and reach for the space tokens for every gap.
 
+Load the core stylesheet first, following [Installation](/docs/installation). The examples
+place composition rules in `loamui.components` and scope them to the layout's root.
+The scope limit protects embedded LoamUI components from descendant selectors; their
+tokens still inherit. Add layout to the region without restyling the controls inside it.
+
 ## Pick the module by the shape of the content
 
 Each module answers a different question. Match it to what you are arranging, not to a breakpoint.
 
-| The content       | The module   | The core declaration                         |
-| ----------------- | ------------ | -------------------------------------------- |
-| A page of prose   | Flow         | nothing; block layout is the default         |
-| A dense dashboard | Grid         | `display: grid` with `subgrid` for alignment |
-| A row of controls | Flex         | `display: flex`                              |
-| A long article    | Multi-column | `columns`                                    |
+| The content       | The module   | The core declaration                               |
+| ----------------- | ------------ | -------------------------------------------------- |
+| A page of prose   | Flow         | nothing; block layout is the default               |
+| A dense dashboard | Grid         | `display: block grid` with `subgrid` for alignment |
+| A row of controls | Flex         | `display: block flex`                              |
+| A long article    | Multi-column | `columns`                                          |
 
 ### Flow, for a documentation page
 
@@ -52,11 +57,13 @@ Normal flow stacks blocks in source order. LoamUI’s element styles provide the
 Grid is the two-dimensional module: use it when rows and columns both matter. Prefer intrinsic, fluid track sizing over media queries. `repeat(auto-fit, minmax(min(16rem, 100%), 1fr))` lays out as many equal columns as fit and reflows itself as the container resizes, with no breakpoints to maintain. When sibling cards must align their internal rows, give them `grid-template-rows: subgrid`.
 
 ```css
-@scope (.dashboard) {
-  :scope {
-    display: grid;
-    gap: var(--loam-space-s);
-    grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+@scope (.dashboard) to ([class*="loam-"]) {
+  @layer loamui.components {
+    :scope {
+      display: block grid;
+      gap: var(--loam-space-s);
+      grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+    }
   }
 }
 ```
@@ -82,12 +89,14 @@ Grid is the two-dimensional module: use it when rows and columns both matter. Pr
 Flex is the one-dimensional module: a row (or column) of items that share a line and wrap when they run out of room. It is the right tool for a button group, a toolbar, or a label beside its control. Let it wrap, align it `safe` so a focused item is never clipped, and space it with a token.
 
 ```css
-@scope (.actions) {
-  :scope {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--loam-space-2xs);
-    align-items: safe center;
+@scope (.actions) to ([class*="loam-"]) {
+  @layer loamui.components {
+    :scope {
+      align-items: safe center;
+      display: block flex;
+      flex-wrap: wrap;
+      gap: var(--loam-space-2xs);
+    }
   }
 }
 ```
@@ -105,10 +114,12 @@ Flex is the one-dimensional module: a row (or column) of items that share a line
 Multi-column flows a single stream of text across balanced columns, the way a newspaper does. Set a column width and let the browser decide the count from the available space.
 
 ```css
-@scope (.article) {
-  :scope {
-    columns: 18rem;
-    gap: var(--loam-space-l);
+@scope (.article) to ([class*="loam-"]) {
+  @layer loamui.components {
+    :scope {
+      columns: 18rem;
+      gap: var(--loam-space-l);
+    }
   }
 }
 ```

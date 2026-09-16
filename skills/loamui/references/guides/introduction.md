@@ -27,7 +27,9 @@ The ideas that hold the primitives together. Each is grounded in a reference and
 1. **Modern.** Real elements carry the semantics and plain, static CSS carries the styling: no CSS-in-JS, no styling engine. `@layer` for order, `@scope` for encapsulation, `light-dark()` and container queries for adaptation. Underneath both sits [contextualism](/docs/contextualism), the paradigm shift: a region declares what it means (`--loam-context`) and the tokens, element styles and components inside all adapt. Component references explain the public APIs and their exceptions.
 2. **[Accessible](/docs/accessibility).** Semantic HTML, managed focus, keyboard support and the reader's preferences as the baseline, distilled from the GOV.UK and Polaris design systems and running through all three primitives.
 
-Trust in the agents is a separate question, answered by gatekeeping rather than by a pillar: contrast, axe and interaction tests run in CI, and Stylelint holds the CSS to the rules above.
+Quality checks provide evidence for these principles. LoamUI's CI runs contrast audits, automated accessibility and interaction tests, and CSS linting against the library and examples covered by those checks.
+
+An agent's work needs checking in your application too. The skill guides it to run your project's checks and review the new composition's layout, keyboard behaviour and application integration. Passing library tests does not verify your content, custom theme or generated interface. Expect the agent to report what passed, what failed and what remains unverified; [Build with the skill](/docs/agent-workflow) explains the workflow.
 
 ## Get started
 

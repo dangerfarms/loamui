@@ -31,14 +31,26 @@
     }
 
     .promptBox {
-      border-block-start: 1px solid var(--loam-color-line);
-      display: block grid;
-      gap: var(--loam-space-s);
-      padding-block-start: var(--loam-space-s);
+      background: var(--loam-color-surface);
+      border: 1px solid var(--loam-color-line);
+      border-radius: var(--loam-radius-md);
+      margin-block-start: var(--loam-space-l);
+
+      .bar {
+        align-items: center;
+        border-block-end: 1px solid var(--loam-color-line);
+        color: var(--loam-color-fg-muted);
+        display: block flex;
+        font-size: var(--loam-text-xs);
+        gap: var(--loam-space-xs);
+        justify-content: space-between;
+        padding: var(--loam-space-3xs) var(--loam-space-xs);
+      }
 
       p {
         font-size: var(--loam-text-md);
         margin: 0;
+        padding: var(--loam-space-s);
       }
     }
   }
@@ -63,9 +75,11 @@
     }
   }
 
-  @scope (.site-AgentShowcase .copy) {
+  @scope (.site-AgentShowcase-panel) to (:scope > *) {
     :scope {
-      justify-self: end;
+      max-block-size: min(36rem, 70svb);
+      overflow: auto;
+      scrollbar-gutter: stable;
     }
   }
 }

@@ -133,16 +133,28 @@ context adaptation, field wiring).
 
 ## Overridable by design
 
-The layer keeps every rule beatable: anything you write outside a layer wins, and the
-components layer wins for a component's own parts. There is no specificity to fight:
-the element styles are a floor, not a ceiling:
+Build on the defaults with scoped rules in `loamui.components`. Load the core stylesheet
+first, as shown in [Installation](/docs/installation), so that layer follows
+`loamui.elements`. Your composition adds its own treatment without repeating the
+element's typography, spacing or other defaults:
 
 ```css
-/* Your unlayered CSS always beats the elements layer */
-blockquote {
-  border-inline-start-color: var(--loam-color-primary);
+@scope (.editorial) to ([class*="loam-"]) {
+  @layer loamui.components {
+    blockquote {
+      border-inline-start-color: var(--loam-color-primary);
+    }
+  }
 }
 ```
+
+Here, `.editorial` is the region you own. The scope limit keeps this selector out of
+embedded LoamUI components; inherited values such as tokens still pass through.
+
+Unlayered normal declarations take precedence over layered normal declarations. That is
+how the cascade works, but it is not the recommended way to extend LoamUI: an unlayered
+global rule can also override component styles. Use the established layers and scope
+the rule to its owner.
 
 <div className="site-callout">
   Element styles are a primitive precisely because downstream work builds on them: new components

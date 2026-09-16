@@ -155,14 +155,18 @@ npx skills add dangerfarms/loamui
 Or point an agent at [`https://loamui.com/llms.txt`](https://loamui.com/llms.txt):
 the single entry point for the environment workflow and documentation. Every
 docs page has a markdown twin at the same URL with `.md` appended. The skill
-bundles these references, including complete recipes, for offline use. Recipe
-cards also offer a **Copy prompt** action with the selected implementation
-and its relevant guidance.
-The [example recipes](https://loamui.com/recipes/) show how to build your own
-components (a hero, a pricing table, a carousel) from the three primitives,
-each opened up with the prompt that made it, and the package ships an
-`AGENTS.md`, a one-page summary of the conventions an agent needs when writing
-against it.
+bundles these references, including complete recipes, for offline use.
+
+Browse the [recipes](https://loamui.com/recipes/) for compositions such as heroes,
+article cards and carousels. Open a recipe to see its live preview, copy its React
+and CSS, or copy the short prompt in **Build with the LoamUI skill**. The prompt
+asks your agent to build that recipe for your application; the skill guides it
+through checking your project, completing agreed setup, adapting the reference
+and verifying the result. You can add your content or describe changes without
+repeating the implementation rules.
+
+The package also ships an `AGENTS.md`, a one-page summary of the conventions an
+agent needs when writing against it.
 
 ## Repository layout
 

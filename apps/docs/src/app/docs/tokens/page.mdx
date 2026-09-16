@@ -29,10 +29,16 @@ solid fills, focus rings) is _derived_ from it by formula, so there is nothing e
 sync:
 
 ```css
-:root {
-  --loam-color-primary: light-dark(oklch(0.62 0.2 275), oklch(0.72 0.17 275)); /* violet */
+@layer loamui.tokens {
+  :root {
+    --loam-color-primary: light-dark(oklch(0.62 0.2 275), oklch(0.72 0.17 275)); /* violet */
+  }
 }
 ```
+
+Load this theme stylesheet after the core stylesheet so its token declaration follows
+the default in the same layer. App-wide tokens belong on `:root`; a composition's
+layout and treatment belong in scoped `loamui.components` rules.
 
 The brand colour appears wherever the design says primary: focus rings, checked states, carets,
 and `primary` context regions. (Buttons are neutral by default; the demo below is
@@ -142,10 +148,12 @@ with everything on this page:
 </div>
 
 ```css
-/* the idiomatic form: a named region declares its meaning in
-   its own stylesheet (a style attribute works for one-offs) */
-.danger-zone {
-  --loam-context: danger;
+@scope (.danger-zone) to ([class*="loam-"]) {
+  @layer loamui.components {
+    :scope {
+      --loam-context: danger;
+    }
+  }
 }
 ```
 

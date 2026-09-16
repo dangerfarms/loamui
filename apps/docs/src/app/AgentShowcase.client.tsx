@@ -31,12 +31,14 @@ export function AgentShowcase({
         <div className="site-AgentAsk">
           <h3>Add the skill</h3>
           <CodeBlock code="npx skills add dangerfarms/loamui --skill loamui" language="bash" />
-          <p className="label">Then try a prompt:</p>
           <div className="promptBox">
+            <div className="bar">
+              <span>Then try a prompt</span>
+              <CopyButton value={prompt} aria-label="Copy the prompt">
+                Copy
+              </CopyButton>
+            </div>
             <p>{prompt}</p>
-            <CopyButton className="copy" value={prompt} aria-label="Copy the prompt">
-              Copy
-            </CopyButton>
           </div>
           <p>
             <SignpostLink render={<Link href="/docs/agent-workflow" />}>
@@ -58,13 +60,13 @@ export function AgentShowcase({
               <Tabs.Tab value="tsx">React</Tabs.Tab>
               <Tabs.Tab value="css">CSS</Tabs.Tab>
             </Tabs.List>
-            <Tabs.Panel value="result">
+            <Tabs.Panel value="result" className="site-AgentShowcase-panel">
               <div className="site-AgentShowcase-stage">{children}</div>
             </Tabs.Panel>
-            <Tabs.Panel value="tsx">
+            <Tabs.Panel value="tsx" className="site-AgentShowcase-panel">
               <CodeBlock code={tsx} language="tsx" />
             </Tabs.Panel>
-            <Tabs.Panel value="css">
+            <Tabs.Panel value="css" className="site-AgentShowcase-panel">
               <CodeBlock code={css} language="css" />
             </Tabs.Panel>
           </Tabs.Root>

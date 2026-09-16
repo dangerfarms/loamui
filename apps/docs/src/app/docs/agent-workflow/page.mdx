@@ -18,27 +18,31 @@ Run this from your application directory and select your coding agent when promp
 npx skills add dangerfarms/loamui --skill loamui
 ```
 
-## 2. Prepare your project
-
-> Use the LoamUI skill to set up this project for LoamUI development.
-
-Your agent checks the package, stylesheet and existing tools. It proposes missing setup before making shared changes, reuses your configuration, and runs the agreed checks. If the project is already ready, it moves on. You do not need to configure each tool by hand.
-
-## 3. Describe what you want to build
+## 2. Describe what you want to build
 
 > Use the LoamUI skill to build a profile form with name and email fields and a Save changes button.
+
+Your agent first checks the package, stylesheet and existing tools. If anything is missing, it proposes the setup needed for your request, reuses your configuration and helps complete the agreed changes before building. If the project is ready, it proceeds directly. You do not need a separate preparation prompt or to configure each tool by hand.
 
 Describe the content and behaviour you need. The skill supplies the implementation guidance: it reads the relevant recipes and component contracts, composes the primitives, and checks the result. For actions such as saving a profile, provide your application's endpoint or ask the agent to identify the integration it needs.
 
 You can also choose a [recipe](/recipes) and copy the short prompt at the top of its page. Add the content or behaviour you want to change; you do not need to list CSS techniques or accessibility rules in the prompt.
 
-## 4. Review the result
+## 3. Review the result
 
 Expect the component, its stylesheet, any application integration and a short account of what the agent checked. Ask for refinements in terms of the outcome: “Keep the action below the fields when the form appears in a narrow sidebar.”
 
 Review the interface in your application, including keyboard use, a narrow layout and both colour schemes. For a form, try errors and confirm submission reaches the real endpoint. The skill guides implementation and verification; it cannot certify an interface from its appearance alone.
 
 **Next: [Choose a recipe](/recipes).** The [recipe guide](/recipes/guide) explains the composition techniques in more detail.
+
+### Optional: prepare a project before building
+
+If you want to configure the project before choosing what to build, use:
+
+> Use the LoamUI skill to set up this project for LoamUI development.
+
+This runs the same setup assessment used by a build request. Your agent proposes any missing tools or shared configuration changes and runs the agreed checks.
 
 ## Using a chat tool
 

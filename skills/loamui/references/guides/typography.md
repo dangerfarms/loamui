@@ -12,11 +12,21 @@ Type is set by two primitives working together: the [tokens](/docs/tokens) suppl
 
 ## A fluid scale, tuned per container
 
-Every size is a `clamp()` that grows with its container, so the scale itself changes shape as space allows.
+Each type token uses `clamp()` and container-relative units to adjust within bounds. The scale itself changes shape as space allows.
 
 Narrow, the steps follow a 1.125 ratio (a "major second"): a gentle progression that keeps headings close to body copy where width is tight. Wide, the same steps open to 1.25 (a "major third"), giving headings more presence when there is room to spend.
 
-The driver is container width, not the viewport. So a heading in a sidebar and a heading in the main column each take the rhythm that suits their own measure, and both stay comfortable to read.
+To give a sidebar or main column its own scale, establish a measuring ancestor with
+`container-type: inline-size`. Font tokens resolved on descendants then respond to
+that container's inline size. Without an eligible container, `cqi` falls back to the
+small viewport's inline size.
+
+Headings resolve their font tokens through the element styles. Body text normally
+inherits an already computed font size, which does not recalculate merely because
+you introduce a new container. Resolve `font-size: var(--loam-text-md)` on a content
+element inside the measuring container to give its body text the local scale.
+The [Tokens guide](/docs/tokens) shows the complete scoped pattern
+for locally responsive type and spacing.
 
 </div>
 
@@ -32,18 +42,26 @@ The element styles also switch on the OpenType features that make text read well
 
 There is no `Heading` or `Text` component, because meaningful typography is domain-specific: a news site wants a headline, a byline and a lede; a documentation site wants a page title and a callout. Those names belong to your product, not to a general library. Build them from the two primitives, a semantic element for structure and a scoped rule for the treatment:
 
+Load the core stylesheet first, following [Installation](/docs/installation). These
+rules belong in `loamui.components`, above the element defaults. Each scope owns a
+single text element; a composition containing other components also needs a scope
+limit, as shown in [Building your own recipes](/recipes/guide).
+
 ```css
 @scope (h1.headline) {
-  :scope {
-    font-family: var(--loam-font-display);
-    font-variant-caps: small-caps;
+  @layer loamui.components {
+    :scope {
+      font-variant-caps: small-caps;
+    }
   }
 }
 
 @scope (p.byline) {
-  :scope {
-    color: var(--loam-color-fg-muted);
-    font-size: var(--loam-text-sm);
+  @layer loamui.components {
+    :scope {
+      color: var(--loam-color-fg-muted);
+      font-size: var(--loam-text-sm);
+    }
   }
 }
 ```

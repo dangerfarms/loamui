@@ -8,7 +8,7 @@ description: The paradigm shift under all three primitives: context decides appe
 
 # Contextualism
 
-In most component libraries you tell each component what to look like: `variant="outline"`, `size="lg"`, `color="danger"`. LoamUI inverts that. Everything it ships reads its _context_ (what the surrounding region means, how much space it has, what it contains) and adapts itself. Identity props are the last resort, not the default.
+In most component libraries you tell each component what to look like: `variant="outline"`, `size="lg"`, `color="danger"`. LoamUI puts those decisions in the surrounding region wherever possible. Its tokens, element styles and component CSS respond to _context_: what a region means, how much space is available and what the markup contains. Component references document the exceptions, including intrinsic sizing options.
 
 ## A paradigm shift
 
@@ -20,10 +20,11 @@ sitting beside the components as a feature of theirs.
 - **Tokens are contextual.** `--loam-color-primary` resolves to the colour supplied by its region. The type scale adapts to the available container space.
 - **Element styles are contextual, because they use those tokens.** A native control
   inside a LoamUI region takes the region's channel for its caret and its
-  `accent-color` without a class of its own, and the typographic rhythm answers the
-  width of the column it sits in.
-- **Components are contextual, which is why they have no props for it.** A Button inside
-  that region is already the right colour before its own stylesheet is consulted.
+  `accent-color` without a class of its own. Typography resolved inside a measuring
+  container responds to that container's width.
+- **Components respond to context through CSS.** Button reads the surrounding region's
+  meaning with style queries and derives its appearance from the corresponding colour
+  tokens. The application declares the meaning once; the library implements the response.
 
 A button doesn't know it's dangerous; the _delete-account panel_ is
 dangerous, and every control inside it should say so. A button doesn't know it should
@@ -35,7 +36,7 @@ Only a handful of contexts cover almost everything:
 
 - **What the region means.** `--loam-context`: `primary` (the action of the area), `danger`
   (destructive territory), and the statuses `success`, `warning` and `info`.
-- **The size of the space.** Container queries and fluid tokens in `cqi` (container query inline units, 1% of the container's width); no size props.
+- **The size of the space.** Container queries and fluid tokens in `cqi` (container query inline units, 1% of the measuring container's width) provide responsive sizing. Intrinsic sizing exceptions are described below.
 - **What the component contains.** Detection with `:has()`: an icon child, a rendered error
   message.
 - **Colour scheme.** `color-scheme` + `light-dark()` tokens; an on-dark region needs no prop.
@@ -53,8 +54,12 @@ whatever it styles: for a single component that means a one-element wrapper arou
 style on the instance itself. A component's own children are fine: a Button inside a warning
 Alert is a descendant of the Alert root, so the root's declaration reaches it.
 
+The excerpts targeting `loam-*` elements on this page explain the library's internals;
+they are not application overrides. This excerpt shows how core reads the context.
+The application-owned region declaration follows it.
+
 ```css
-/* the library reads context like this */
+/* Excerpt from core's scoped component rules. */
 @container (style(--loam-context: danger)) {
   .loam-Button {
     --_color: var(--loam-color-danger);
@@ -64,14 +69,22 @@ Alert is a descendant of the Alert root, so the root's declaration reaches it.
 
 A named, recurring region declares its context where the region is defined: in its own
 stylesheet. This is the idiomatic form: the region already has a class and a CSS file, and
-the declaration is a semantic fact about it, so it lives with the rest of its styling:
+the declaration is a semantic fact about it, so it lives with the rest of its styling.
+Load the core stylesheet first, following [Installation](/docs/installation), then put
+the region's rules in `loamui.components`:
 
 ```css
-/* danger-zone.css: the region declares what it means */
-.danger-zone {
-  --loam-context: danger;
+@scope (.danger-zone) to ([class*="loam-"]) {
+  @layer loamui.components {
+    :scope {
+      --loam-context: danger;
+    }
+  }
 }
 ```
+
+The scope limit prevents selectors from reaching into embedded components. It does not
+block inheritance: those components still receive the region's context and tokens.
 
 ```tsx
 <section className="danger-zone">
@@ -94,13 +107,15 @@ consequence still lives in the stylesheets:
 
 </div>
 
-Notice the checkbox: `--loam-context` is not a button feature. The region remaps
-the semantic colour tokens for _every_ LoamUI component inside: checked states, focus
-rings, carets. No component contains context code; the cascade does the
-work.
+Notice the checkbox: `--loam-context` is not a button feature. Core's token rules
+remap semantic colours on descendants of the region. Native elements and components
+that consume those tokens use them for checked states, focus rings and carets.
+Some components also read context directly: Button's CSS selects its colour channel
+with style queries. Application code does not need to repeat the region's status
+on each control.
 
-The remap reaches LoamUI elements and their descendants; it does not restyle the region's
-own element. A page's own element that declares a context paints itself with the status
+The remap reaches native elements and application compositions as well as LoamUI
+components; it does not restyle the region's own element. A page's own element that declares a context paints itself with the status
 tokens directly (`border-color: var(--loam-color-danger)` in its own rule), and the
 components inside it answer the context. Nor can a region answer its own style query: to
 mark the element itself, declare the context on its parent. One more thing to expect: `primary`
@@ -173,8 +188,14 @@ export function BrandButton(props: ButtonProps) {
 
 ## The size of the space
 
-The size tokens are container-relative, so element styles and components respond to the
-space they are given. Badge, Loader, Progress and Meter expose intrinsic size options;
+For local sizing, establish a measuring ancestor with `container-type: inline-size`.
+The fluid type and spacing tokens use its inline size when resolved on descendants;
+without an eligible container, their `cqi` units fall back to the small viewport's
+inline size. An inherited, already computed font size does not recalculate when a new
+container is introduced. Resolve the font token on a content element inside it, as
+shown in [Fluid type and spacing](/docs/tokens).
+
+Badge, Loader, Progress and Meter expose intrinsic size options;
 Input also preserves the native HTML `size` attribute. Their component references describe
 these exceptions.
 Padding and font are fluid container-relative tokens, and in a
