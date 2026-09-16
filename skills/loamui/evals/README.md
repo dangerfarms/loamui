@@ -43,8 +43,8 @@ project and proposes missing quality tools before building. Repeat with Sign in
 with errors to exercise Field wiring,
 native validation, value preservation and application submission boundaries.
 
-`pnpm check:prompts` checks the short prompts, bundled recipe sources against the real
-recipe files, and links to component references. Run the docs export first.
+`pnpm check:prompts` checks the short prompts, bundled recipe sources against the
+real recipe files, and links to component references. Run the docs export first.
 This is an artifact integrity check, not an LLM generation trial. Record actual
 model runs separately; do not report these scenarios as passed merely because
 the generated files or unit tests pass.
