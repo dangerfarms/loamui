@@ -101,8 +101,8 @@ export default async function ExamplePage({
           </h2>
           <p className="sectionNote">
             Copy <code>Example.tsx</code> and <code>example.css</code> side by side into a React 19
-            project. Install <code>@loamui/core</code> and load <code>@loamui/core/styles.css</code>{" "}
-            once at your application root, as shown in the{" "}
+            project. Install <code>@loamui/core</code> and load the core stylesheet at your
+            application root, as shown in the{" "}
             <Link href="/docs/installation">installation guide</Link>. The component imports its own
             stylesheet.
           </p>

@@ -18,7 +18,7 @@ A recipe in **Heroes**: a component and a stylesheet built from `@loamui/core`, 
 
 ## Using this recipe
 
-Copy both files side by side into your React framework project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+Copy both files side by side into your React framework project. Install `@loamui/core` and load the core stylesheet at the application root, following the framework-specific installation guide.
 
 Use this h1 as the page’s main heading and replace the sample photograph and routes. The image is decorative: keep meaningful information in the text and its alt empty. Native srcSet supplies three renditions; sizes="100vw" is a conservative upper bound for a portable hero, so tailor that hint to your page’s layout and image pipeline. fetchPriority="high" is intended for the page’s critical above-the-fold image, which should not be lazy-loaded. The content reserves the section’s height; an absolutely positioned photograph does not reserve space through its dimensions. Recheck overlay contrast if you change the tokens or scrim. This synchronous component needs no client directive.
 

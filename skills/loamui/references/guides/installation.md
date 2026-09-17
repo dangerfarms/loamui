@@ -8,7 +8,7 @@ description: Set up LoamUI in Next.js or TanStack Start, check your first interf
 
 # Installation
 
-Create a framework application, install `@loamui/core`, and import its stylesheet. One import loads tokens, element styles and component styles; no provider is needed. Then add the skill and describe what you want to build.
+Create a framework application, install `@loamui/core`, and load its stylesheet. The stylesheet supplies tokens, element styles and component styles; no provider is needed. Then add the skill and describe what you want to build.
 
 > **Package availability:** the public npm release of `@loamui/core` is planned but not yet available. The package commands in these guides apply once it is published. Installing the agent skill does not install the library.
 
@@ -22,6 +22,12 @@ Use a working framework application before adding LoamUI. These guides cover a f
 The beta setup uses LoamUI as the styling foundation, without Tailwind or another global reset. [React recommends starting new applications with a framework](https://react.dev/learn/creating-a-react-app).
 
 **Already have a project?** Check its framework, React version, CSS imports and resets first. Tailwind's presence in a manifest alone does not prove a conflict: inspect Preflight, utility classes and global rules that affect the interface. Follow the [existing-project workflow](/docs/agent-workflow#establish-the-environment-first) before changing shared styles or dependencies.
+
+## Stylesheet delivery during the beta
+
+The current core stylesheet uses modern CSS that the tested Next.js and TanStack Start bundlers cannot parse. For now, both framework guides load `https://loamui.com/loamui-core.css` through a stylesheet link, so the browser receives the CSS unchanged. Do not also import `@loamui/core/styles.css` through JavaScript or CSS.
+
+This hosted URL follows the documentation deployment, not your installed package version. It requires network access and must be allowed by your site's Content Security Policy. Use it for the beta trial; a production integration should serve a version-matched copy of the installed stylesheet from its own public assets, keeping the link and layer ordering below. Do not silently switch delivery methods or alter core CSS to get a build to pass.
 
 ## 2. Check the foundation
 

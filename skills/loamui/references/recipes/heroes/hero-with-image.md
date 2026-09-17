@@ -18,7 +18,7 @@ A recipe in **Heroes**: a component and a stylesheet built from `@loamui/core`, 
 
 ## Using this recipe
 
-Copy both files side by side into your React framework project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+Copy both files side by side into your React framework project. Install `@loamui/core` and load the core stylesheet at the application root, following the framework-specific installation guide.
 
 Use the h1 for the page's main heading; choose the appropriate heading level if adapting this into a subsection. Replace the sample photograph, alt text and routes. Keep the badge label brief and put longer seasonal information in the wrapping text beside it. Its dimensions reserve space and fetchPriority="high" suits an above-the-fold hero image: avoid lazy-loading the page's likely largest-contentful-paint image. The sample srcSet offers three renditions; sizes="100vw" is a conservative upper bound because this portable recipe cannot know its host width. Replace it with an accurate sizes hint for your page and use your own image pipeline. Reserve high priority for the page's critical image. This synchronous component can render on the server; useId does not require a client directive.
 

@@ -40,10 +40,10 @@ export const PACKAGE_COMMANDS = {
     bun: "bun run build\nbun run preview",
   },
   skill: {
-    pnpm: "pnpm dlx skills add dangerfarms/loamui --skill loamui",
-    npm: "npx skills add dangerfarms/loamui --skill loamui",
-    yarn: "yarn dlx skills add dangerfarms/loamui --skill loamui",
-    bun: "bunx skills add dangerfarms/loamui --skill loamui",
+    pnpm: "pnpm dlx skills@latest add dangerfarms/loamui --skill loamui",
+    npm: "npx --yes skills@latest add dangerfarms/loamui --skill loamui",
+    yarn: "yarn dlx skills@latest add dangerfarms/loamui --skill loamui",
+    bun: "bunx skills@latest add dangerfarms/loamui --skill loamui",
   },
   stylelint: {
     pnpm: "pnpm add -D stylelint stylelint-config-standard stylelint-config-modern stylelint-config-alphabetical-order stylelint-use-nesting",
@@ -54,3 +54,18 @@ export const PACKAGE_COMMANDS = {
 } satisfies Record<string, Commands>;
 
 export type PackageCommandName = keyof typeof PACKAGE_COMMANDS;
+
+export const SKILL_AGENTS = [
+  { value: "claude-code", label: "Claude Code" },
+  { value: "codex", label: "Codex" },
+] as const;
+export type SkillAgent = (typeof SKILL_AGENTS)[number]["value"];
+
+export function packageCommand(
+  name: PackageCommandName,
+  manager: PackageManager,
+  agent: SkillAgent,
+) {
+  const command = PACKAGE_COMMANDS[name][manager];
+  return name === "skill" ? `${command} --agent ${agent} --yes` : command;
+}

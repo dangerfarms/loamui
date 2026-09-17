@@ -10,19 +10,32 @@ markdown twin at the same URL with `.md` appended, and
 Before changing dependencies or shared styles, inspect the consuming project's
 instructions, installed package version, CSS delivery and layer order. Follow
 <https://loamui.com/docs/agent-workflow.md>; propose concrete infrastructure
-changes for approval unless already authorized. In chat-only environments,
+changes for approval unless already authorized. Complete additive project-local
+setup within a build request's authorization before composing; ask about
+conflicts or changes outside that scope.
+
+In chat-only environments,
 use the real package or provide source with explicit runtime verification gaps.
 Never emulate core exports or claim unrun checks.
+
 For project setup and missing quality tools, follow
 <https://loamui.com/docs/agent-workflow.md#project-setup>. Reuse existing
 tooling and the skill's maintained CSS configuration; verify the commands
-after setup.
+after setup. Require project-owned Stylelint configuration, composition checker
+files, dependencies and runnable scripts; scratchpad checks are not setup.
+
+Install missing Modern CSS and Google Chrome Modern Web Guidance skills for the
+active agent using the workflow's explicit targets. Verify discovery and read
+the guidance before writing UI; report setup, guidance, commands and browser
+verification separately.
 
 Repository setup requires a React framework application with ESM support.
 Follow <https://loamui.com/docs/installation.md> for Next.js App Router or
-TanStack Start. Import `@loamui/core/styles.css` once at the application root,
-before application and recipe styles, to load all three primitives. Inspect
-existing resets and Tailwind Preflight before changing them.
+TanStack Start. For the current beta, link `https://loamui.com/loamui-core.css`
+from the root document; do not bundle `@loamui/core/styles.css` in these frameworks.
+Establish the layer order below at the start of the application stylesheet.
+The hosted URL is unversioned; follow the installation guide's delivery limits.
+Inspect existing resets and Tailwind Preflight before changing them.
 
 Installing the skill does not install the package. An authorized setup request
 can include missing dependencies. No provider is needed.

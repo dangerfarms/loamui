@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      loamui-typescript:
+        specifier: npm:typescript@5.9.2
+        version: typescript@5.9.2
       oxfmt:
         specifier: 0.63.0
         version: 0.63.0

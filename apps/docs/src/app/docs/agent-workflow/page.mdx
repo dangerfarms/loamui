@@ -8,19 +8,21 @@ export const metadata = {
 
 The package supplies the tokens, element styles and React components. The skill helps your agent check your project, compose those primitives and verify what it builds.
 
-**Before you start:** create your framework application, install LoamUI and import its stylesheet using [Installation](/docs/installation). Installing the skill does not install LoamUI. Your agent can help complete missing setup when you ask it to.
+**Before you start:** create your framework application, install LoamUI and load its stylesheet using [Installation](/docs/installation). Installing the skill does not install LoamUI. Build requests also check and complete missing project setup.
 
 ## 1. Add the skill
 
-Run this from your application directory and select your coding agent when prompted:
+Choose your coding agent below, then run the command from your application directory. The command installs only the LoamUI skill for that agent:
 
 <PackageCommands name="skill" />
+
+Open a new agent session in the project and confirm `loamui` appears among its available skills before using a recipe prompt. For another agent, use its explicit target from the [installer's supported agents](https://github.com/vercel-labs/skills#supported-agents).
 
 ## 2. Describe what you want to build
 
 <PromptBlock prompt="Use the LoamUI skill to build a profile form with name and email fields and a Save changes button." />
 
-Your agent first checks the package, stylesheet and existing tools. If anything is missing, it proposes the setup needed for your request, reuses your configuration and helps complete the agreed changes before building. If the project is ready, it proceeds directly. You do not need a separate preparation prompt or to configure each tool by hand.
+Your agent first checks the package, stylesheet and existing tools. A build request includes missing project-local quality tools and companion skills. Your agent explains and completes additive setup within your authorization before building, reusing existing configuration. It asks before replacing conflicting infrastructure or making changes outside that scope. If the project is ready, it proceeds directly. You do not need a separate preparation prompt or to configure each tool by hand.
 
 Describe the content and behaviour you need. The skill supplies the implementation guidance: it reads the relevant recipes and component contracts, composes the primitives, and checks the result. For actions such as saving a profile, provide your application's endpoint or ask the agent to identify the integration it needs.
 
@@ -40,7 +42,7 @@ If you want to configure the project before choosing what to build, use:
 
 <PromptBlock prompt="Use the LoamUI skill to set up this project for LoamUI development." />
 
-This runs the same setup assessment used by a build request. Your agent proposes any missing tools or shared configuration changes and runs the agreed checks.
+This runs the same setup assessment used by a build request. Your agent completes missing additive setup within your authorization, asks about conflicts and runs the project’s checks.
 
 ## Using a chat tool
 
@@ -53,13 +55,15 @@ If your tool cannot install a skill, provide [llms.txt](/llms.txt) and a recipe 
 
 The following reference guides the agent through setup. Setup is complete when the agreed tools run in your application, not just when their configuration files exist.
 
-### Inspect and propose
+### Inspect and complete setup
 
-Read the project instructions, package manifest, lockfile, framework entry and styles. Check the installed LoamUI exports, stylesheet import and layer order. Identify existing formatting, type checking, CSS linting, interaction tests and CI commands. Check which agent is running and whether it supports project-local skills and browser tools. Confirm that LoamUI, Modern CSS and Google Chrome’s Modern Web Guidance skills are available to that agent; a folder on disk alone does not establish availability. Check the Stylelint configuration and composition checks as well as their installed dependencies.
+Read the project instructions, package manifest, lockfile, framework entry and styles. Check the installed LoamUI exports, stylesheet delivery and layer order. Identify existing formatting, type checking, CSS linting, interaction tests and CI commands. Check which agent is running and whether it supports project-local skills and browser tools. Confirm that LoamUI, Modern CSS and Google Chrome’s Modern Web Guidance skills are available to that agent; a folder on disk alone does not establish availability. Check the Stylelint configuration and composition checks as well as their installed dependencies.
 
 Keep the user's framework, package manager and browser support policy. Explain specific conflicts with resets or global rules; do not silently remove Tailwind or rewrite unrelated styles. If the framework or library is missing, follow Installation before composing UI.
 
-Propose the missing pieces with their packages, files and commands. Distinguish necessary setup from optional additions. Apply an approved proposal, or proceed within setup that the user has already authorized. Do not ask again for the same approval. A request to explain changes before making them still requires that explanation.
+Treat missing package/CSS integration, Stylelint, composition checks and companion skills as part of a repository build request. Explain the packages, files and commands, then complete additive project-local setup within the user's authorization. Ask before replacing conflicting infrastructure, removing styling dependencies, changing framework/browser policy or touching global configuration or CI. Respect explicit limits on installation. Resolve necessary approval before writing UI; do not defer required setup to an optional offer after implementation.
+
+Before composing, verify dependencies in the application's manifest and lockfile, project-owned configuration and checker files, and scripts covering its authored paths. Checks run from a scratchpad, a temporary directory or a one-off runner do not establish persistent setup. If setup is blocked or declined, identify the gap and agree the reduced scope before continuing; do not claim the full workflow succeeded.
 
 ### Configure CSS checks
 
@@ -103,8 +107,10 @@ Stylelint covers CSS syntax and conventions. The following checks share their ru
 Copy all three files into the same project-owned directory, such as `scripts/loamui/`. Use the project's package manager to add their dependencies if missing:
 
 ```bash
-npm install --save-dev postcss postcss-value-parser typescript
+npm install --save-dev postcss postcss-value-parser loamui-typescript@npm:typescript@^5.9.2
 ```
+
+Use the equivalent add-dev command for the project's package manager. `loamui-typescript` is an npm alias for the compiler API used by the checker. It is separate from the application's TypeScript dependency: TypeScript 7 does not expose that API at its package root. Keep the application's compiler version unchanged.
 
 Add a command using the actual authored source directories. For a project with `src/`:
 
@@ -126,18 +132,31 @@ Keep these files together when updating them from the skill and preserve project
 
 ### Add the companion skills
 
-The LoamUI skill carries the essential composition rules and worked examples. Users do not need to invoke companion skills separately. When the coding agent supports skills, offer these project-local additions using the supported installer and the active agent's target:
+The LoamUI skill carries the composition contract; Modern CSS and Google Chrome Modern Web Guidance supply the companion guidance used by this repository. Install missing companions as project-local setup for the active agent. Use these exact repositories and skill names with the [skills installer](https://github.com/vercel-labs/skills), not similarly named alternatives.
+
+For **Claude Code**, run:
 
 ```bash
-npx skills add moderncss/skills --skill modern-css
-npx skills add GoogleChrome/modern-web-guidance --skill modern-web-guidance
+npx --yes skills@latest add moderncss/skills --skill modern-css --agent claude-code --yes
+npx --yes skills@latest add GoogleChrome/modern-web-guidance --skill modern-web-guidance --agent claude-code --yes
 ```
 
-Check for an existing installation first. Do not install into every agent or the user's global configuration. Preserve the skill lockfile. Read the installed skill instructions after installation; some hosts need a new session to discover them. Verify availability instead of assuming activation.
+For **Codex**, run:
+
+```bash
+npx --yes skills@latest add moderncss/skills --skill modern-css --agent codex --yes
+npx --yes skills@latest add GoogleChrome/modern-web-guidance --skill modern-web-guidance --agent codex --yes
+```
+
+With pnpm, use `pnpm dlx` in place of `npx --yes`; with Yarn, use `yarn dlx`; with Bun, use `bunx`. Keep the repository, skill name, explicit agent target and `--yes`. For another host, look up its supported target; do not guess or use `--all` or `--global`. Installer flags remove interactive prompts; they do not override the user's permissions.
+
+Check existing skills first and preserve customizations and the skill lockfile. Reuse a companion already available and readable to the active agent; report whether it is project-local or global. Do not reinstall the LoamUI skill merely because you are using it.
+
+Verify the installer result and the host-specific skill entry. For Claude Code, each `.claude/skills/<name>/SKILL.md` must resolve and be readable, even if the installer stores the canonical copy in `.agents/skills/`. Check the host's available-skills list as well; a successful download is not proof of discovery. If a session refresh is required, report “installed; discovery pending”, explain how to restart in the project, and read the installed instructions explicitly for the current task if the host permits it. Do not claim automatic discovery until verified.
 
 Before composing or changing UI, read the relevant Modern CSS rules. Search and retrieve the relevant Google Chrome guidance for the task, following that skill's instructions. Reconcile examples with LoamUI's component contracts and the project's browser policy. Do not copy a generic example's colours, reset or controls over LoamUI's primitives.
 
-If companion installation is unavailable or declined, use LoamUI's bundled composition rules and relevant official platform documentation. State which guidance was available. If an API or browser behaviour cannot be verified, identify the missing evidence instead of inventing it. These skills guide decisions; they do not replace linting or browser checks.
+If companion installation is unavailable or declined, report incomplete setup and agree the reduced scope. For that limited deliverable, use LoamUI's bundled composition rules and relevant official platform documentation. State which guidance was available. If an API or browser behaviour cannot be verified, identify the missing evidence instead of inventing it. These skills guide decisions; they do not replace linting or browser checks.
 
 ### Run and record the checks
 
@@ -151,7 +170,14 @@ The supplied checks do not establish complete scope ownership, token usage, acce
 
 Add a short LoamUI section to the project's existing agent instructions when that is part of the agreed setup. Record the stylesheet entry, composition directories, browser policy, skill/reference locations and commands that actually ran. Preserve unrelated instructions; use the host's existing instruction file rather than creating competing copies.
 
-Report what was configured, what passed and what remains unverified. If CI changes were included in the agreed setup, connect the existing checks there. Otherwise, report that checks currently run locally. Subsequent UI tasks should read the relevant recipe and component contracts, implement, verify and repair without repeating setup unnecessarily.
+Report evidence in four short lines:
+
+- **Project setup:** package/CSS delivery, project-owned config and script paths; missing or declined steps.
+- **Guidance:** each companion's installation location, discovery status and the task-specific guidance actually read.
+- **Checks:** exact project commands and pass/fail results, including pre-existing failures separately.
+- **Browser:** rendered appearance and interactions checked; anything not verified. A build or HTML inspection is not browser verification.
+
+Temporary checks can be reported as limited evidence, never as completed project setup. If CI changes were included in the agreed setup, connect the existing checks there. Otherwise, report that checks currently run locally. Subsequent UI tasks should read the relevant recipe and component contracts, implement, verify and repair without repeating setup unnecessarily.
 
 </details>
 
@@ -166,7 +192,9 @@ The following guidance defines the environment checks, composition rules and ver
 
 ### Establish the environment first
 
-Every recipe request starts with the environment checks below, even when the prompt only names the recipe. For missing quality tools, follow [Set up your project](/docs/agent-workflow#project-setup). It supplies the maintained CSS configuration and companion-skill workflow. Reuse existing tools; do not install the repository’s entire development stack.
+Every recipe request starts with the environment checks below, even when the prompt only names the recipe. Complete missing additive project-local setup within the user’s authorization before writing UI; resolve conflicts or required approval first. For quality tools and companion installation, follow [Set up your project](/docs/agent-workflow#project-setup). It supplies the maintained CSS configuration and companion-skill workflow. Reuse existing tools; do not install the repository’s entire development stack.
+
+Readiness means the project owns its Stylelint configuration, composition checker, dependencies and runnable scripts, and the active agent can read Modern CSS and Google Chrome Modern Web Guidance. Verify host discovery separately from files on disk. Install missing companions using the exact agent-targeted commands in Project setup, then read the relevant guidance before composing. Temporary or scratchpad checks do not complete project setup. Report missing or declined steps and agree reduced scope if the full workflow cannot run.
 
 Inspect what is available before changing anything. In a repository, read its instructions, package manifest, lockfile, app entry, stylesheet entry and relevant existing components. Check the installed `@loamui/core` version and its public exports/types. Use the existing package manager. Do not assume that the documentation and installed package are the same version.
 
@@ -182,9 +210,9 @@ The layer order must be established before any recipe or library style registers
 @layer loamui.tokens, loamui.elements, loamui.components;
 ```
 
-The core stylesheet includes this declaration; load it before application and recipe styles as shown in the installation guide. If a host loads recipe styles earlier, establish this order in its earliest stylesheet. A later declaration cannot reorder already established layers. If a recipe first creates `loamui.components`, subsequently loading core can put `loamui.elements` above it: default image sizing then defeats the recipe's full-height image. Check direct loads and client navigation, including lazy stylesheet loading.
+The core stylesheet includes this declaration, but the current linked-stylesheet workaround also requires it at the start of the application stylesheet: frameworks can emit bundled recipe CSS before the linked core CSS. Follow the framework installation guide and verify the emitted order. A later declaration cannot reorder already established layers. If a recipe first creates `loamui.components`, subsequently loading core can put `loamui.elements` above it: default image sizing then defeats the recipe's full-height image. Check direct loads and client navigation, including lazy stylesheet loading.
 
-Look for existing resets, unlayered element rules, theme declarations and browser targets that affect the new UI. Assess the integration region; do not require an unrelated application-wide migration. State the specific conflict and affected files. Before installing packages or changing shared infrastructure, present the minimal proposed changes and obtain approval unless that setup has already been authorized. Continue independent inspection and prepare a concrete proposal while approval is pending. Do not treat silence as approval.
+Look for existing resets, unlayered element rules, theme declarations and browser targets that affect the new UI. Assess the integration region; do not require an unrelated application-wide migration. State the specific conflict and affected files. Apply the setup and approval boundaries in Project setup. Ask about unresolved conflicts before composing, and do not treat silence as approval.
 
 A useful setup report states: installed package/version; how styles load; layer order; relevant conflicts; available build/browser checks; and any proposed changes. If the consumer has no formatter, CSS lint or browser checks, propose the smallest suitable setup and identify which checks need approval or additional tooling. If setup is already correct, proceed without another approval round.
 
@@ -219,7 +247,7 @@ Preserve native labels, keyboard behaviour, focus, readable contrast and user pr
 
 ### Read and adapt a reference
 
-Read the [recipe guide](/recipes/guide), the selected recipe's complete TSX and CSS, and the reference for each core component used. Skill users can read these offline in `references/`. Each recipe page shows a short prompt that names the LoamUI skill and recipe. Resolve the name through the bundled reference index; do not ask the user to restate the implementation rules or supply a combined reference document. Run the environment checks first, propose any missing shared setup, then adapt the source and verify the result. An existing setup needs inspection, not another installation.
+Read the [recipe guide](/recipes/guide), the selected recipe's complete TSX and CSS, and the reference for each core component used. Skill users can read these offline in `references/`. Each recipe page shows a short prompt that names the LoamUI skill and recipe. Resolve the name through the bundled reference index; do not ask the user to restate the implementation rules or supply a combined reference document. Run the environment checks and complete authorized setup first, then adapt the source and verify the result. An existing setup needs inspection, not another installation.
 
 Use the published recipes as worked references for this contract. Publication and design notes are not certification: verify every adaptation in its consuming environment.
 
