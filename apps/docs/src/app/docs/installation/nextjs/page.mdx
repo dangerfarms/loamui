@@ -13,21 +13,17 @@ Use Next.js App Router. Follow [Next.js’s current system requirements](https:/
 
 For a new project, create an empty application without Tailwind:
 
-```bash
-npx create-next-app@latest my-app \
-  --ts --app --empty --no-tailwind --no-src-dir --use-npm --yes
-cd my-app
-```
+<PackageCommands name="next-create" />
 
 This creates an empty application without Tailwind or a UI kit.
 
-Already have an application? Keep its routes and configuration. Check the [existing-project workflow](/docs/agent-workflow#establish-the-environment-first) before changing its styling foundation. The paths below use `app/`; use `src/app/` instead if your project has a `src` directory.
+Already have an application? Keep its routes and configuration. Check the [existing-project workflow](/docs/agent-workflow#establish-the-environment-first) before changing its styling foundation.
+
+The paths below use `app/`; use `src/app/` instead if your project has a `src` directory.
 
 Install the package when the [public npm release is available](/docs/installation):
 
-```bash
-npm install @loamui/core
-```
+<PackageCommands name="install" />
 
 ## Import the styles
 
@@ -46,15 +42,10 @@ For a fresh application, clear the starter rules from `app/globals.css` and use 
 
 Copy the [foundation example](/docs/installation#2-check-the-foundation) into `app/page.tsx` and put its CSS alongside it. Compound exports such as `Field.Root` require a client boundary because the package exports them from a client bundle. Keep `"use client"` on that composition; the root layout stays a server component.
 
-```bash
-npm run dev
-```
+<PackageCommands name="dev" />
 
 Check the interface, then stop that server and run:
 
-```bash
-npm run build
-npm start
-```
+<PackageCommands name="next-build" />
 
 Next: [build with the skill](/docs/agent-workflow).

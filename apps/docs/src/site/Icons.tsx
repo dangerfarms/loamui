@@ -77,10 +77,41 @@ export function CheckIcon(p: SVGProps<SVGSVGElement>) {
   );
 }
 
+// Tabler Icons: https://tabler.io/icons/icon/copy (MIT; see tabler-icons.LICENSE).
+export function CopyIcon(p: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} aria-hidden="true" {...p}>
+      <path d="M7 9.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667l0 -8.666" />
+      <path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" />
+    </svg>
+  );
+}
+
 export function BoltIcon(p: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base} {...p}>
       <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
+    </svg>
+  );
+}
+
+// Tabler Icons (MIT; see tabler-icons.LICENSE).
+export function TerminalIcon(p: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} aria-hidden="true" {...p}>
+      <path d="M8 9l3 3l-3 3" />
+      <path d="M13 15l3 0" />
+      <path d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -12" />
+    </svg>
+  );
+}
+
+export function MessageIcon(p: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} aria-hidden="true" {...p}>
+      <path d="M8 9h8" />
+      <path d="M8 13h6" />
+      <path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12" />
     </svg>
   );
 }

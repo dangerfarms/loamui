@@ -1,7 +1,8 @@
 "use client";
 
-import { CopyButton, Tabs } from "@loamui/core";
+import { Tabs } from "@loamui/core";
 import { CodeBlock } from "./CodeBlock";
+import { CopyAction } from "./CopyPanel";
 import type { ExampleSource } from "@/examples/types";
 import "./examples-code.css";
 
@@ -23,13 +24,7 @@ export function ExampleCode({ source }: { source: ExampleSource }) {
           <Tabs.Tab value="tsx">Example.tsx</Tabs.Tab>
           <Tabs.Tab value="css">example.css</Tabs.Tab>
         </Tabs.List>
-        <CopyButton
-          className="copyBoth"
-          value={fencedPair(source)}
-          labels={{ copied: "Copied both" }}
-        >
-          Copy both
-        </CopyButton>
+        <CopyAction value={fencedPair(source)} label="Copy both files" />
       </div>
       <Tabs.Panel value="tsx" className="panel">
         <CodeBlock code={source.tsx} language="tsx" className="code" />

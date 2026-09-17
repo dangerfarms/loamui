@@ -1,0 +1,8 @@
+@layer loamui.components {
+  @scope (.site-PackageCommands) to ([class*="loam-"], [class*="site-"]) {
+    :scope {
+      margin-block: var(--loam-space-s);
+      min-inline-size: 0;
+    }
+  }
+}

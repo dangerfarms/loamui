@@ -14,13 +14,11 @@ The package supplies the tokens, element styles and React components. The skill 
 
 Run this from your application directory and select your coding agent when prompted:
 
-```bash
-npx skills add dangerfarms/loamui --skill loamui
-```
+<PackageCommands name="skill" />
 
 ## 2. Describe what you want to build
 
-> Use the LoamUI skill to build a profile form with name and email fields and a Save changes button.
+<PromptBlock prompt="Use the LoamUI skill to build a profile form with name and email fields and a Save changes button." />
 
 Your agent first checks the package, stylesheet and existing tools. If anything is missing, it proposes the setup needed for your request, reuses your configuration and helps complete the agreed changes before building. If the project is ready, it proceeds directly. You do not need a separate preparation prompt or to configure each tool by hand.
 
@@ -40,7 +38,7 @@ Review the interface in your application, including keyboard use, a narrow layou
 
 If you want to configure the project before choosing what to build, use:
 
-> Use the LoamUI skill to set up this project for LoamUI development.
+<PromptBlock prompt="Use the LoamUI skill to set up this project for LoamUI development." />
 
 This runs the same setup assessment used by a build request. Your agent proposes any missing tools or shared configuration changes and runs the agreed checks.
 
@@ -72,11 +70,9 @@ LoamUI maintains these Stylelint files, bundled under `assets/` in the skill and
 
 The shared rules are also used by this repository. They check modern colour syntax, logical properties, nesting, display notation, naming, disallowed viewport units and `!important`. The consumer configuration reads custom properties from the installed `@loamui/core/styles.css`, so it can flag unknown token names without a copy of the library's source tree.
 
-For a project without Stylelint, install compatible versions of its development dependencies with the project's package manager. For npm:
+For a project without Stylelint, install compatible versions of its development dependencies with the project's package manager:
 
-```bash
-npm install --save-dev stylelint stylelint-config-standard stylelint-config-modern stylelint-config-alphabetical-order stylelint-use-nesting
-```
+<PackageCommands name="stylelint" />
 
 Copy both files beside the application package manifest, keeping their names and relative import. Do not import them from a temporary skill installation path. The configuration resolves LoamUI from the consuming application. For a workspace, put it in the package that depends on LoamUI and run the check there.
 

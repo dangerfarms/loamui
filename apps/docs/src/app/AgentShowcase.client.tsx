@@ -2,8 +2,10 @@
 
 import { type ReactNode } from "react";
 import Link from "next/link";
-import { Card, CopyButton, SignpostLink, Tabs } from "@loamui/core";
+import { Card, SignpostLink, Tabs } from "@loamui/core";
 import { CodeBlock } from "@/renderer/CodeBlock";
+import { PromptBlock } from "@/renderer/CopyPanel";
+import { PackageCommands } from "@/renderer/PackageCommands";
 import "./AgentShowcase.css";
 
 /**
@@ -30,15 +32,9 @@ export function AgentShowcase({
       <Card>
         <div className="site-AgentAsk">
           <h3>Add the skill</h3>
-          <CodeBlock code="npx skills add dangerfarms/loamui --skill loamui" language="bash" />
+          <PackageCommands name="skill" />
           <div className="promptBox">
-            <div className="bar">
-              <span>Then try a prompt</span>
-              <CopyButton value={prompt} aria-label="Copy the prompt">
-                Copy
-              </CopyButton>
-            </div>
-            <p>{prompt}</p>
+            <PromptBlock prompt={prompt} label="Then try a prompt" />
           </div>
           <p>
             <SignpostLink render={<Link href="/docs/agent-workflow" />}>

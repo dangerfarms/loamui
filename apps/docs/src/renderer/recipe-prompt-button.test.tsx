@@ -1,18 +1,13 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { RecipePromptButton } from "./recipe-prompt-button";
+import { PromptBlock } from "./CopyPanel";
 
 const prompt = "Use the LoamUI skill to build the “Hero with image” recipe for my application.";
 
 function setup() {
   const writeText = vi.fn().mockResolvedValue(undefined);
   vi.stubGlobal("navigator", { ...navigator, clipboard: { writeText } });
-  render(
-    <section>
-      <p>{prompt}</p>
-      <RecipePromptButton title="Hero with image" prompt={prompt} />
-    </section>,
-  );
+  render(<PromptBlock prompt={prompt} copyLabel="Copy prompt for Hero with image" />);
   return { writeText };
 }
 
@@ -29,8 +24,7 @@ describe("recipe prompt copying", () => {
     button.focus();
     fireEvent.click(button);
     expect(writeText).toHaveBeenCalledWith(prompt);
-    expect(button).toHaveAttribute("aria-disabled", "true");
-    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Prompt copied"));
+    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Copied"));
     expect(button).toHaveFocus();
   });
 
@@ -41,7 +35,7 @@ describe("recipe prompt copying", () => {
     await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Could not copy"));
     expect(screen.getByText(prompt)).toBeVisible();
     fireEvent.click(screen.getByRole("button"));
-    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Prompt copied"));
+    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Copied"));
   });
 
   it("provides manual copying when the clipboard API is unavailable", async () => {

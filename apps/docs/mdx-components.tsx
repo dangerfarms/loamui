@@ -1,6 +1,8 @@
 import type { MDXComponents } from "mdx/types";
 import type { ReactElement, ReactNode } from "react";
 import { CodeBlock } from "@/renderer/CodeBlock";
+import { PromptBlock } from "@/renderer/CopyPanel";
+import { PackageCommands, PackageManagerProvider } from "@/renderer/PackageCommands";
 import "@/app/docs/prose.css";
 
 /** Native fences render through the site's CodeBlock. */
@@ -15,12 +17,24 @@ function Pre({ children }: { children?: ReactNode }) {
   );
 }
 
+function Prompt({ prompt }: { prompt: string }) {
+  return (
+    <div className="block">
+      <PromptBlock prompt={prompt} />
+    </div>
+  );
+}
+
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     wrapper: ({ children }: { children?: ReactNode }) => (
-      <div className="site-prose">{children}</div>
+      <PackageManagerProvider>
+        <div className="site-prose">{children}</div>
+      </PackageManagerProvider>
     ),
     pre: Pre,
+    PromptBlock: Prompt,
+    PackageCommands,
     ...components,
   };
 }

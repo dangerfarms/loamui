@@ -17,11 +17,6 @@
     padding: var(--loam-space-2xs);
   }
 
-  .copyBoth {
-    font-size: var(--loam-text-xs);
-    margin-block-end: var(--loam-space-3xs);
-  }
-
   .panel {
     min-inline-size: 0;
     padding: 0;
