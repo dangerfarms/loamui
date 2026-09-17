@@ -1,10 +1,12 @@
 "use client";
 
 import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
-import { Tabs } from "@loamui/core";
+import { Field, Select, Tabs } from "@loamui/core";
 import { CodeBlock } from "./CodeBlock";
 import {
-  PACKAGE_COMMANDS,
+  packageCommand,
+  SKILL_AGENTS,
+  type SkillAgent,
   PACKAGE_MANAGERS,
   type PackageCommandName,
   type PackageManager,
@@ -23,12 +25,31 @@ export function PackageManagerProvider({ children }: { children: ReactNode }) {
 }
 
 export function PackageCommands({ name }: { name: PackageCommandName }) {
+  const [agent, selectAgent] = useState<SkillAgent>("claude-code");
   const shared = useContext(ManagerContext);
   const [local, selectLocal] = useState<PackageManager>("pnpm");
   const manager = shared?.manager ?? local;
   const select = shared?.select ?? selectLocal;
   return (
     <div className="site-PackageCommands">
+      {name === "skill" && (
+        <Field.Root>
+          <Field.Label>Coding agent</Field.Label>
+          <Select
+            value={agent}
+            onChange={(event) => {
+              const selected = SKILL_AGENTS.find((item) => item.value === event.target.value);
+              if (selected) selectAgent(selected.value);
+            }}
+          >
+            {SKILL_AGENTS.map((item) => (
+              <option key={item.value} value={item.value}>
+                {item.label}
+              </option>
+            ))}
+          </Select>
+        </Field.Root>
+      )}
       <Tabs.Root
         value={manager}
         onChange={(value) => {
@@ -45,7 +66,7 @@ export function PackageCommands({ name }: { name: PackageCommandName }) {
         </Tabs.List>
         {PACKAGE_MANAGERS.map((item) => (
           <Tabs.Panel key={item} value={item}>
-            <CodeBlock code={PACKAGE_COMMANDS[name][item]} language="bash" />
+            <CodeBlock code={packageCommand(name, item, agent)} language="bash" />
           </Tabs.Panel>
         ))}
       </Tabs.Root>

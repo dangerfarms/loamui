@@ -18,7 +18,7 @@ A recipe in **Forms**: a component and a stylesheet built from `@loamui/core`, t
 
 ## Using this recipe
 
-Copy both files side by side into your React framework project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+Copy both files side by side into your React framework project. Install `@loamui/core` and load the core stylesheet at the application root, following the framework-specific installation guide.
 
 Replace the sample contact details and pass action for your POST endpoint; the default is /contact. Validate on the server and deliver or durably queue the message before confirming it. On failure, render a fresh Example with initialResponse: { status: 'error', values: { email, message }, errors: { form: 'We could not send your message. Please try again.' } }. Use errors.email and errors.message for field-specific validation; a service failure belongs in errors.form. Values are restored and the error summary receives focus after hydration. After confirmed success, redirect to a confirmation page rendering Example with initialResponse: { status: 'sent' }; its confirmation replaces the form, explains when a reply is due and receives focus after hydration. initialResponse initializes each new server response; it is not an asynchronous update to a mounted form. Give the response page an Error: title prefix on failure or a Message sent title on success. Native POST and validation remain usable without JavaScript. No message is sent by this recipe alone.
 

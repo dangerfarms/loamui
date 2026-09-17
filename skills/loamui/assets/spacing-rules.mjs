@@ -1,7 +1,7 @@
 /** Shared spacing checks for repository and consumer compositions. */
 import postcss from "postcss";
 import valueParser from "postcss-value-parser";
-import ts from "typescript";
+import ts from "loamui-typescript";
 
 const PROPERTY = /^(?:padding|margin|(?:row-|column-)?gap)(?:-[a-z]+)*$/;
 

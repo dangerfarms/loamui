@@ -126,3 +126,49 @@ test("consumer Stylelint config resolves installed tokens and rejects CSS regres
     );
   }
 });
+
+test("consumer checker uses its compiler API independently of the application's TypeScript", async (t) => {
+  const { mkdtemp, mkdir, copyFile, symlink, writeFile, rm } = await import("node:fs/promises");
+  const { tmpdir } = await import("node:os");
+  const { join, dirname } = await import("node:path");
+  const { createRequire } = await import("node:module");
+  const { spawnSync } = await import("node:child_process");
+  const { existsSync } = await import("node:fs");
+  const require = createRequire(import.meta.url);
+  const project = await mkdtemp(join(tmpdir(), "loam-checker-compiler-"));
+  t.after(() => rm(project, { recursive: true, force: true }));
+  await mkdir(join(project, "node_modules/typescript"), { recursive: true });
+  // TypeScript 7's root export has version information, not the old compiler API.
+  await writeFile(
+    join(project, "node_modules/typescript/package.json"),
+    JSON.stringify({ name: "typescript", main: "index.cjs" }),
+  );
+  await writeFile(
+    join(project, "node_modules/typescript/index.cjs"),
+    'module.exports = { version: "7.0.2" };',
+  );
+  for (const name of ["postcss", "postcss-value-parser", "loamui-typescript"]) {
+    let directory = dirname(require.resolve(name));
+    while (!existsSync(join(directory, "package.json"))) directory = dirname(directory);
+    await symlink(directory, join(project, "node_modules", name), "dir");
+  }
+  for (const name of ["check-composition.mjs", "scope-rules.mjs", "spacing-rules.mjs"])
+    await copyFile(
+      new URL(`../skills/loamui/assets/${name}`, import.meta.url),
+      join(project, name),
+    );
+  const run = () =>
+    spawnSync(process.execPath, ["check-composition.mjs", "example.tsx"], {
+      cwd: project,
+      encoding: "utf8",
+    });
+  await writeFile(
+    join(project, "example.tsx"),
+    'const view = <div style={{ gap: "var(--loam-space-s)" }} />;',
+  );
+  assert.equal(run().status, 0);
+  await writeFile(join(project, "example.tsx"), 'const view = <div style={{ gap: "12px" }} />;');
+  const failure = run();
+  assert.equal(failure.status, 1);
+  assert.match(failure.stderr, /gap: 12px bypasses spacing tokens/);
+});

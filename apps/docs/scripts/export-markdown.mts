@@ -29,6 +29,8 @@ import { linkedRecipePrompt } from "../src/examples/recipe-prompt.js";
 import { PILLARS } from "../src/examples/types.js";
 import {
   PACKAGE_COMMANDS,
+  SKILL_AGENTS,
+  packageCommand,
   PACKAGE_MANAGERS,
   type PackageCommandName,
 } from "../src/renderer/package-commands.js";
@@ -255,8 +257,19 @@ function mdxToMarkdown(src: string): { md: string; title: string; description: s
     if (command) {
       const name = command[1] as PackageCommandName;
       if (!Object.hasOwn(PACKAGE_COMMANDS, name)) throw new Error(`Unknown command: ${name}`);
-      for (const manager of PACKAGE_MANAGERS) {
-        out.push(`**${manager}**`, "", "```bash", PACKAGE_COMMANDS[name][manager], "```", "");
+      const agents = name === "skill" ? SKILL_AGENTS : [SKILL_AGENTS[0]];
+      for (const agent of agents) {
+        if (name === "skill") out.push(`**${agent.label}**`, "");
+        for (const manager of PACKAGE_MANAGERS) {
+          out.push(
+            `**${manager}**`,
+            "",
+            "```bash",
+            packageCommand(name, manager, agent.value),
+            "```",
+            "",
+          );
+        }
       }
       i++;
       continue;
@@ -474,7 +487,7 @@ function exampleMarkdown(entry: (typeof EXAMPLE_META)[number]): string {
   out.push(
     "## Using this recipe",
     "",
-    "Copy both files side by side into your React framework project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.",
+    "Copy both files side by side into your React framework project. Install `@loamui/core` and load the core stylesheet at the application root, following the framework-specific installation guide.",
     "",
   );
   out.push(

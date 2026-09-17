@@ -1,6 +1,6 @@
 ---
 name: loamui
-description: Set up, build, adapt recipes, theme or review UI with @loamui/core. Inspect the consuming project, configure missing quality tools when authorized, and compose contextual tokens, native element styles and React components. Includes offline contracts, worked recipes and verification guidance. Use when a project uses LoamUI or a user requests LoamUI setup or UI work.
+description: Set up, build, adapt recipes, theme or review UI with @loamui/core. Configure authorized project tools and compose contextual tokens, element styles and components using offline contracts and recipes. Use for LoamUI setup or UI work.
 metadata:
   library: "@loamui/core"
   docs: https://loamui.com
@@ -15,16 +15,12 @@ metadata:
 
 ## Where the truth lives
 
-- **Live docs:** <https://loamui.com>. Every page has a markdown twin at the
-  same URL with `.md` appended (`/docs/components/button` →
-  `/docs/components/button.md`). Index: <https://loamui.com/llms.txt>.
-- **Offline copies** of those twins ship with this skill, generated from the
-  docs source so they match the site: start at
-  [`references/index.md`](references/index.md), then
-  `references/guides/*.md` and `references/components/*.md`.
-- **Read a component's reference before using it** if you have not read it in
-  this session. Props, parts, custom properties, when-to-use and the
-  accessibility contract live there, not here.
+- **Live docs:** <https://loamui.com>; append `.md` to a page URL for its
+  markdown twin. Index: <https://loamui.com/llms.txt>.
+- **Offline copies** generated from the docs ship under `references/`.
+  Start at [the index](references/index.md).
+- **Read each component's reference before using it** in a session: props,
+  parts, custom properties, when-to-use and accessibility contracts live there.
 - The references match the library at the same commit; check the installed
   version in `node_modules/@loamui/core/package.json` if behaviour differs.
 - **Recipes:** the curated `/recipes` collection contains portable React and CSS
@@ -46,20 +42,25 @@ Read [Build with the skill](references/guides/agent-workflow.md) before
 implementation. Users describe their UI; you handle setup, composition and
 verification.
 
-Developers normally start with a React framework, `@loamui/core` and its
-stylesheet installed. Installing this skill installs none of those. Check
-[installation](references/guides/installation.md), the actual package exports,
-style delivery, layer order and existing tools. An authorized setup request
-can include missing dependencies; propose shared changes before applying them
-unless already approved. Preserve existing tools and unrelated styles.
+Before writing UI, follow [Project setup](references/guides/agent-workflow.md#project-setup):
 
-On every recipe request, check LoamUI, Modern CSS and Google Chrome's Modern
-Web Guidance skills are available to the active agent, plus Stylelint and the
-composition checks. For gaps, follow [Project setup](references/guides/agent-workflow.md#project-setup).
-Reuse working tools; propose missing shared setup. When authorized, configure
-it from `assets/` for the project's paths and run the checks. Read companion
-guidance, not just its installation status. If unavailable, use bundled rules
-and official references; report missing guidance and unrun checks.
+1. Inspect the framework, installed package, CSS delivery, layer order, tools
+   and active agent's skill discovery. Installing this skill installs no runtime.
+   Next.js and TanStack Start currently need the linked-stylesheet workaround in
+   [installation](references/guides/installation.md), not a bundled core CSS import.
+2. Complete missing additive project-local setup within the build request's
+   authorization: package/CSS integration, Stylelint, composition checks and
+   companion skills. Explain changes; ask before replacing conflicting tools
+   or styles, changing framework/browser policy, or global/CI changes. Respect
+   installation limits; resolve necessary approval before composing.
+3. Verify dependencies and lockfile, project-owned configuration/checker files,
+   and runnable scripts covering authored paths. Scratchpad and one-off checks
+   are not persistent setup. Reuse working tools; never disable them to pass.
+4. Install missing companions using Project setup's exact sources and explicit
+   agent targets. Do not reinstall this skill if already loaded. Verify discovery
+   and read relevant guidance before writing UI, including copied recipes. State
+   what you read. If refresh is needed, report installed versus active. If setup
+   is blocked or declined, agree a reduced deliverable and report the gaps.
 
 For a named recipe prompt, resolve the title in [the index](references/index.md)
 and read that recipe's source and component contracts. Do not require a long
@@ -117,7 +118,9 @@ server errors such as rejected credentials.
 
 Gatekeeping supports trust in generated work; it is separate from the two
 pillars. Run the relevant deterministic checks and inspect the rendered result.
-Core’s automated tests and audited palette do not certify your composition,
+Report project-owned setup, companion guidance read, exact check commands and
+results, and browser checks or gaps separately. Core’s automated tests and
+audited palette do not certify your composition,
 content or custom theme; verify them separately and report untested behaviour.
 
 ## Components
@@ -251,10 +254,7 @@ Each of these has been seen in real migrations. Check your output against them.
 - Every component's usage, parts, props, custom properties, when-to-use and
   accessibility notes: `references/components/<slug>.md`.
 
-For responsive composition, keep the measuring container outside the element
-whose layout changes; name queries that must measure a particular recipe region.
-Protect embedded core roots with `@scope (.recipe) to ([class*="loam-"])`.
-Tokens express design decisions; structural dimensions, aspect ratios and zero
-values remain ordinary CSS. A recipe built only from native elements and tokens
-is valid: do not add imports or status regions just to demonstrate every
-primitive.
+For responsive layouts, keep the measuring container outside the queried element
+and name queries that must measure a particular recipe region. Structural
+geometry and zero values remain ordinary CSS. A native-only recipe using tokens
+and element styles is valid; imports and status regions must serve a purpose.

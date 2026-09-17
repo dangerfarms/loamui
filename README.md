@@ -149,8 +149,14 @@ the library: the primitives, the
 pillars, every component's reference, and the mistakes people make by default:
 
 ```bash
-npx skills add dangerfarms/loamui
+npx --yes skills@latest add dangerfarms/loamui \
+  --skill loamui --agent claude-code --yes
 ```
+
+This command targets Claude Code. For Codex, replace `claude-code` with `codex`.
+Open a new session in the project and confirm the skill is available. See
+[Build with the skill](https://loamui.com/docs/agent-workflow) for package-manager
+commands and project setup, including companion skills and persistent checks.
 
 Or point an agent at [`https://loamui.com/llms.txt`](https://loamui.com/llms.txt):
 the single entry point for the environment workflow and documentation. Every

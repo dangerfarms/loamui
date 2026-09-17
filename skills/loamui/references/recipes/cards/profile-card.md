@@ -18,7 +18,7 @@ A recipe in **Cards**: a component and a stylesheet built from `@loamui/core`, t
 
 ## Using this recipe
 
-Copy both files side by side into your React framework project. Install `@loamui/core` and load `@loamui/core/styles.css` once at the application root, following the framework-specific installation guide.
+Copy both files side by side into your React framework project. Install `@loamui/core` and load the core stylesheet at the application root, following the framework-specific installation guide.
 
 Replace the sample person, figures and profile destination with application data. The link navigates to the profile; there is no simulated account relationship or persistence. If this card appears below a section heading, adjust its heading level accordingly.
 
