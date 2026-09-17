@@ -14,9 +14,35 @@ TanStack Start is a full-stack React framework with routing, server rendering an
 
 Create a blank React project:
 
+**pnpm**
+
+```bash
+pnpm dlx @tanstack/cli@latest create my-app \
+  --blank --framework React --package-manager pnpm -y
+cd my-app
+```
+
+**npm**
+
 ```bash
 npx @tanstack/cli@latest create my-app \
   --blank --framework React --package-manager npm -y
+cd my-app
+```
+
+**yarn**
+
+```bash
+yarn dlx @tanstack/cli@latest create my-app \
+  --blank --framework React --package-manager yarn -y
+cd my-app
+```
+
+**bun**
+
+```bash
+bunx @tanstack/cli@latest create my-app \
+  --blank --framework React --package-manager bun -y
 cd my-app
 ```
 
@@ -26,8 +52,28 @@ Already have an application? Follow the [existing-project workflow](/docs/agent-
 
 Install LoamUI when the [public npm release is available](/docs/installation):
 
+**pnpm**
+
+```bash
+pnpm add @loamui/core
+```
+
+**npm**
+
 ```bash
 npm install @loamui/core
+```
+
+**yarn**
+
+```bash
+yarn add @loamui/core
+```
+
+**bun**
+
+```bash
+bun add @loamui/core
 ```
 
 ## Import the styles
@@ -57,15 +103,58 @@ export const Route = createFileRoute("/")({ component: Welcome });
 
 Run the development server:
 
+**pnpm**
+
+```bash
+pnpm run dev
+```
+
+**npm**
+
 ```bash
 npm run dev
 ```
 
+**yarn**
+
+```bash
+yarn run dev
+```
+
+**bun**
+
+```bash
+bun run dev
+```
+
 Check the interface, then stop the server and verify the production build:
+
+**pnpm**
+
+```bash
+pnpm run build
+pnpm run preview
+```
+
+**npm**
 
 ```bash
 npm run build
 npm run preview
+```
+
+**yarn**
+
+```bash
+yarn run build
+yarn run preview
+```
+
+**bun**
+
+```bash
+bun run build
+bun run preview
 ```
 
 Once the foundation works, [build with the skill](/docs/agent-workflow).

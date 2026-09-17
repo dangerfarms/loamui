@@ -27,6 +27,11 @@ import { EXAMPLE_CATEGORIES } from "../src/examples/categories.js";
 import { EXAMPLE_META } from "../src/examples/generated-meta.js";
 import { linkedRecipePrompt } from "../src/examples/recipe-prompt.js";
 import { PILLARS } from "../src/examples/types.js";
+import {
+  PACKAGE_COMMANDS,
+  PACKAGE_MANAGERS,
+  type PackageCommandName,
+} from "../src/renderer/package-commands.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const APP = join(ROOT, "src", "app");
@@ -246,6 +251,16 @@ function mdxToMarkdown(src: string): { md: string; title: string; description: s
       i++;
       continue;
     }
+    const command = /^<PackageCommands name="([^"]+)" \/>$/.exec(line);
+    if (command) {
+      const name = command[1] as PackageCommandName;
+      if (!Object.hasOwn(PACKAGE_COMMANDS, name)) throw new Error(`Unknown command: ${name}`);
+      for (const manager of PACKAGE_MANAGERS) {
+        out.push(`**${manager}**`, "", "```bash", PACKAGE_COMMANDS[name][manager], "```", "");
+      }
+      i++;
+      continue;
+    }
     if (/^\s*<\w/.test(line)) {
       // A JSX island: consume until tags balance.
       let block = "";
@@ -259,7 +274,12 @@ function mdxToMarkdown(src: string): { md: string; title: string; description: s
         i++;
       } while (i < lines.length && depth > 0);
 
-      if (/className=\{prose\.callout\}/.test(block)) {
+      if (/<PromptBlock\b/.test(block)) {
+        const prompt = /^\s*<PromptBlock\s+prompt="([^"]*)"\s*\/>\s*$/.exec(block);
+        if (!prompt)
+          throw new Error("MDX prompts must use a literal PromptBlock prompt attribute.");
+        out.push("> " + prompt[1]!.replace(/\s+/g, " ").trim(), "");
+      } else if (/className=\{prose\.callout\}/.test(block)) {
         out.push("> " + jsxToText(block), "");
       } else if (/<ComputedTokens/.test(block)) {
         // The live table reads getComputedStyle; the twin gets the same

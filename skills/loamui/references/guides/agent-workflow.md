@@ -16,8 +16,28 @@ The package supplies the tokens, element styles and React components. The skill 
 
 Run this from your application directory and select your coding agent when prompted:
 
+**pnpm**
+
+```bash
+pnpm dlx skills add dangerfarms/loamui --skill loamui
+```
+
+**npm**
+
 ```bash
 npx skills add dangerfarms/loamui --skill loamui
+```
+
+**yarn**
+
+```bash
+yarn dlx skills add dangerfarms/loamui --skill loamui
+```
+
+**bun**
+
+```bash
+bunx skills add dangerfarms/loamui --skill loamui
 ```
 
 ## 2. Describe what you want to build
@@ -71,10 +91,30 @@ LoamUI maintains these Stylelint files, bundled under `assets/` in the skill and
 
 The shared rules are also used by this repository. They check modern colour syntax, logical properties, nesting, display notation, naming, disallowed viewport units and `!important`. The consumer configuration reads custom properties from the installed `@loamui/core/styles.css`, so it can flag unknown token names without a copy of the library's source tree.
 
-For a project without Stylelint, install compatible versions of its development dependencies with the project's package manager. For npm:
+For a project without Stylelint, install compatible versions of its development dependencies with the project's package manager:
+
+**pnpm**
+
+```bash
+pnpm add -D stylelint stylelint-config-standard stylelint-config-modern stylelint-config-alphabetical-order stylelint-use-nesting
+```
+
+**npm**
 
 ```bash
 npm install --save-dev stylelint stylelint-config-standard stylelint-config-modern stylelint-config-alphabetical-order stylelint-use-nesting
+```
+
+**yarn**
+
+```bash
+yarn add -D stylelint stylelint-config-standard stylelint-config-modern stylelint-config-alphabetical-order stylelint-use-nesting
+```
+
+**bun**
+
+```bash
+bun add -d stylelint stylelint-config-standard stylelint-config-modern stylelint-config-alphabetical-order stylelint-use-nesting
 ```
 
 Copy both files beside the application package manifest, keeping their names and relative import. Do not import them from a temporary skill installation path. The configuration resolves LoamUI from the consuming application. For a workspace, put it in the package that depends on LoamUI and run the check there.

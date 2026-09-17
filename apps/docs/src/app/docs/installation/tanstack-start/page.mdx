@@ -13,11 +13,7 @@ TanStack Start is a full-stack React framework with routing, server rendering an
 
 Create a blank React project:
 
-```bash
-npx @tanstack/cli@latest create my-app \
-  --blank --framework React --package-manager npm -y
-cd my-app
-```
+<PackageCommands name="tanstack-create" />
 
 The [blank starter](https://tanstack.com/cli/latest/docs/cli-reference) has one route and no Tailwind, shadcn, or other UI kit. No styling packages need to be removed.
 
@@ -25,9 +21,7 @@ Already have an application? Follow the [existing-project workflow](/docs/agent-
 
 Install LoamUI when the [public npm release is available](/docs/installation):
 
-```bash
-npm install @loamui/core
-```
+<PackageCommands name="install" />
 
 ## Import the styles
 
@@ -56,15 +50,10 @@ export const Route = createFileRoute("/")({ component: Welcome });
 
 Run the development server:
 
-```bash
-npm run dev
-```
+<PackageCommands name="dev" />
 
 Check the interface, then stop the server and verify the production build:
 
-```bash
-npm run build
-npm run preview
-```
+<PackageCommands name="tanstack-build" />
 
 Once the foundation works, [build with the skill](/docs/agent-workflow).

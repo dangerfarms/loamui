@@ -1,9 +1,23 @@
 "use client";
 
-import { Highlight, type PrismTheme } from "prism-react-renderer";
-import { CopyButton } from "@loamui/core";
+import { Highlight, Prism, type PrismTheme } from "prism-react-renderer";
+import { CopyPanel } from "./CopyPanel";
+import { TerminalIcon } from "@/site/Icons";
 import { useScrollable } from "./scrollable";
 import "./CodeBlock.css";
+
+// The bundled Prism languages omit shell. These rules cover our command listings.
+Prism.languages.bash = {
+  comment: /(^|\s)#.*/,
+  string: /"(?:\\.|[^"\\])*"|'[^']*'/,
+  function: {
+    pattern: /(^|\n)\s*(?:pnpm|npm|npx|yarn|bunx?|node|cd)(?=\s|$)/,
+    lookbehind: true,
+  },
+  keyword: /(^|\s)--?[\w-]+/,
+  punctuation: /\\(?=\n)/,
+};
+Prism.languages.sh = Prism.languages.bash;
 
 /**
  * The highlighter's palette, drawn from the library's own tokens: every
@@ -79,13 +93,13 @@ export function CodeBlock({
   const scroll = useScrollable<HTMLPreElement>(`${name} code`, "group");
 
   return (
-    <div className={`site-CodeBlock ${className ?? ""}`}>
-      <div className="bar">
-        <span>{name}</span>
-        <CopyButton value={code.trim()} aria-label={`Copy ${name} code`}>
-          Copy
-        </CopyButton>
-      </div>
+    <CopyPanel
+      className={`site-CodeBlock ${className ?? ""}`}
+      value={code.trim()}
+      label={name}
+      icon={name === "shell" ? <TerminalIcon /> : undefined}
+      copyLabel={name === "shell" ? "Copy shell command" : `Copy ${name} code`}
+    >
       <Highlight code={code.trim()} language={language} theme={THEME}>
         {({ tokens, getLineProps, getTokenProps }) => (
           <pre className="pre" {...scroll}>
@@ -99,6 +113,6 @@ export function CodeBlock({
           </pre>
         )}
       </Highlight>
-    </div>
+    </CopyPanel>
   );
 }

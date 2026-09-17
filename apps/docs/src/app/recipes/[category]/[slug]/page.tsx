@@ -8,7 +8,8 @@ import { EXAMPLE_SOURCE } from "@/examples/generated-source";
 import { COMPONENTS } from "@/site/nav";
 import { RecipePlayground } from "@/renderer/recipe-playground";
 import { linkedRecipePrompt } from "@/examples/recipe-prompt";
-import { RecipePromptButton } from "@/renderer/recipe-prompt-button";
+import { PromptBlock } from "@/renderer/CopyPanel";
+import "@/renderer/recipe-prompt-button.css";
 import { ExamplePillars } from "@/renderer/examples-pillars";
 import { ExampleCrumbs } from "@/renderer/examples-crumbs";
 import { ExamplePager } from "@/renderer/examples-pager";
@@ -83,10 +84,7 @@ export default async function ExamplePage({
             Already added the LoamUI skill? Copy the prompt below. Your agent will check your
             project and help complete any missing setup before building.
           </p>
-          <div className="instruction">
-            <p className="prompt">{prompt}</p>
-            <RecipePromptButton title={example.meta.title} prompt={prompt} />
-          </div>
+          <PromptBlock prompt={prompt} copyLabel={`Copy prompt for ${example.meta.title}`} />
           <p className="help">
             Add your content or describe what you want to change. New to the skill?{" "}
             <Link href="/docs/agent-workflow">Add it to your project</Link>.

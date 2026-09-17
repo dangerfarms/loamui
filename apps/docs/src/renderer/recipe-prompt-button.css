@@ -1,5 +1,5 @@
 @layer loamui.ui {
-  @scope (.site-RecipePrompt) to ([class*="loam-"]) {
+  @scope (.site-RecipePrompt) to ([class*="loam-"], [class*="site-"]) {
     :scope {
       background: var(--loam-color-bg-subtle);
       border: 1px solid var(--loam-color-line);
@@ -13,37 +13,7 @@
       font-size: var(--loam-text-xl);
     }
 
-    .instruction {
-      align-items: start;
-      background: var(--loam-color-bg);
-      border: 1px solid var(--loam-color-line);
-      border-radius: var(--loam-radius-md);
-      display: block flex;
-      flex-wrap: wrap;
-      gap: var(--loam-space-s);
-      padding: var(--loam-space-s);
-    }
-
-    .prompt {
-      flex: 1 1 32ch;
-      min-inline-size: 0;
-      overflow-wrap: anywhere;
-    }
-
-    .copy {
-      display: block grid;
-      gap: var(--loam-space-3xs);
-    }
-
-    button {
-      font-size: var(--loam-text-sm);
-      min-block-size: 2.75rem;
-      padding-block: var(--loam-space-3xs);
-      padding-inline: var(--loam-space-xs);
-    }
-
-    .help,
-    .message {
+    .help {
       color: var(--loam-color-fg-muted);
       font-size: var(--loam-text-sm);
       overflow-wrap: anywhere;
