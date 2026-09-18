@@ -10,7 +10,7 @@ description: Set up LoamUI in Next.js or TanStack Start, check your first interf
 
 Create a framework application, install `@loamui/core`, and load its stylesheet. The stylesheet supplies tokens, element styles and component styles; no provider is needed. Then add the skill and describe what you want to build.
 
-> **Package availability:** the public npm release of `@loamui/core` is planned but not yet available. The package commands in these guides apply once it is published. Installing the agent skill does not install the library.
+`@loamui/core` is available on [npm](https://www.npmjs.com/package/@loamui/core). Installing the agent skill does not install the library.
 
 ## 1. Choose your framework
 

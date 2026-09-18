@@ -50,7 +50,7 @@ The [blank starter](https://tanstack.com/cli/latest/docs/cli-reference) has one 
 
 Already have an application? Follow the [existing-project workflow](/docs/agent-workflow#establish-the-environment-first) before changing its styling foundation.
 
-Install LoamUI when the [public npm release is available](/docs/installation):
+Install LoamUI:
 
 **pnpm**
 

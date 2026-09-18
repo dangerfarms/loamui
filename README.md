@@ -138,9 +138,14 @@ Start with a React framework application. Follow the
 or **TanStack Start**: prepare the app, load LoamUI's three
 primitives and verify your first interface before adding the skill.
 
-The public npm release of `@loamui/core` is planned but not yet available.
-The guide's package commands apply once it is published. Installing the skill
-does not install the library.
+Install the public package from npm:
+
+```bash
+npm install @loamui/core
+```
+
+Follow the guide for stylesheet delivery and framework setup. Installing the
+skill does not install the library.
 
 ## Use it with an AI agent
 
