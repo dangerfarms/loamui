@@ -1,72 +1,159 @@
 # LoamUI
 
-**Modern UI primitives for agent-assisted developers.** Contextual tokens,
-element styles and React components, built on Google's Modern Web Guidelines
-for quickly building bespoke UIs that are accessible, adaptable and fast.
-
 [![npm](https://img.shields.io/npm/v/@loamui/core.svg)](https://www.npmjs.com/package/@loamui/core)
 [![license](https://img.shields.io/npm/l/@loamui/core.svg)](./LICENSE)
 
-## Why LoamUI?
+**Modern UI primitives for agent-assisted developers.**
 
-LoamUI provides three primitives and an agent skill for building interfaces
-for your product. The primitives follow the Chrome team's guidance for the
-modern web and established accessibility and UX practices:
+LoamUI combines contextual tokens, enhanced native element styles and composable
+React components to help you build bespoke interfaces. Its foundations follow
+[Google Chrome's Modern Web Guidance](https://github.com/GoogleChrome/modern-web-guidance)
+and established accessibility and UX practices. An accompanying agent skill
+teaches those foundations, component APIs and worked recipes to your coding agent.
 
-- **Tokens.** A handful of semantic decisions (four hues, eight neutrals,
-  fluid scales); everything else is derived by recipe and audited in CI.
-- **Element styles.** Enhanced default styles for native HTML, page-wide:
-  responsive, accessible, and respecting the reader's light or dark
-  preference. Plain markup is presentable before any component appears.
-- **Components.** A small set of composable React components. A region declares
-  what it means (`--loam-context`), and its contents adapt through the tokens.
-  Component references document their APIs, including the intrinsic sizing
-  exceptions described in Standards below.
+[Documentation](https://loamui.com/) ·
+[Live recipes](https://loamui.com/recipes/) ·
+[Agent workflow](https://loamui.com/docs/agent-workflow)
 
-All of it is plain, static CSS (cascade layers, `@scope`, `light-dark()`,
-container queries, anchor positioning), so no styling runtime ships to your
-users: the components are ordinary React, and the stylesheet is one file.
+## Install
 
-## Philosophy
+```bash
+npm install @loamui/core
+```
 
-Two ideas hold the library together. Each is grounded in a reference and
-enforced somewhere (by the cascade, a lint rule, a CI gate, or review), not
-just asserted.
+Use a **React 19 application with ESM support**. Load the stylesheet as well as
+installing the package; no LoamUI provider is needed. Follow the setup guide for
+[Next.js App Router](https://loamui.com/docs/installation/nextjs) or
+[TanStack Start](https://loamui.com/docs/installation/tanstack-start).
 
-1. **Modern.** Real HTML elements carry the semantics; native CSS carries the
-   styling. A button is a `<button>`, a dialog is a `<dialog>` opened with
-   `showModal()`. Static CSS supplies the styling without a JavaScript styling
-   runtime. Grounded in [Google Chrome's
-   Modern Web Guidance](https://github.com/GoogleChrome/modern-web-guidance).
+**Stylesheet delivery matters.** The tested framework bundlers cannot parse
+some of the modern CSS LoamUI uses, so the guides deliver it unchanged through
+a `<link>`. For production, serve a version-matched copy of the installed
+`node_modules/@loamui/core/dist/styles.css` file from your application's public
+assets. The hosted stylesheet used in the guides follows the docs deployment
+and is unversioned. Follow the [installation guide](https://loamui.com/docs/installation)
+for delivery and cascade-layer order before using the example below.
 
-   On top of that sits modern CSS itself: `@layer` for order, `@scope` for
-   encapsulation, `light-dark()` and container queries for adaptation. These
-   are additive styles that lean on the cascade instead of fighting it, with no
-   BEM and no specificity battles, following the
-   [ModernCSS](https://moderncss.ai/) rule set.
+## Three primitives, working together
 
-   Underneath both runs
-   [contextualism](https://css-day-2026.netlify.app/00.02-contextualism/), the
-   paradigm shift. A region declares what it means (`--loam-context` for
-   status, a container query for size) and the tokens, element styles and
-   components inside all adapt. That is the whole status-and-size API: set once
-   on a region, never repeated as a prop on each control.
+- **Tokens** describe colour, typography, spacing and motion through `--loam-*`
+  CSS custom properties. Override them at the page or region level to theme
+  your interface. Context and container queries let descendants adapt to their
+  surroundings.
+- **Element styles** give native HTML a shared foundation across the page:
+  headings, links, forms, tables and more. Start with semantic markup; it already
+  participates in the design.
+- **React components** add structure and behaviour where needed: form fields,
+  dialogs, navigation and feedback. Compound components expose named parts such
+  as `Field.Root` and `Field.Label`, so you control the markup and composition.
 
-2. **Accessible.** Semantic HTML, managed focus, keyboard support, and the
-   reader's colour-scheme and motion preferences as the baseline, distilled
-   from long-established public practice and running through all three
-   primitives. The palette is contrast-audited in CI, every component has an
-   [axe](https://github.com/dequelabs/axe-core) (automated accessibility
-   checker) test, and the interactive ones have interaction tests. What a
-   tool can verify, a tool verifies.
+Use these primitives to build interfaces specific to your product. Larger
+compositions, such as heroes and article cards, live in the
+[recipes](https://loamui.com/recipes/), where you can inspect, copy and adapt
+their React and CSS.
 
-Composition is not a pillar — tokens and element styles have nothing to
-compose — but it is how the components are used. Parts, not prop soup: a modal
-is assembled from its own named parts (`Modal.Root`, `Modal.Trigger`,
-`Modal.Popup`) that you arrange in your markup, rather than one component
-configured through a wall of props. You swap the rendered element through a
-`render` prop, and icons and loaders are ordinary children the component
-detects. The structure stays where you can see it and rearrange it.
+## Set context once
+
+A region declares its intent and the components inside respond. After loading
+the stylesheet, this example combines native HTML with two React components:
+
+```tsx
+"use client";
+
+import type { CSSProperties } from "react";
+import { Badge, Progress } from "@loamui/core";
+
+export function UploadStatus() {
+  return (
+    <section style={{ "--loam-context": "info" } as CSSProperties}>
+      <h2>Your photos</h2>
+      <p>Keep this page open until the upload finishes.</p>
+      <Badge>In progress</Badge>
+      <Progress value={60}>Uploading photos</Progress>
+    </section>
+  );
+}
+```
+
+The heading and paragraph use the element styles. The badge and progress fill
+pick up the region's `info` colours, without a colour prop on either component.
+`Progress` renders a native `<progress>` element and uses its visible label as
+its accessible name.
+
+This is LoamUI's contextual approach: status comes from a surrounding region,
+fluid sizing responds to containers, and width comes from your layout. Public
+CSS tokens provide the theming surface. Light and dark colours follow
+`color-scheme`; you can also set `data-theme="light"` or `data-theme="dark"`
+on `<html>`.
+
+## Two pillars
+
+**Modern.** Use the web platform's own semantics and behaviour, with ordinary
+React for component logic and static CSS for styling. Cascade layers, `@scope`,
+`light-dark()` and container queries carry the styling without a JavaScript
+styling runtime. The CSS follows the [ModernCSS](https://moderncss.ai/) rules
+alongside Google's Modern Web Guidance.
+
+**Accessible.** Labels, keyboard interaction, focus, contrast and user
+preferences inform all three primitives. Component documentation explains when
+to use a pattern, when to choose something else, and the UX reasoning behind
+its defaults. The library checks contrast, automated accessibility and
+interactions in its test suite; your content and compositions still need
+verification in the application.
+
+LoamUI targets modern browsers. Baseline Widely and Newly Available features
+are used natively, without polyfills; features outside Baseline must follow the
+project's progressive-enhancement policy. See the
+[browser support policy](https://github.com/loamui/loamui/blob/main/CONTRIBUTING.md#browser-support-policy)
+when assessing support for your users.
+
+## Build with an agent
+
+Once your application is set up, install the LoamUI skill in the project:
+
+```bash
+npx --yes skills@latest add loamui/loamui \
+  --skill loamui --agent claude-code --yes
+```
+
+For Codex, replace `claude-code` with `codex`. Open a new agent session and
+confirm the skill is available. Installing the skill is separate from
+installing the npm package.
+
+Describe the interface you need, or start with a recipe's **Build with the
+LoamUI skill** prompt. The skill guides the agent through inspecting your
+project, choosing primitives, adapting a composition and verifying the result.
+It bundles component references and recipes for offline use. The
+[agent workflow](https://loamui.com/docs/agent-workflow) covers companion skills,
+project checks and browser verification.
+
+You can also use LoamUI directly without an agent. For tools that read online
+documentation, [llms.txt](https://loamui.com/llms.txt) indexes the documentation;
+each page has a markdown twin at the same URL with `.md` appended. The npm
+package includes an `AGENTS.md` summary of the consumer conventions.
+
+## Contribute
+
+This is a pnpm and Turborepo monorepo. Use Node.js 22.13 or later and pnpm 11.
+
+- [`packages/core`](./packages/core): the published `@loamui/core` library.
+- [`apps/docs`](./apps/docs): the documentation site and live examples.
+- [`apps/docs/src/examples`](./apps/docs/src/examples): the worked recipes.
+
+```bash
+pnpm install
+pnpm build
+pnpm dev
+```
+
+Run `pnpm --filter @loamui/core storybook` for the component workbench.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for API and CSS conventions, required
+checks and the release process.
+
+The repository's `.agents/skills/` directory contains contributor procedures:
+`add-component`, `component-review`, `modern-css` and `modern-web-guidance`.
+These support work on the library itself; the installable `loamui` skill above
+supports work in consumer applications.
 
 ## Standards
 
@@ -131,94 +218,6 @@ the authority for everything it covers: run it and believe it.
 - **Verification.** Nothing is done until the full gate suite passes and any
   visual change is confirmed with headless screenshots in both colour schemes.
 
-## Installation
-
-Start with a React framework application. Follow the
-[installation guide](https://loamui.com/docs/installation) for **Next.js App Router**
-or **TanStack Start**: prepare the app, load LoamUI's three
-primitives and verify your first interface before adding the skill.
-
-Install the public package from npm:
-
-```bash
-npm install @loamui/core
-```
-
-Follow the guide for stylesheet delivery and framework setup. Installing the
-skill does not install the library.
-
-## Use it with an AI agent
-
-After completing the application setup, add the skill that teaches agents
-the library: the primitives, the
-pillars, every component's reference, and the mistakes people make by default:
-
-```bash
-npx --yes skills@latest add loamui/loamui \
-  --skill loamui --agent claude-code --yes
-```
-
-This command targets Claude Code. For Codex, replace `claude-code` with `codex`.
-Open a new session in the project and confirm the skill is available. See
-[Build with the skill](https://loamui.com/docs/agent-workflow) for package-manager
-commands and project setup, including companion skills and persistent checks.
-
-Or point an agent at [`https://loamui.com/llms.txt`](https://loamui.com/llms.txt):
-the single entry point for the environment workflow and documentation. Every
-docs page has a markdown twin at the same URL with `.md` appended. The skill
-bundles these references, including complete recipes, for offline use.
-
-Browse the [recipes](https://loamui.com/recipes/) for compositions such as heroes,
-article cards and carousels. Open a recipe to see its live preview, copy its React
-and CSS, or copy the short prompt in **Build with the LoamUI skill**. The prompt
-asks your agent to build that recipe for your application; the skill guides it
-through checking your project, completing agreed setup, adapting the reference
-and verifying the result. You can add your content or describe changes without
-repeating the implementation rules.
-
-The package also ships an `AGENTS.md`, a one-page summary of the conventions an
-agent needs when writing against it.
-
-## Repository layout
-
-This is a pnpm + Turborepo monorepo:
-
-- [`packages/core`](./packages/core): `@loamui/core`, the component library.
-- [`apps/docs`](./apps/docs): the marketing site and documentation (Next.js).
-- [`apps/docs/src/examples`](./apps/docs/src/examples): the worked recipes
-  shown at `/recipes` on the docs site.
-
-## Development
-
-```bash
-pnpm install
-pnpm build        # build the library, then the docs site
-pnpm dev          # run the docs site against the library
-pnpm check-types  # type-check everything
-
-pnpm --filter @loamui/core storybook   # component explorer at :6006
-```
-
-Storybook is the component workbench: a **Foundations** section documenting the
-tokens, element styles, contextualism, layout and accessibility model, plus live
-stories for every component with axe and keyboard interaction tests.
-
-Working here with an AI agent? Four skills in `.agents/skills/` turn the
-Philosophy and Standards above into procedures: **`add-component`** and
-**`component-review`** (adding and reviewing a component), plus the vendored
-**`modern-css`** and **`modern-web-guidance`** references. Claude Code loads
-them through the `.claude/skills/` symlinks. These are contributor skills for
-this repository; they are not installable in a consumer project.
-
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
-
 ## License
 
 [MIT](./LICENSE) © Danger Farms
-
-## Requirements
-
-- React 19.
-- The package is ESM-only; there is no CommonJS build.
-- Styling targets Baseline Newly Available CSS with graceful degradation;
-  the full browser-support policy is in [CONTRIBUTING](CONTRIBUTING.md).
