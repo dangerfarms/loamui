@@ -4,6 +4,18 @@ Notable changes to `@loamui/core`. Dates are the day the change landed on
 `main`. While the version is below 1.0, any release may break: the scale, the
 token names and the context mechanism are still settling.
 
+## 0.1.1 — 2026-09-18
+
+### Changed
+
+- Reworked the package and repository READMEs to explain LoamUI's three
+  primitives, Modern and Accessible pillars, contextual styling and agent
+  workflow.
+- Clarified npm installation, React and ESM requirements, and stylesheet
+  delivery, with a typed usage example.
+
+This release changes documentation only; component APIs and styles are unchanged.
+
 ## 0.1.0
 
 ### Changed — breaking
