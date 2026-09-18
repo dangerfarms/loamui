@@ -24,7 +24,7 @@ const groups = [
     links: [
       { label: "Recipes", href: "/recipes" },
       { label: "Accessibility", href: "/docs/accessibility" },
-      { label: "GitHub", href: "https://github.com/dangerfarms/loamui" },
+      { label: "GitHub", href: "https://github.com/loamui/loamui" },
     ],
   },
 ];

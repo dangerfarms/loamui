@@ -18,7 +18,7 @@ export function HeroDemo() {
       </p>
       <div className="actions">
         <SignpostLink href="/docs">Get started</SignpostLink>
-        <a href="https://github.com/dangerfarms/loamui">Star on GitHub</a>
+        <a href="https://github.com/loamui/loamui">Star on GitHub</a>
       </div>
     </section>
   );

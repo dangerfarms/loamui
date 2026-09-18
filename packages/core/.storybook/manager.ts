@@ -6,7 +6,7 @@ import { create } from "storybook/theming";
 const loam = create({
   base: "light",
   brandTitle: "LoamUI",
-  brandUrl: "https://github.com/dangerfarms/loamui",
+  brandUrl: "https://github.com/loamui/loamui",
   brandTarget: "_blank",
   colorPrimary: "#6d28d9",
   colorSecondary: "#6d28d9",

@@ -149,7 +149,7 @@ the library: the primitives, the
 pillars, every component's reference, and the mistakes people make by default:
 
 ```bash
-npx --yes skills@latest add dangerfarms/loamui \
+npx --yes skills@latest add loamui/loamui \
   --skill loamui --agent claude-code --yes
 ```
 

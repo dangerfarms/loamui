@@ -6,7 +6,7 @@ import { HeaderNav } from "./HeaderNav";
 import { GitHubIcon } from "./Icons";
 import "./Header.css";
 
-const GITHUB_URL = "https://github.com/dangerfarms/loamui";
+const GITHUB_URL = "https://github.com/loamui/loamui";
 
 export function Header() {
   return (

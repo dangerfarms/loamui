@@ -22,13 +22,13 @@
   ],
   "homepage": "https://loamui.com/",
   "bugs": {
-    "url": "https://github.com/dangerfarms/loamui/issues"
+    "url": "https://github.com/loamui/loamui/issues"
   },
   "license": "MIT",
   "author": "Danger Farms",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dangerfarms/loamui.git",
+    "url": "git+https://github.com/loamui/loamui.git",
     "directory": "packages/core"
   },
   "files": [

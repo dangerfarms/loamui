@@ -8,7 +8,7 @@ skill's wording is edited against evidence, not taste.
 1. Pick an agent (Claude Code, Cursor, Codex, …) in a scratch project that
    depends on `@loamui/core`.
 2. For each eval, run the prompt **twice**: once with the `loamui` skill
-   installed (`npx skills add dangerfarms/loamui`), once without.
+   installed (`npx skills add loamui/loamui`), once without.
 3. Repeat each condition and record the agent/model, package and skill versions,
    prompt, transcript, generated files and checks performed. Verify whether the
    skill activated and which references the agent read.

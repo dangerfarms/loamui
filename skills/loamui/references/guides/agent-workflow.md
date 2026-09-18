@@ -21,25 +21,25 @@ Choose your coding agent below, then run the command from your application direc
 **pnpm**
 
 ```bash
-pnpm dlx skills@latest add dangerfarms/loamui --skill loamui --agent claude-code --yes
+pnpm dlx skills@latest add loamui/loamui --skill loamui --agent claude-code --yes
 ```
 
 **npm**
 
 ```bash
-npx --yes skills@latest add dangerfarms/loamui --skill loamui --agent claude-code --yes
+npx --yes skills@latest add loamui/loamui --skill loamui --agent claude-code --yes
 ```
 
 **yarn**
 
 ```bash
-yarn dlx skills@latest add dangerfarms/loamui --skill loamui --agent claude-code --yes
+yarn dlx skills@latest add loamui/loamui --skill loamui --agent claude-code --yes
 ```
 
 **bun**
 
 ```bash
-bunx skills@latest add dangerfarms/loamui --skill loamui --agent claude-code --yes
+bunx skills@latest add loamui/loamui --skill loamui --agent claude-code --yes
 ```
 
 **Codex**
@@ -47,25 +47,25 @@ bunx skills@latest add dangerfarms/loamui --skill loamui --agent claude-code --y
 **pnpm**
 
 ```bash
-pnpm dlx skills@latest add dangerfarms/loamui --skill loamui --agent codex --yes
+pnpm dlx skills@latest add loamui/loamui --skill loamui --agent codex --yes
 ```
 
 **npm**
 
 ```bash
-npx --yes skills@latest add dangerfarms/loamui --skill loamui --agent codex --yes
+npx --yes skills@latest add loamui/loamui --skill loamui --agent codex --yes
 ```
 
 **yarn**
 
 ```bash
-yarn dlx skills@latest add dangerfarms/loamui --skill loamui --agent codex --yes
+yarn dlx skills@latest add loamui/loamui --skill loamui --agent codex --yes
 ```
 
 **bun**
 
 ```bash
-bunx skills@latest add dangerfarms/loamui --skill loamui --agent codex --yes
+bunx skills@latest add loamui/loamui --skill loamui --agent codex --yes
 ```
 
 Open a new agent session in the project and confirm `loamui` appears among its available skills before using a recipe prompt. For another agent, use its explicit target from the [installer's supported agents](https://github.com/vercel-labs/skills#supported-agents).

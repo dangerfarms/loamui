@@ -40,10 +40,10 @@ export const PACKAGE_COMMANDS = {
     bun: "bun run build\nbun run preview",
   },
   skill: {
-    pnpm: "pnpm dlx skills@latest add dangerfarms/loamui --skill loamui",
-    npm: "npx --yes skills@latest add dangerfarms/loamui --skill loamui",
-    yarn: "yarn dlx skills@latest add dangerfarms/loamui --skill loamui",
-    bun: "bunx skills@latest add dangerfarms/loamui --skill loamui",
+    pnpm: "pnpm dlx skills@latest add loamui/loamui --skill loamui",
+    npm: "npx --yes skills@latest add loamui/loamui --skill loamui",
+    yarn: "yarn dlx skills@latest add loamui/loamui --skill loamui",
+    bun: "bunx skills@latest add loamui/loamui --skill loamui",
   },
   stylelint: {
     pnpm: "pnpm add -D stylelint stylelint-config-standard stylelint-config-modern stylelint-config-alphabetical-order stylelint-use-nesting",

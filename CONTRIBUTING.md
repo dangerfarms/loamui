@@ -10,7 +10,7 @@ Thanks for your interest in improving LoamUI! 🌱
 ## Getting started
 
 ```bash
-git clone https://github.com/dangerfarms/loamui.git
+git clone https://github.com/loamui/loamui.git
 cd loamui
 pnpm install
 pnpm build      # builds @loamui/core (required before running the docs)
@@ -451,8 +451,81 @@ built on container queries and modern colour:
 
 ## Releasing
 
-Publishing is automated: pushing a `v*` tag runs the release workflow, which
-builds and publishes `@loamui/core` to npm. Maintainers only.
+The public package is `@loamui/core`; the monorepo root and docs app are private.
+Use Node.js 24 and pnpm 11 for releases. Maintainers publish from `main` after
+the full CI suite passes.
+
+### First publication
+
+An npm organization owner must grant the publishing account access to the
+`loamui` scope. Enable two-factor authentication on that account, then sign in:
+
+```bash
+npm login
+npm whoami
+```
+
+From the repository root, install the locked dependencies, run the full CI
+suite above, and inspect the files npm will include:
+
+```bash
+pnpm install --frozen-lockfile
+pnpm --filter @loamui/core build
+cd packages/core
+npm pack --dry-run
+```
+
+The package must contain `dist/index.js`, `dist/index.d.ts`, `dist/styles.css`,
+`package.json`, `README.md`, `LICENSE` and `AGENTS.md`. Verify installation and
+imports in a separate consumer project before publishing.
+
+Publish the version in `packages/core/package.json` from that directory:
+
+```bash
+npm publish --access public
+npm view @loamui/core version
+```
+
+Complete npm's browser authentication and 2FA prompts. This first publication
+creates the package so its trusted publisher can be configured. Do not push
+a release tag for this version: the workflow would try to publish it again.
+After the registry confirms publication, update the package-availability
+notices in the README and installation guides, then regenerate the skill
+references with the docs build.
+
+### Trusted publishing setup
+
+Create a GitHub environment named `npm` in `loamui/loamui`. Restrict deployment
+to release tags matching `v*` and configure any required reviewers there.
+In the npm package settings, add a GitHub Actions trusted publisher with:
+
+| Field                | Value                                       |
+| -------------------- | ------------------------------------------- |
+| Organization or user | `loamui`                                    |
+| Repository           | `loamui`                                    |
+| Workflow filename    | `release.yml`                               |
+| Environment          | `npm`                                       |
+| Allowed actions      | Enable direct publishing with `npm publish` |
+
+The workflow uses OIDC authentication and provenance; no `NPM_TOKEN` secret is
+needed. The repository URL in the package metadata must match this repository.
+See npm's [trusted publishing guide](https://docs.npmjs.com/trusted-publishers/).
+
+### Subsequent releases
+
+Bump `packages/core/package.json` in a reviewed change and merge it to `main`.
+From an up-to-date, clean `main` checkout, tag that commit with the matching
+`vMAJOR.MINOR.PATCH` version and push the tag. For example, for version `0.1.1`:
+
+```bash
+git tag -a v0.1.1 -m "Release @loamui/core 0.1.1"
+git push origin v0.1.1
+```
+
+The release workflow runs the full CI suite on the tagged commit, verifies the
+tag matches the package version, builds and publishes the package. Published
+versions cannot be overwritten. Prerelease tags are rejected to avoid
+publishing them to npm's default `latest` channel.
 
 By contributing you agree that your contributions are licensed under the
 project's [MIT License](./LICENSE).

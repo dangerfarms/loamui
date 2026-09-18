@@ -22,7 +22,7 @@ it("copies the selected agent and package manager in the skill install command",
   fireEvent.click(screen.getByRole("button", { name: /copy/i }));
   await waitFor(() =>
     expect(writeText).toHaveBeenLastCalledWith(
-      "pnpm dlx skills@latest add dangerfarms/loamui --skill loamui --agent claude-code --yes",
+      "pnpm dlx skills@latest add loamui/loamui --skill loamui --agent claude-code --yes",
     ),
   );
   fireEvent.change(screen.getByRole("combobox"), { target: { value: "codex" } });
@@ -30,7 +30,7 @@ it("copies the selected agent and package manager in the skill install command",
   fireEvent.click(screen.getByRole("button", { name: /copy/i }));
   await waitFor(() =>
     expect(writeText).toHaveBeenLastCalledWith(
-      "npx --yes skills@latest add dangerfarms/loamui --skill loamui --agent codex --yes",
+      "npx --yes skills@latest add loamui/loamui --skill loamui --agent codex --yes",
     ),
   );
 });
