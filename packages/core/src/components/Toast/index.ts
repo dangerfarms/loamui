@@ -1,4 +1,5 @@
-export { Toast, Toasts, useToast } from "./Toast";
+export * as Toast from "./Toast.parts.js";
+export { Toasts, useToast } from "./Toast.js";
 export type {
   ToastOptions,
   ToastData,
@@ -16,4 +17,4 @@ export type {
   ToastCloseLabels,
   ToastsProps,
   ToastsLabels,
-} from "./Toast";
+} from "./Toast.js";

@@ -29,7 +29,9 @@ export default function Example() {
         <a href="/journal/summer-container-colours">Colour ideas for summer containers</a>
       </h3>
       <div className="author">
-        <Avatar name="Amara Okonkwo" aria-hidden />
+        <Avatar.Root aria-hidden>
+          <Avatar.Fallback>AO</Avatar.Fallback>
+        </Avatar.Root>
         <div className="byline">
           <address>
             <a href="/growers/amara-okonkwo" rel="author">

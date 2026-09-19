@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import { cx, type PartProps } from "../../utils";
-import { renderWithProps } from "../../render";
-import type { RenderProp } from "../../render";
+import { cx, type PartProps } from "../../utils.js";
+import { renderWithProps } from "../../render.js";
+import type { RenderProp } from "../../render.js";
 
 export interface VisuallyHiddenProps extends PartProps<"span"> {
   /**

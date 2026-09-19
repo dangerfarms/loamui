@@ -1,17 +1,18 @@
 "use client";
 
-import { createContext, useCallback, useEffect, useId, useMemo, useState } from "react";
+import { createContext, useCallback, useId, useMemo, useState } from "react";
 import type { FormEvent, ReactNode } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { useRequiredContext } from "../../context";
-import { composeRefs, idList } from "../../render";
-import { useFormReset } from "../../use-form-reset";
-import { usePresence } from "../../use-presence";
-import { Fieldset } from "../Fieldset/Fieldset";
-import type { FieldsetLabels, FieldsetLegendProps } from "../Fieldset/Fieldset";
-import { RadioGroupContext } from "./group-context";
-import type { RadioGroupContextValue } from "./group-context";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { useRequiredContext } from "../../context.js";
+import { composeRefs, idList } from "../../render.js";
+import { useFormReset } from "../../use-form-reset.js";
+import { hasContent as hasMessageContent } from "../../content.js";
+import { useIdRegistry, useIsoLayoutEffect } from "../../use-id-registry.js";
+import { FieldsetRoot, FieldsetLegend } from "../Fieldset/Fieldset.js";
+import type { FieldsetLabels, FieldsetLegendProps } from "../Fieldset/Fieldset.js";
+import { RadioGroupContext } from "./group-context.js";
+import type { RadioGroupContextValue } from "./group-context.js";
 
 /**
  * Labels and lays out a set of mutually exclusive {@link Radio} options,
@@ -20,8 +21,8 @@ import type { RadioGroupContextValue } from "./group-context";
  * Options participate via context (not element cloning), so `<Radio>`s
  * work at any nesting depth inside the group. The Root holds no selection
  * state: use uncontrolled (`defaultValue`) or drive it with `value` +
- * `onChange`. The group is invalid exactly while an Error with content is
- * rendered, or after a native submit attempt found a required option
+ * `onChange`. The group is invalid when Root invalid is set
+ * or after a native submit attempt found a required option
  * unchosen.
  *
  * ```tsx
@@ -29,8 +30,8 @@ import type { RadioGroupContextValue } from "./group-context";
  *   <RadioGroup.Legend>Plan</RadioGroup.Legend>
  *   <RadioGroup.Description>You can change it later.</RadioGroup.Description>
  *   <RadioGroup.Error>{error}</RadioGroup.Error>
- *   <Radio value="free" label="Free" />
- *   <Radio value="pro" label="Pro" />
+ *   <Field.Item><Field.Label><Radio value="free" /> Free</Field.Label></Field.Item>
+ *   <Field.Item><Field.Label><Radio value="pro" /> Pro</Field.Label></Field.Item>
  * </RadioGroup.Root>
  * ```
  */
@@ -50,8 +51,8 @@ interface RadioGroupPartsContextValue {
   descriptionId: string;
   errorId: string;
   errorPrefix: ReactNode;
-  registerDescription: () => () => void;
-  registerError: () => () => void;
+  registerDescription: (id: string) => () => void;
+  registerError: (id: string) => () => void;
 }
 
 const RadioGroupPartsContext = createContext<RadioGroupPartsContextValue | null>(null);
@@ -75,6 +76,8 @@ export interface RadioGroupRootProps extends Omit<
   defaultValue?: string;
   /** Fires with the newly selected value when a radio is chosen. */
   onChange?: (value: string) => void;
+  /** Explicit validation state, independent of message content. */
+  invalid?: boolean;
   /** Layout direction of the options. @default "vertical" */
   orientation?: "vertical" | "horizontal";
   /** The group's own words; the Legend and Error read them from here. */
@@ -87,6 +90,7 @@ function RadioGroupRoot({
   defaultValue,
   onChange,
   orientation = "vertical",
+  invalid: invalidProp = false,
   labels,
   id,
   className,
@@ -103,11 +107,11 @@ function RadioGroupRoot({
   const groupName = name ?? baseId;
   const descriptionId = `${baseId}-description`;
   const errorId = `${baseId}-error`;
-  const [hasDescription, registerDescription] = usePresence();
-  const [hasError, registerError] = usePresence();
+  const [descriptionIds, registerDescription] = useIdRegistry();
+  const [errorIds, registerError] = useIdRegistry();
   const errorPrefix = labels?.errorPrefix ?? DEFAULT_ERROR_PREFIX;
   const [nativeInvalid, setNativeInvalid] = useState(false);
-  const invalid = hasError || nativeInvalid;
+  const invalid = invalidProp || nativeInvalid;
   const clearNativeInvalid = useCallback(() => setNativeInvalid(false), []);
   const resetRef = useFormReset<HTMLFieldSetElement>(clearNativeInvalid);
   const rootRef = useMemo(() => composeRefs(ref, resetRef), [ref, resetRef]);
@@ -135,7 +139,7 @@ function RadioGroupRoot({
   return (
     <RadioGroupContext value={ctx}>
       <RadioGroupPartsContext value={parts}>
-        <Fieldset.Root
+        <FieldsetRoot
           ref={rootRef}
           id={id}
           // radiogroup (not the fieldset's implicit group): the precise
@@ -144,11 +148,7 @@ function RadioGroupRoot({
           className={cx("loam-RadioGroup", className)}
           data-orientation={orientation}
           labels={labels}
-          aria-describedby={idList(
-            hasDescription ? descriptionId : undefined,
-            hasError ? errorId : undefined,
-            ariaDescribedby,
-          )}
+          aria-describedby={idList(...descriptionIds, ...errorIds, ariaDescribedby)}
           aria-invalid={ariaInvalid ?? (invalid || undefined)}
           onInvalid={(event) => {
             onInvalid?.(event);
@@ -161,7 +161,7 @@ function RadioGroupRoot({
           {...rest}
         >
           {children}
-        </Fieldset.Root>
+        </FieldsetRoot>
       </RadioGroupPartsContext>
     </RadioGroupContext>
   );
@@ -172,15 +172,26 @@ export interface RadioGroupLegendProps extends FieldsetLegendProps {}
 /** The group's name: core `Fieldset.Legend`, which reads `labels.optional`. */
 function RadioGroupLegend(props: RadioGroupLegendProps) {
   useRadioGroupParts("RadioGroup.Legend");
-  return <Fieldset.Legend {...props} />;
+  return <FieldsetLegend {...props} />;
 }
 
 export interface RadioGroupDescriptionProps extends PartProps<"p"> {}
 
 /** Helper text under the legend, joined to the group with `aria-describedby`. */
-function RadioGroupDescription({ className, children, ref, ...rest }: RadioGroupDescriptionProps) {
-  const { descriptionId, registerDescription } = useRadioGroupParts("RadioGroup.Description");
-  useEffect(() => registerDescription(), [registerDescription]);
+function RadioGroupDescription({
+  id,
+  className,
+  children,
+  ref,
+  ...rest
+}: RadioGroupDescriptionProps) {
+  const { descriptionId: defaultId, registerDescription } =
+    useRadioGroupParts("RadioGroup.Description");
+  const descriptionId = id ?? defaultId;
+  useIsoLayoutEffect(
+    () => registerDescription(descriptionId),
+    [descriptionId, registerDescription],
+  );
   return (
     <p ref={ref} className={cx("description", className)} id={descriptionId} {...rest}>
       {children}
@@ -191,17 +202,16 @@ function RadioGroupDescription({ className, children, ref, ...rest }: RadioGroup
 export interface RadioGroupErrorProps extends PartProps<"p"> {}
 
 /**
- * The group's error, announced as it appears. With content it puts the
- * group in the invalid state (every radio answers it); without content it
- * renders nothing.
+ * The group's error, announced as it appears. Empty content renders nothing.
+ * Validation state is supplied separately on Root.
  */
-function RadioGroupError({ className, children, ref, ...rest }: RadioGroupErrorProps) {
-  const { errorId, errorPrefix, registerError } = useRadioGroupParts("RadioGroup.Error");
-  const hasContent = children != null && children !== false;
-  useEffect(() => {
-    if (!hasContent) return;
-    return registerError();
-  }, [hasContent, registerError]);
+function RadioGroupError({ id, className, children, ref, ...rest }: RadioGroupErrorProps) {
+  const { errorId: defaultId, errorPrefix, registerError } = useRadioGroupParts("RadioGroup.Error");
+  const errorId = id ?? defaultId;
+  const hasContent = hasMessageContent(children);
+  useIsoLayoutEffect(() => {
+    if (hasContent) return registerError(errorId);
+  }, [hasContent, errorId, registerError]);
 
   if (!hasContent) return null;
   return (
@@ -212,9 +222,4 @@ function RadioGroupError({ className, children, ref, ...rest }: RadioGroupErrorP
   );
 }
 
-export const RadioGroup = {
-  Root: RadioGroupRoot,
-  Legend: RadioGroupLegend,
-  Description: RadioGroupDescription,
-  Error: RadioGroupError,
-};
+export { RadioGroupRoot, RadioGroupLegend, RadioGroupDescription, RadioGroupError };

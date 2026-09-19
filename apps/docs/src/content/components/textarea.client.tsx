@@ -28,7 +28,7 @@ export function TextareaDescriptionDemo() {
 export function TextareaErrorDemo() {
   return (
     <div style={{ maxInlineSize: "24rem", inlineSize: "100%" }}>
-      <Field.Root>
+      <Field.Root invalid>
         <Field.Label>Message</Field.Label>
         <Field.Error>Message must be 20 characters or more</Field.Error>
         <Textarea defaultValue="Too short" />

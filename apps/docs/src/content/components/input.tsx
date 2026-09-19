@@ -15,7 +15,7 @@ import {
 const doc: ComponentContent = {
   slug: "input",
   lead: "The single-line text box. Compose it inside a Field for its label, description and error.",
-  importLine: `import { Field, Input } from "@loamui/core";`,
+  importLine: `import { Field, Input, Button } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",
@@ -60,8 +60,8 @@ const doc: ComponentContent = {
     {
       title: "Error state",
       description:
-        "A Field.Error before the control marks the field invalid and is announced: no error prop, the message's presence is the state.",
-      code: `<Field.Root>
+        "Set invalid on Field.Root and compose Field.Error before the control for its announced message.",
+      code: `<Field.Root invalid>
   <Field.Label>Email</Field.Label>
   <Field.Error>
     Enter an email address in the correct format, like name@example.com
@@ -94,24 +94,30 @@ const doc: ComponentContent = {
       render: () => <InputDisabledDemo />,
     },
     {
-      title: "With sections",
+      title: "Composed adornments",
       description:
-        "Sections sit inside the field but outside the accessible name, so the Field.Label still does the naming. A placeholder alone never can.",
+        "Compose prefixes and suffixes beside Input in your own layout. Field.Label names the input; include any meaningful unit or suffix in the label or description.",
       code: `<Field.Root>
   <Field.Label>Handle</Field.Label>
-  <Input startSection="@" />
+  <div style={{ display: "grid", gridTemplateColumns: "auto minmax(0, 1fr)", alignItems: "center", gap: "var(--loam-space-2xs)" }}>
+    <span aria-hidden="true">@</span>
+    <Input />
+  </div>
 </Field.Root>
 
 <Field.Root>
-  <Field.Label>Site name</Field.Label>
-  <Input endSection=".dev" />
+  <Field.Label>Site name on .dev</Field.Label>
+  <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) auto", alignItems: "center", gap: "var(--loam-space-2xs)" }}>
+    <Input />
+    <span aria-hidden="true">.dev</span>
+  </div>
 </Field.Root>`,
       render: () => <InputSectionsDemo />,
     },
   ],
   whenToUse: [
     "For short, free-form single-line text: names, emails, search terms, URLs.",
-    "Inside a Field.Root, which ties the label, helper description and inline error together: the control self-wires from the surrounding field, so the accessibility is correct by construction. See the Field page.",
+    "Inside a Field.Root, which ties the label, helper description and inline error together: the control self-wires from the surrounding field, with message IDs registered after hydration. Supply explicit ARIA links when needed in initial server HTML; see the Field page.",
   ],
   whenNotToUse: [
     "For multi-line text: use Textarea.",
@@ -151,7 +157,7 @@ const doc: ComponentContent = {
     },
     {
       title: "Width belongs to the container, or to the answer",
-      body: "The field fills whatever it is placed in; there is no width prop. Width is information: a four-character reference in a page-wide box reads as a harder question than it is. For an answer of a known length, the native size attribute is the platform's own measure: the input is as wide as that many characters and the box shrink-wraps it. DateInput is built on it. For anything else, put the field in a container sized to the expected answer.",
+      body: "The field fills whatever it is placed in; there is no width prop. Width is information: a four-character reference in a page-wide box reads as a harder question than it is. For an answer of a known length, the native size attribute is the platform's own measure: the input is as wide as that many characters and it keeps its intrinsic width. DateInput is built on it. For anything else, put the field in a container sized to the expected answer.",
       code: `<Field.Root>
   <Field.Label>Sort code</Field.Label>
   <Input inputMode="numeric" size={6} />
@@ -183,34 +189,18 @@ const doc: ComponentContent = {
   ],
   accessibility: [
     "Inside a Field.Root the input reads its id from the field, so Field.Label is a real <label> tied to it: clicking the label focuses the field and screen readers announce it.",
-    "Field.Description and Field.Error are linked via aria-describedby, and a rendered error also sets aria-invalid, announced together when the field gains focus.",
+    "Field.Description and Field.Error are linked via aria-describedby, and Field.Root invalid sets aria-invalid, announced together when the field gains focus.",
     'Field.Error uses role="alert" so the message is announced as it appears.',
-    "startSection / endSection render your content beside the input but outside its accessible name. Mark visual content like currency symbols or icons aria-hidden, and carry the unit in the label or description so non-visual users get it too.",
+    "Compose adornments as siblings of the native Input. Mark visual content like currency symbols or icons aria-hidden, and carry the unit in the label or description so non-visual users get it too.",
     "Under forced colours the danger border colour is dropped, so an invalid field carries its state as an outline in a system colour, with the focus ring offset further out.",
     "Mark optional fields in words (Field.Label's optional prop) rather than asterisking required ones: required lives on the control as the native required attribute, which drives validation after submission.",
   ],
   props: [
     {
-      name: "startSection",
-      type: "ReactNode",
-      description: "Content inside the box, before the input.",
-    },
-    {
-      name: "endSection",
-      type: "ReactNode",
-      description: "Content inside the box, after the input.",
-    },
-    {
       name: "size",
       type: "number",
       description:
-        "The native size attribute, honoured: the input is as wide as that many characters and the box shrink-wraps it.",
-    },
-    {
-      name: "wrapperProps",
-      type: 'PartProps<"div">',
-      description:
-        "Props for the bordered box around the input. className, style, ref and every other prop land on the <input> itself; this is the one way to reach the box.",
+        "The native size attribute, honoured: the input is as wide as that many characters and it keeps its intrinsic width.",
     },
     {
       name: "...others",

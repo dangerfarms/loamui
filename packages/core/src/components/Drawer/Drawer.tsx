@@ -1,10 +1,10 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { mergeProps, renderWithProps } from "../../render";
-import type { RenderProp } from "../../render";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { mergeProps, renderWithProps } from "../../render.js";
+import type { RenderProp } from "../../render.js";
 import {
   DialogContext,
   dialogCloseProps,
@@ -14,10 +14,10 @@ import {
   useDialogPopup,
   useDialogRoot,
   useDialogTitle,
-} from "../../use-dialog";
-import type { DialogCloseRenderProps, DialogTriggerRenderProps } from "../../use-dialog";
+} from "../../use-dialog.js";
+import type { DialogCloseRenderProps, DialogTriggerRenderProps } from "../../use-dialog.js";
 
-import { Button } from "../Button/Button";
+import { Button } from "../Button/Button.js";
 
 /**
  * An edge-anchored panel that slides in over the page, composed from parts.
@@ -165,11 +165,4 @@ function DrawerClose({ render, children, ...rest }: DrawerCloseProps) {
   );
 }
 
-export const Drawer = {
-  Root: DrawerRoot,
-  Trigger: DrawerTrigger,
-  Popup: DrawerPopup,
-  Title: DrawerTitle,
-  Description: DrawerDescription,
-  Close: DrawerClose,
-};
+export { DrawerRoot, DrawerTrigger, DrawerPopup, DrawerTitle, DrawerDescription, DrawerClose };

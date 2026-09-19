@@ -8,7 +8,9 @@ export function SkeletonSwapDemo() {
   return (
     <div style={{ display: "grid", gap: "var(--loam-space-s)", justifyItems: "start" }}>
       <Skeleton visible={loading}>
-        <Avatar name="Ada Lovelace" />
+        <Avatar.Root role="img" aria-label="Ada Lovelace">
+          <Avatar.Fallback>AL</Avatar.Fallback>
+        </Avatar.Root>
       </Skeleton>
       <Button onClick={() => setLoading((l) => !l)}>
         {loading ? "Finish loading" : "Load again"}

@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import type { ReactNode } from "react";
-import { Button } from "../Button/Button";
-import { Input } from "../Input/Input";
-import type { InputProps } from "../Input/Input";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
+import { Button } from "../Button/Button.js";
+import { Input } from "../Input/Input.js";
+import type { InputProps } from "../Input/Input.js";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
 
 /** The words the field says on its own, each with an English default. */
 export interface PasswordInputLabels {
@@ -22,7 +22,7 @@ const DEFAULT_LABELS: Required<PasswordInputLabels> = {
   show: "Show password",
 };
 
-export interface PasswordInputProps extends Omit<InputProps, "type" | "wrapperProps"> {
+export interface PasswordInputProps extends Omit<InputProps, "type"> {
   /** The field's own words. */
   labels?: PasswordInputLabels;
   /**

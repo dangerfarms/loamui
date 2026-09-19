@@ -1,6 +1,6 @@
 import { cloneElement, isValidElement } from "react";
 import type { CSSProperties, ReactElement, ReactNode, Ref } from "react";
-import { cx } from "./utils";
+import { cx } from "./utils.js";
 
 /**
  * Composition plumbing shared by compound components — the single merge
@@ -118,8 +118,12 @@ export function mergeProps<W extends object, O extends object>(wiring: W, own: O
   return merged as W & O;
 }
 
-/** Render a RenderProp with wiring props applied per the merge contract. */
-export function renderWithProps<P extends object>(render: RenderProp<P>, props: P): ReactNode {
+/** Render with merged props. ownedProps reserves coordinated identities, such as a Field control ID. */
+export function renderWithProps<P extends object>(
+  render: RenderProp<P>,
+  props: P,
+  ownedProps?: Partial<P>,
+): ReactNode {
   if (typeof render === "function") {
     if (process.env.NODE_ENV !== "production" && /^[A-Z]/.test(render.name)) {
       console.error(
@@ -127,11 +131,14 @@ export function renderWithProps<P extends object>(render: RenderProp<P>, props: 
           `Pass an element instead — \`render={<${render.name} />}\` — or a function of the wiring props.`,
       );
     }
-    return render(props);
+    return render({ ...props, ...ownedProps });
   }
   if (isValidElement<AnyProps>(render)) {
     // React 19: the element's ref is an ordinary prop and merges like one.
-    return cloneElement(render, mergeProps(props as AnyProps, render.props as AnyProps));
+    return cloneElement(render, {
+      ...mergeProps(props as AnyProps, render.props as AnyProps),
+      ...ownedProps,
+    });
   }
   return null;
 }

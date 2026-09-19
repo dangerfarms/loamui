@@ -80,7 +80,8 @@ for (const c of EXAMPLE_CATEGORIES) {
 }
 
 for (const key of published) {
-  if (!discovered.has(key)) problems.push(`Published recipe "${key}" has no complete source folder`);
+  if (!discovered.has(key))
+    problems.push(`Published recipe "${key}" has no complete source folder`);
 }
 if (published.size !== PUBLISHED_RECIPES.length) problems.push("Duplicate published recipe");
 

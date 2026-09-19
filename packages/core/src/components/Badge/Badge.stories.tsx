@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { CSSProperties } from "react";
-import { Badge } from "../../index";
+import { Badge } from "../../index.js";
 
 const meta = {
   title: "Data display/Badge",

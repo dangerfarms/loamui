@@ -135,7 +135,7 @@ export default function Example({
               )}
             </ErrorSummary.Root>
           )}
-          <Field.Root id={`${id}-email`}>
+          <Field.Root invalid={Boolean(validation.email && validation.email)} id={`${id}-email`}>
             <Field.Label>Email address</Field.Label>
             {validation.email && <Field.Error>{validation.email}</Field.Error>}
             <Input
@@ -150,17 +150,24 @@ export default function Example({
               required
             />
           </Field.Root>
-          <Field.Root id={`${id}-password`}>
+          <Field.Root
+            invalid={Boolean(validation.password && validation.password)}
+            id={`${id}-password`}
+          >
             <Field.Label>Password</Field.Label>
             {validation.password && <Field.Error>{validation.password}</Field.Error>}
             <PasswordInput name="password" autoComplete="current-password" required />
           </Field.Root>
           <a href="/forgot-password">Forgot your password?</a>
-          <Checkbox
-            name="remember"
-            label="Keep me signed in"
-            defaultChecked={initialResponse?.values.remember ?? false}
-          />
+          <Field.Item>
+            <Field.Label>
+              <Checkbox
+                name="remember"
+                defaultChecked={initialResponse?.values.remember ?? false}
+              />{" "}
+              Keep me signed in
+            </Field.Label>
+          </Field.Item>
           <div className="actions">
             <Button type="submit">Sign in</Button>
           </div>

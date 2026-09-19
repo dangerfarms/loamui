@@ -13,7 +13,9 @@ export default function Example() {
   return (
     <article className="comment" aria-labelledby={author}>
       <header>
-        <Avatar name="Priya Natarajan" aria-hidden />
+        <Avatar.Root aria-hidden>
+          <Avatar.Fallback>PN</Avatar.Fallback>
+        </Avatar.Root>
         <a id={author} className="author" href="/members/priya-natarajan">
           Priya Natarajan
         </a>

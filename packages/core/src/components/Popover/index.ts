@@ -1,4 +1,4 @@
-export { Popover } from "./Popover";
+export * as Popover from "./Popover.parts.js";
 export type {
   PopoverRootProps,
   PopoverTriggerProps,
@@ -9,4 +9,4 @@ export type {
   PopoverDescriptionProps,
   PopoverCloseProps,
   PopoverCloseRenderProps,
-} from "./Popover";
+} from "./Popover.js";

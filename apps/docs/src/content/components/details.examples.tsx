@@ -1,6 +1,4 @@
-"use client";
-
-import { Details } from "@loamui/core";
+import { Details } from "@loamui/core/details";
 
 export function DetailsBasicDemo() {
   return (

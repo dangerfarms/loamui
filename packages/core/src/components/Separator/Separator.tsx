@@ -1,5 +1,5 @@
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
 
 export interface SeparatorProps extends PartProps<"hr"> {
   /**

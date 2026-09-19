@@ -15,7 +15,7 @@ describe("input-with-tooltip", () => {
     expect(hint).toHaveClass("loam-Button");
     expect(hint).toHaveAttribute("type", "button");
     // Beside the box in the example's row, not inside the Input's field.
-    expect(container.querySelector(".loam-Input-field")).not.toContainElement(hint);
+    expect(screen.getByRole("textbox")).not.toContainElement(hint);
     const row = container.querySelector("div.row")!;
     expect(row).toContainElement(box);
     expect(row).toContainElement(hint);

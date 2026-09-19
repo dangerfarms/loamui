@@ -21,7 +21,7 @@ const doc: ComponentContent = {
       </ErrorSummary.List>
     </ErrorSummary.Root>
   )}
-  <Field.Root id="demo-email">
+  <Field.Root invalid={Boolean(emailError)} id="demo-email">
     <Field.Label>Email address</Field.Label>
     <Field.Error>{emailError}</Field.Error>
     <Input />

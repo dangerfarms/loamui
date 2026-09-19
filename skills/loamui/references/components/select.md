@@ -89,7 +89,7 @@ Field.Description links to the select via aria-describedby, the same wiring ever
 A Field.Error before the control marks the field invalid and is announced: the message's presence is the state.
 
 ```tsx
-<Field.Root>
+<Field.Root invalid>
   <Field.Label>Country</Field.Label>
   <Field.Error>Select a country</Field.Error>
   <Select>

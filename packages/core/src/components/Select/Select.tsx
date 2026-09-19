@@ -1,11 +1,11 @@
 "use client";
 
 import { useMemo } from "react";
-import { useFieldControlProps } from "../Field/Field";
-import { useUserInvalid } from "../../use-user-invalid";
-import { composeRefs } from "../../render";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
+import { useFieldControlProps } from "../Field/Field.js";
+import { useUserInvalid } from "../../use-user-invalid.js";
+import { composeRefs } from "../../render.js";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
 
 export interface SelectProps extends Omit<PartProps<"select">, "size"> {
   /**
@@ -40,7 +40,7 @@ export function Select({
   ref,
   ...rest
 }: SelectProps) {
-  const field = useFieldControlProps(ariaDescribedby);
+  const field = useFieldControlProps(ariaDescribedby, id);
   const { nativeInvalid, validationRef, checkOnInput, checkOnInvalid } =
     useUserInvalid<HTMLSelectElement>();
   const selectRef = useMemo(() => composeRefs(ref, validationRef), [ref, validationRef]);
@@ -57,7 +57,7 @@ export function Select({
         className={className}
         value={value}
         defaultValue={resolvedDefault}
-        id={id ?? field.id}
+        id={field.id ?? id}
         {...rest}
         aria-invalid={ariaInvalid ?? field["aria-invalid"] ?? (nativeInvalid || undefined)}
         aria-describedby={field["aria-describedby"]}

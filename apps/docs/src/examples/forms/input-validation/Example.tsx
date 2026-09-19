@@ -16,7 +16,7 @@ export default function Example() {
   const [error, setError] = useState<string | null>(null);
 
   return (
-    <Field.Root className="input-validation">
+    <Field.Root invalid={Boolean(touched ? error : null)} className="input-validation">
       <Field.Label>Email address</Field.Label>
       <Field.Description>Order confirmations and sowing notes go here.</Field.Description>
       <Field.Error>{touched ? error : null}</Field.Error>

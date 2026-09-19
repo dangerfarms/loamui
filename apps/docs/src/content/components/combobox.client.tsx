@@ -105,7 +105,7 @@ export function ComboboxFieldDemo() {
   const [query, setQuery] = useState("");
   return (
     <div style={{ maxInlineSize: "20rem", inlineSize: "100%" }}>
-      <Field.Root>
+      <Field.Root invalid>
         <Field.Label>Country</Field.Label>
         <Field.Description>Where you are resident for tax.</Field.Description>
         <Field.Error>Choose a country from the list</Field.Error>

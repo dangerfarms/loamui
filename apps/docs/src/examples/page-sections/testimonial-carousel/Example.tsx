@@ -57,7 +57,14 @@ export default function Example() {
                 <p>{testimonial.quote}</p>
               </blockquote>
               <figcaption>
-                <Avatar name={testimonial.name} aria-hidden="true" />
+                <Avatar.Root aria-hidden="true">
+                  <Avatar.Fallback>
+                    {testimonial.name
+                      .split(/\s+/)
+                      .map((part) => part[0])
+                      .join("")}
+                  </Avatar.Fallback>
+                </Avatar.Root>
                 <div className="author">
                   <span className="name">{testimonial.name}</span>
                   <span className="role">{testimonial.role}</span>

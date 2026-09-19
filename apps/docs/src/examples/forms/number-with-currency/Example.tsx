@@ -22,25 +22,24 @@ export default function Example() {
         Gift cards are sold in three currencies, from 10 to 200.
       </Field.Description>
       <div className="row">
-        <Input
-          name="amount"
-          inputMode="decimal"
-          autoComplete="off"
-          startSection={<span aria-hidden="true">{symbol}</span>}
-        />
-        <Select
-          id={currencyId}
-          name="currency"
-          aria-label="Currency"
-          value={currency}
-          onChange={(e) => setCurrency(e.currentTarget.value)}
-        >
-          {CURRENCIES.map((c) => (
-            <option key={c.code} value={c.code}>
-              {c.code}
-            </option>
-          ))}
-        </Select>
+        <div className="amount">
+          <span aria-hidden="true">{symbol}</span>
+          <Input className="currency-amount" name="amount" inputMode="decimal" autoComplete="off" />
+        </div>
+        <Field.Root id={currencyId}>
+          <Select
+            name="currency"
+            aria-label="Currency"
+            value={currency}
+            onChange={(e) => setCurrency(e.currentTarget.value)}
+          >
+            {CURRENCIES.map((c) => (
+              <option key={c.code} value={c.code}>
+                {c.code}
+              </option>
+            ))}
+          </Select>
+        </Field.Root>
       </div>
     </Field.Root>
   );

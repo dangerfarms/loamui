@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { renderWithProps } from "../../render";
-import type { RenderProp } from "../../render";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { renderWithProps } from "../../render.js";
+import type { RenderProp } from "../../render.js";
 
 /**
  * Shows the path to the current page.
@@ -98,7 +98,4 @@ function BreadcrumbsItem({
   );
 }
 
-export const Breadcrumbs = {
-  Root: BreadcrumbsRoot,
-  Item: BreadcrumbsItem,
-};
+export { BreadcrumbsRoot, BreadcrumbsItem };

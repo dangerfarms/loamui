@@ -5,7 +5,7 @@ import { notFound, permanentRedirect } from "next/navigation";
 import { Badge } from "@loamui/core";
 import { exampleHref, examplesIn, getCategory, getExample } from "@/examples";
 import { EXAMPLE_SOURCE } from "@/examples/generated-source";
-import { COMPONENTS } from "@/site/nav";
+import { componentForExport } from "@/site/nav";
 import { RecipePlayground } from "@/renderer/recipe-playground";
 import { linkedRecipePrompt } from "@/examples/recipe-prompt";
 import { PromptBlock } from "@/renderer/CopyPanel";
@@ -33,7 +33,7 @@ export async function generateMetadata({
 
 /** The docs page for a core component, by its export name. */
 function docHref(name: string): string | undefined {
-  const item = COMPONENTS.find((comp) => comp.name === name);
+  const item = componentForExport(name);
   return item ? `/docs/components/${item.slug}` : undefined;
 }
 

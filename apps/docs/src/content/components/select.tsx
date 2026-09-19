@@ -78,7 +78,7 @@ const doc: ComponentContent = {
       title: "Error state",
       description:
         "A Field.Error before the control marks the field invalid and is announced: the message's presence is the state.",
-      code: `<Field.Root>
+      code: `<Field.Root invalid>
   <Field.Label>Country</Field.Label>
   <Field.Error>Select a country</Field.Error>
   <Select>

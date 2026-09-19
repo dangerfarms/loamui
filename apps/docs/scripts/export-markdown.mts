@@ -21,7 +21,7 @@ import {
 } from "node:fs";
 import { join, relative, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { COMPONENTS, CATEGORY_ORDER } from "../src/site/nav.js";
+import { componentForExport, COMPONENTS, CATEGORY_ORDER } from "../src/site/nav.js";
 import type { ComponentContent } from "../src/renderer/types.js";
 import { EXAMPLE_CATEGORIES } from "../src/examples/categories.js";
 import { EXAMPLE_META } from "../src/examples/generated-meta.js";
@@ -515,7 +515,7 @@ function exampleMarkdown(entry: (typeof EXAMPLE_META)[number]): string {
     `- [Element styles](${ORIGIN}/docs/element-styles.md)`,
   );
   for (const name of meta.uses) {
-    const component = COMPONENTS.find((item) => item.name === name);
+    const component = componentForExport(name);
     if (!component) throw new Error(`Missing recipe reference for ${name}`);
     out.push(`- [${name}](${ORIGIN}/docs/components/${component.slug}.md)`);
   }

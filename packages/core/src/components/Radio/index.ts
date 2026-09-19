@@ -1,10 +1,16 @@
-export { Radio } from "./Radio";
-export type { RadioProps, RadioControlProps } from "./Radio";
-export { RadioGroup } from "./RadioGroup";
+export * as RadioGroup from "./RadioGroup.parts.js";
+export { Radio } from "./Radio.js";
+export type { RadioProps } from "./Radio.js";
+export {
+  RadioGroupRoot,
+  RadioGroupLegend,
+  RadioGroupDescription,
+  RadioGroupError,
+} from "./RadioGroup.js";
 export type {
   RadioGroupLabels,
   RadioGroupRootProps,
   RadioGroupLegendProps,
   RadioGroupDescriptionProps,
   RadioGroupErrorProps,
-} from "./RadioGroup";
+} from "./RadioGroup.js";

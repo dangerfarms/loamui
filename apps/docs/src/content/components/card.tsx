@@ -4,7 +4,7 @@ import type { ComponentContent } from "@/renderer/types";
 const doc: ComponentContent = {
   slug: "card",
   lead: "A surface container that groups related content: the one surface primitive, which compositions such as a product card or a testimonial are built on rather than restyling.",
-  importLine: `import { Card } from "@loamui/core";`,
+  importLine: `import { Card, Button } from "@loamui/core";`,
   demos: [
     {
       title: "Basic card",

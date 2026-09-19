@@ -16,8 +16,8 @@ describe("tasks-card", () => {
     expect(container.querySelector("p.count")).toHaveTextContent("12 of 20");
     const team = screen.getByRole("list", { name: "Working on this" });
     expect(team.querySelectorAll("li")).toHaveLength(5);
-    expect(screen.getByRole("img", { name: "3 more" })).toBeInTheDocument();
-    expect(screen.getByAltText("Nia Prosser")).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "3 more people" })).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "Nia Prosser" })).toBeInTheDocument();
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 });

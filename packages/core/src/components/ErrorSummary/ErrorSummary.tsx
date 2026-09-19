@@ -2,11 +2,11 @@
 
 import { createContext, useEffect, useId, useRef, useMemo } from "react";
 import type { MouseEvent as ReactMouseEvent, ReactNode } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { useRequiredContext } from "../../context";
-import { composeRefs, renderWithProps } from "../../render";
-import type { RenderProp } from "../../render";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { useRequiredContext } from "../../context.js";
+import { composeRefs, renderWithProps } from "../../render.js";
+import type { RenderProp } from "../../render.js";
 
 /**
  * The form-level error pattern: a box at the top of the form
@@ -162,9 +162,4 @@ function ErrorSummaryItem({
   );
 }
 
-export const ErrorSummary = {
-  Root: ErrorSummaryRoot,
-  Title: ErrorSummaryTitle,
-  List: ErrorSummaryList,
-  Item: ErrorSummaryItem,
-};
+export { ErrorSummaryRoot, ErrorSummaryTitle, ErrorSummaryList, ErrorSummaryItem };

@@ -10,7 +10,7 @@ import {
 const doc: ComponentContent = {
   slug: "field",
   lead: "A composable form-field primitive that wires label, description, error and accessibility for any control.",
-  importLine: `import { Field } from "@loamui/core";`,
+  importLine: `import { Field, Input, Button } from "@loamui/core";`,
   demos: [
     {
       title: "Composing a field",
@@ -26,8 +26,8 @@ const doc: ComponentContent = {
     {
       title: "Error state",
       description:
-        'A Field.Error with content flips the field to invalid and is announced via role="alert".',
-      code: `<Field.Root>
+        'Set invalid on Field.Root for the validation state. Field.Error supplies the message and is announced via role="alert".',
+      code: `<Field.Root invalid>
   <Field.Label>Email</Field.Label>
   <Field.Error>
     Enter an email address in the correct format, like name@example.com
@@ -51,12 +51,12 @@ const doc: ComponentContent = {
       description:
         "Fields compose into a form with nothing extra: each control self-wires, each Field.Error appears where its field is, and submit is an ordinary button. For the summary that belongs at the top of a longer form, see ErrorSummary.",
       code: `<form onSubmit={onSubmit} noValidate>
-  <Field.Root>
+  <Field.Root invalid={Boolean(errors.name)}>
     <Field.Label>Full name</Field.Label>
     <Field.Error>{errors.name}</Field.Error>
     <Input name="name" autoComplete="name" />
   </Field.Root>
-  <Field.Root>
+  <Field.Root invalid={Boolean(errors.email)}>
     <Field.Label>Email address</Field.Label>
     <Field.Description>We'll only use this to reply.</Field.Description>
     <Field.Error>{errors.email}</Field.Error>
@@ -85,10 +85,14 @@ const doc: ComponentContent = {
     "To give a custom or third-party control the same accessible label/description/error wiring, via Field.Control.",
   ],
   whenNotToUse: [
-    "For inline choices: Checkbox and Switch render their own label and description beside the control; wrap them in a Field only when they need an error message.",
+    "For naming a whole set of controls: use Fieldset and give each option its own Field.Item.",
     "As a layout grid: Field only arranges a single control and its supporting text.",
   ],
   howItWorks: [
+    {
+      title: "Server rendering and custom IDs",
+      body: "Parts can live inside custom child components. They register their actual IDs in client layout effects; custom IDs and conditional removal are supported. For description and error links in initial server HTML, supply stable IDs on the parts and aria-describedby on the control. Put the control ID on Root when it must be fixed before hydration. invalid is explicit and works during server rendering.",
+    },
     {
       title: "Writing error messages",
       body: "An error message says what happened and how to fix it, in the words of the question itself: if the label asks “How many hours do you work a week?”, the error is “Enter how many hours you work a week”, never “This field is required”. Use an instruction (“Enter your first name”) when the field is empty and a description (“Name must be 35 characters or fewer”) when the value breaks a rule. Write in plain, positive language: no “please” (it implies a choice), no “sorry” (it doesn't help), no “valid/invalid” (vague), no jargon or error codes, no humour. Keep the user's input on screen while showing the error: never clear the field.",
@@ -99,7 +103,7 @@ const doc: ComponentContent = {
     },
     {
       title: "When validation runs",
-      body: "Two paths, one timing rule. Native constraints (required, type, minlength) open the error state only after a submit attempt. Once open, the error remains while the value is invalid and clears as soon as the correction is valid. The render path is explicit: a field is invalid exactly while a Field.Error with content is rendered, so server or async validation is rendering that message after submission. Neither path validates on blur or complains mid-word.",
+      body: "Two paths, one timing rule. Native constraints (required, type, minlength) open the error state only after a submit attempt. Once open, the error remains while the value is invalid and clears as soon as the correction is valid. The render path is explicit: set invalid on Field.Root from the validation result and render Field.Error for its message. Error content does not determine validity. Neither path validates on blur or complains mid-word.",
     },
     {
       title: "Styling state from outside",
@@ -130,16 +134,27 @@ const doc: ComponentContent = {
   ],
   accessibility: [
     "Field.Root generates one id and hands it to Field.Label (via htmlFor) and to the control, so label and control are always associated.",
-    "Description and error ids are added to the control's aria-describedby only when those parts are present, ahead of any aria-describedby the control carries itself, each id once: a control that brings its own description keeps it.",
-    'Any Field.Error with content sets aria-invalid on the control and is announced with role="alert"; a visually hidden "Error: " prefix (labels.errorPrefix on the Root) makes the announcement unmistakable out of context.',
+    "After hydration, description and error ids are added to the control's aria-describedby when those parts are present, ahead of any aria-describedby the control carries itself, each id once: a control that brings its own description keeps it.",
+    'Field.Root invalid sets aria-invalid on the control, including server HTML. Field.Error is announced with role="alert"; a visually hidden "Error: " prefix (labels.errorPrefix on the Root) makes the announcement unmistakable out of context.',
     "The LoamUI controls read this wiring from context; Field.Control hands it to arbitrary elements, letting you keep semantic, native controls instead of re-implementing them.",
   ],
   parts: [
     {
+      name: "Field.Item",
+      description:
+        "A local label and description scope for one option within a group. Inherits Field validation state while giving its control independent IDs. Can also be used outside Field.Root. Native div props are forwarded; id sets the control ID.",
+    },
+    {
       name: "Field.Root",
       description:
-        "Wraps a field and provides context. The invalid state is detected: it is true exactly when a Field.Error with content is rendered. Native <div> props are forwarded.",
+        "Wraps a field and provides context. The invalid prop supplies validation state independently of message content. Native <div> props are forwarded.",
       props: [
+        {
+          name: "invalid",
+          type: "boolean",
+          default: "false",
+          description: "Explicit validation state, available before hydration.",
+        },
         {
           name: "id",
           type: "string",
@@ -187,7 +202,7 @@ const doc: ComponentContent = {
     {
       name: "Field.Error",
       description:
-        'Error message with role="alert"; sets the invalid state when it has content. Native <p> props are forwarded.',
+        'Error message with role="alert"; renders nothing for empty strings, whitespace, null or false. It does not set validation state. Native <p> props are forwarded.',
     },
   ],
 };

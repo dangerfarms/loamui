@@ -74,7 +74,7 @@ export function InputDescriptionDemo() {
 export function InputErrorDemo() {
   return (
     <div style={{ maxInlineSize: "20rem", inlineSize: "100%" }}>
-      <Field.Root>
+      <Field.Root invalid>
         <Field.Label>Email</Field.Label>
         <Field.Error>
           Enter an email address in the correct format, like name@example.com
@@ -139,11 +139,31 @@ export function InputSectionsDemo() {
     >
       <Field.Root>
         <Field.Label>Handle</Field.Label>
-        <Input startSection="@" />
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "auto minmax(0, 1fr)",
+            alignItems: "center",
+            gap: "var(--loam-space-2xs)",
+          }}
+        >
+          <span aria-hidden="true">@</span>
+          <Input />
+        </div>
       </Field.Root>
       <Field.Root>
-        <Field.Label>Site name</Field.Label>
-        <Input endSection=".dev" />
+        <Field.Label>Site name on .dev</Field.Label>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 1fr) auto",
+            alignItems: "center",
+            gap: "var(--loam-space-2xs)",
+          }}
+        >
+          <Input />
+          <span aria-hidden="true">.dev</span>
+        </div>
       </Field.Root>
     </div>
   );

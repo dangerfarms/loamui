@@ -21,7 +21,10 @@ export function ErrorSummaryDemo() {
           </ErrorSummary.List>
         </ErrorSummary.Root>
       )}
-      <Field.Root id="demo-email">
+      <Field.Root
+        invalid={Boolean(submitted ? "Enter your email address" : undefined)}
+        id="demo-email"
+      >
         <Field.Label>Email address</Field.Label>
         <Field.Error>{submitted ? "Enter your email address" : undefined}</Field.Error>
         <Input />

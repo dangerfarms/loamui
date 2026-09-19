@@ -13,7 +13,9 @@ export default function Example() {
   return (
     <article className="comment-html" aria-labelledby={`${instanceId}-comment-html-author`}>
       <header>
-        <Avatar name="Tom Bradshaw" aria-hidden />
+        <Avatar.Root aria-hidden>
+          <Avatar.Fallback>TB</Avatar.Fallback>
+        </Avatar.Root>
         <a id={`${instanceId}-comment-html-author`} className="author" href="/members/tom-bradshaw">
           Tom Bradshaw
         </a>

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Table } from "../../index";
+import { Table } from "../../index.js";
 
 type Field = {
   name: string;

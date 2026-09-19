@@ -1,4 +1,4 @@
-export { Table } from "./Table";
+export { Table } from "./Table.js";
 export type {
   TableProps,
   TableLabels,
@@ -6,4 +6,4 @@ export type {
   TableSortButtonProps,
   TableSortButtonLabels,
   TableSortDirection,
-} from "./Table";
+} from "./Table.js";

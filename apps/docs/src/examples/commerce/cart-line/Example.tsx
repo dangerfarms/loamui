@@ -55,7 +55,7 @@ export default function Example() {
         </h3>
         <p className="options">Packet of 25 seeds</p>
         <div className="control">
-          <Field.Root>
+          <Field.Root invalid={Boolean(error ? "Enter a whole quantity from 1 to 10." : null)}>
             <Field.Label className="loam-VisuallyHidden">
               Quantity of Climbing bean ‘Blue Lake’ seeds
             </Field.Label>

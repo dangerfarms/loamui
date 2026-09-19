@@ -1,14 +1,15 @@
 "use client";
 
+import type { RefObject } from "react";
 import { createContext, use, useCallback, useId, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { useRequiredContext } from "../../context";
-import { composeRefs } from "../../render";
-import { useFieldControlProps } from "../Field/Field";
-import { useFormReset } from "../../use-form-reset";
-import { useUserInvalid } from "../../use-user-invalid";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { useRequiredContext } from "../../context.js";
+import { composeRefs } from "../../render.js";
+import { useFieldControlProps } from "../Field/Field.js";
+import { useFormReset } from "../../use-form-reset.js";
+import { useUserInvalid } from "../../use-user-invalid.js";
 
 /**
  * A file picker built on the native `<input type="file">`, composed from
@@ -36,6 +37,12 @@ interface FileInputContextValue {
   id: string;
   files: File[];
   setFiles: (files: File[]) => void;
+  /**
+   * The Control's own input, so a drop can hand it the files. The Control is
+   * placed by the consumer, so the Root is told where it is rather than going
+   * looking: a nested file input of the consumer's own is not ours to fill.
+   */
+  controlRef: RefObject<HTMLInputElement | null>;
 }
 
 const FileInputContext = createContext<FileInputContextValue | null>(null);
@@ -87,7 +94,11 @@ function FileInputRoot({
   // dragenter/dragleave fire for every descendant the pointer crosses; a
   // depth count keeps the state on until the pointer leaves the box itself.
   const depth = useRef(0);
-  const value = useMemo<FileInputContextValue>(() => ({ id, files, setFiles }), [id, files]);
+  const controlRef = useRef<HTMLInputElement | null>(null);
+  const value = useMemo<FileInputContextValue>(
+    () => ({ id, files, setFiles, controlRef }),
+    [id, files],
+  );
 
   return (
     <FileInputContext value={value}>
@@ -124,7 +135,7 @@ function FileInputRoot({
           const transfer = event.dataTransfer;
           if (!carriesFiles(transfer)) return;
           event.preventDefault();
-          const input = event.currentTarget.querySelector<HTMLInputElement>('input[type="file"]');
+          const input = controlRef.current;
           const dropped = transfer?.files;
           if (!input || input.disabled || !dropped?.length) return;
           // The dropped files become the input's own, so the form submits
@@ -163,7 +174,7 @@ function FileInputControl({
   ref,
   ...rest
 }: FileInputControlProps) {
-  const field = useFieldControlProps(ariaDescribedby);
+  const field = useFieldControlProps(ariaDescribedby, id);
   const ctx = use(FileInputContext);
   const setFiles = ctx?.setFiles;
   const { nativeInvalid, validationRef, checkOnInput, checkOnInvalid } =
@@ -171,15 +182,16 @@ function FileInputControl({
   // A form reset empties the control natively; the list follows it.
   const clearFiles = useCallback(() => setFiles?.([]), [setFiles]);
   const resetRef = useFormReset<HTMLInputElement>(clearFiles);
+  // The Root's ref goes on last: a drop hands the files straight to this input.
   const inputRef = useMemo(
-    () => composeRefs(composeRefs(ref, resetRef), validationRef),
-    [ref, resetRef, validationRef],
+    () => composeRefs(composeRefs(composeRefs(ref, resetRef), validationRef), ctx?.controlRef),
+    [ref, resetRef, validationRef, ctx?.controlRef],
   );
 
   return (
     <input
       ref={inputRef}
-      id={id ?? ctx?.id ?? field.id}
+      id={field.id ?? id ?? ctx?.id}
       type="file"
       className={cx(ctx ? "loam-VisuallyHidden" : undefined, className)}
       disabled={disabled}
@@ -263,9 +275,4 @@ function FileInputFiles({ locale = "en", className, ref, ...rest }: FileInputFil
   );
 }
 
-export const FileInput = {
-  Root: FileInputRoot,
-  Control: FileInputControl,
-  Prompt: FileInputPrompt,
-  Files: FileInputFiles,
-};
+export { FileInputRoot, FileInputControl, FileInputPrompt, FileInputFiles };

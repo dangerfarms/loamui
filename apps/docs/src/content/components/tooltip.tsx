@@ -1,5 +1,5 @@
 import type { ComponentContent } from "@/renderer/types";
-import { TooltipArrow, TooltipGroup, TooltipSides } from "./tooltip.client";
+import { TooltipArrowDemo, TooltipGroup, TooltipSides } from "./tooltip.client";
 
 const doc: ComponentContent = {
   slug: "tooltip",
@@ -37,7 +37,7 @@ const doc: ComponentContent = {
     Saved just now <Tooltip.Arrow />
   </Tooltip.Popup>
 </Tooltip.Root>`,
-      render: () => <TooltipArrow />,
+      render: () => <TooltipArrowDemo />,
     },
     {
       title: "Grouped with a Provider",

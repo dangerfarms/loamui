@@ -22,7 +22,7 @@ export function TooltipSides() {
   );
 }
 
-export function TooltipArrow() {
+export function TooltipArrowDemo() {
   return (
     <Tooltip.Root>
       <Tooltip.Trigger>Hover or focus me</Tooltip.Trigger>

@@ -3,8 +3,8 @@ import { render, screen, cleanup, fireEvent, within } from "@testing-library/rea
 import userEvent from "@testing-library/user-event";
 import { axe } from "vitest-axe";
 
-import { FileInput } from "../components/FileInput/index";
-import { Field } from "../index";
+import { FileInput } from "../components/FileInput/index.js";
+import { Field } from "../index.js";
 
 afterEach(cleanup);
 
@@ -70,7 +70,7 @@ describe("FileInput", () => {
 
   it("the bare control self-wires from a Field", () => {
     render(
-      <Field.Root>
+      <Field.Root invalid>
         <Field.Label>Receipt</Field.Label>
         <Field.Error>Choose a file smaller than 5 MB</Field.Error>
         <FileInput.Control />

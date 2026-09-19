@@ -1,7 +1,7 @@
-export { Search } from "./Search";
+export * as Search from "./Search.parts.js";
 export type {
   SearchRootProps,
   SearchLabelProps,
   SearchInputProps,
   SearchButtonProps,
-} from "./Search";
+} from "./Search.js";

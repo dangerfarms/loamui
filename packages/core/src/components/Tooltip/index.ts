@@ -1,4 +1,4 @@
-export { Tooltip } from "./Tooltip";
+export * as Tooltip from "./Tooltip.parts.js";
 export type {
   TooltipProviderProps,
   TooltipRootProps,
@@ -6,4 +6,4 @@ export type {
   TooltipTriggerRenderProps,
   TooltipPopupProps,
   TooltipArrowProps,
-} from "./Tooltip";
+} from "./Tooltip.js";

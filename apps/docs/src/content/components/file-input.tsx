@@ -60,7 +60,7 @@ const doc: ComponentContent = {
       title: "With a size limit",
       description:
         "The browser enforces neither a size limit nor, for a dropped file, the accept list, so the limit is stated in the description and checked when the form is submitted. A Field.Error before the control marks it invalid and is announced; the message answers in the words of the question.",
-      code: `<Field.Root>
+      code: `<Field.Root invalid>
   <Field.Label>Passport scan</Field.Label>
   <Field.Description>PDF or PNG, up to 5 MB</Field.Description>
   <Field.Error>Choose a file smaller than 5 MB</Field.Error>
@@ -111,7 +111,7 @@ const doc: ComponentContent = {
   ],
   accessibility: [
     'Renders a real <input type="file">: the picker, the keyboard behaviour and the platform\'s own file-name display come from the browser, before and without JavaScript.',
-    "The Prompt is a <label> for the input, so its text joins the accessible name and clicking it opens the picker; inside a Field, Field.Label names the control too, and Field.Description and Field.Error are linked via aria-describedby with a rendered error also setting aria-invalid.",
+    "The Prompt is a <label> for the input, so its text joins the accessible name and clicking it opens the picker; inside a Field, Field.Label names the control too, and Field.Description and Field.Error are linked via aria-describedby with Field.Root invalid setting aria-invalid.",
     "Inside a Root the native control wears the library's shared .loam-VisuallyHidden class, never display: none, so it keeps focus; the ring is drawn on the box with :has(input:focus-visible), and the dragging and error states move to system colours under forced colours. Outside a Root the control stays in view.",
   ],
   parts: [

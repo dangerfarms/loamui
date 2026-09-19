@@ -2,9 +2,9 @@
 
 import { useEffect, useId, useMemo, useRef } from "react";
 import type { CSSProperties, MouseEvent as ReactMouseEvent, Ref, RefObject } from "react";
-import { cssSafeId, supportsAnchoredPopover } from "./anchor";
-import { useControllable } from "./use-controllable";
-import { useSupports } from "./use-support";
+import { cssSafeId, supportsAnchoredPopover } from "./anchor.js";
+import { useControllable } from "./use-controllable.js";
+import { useSupports } from "./use-support.js";
 
 /**
  * The open/close engine behind the anchored popups (Popover, Menu) and the

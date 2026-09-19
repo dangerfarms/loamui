@@ -5,8 +5,8 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { useState } from "react";
 
-import { Field } from "../components/Field/index";
-import { Range } from "../components/Range/index";
+import { Field } from "../components/Field/index.js";
+import { Range } from "../components/Range/index.js";
 
 afterEach(cleanup);
 

@@ -10,7 +10,7 @@ import {
 const doc: ComponentContent = {
   slug: "date-input",
   lead: "Composable labelled fields for a date the user already knows.",
-  importLine: `import { DateInput } from "@loamui/core";`,
+  importLine: `import { DateInput, ErrorSummary } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",
@@ -30,8 +30,8 @@ const doc: ComponentContent = {
     {
       title: "Error on the whole date",
       description:
-        "An Error without parts puts all the fields in the invalid state, the right default when you cannot tell which part is wrong.",
-      code: `<DateInput.Root>
+        "Set invalid on Root to mark all fields invalid when you cannot tell which part is wrong. Error supplies the message.",
+      code: `<DateInput.Root invalid>
   <DateInput.Legend>Date of birth</DateInput.Legend>
   <DateInput.Description>For example, 27 3 2007</DateInput.Description>
   <DateInput.Error>Enter your date of birth</DateInput.Error>
@@ -46,11 +46,11 @@ const doc: ComponentContent = {
     {
       title: "Error on one part",
       description:
-        "When the message names a specific part, parts on the Error narrows the invalid styling to that field. The user's correct answers keep their values and their normal borders.",
-      code: `<DateInput.Root name="membership-start">
+        "When the message names a specific part, invalid on Root narrows the invalid styling to that field. The user's correct answers keep their values and their normal borders.",
+      code: `<DateInput.Root invalid={["year"]} name="membership-start">
   <DateInput.Legend>When did your membership start?</DateInput.Legend>
   <DateInput.Description>For example, 27 3 2019</DateInput.Description>
-  <DateInput.Error parts={["year"]}>
+  <DateInput.Error >
     Membership start date must include a year
   </DateInput.Error>
   <DateInput.Fields>
@@ -95,7 +95,7 @@ const doc: ComponentContent = {
     },
     {
       title: "Highlight only the wrong part",
-      body: 'If one field is empty or impossible, say so ("[Date] must include a year") and pass parts to the Error to mark only that field invalid. If you cannot tell which part is wrong, or the parts are individually fine but the date is not real, leave parts unset so the whole date is highlighted. Either way the user\'s correct entries are never cleared.',
+      body: 'If one field is empty or impossible, say so ("[Date] must include a year") and pass its name in the Root invalid array to mark only that field invalid. If you cannot tell which part is wrong, or the parts are individually fine but the date is not real, set Root invalid to true so the whole date is highlighted. Either way the user\'s correct entries are never cleared.',
     },
     {
       title: "Autofill for dates of birth",
@@ -113,10 +113,10 @@ const doc: ComponentContent = {
   </ErrorSummary.List>
 </ErrorSummary.Root>
 
-<DateInput.Root id="membership-start" name="membership-start">
+<DateInput.Root invalid={["year"]} id="membership-start" name="membership-start">
   <DateInput.Legend>When did your membership start?</DateInput.Legend>
   <DateInput.Description>For example, 27 3 2019</DateInput.Description>
-  <DateInput.Error parts={["year"]}>
+  <DateInput.Error >
     Membership start date must include a year
   </DateInput.Error>
   <DateInput.Fields>
@@ -167,6 +167,13 @@ const doc: ComponentContent = {
       description: "The fieldset and the wiring; native <fieldset> props are forwarded.",
       props: [
         {
+          name: "invalid",
+          type: 'boolean | ("day" | "month" | "year")[]',
+          default: "false",
+          description:
+            "Explicit validation state for all fields or named parts; available before hydration. Supply aria-describedby for initial server message associations.",
+        },
+        {
           name: "name",
           type: "string",
           description:
@@ -207,14 +214,6 @@ const doc: ComponentContent = {
     {
       name: "DateInput.Error",
       description: 'Error message announced via role="alert"; native <p> props are forwarded.',
-      props: [
-        {
-          name: "parts",
-          type: `("day" | "month" | "year")[]`,
-          description:
-            "Narrows the invalid state to the fields the error names; default is all of them.",
-        },
-      ],
     },
     {
       name: "DateInput.Fields",
@@ -223,7 +222,7 @@ const doc: ComponentContent = {
     {
       name: "DateInput.Day",
       description:
-        'The day part: a core Field around a core Input with the right name, autocomplete, inputMode="numeric" and a size of two characters. All Input props are forwarded: value, onChange, maxLength, ref, wrapperProps.',
+        'The day part: a core Field around a core Input with the right name, autocomplete, inputMode="numeric" and a size of two characters. All Input props are forwarded: value, onChange, maxLength and ref.',
       props: [
         {
           name: "children",

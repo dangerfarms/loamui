@@ -8,13 +8,13 @@ import type {
   Ref,
   RefObject,
 } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { useRequiredContext } from "../../context";
-import { composeRefs, mergeProps, renderWithProps } from "../../render";
-import type { RenderProp } from "../../render";
-import { Button } from "../Button/Button";
-import type { ButtonProps } from "../Button/Button";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { useRequiredContext } from "../../context.js";
+import { composeRefs, mergeProps, renderWithProps } from "../../render.js";
+import type { RenderProp } from "../../render.js";
+import { Button } from "../Button/Button.js";
+import type { ButtonProps } from "../Button/Button.js";
 
 /**
  * A carousel: a scroll-snap track of items with buttons that page it,
@@ -480,11 +480,11 @@ function CarouselIndicators({ className, ...rest }: CarouselIndicatorsProps) {
   );
 }
 
-export const Carousel = {
-  Root: CarouselRoot,
-  Track: CarouselTrack,
-  Item: CarouselItem,
-  Previous: CarouselPrevious,
-  Next: CarouselNext,
-  Indicators: CarouselIndicators,
+export {
+  CarouselRoot,
+  CarouselTrack,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+  CarouselIndicators,
 };

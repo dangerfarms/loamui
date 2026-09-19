@@ -40,7 +40,7 @@ export default function Example() {
         <thead>
           <tr>
             <th scope="col" className="select">
-              <Checkbox.Control
+              <Checkbox
                 aria-label="Select all orders"
                 checked={all}
                 indeterminate={some}
@@ -62,7 +62,7 @@ export default function Example() {
           {ORDERS.map((order) => (
             <tr key={order.id}>
               <td className="select">
-                <Checkbox.Control
+                <Checkbox
                   aria-label={`Select order ${order.id}`}
                   checked={selected.has(order.id)}
                   onChange={() => toggle(order.id)}

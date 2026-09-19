@@ -6,7 +6,7 @@ import { SkeletonSwapDemo } from "./skeleton.client";
 const doc: ComponentContent = {
   slug: "skeleton",
   lead: "A placeholder shown while content loads, sized by the content it stands in for.",
-  importLine: `import { Skeleton } from "@loamui/core";`,
+  importLine: `import { Skeleton, Avatar } from "@loamui/core";`,
   demos: [
     {
       title: "Basic lines",
@@ -35,7 +35,7 @@ const doc: ComponentContent = {
       description:
         "An avatar-and-text placeholder for a list item. The circle is a wrapped Avatar: the child sizes and shapes the placeholder, so there is no circle prop and nothing to keep in step with the avatar's size.",
       code: `<div style={{ display: "flex", gap: "var(--loam-space-xs)", alignItems: "center" }}>
-  <Skeleton><Avatar /></Skeleton>
+  <Skeleton><Avatar.Root /></Skeleton>
   <div style={{ display: "grid", gap: "var(--loam-space-2xs)", flex: 1 }}>
     <Skeleton style={{ "--loam-skeleton-inline-size": "40%" }} />
     <Skeleton style={{ "--loam-skeleton-inline-size": "70%" }} />
@@ -52,7 +52,9 @@ const doc: ComponentContent = {
           }}
         >
           <Skeleton>
-            <Avatar />
+            <Avatar.Root>
+              <Avatar.Fallback>?</Avatar.Fallback>
+            </Avatar.Root>
           </Skeleton>
           <div style={{ display: "grid", gap: "var(--loam-space-2xs)", flex: 1 }}>
             <Skeleton style={{ "--loam-skeleton-inline-size": "40%" } as CSSProperties} />
@@ -89,7 +91,7 @@ const doc: ComponentContent = {
       description:
         "Wrapped children size the box, so the placeholder matches the coming layout with no size props; flip visible when the data lands.",
       code: `<Skeleton visible={loading}>
-  <Avatar name="Ada Lovelace" />
+  <Avatar.Root role="img" aria-label="Ada Lovelace"><Avatar.Fallback>AL</Avatar.Fallback></Avatar.Root>
 </Skeleton>`,
       render: () => <SkeletonSwapDemo />,
     },

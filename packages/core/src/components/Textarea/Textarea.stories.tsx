@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Field, Textarea } from "../../index";
+import { Field, Textarea } from "../../index.js";
 
 const meta = {
   title: "Inputs/Textarea",
@@ -48,7 +48,7 @@ export const WithDescription: Story = {
 
 export const WithError: Story = {
   render: () => (
-    <Field.Root>
+    <Field.Root invalid>
       <Field.Label>Message</Field.Label>
       <Field.Error>Message must be at least 20 characters.</Field.Error>
       <Textarea defaultValue="Too short" />

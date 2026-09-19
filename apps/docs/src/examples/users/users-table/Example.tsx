@@ -71,11 +71,15 @@ export default function Example() {
           <tr key={member.id}>
             <th scope="row">
               <span className="member">
-                <Avatar
-                  name={member.name}
-                  src={`https://picsum.photos/id/${member.photo}/96/96`}
-                  aria-hidden
-                />
+                <Avatar.Root aria-hidden>
+                  <Avatar.Image src={`https://picsum.photos/id/${member.photo}/96/96`} alt="" />
+                  <Avatar.Fallback>
+                    {member.name
+                      .split(/\s+/)
+                      .map((part) => part[0])
+                      .join("")}
+                  </Avatar.Fallback>
+                </Avatar.Root>
                 {member.name}
               </span>
             </th>

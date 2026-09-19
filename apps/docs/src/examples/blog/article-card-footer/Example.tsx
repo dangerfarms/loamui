@@ -34,7 +34,9 @@ export default function Example() {
       </p>
       <footer>
         <div className="author">
-          <Avatar name="Dafydd Rees" aria-hidden />
+          <Avatar.Root aria-hidden>
+            <Avatar.Fallback>DR</Avatar.Fallback>
+          </Avatar.Root>
           <div className="byline">
             <address>
               <a href="/growers/dafydd-rees" rel="author">

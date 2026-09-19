@@ -16,9 +16,13 @@ export function AlertDismissibleDemo() {
       }}
     >
       {open ? (
-        <Alert title="Draft restored" onClose={() => setOpen(false)}>
-          We recovered the draft you were editing.
-        </Alert>
+        <Alert.Root>
+          <Alert.Body>
+            <Alert.Title>Draft restored</Alert.Title>
+            <Alert.Description>We recovered the draft you were editing.</Alert.Description>
+          </Alert.Body>
+          <Alert.Close onClose={() => setOpen(false)} />
+        </Alert.Root>
       ) : (
         <Button onClick={() => setOpen(true)}>Show the alert again</Button>
       )}

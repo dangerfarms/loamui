@@ -17,7 +17,12 @@ export default function Example() {
               </Field.Description>
             </div>
             <div className="control">
-              <Switch.Control name="orderUpdates" defaultChecked />
+              <Switch.Root>
+                <Switch.Control name="orderUpdates" defaultChecked />
+                <Switch.Track>
+                  <Switch.Thumb />
+                </Switch.Track>
+              </Switch.Root>
             </div>
           </div>
         </Field.Root>
@@ -45,18 +50,23 @@ export default function Example() {
               <Field.Description>News from the co-op, four times a year.</Field.Description>
             </div>
             <div className="control">
-              <Checkbox.Control name="newsletter" />
+              <Checkbox name="newsletter" />
             </div>
           </div>
         </Field.Root>
-        <Field.Root>
+        <Field.Root invalid>
           <div className="row">
             <div className="text">
               <Field.Label>Text message alerts</Field.Label>
               <Field.Description>A text when a courier is on the way.</Field.Description>
             </div>
             <div className="control">
-              <Switch.Control name="textAlerts" defaultChecked />
+              <Switch.Root>
+                <Switch.Control name="textAlerts" defaultChecked />
+                <Switch.Track>
+                  <Switch.Thumb />
+                </Switch.Track>
+              </Switch.Root>
             </div>
             <Field.Error>Add a mobile number to your account before turning this on</Field.Error>
           </div>

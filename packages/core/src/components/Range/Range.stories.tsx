@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Field, Range } from "../../index";
+import { Field, Range } from "../../index.js";
 
 const meta = {
   title: "Inputs/Range",
@@ -62,7 +62,7 @@ export const Disabled: Story = {
  */
 export const WithError: Story = {
   render: (args) => (
-    <Field.Root>
+    <Field.Root invalid>
       <Field.Label>Irrigation level</Field.Label>
       <Field.Error>Choose a level of at least 20</Field.Error>
       <Range {...args} />

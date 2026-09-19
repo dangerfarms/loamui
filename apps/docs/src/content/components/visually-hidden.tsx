@@ -4,7 +4,7 @@ import type { ComponentContent } from "@/renderer/types";
 const doc: ComponentContent = {
   slug: "visually-hidden",
   lead: "Text for assistive technology alone: the name of an icon-only control, the word that tells two identical buttons apart, the label a design hides.",
-  importLine: `import { VisuallyHidden } from "@loamui/core";`,
+  importLine: `import { VisuallyHidden, Button, Input } from "@loamui/core";`,
   demos: [
     {
       title: "Naming an icon-only control",

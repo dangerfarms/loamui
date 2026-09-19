@@ -22,7 +22,7 @@ pnpm dev        # runs the docs site
 - `packages/core`: the `@loamui/core` component library. Each component lives in
   `src/components/<Name>/` as a `.tsx` file plus a plain `.css` file inside
   `@layer loamui.components`. Each scope root keeps one prefixed class
-  (`.loam-<Name>`, or a semantic root name like `.loam-Input-field` where a
+  (`.loam-<Name>`, or a semantic root name like `.loam-Search` where a
   component has several roots); parts inside the scope are type selectors or
   short classes (`label`, `p.description`). The encapsulation is `@scope`'s
   job, not the class name's.
@@ -154,8 +154,8 @@ Button). The `render` prop exists only to _substitute_ that element
 common case needs `render`, the part has the wrong default element. The
 exception is `Field.Control`, whose entire purpose is wiring an arbitrary
 element into the field: the LoamUI controls (`Input`, `Select`, `Textarea`,
-`Range`, `QuantityInput`, `FileInput.Control`, `Search.Input`) self-wire from
-Field context when rendered inside `Field.Root`, so they never go through it.
+`Range.Control`, `QuantityInput`, `FileInput.Control`, `Search.Input`) self-wire
+from Field context when rendered inside `Field.Root`, so they never go through it.
 
 **One merge contract** (`src/render.ts`, used by every part): event handlers
 chain (the element's own handler runs first, wiring second, both always run);
@@ -164,31 +164,41 @@ chain (the element's own handler runs first, wiring second, both always run);
 `aria-labelledby` token-lists concatenate; refs compose. Never hand-roll
 `cloneElement` prop injection.
 
-**Export shapes** (pick by what the component is):
+**Compound components use ES module namespaces.** Implement parts as named
+exports such as `FieldRoot` and `FieldLabel`. Re-export them as `Root` and
+`Label` from `Field.parts.ts`, then use `export * as Field` in the component
+index. Consumers write `Field.Root`, `Field.Label` and `Alert.Title`. Keep the
+individual exports available too.
 
-- Parts only (Popover, Tooltip, Field, Fieldset, Breadcrumbs) → plain object:
-  `export const Popover = { Root, Trigger, … }`
-- Convenience form + parts (Alert) →
-  `Object.assign(Convenience, { Root, … })` so both `<Alert title=…>` and
-  `<Alert.Root>` work
-- Form controls → bare controls that self-wire from Field context via
-  `useFieldControlProps()` (`Input`, `Select`, `Textarea`, `Range`,
-  `QuantityInput`, `FileInput.Control`, `Search.Input`): no
-  label/description/error props; composition inside `Field.Root` supplies
-  them. Inline controls whose anatomy is a row (Checkbox, Switch, Radio)
-  keep the labelled convenience form plus a bare `XControl` part
-- Composed from other components (Search from Input + Button, QuantityInput
-  from `<input>` + two Buttons, CopyButton from Button) → the inner
-  components keep their own props and CSS behind the scope's donut; the
-  composite adds only its wiring
+Do not attach parts to component functions
+or collect them in runtime objects. Compound components always have an explicit
+`.Root`; standalone components such as `Button` remain callable.
 
-RSC note: `@loamui/core` ships as a single bundle with a `"use client"`
-banner, so in React Server Components **every** compound export is a client
-reference; dot access like `Popover.Root` or `Breadcrumbs.Item` is
-`undefined` in a server module, regardless of what the source file declares.
-Any JSX that uses compound parts (docs demos included) must live in a
-`*.client.tsx` file; callable convenience forms (`<Alert title=…>`,
-`<Button>`) work from server modules.
+Consumers can import from `@loamui/core` or a component entry point such as
+`@loamui/core/alert` or `@loamui/core/date-input`. Both expose the same named
+exports. Keep internal imports pointed at the implementation they need.
+
+The TypeScript build preserves modules, declarations and `"use client"`
+directives. Relative imports in core use `.js` extensions so the emitted ESM
+also resolves in Node. Add `"use client"` to modules that require client hooks
+or create event handlers, and keep static components server-compatible. A
+server component can compose imported client parts with serializable props;
+its own hooks, event handlers or render callbacks require a client boundary.
+Keep interactivity in the smallest practical module, as `Alert.Close` does.
+
+Form controls self-wire from Field context via `useFieldControlProps()`:
+`Input`, `Select`, `Textarea`, `Range.Control`, `QuantityInput`, `FileInput.Control`
+and `Search.Input` have no label/description/error props. Inline controls
+(`Checkbox`, `Switch`, `Radio`) expose their labelled component as `.Root`
+and their bare input as `.Control`. `Range.Control` is the range input;
+`Range.Root` supplies context for an optional `Range.Output`. Composites
+preserve the inner components' props and CSS boundaries and add only their
+own wiring.
+
+Run `pnpm --filter @loamui/core build` and
+`pnpm --filter @loamui/core test:package` after changing exports or build
+configuration. These checks exercise the built package's public imports,
+unused-code elimination, lazy chunks and server/client module boundaries.
 
 **State attributes**: the shared styling vocabulary, identical on every
 component (never invent synonyms):
@@ -201,7 +211,7 @@ component (never invent synonyms):
 | `data-current`                                                            | nav item                                                                 | current page/location                                                                                  |
 | `data-size` / `data-side`                                                 | Badge, Loader, Progress, Meter; Drawer, Popover, Menu and Tooltip popups | instance styling hooks read by the stylesheet; form controls have no size hooks: their sizing is fluid |
 | `data-orientation`                                                        | RadioGroup                                                               | display hook (see Sanctioned exceptions)                                                               |
-| `data-label-position`                                                     | Switch                                                                   | display hook (see Sanctioned exceptions)                                                               |
+| `data-loading` / `data-error`                                             | Avatar.Image                                                             | native image loading status                                                                            |
 | `data-striped` / `data-hover` / `data-col-borders` / `data-sticky-header` | Table                                                                    | display hooks (see Sanctioned exceptions)                                                              |
 | `data-striped` / `data-animated`                                          | Progress (root)                                                          | display hooks (see Sanctioned exceptions)                                                              |
 | `data-show-label`                                                         | Rating                                                                   | display hook (see Sanctioned exceptions)                                                               |
@@ -211,11 +221,15 @@ component (never invent synonyms):
 Components built on native state use the platform's hook instead (e.g.
 Details styles `details[open]`). **Prefer detection over declaration**:
 when the DOM already expresses a state, style it with `:has()` / ARIA
-selectors instead of minting an attribute. Field error state is the model:
-a field is invalid exactly when it contains a rendered error message
-(`.loam-Field:has(> p.error)`), and controls key off their own
-`[aria-invalid="true"]`; there are no `invalid` props and no `data-invalid`
-attributes.
+selectors instead of minting an attribute.
+
+Validation state is explicit:
+`Field.Root invalid` supplies `aria-invalid` on the control, including server
+HTML. `Field.Error` supplies message content; an empty message renders nothing.
+Description and error IDs register in client layout effects. For initial server
+associations, supply part IDs and `aria-describedby` explicitly. This supports
+parts inside custom child components without inspecting the React child tree.
+Style the control's `[aria-invalid="true"]`; do not duplicate it in `data-invalid`.
 
 **Contextual channels**: orthogonal ways a region influences the
 components inside it; never blur them:
@@ -268,10 +282,6 @@ Under review: these are the exceptions to the doctrine above; do not add to
 this list without a maintainer ruling. Each exists today and is accepted until
 a maintainer decides otherwise.
 
-- Input `startSection` / `endSection`: adornments inside the field box, not
-  icons in flow, so `:has()` detection cannot place them.
-- Alert `icon` and `onClose` on the convenience form: mirror the `Alert.Icon`
-  and `Alert.Close` parts.
 - Table `striped` / `highlightOnHover` / `withColumnBorders` / `stickyHeader`:
   display hooks, emitted as the `data-striped` / `data-hover` /
   `data-col-borders` / `data-sticky-header` attributes. The scroller's height
@@ -280,7 +290,6 @@ a maintainer decides otherwise.
   `data-striped` / `data-animated` attributes.
 - RadioGroup `orientation`: emits `data-orientation`; the layout of a set, not
   a control.
-- Switch `labelPosition`: emits `data-label-position`.
 - Rating `showLabel`: emits
   `data-show-label`; whether the
   group's name is painted as well as read. Rating `readOnly` emits
@@ -349,7 +358,7 @@ their tests remain available.
    opt-in; every icon-only control named by hidden text; `role="list"` on a
    list whose markers are stripped.
 5. **Idiomatic, current React.** `"use client"` only where the module needs
-   it (compound parts, client hooks, a function passed as a prop; the gate checks);
+   it (client hooks or a function passed as a prop; the gate checks);
    `useId` works in a synchronous Server Component without that directive;
    no effects deriving state; `useId` for ids on a unit that repeats on a
    page; native form attributes over handlers.

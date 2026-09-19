@@ -2,11 +2,11 @@
 
 import { createContext, use, useEffect, useId, useMemo, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { composeRefs } from "../../render";
-import { Button } from "../Button/Button";
-import type { ButtonProps } from "../Button/Button";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { composeRefs } from "../../render.js";
+import { Button } from "../Button/Button.js";
+import type { ButtonProps } from "../Button/Button.js";
 
 /** The words the scroll region speaks. */
 export interface TableLabels {
@@ -226,6 +226,10 @@ function TableSortButton({
   );
 }
 
+/**
+ * Callable, because a table is one element: `<Table>` renders the scroll
+ * region and the table. Th and SortButton are the cells that need behaviour.
+ */
 export const Table = Object.assign(TableRoot, {
   Th: TableTh,
   SortButton: TableSortButton,

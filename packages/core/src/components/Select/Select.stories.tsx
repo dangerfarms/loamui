@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Field, Select } from "../../index";
+import { Field, Select } from "../../index.js";
 
 const frameworkOptions = (
   <>
@@ -76,7 +76,7 @@ export const WithDescription: Story = {
 
 export const WithError: Story = {
   render: (args) => (
-    <Field.Root>
+    <Field.Root invalid>
       <Field.Label>Framework</Field.Label>
       <Field.Error>Select a framework</Field.Error>
       <Select {...args} />

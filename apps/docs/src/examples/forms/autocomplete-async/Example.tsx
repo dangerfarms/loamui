@@ -93,11 +93,8 @@ export default function Example() {
           empty: "No varieties match",
         }}
       >
-        <Combobox.Input
-          autoCapitalize="none"
-          spellCheck={false}
-          endSection={searching ? <Loader aria-hidden="true" /> : undefined}
-        />
+        <Combobox.Input autoCapitalize="none" spellCheck={false} />
+        {searching && <Loader aria-hidden="true" />}
         <Combobox.List>
           {matches?.map((name) => (
             <Combobox.Option key={name} value={name}>

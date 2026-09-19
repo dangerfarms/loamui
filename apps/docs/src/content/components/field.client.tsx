@@ -18,7 +18,7 @@ export function FieldComposeDemo() {
 export function FieldErrorDemo() {
   return (
     <div style={{ maxInlineSize: "20rem", inlineSize: "100%" }}>
-      <Field.Root>
+      <Field.Root invalid>
         <Field.Label>Email</Field.Label>
         <Field.Error>
           Enter an email address in the correct format, like name@example.com
@@ -70,12 +70,12 @@ export function FieldFormDemo() {
       noValidate
       style={{ display: "grid", gap: "var(--loam-space-s)", maxInlineSize: "22rem" }}
     >
-      <Field.Root>
+      <Field.Root invalid={Boolean(errors.name)}>
         <Field.Label>Full name</Field.Label>
         <Field.Error>{errors.name}</Field.Error>
         <Input name="name" autoComplete="name" />
       </Field.Root>
-      <Field.Root>
+      <Field.Root invalid={Boolean(errors.email)}>
         <Field.Label>Email address</Field.Label>
         <Field.Description>We&apos;ll only use this to reply.</Field.Description>
         <Field.Error>{errors.email}</Field.Error>

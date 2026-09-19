@@ -2,9 +2,9 @@
 
 import { createContext, useCallback, useId, useMemo, useRef } from "react";
 import type { ChangeEvent, ReactNode } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { useRequiredContext } from "../../context";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { useRequiredContext } from "../../context.js";
 
 /**
  * A set of mutually exclusive options drawn as one row of segments: a
@@ -170,8 +170,4 @@ function SegmentedControlItem({
   );
 }
 
-export const SegmentedControl = {
-  Root: SegmentedControlRoot,
-  Legend: SegmentedControlLegend,
-  Item: SegmentedControlItem,
-};
+export { SegmentedControlRoot, SegmentedControlLegend, SegmentedControlItem };

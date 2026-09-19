@@ -1,12 +1,12 @@
 "use client";
 
 import type { MouseEvent as ReactMouseEvent, ReactNode } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import type { RenderProp } from "../../render";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import type { RenderProp } from "../../render.js";
 
-import { Button } from "../Button/Button";
-import type { ButtonProps } from "../Button/Button";
+import { Button } from "../Button/Button.js";
+import type { ButtonProps } from "../Button/Button.js";
 
 /**
  * Link-first page navigation, composed from parts.
@@ -272,11 +272,11 @@ function PaginationPages({
   );
 }
 
-export const Pagination = {
-  Root: PaginationRoot,
-  List: PaginationList,
-  Item: PaginationItem,
-  Link: PaginationLink,
-  Ellipsis: PaginationEllipsis,
-  Pages: PaginationPages,
+export {
+  PaginationRoot,
+  PaginationList,
+  PaginationItem,
+  PaginationLink,
+  PaginationEllipsis,
+  PaginationPages,
 };

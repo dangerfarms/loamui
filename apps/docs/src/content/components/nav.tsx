@@ -14,7 +14,7 @@ import {
 const doc: ComponentContent = {
   slug: "nav",
   lead: "Vertical navigation composed from parts: a landmark named by its title, lists of links with the current one marked by a line and weight, related links folded into native disclosures or dropped down from a header's line, and a hook that tells a table of contents which section the reader is in.",
-  importLine: `import { Nav, useScrollSpy } from "@loamui/core";`,
+  importLine: `import { Nav, useScrollSpy, Menu } from "@loamui/core";`,
   demos: [
     {
       title: "A side nav",

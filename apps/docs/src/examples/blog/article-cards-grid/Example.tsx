@@ -67,7 +67,14 @@ export default function Example() {
             </h3>
             <p className="description">{article.description}</p>
             <div className="foot">
-              <Avatar name={article.author.name} aria-hidden />
+              <Avatar.Root aria-hidden>
+                <Avatar.Fallback>
+                  {article.author.name
+                    .split(/\s+/)
+                    .map((part) => part[0])
+                    .join("")}
+                </Avatar.Fallback>
+              </Avatar.Root>
               <address>
                 <a href={`/growers/${article.author.slug}`} rel="author">
                   {article.author.name}

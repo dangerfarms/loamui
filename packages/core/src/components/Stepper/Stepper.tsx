@@ -2,11 +2,11 @@
 
 import { createContext, useMemo } from "react";
 import type { ReactNode } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { useRequiredContext } from "../../context";
-import { renderWithProps } from "../../render";
-import type { RenderProp } from "../../render";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { useRequiredContext } from "../../context.js";
+import { renderWithProps } from "../../render.js";
+import type { RenderProp } from "../../render.js";
 
 /**
  * A stepper: an ordered list of steps, each a marker, a title and a
@@ -178,10 +178,4 @@ function StepperDescription({ className, children, ref, ...rest }: StepperDescri
   );
 }
 
-export const Stepper = {
-  Root: StepperRoot,
-  Step: StepperStep,
-  Marker: StepperMarker,
-  Title: StepperTitle,
-  Description: StepperDescription,
-};
+export { StepperRoot, StepperStep, StepperMarker, StepperTitle, StepperDescription };

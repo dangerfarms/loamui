@@ -13,7 +13,9 @@ export default function Example() {
   return (
     <article className="comment-thread" aria-labelledby={`${instanceId}-comment-thread-author`}>
       <header>
-        <Avatar name="Dafydd Rees" aria-hidden />
+        <Avatar.Root aria-hidden>
+          <Avatar.Fallback>DR</Avatar.Fallback>
+        </Avatar.Root>
         <a
           id={`${instanceId}-comment-thread-author`}
           className="author"
@@ -38,7 +40,9 @@ export default function Example() {
         <li>
           <article aria-labelledby={`${instanceId}-comment-thread-reply-1-author`}>
             <header>
-              <Avatar name="Nia Prosser" aria-hidden />
+              <Avatar.Root aria-hidden>
+                <Avatar.Fallback>NP</Avatar.Fallback>
+              </Avatar.Root>
               <a
                 id={`${instanceId}-comment-thread-reply-1-author`}
                 className="author"
@@ -66,7 +70,9 @@ export default function Example() {
         <li>
           <article aria-labelledby={`${instanceId}-comment-thread-reply-2-author`}>
             <header>
-              <Avatar name="Priya Natarajan" aria-hidden />
+              <Avatar.Root aria-hidden>
+                <Avatar.Fallback>PN</Avatar.Fallback>
+              </Avatar.Root>
               <a
                 id={`${instanceId}-comment-thread-reply-2-author`}
                 className="author"

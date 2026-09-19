@@ -4,7 +4,7 @@ import type { ComponentContent } from "@/renderer/types";
 const doc: ComponentContent = {
   slug: "search",
   lead: "The site's or page's search: a search landmark around a native form, with a search box and a submit.",
-  importLine: `import { Search } from "@loamui/core";`,
+  importLine: `import { Search, Field } from "@loamui/core";`,
   demos: [
     {
       title: "In a site header",

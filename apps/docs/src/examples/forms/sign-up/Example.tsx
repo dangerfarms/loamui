@@ -27,16 +27,17 @@ export default function Example() {
           </Field.Description>
           <PasswordInput name="password" autoComplete="new-password" minLength={12} required />
         </Field.Root>
-        <Checkbox
-          name="consent"
-          label={
-            <>
-              I agree to the <a href="/terms">membership terms</a> and the{" "}
-              <a href="/privacy">privacy policy</a>
-            </>
-          }
-          required
-        />
+        <Field.Item>
+          <Field.Label>
+            <Checkbox name="consent" required />{" "}
+            {
+              <>
+                I agree to the <a href="/terms">membership terms</a> and the{" "}
+                <a href="/privacy">privacy policy</a>
+              </>
+            }
+          </Field.Label>
+        </Field.Item>
         <div className="actions">
           <Button type="submit">Create account</Button>
         </div>

@@ -1,4 +1,4 @@
-export { Carousel } from "./Carousel";
+export * as Carousel from "./Carousel.parts.js";
 export type {
   CarouselLabels,
   CarouselRootProps,
@@ -8,4 +8,4 @@ export type {
   CarouselControlProps,
   CarouselControlRenderProps,
   CarouselIndicatorsProps,
-} from "./Carousel";
+} from "./Carousel.js";

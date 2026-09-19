@@ -2,16 +2,16 @@
 
 import { createContext, useEffect, useMemo } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { useRequiredContext } from "../../context";
-import { usePresence } from "../../use-presence";
-import { composeRefs, idList, mergeProps, renderWithProps } from "../../render";
-import type { RenderProp } from "../../render";
-import { popupProps, popupTriggerProps, usePopup, usePopupRoot } from "../../use-popup";
-import type { PopupState, PopupTriggerRenderProps } from "../../use-popup";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { useRequiredContext } from "../../context.js";
+import { usePresence } from "../../use-presence.js";
+import { composeRefs, idList, mergeProps, renderWithProps } from "../../render.js";
+import type { RenderProp } from "../../render.js";
+import { popupProps, popupTriggerProps, usePopup, usePopupRoot } from "../../use-popup.js";
+import type { PopupState, PopupTriggerRenderProps } from "../../use-popup.js";
 
-import { Button } from "../Button/Button";
+import { Button } from "../Button/Button.js";
 
 /**
  * A click-triggered floating panel, composed from parts.
@@ -225,11 +225,11 @@ function PopoverClose({ render, children, ...rest }: PopoverCloseProps) {
   );
 }
 
-export const Popover = {
-  Root: PopoverRoot,
-  Trigger: PopoverTrigger,
-  Popup: PopoverPopup,
-  Title: PopoverTitle,
-  Description: PopoverDescription,
-  Close: PopoverClose,
+export {
+  PopoverRoot,
+  PopoverTrigger,
+  PopoverPopup,
+  PopoverTitle,
+  PopoverDescription,
+  PopoverClose,
 };

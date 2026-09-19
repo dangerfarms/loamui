@@ -34,14 +34,21 @@ export default function Example() {
         </p>
       </div>
       <div className="foot">
-        <Avatar.Group more={3} aria-label="Working on this">
+        <Avatar.Group aria-label="Working on this">
           {TEAM.map((member) => (
-            <Avatar
-              key={member.name}
-              name={member.name}
-              src={`https://picsum.photos/id/${member.photo}/80/80`}
-            />
+            <Avatar.Root key={member.name} role="img" aria-label={member.name}>
+              <Avatar.Image src={`https://picsum.photos/id/${member.photo}/80/80`} alt="" />
+              <Avatar.Fallback>
+                {member.name
+                  .split(/\s+/)
+                  .map((part) => part[0])
+                  .join("")}
+              </Avatar.Fallback>
+            </Avatar.Root>
           ))}
+          <Avatar.Root role="img" aria-label="3 more people">
+            <Avatar.Fallback>+3</Avatar.Fallback>
+          </Avatar.Root>
         </Avatar.Group>
       </div>
     </Card>
