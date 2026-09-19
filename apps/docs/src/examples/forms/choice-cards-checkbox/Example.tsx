@@ -35,7 +35,7 @@ export default function Example() {
           return (
             <Card key={addon.value} render={<label className="card" htmlFor={id} />}>
               <span className="control">
-                <Checkbox.Control
+                <Checkbox
                   id={id}
                   name="addon"
                   value={addon.value}

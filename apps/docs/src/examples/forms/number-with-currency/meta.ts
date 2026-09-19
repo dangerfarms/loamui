@@ -15,7 +15,7 @@ export const meta: ExampleMeta = {
       "The Field's label names the amount and its description says the bounds; the select carries its own name, Currency, in an aria-label, because it is a second control and a screen reader reaches it as one. The symbol in the box is aria-hidden: it repeats what the select already says.",
   },
   composition:
-    "Core keeps buttons and selects beside a box rather than inside it, so the two share the derived control height and the box keeps its padding; the symbol is a startSection, the one adornment that belongs in the box.",
+    "Core keeps buttons and selects beside a box rather than inside it, so the two share the derived control height and the box keeps its padding; the symbol is an explicit sibling placed over the input’s padding, while the native input keeps its border and focus ring.",
   tags: ["currency", "amount", "money", "number", "select", "gift card"],
   order: 15,
 };

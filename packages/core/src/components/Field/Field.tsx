@@ -1,13 +1,14 @@
 "use client";
 
-import { createContext, use, useEffect, useId, useMemo } from "react";
+import { createContext, isValidElement, use, useId, useMemo } from "react";
 import type { ReactNode } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { useRequiredContext } from "../../context";
-import { usePresence } from "../../use-presence";
-import { idList, renderWithProps } from "../../render";
-import type { RenderProp } from "../../render";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { useRequiredContext } from "../../context.js";
+import { useIdRegistry, useIsoLayoutEffect } from "../../use-id-registry.js";
+import { hasContent } from "../../content.js";
+import { idList, renderWithProps } from "../../render.js";
+import type { RenderProp } from "../../render.js";
 
 /**
  * A composable form-field primitive.
@@ -15,10 +16,10 @@ import type { RenderProp } from "../../render";
  * Assemble a labelled control from small parts and the Root wires accessibility
  * for you: the Label points at the control, the control's `aria-describedby`
  * gathers whatever Description/Error are present, and `aria-invalid` reflects
- * the error state. Parts may be reordered or swapped freely.
+ * the explicit invalid state. Parts may be reordered or swapped freely.
  *
  * ```tsx
- * <Field.Root>
+ * <Field.Root invalid={Boolean(errorMessage)}>
  *   <Field.Label>Email</Field.Label>
  *   <Field.Description>We'll never share it.</Field.Description>
  *   <Field.Error>{errorMessage}</Field.Error>
@@ -47,14 +48,13 @@ interface FieldContextValue {
   fieldId: string;
   descriptionId: string;
   errorId: string;
-  hasDescription: boolean;
-  hasError: boolean;
   invalid: boolean;
   /** Composed aria-describedby (description + error ids that are present). */
   describedBy: string | undefined;
   labels: Required<FieldLabels>;
-  registerDescription: () => () => void;
-  registerError: () => () => void;
+  registerControl: (id: string) => () => void;
+  registerDescription: (id: string) => () => void;
+  registerError: (id: string) => () => void;
 }
 
 const FieldContext = createContext<FieldContextValue | null>(null);
@@ -71,12 +71,19 @@ function useFieldContext(part: string): FieldContextValue {
  * id once, so a control inside a Field keeps any description it brings.
  * Outside a `Field.Root` only that own value comes back, so a control can
  * wire itself to the Field when composed inside one
- * (`<Field.Label><Checkbox.Control /> …</Field.Label>`) and fall back to its
+ * (`<Field.Label><Checkbox /> …</Field.Label>`) and fall back to its
  * own props when used standalone. The shape matches
  * {@link FieldControlRenderProps}.
  */
-export function useFieldControlProps(ariaDescribedby?: string): Partial<FieldControlRenderProps> {
+export function useFieldControlProps(
+  ariaDescribedby?: string,
+  id?: string,
+): Partial<FieldControlRenderProps> {
   const ctx = use(FieldContext);
+  const registerControl = ctx?.registerControl;
+  useIsoLayoutEffect(() => {
+    if (id !== undefined && registerControl) return registerControl(id);
+  }, [id, registerControl]);
   if (!ctx) return { "aria-describedby": idList(ariaDescribedby) };
   return {
     id: ctx.fieldId,
@@ -88,39 +95,42 @@ export function useFieldControlProps(ariaDescribedby?: string): Partial<FieldCon
 export interface FieldRootProps extends PartProps<"div"> {
   /** Base id for the control; auto-generated when omitted. */
   id?: string;
+  /** Validation state, independent of whether an error message is rendered. */
+  invalid?: boolean;
   /** The Field's own words; Label and Error read them from here. */
   labels?: FieldLabels;
 }
 
-function FieldRoot({ id, labels, className, children, ref, ...rest }: FieldRootProps) {
+function FieldRoot({
+  id,
+  invalid = false,
+  labels,
+  className,
+  children,
+  ref,
+  ...rest
+}: FieldRootProps) {
   const autoId = useId();
-  const fieldId = id ?? autoId;
-  const [hasDescription, registerDescription] = usePresence();
-  const [hasError, registerError] = usePresence();
+  const baseId = id ?? autoId;
+  const [controls, registerControl] = useIdRegistry();
+  const [descriptions, registerDescription] = useIdRegistry();
+  const [errors, registerError] = useIdRegistry();
+  const fieldId = controls.at(-1) ?? baseId;
+  const descriptionId = `${baseId}-description`;
+  const errorId = `${baseId}-error`;
+  const describedBy = idList(...descriptions, ...errors);
   const optionalLabel = labels?.optional ?? DEFAULT_LABELS.optional;
   const errorPrefix = labels?.errorPrefix ?? DEFAULT_LABELS.errorPrefix;
-
-  // Invalid is never declared, only detected: the field is invalid exactly
-  // when a Field.Error with content is rendered. CSS detects the same thing
-  // with :has(> p.error).
-  const invalid = hasError;
-  const descriptionId = `${fieldId}-description`;
-  const errorId = `${fieldId}-error`;
-  const describedBy = idList(
-    hasDescription ? descriptionId : undefined,
-    hasError ? errorId : undefined,
-  );
 
   const value = useMemo<FieldContextValue>(
     () => ({
       fieldId,
       descriptionId,
       errorId,
-      hasDescription,
-      hasError,
       invalid,
       describedBy,
       labels: { optional: optionalLabel, errorPrefix },
+      registerControl,
       registerDescription,
       registerError,
     }),
@@ -128,12 +138,11 @@ function FieldRoot({ id, labels, className, children, ref, ...rest }: FieldRootP
       fieldId,
       descriptionId,
       errorId,
-      hasDescription,
-      hasError,
       invalid,
       describedBy,
       optionalLabel,
       errorPrefix,
+      registerControl,
       registerDescription,
       registerError,
     ],
@@ -146,6 +155,14 @@ function FieldRoot({ id, labels, className, children, ref, ...rest }: FieldRootP
       </div>
     </FieldContext>
   );
+}
+
+/** A local label/description scope for an option, inheriting the surrounding validation state. */
+export interface FieldItemProps extends PartProps<"div"> {}
+
+function FieldItem(props: FieldItemProps) {
+  const parent = use(FieldContext);
+  return <FieldRoot invalid={parent?.invalid} labels={parent?.labels} {...props} />;
 }
 
 export interface FieldLabelProps extends PartProps<"label"> {
@@ -170,15 +187,19 @@ function FieldLabel({ optional, className, children, ref, ...rest }: FieldLabelP
 
 export interface FieldDescriptionProps extends PartProps<"p"> {}
 
-function FieldDescription({ className, children, ref, ...rest }: FieldDescriptionProps) {
+function FieldDescription({ id, className, children, ref, ...rest }: FieldDescriptionProps) {
   const ctx = useFieldContext("Field.Description");
   const { registerDescription } = ctx;
-  useEffect(() => registerDescription(), [registerDescription]);
+  const descriptionId = id ?? ctx.descriptionId;
+  useIsoLayoutEffect(
+    () => registerDescription(descriptionId),
+    [descriptionId, registerDescription],
+  );
   return (
     <p
       ref={ref}
       className={cx("loam-Field-description description", className)}
-      id={ctx.descriptionId}
+      id={descriptionId}
       {...rest}
     >
       {children}
@@ -188,21 +209,21 @@ function FieldDescription({ className, children, ref, ...rest }: FieldDescriptio
 
 export interface FieldErrorProps extends PartProps<"p"> {}
 
-function FieldError({ className, children, ref, ...rest }: FieldErrorProps) {
+function FieldError({ id, className, children, ref, ...rest }: FieldErrorProps) {
   const ctx = useFieldContext("Field.Error");
   const { registerError } = ctx;
-  const hasContent = children != null && children !== false;
-  useEffect(() => {
-    if (!hasContent) return;
-    return registerError();
-  }, [hasContent, registerError]);
+  const present = hasContent(children);
+  const errorId = id ?? ctx.errorId;
+  useIsoLayoutEffect(() => {
+    if (present) return registerError(errorId);
+  }, [present, errorId, registerError]);
 
-  if (!hasContent) return null;
+  if (!present) return null;
   return (
     <p
       ref={ref}
       className={cx("loam-Field-error error", className)}
-      id={ctx.errorId}
+      id={errorId}
       role="alert"
       {...rest}
     >
@@ -230,19 +251,15 @@ export interface FieldControlProps {
 function FieldControl({ render }: FieldControlProps) {
   const ctx = useFieldContext("Field.Control");
 
+  const ownId = isValidElement<{ id?: string }>(render) ? render.props.id : undefined;
+  const field = useFieldControlProps(undefined, ownId);
   const controlProps: FieldControlRenderProps = {
-    id: ctx.fieldId,
+    id: field.id ?? ctx.fieldId,
     "aria-describedby": ctx.describedBy,
     "aria-invalid": ctx.invalid || undefined,
   };
 
-  return <>{renderWithProps(render, controlProps)}</>;
+  return <>{renderWithProps(render, controlProps, { id: controlProps.id })}</>;
 }
 
-export const Field = {
-  Root: FieldRoot,
-  Label: FieldLabel,
-  Description: FieldDescription,
-  Control: FieldControl,
-  Error: FieldError,
-};
+export { FieldRoot, FieldItem, FieldLabel, FieldDescription, FieldControl, FieldError };

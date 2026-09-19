@@ -13,30 +13,70 @@ const doc: ComponentContent = {
       description:
         "Alert has no colour or variant props. Declare --loam-context on a one-element wrapper region (a style query is answered by ancestors, never by the element that declares the property) and the status colours follow. See the Contextualism guide.",
       code: `<div style={{ "--loam-context": "info" }}>
-  <Alert title="Heads up">A new version is available.</Alert>
+  <Alert.Root>
+    <Alert.Body>
+      <Alert.Title>Heads up</Alert.Title>
+      <Alert.Description>A new version is available.</Alert.Description>
+    </Alert.Body>
+  </Alert.Root>
 </div>
 <div style={{ "--loam-context": "success" }}>
-  <Alert title="Saved">Your changes have been stored.</Alert>
+  <Alert.Root>
+    <Alert.Body>
+      <Alert.Title>Saved</Alert.Title>
+      <Alert.Description>Your changes have been stored.</Alert.Description>
+    </Alert.Body>
+  </Alert.Root>
 </div>
 <div style={{ "--loam-context": "warning" }}>
-  <Alert title="Low storage">Only 5% of your quota remains.</Alert>
+  <Alert.Root>
+    <Alert.Body>
+      <Alert.Title>Low storage</Alert.Title>
+      <Alert.Description>Only 5% of your quota remains.</Alert.Description>
+    </Alert.Body>
+  </Alert.Root>
 </div>
 <div style={{ "--loam-context": "danger" }}>
-  <Alert title="Deploy failed">Check the build logs.</Alert>
+  <Alert.Root>
+    <Alert.Body>
+      <Alert.Title>Deploy failed</Alert.Title>
+      <Alert.Description>Check the build logs.</Alert.Description>
+    </Alert.Body>
+  </Alert.Root>
 </div>`,
       render: () => (
         <div style={{ display: "grid", gap: "var(--loam-space-xs)", inlineSize: "100%" }}>
           <div style={{ "--loam-context": "info" } as CSSProperties}>
-            <Alert title="Heads up">A new version is available.</Alert>
+            <Alert.Root>
+              <Alert.Body>
+                <Alert.Title>Heads up</Alert.Title>
+                <Alert.Description>A new version is available.</Alert.Description>
+              </Alert.Body>
+            </Alert.Root>
           </div>
           <div style={{ "--loam-context": "success" } as CSSProperties}>
-            <Alert title="Saved">Your changes have been stored.</Alert>
+            <Alert.Root>
+              <Alert.Body>
+                <Alert.Title>Saved</Alert.Title>
+                <Alert.Description>Your changes have been stored.</Alert.Description>
+              </Alert.Body>
+            </Alert.Root>
           </div>
           <div style={{ "--loam-context": "warning" } as CSSProperties}>
-            <Alert title="Low storage">Only 5% of your quota remains.</Alert>
+            <Alert.Root>
+              <Alert.Body>
+                <Alert.Title>Low storage</Alert.Title>
+                <Alert.Description>Only 5% of your quota remains.</Alert.Description>
+              </Alert.Body>
+            </Alert.Root>
           </div>
           <div style={{ "--loam-context": "danger" } as CSSProperties}>
-            <Alert title="Deploy failed">Check the build logs.</Alert>
+            <Alert.Root>
+              <Alert.Body>
+                <Alert.Title>Deploy failed</Alert.Title>
+                <Alert.Description>Check the build logs.</Alert.Description>
+              </Alert.Body>
+            </Alert.Root>
           </div>
         </div>
       ),
@@ -46,9 +86,12 @@ const doc: ComponentContent = {
       description:
         "--loam-context inherits, so an alert inside a region that already means something needs nothing of its own. Here the region declares danger once: the Alert and the Button beside it both answer it, and neither carries a prop.",
       code: `<div style={{ "--loam-context": "danger" }}>
-  <Alert title="This workspace will be deleted">
-    Everything in it is removed for every member.
-  </Alert>
+  <Alert.Root>
+    <Alert.Body>
+      <Alert.Title>This workspace will be deleted</Alert.Title>
+      <Alert.Description>Everything in it is removed for every member.</Alert.Description>
+    </Alert.Body>
+  </Alert.Root>
   <Button>Delete workspace</Button>
 </div>`,
       render: () => (
@@ -63,9 +106,12 @@ const doc: ComponentContent = {
             } as CSSProperties
           }
         >
-          <Alert title="This workspace will be deleted">
-            Everything in it is removed for every member.
-          </Alert>
+          <Alert.Root>
+            <Alert.Body>
+              <Alert.Title>This workspace will be deleted</Alert.Title>
+              <Alert.Description>Everything in it is removed for every member.</Alert.Description>
+            </Alert.Body>
+          </Alert.Root>
           <Button>Delete workspace</Button>
         </div>
       ),
@@ -75,15 +121,27 @@ const doc: ComponentContent = {
       description:
         "Pass any node as the leading icon. It is rendered aria-hidden, so the title carries the meaning on its own.",
       code: `<div style={{ "--loam-context": "info" }}>
-  <Alert icon={<span aria-hidden>ℹ</span>} title="Did you know?">
-    An alert takes its status from the --loam-context of the region around it.
-  </Alert>
+  <Alert.Root>
+    <Alert.Icon>{<span aria-hidden>ℹ</span>}</Alert.Icon>
+    <Alert.Body>
+      <Alert.Title>Did you know?</Alert.Title>
+      <Alert.Description>
+        An alert takes its status from the --loam-context of the region around it.
+      </Alert.Description>
+    </Alert.Body>
+  </Alert.Root>
 </div>`,
       render: () => (
         <div style={{ "--loam-context": "info", inlineSize: "100%" } as CSSProperties}>
-          <Alert icon={<span aria-hidden>ℹ</span>} title="Did you know?">
-            An alert takes its status from the --loam-context of the region around it.
-          </Alert>
+          <Alert.Root>
+            <Alert.Icon>{<span aria-hidden>ℹ</span>}</Alert.Icon>
+            <Alert.Body>
+              <Alert.Title>Did you know?</Alert.Title>
+              <Alert.Description>
+                An alert takes its status from the --loam-context of the region around it.
+              </Alert.Description>
+            </Alert.Body>
+          </Alert.Root>
         </div>
       ),
     },
@@ -92,34 +150,48 @@ const doc: ComponentContent = {
       description:
         "Body content is optional: a one-line message is the title alone, and the live region still announces it.",
       code: `<div style={{ "--loam-context": "success" }}>
-  <Alert title="All systems operational." />
+  <Alert.Root>
+    <Alert.Body>
+      <Alert.Title>All systems operational.</Alert.Title>
+    </Alert.Body>
+  </Alert.Root>
 </div>`,
       render: () => (
         <div style={{ "--loam-context": "success", inlineSize: "100%" } as CSSProperties}>
-          <Alert title="All systems operational." />
+          <Alert.Root>
+            <Alert.Body>
+              <Alert.Title>All systems operational.</Alert.Title>
+            </Alert.Body>
+          </Alert.Root>
         </div>
       ),
     },
     {
       title: "Dismissible",
       description:
-        "onClose renders an Alert.Close, a LoamUI Button named Dismiss (or labels.close), at the inline end. The alert does not remove itself: the handler stops rendering it, because only you know whether acknowledging the message ends the condition it reports.",
+        "Add Alert.Close at the inline end and handle dismissal with its onClose prop. Its default accessible name is Dismiss; labels.close supplies another name. The alert does not remove itself: the handler stops rendering it, because only you know whether acknowledging the message ends the condition it reports.",
       code: `const [open, setOpen] = useState(true);
 
 {open && (
-  <Alert title="Draft restored" onClose={() => setOpen(false)}>
-    We recovered the draft you were editing.
-  </Alert>
+  <Alert.Root>
+    <Alert.Body>
+      <Alert.Title>Draft restored</Alert.Title>
+      <Alert.Description>We recovered the draft you were editing.</Alert.Description>
+    </Alert.Body>
+    <Alert.Close onClose={() => setOpen(false)} />
+  </Alert.Root>
 )}`,
       render: () => <AlertDismissibleDemo />,
     },
     {
       title: "Composed from parts",
       description:
-        "The parts in the anatomy the convenience form renders. Alert.Title takes render where the title belongs in the page outline; Alert.Close takes labels for its name.",
+        "Compose the icon, body, heading and dismiss button explicitly. Alert.Title takes render where the title belongs in the page outline; Alert.Close takes labels for its name.",
       code: `<div style={{ "--loam-context": "warning" }}>
   <Alert.Root>
-    <Alert.Icon><span aria-hidden>⚠</span></Alert.Icon>
+    <Alert.Icon>
+      <span aria-hidden>⚠</span>
+    </Alert.Icon>
     <Alert.Body>
       <Alert.Title render={<h2 />}>Storage almost full</Alert.Title>
       <Alert.Description>Free up space to keep syncing.</Alert.Description>
@@ -136,7 +208,7 @@ const doc: ComponentContent = {
   ],
   whenNotToUse: [
     "For transient confirmations that need no follow-up (“Saved”, “Copied”). Use Toast; an alert that lingers after the moment has passed becomes noise.",
-    "For an error tied to a single form field. Use Field.Error, which wires aria-describedby and aria-invalid to the control the error belongs to.",
+    "For an error tied to a single form field. Use Field.Root invalid and Field.Error to provide validation state and an associated message.",
   ],
   howItWorks: [
     {
@@ -160,51 +232,11 @@ const doc: ComponentContent = {
     "The icon slot is rendered aria-hidden. Icons are decoration here, so any meaning they carry must also be in the text.",
     "Title text is not the raw status colour: it is mixed toward black (light scheme) or white (dark) so it keeps AA contrast on the tint even for light channels like warning; only the decorative icon carries the raw channel (the border is a softer tint of it).",
   ],
-  props: [
-    {
-      name: "title",
-      type: "ReactNode",
-      description: "Bold heading rendered above the body.",
-    },
-    {
-      name: "icon",
-      type: "ReactNode",
-      description: "Icon rendered to the inline-start of the content.",
-    },
-    {
-      name: "children",
-      type: "ReactNode",
-      description: "Alert body content.",
-    },
-    {
-      name: "onClose",
-      type: "() => void",
-      description: "Renders an Alert.Close that calls this when activated.",
-    },
-    {
-      name: "labels",
-      type: "{ close?: string }",
-      default: `{ close: "Dismiss" }`,
-      description: "The close button's name, when onClose renders one.",
-    },
-    {
-      name: "role",
-      type: "string",
-      default: `"status"`,
-      description:
-        'Live-region role. The polite default announces without interrupting; pass "alert" for a message that appears in response to an action and must interrupt.',
-    },
-    {
-      name: "...others",
-      type: "HTMLAttributes<HTMLDivElement>",
-      description: "All native <div> props are forwarded.",
-    },
-  ],
   parts: [
     {
       name: "Alert.Root",
       description:
-        'The live region: a <div role="status"> carrying the class and the context; all native <div> props are forwarded, so role="alert" overrides the default.',
+        'The live region: a <div role="status"> carrying the class and the context. Use Alert.Title for the heading; role="alert" overrides the polite default.',
     },
     {
       name: "Alert.Icon",

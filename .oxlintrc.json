@@ -21,9 +21,9 @@
       "error",
       {
         "controlComponents": [
-          "CheckboxControl",
-          "SwitchControl",
-          "RadioControl",
+          "Checkbox.Control",
+          "Switch.Control",
+          "Radio.Control",
           "Input",
           "Select",
           "Textarea",
@@ -116,7 +116,7 @@
     // The modal example demonstrates initial-focus placement, which is
     // what autofocus is for inside a just-opened dialog.
     {
-      "files": ["**/modal.client.tsx"],
+      "files": ["**/modal.examples.tsx"],
       "rules": {
         "jsx-a11y/no-autofocus": "off"
       }

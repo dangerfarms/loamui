@@ -13,7 +13,7 @@ The site's or page's search: a search landmark around a native form, with a sear
 ## Import
 
 ```tsx
-import { Search } from "@loamui/core";
+import { Search, Field } from "@loamui/core";
 ```
 
 ## Usage

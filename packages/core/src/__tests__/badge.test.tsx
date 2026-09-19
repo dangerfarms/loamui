@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import { axe } from "vitest-axe";
-import { Badge } from "../components/Badge/index";
+import { Badge } from "../components/Badge/index.js";
 
 afterEach(cleanup);
 

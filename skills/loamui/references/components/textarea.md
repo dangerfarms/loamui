@@ -48,7 +48,7 @@ Field.Description is linked to the textarea through aria-describedby, so the hin
 A Field.Error before the control marks the field invalid and is announced: the message's presence is the state.
 
 ```tsx
-<Field.Root>
+<Field.Root invalid>
   <Field.Label>Message</Field.Label>
   <Field.Error>Message must be 20 characters or more</Field.Error>
   <Textarea defaultValue="Too short" />

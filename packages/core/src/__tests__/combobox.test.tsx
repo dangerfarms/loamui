@@ -5,8 +5,8 @@ import { axe } from "vitest-axe";
 import { useState } from "react";
 import type { FormEvent } from "react";
 
-import { Combobox } from "../components/Combobox/index";
-import { Field } from "../index";
+import { Combobox } from "../components/Combobox/index.js";
+import { Field } from "../index.js";
 
 afterEach(cleanup);
 

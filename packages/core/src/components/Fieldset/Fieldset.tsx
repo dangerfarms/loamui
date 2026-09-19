@@ -2,8 +2,8 @@
 
 import { createContext, useContext, useMemo } from "react";
 import type { ReactNode } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
 
 /**
  * Groups related controls under a shared, semantic label.
@@ -71,7 +71,4 @@ function FieldsetLegend({ optional, className, children, ref, ...rest }: Fieldse
   );
 }
 
-export const Fieldset = {
-  Root: FieldsetRoot,
-  Legend: FieldsetLegend,
-};
+export { FieldsetRoot, FieldsetLegend };

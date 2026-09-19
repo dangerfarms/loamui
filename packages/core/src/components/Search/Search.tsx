@@ -1,14 +1,14 @@
 "use client";
 
 import { createContext, useId, useMemo } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { useRequiredContext } from "../../context";
-import { useFieldControlProps } from "../Field/Field";
-import { Button } from "../Button/Button";
-import type { ButtonProps } from "../Button/Button";
-import { Input } from "../Input/Input";
-import type { InputProps } from "../Input/Input";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { useRequiredContext } from "../../context.js";
+import { useFieldControlProps } from "../Field/Field.js";
+import { Button } from "../Button/Button.js";
+import type { ButtonProps } from "../Button/Button.js";
+import { Input } from "../Input/Input.js";
+import type { InputProps } from "../Input/Input.js";
 
 /**
  * The site's or page's search, composed from parts.
@@ -137,9 +137,4 @@ function SearchButton({ children, ...rest }: SearchButtonProps) {
   );
 }
 
-export const Search = {
-  Root: SearchRoot,
-  Label: SearchLabel,
-  Input: SearchInput,
-  Button: SearchButton,
-};
+export { SearchRoot, SearchLabel, SearchInput, SearchButton };

@@ -4,7 +4,9 @@ import "./example.css";
 export default function Example() {
   return (
     <div className="byline">
-      <Avatar name="Nia Prosser" aria-hidden />
+      <Avatar.Root aria-hidden>
+        <Avatar.Fallback>NP</Avatar.Fallback>
+      </Avatar.Root>
       <address>
         <a href="/growers/nia-prosser" rel="author">
           Nia Prosser

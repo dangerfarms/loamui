@@ -23,7 +23,7 @@ export interface PropRow {
  * props table so the reference mirrors the anatomy.
  */
 export interface PartDoc {
-  /** As written in code: "Modal.Trigger", "RadioGroup", "CheckboxControl". */
+  /** As written in code: "Modal.Trigger", "RadioGroup", "Field.Item". */
   name: string;
   /** What the part is and renders. */
   description: string;

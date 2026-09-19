@@ -2,12 +2,12 @@
 
 import { createContext, useEffect, useId, useMemo, useRef } from "react";
 import type { MouseEvent as ReactMouseEvent, Ref, RefObject } from "react";
-import { useRequiredContext } from "./context";
-import { composeRefs, idList } from "./render";
-import { usePresence } from "./use-presence";
-import { useOpenState } from "./use-popup";
-import type { OpenStateOptions } from "./use-popup";
-import { useSupports } from "./use-support";
+import { useRequiredContext } from "./context.js";
+import { composeRefs, idList } from "./render.js";
+import { usePresence } from "./use-presence.js";
+import { useOpenState } from "./use-popup.js";
+import type { OpenStateOptions } from "./use-popup.js";
+import { useSupports } from "./use-support.js";
 
 /**
  * The dialog engine behind Modal and Drawer. The Popup is a native

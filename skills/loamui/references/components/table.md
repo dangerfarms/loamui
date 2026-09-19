@@ -196,7 +196,11 @@ A <caption> names the table in its own words: it is what screen readers announce
 - striped and highlightOnHover are visual aids only: never encode meaning in row shading, because assistive tech does not announce it.
 - A sortable header is a <th aria-sort> holding a real <button>, so it is reached by Tab and toggled with Enter or Space; the button's name is the column plus a hidden suffix saying what a press will do, and labels.sort replaces those words.
 
-## Props
+## Parts
+
+### Table
+
+The table and its scroll wrapper; compose native table elements inside it.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -208,11 +212,9 @@ A <caption> names the table in its own words: it is what screen readers announce
 | `labels` | `{ scrollable?: string }` | `{ scrollable: "Scrollable table" }` | The scroll region's name when the table overflows and has no <caption>. |
 | `...others` | `HTMLAttributes<HTMLDivElement> & { ref }` | — | All native <div> props land on the scroll wrapper, the component's own element. |
 
-## Parts
-
 ### Table.Th
 
-A header cell: <th scope="col"> by default (scope is forwarded for row headers). With sort it carries aria-sort and gives the SortButton inside it the current state. Must be inside a Table.
+A header cell: <th scope="col"> by default (scope is forwarded for row headers). With sort it carries aria-sort and gives the SortButton inside it the current state. Must be inside Table.Root.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |

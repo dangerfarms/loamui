@@ -1,4 +1,4 @@
-export { Modal } from "./Modal";
+export * as Modal from "./Modal.parts.js";
 export type {
   ModalRootProps,
   ModalTriggerProps,
@@ -8,4 +8,4 @@ export type {
   ModalDescriptionProps,
   ModalCloseProps,
   ModalCloseRenderProps,
-} from "./Modal";
+} from "./Modal.js";

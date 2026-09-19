@@ -4,7 +4,10 @@ import "./example.css";
 export default function Example() {
   return (
     <div className="user-info-with-icons">
-      <Avatar name="Bryn Powell" src="https://picsum.photos/id/1005/200/200" aria-hidden />
+      <Avatar.Root aria-hidden>
+        <Avatar.Image src="https://picsum.photos/id/1005/200/200" alt="" />
+        <Avatar.Fallback>BP</Avatar.Fallback>
+      </Avatar.Root>
       <div className="text">
         <h2>Bryn Powell</h2>
         <p className="role">Head grower</p>

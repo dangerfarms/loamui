@@ -21,7 +21,7 @@ Reach for a component when a native element needs structure it does not have on 
 
 ## Compose, don't configure
 
-Composition is the components' own concern, which is why it lives here rather than beside the pillars: tokens and element styles have nothing to compose. Compound components expose their parts, element substitution goes through the `render` prop, and Button icons and loaders are children. Input’s `startSection` and `endSection` props supply adornments inside its field box. Bespoke variants are compositions in your codebase, not configuration in the library.
+Composition is the components' own concern, which is why it lives here rather than beside the pillars: tokens and element styles have nothing to compose. Compound components expose their parts, element substitution goes through the `render` prop, and Button icons and loaders are children. Input renders one native input; adornments are composed as siblings in caller-owned markup. Bespoke variants are compositions in your codebase, not configuration in the library.
 
 ```tsx
 <Field.Root>
@@ -37,3 +37,30 @@ Three rules follow from it. Parts, not prop soup: `Modal.Root`, `Modal.Trigger`,
 ## Finding your way
 
 The components are grouped by job in the sidebar: **Inputs**, **Data display**, **Feedback**, **Disclosures**, **Navigation** and **Utilities**. Every page shows live examples, the real CSS that ships, and guidance on when to use it and when not. They are low-level parts by design: a hero, a pricing table or a grid of cards is a composition you own, and the [example recipes](/recipes) are worked references for writing your own.
+
+## Component namespaces
+
+Import the component namespace and compose its parts. The package root and
+component entry points expose the same components:
+
+```tsx
+import { Alert } from "@loamui/core/alert";
+
+<Alert.Root>
+  <Alert.Title>Saved</Alert.Title>
+  <Alert.Description>Your changes are saved.</Alert.Description>
+</Alert.Root>;
+```
+
+Compound components use an explicit `.Root`. Alert's heading, icon and dismiss
+button are children: `Alert.Title`, `Alert.Icon` and `Alert.Close`.
+
+Individual exports such as `AlertRoot` and `AlertTitle` are also available.
+They allow finer-grained tree shaking in bundlers that retain sibling parts
+when using a namespace. Use component entry points such as
+`@loamui/core/modal` to control lazy-loading boundaries.
+
+The build preserves module-level client directives. Static parts can render
+on the server. Server components can compose imported client parts with
+serializable props; add a client boundary to your own composition when it
+needs client hooks, event handlers or render callbacks.

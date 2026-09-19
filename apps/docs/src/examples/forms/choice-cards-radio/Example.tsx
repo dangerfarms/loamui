@@ -34,7 +34,7 @@ export default function Example({ name }: { name?: string }) {
           return (
             <Card key={plan.value} render={<label className="card" htmlFor={id} />}>
               <span className="control">
-                <Radio.Control
+                <Radio
                   id={id}
                   value={plan.value}
                   aria-labelledby={`${id}-title`}

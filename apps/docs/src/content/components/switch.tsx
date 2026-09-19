@@ -1,4 +1,4 @@
-import { Switch } from "@loamui/core";
+import { Switch, Field } from "@loamui/core";
 import type { ComponentContent } from "@/renderer/types";
 import { Example } from "@/renderer/Example";
 import { SwitchFieldDemo } from "./switch.client";
@@ -12,27 +12,62 @@ const doc: ComponentContent = {
       title: "Basic usage",
       description:
         "A bare Switch named by aria-label, for a row where the words already sit beside it. Off by default: a setting the user has not turned on.",
-      code: `<Switch aria-label="Email notifications" />`,
-      render: () => <Switch aria-label="Email notifications" />,
+      code: `<Switch.Root><Switch.Control aria-label="Email notifications" /><Switch.Track><Switch.Thumb /></Switch.Track></Switch.Root>`,
+      render: () => (
+        <Switch.Root>
+          <Switch.Control aria-label="Email notifications" />
+          <Switch.Track>
+            <Switch.Thumb />
+          </Switch.Track>
+        </Switch.Root>
+      ),
     },
     {
       title: "Checked",
       description: "The track fills with the primary colour when on.",
-      code: `<Switch defaultChecked aria-label="Autosave" />`,
-      render: () => <Switch defaultChecked aria-label="Autosave" />,
+      code: `<Switch.Root><Switch.Control defaultChecked aria-label="Autosave" /><Switch.Track><Switch.Thumb /></Switch.Track></Switch.Root>`,
+      render: () => (
+        <Switch.Root>
+          <Switch.Control defaultChecked aria-label="Autosave" />
+          <Switch.Track>
+            <Switch.Thumb />
+          </Switch.Track>
+        </Switch.Root>
+      ),
     },
     {
       title: "Label position",
-      description: "labelPosition places the label after the toggle (default) or before it.",
-      code: `<Switch label="Enable notifications" />
-<Switch label="Marketing emails" labelPosition="start" />`,
+      description:
+        "Place the text before or after Switch.Root inside Field.Label. DOM order sets the label position.",
+      code: `<Field.Item><Field.Label><Switch.Root><Switch.Control  /><Switch.Track><Switch.Thumb /></Switch.Track></Switch.Root> Enable notifications</Field.Label></Field.Item>
+<Field.Item><Field.Label>Marketing emails <Switch.Root><Switch.Control  /><Switch.Track><Switch.Thumb /></Switch.Track></Switch.Root></Field.Label></Field.Item>`,
       render: () => (
         <div style={{ display: "grid", gap: "var(--loam-space-xs)" }}>
           <Example label="Label at the end (default)">
-            <Switch label="Enable notifications" />
+            <Field.Item>
+              <Field.Label>
+                <Switch.Root>
+                  <Switch.Control />
+                  <Switch.Track>
+                    <Switch.Thumb />
+                  </Switch.Track>
+                </Switch.Root>{" "}
+                Enable notifications
+              </Field.Label>
+            </Field.Item>
           </Example>
           <Example label="Label at the start">
-            <Switch label="Marketing emails" labelPosition="start" />
+            <Field.Item>
+              <Field.Label>
+                Marketing emails{" "}
+                <Switch.Root>
+                  <Switch.Control />
+                  <Switch.Track>
+                    <Switch.Thumb />
+                  </Switch.Track>
+                </Switch.Root>
+              </Field.Label>
+            </Field.Item>
           </Example>
         </div>
       ),
@@ -40,13 +75,33 @@ const doc: ComponentContent = {
     {
       title: "Disabled",
       description:
-        "disabled reaches the native input: the row is dimmed and skipped by Tab, and a switch that is on and disabled shows a setting that is on and not the user's to change here. Disabled is detected on the input, never declared on the row.",
-      code: `<Switch label="Usage analytics" disabled />
-<Switch label="Security alerts" defaultChecked disabled />`,
+        "disabled reaches the native input: the track is dimmed and the input is skipped by Tab, and a switch that is on and disabled shows a setting that is on and not the user's to change here. Disabled is detected on the input, never declared on the row.",
+      code: `<Field.Item><Field.Label><Switch.Root><Switch.Control disabled /><Switch.Track><Switch.Thumb /></Switch.Track></Switch.Root> Usage analytics</Field.Label></Field.Item>
+<Field.Item><Field.Label><Switch.Root><Switch.Control defaultChecked disabled /><Switch.Track><Switch.Thumb /></Switch.Track></Switch.Root> Security alerts</Field.Label></Field.Item>`,
       render: () => (
         <div style={{ display: "grid", gap: "var(--loam-space-xs)" }}>
-          <Switch label="Usage analytics" disabled />
-          <Switch label="Security alerts" defaultChecked disabled />
+          <Field.Item>
+            <Field.Label>
+              <Switch.Root>
+                <Switch.Control disabled />
+                <Switch.Track>
+                  <Switch.Thumb />
+                </Switch.Track>
+              </Switch.Root>{" "}
+              Usage analytics
+            </Field.Label>
+          </Field.Item>
+          <Field.Item>
+            <Field.Label>
+              <Switch.Root>
+                <Switch.Control defaultChecked disabled />
+                <Switch.Track>
+                  <Switch.Thumb />
+                </Switch.Track>
+              </Switch.Root>{" "}
+              Security alerts
+            </Field.Label>
+          </Field.Item>
         </div>
       ),
     },
@@ -56,7 +111,7 @@ const doc: ComponentContent = {
         "The bare Switch.Control self-wires from Field context: label association and description linking come from the Field, the same composition contract every form control shares.",
       code: `<Field.Root>
   <Field.Label>
-    <Switch.Control defaultChecked /> Email notifications
+    <Switch.Root><Switch.Control defaultChecked /><Switch.Track><Switch.Thumb /></Switch.Track></Switch.Root> Email notifications
   </Field.Label>
   <Field.Description>Sent at most once a day.</Field.Description>
 </Field.Root>`,
@@ -84,47 +139,31 @@ const doc: ComponentContent = {
   accessibility: [
     'Renders a native checkbox exposed with role="switch", so it is operable by keyboard and announced as on/off.',
     "The label is tied to the control; the whole row is clickable.",
-    "In the rare case a switch needs an error message, wrap it in a Field.Root and add a Field.Error before the control: the message marks it invalid and is announced.",
+    "In the rare case a switch needs an error message, wrap it in a Field.Root and add a Field.Error before the control: set invalid on Field.Root for the validation state; the message is announced.",
     "State is conveyed by more than colour (the thumb position), so it remains clear in forced-colors and for colour-blind users.",
     "Disabled is detected on the native input (:has(input:disabled) on the row, input:disabled on the track), never declared on a wrapper.",
   ],
-  props: [
-    {
-      name: "label",
-      type: "ReactNode",
-      description: "Label rendered beside the toggle.",
-    },
-    {
-      name: "description",
-      type: "ReactNode",
-      description: "Helper text rendered below the label row.",
-    },
-    {
-      name: "labelPosition",
-      type: `"start" | "end"`,
-      default: `"end"`,
-      description: "Which side of the toggle the label sits on.",
-    },
-    {
-      name: "wrapperProps",
-      type: 'PartProps<"label">',
-      description:
-        "Props for the labelled row (the <label> around the toggle and its words). className, style, ref and every other prop land on the <input> itself.",
-    },
-    {
-      name: "...others",
-      type: "InputHTMLAttributes",
-      description:
-        'All native <input type="checkbox"> props (except type and size), and ref, are forwarded to the <input>.',
-    },
-  ],
+
   parts: [
+    {
+      name: "Switch.Root",
+      description: "A span containing Control and Track. Native span props and ref are forwarded.",
+    },
     {
       name: "Switch.Control",
       description:
-        "The bare toggle without a label, for composing inside a Field where the label lives on Field.Label. It reads its wiring (id, aria-describedby, aria-invalid) from the field context, and takes the same props as Switch minus label, description and labelPosition; its wrapperProps reach the span around the input and track.",
+        "The native checkbox with role=switch. Receives checked, defaultChecked, disabled, name, onChange, ref and other input props, and self-wires from Field.",
+    },
+    {
+      name: "Switch.Track",
+      description:
+        "The decorative track, following the Control in the DOM. Native span props are forwarded.",
+    },
+    {
+      name: "Switch.Thumb",
+      description:
+        "The decorative thumb inside Track; CSS moves it in response to the native input’s checked state.",
     },
   ],
 };
-
 export default doc;

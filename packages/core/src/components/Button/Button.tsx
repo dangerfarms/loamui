@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { renderWithProps } from "../../render";
-import type { RenderProp } from "../../render";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { renderWithProps } from "../../render.js";
+import type { RenderProp } from "../../render.js";
 
 export interface ButtonProps extends PartProps<"button"> {
   children?: ReactNode;
@@ -42,12 +42,15 @@ export interface ButtonProps extends PartProps<"button"> {
  * For a one-off colour set the public `--loam-button-color` property; for a
  * house style, wrap it (the SecondaryButton pattern).
  */
-export function Button({ render, className, children, ref, ...rest }: ButtonProps) {
+export function Button({ render, type, className, children, ref, ...rest }: ButtonProps) {
   if (render) {
+    const buttonTarget =
+      typeof render === "function" || typeof render.type !== "string" || render.type === "button";
     return (
       <>
         {renderWithProps(render, {
           ref,
+          type: type ?? (buttonTarget ? "button" : undefined),
           className: cx("loam-Button", className),
           children,
           ...rest,
@@ -58,7 +61,7 @@ export function Button({ render, className, children, ref, ...rest }: ButtonProp
   return (
     // type="button" unless overridden: a bare <button> inside a form is a
     // native submit, so "Cancel" buttons would submit the form.
-    <button ref={ref} type="button" className={cx("loam-Button", className)} {...rest}>
+    <button ref={ref} type={type ?? "button"} className={cx("loam-Button", className)} {...rest}>
       {children}
     </button>
   );

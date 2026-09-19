@@ -372,3 +372,14 @@ export function componentsByCategory() {
     items: COMPONENTS.filter((c) => c.category === category),
   })).filter((g) => g.items.length > 0);
 }
+
+/** Resolve a named part to the component family that documents it. */
+export function componentForExport(name: string): NavItem | undefined {
+  return (
+    COMPONENTS.find((component) => component.name === name) ??
+    COMPONENTS.filter(
+      (component) =>
+        name.startsWith(component.name) && /^[A-Z]/.test(name.slice(component.name.length)),
+    ).sort((a, b) => b.name.length - a.name.length)[0]
+  );
+}

@@ -53,7 +53,7 @@ export function FileInputDraggingDemo() {
 export function FileInputErrorDemo() {
   return (
     <div style={{ maxInlineSize: "24rem", inlineSize: "100%" }}>
-      <Field.Root>
+      <Field.Root invalid>
         <Field.Label>Passport scan</Field.Label>
         <Field.Description>PDF or PNG, up to 5 MB</Field.Description>
         <Field.Error>Choose a file smaller than 5 MB</Field.Error>

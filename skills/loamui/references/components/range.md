@@ -134,7 +134,7 @@ disabled reaches the native input: the track and thumb dim, the value stays read
 
 ### Show the current value
 
-A track communicates roughly where you are, never what you chose, so render the number where the user can see it. Range.Output is the component's answer: a native <output> bound to the input, above the thumb, that follows it. Field.Label accepts any content and the control is stateless, so the value can instead ride in the label, driven by value and onChange.
+The thumb shows an approximate position. Display the chosen number with Range.Output, a native <output> bound to the input that follows the thumb. Field.Label accepts any content and the control is stateless, so the value can instead ride in the label, driven by value and onChange.
 
 ```tsx
 const [volume, setVolume] = useState(70);
@@ -159,7 +159,11 @@ step sets the smallest move a user can make, so match it to differences that act
 - Assistive tech hears the value change as it moves; sighted users have no equivalent unless you render the value visibly: Range.Output, or the value in the label.
 - Range.Output is a native <output for>, so it is bound to the input and announced as a status; marks are a real <datalist>, which the platform snaps to, and the drawn ticks and labels are a picture of it, hidden from assistive technology rather than exposed as a list of options after the slider.
 
-## Props
+## Parts
+
+### Range
+
+The native range input. It self-wires inside Field.Root; Range.Root is optional when composing an output.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -170,11 +174,9 @@ step sets the smallest move a user can make, so match it to differences that act
 | `marks` | `Array<{ value: number; label?: string }>` | — | Points on the track: forwarded to a <datalist> the input references, drawn as ticks under the track with each label beneath its tick. |
 | `...others` | `InputHTMLAttributes` | — | All native <input type="range"> props are forwarded. |
 
-## Parts
-
 ### Range.Root
 
-The optional <div> wrapper that carries the value between a Range and its Range.Output; native <div> props are forwarded. Not needed for a range without an output.
+The optional <div> wrapper that carries the value between Range and Range.Output; native <div> props are forwarded. Not needed for a range without an output.
 
 ### Range.Output
 

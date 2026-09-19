@@ -11,7 +11,9 @@ export default function Example() {
         </p>
       </blockquote>
       <figcaption>
-        <Avatar name="Mari Hughes" aria-hidden="true" />
+        <Avatar.Root aria-hidden="true">
+          <Avatar.Fallback>MH</Avatar.Fallback>
+        </Avatar.Root>
         <div className="author">
           <span className="name">Mari Hughes</span>
           <span className="role">Member since 2019, Ludlow</span>

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import { cx, type LoamUISize, type PartProps } from "../../utils";
-import { renderWithProps } from "../../render";
-import type { RenderProp } from "../../render";
+import { cx, type LoamUISize, type PartProps } from "../../utils.js";
+import { renderWithProps } from "../../render.js";
+import type { RenderProp } from "../../render.js";
 
 export interface BadgeProps extends Omit<PartProps<"span">, "color"> {
   /** Control size. @default "md" */
@@ -55,4 +55,9 @@ function BadgeBase({ size = "md", render, className, children, ref, ...rest }: B
   return <span {...wiring} />;
 }
 
+/**
+ * Callable, because a Badge is one element: `<Badge>Live</Badge>`. The dot is
+ * the only part worth naming, so it hangs off the component rather than
+ * forcing a `Badge` that would say nothing the bare tag does not.
+ */
 export const Badge = Object.assign(BadgeBase, { Dot: BadgeDot });

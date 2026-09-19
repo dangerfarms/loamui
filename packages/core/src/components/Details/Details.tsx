@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
 
 export interface DetailsRootProps extends PartProps<"details"> {
   /** Open by default (maps to the native open attribute). */
@@ -79,8 +79,4 @@ function DetailsContent({ className, children, ref, ...rest }: DetailsContentPro
   );
 }
 
-export const Details = {
-  Root: DetailsRoot,
-  Summary: DetailsSummary,
-  Content: DetailsContent,
-};
+export { DetailsRoot, DetailsSummary, DetailsContent };

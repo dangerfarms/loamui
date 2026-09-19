@@ -10,7 +10,7 @@ import {
 const doc: ComponentContent = {
   slug: "carousel",
   lead: "A scroll-snap track of items with buttons that page it, indicators that jump to an item and a live status. The track is an ordinary scroller: a wheel, a swipe and the arrow keys all work without the buttons, and the current item is read from the scroll position, so every part follows a swipe as faithfully as a click.",
-  importLine: `import { Carousel } from "@loamui/core";`,
+  importLine: `import { Carousel, Card } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",

@@ -4,6 +4,52 @@ Notable changes to `@loamui/core`. Dates are the day the change landed on
 `main`. While the version is below 1.0, any release may break: the scale, the
 token names and the context mechanism are still settling.
 
+## Unreleased
+
+### Changed — breaking
+
+- Input renders a single native input. Its `startSection`, `endSection` and
+  `wrapperProps` are removed; compose surrounding content explicitly. Combobox
+  anchors its suggestions to that native input.
+- Compound components are ES module namespaces with an explicit `.Root`,
+  including `Alert.Root`, `Badge.Root`, `Switch.Root` and `Table.Root`.
+  Parts retain dot syntax without attaching properties to component functions.
+  Individual named exports remain available for fine-grained tree shaking.
+- Alert's `title`, `icon` and `onClose` convenience props are removed. Compose
+  `Alert.Title`, `Alert.Icon` and `Alert.Close` inside `Alert.Root` instead.
+- Avatar now composes `Root`, `Image` and `Fallback`; image loading stays native.
+  Root no longer accepts `src`, `name` or `alt`. Group overflow is explicit children.
+- Checkbox and Radio are callable native controls without label/description props.
+  Compose text through Field. Switch exposes Root, Control, Track and Thumb.
+- `Field.Item` provides independent option labels and descriptions. Field and
+  RadioGroup use explicit Root `invalid`; DateInput accepts a boolean or an
+  array of invalid part names on Root. Error content no longer determines validity.
+  Message IDs register after hydration; explicit ARIA links support initial SSR.
+- The range input is `Range.Control`; `Range.Root` provides the optional
+  value context for `Range.Output`.
+- JavaScript ships as separate ES modules with module-level client
+  directives. Static components can execute on the server; server
+  compositions can render named client parts with serializable props.
+
+### Added
+
+- Component entry points such as `@loamui/core/alert` and
+  `@loamui/core/modal`, exposing the same named exports as the package root.
+  Use these entry points to control lazy-loading boundaries.
+- Browser regression checks across Chromium, Firefox and WebKit in light and dark
+  schemes, including native controls, SSR, image loading and dialog focus.
+- Package regression checks for public entry points, unused-code removal,
+  deferred chunks and client directives.
+
+### Fixed
+
+- Button render targets preserve the default non-submit type.
+- Custom Field IDs keep label and description associations.
+- Empty error content does not produce an announcement.
+- QuantityInput respects readOnly in its step controls.
+- Tabs.List composes the consumer keyboard handler.
+- Avatar retains caller-supplied naming across image failures and retries new sources.
+
 ## 0.1.1 — 2026-09-18
 
 ### Changed

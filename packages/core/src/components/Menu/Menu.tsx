@@ -6,16 +6,16 @@ import type {
   MouseEvent as ReactMouseEvent,
   ReactNode,
 } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { useRequiredContext } from "../../context";
-import { composeRefs, mergeProps, renderWithProps } from "../../render";
-import type { RenderProp } from "../../render";
-import { popupProps, popupTriggerProps, usePopup, usePopupRoot } from "../../use-popup";
-import type { PopupState, PopupTriggerRenderProps } from "../../use-popup";
-import { usePresence } from "../../use-presence";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { useRequiredContext } from "../../context.js";
+import { composeRefs, mergeProps, renderWithProps } from "../../render.js";
+import type { RenderProp } from "../../render.js";
+import { popupProps, popupTriggerProps, usePopup, usePopupRoot } from "../../use-popup.js";
+import type { PopupState, PopupTriggerRenderProps } from "../../use-popup.js";
+import { usePresence } from "../../use-presence.js";
 
-import { Button } from "../Button/Button";
+import { Button } from "../Button/Button.js";
 
 /**
  * A list of actions opened from a trigger, composed from parts.
@@ -54,6 +54,9 @@ interface MenuContextValue extends PopupState {
   focusOnOpen: { current: "first" | "last" };
   /** Close and return focus to the trigger (item activation, Escape). */
   closeAndRefocus: () => void;
+  registerItem: (item: MenuItemEntry) => () => void;
+  /** The focusable items in the order they are painted. */
+  items: () => HTMLElement[];
 }
 
 const MenuContext = createContext<MenuContextValue | null>(null);
@@ -62,12 +65,29 @@ function useMenuContext(part: string): MenuContextValue {
   return useRequiredContext(MenuContext, part, "Menu.Root");
 }
 
-/** The focusable items of every kind, in DOM order; disabled items are skipped. */
-function menuItems(popup: HTMLElement | null): HTMLElement[] {
-  if (!popup) return [];
-  return Array.from(
-    popup.querySelectorAll<HTMLElement>('[role^="menuitem"]:not([aria-disabled="true"])'),
-  );
+/**
+ * What an item tells the Root about itself. The items are the Root's own
+ * collection rather than something re-read from the popup: an item may be a
+ * button, a link or a consumer's own element through `render`, so a query
+ * would couple roving focus to markup the consumer controls.
+ */
+export interface MenuItemEntry {
+  node: HTMLElement | null;
+  disabled?: boolean;
+}
+
+/**
+ * The focusable items of every kind, in the order they are painted; disabled
+ * items are skipped. Registration order is mount order, which groups and
+ * conditional items do not preserve, so the nodes settle the order.
+ */
+function inPaintedOrder(items: Iterable<MenuItemEntry>): HTMLElement[] {
+  return [...items]
+    .filter((item) => !item.disabled && item.node)
+    .sort((a, b) =>
+      a.node!.compareDocumentPosition(b.node!) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1,
+    )
+    .map((item) => item.node!);
 }
 
 export interface MenuRootProps extends PartProps<"span"> {
@@ -96,9 +116,20 @@ function MenuRoot({
     triggerRef.current?.focus({ preventScroll: true });
   }, [setOpen, triggerRef]);
 
+  const itemsRef = useRef(new Map<MenuItemEntry, MenuItemEntry>());
+
+  const registerItem = useCallback((item: MenuItemEntry) => {
+    itemsRef.current.set(item, item);
+    return () => {
+      itemsRef.current.delete(item);
+    };
+  }, []);
+
+  const items = useCallback(() => inPaintedOrder(itemsRef.current.values()), []);
+
   const value = useMemo<MenuContextValue>(
-    () => ({ ...popup, focusOnOpen, closeAndRefocus }),
-    [popup, closeAndRefocus],
+    () => ({ ...popup, focusOnOpen, closeAndRefocus, registerItem, items }),
+    [popup, closeAndRefocus, registerItem, items],
   );
 
   return (
@@ -176,8 +207,8 @@ function MenuPopup({
   // when it would otherwise be lost. Menus move focus; they never trap it.
   usePopup(ctx, {
     focusOnOpen: (el) => {
-      const items = menuItems(el);
-      const target = ctx.focusOnOpen.current === "last" ? items[items.length - 1] : items[0];
+      const found = ctx.items();
+      const target = ctx.focusOnOpen.current === "last" ? found[found.length - 1] : found[0];
       (target ?? el).focus({ preventScroll: true });
     },
     onEscape: ctx.closeAndRefocus,
@@ -187,7 +218,7 @@ function MenuPopup({
   const handleKeyDown = (e: ReactKeyboardEvent<HTMLDivElement>) => {
     onKeyDown?.(e);
     if (e.defaultPrevented) return;
-    const items = menuItems(ref.current);
+    const items = ctx.items();
     if (items.length === 0) return;
     const current = items.indexOf(document.activeElement as HTMLElement);
 
@@ -305,6 +336,13 @@ function ItemBase({
     `Menu.${role === "menuitem" ? "Item" : role === "menuitemcheckbox" ? "CheckboxItem" : "RadioItem"}`,
   );
 
+  // The node goes in with the entry: it is what settles painted order, and
+  // what roving focus and typeahead move to. An item may be a button, a link
+  // or the consumer's own element, so the ref rides the wiring either way.
+  const node = useRef<HTMLElement | null>(null);
+  const { registerItem } = ctx;
+  useEffect(() => registerItem({ node: node.current, disabled }), [registerItem, disabled]);
+
   const itemProps: MenuItemRenderProps = {
     role,
     tabIndex: -1,
@@ -328,6 +366,7 @@ function ItemBase({
         {renderWithProps(render, {
           ...rest,
           ...itemProps,
+          ref: node,
           children,
           className: cx("item", className),
         })}
@@ -344,7 +383,7 @@ function ItemBase({
         {children}
       </button>
     );
-  return <>{renderWithProps(target, itemProps)}</>;
+  return <>{renderWithProps(target, { ...itemProps, ref: node })}</>;
 }
 
 function MenuItem({ closeOnClick = true, ...props }: MenuItemProps) {
@@ -525,15 +564,15 @@ function MenuSeparator({ className, ...rest }: MenuSeparatorProps) {
   return <hr className={className} {...rest} />;
 }
 
-export const Menu = {
-  Root: MenuRoot,
-  Trigger: MenuTrigger,
-  Popup: MenuPopup,
-  Item: MenuItem,
-  CheckboxItem: MenuCheckboxItem,
-  RadioGroup: MenuRadioGroup,
-  RadioItem: MenuRadioItem,
-  Group: MenuGroup,
-  GroupLabel: MenuGroupLabel,
-  Separator: MenuSeparator,
+export {
+  MenuRoot,
+  MenuTrigger,
+  MenuPopup,
+  MenuItem,
+  MenuCheckboxItem,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuGroup,
+  MenuGroupLabel,
+  MenuSeparator,
 };

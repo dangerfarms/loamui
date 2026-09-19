@@ -1,4 +1,4 @@
-export { Drawer } from "./Drawer";
+export * as Drawer from "./Drawer.parts.js";
 export type {
   DrawerRootProps,
   DrawerTriggerProps,
@@ -9,4 +9,4 @@ export type {
   DrawerDescriptionProps,
   DrawerCloseProps,
   DrawerCloseRenderProps,
-} from "./Drawer";
+} from "./Drawer.js";

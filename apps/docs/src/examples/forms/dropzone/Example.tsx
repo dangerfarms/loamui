@@ -29,7 +29,7 @@ export default function Example() {
   const [error, setError] = useState<string | null>(null);
 
   return (
-    <Field.Root className="dropzone">
+    <Field.Root invalid={Boolean(error)} className="dropzone">
       <Field.Label>Plot photos</Field.Label>
       <Field.Description>JPEG or PNG, up to 10 MB each, five at most.</Field.Description>
       <Field.Error>{error}</Field.Error>

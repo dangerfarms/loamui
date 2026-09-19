@@ -1,6 +1,8 @@
+"use client";
+
 import { useCallback, useEffect, useId, useState } from "react";
-import { usePresence } from "./use-presence";
-import { useHydrated } from "./use-support";
+import { usePresence } from "./use-presence.js";
+import { useHydrated } from "./use-support.js";
 
 /**
  * Server-safe naming for a composition whose Root is named by one of its

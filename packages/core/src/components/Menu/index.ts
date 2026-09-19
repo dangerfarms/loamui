@@ -1,4 +1,4 @@
-export { Menu } from "./Menu";
+export * as Menu from "./Menu.parts.js";
 export type {
   MenuRootProps,
   MenuTriggerProps,
@@ -12,4 +12,4 @@ export type {
   MenuGroupProps,
   MenuGroupLabelProps,
   MenuSeparatorProps,
-} from "./Menu";
+} from "./Menu.js";

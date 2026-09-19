@@ -1,11 +1,10 @@
-export { Alert } from "./Alert";
+export { Alert } from "./AlertBase.js";
+export type { AlertProps } from "./AlertBase.js";
 export type {
-  AlertProps,
   AlertRootProps,
   AlertIconProps,
   AlertBodyProps,
   AlertTitleProps,
   AlertDescriptionProps,
-  AlertCloseProps,
-  AlertCloseLabels,
-} from "./Alert";
+} from "./Alert.js";
+export type { AlertCloseProps, AlertCloseLabels } from "./AlertClose.js";

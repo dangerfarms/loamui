@@ -7,7 +7,9 @@ export default function Example() {
   return (
     <Card render={<article className="profile-card" aria-labelledby={name} />}>
       <div className="body">
-        <Avatar name="Imogen Hartley" aria-hidden />
+        <Avatar.Root aria-hidden>
+          <Avatar.Fallback>IH</Avatar.Fallback>
+        </Avatar.Root>
         <h2 id={name}>Imogen Hartley</h2>
         <p className="role">Steward, Lower Field plot</p>
         <dl className="stats">

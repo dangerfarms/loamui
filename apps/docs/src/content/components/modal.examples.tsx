@@ -1,6 +1,4 @@
-"use client";
-
-import { Modal } from "@loamui/core";
+import { Modal } from "@loamui/core/modal";
 import type { CSSProperties } from "react";
 
 export function ModalDemo() {

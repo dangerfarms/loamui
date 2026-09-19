@@ -1,4 +1,4 @@
-export { Stepper } from "./Stepper";
+export * as Stepper from "./Stepper.parts.js";
 export type {
   StepperLabels,
   StepperRootProps,
@@ -6,4 +6,4 @@ export type {
   StepperMarkerProps,
   StepperTitleProps,
   StepperDescriptionProps,
-} from "./Stepper";
+} from "./Stepper.js";

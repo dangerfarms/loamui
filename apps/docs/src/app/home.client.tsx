@@ -30,7 +30,9 @@ export function HeroShowcase() {
         }}
       >
         <header>
-          <Avatar name="Jamie Rivera" />
+          <Avatar.Root role="img" aria-label="Jamie Rivera">
+            <Avatar.Fallback>JR</Avatar.Fallback>
+          </Avatar.Root>
           <div>
             <strong>Jamie Rivera</strong>
             <small>Product designer</small>
@@ -62,15 +64,19 @@ export function HeroShowcase() {
         </Field.Root>
 
         <div className="row">
-          <Checkbox
-            label="Email notifications"
-            name="notifications"
-            checked={notify}
-            onChange={(event) => {
-              setNotify(event.currentTarget.checked);
-              setMessage("");
-            }}
-          />
+          <Field.Item>
+            <Field.Label>
+              <Checkbox
+                name="notifications"
+                checked={notify}
+                onChange={(event) => {
+                  setNotify(event.currentTarget.checked);
+                  setMessage("");
+                }}
+              />{" "}
+              Email notifications
+            </Field.Label>
+          </Field.Item>
         </div>
         <div className="row">
           <span className="label">Notifications</span>
@@ -139,11 +145,15 @@ export function ContextShowcase() {
               <h4>One region, shared styles</h4>
             </header>
             <p>The same content adapts to its surroundings.</p>
-            <Checkbox
-              label="Example selection"
-              checked={selected}
-              onChange={(event) => setSelected(event.currentTarget.checked)}
-            />
+            <Field.Item>
+              <Field.Label>
+                <Checkbox
+                  checked={selected}
+                  onChange={(event) => setSelected(event.currentTarget.checked)}
+                />{" "}
+                Example selection
+              </Field.Label>
+            </Field.Item>
             <a href="/docs/contextualism">How contextualism works</a>
             <footer>
               <Button

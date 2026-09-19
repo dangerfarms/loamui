@@ -18,7 +18,7 @@ export function DateInputDemo() {
 
 export function DateInputWholeErrorDemo() {
   return (
-    <DateInput.Root>
+    <DateInput.Root invalid>
       <DateInput.Legend>Date of birth</DateInput.Legend>
       <DateInput.Description>For example, 27 3 2007</DateInput.Description>
       <DateInput.Error>Enter your date of birth</DateInput.Error>
@@ -33,10 +33,10 @@ export function DateInputWholeErrorDemo() {
 
 export function DateInputPartErrorDemo() {
   return (
-    <DateInput.Root name="membership-start">
+    <DateInput.Root invalid={["year"]} name="membership-start">
       <DateInput.Legend>When did your membership start?</DateInput.Legend>
       <DateInput.Description>For example, 27 3 2019</DateInput.Description>
-      <DateInput.Error parts={["year"]}>Membership start date must include a year</DateInput.Error>
+      <DateInput.Error>Membership start date must include a year</DateInput.Error>
       <DateInput.Fields>
         <DateInput.Day defaultValue="27" />
         <DateInput.Month defaultValue="3" />
@@ -70,12 +70,10 @@ export function DateInputSummaryDemo() {
           </ErrorSummary.Item>
         </ErrorSummary.List>
       </ErrorSummary.Root>
-      <DateInput.Root id="membership-start" name="membership-start">
+      <DateInput.Root invalid={["year"]} id="membership-start" name="membership-start">
         <DateInput.Legend>When did your membership start?</DateInput.Legend>
         <DateInput.Description>For example, 27 3 2019</DateInput.Description>
-        <DateInput.Error parts={["year"]}>
-          Membership start date must include a year
-        </DateInput.Error>
+        <DateInput.Error>Membership start date must include a year</DateInput.Error>
         <DateInput.Fields>
           <DateInput.Day defaultValue="27" />
           <DateInput.Month defaultValue="3" />

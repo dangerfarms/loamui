@@ -13,7 +13,7 @@ export const meta: ExampleMeta = {
       "The bar speaks 60% of tasks done through labels.value and the count is written out beside it; the group is named Working on this and each avatar is an image with the person's name as its alt.",
   },
   composition:
-    "Avatar.Group counts the people it is given and adds the overflow avatar from more; the avatar size is its public property, set on the foot rather than passed to each Avatar.",
+    "Avatar.Group wraps each child in a list item; the overflow count is another composed Avatar; the avatar size is its public property, set on the foot rather than passed to each Avatar.",
   tags: ["milestone", "project", "tasks", "team", "deadline"],
   order: 7,
 };

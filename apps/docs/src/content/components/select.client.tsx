@@ -62,7 +62,7 @@ export function SelectGroupsDemo() {
 export function SelectErrorDemo() {
   return (
     <div style={{ maxInlineSize: "20rem", inlineSize: "100%" }}>
-      <Field.Root>
+      <Field.Root invalid>
         <Field.Label>Country</Field.Label>
         <Field.Error>Select a country</Field.Error>
         <Select>

@@ -1,4 +1,4 @@
-import { Button, Checkbox, Loader, VisuallyHidden } from "@loamui/core";
+import { Button, Checkbox, Loader, VisuallyHidden, Field } from "@loamui/core";
 import type { CSSProperties } from "react";
 import type { ComponentContent } from "@/renderer/types";
 import { Example } from "@/renderer/Example";
@@ -6,7 +6,7 @@ import { Example } from "@/renderer/Example";
 const doc: ComponentContent = {
   slug: "button",
   lead: "A native button whose appearance is decided by its context, not by props.",
-  importLine: `import { Button } from "@loamui/core";`,
+  importLine: `import { Button, Checkbox, Loader, VisuallyHidden } from "@loamui/core";`,
   demos: [
     {
       title: "Contexts",
@@ -45,7 +45,7 @@ const doc: ComponentContent = {
       description:
         "--loam-context isn't a button feature: everything in the region answers it. Here the checkbox's fill, the button's tint and the loader's stroke all take the danger colour, and focus rings inside follow. Intent is declared once on the container, not as a colour prop on each control.",
       code: `<div style={{ "--loam-context": "danger" }}>
-  <Checkbox label="Also delete backups" defaultChecked />
+  <Field.Item><Field.Label><Checkbox defaultChecked /> Also delete backups</Field.Label></Field.Item>
   <Button>Delete account</Button>
   <Loader label="Deleting" />
 </div>`,
@@ -61,7 +61,11 @@ const doc: ComponentContent = {
             } as CSSProperties
           }
         >
-          <Checkbox label="Also delete backups" defaultChecked />
+          <Field.Item>
+            <Field.Label>
+              <Checkbox defaultChecked /> Also delete backups
+            </Field.Label>
+          </Field.Item>
           <Button>Delete account</Button>
           <Loader label="Deleting" />
         </div>

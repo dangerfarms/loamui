@@ -11,6 +11,7 @@ describe("number-input-with-slider", () => {
     const { container } = render(<Example />);
     const box = screen.getByRole("textbox", { name: "Propagator temperature" });
     const slider = screen.getByRole("slider", { name: "Propagator temperature" });
+    expect(box.id).not.toBe(slider.id);
     expect(box).toHaveAttribute("size", "3");
     expect(box).toHaveValue("20");
     expect(slider).toHaveValue("20");

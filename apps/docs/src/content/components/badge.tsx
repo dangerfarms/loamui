@@ -139,31 +139,36 @@ const doc: ComponentContent = {
     "The context colours the pill but is never announced. Assistive tech hears only the text, so never let colour be the only difference between two badges.",
     "The label is not the raw status colour: it is mixed toward black (light scheme) or white (dark) so it keeps contrast on the pill's own tint in both schemes.",
   ],
-  props: [
-    {
-      name: "size",
-      type: `"sm" | "md" | "lg"`,
-      default: `"md"`,
-      description: "Control size: the type step, with the pill's geometry in em on it.",
-    },
-    {
-      name: "render",
-      type: "element | (props) => node",
-      description:
-        "Substitute the element (render={<a href=… />} for a tag that is a link); the Badge's class and attributes merge onto it.",
-    },
-    {
-      name: "children",
-      type: "ReactNode",
-      description: "The badge content: label, and any composed icons.",
-    },
-    {
-      name: "...others",
-      type: "SpanHTMLAttributes",
-      description: "All native <span> props are forwarded.",
-    },
-  ],
+
   parts: [
+    {
+      name: "Badge",
+      description: "The badge container, with its label and optional Badge.Dot or icon children.",
+      props: [
+        {
+          name: "size",
+          type: `"sm" | "md" | "lg"`,
+          default: `"md"`,
+          description: "Control size: the type step, with the pill's geometry in em on it.",
+        },
+        {
+          name: "render",
+          type: "element | (props) => node",
+          description:
+            "Substitute the element (render={<a href=… />} for a tag that is a link); the Badge's class and attributes merge onto it.",
+        },
+        {
+          name: "children",
+          type: "ReactNode",
+          description: "The badge content: label, and any composed icons.",
+        },
+        {
+          name: "...others",
+          type: "SpanHTMLAttributes",
+          description: "All native <span> props are forwarded.",
+        },
+      ],
+    },
     {
       name: "Badge.Dot",
       description:

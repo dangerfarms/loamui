@@ -1,17 +1,18 @@
 "use client";
 
-import { createContext, useCallback, useEffect, useId, useMemo, useState } from "react";
+import { createContext, useId, useMemo } from "react";
 import type { ReactNode } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { useRequiredContext } from "../../context";
-import { idList } from "../../render";
-import { usePresence } from "../../use-presence";
-import { Field } from "../Field/Field";
-import { Fieldset } from "../Fieldset/Fieldset";
-import type { FieldsetLabels } from "../Fieldset/Fieldset";
-import { Input } from "../Input/Input";
-import type { InputProps } from "../Input/Input";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { useRequiredContext } from "../../context.js";
+import { idList } from "../../render.js";
+import { hasContent as hasMessageContent } from "../../content.js";
+import { useIdRegistry, useIsoLayoutEffect } from "../../use-id-registry.js";
+import { FieldRoot, FieldLabel } from "../Field/Field.js";
+import { FieldsetRoot, FieldsetLegend } from "../Fieldset/Fieldset.js";
+import type { FieldsetLabels } from "../Fieldset/Fieldset.js";
+import { Input } from "../Input/Input.js";
+import type { InputProps } from "../Input/Input.js";
 
 /**
  * Composable parts for asking for a memorable date.
@@ -66,11 +67,9 @@ interface DateInputContextValue {
   descriptionId: string;
   errorId: string;
   errorPrefix: ReactNode;
-  hasError: boolean;
-  /** Parts the registered error applies to; null means all of them. */
-  errorParts: DateInputPart[] | null;
-  registerDescription: () => () => void;
-  registerError: (parts: DateInputPart[] | null) => () => void;
+  invalid: boolean | DateInputPart[];
+  registerDescription: (id: string) => () => void;
+  registerError: (id: string) => () => void;
 }
 
 const DateInputContext = createContext<DateInputContextValue | null>(null);
@@ -84,6 +83,8 @@ export interface DateInputRootProps extends Omit<PartProps<"fieldset">, "name"> 
   name?: string;
   /** Wire browser autofill when asking for a date of birth (WCAG 1.3.5). */
   autoComplete?: "bday";
+  /** Validation state: true for all fields, or the specific invalid parts. */
+  invalid?: boolean | DateInputPart[];
   /** The group's own words; the Legend and Error read them from here. */
   labels?: DateInputLabels;
 }
@@ -91,6 +92,8 @@ export interface DateInputRootProps extends Omit<PartProps<"fieldset">, "name"> 
 function DateInputRoot({
   name,
   autoComplete,
+  invalid = false,
+  "aria-describedby": ariaDescribedby,
   labels,
   id,
   className,
@@ -103,26 +106,9 @@ function DateInputRoot({
   const descriptionId = `${baseId}-description`;
   const errorId = `${baseId}-error`;
   const errorPrefix = labels?.errorPrefix ?? DEFAULT_ERROR_PREFIX;
-  const [hasDescription, registerDescription] = usePresence();
-  // An Error registers like a Description, plus the parts it names.
-  const [errorInfo, setErrorInfo] = useState<{
-    count: number;
-    parts: DateInputPart[] | null;
-  }>({ count: 0, parts: null });
-  const registerError = useCallback((parts: DateInputPart[] | null) => {
-    setErrorInfo((s) => ({ count: s.count + 1, parts }));
-    return () =>
-      setErrorInfo((s) => ({
-        count: s.count - 1,
-        parts: s.count > 1 ? s.parts : null,
-      }));
-  }, []);
-
-  const hasError = errorInfo.count > 0;
-  const describedBy = idList(
-    hasDescription ? descriptionId : undefined,
-    hasError ? errorId : undefined,
-  );
+  const [descriptionIds, registerDescription] = useIdRegistry();
+  const [errorIds, registerError] = useIdRegistry();
+  const describedBy = idList(...descriptionIds, ...errorIds, ariaDescribedby);
 
   const value = useMemo<DateInputContextValue>(
     () => ({
@@ -132,8 +118,7 @@ function DateInputRoot({
       descriptionId,
       errorId,
       errorPrefix,
-      hasError,
-      errorParts: errorInfo.parts,
+      invalid,
       registerDescription,
       registerError,
     }),
@@ -144,8 +129,7 @@ function DateInputRoot({
       descriptionId,
       errorId,
       errorPrefix,
-      hasError,
-      errorInfo.parts,
+      invalid,
       registerDescription,
       registerError,
     ],
@@ -153,7 +137,7 @@ function DateInputRoot({
 
   return (
     <DateInputContext value={value}>
-      <Fieldset.Root
+      <FieldsetRoot
         ref={ref}
         id={id}
         className={cx("loam-DateInput", className)}
@@ -162,45 +146,48 @@ function DateInputRoot({
         {...rest}
       >
         {children}
-      </Fieldset.Root>
+      </FieldsetRoot>
     </DateInputContext>
   );
 }
 
 export interface DateInputDescriptionProps extends PartProps<"p"> {}
 
-function DateInputDescription({ className, children, ref, ...rest }: DateInputDescriptionProps) {
+function DateInputDescription({
+  id,
+  className,
+  children,
+  ref,
+  ...rest
+}: DateInputDescriptionProps) {
   const ctx = useDateInputContext("DateInput.Description");
   const { registerDescription } = ctx;
-  useEffect(() => registerDescription(), [registerDescription]);
+  const descriptionId = id ?? ctx.descriptionId;
+  useIsoLayoutEffect(
+    () => registerDescription(descriptionId),
+    [descriptionId, registerDescription],
+  );
   return (
-    <p ref={ref} id={ctx.descriptionId} className={cx("description", className)} {...rest}>
+    <p ref={ref} id={descriptionId} className={cx("description", className)} {...rest}>
       {children}
     </p>
   );
 }
 
-export interface DateInputErrorProps extends PartProps<"p"> {
-  /**
-   * Which fields the error applies to. Defaults to all of them — narrow it
-   * when the error names a specific part ("must include a year").
-   */
-  parts?: DateInputPart[];
-}
+export interface DateInputErrorProps extends PartProps<"p"> {}
 
-function DateInputError({ parts, className, children, ref, ...rest }: DateInputErrorProps) {
+function DateInputError({ id, className, children, ref, ...rest }: DateInputErrorProps) {
   const ctx = useDateInputContext("DateInput.Error");
   const { registerError } = ctx;
-  const hasContent = children != null && children !== false;
-  const partsKey = parts?.join(",") ?? "";
-  useEffect(() => {
-    if (!hasContent) return;
-    return registerError(partsKey ? (partsKey.split(",") as DateInputPart[]) : null);
-  }, [hasContent, partsKey, registerError]);
+  const hasContent = hasMessageContent(children);
+  const errorId = id ?? ctx.errorId;
+  useIsoLayoutEffect(() => {
+    if (hasContent) return registerError(errorId);
+  }, [hasContent, errorId, registerError]);
 
   if (!hasContent) return null;
   return (
-    <p ref={ref} id={ctx.errorId} role="alert" className={cx("error", className)} {...rest}>
+    <p ref={ref} id={errorId} role="alert" className={cx("error", className)} {...rest}>
       <span className="loam-VisuallyHidden">{ctx.errorPrefix}</span>
       {children}
     </p>
@@ -235,10 +222,10 @@ function createPart(part: DateInputPart, displayName: string) {
   function DateInputPartField({ children, id, ...rest }: DateInputPartProps) {
     const ctx = useDateInputContext(displayName);
     const inputId = id ?? `${ctx.baseId}-${part}`;
-    const invalid = ctx.hasError && (ctx.errorParts?.includes(part) ?? true);
+    const invalid = typeof ctx.invalid === "boolean" ? ctx.invalid : ctx.invalid.includes(part);
     return (
-      <Field.Root id={inputId}>
-        <Field.Label>{children ?? PART_LABELS[part]}</Field.Label>
+      <FieldRoot id={inputId} invalid={invalid}>
+        <FieldLabel>{children ?? PART_LABELS[part]}</FieldLabel>
         <Input
           {...PARTS[part]}
           name={ctx.name ? `${ctx.name}-${part}` : undefined}
@@ -246,21 +233,16 @@ function createPart(part: DateInputPart, displayName: string) {
           aria-invalid={invalid || undefined}
           {...rest}
         />
-      </Field.Root>
+      </FieldRoot>
     );
   }
   DateInputPartField.displayName = displayName;
   return DateInputPartField;
 }
 
-export const DateInput = {
-  Root: DateInputRoot,
-  /** Names the group: core `Fieldset.Legend`, which reads `labels.optional`. */
-  Legend: Fieldset.Legend,
-  Description: DateInputDescription,
-  Error: DateInputError,
-  Fields: DateInputFields,
-  Day: createPart("day", "DateInput.Day"),
-  Month: createPart("month", "DateInput.Month"),
-  Year: createPart("year", "DateInput.Year"),
-};
+export { DateInputRoot, DateInputDescription, DateInputError, DateInputFields };
+/** Names the group with Fieldset.Legend, which reads `labels.optional`. */
+export const DateInputLegend = FieldsetLegend;
+export const DateInputDay = /* @__PURE__ */ createPart("day", "DateInput.Day");
+export const DateInputMonth = /* @__PURE__ */ createPart("month", "DateInput.Month");
+export const DateInputYear = /* @__PURE__ */ createPart("year", "DateInput.Year");

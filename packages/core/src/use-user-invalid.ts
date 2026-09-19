@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import type { FormEvent } from "react";
-import { useFormReset } from "./use-form-reset";
+import { useFormReset } from "./use-form-reset.js";
 
 type ValidatableControl = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 

@@ -1,13 +1,13 @@
 import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
-import { Field, Select } from "../index";
+import { Field, Select } from "../index.js";
 
 afterEach(cleanup);
 
 describe("Select ↔ Field wiring", () => {
   it("Select inside a Field gets id/describedby/invalid from context", () => {
     render(
-      <Field.Root>
+      <Field.Root invalid>
         <Field.Label>Country</Field.Label>
         <Field.Description>Where you live.</Field.Description>
         <Select>
@@ -24,7 +24,7 @@ describe("Select ↔ Field wiring", () => {
 
   it("Field.Error puts the composed select in an invalid state", () => {
     render(
-      <Field.Root>
+      <Field.Root invalid>
         <Field.Label>Country</Field.Label>
         <Select>
           <option>UK</option>

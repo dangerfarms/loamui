@@ -7,8 +7,8 @@ import { resolve } from "node:path";
 import { useState } from "react";
 import type { CSSProperties } from "react";
 
-import { Table } from "../components/Table/index";
-import type { TableProps, TableSortDirection } from "../components/Table/index";
+import { Table } from "../components/Table/index.js";
+import type { TableProps, TableSortDirection } from "../components/Table/index.js";
 
 afterEach(cleanup);
 

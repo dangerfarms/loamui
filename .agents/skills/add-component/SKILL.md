@@ -68,7 +68,7 @@ Copy the structure of the closest existing component rather than inventing one:
 | Shape                                                   | Model                                   |
 | ------------------------------------------------------- | --------------------------------------- |
 | Bare form control (self-wires from `Field`)             | `Input`, `Select`, `Textarea`           |
-| Control with an inline label + a bare `*Control` export | `Checkbox`, `Switch`                    |
+| Native choice with independently composed text | `Checkbox` or `Radio` inside `Field.Item` |
 | A set participating via context (never `cloneElement`)  | `RadioGroup`+`Radio`, `Tabs`            |
 | Compound overlay (Root/Trigger/Popup parts)             | `Modal`, `Popover`, `Menu`, `Drawer`    |
 | Native disclosure                                       | `Details`                               |
@@ -93,8 +93,13 @@ Non-negotiables (full reasons in the README Standards section):
 - **Compose, don't configure.** Compound components expose parts; element swap
   goes through the `render` prop; icons and loaders are detected children
   (`:has(svg, .loam-Loader)`), never slot props. Bare form controls self-wire
-  from `Field` (no `label`/`error` props); Checkbox/Radio/Switch keep an inline
-  label because the control lives inside it.
+  from `Field` (no `label`/`error` props). Checkbox and Radio remain native
+  inputs; compose their text with Field.Label and Field.Description. Field.Item
+  gives each grouped option independent associations. Switch exposes Root,
+  Control, Track and Thumb while the input remains native. Avatar composes
+  Root, Image and Fallback with explicit child content. Field validation is
+  explicit through Root invalid; message IDs register after hydration, with
+  explicit ARIA links for initial server associations.
 - **Scope, don't BEM.** One `loam-` class on each scope root; parts are type
   selectors or short classes. **Add the donut** (`@scope (root) to
 ([class*="loam-"])`) whenever the scope hosts foreign content (children, a
@@ -136,12 +141,17 @@ The CSS and TSX are the easy part; these are the steps low-risk additions miss:
       marketing and overview pages are the exception: there, citing what the
       accessibility pillar is distilled from is a credibility signal, and the
       attribution is deliberate.
-- [ ] **JSX that uses compound parts lives in `<slug>.client.tsx` with
-      `"use client"`; the server content page imports it.** The core bundle is
-      one client reference, so `Search.Root` or `FileInput.Control` is
-      `undefined` in a server module and the page crashes at prerender.
-      Callable forms (`<Rating>`, `<Meter>`, `<CopyButton>`) render from the
-      server page as they are.
+- [ ] **Export each part by its prefixed name**, such as `SearchRoot` or
+      `FileInputControl`, through the component index and package index. Add
+      the component's subpath to `package.json` exports. Do not collect parts
+      in a runtime object or attach them to a function. Re-export aliases such
+      as `Root` and `Control` from `<Name>.parts.ts`, then expose the ES module
+      namespace with `export * as Name`. Compound components use explicit
+      `.Root`; standalone components remain callable.
+- [ ] **Preserve client boundaries.** Modules using client hooks or creating
+      event handlers declare `"use client"`. Static parts remain server-compatible;
+      server compositions can render named client parts with serializable props.
+      Consumer hooks and callbacks belong in a client module.
 - [ ] Every default string (an `aria-label`, a status, a button's name) is a
       prop or children, documented in the props table with its default.
 - [ ] If it introduces a new colour pairing, add a check to
@@ -171,7 +181,7 @@ Run the full suite and believe it, then verify what no tool can:
 
 ```
 pnpm -r lint · pnpm lint:md · pnpm -r exec tsc --noEmit
-pnpm --filter @loamui/core test · pnpm format:check
+pnpm --filter @loamui/core test · pnpm --filter @loamui/core test:package · pnpm format:check
 pnpm --filter @loamui/core audit:contrast
 pnpm --filter @loamui/core build-storybook · PAGES=true pnpm -r build
 ```

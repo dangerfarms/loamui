@@ -29,15 +29,27 @@ import {
   SkipLink,
   Textarea,
   Field,
-} from "../index";
-import type { ToastOptions } from "../index";
+} from "../index.js";
+import type { ToastOptions } from "../index.js";
 
 afterEach(cleanup);
 
 describe("Switch", () => {
   it("toggles on click", async () => {
     const user = userEvent.setup();
-    render(<Switch label="Notifications" />);
+    render(
+      <Field.Item>
+        <Field.Label>
+          <Switch.Root>
+            <Switch.Control />
+            <Switch.Track>
+              <Switch.Thumb />
+            </Switch.Track>
+          </Switch.Root>{" "}
+          Notifications
+        </Field.Label>
+      </Field.Item>,
+    );
     const sw = screen.getByRole("switch") as HTMLInputElement;
     expect(sw.checked).toBe(false);
     await user.click(sw);
@@ -47,7 +59,13 @@ describe("Switch", () => {
 
 describe("Checkbox", () => {
   it("reflects the indeterminate prop on the DOM node", () => {
-    render(<Checkbox label="Select all" indeterminate />);
+    render(
+      <Field.Item>
+        <Field.Label>
+          <Checkbox indeterminate /> Select all
+        </Field.Label>
+      </Field.Item>,
+    );
     const cb = screen.getByRole("checkbox") as HTMLInputElement;
     expect(cb.indeterminate).toBe(true);
   });
@@ -1207,9 +1225,9 @@ describe("DateInput", () => {
 
   it("an error narrowed with parts marks only those fields invalid", () => {
     render(
-      <DateInput.Root name="dob">
+      <DateInput.Root invalid={["year"]} name="dob">
         <DateInput.Legend>Date of birth</DateInput.Legend>
-        <DateInput.Error parts={["year"]}>The year must include four digits</DateInput.Error>
+        <DateInput.Error>The year must include four digits</DateInput.Error>
         <DateInput.Fields>
           <DateInput.Day />
           <DateInput.Month />

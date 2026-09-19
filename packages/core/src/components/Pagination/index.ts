@@ -1,4 +1,4 @@
-export { Pagination } from "./Pagination";
+export * as Pagination from "./Pagination.parts.js";
 export type {
   PaginationLabels,
   PaginationRootProps,
@@ -9,4 +9,4 @@ export type {
   PaginationEllipsisProps,
   PaginationPagesProps,
   PaginationPagesLabels,
-} from "./Pagination";
+} from "./Pagination.js";

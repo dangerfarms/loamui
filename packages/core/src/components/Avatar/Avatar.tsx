@@ -1,138 +1,52 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { Children, useState } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
+import { Children, createContext, useMemo, useState } from "react";
+import { useRequiredContext } from "../../context.js";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
 
-export interface AvatarProps extends Omit<PartProps<"span">, "color"> {
-  /** Image source. When set, renders an <img>. */
-  src?: string;
-  /** Alt text for the image (falls back to `name`; `""` when the Avatar is `aria-hidden`). */
-  alt?: string;
-  /** Person's name; used for initials and, if no `alt`, the image alt. */
-  name?: string;
-  children?: ReactNode;
+export type AvatarImageStatus = "loading" | "loaded" | "error";
+const AvatarContext = createContext<{
+  status: AvatarImageStatus;
+  setStatus: (status: AvatarImageStatus) => void;
+} | null>(null);
+
+export function useAvatarContext(part: string) {
+  return useRequiredContext(AvatarContext, part, "Avatar.Root");
 }
 
-/** The first `n` user-perceived characters of a string: graphemes, not code units. */
-function graphemes(s: string, n: number): string {
-  if (typeof Intl.Segmenter === "function") {
-    let out = "";
-    for (const { segment } of new Intl.Segmenter(undefined, { granularity: "grapheme" }).segment(
-      s,
-    )) {
-      if (n-- <= 0) break;
-      out += segment;
-    }
-    return out;
-  }
-  return [...s].slice(0, n).join("");
-}
+export interface AvatarRootProps extends Omit<PartProps<"span">, "color"> {}
 
-/** Derive up to two uppercase initials from a name. */
-function initialsFrom(name: string): string {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  const first = parts[0];
-  const last = parts[parts.length - 1];
-  if (!first || !last) return "";
-  if (parts.length === 1) return graphemes(first, 2).toUpperCase();
-  return (graphemes(first, 1) + graphemes(last, 1)).toUpperCase();
-}
-
-/** Fallback user glyph shown when there is no image or name. */
-function UserGlyph() {
+/** A person represented by an Image and explicit Fallback content. */
+export function AvatarRoot({ className, children, ref, ...rest }: AvatarRootProps) {
+  const [status, setStatus] = useState<AvatarImageStatus>("loading");
+  const context = useMemo(() => ({ status, setStatus }), [status]);
   return (
-    <svg className="glyph" viewBox="0 0 24 24" fill="currentColor" aria-hidden focusable="false">
-      <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.42 0-8 2.69-8 6v1a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-1c0-3.31-3.58-6-8-6Z" />
-    </svg>
+    <AvatarContext value={context}>
+      <span ref={ref} className={cx("loam-Avatar", className)} {...rest}>
+        {children}
+      </span>
+    </AvatarContext>
   );
 }
 
-/**
- * An image, initials, or fallback glyph representing a user.
- *
- * Sized by the public `--loam-avatar-size` property (2.5rem by default), set
- * per instance or on a region. A set of people is `Avatar.Group`.
- */
-function AvatarBase({ src, alt, name, className, children, ref, ...rest }: AvatarProps) {
-  // A failed image falls back to initials instead of the broken-image glyph.
-  const [imageFailed, setImageFailed] = useState(false);
-  const initials = name ? initialsFrom(name) : "";
-  // With no name anywhere, an avatar is decorative — hide it rather than
-  // expose an unnamed role="img" to assistive technology.
-  const accessibleName = name ?? alt;
-  const consumerNamed = rest["aria-label"] != null || rest["aria-labelledby"] != null;
-  // A decorative avatar (aria-hidden, beside the printed name) carries an
-  // empty alt, so the name is not read twice where aria-hidden is not honoured.
-  const hidden = rest["aria-hidden"] === true || rest["aria-hidden"] === "true";
+export interface AvatarFallbackProps extends PartProps<"span"> {}
 
-  let content: ReactNode;
-  if (children) {
-    content = children;
-  } else if (src && !imageFailed) {
-    content = (
-      <img
-        className="image"
-        src={src}
-        alt={hidden ? "" : (alt ?? name ?? "")}
-        onError={() => setImageFailed(true)}
-      />
-    );
-  } else if (initials) {
-    content = <span className="initials">{initials}</span>;
-  } else {
-    content = <UserGlyph />;
-  }
-
+/** Visible until the image loads, and after a load failure. */
+export function AvatarFallback({ className, ref, ...rest }: AvatarFallbackProps) {
+  const { status } = useAvatarContext("Avatar.Fallback");
   return (
-    <span
-      ref={ref}
-      className={cx("loam-Avatar", className)}
-      role={src || (!accessibleName && !consumerNamed) ? undefined : "img"}
-      aria-label={src ? undefined : accessibleName}
-      aria-hidden={!src && !accessibleName && !consumerNamed ? true : undefined}
-      {...rest}
-    >
-      {content}
-    </span>
+    <span ref={ref} className={cx("fallback", className)} {...rest} hidden={status === "loaded"} />
   );
 }
 
-/** The words the Group speaks. */
-export interface AvatarGroupLabels {
-  /** Names the overflow avatar. @default `"${n} more"` */
-  more?: (n: number) => string;
-}
+export interface AvatarGroupProps extends PartProps<"ul"> {}
 
-export interface AvatarGroupProps extends PartProps<"ul"> {
-  /**
-   * How many more people there are than avatars shown. Rendered as a final
-   * "+n" avatar named by `labels.more`.
-   */
-  more?: number;
-  /** The words the overflow avatar speaks: `more(n)` names it ("5 more"). */
-  labels?: AvatarGroupLabels;
-  /** The avatars; each becomes a list item. */
-  children?: ReactNode;
-}
-
-/**
- * A set of people: a list whose avatars overlap with a surface-coloured
- * ring. Each child is one item; `more` adds an overflow count at the end.
- */
-function AvatarGroup({ more, labels, className, children, ref, ...rest }: AvatarGroupProps) {
-  const moreLabel = labels?.more ?? ((n: number) => `${n} more`);
+/** An overlapping list. Compose an additional Avatar for an overflow count. */
+export function AvatarGroup({ className, children, ref, ...rest }: AvatarGroupProps) {
   return (
-    <ul ref={ref} className={cx("loam-Avatar-group", className)} {...rest}>
+    <ul ref={ref} role="list" className={cx("loam-Avatar-group", className)} {...rest}>
       {Children.map(children, (child) => (child == null ? null : <li>{child}</li>))}
-      {more != null && more > 0 && (
-        <li>
-          <AvatarBase aria-label={moreLabel(more)}>+{more}</AvatarBase>
-        </li>
-      )}
     </ul>
   );
 }
-
-export const Avatar = Object.assign(AvatarBase, { Group: AvatarGroup });

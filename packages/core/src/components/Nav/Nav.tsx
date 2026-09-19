@@ -8,14 +8,14 @@ import type {
   Ref,
   ToggleEvent,
 } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { useRequiredContext } from "../../context";
-import { useNamePart, useNamedRoot } from "../../naming";
-import { composeRefs, mergeProps, renderWithProps } from "../../render";
-import type { RenderProp } from "../../render";
-import { usePopup, usePopupRoot } from "../../use-popup";
-import type { OpenStateOptions, PopupState } from "../../use-popup";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { useRequiredContext } from "../../context.js";
+import { useNamePart, useNamedRoot } from "../../naming.js";
+import { composeRefs, mergeProps, renderWithProps } from "../../render.js";
+import type { RenderProp } from "../../render.js";
+import { usePopup, usePopupRoot } from "../../use-popup.js";
+import type { OpenStateOptions, PopupState } from "../../use-popup.js";
 
 /**
  * Vertical navigation, composed from parts: a `nav` landmark holding lists
@@ -425,15 +425,15 @@ function NavDropdownPanel({
   );
 }
 
-export const Nav = {
-  Root: NavRoot,
-  Title: NavTitle,
-  List: NavList,
-  Item: NavItem,
-  Link: NavLink,
-  Group: NavGroup,
-  GroupTitle: NavGroupTitle,
-  Dropdown: NavDropdown,
-  DropdownTrigger: NavDropdownTrigger,
-  DropdownPanel: NavDropdownPanel,
+export {
+  NavRoot,
+  NavTitle,
+  NavList,
+  NavItem,
+  NavLink,
+  NavGroup,
+  NavGroupTitle,
+  NavDropdown,
+  NavDropdownTrigger,
+  NavDropdownPanel,
 };

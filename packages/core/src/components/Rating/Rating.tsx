@@ -2,9 +2,9 @@
 
 import { useId } from "react";
 import type { ChangeEvent, Ref } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { Fieldset } from "../Fieldset/Fieldset";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { FieldsetRoot, FieldsetLegend } from "../Fieldset/Fieldset.js";
 
 /** The words the stars speak. */
 export interface RatingLabels {
@@ -150,16 +150,16 @@ export function Rating({
   };
 
   return (
-    <Fieldset.Root
+    <FieldsetRoot
       ref={ref}
       className={cx("loam-Rating", className)}
       data-show-label={showLabel || undefined}
       disabled={disabled}
       {...rest}
     >
-      <Fieldset.Legend className={showLabel ? undefined : "loam-VisuallyHidden"}>
+      <FieldsetLegend className={showLabel ? undefined : "loam-VisuallyHidden"}>
         {label}
-      </Fieldset.Legend>
+      </FieldsetLegend>
       <span className="stars">
         {stars.map((star) => (
           <label key={star} className="star">
@@ -180,6 +180,6 @@ export function Rating({
           </label>
         ))}
       </span>
-    </Fieldset.Root>
+    </FieldsetRoot>
   );
 }

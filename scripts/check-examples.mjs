@@ -9,9 +9,9 @@
 //      imports (cx and renderWithProps are plumbing, not components);
 //   4. meta.category is the folder, and the folder's category is listed in
 //      categories.ts;
-//   5. Example.tsx carries "use client" when it uses compound parts, client
-//      hooks, or passes a function as a prop. useId is supported in synchronous
-//      server components; core compound parts still need a client boundary;
+//   5. Example.tsx carries "use client" when it uses client hooks or passes
+//      a function as a prop. Named core parts and useId can be composed from
+//      synchronous server components;
 //   6. example.css has no rule outside a `@scope (.<slug>…) to
 //      ([class*="loam-"])` block, and its root class is the slug: the donut
 //      is the one rule of composing, and every scope must start at the
@@ -147,7 +147,6 @@ for (const category of readdirSync(DIR)) {
     // 5. "use client" where the module needs it
     const isClient = /^\s*["']use client["'];?/m.test(tsx);
     const body = tsx.replace(/^import[\s\S]*?["'][^"']+["'];?$/gm, "");
-    const dotAccess = [...coreNames].filter((n) => new RegExp(`\\b${n}\\.[A-Z]`).test(body));
     // Recipes default-export synchronous functions. useId is available in
     // React's server runtime; conservatively require a boundary for other hooks.
     const hooks = /\buse(?!Id\b)[A-Z]\w*\s*\(/.test(body);
@@ -156,12 +155,8 @@ for (const category of readdirSync(DIR)) {
     // refuses the page at build time. Arrow functions inside `.map(` calls
     // run on the server and are fine, so only prop values are checked.
     const fnProp = /\b(?:on[A-Z]\w*|labels)=\{\{?[^}]*=>/.test(body);
-    if ((dotAccess.length || hooks || fnProp) && !isClient) {
-      const why = dotAccess.length
-        ? `compound parts (${dotAccess.map((n) => `${n}.*`).join(", ")})`
-        : hooks
-          ? "hooks"
-          : "a function passed as a prop (a handler or a labels callback)";
+    if ((hooks || fnProp) && !isClient) {
+      const why = hooks ? "hooks" : "a function passed as a prop (a handler or a labels callback)";
       fail(dir, `Example.tsx needs "use client": it uses ${why}`);
     }
 

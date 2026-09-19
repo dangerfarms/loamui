@@ -31,7 +31,7 @@ export function PasswordInputNewDemo() {
 export function PasswordInputErrorDemo() {
   return (
     <div style={{ maxInlineSize: "24rem", inlineSize: "100%" }}>
-      <Field.Root>
+      <Field.Root invalid>
         <Field.Label>Password</Field.Label>
         <Field.Error>Enter your password</Field.Error>
         <PasswordInput name="password" autoComplete="current-password" />

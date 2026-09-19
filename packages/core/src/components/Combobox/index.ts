@@ -1,4 +1,4 @@
-export { Combobox } from "./Combobox";
+export * as Combobox from "./Combobox.parts.js";
 export type {
   ComboboxLabels,
   ComboboxRootProps,
@@ -9,4 +9,4 @@ export type {
   ComboboxOptionProps,
   ComboboxOptionRenderProps,
   ComboboxEmptyProps,
-} from "./Combobox";
+} from "./Combobox.js";

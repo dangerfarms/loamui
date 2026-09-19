@@ -39,7 +39,7 @@ const doc: ComponentContent = {
       title: "Error state",
       description:
         "A Field.Error before the control marks the box invalid and is announced, exactly as it does for Input.",
-      code: `<Field.Root>
+      code: `<Field.Root invalid>
   <Field.Label>Password</Field.Label>
   <Field.Error>Enter your password</Field.Error>
   <PasswordInput name="password" autoComplete="current-password" />
@@ -101,7 +101,7 @@ const doc: ComponentContent = {
     },
   ],
   accessibility: [
-    "Inside a Field.Root the input reads its id from the field, so Field.Label is a real <label> tied to it, and Field.Description and Field.Error are linked via aria-describedby; a rendered error also sets aria-invalid.",
+    "Inside a Field.Root the input reads its id from the field, so Field.Label is a real <label> tied to it, and Field.Description and Field.Error are linked via aria-describedby; Field.Root invalid sets aria-invalid.",
     'The toggle is a native <button type="button"> with a constant name and aria-pressed; pressing it swaps the input between type password and type text without moving focus or changing the value.',
     "The box is the library's Input, so its focus ring, invalid state and forced-colours treatment are Input's own.",
   ],
@@ -122,7 +122,7 @@ const doc: ComponentContent = {
       name: "...others",
       type: "InputProps",
       description:
-        "All Input props are forwarded to the <input>, except type; startSection and endSection included.",
+        "All native Input props except type are forwarded to the <input>. Compose any surrounding content explicitly.",
     },
   ],
 };

@@ -34,4 +34,14 @@ jobs:
         working-directory: apps/docs
       - run: pnpm --filter @loamui/core audit:contrast
       - run: pnpm --filter @loamui/core test
+      - run: pnpm --filter @loamui/core test:package
       - run: pnpm --filter @loamui/docs test
+      - run: pnpm --filter @loamui/core exec playwright install --with-deps chromium firefox webkit
+      - run: pnpm --filter @loamui/core test:browser
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-results
+          path: |
+            packages/core/test-results
+            packages/core/playwright-report

@@ -2,14 +2,14 @@
 
 import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent, ReactNode } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { useRequiredContext } from "../../context";
-import { composeRefs, mergeProps, renderWithProps } from "../../render";
-import type { RenderProp } from "../../render";
-import { useSupports } from "../../use-support";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { useRequiredContext } from "../../context.js";
+import { composeRefs, mergeProps, renderWithProps } from "../../render.js";
+import type { RenderProp } from "../../render.js";
+import { useSupports } from "../../use-support.js";
 
-import { Button } from "../Button/Button";
+import { Button } from "../Button/Button.js";
 
 /**
  * Transient notifications, composed from parts.
@@ -511,12 +511,12 @@ export function Toasts({ labels }: ToastsProps) {
   );
 }
 
-export const Toast = {
-  Provider: ToastProvider,
-  Viewport: ToastViewport,
-  Root: ToastRoot,
-  Title: ToastTitle,
-  Description: ToastDescription,
-  Action: ToastAction,
-  Close: ToastClose,
+export {
+  ToastProvider,
+  ToastViewport,
+  ToastRoot,
+  ToastTitle,
+  ToastDescription,
+  ToastAction,
+  ToastClose,
 };

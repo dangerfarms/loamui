@@ -188,7 +188,7 @@ with everything on this page:
 <section className="danger-zone">
   {/* everything inside adopts the danger accent: buttons, checked
       states, carets: even focus rings */}
-  <Checkbox label="I understand this is permanent" />
+  <Field.Item><Field.Label><Checkbox /> I understand this is permanent</Field.Label></Field.Item>
   <Button>Delete</Button>
 </section>
 ```

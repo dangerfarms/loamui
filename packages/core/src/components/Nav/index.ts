@@ -1,4 +1,4 @@
-export { Nav } from "./Nav";
+export * as Nav from "./Nav.parts.js";
 export type {
   NavLabels,
   NavCurrent,
@@ -14,4 +14,4 @@ export type {
   NavDropdownTriggerProps,
   NavDropdownTriggerRenderProps,
   NavDropdownPanelProps,
-} from "./Nav";
+} from "./Nav.js";

@@ -1,4 +1,4 @@
-export { DateInput } from "./DateInput";
+export * as DateInput from "./DateInput.parts.js";
 export type {
   DateInputLabels,
   DateInputRootProps,
@@ -7,4 +7,4 @@ export type {
   DateInputFieldsProps,
   DateInputPartProps,
   DateInputPart,
-} from "./DateInput";
+} from "./DateInput.js";

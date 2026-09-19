@@ -26,7 +26,14 @@ export default function Example() {
       <ul role="list">
         {PEOPLE.map((person) => (
           <li key={person.name}>
-            <Avatar name={person.name} aria-hidden="true" />
+            <Avatar.Root aria-hidden="true">
+              <Avatar.Fallback>
+                {person.name
+                  .split(/\s+/)
+                  .map((part) => part[0])
+                  .join("")}
+              </Avatar.Fallback>
+            </Avatar.Root>
             <h3>{person.name}</h3>
             <p>{person.role}</p>
           </li>

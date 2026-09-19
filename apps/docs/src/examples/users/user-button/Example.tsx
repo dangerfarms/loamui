@@ -5,7 +5,10 @@ export default function Example() {
   return (
     <div className="user-button">
       <Button>
-        <Avatar name="Imogen Hartley" src="https://picsum.photos/id/823/96/96" aria-hidden />
+        <Avatar.Root aria-hidden>
+          <Avatar.Image src="https://picsum.photos/id/823/96/96" alt="" />
+          <Avatar.Fallback>IH</Avatar.Fallback>
+        </Avatar.Root>
         <span className="text">
           <strong>Imogen Hartley</strong>
           <span>imogen@hedgerow.example</span>

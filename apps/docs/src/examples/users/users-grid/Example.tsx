@@ -46,11 +46,15 @@ export default function Example() {
       {GROWERS.map((grower) => (
         <li key={grower.id}>
           <Card render={<article aria-labelledby={`${instanceId}-users-grid-${grower.id}`} />}>
-            <Avatar
-              name={grower.name}
-              src={`https://picsum.photos/id/${grower.photo}/120/120`}
-              aria-hidden
-            />
+            <Avatar.Root aria-hidden>
+              <Avatar.Image src={`https://picsum.photos/id/${grower.photo}/120/120`} alt="" />
+              <Avatar.Fallback>
+                {grower.name
+                  .split(/\s+/)
+                  .map((part) => part[0])
+                  .join("")}
+              </Avatar.Fallback>
+            </Avatar.Root>
             <div className="text">
               <h2 id={`${instanceId}-users-grid-${grower.id}`}>{grower.name}</h2>
               <p className="role">{grower.role}</p>

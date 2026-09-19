@@ -11,11 +11,11 @@ import {
   useState,
 } from "react";
 import type { ChangeEvent, CSSProperties } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { useRequiredContext } from "../../context";
-import { composeRefs } from "../../render";
-import { useFieldControlProps } from "../Field/Field";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { useRequiredContext } from "../../context.js";
+import { composeRefs } from "../../render.js";
+import { useFieldControlProps } from "../Field/Field.js";
 
 /** A point on the track: a value the thumb snaps to, with an optional label. */
 export interface RangeMark {
@@ -80,23 +80,28 @@ function RangeInput({
   ref: refProp,
   ...rest
 }: RangeProps) {
-  const field = useFieldControlProps(ariaDescribedby);
+  const field = useFieldControlProps(ariaDescribedby, id);
   const root = use(RangeContext);
   const listId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
   const composedRef = useMemo(() => composeRefs(refProp, inputRef), [refProp]);
-  const inputId = id ?? field.id ?? root?.inputId;
+  const inputId = field.id ?? id ?? root?.inputId;
   const report = root?.report;
   const minValue = toNumber(min, 0);
   const maxValue = toNumber(max, 100);
 
   // The value is the input's own (defaultValue or value), so it is read from
-  // the DOM after each render rather than reconstructed from props.
+  // the input rather than reconstructed from props. This fires when the value
+  // arrives from outside — on mount, and when a controlled value or the bounds
+  // change. What the user does goes through onChange below, because an event
+  // is where an event belongs; reporting on every render instead would set
+  // state in the Root after each one, and re-render both.
+  const controlledValue = rest.value;
   useEffect(() => {
     const input = inputRef.current;
     if (!report || !input || !inputId) return;
     report({ id: inputId, value: input.valueAsNumber, min: minValue, max: maxValue });
-  });
+  }, [report, inputId, minValue, maxValue, controlledValue]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange?.(e);
@@ -179,7 +184,7 @@ function RangeRoot({ className, style, children, ...rest }: RangeRootProps) {
     );
   }, []);
 
-  const inputId = state?.id ?? field.id ?? autoId;
+  const inputId = field.id ?? state?.id ?? autoId;
   const value = useMemo<RangeContextValue>(
     () => ({ inputId, state, report }),
     [inputId, state, report],
@@ -235,6 +240,10 @@ function RangeOutput({ labels, className, children, ...rest }: RangeOutputProps)
   );
 }
 
+/**
+ * Callable, because the common case is one slider: `<Range max={10} />`. The
+ * labelled wrapper and the readout are parts for when a recipe needs them.
+ */
 export const Range = Object.assign(RangeInput, {
   Root: RangeRoot,
   Output: RangeOutput,

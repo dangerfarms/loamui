@@ -1,10 +1,10 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { mergeProps, renderWithProps } from "../../render";
-import type { RenderProp } from "../../render";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { mergeProps, renderWithProps } from "../../render.js";
+import type { RenderProp } from "../../render.js";
 import {
   DialogContext,
   dialogCloseProps,
@@ -14,10 +14,10 @@ import {
   useDialogPopup,
   useDialogRoot,
   useDialogTitle,
-} from "../../use-dialog";
-import type { DialogCloseRenderProps, DialogTriggerRenderProps } from "../../use-dialog";
+} from "../../use-dialog.js";
+import type { DialogCloseRenderProps, DialogTriggerRenderProps } from "../../use-dialog.js";
 
-import { Button } from "../Button/Button";
+import { Button } from "../Button/Button.js";
 
 /**
  * A blocking dialog for must-complete tasks, composed from parts.
@@ -167,11 +167,4 @@ function ModalClose({ render, children, ...rest }: ModalCloseProps) {
   );
 }
 
-export const Modal = {
-  Root: ModalRoot,
-  Trigger: ModalTrigger,
-  Popup: ModalPopup,
-  Title: ModalTitle,
-  Description: ModalDescription,
-  Close: ModalClose,
-};
+export { ModalRoot, ModalTrigger, ModalPopup, ModalTitle, ModalDescription, ModalClose };

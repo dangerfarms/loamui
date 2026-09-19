@@ -26,8 +26,7 @@
   }
 }
 
-/* Size variables live on the control so the bare Switch.Control (composed
-   inside a Field) sizes itself without the labelled wrapper. */
+/* Root owns visual geometry; Control remains the native interactive input. */
 @scope (.loam-Switch-control) to ([class*="loam-"]) {
   :scope {
     --_track-w: 2.7778em;
@@ -121,7 +120,7 @@
   /* The wrapper ancestor sits outside the scope root; the subject (the
      track) stays in scope. */
   @media (hover: hover) {
-    :is(.loam-Switch-wrapper, :scope):hover input:not(:disabled) + span.track {
+    :scope:hover input:not(:disabled) + span.track {
       background: color-mix(in oklch, var(--loam-color-line-strong) 80%, var(--loam-color-primary));
     }
   }

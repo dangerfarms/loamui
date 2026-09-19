@@ -1,5 +1,5 @@
-import type { PartProps } from "../../utils";
-import { cx, type LoamUISize } from "../../utils";
+import type { PartProps } from "../../utils.js";
+import { cx, type LoamUISize } from "../../utils.js";
 
 export interface LoaderProps extends Omit<PartProps<"span">, "color"> {
   /**

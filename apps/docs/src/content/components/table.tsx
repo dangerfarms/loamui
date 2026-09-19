@@ -390,46 +390,7 @@ const doc: ComponentContent = {
     "striped and highlightOnHover are visual aids only: never encode meaning in row shading, because assistive tech does not announce it.",
     "A sortable header is a <th aria-sort> holding a real <button>, so it is reached by Tab and toggled with Enter or Space; the button's name is the column plus a hidden suffix saying what a press will do, and labels.sort replaces those words.",
   ],
-  props: [
-    {
-      name: "striped",
-      type: "boolean",
-      description: "Shade alternating body rows.",
-    },
-    {
-      name: "highlightOnHover",
-      type: "boolean",
-      description: "Highlight the row under the pointer.",
-    },
-    {
-      name: "withColumnBorders",
-      type: "boolean",
-      description: "Draw vertical borders between columns.",
-    },
-    {
-      name: "stickyHeader",
-      type: "boolean",
-      description:
-        "Keep the header row in view while the body scrolls beneath it. The scroller is the component's own element: cap it with --loam-table-block-size (or the layout around it).",
-    },
-    {
-      name: "tableProps",
-      type: "TableHTMLAttributes & { ref }",
-      description: "Attributes for the <table> itself (caption-side, ref, id).",
-    },
-    {
-      name: "labels",
-      type: "{ scrollable?: string }",
-      default: `{ scrollable: "Scrollable table" }`,
-      description: "The scroll region's name when the table overflows and has no <caption>.",
-    },
-    {
-      name: "...others",
-      type: "HTMLAttributes<HTMLDivElement> & { ref }",
-      description:
-        "All native <div> props land on the scroll wrapper, the component's own element.",
-    },
-  ],
+
   cssProps: [
     {
       name: "--loam-table-block-size",
@@ -441,9 +402,53 @@ const doc: ComponentContent = {
   ],
   parts: [
     {
+      name: "Table",
+      description: "The table and its scroll wrapper; compose native table elements inside it.",
+      props: [
+        {
+          name: "striped",
+          type: "boolean",
+          description: "Shade alternating body rows.",
+        },
+        {
+          name: "highlightOnHover",
+          type: "boolean",
+          description: "Highlight the row under the pointer.",
+        },
+        {
+          name: "withColumnBorders",
+          type: "boolean",
+          description: "Draw vertical borders between columns.",
+        },
+        {
+          name: "stickyHeader",
+          type: "boolean",
+          description:
+            "Keep the header row in view while the body scrolls beneath it. The scroller is the component's own element: cap it with --loam-table-block-size (or the layout around it).",
+        },
+        {
+          name: "tableProps",
+          type: "TableHTMLAttributes & { ref }",
+          description: "Attributes for the <table> itself (caption-side, ref, id).",
+        },
+        {
+          name: "labels",
+          type: "{ scrollable?: string }",
+          default: `{ scrollable: "Scrollable table" }`,
+          description: "The scroll region's name when the table overflows and has no <caption>.",
+        },
+        {
+          name: "...others",
+          type: "HTMLAttributes<HTMLDivElement> & { ref }",
+          description:
+            "All native <div> props land on the scroll wrapper, the component's own element.",
+        },
+      ],
+    },
+    {
       name: "Table.Th",
       description:
-        'A header cell: <th scope="col"> by default (scope is forwarded for row headers). With sort it carries aria-sort and gives the SortButton inside it the current state. Must be inside a Table.',
+        'A header cell: <th scope="col"> by default (scope is forwarded for row headers). With sort it carries aria-sort and gives the SortButton inside it the current state. Must be inside Table.Root.',
       props: [
         {
           name: "sort",

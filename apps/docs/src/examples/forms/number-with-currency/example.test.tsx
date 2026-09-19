@@ -18,10 +18,10 @@ describe("number-with-currency", () => {
     expect(currency).toHaveValue("GBP");
     expect(currency.id).not.toBe(amount.id);
     expect(container.querySelector("label")).toHaveAttribute("for", amount.id);
-    expect(container.querySelector(".loam-Input-field")).toHaveTextContent("£");
+    expect(container.querySelector(".amount")).toHaveTextContent("£");
 
     fireEvent.change(currency, { target: { value: "EUR" } });
-    expect(container.querySelector(".loam-Input-field")).toHaveTextContent("€");
+    expect(container.querySelector(".amount")).toHaveTextContent("€");
     expect(await axe(container, axeOptions)).toHaveNoViolations();
   });
 });

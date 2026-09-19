@@ -8,16 +8,16 @@ import type {
   PointerEvent as ReactPointerEvent,
   ReactNode,
 } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { cssSafeId, supportsAnchoredPopover } from "../../anchor";
-import { useRequiredContext } from "../../context";
-import { composeRefs, mergeProps, renderWithProps } from "../../render";
-import type { RenderProp } from "../../render";
-import { useOpenState, usePopoverReconcile } from "../../use-popup";
-import { useSupports } from "../../use-support";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { cssSafeId, supportsAnchoredPopover } from "../../anchor.js";
+import { useRequiredContext } from "../../context.js";
+import { composeRefs, mergeProps, renderWithProps } from "../../render.js";
+import type { RenderProp } from "../../render.js";
+import { useOpenState, usePopoverReconcile } from "../../use-popup.js";
+import { useSupports } from "../../use-support.js";
 
-import { Button } from "../Button/Button";
+import { Button } from "../Button/Button.js";
 
 /**
  * A small floating label revealed on hover and keyboard focus.
@@ -400,10 +400,4 @@ function TooltipArrow({ className, ...rest }: TooltipArrowProps) {
   return <span aria-hidden="true" className={cx("arrow", className)} {...rest} />;
 }
 
-export const Tooltip = {
-  Provider: TooltipProvider,
-  Root: TooltipRoot,
-  Trigger: TooltipTrigger,
-  Popup: TooltipPopup,
-  Arrow: TooltipArrow,
-};
+export { TooltipProvider, TooltipRoot, TooltipTrigger, TooltipPopup, TooltipArrow };

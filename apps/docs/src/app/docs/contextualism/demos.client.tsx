@@ -2,11 +2,11 @@
 
 import { Field, Input } from "@loamui/core";
 
-/** A field whose invalid state is detected from the rendered error message. */
+/** A field whose explicit invalid state is exposed through aria-invalid. */
 export function DetectedErrorDemo() {
   return (
     <div style={{ maxInlineSize: "22rem" }}>
-      <Field.Root>
+      <Field.Root invalid>
         <Field.Label>Workspace name</Field.Label>
         <Field.Error>Names can only contain letters, numbers and dashes.</Field.Error>
         <Input defaultValue="my workspace!" />

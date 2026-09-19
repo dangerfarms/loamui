@@ -13,7 +13,7 @@ Text for assistive technology alone: the name of an icon-only control, the word 
 ## Import
 
 ```tsx
-import { VisuallyHidden } from "@loamui/core";
+import { VisuallyHidden, Button, Input } from "@loamui/core";
 ```
 
 ## Usage

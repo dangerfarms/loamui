@@ -51,12 +51,17 @@ export default function Example() {
                   <label htmlFor={id}>{preference.label}</label>
                   <p id={`${id}-description`}>{preference.description}</p>
                 </div>
-                <Switch.Control
-                  id={id}
-                  name={preference.name}
-                  aria-describedby={`${id}-description`}
-                  defaultChecked={preference.on}
-                />
+                <Switch.Root>
+                  <Switch.Control
+                    id={id}
+                    name={preference.name}
+                    aria-describedby={`${id}-description`}
+                    defaultChecked={preference.on}
+                  />
+                  <Switch.Track>
+                    <Switch.Thumb />
+                  </Switch.Track>
+                </Switch.Root>
               </div>
             );
           })}

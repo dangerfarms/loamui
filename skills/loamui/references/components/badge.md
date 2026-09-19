@@ -112,9 +112,11 @@ The rendered element is a span with no interactive semantics, and that is delibe
 - The context colours the pill but is never announced. Assistive tech hears only the text, so never let colour be the only difference between two badges.
 - The label is not the raw status colour: it is mixed toward black (light scheme) or white (dark) so it keeps contrast on the pill's own tint in both schemes.
 
-## Props
+## Parts
 
-Status is not a prop: it comes from the surrounding `--loam-context` region (see the Contextualism guide).
+### Badge
+
+The badge container, with its label and optional Badge.Dot or icon children.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -122,8 +124,6 @@ Status is not a prop: it comes from the surrounding `--loam-context` region (see
 | `render` | `element \| (props) => node` | — | Substitute the element (render={<a href=… />} for a tag that is a link); the Badge's class and attributes merge onto it. |
 | `children` | `ReactNode` | — | The badge content: label, and any composed icons. |
 | `...others` | `SpanHTMLAttributes` | — | All native <span> props are forwarded. |
-
-## Parts
 
 ### Badge.Dot
 

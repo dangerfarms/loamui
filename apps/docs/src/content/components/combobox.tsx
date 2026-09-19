@@ -10,7 +10,7 @@ import {
 const doc: ComponentContent = {
   slug: "combobox",
   lead: "A text box with a list of suggestions under it: the ARIA Authoring Practices Guide (APG) editable combobox with a listbox popup. You filter the options; the component manages the highlight, the selection, the open state and what is announced.",
-  importLine: `import { Combobox, Field } from "@loamui/core";`,
+  importLine: `import { Combobox, Field, Button } from "@loamui/core";`,
   demos: [
     {
       title: "Basic usage",
@@ -76,7 +76,7 @@ const matches = COUNTRIES.filter((c) =>
       title: "In a Field with a description and an error",
       description:
         "The box is the library's Input, so Field.Description reaches it through aria-describedby and a rendered Field.Error marks it invalid: the message's presence is the state, exactly as for Input.",
-      code: `<Field.Root>
+      code: `<Field.Root invalid>
   <Field.Label>Country</Field.Label>
   <Field.Description>Where you are resident for tax.</Field.Description>
   <Field.Error>Choose a country from the list</Field.Error>
@@ -212,7 +212,7 @@ const matches = COUNTRIES.filter((c) =>
     {
       name: "Combobox.Input",
       description:
-        'The box: the library\'s Input as the combobox (role="combobox", aria-autocomplete="list", aria-expanded, aria-controls, aria-activedescendant). Inside a Field.Root it is named, described and marked invalid by the Field. All Input props except value, defaultValue and type are forwarded: placeholder, startSection, endSection, wrapperProps, disabled and every native <input> prop.',
+        'The box: the library\'s Input as the combobox (role="combobox", aria-autocomplete="list", aria-expanded, aria-controls, aria-activedescendant). Inside a Field.Root it is named, described and marked invalid by the Field. All Input props except value, defaultValue and type are forwarded: placeholder, disabled and every native <input> prop. The native input anchors the suggestions; compose adornments as siblings.',
     },
     {
       name: "Combobox.Trigger",

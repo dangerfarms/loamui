@@ -246,7 +246,7 @@ export default function Example({
                 )}
               </ErrorSummary.Root>
             )}
-            <Field.Root id={`${id}-email`}>
+            <Field.Root invalid={Boolean(validation.email && validation.email)} id={`${id}-email`}>
               <Field.Label>Email address</Field.Label>
               <Field.Description>We’ll reply to this address.</Field.Description>
               {validation.email && <Field.Error>{validation.email}</Field.Error>}
@@ -262,7 +262,10 @@ export default function Example({
                 required
               />
             </Field.Root>
-            <Field.Root id={`${id}-message`}>
+            <Field.Root
+              invalid={Boolean(validation.message && validation.message)}
+              id={`${id}-message`}
+            >
               <Field.Label>Message</Field.Label>
               {validation.message && <Field.Error>{validation.message}</Field.Error>}
               <Textarea name="message" defaultValue={failure?.values.message} rows={5} required />

@@ -22,7 +22,10 @@ export default function Example() {
         </a>
         <Menu.Root>
           <Menu.Trigger>
-            <Avatar name="Imogen Hartley" src="https://picsum.photos/id/823/96/96" aria-hidden />
+            <Avatar.Root aria-hidden>
+              <Avatar.Image src="https://picsum.photos/id/823/96/96" alt="" />
+              <Avatar.Fallback>IH</Avatar.Fallback>
+            </Avatar.Root>
             <span className="loam-VisuallyHidden">Account menu for </span>
             <span className="name">Imogen Hartley</span>
             <svg

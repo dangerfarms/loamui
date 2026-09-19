@@ -2,10 +2,22 @@
 
 import { createContext, useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import type { KeyboardEvent, ReactNode } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { useRequiredContext } from "../../context";
-import { composeRefs } from "../../render";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { useRequiredContext } from "../../context.js";
+import { composeRefs } from "../../render.js";
+
+/**
+ * What a Tab tells the Root about itself. The tabs are the Root's own
+ * collection rather than something re-read from the DOM: roving focus and the
+ * fallback selection both need to know which tabs exist and which are
+ * disabled, and that is the Tab's own knowledge, not the markup's.
+ */
+export interface TabsTabEntry {
+  value: string;
+  disabled?: boolean;
+  node: HTMLButtonElement | null;
+}
 
 interface TabsContextValue {
   value: string | null;
@@ -13,6 +25,11 @@ interface TabsContextValue {
   isControlled: boolean;
   /** Stable id prefix so tab/panel aria wiring links up. */
   baseId: string;
+  registerTab: (tab: TabsTabEntry) => () => void;
+  /** The selectable tabs in the order they are painted. */
+  enabledTabs: () => TabsTabEntry[];
+  /** Changes whenever the collection does, so effects can depend on it. */
+  tabCount: number;
 }
 
 const TabsContext = createContext<TabsContextValue | null>(null);
@@ -92,9 +109,36 @@ function TabsRoot({
     [isControlled, onChange],
   );
 
+  // The tabs, keyed by value. `tabCount` mirrors the map's size so an effect
+  // can wait for the collection to settle; the map is the source.
+  const tabsRef = useRef(new Map<string, TabsTabEntry>());
+  const [tabCount, setTabCount] = useState(0);
+
+  const registerTab = useCallback((tab: TabsTabEntry) => {
+    tabsRef.current.set(tab.value, tab);
+    setTabCount(tabsRef.current.size);
+    return () => {
+      tabsRef.current.delete(tab.value);
+      setTabCount(tabsRef.current.size);
+    };
+  }, []);
+
+  // Registration order is mount order, which a reordered list does not
+  // preserve, so the nodes settle the order — the one question only the
+  // document can answer.
+  const enabledTabs = useCallback(
+    () =>
+      [...tabsRef.current.values()]
+        .filter((tab) => !tab.disabled && tab.node)
+        .sort((a, b) =>
+          a.node!.compareDocumentPosition(b.node!) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1,
+        ),
+    [],
+  );
+
   const ctx = useMemo<TabsContextValue>(
-    () => ({ value, setValue, isControlled, baseId }),
-    [value, setValue, isControlled, baseId],
+    () => ({ value, setValue, isControlled, baseId, registerTab, enabledTabs, tabCount }),
+    [value, setValue, isControlled, baseId, registerTab, enabledTabs, tabCount],
   );
 
   return (
@@ -107,40 +151,40 @@ function TabsRoot({
 }
 
 /** The row of tab controls. */
-function TabsList({ className, children, ref: refProp, ...rest }: TabsListProps) {
-  const { value, setValue, isControlled } = useTabsContext("Tabs.List");
+function TabsList({
+  className,
+  children,
+  onKeyDown: onKeyDownProp,
+  ref: refProp,
+  ...rest
+}: TabsListProps) {
+  const { value, setValue, isControlled, enabledTabs, tabCount } = useTabsContext("Tabs.List");
   const listRef = useRef<HTMLDivElement>(null);
   const composedRef = useMemo(() => composeRefs(refProp, listRef), [refProp]);
 
   // The type requires an initial selection. This runtime fallback also keeps
   // plain JavaScript and stale values accessible by selecting the first
-  // enabled tab instead of leaving every panel hidden.
+  // enabled tab instead of leaving every panel hidden. It waits on tabCount
+  // because the tabs register in their own effects, after this one first runs.
   useEffect(() => {
     if (isControlled) return;
-    const list = listRef.current;
-    if (
-      !list ||
-      list.querySelector('[role="tab"][aria-selected="true"]:not([aria-disabled="true"])')
-    )
-      return;
-    const first = list.querySelector<HTMLButtonElement>('[role="tab"]:not([aria-disabled="true"])');
-    const fallback = first?.dataset.tabValue;
-    if (fallback) setValue(fallback);
-  }, [isControlled, setValue, value]);
+    const tabs = enabledTabs();
+    if (tabs.length === 0 || tabs.some((tab) => tab.value === value)) return;
+    setValue(tabs[0]!.value);
+  }, [isControlled, setValue, value, enabledTabs, tabCount]);
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    onKeyDownProp?.(event);
     const keys = ["ArrowRight", "ArrowLeft", "Home", "End"];
     if (!keys.includes(event.key)) return;
 
-    const tabs = Array.from(
-      listRef.current?.querySelectorAll<HTMLButtonElement>(
-        '[role="tab"]:not([aria-disabled="true"])',
-      ) ?? [],
-    );
+    const tabs = enabledTabs();
     if (tabs.length === 0) return;
 
     const list = listRef.current!;
-    const current = tabs.indexOf(document.activeElement as HTMLButtonElement);
+    // Which tab has focus is the document's own answer, so it is asked here
+    // and matched against the collection rather than re-querying the markup.
+    const current = tabs.findIndex((tab) => tab.node === document.activeElement);
     let nextIndex = current;
     const direction = getComputedStyle(list).direction || list.closest<HTMLElement>("[dir]")?.dir;
     const rtl = direction === "rtl";
@@ -171,8 +215,8 @@ function TabsList({ className, children, ref: refProp, ...rest }: TabsListProps)
     }
 
     event.preventDefault();
-    tabs[nextIndex]?.focus();
-    tabs[nextIndex]?.click();
+    tabs[nextIndex]?.node?.focus();
+    tabs[nextIndex]?.node?.click();
   };
 
   return (
@@ -191,13 +235,31 @@ function TabsList({ className, children, ref: refProp, ...rest }: TabsListProps)
 }
 
 /** A single tab control. */
-function TabsTab({ value, disabled, className, children, onClick, ...rest }: TabsTabProps) {
-  const { value: active, setValue, baseId } = useTabsContext("Tabs.Tab");
+function TabsTab({
+  value,
+  disabled,
+  className,
+  children,
+  onClick,
+  ref: refProp,
+  ...rest
+}: TabsTabProps) {
+  const { value: active, setValue, baseId, registerTab } = useTabsContext("Tabs.Tab");
   const selected = active === value;
+  const node = useRef<HTMLButtonElement>(null);
+  const composedRef = useMemo(() => composeRefs(refProp, node), [refProp]);
+
+  // The node goes in with the entry: it is what settles painted order, and
+  // what roving focus moves to.
+  useEffect(
+    () => registerTab({ value, disabled, node: node.current }),
+    [registerTab, value, disabled],
+  );
 
   return (
     <button
       {...rest}
+      ref={composedRef}
       type="button"
       role="tab"
       id={`${baseId}-tab-${value}`}
@@ -266,9 +328,4 @@ function TabsPanel({ value, className, children, ref: refProp, ...rest }: TabsPa
   );
 }
 
-export const Tabs = {
-  Root: TabsRoot,
-  List: TabsList,
-  Tab: TabsTab,
-  Panel: TabsPanel,
-};
+export { TabsRoot, TabsList, TabsTab, TabsPanel };

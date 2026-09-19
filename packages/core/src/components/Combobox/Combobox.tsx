@@ -20,17 +20,17 @@ import type {
   Ref,
   RefObject,
 } from "react";
-import { cx } from "../../utils";
-import type { PartProps } from "../../utils";
-import { cssSafeId } from "../../anchor";
-import { useRequiredContext } from "../../context";
-import { composeRefs, mergeProps, renderWithProps } from "../../render";
-import type { RenderProp } from "../../render";
-import { useControllable } from "../../use-controllable";
-import { Button } from "../Button/Button";
-import type { ButtonProps } from "../Button/Button";
-import { Input } from "../Input/Input";
-import type { InputProps } from "../Input/Input";
+import { cx } from "../../utils.js";
+import type { PartProps } from "../../utils.js";
+import { cssSafeId } from "../../anchor.js";
+import { useRequiredContext } from "../../context.js";
+import { composeRefs, mergeProps, renderWithProps } from "../../render.js";
+import type { RenderProp } from "../../render.js";
+import { useControllable } from "../../use-controllable.js";
+import { Button } from "../Button/Button.js";
+import type { ButtonProps } from "../Button/Button.js";
+import { Input } from "../Input/Input.js";
+import type { InputProps } from "../Input/Input.js";
 
 /**
  * A text box with a list of suggestions under it, composed from parts: the
@@ -83,7 +83,9 @@ interface ComboboxContextValue {
   highlight: (id: string | null) => void;
   releaseHighlight: (id: string) => void;
   moveHighlight: (to: "next" | "previous" | "first" | "last") => void;
-  registerOption: () => () => void;
+  registerOption: (option: ComboboxOptionEntry) => () => void;
+  /** The registered option with this id, if it is still mounted. */
+  getOption: (id: string) => ComboboxOptionEntry | undefined;
   count: number;
   listId: string;
   anchorName: string;
@@ -104,12 +106,29 @@ function defaultStatus(count: number): string {
 
 const NO_LABELS: ComboboxLabels = {};
 
-/** The selectable options in DOM order; disabled ones are skipped. */
-function enabledOptions(list: HTMLElement | null): HTMLElement[] {
-  if (!list) return [];
-  return Array.from(
-    list.querySelectorAll<HTMLElement>('[role="option"]:not([aria-disabled="true"])'),
-  );
+/**
+ * What an Option tells the Root about itself. The options are the Root's own
+ * collection rather than something re-read from the DOM: the markup is the
+ * consumer's, so a query would couple keyboard movement to their structure.
+ */
+export interface ComboboxOptionEntry {
+  id: string;
+  value: string;
+  disabled?: boolean;
+  node: HTMLElement | null;
+}
+
+/**
+ * The collection in the order it is painted. Registration order is mount
+ * order, which a reordered or filtered list does not preserve, so the nodes
+ * settle the order — the one question only the document can answer.
+ */
+function inPaintedOrder(options: Iterable<ComboboxOptionEntry>): ComboboxOptionEntry[] {
+  return [...options]
+    .filter((option) => !option.disabled && option.node)
+    .sort((a, b) =>
+      a.node!.compareDocumentPosition(b.node!) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1,
+    );
 }
 
 export interface ComboboxRootProps extends Omit<PartProps<"div">, "defaultValue"> {
@@ -166,7 +185,9 @@ function ComboboxRoot({
   );
   const [open, setOpen] = useControllable(openProp, defaultOpen, onOpenChange);
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
-  const countRef = useRef(0);
+  // The options themselves, keyed by id. `count` mirrors the map's size for
+  // rendering; the map is the source, so nothing can disagree with it.
+  const optionsRef = useRef(new Map<string, ComboboxOptionEntry>());
   const [count, setCount] = useState(0);
   const [status, setStatus] = useState("");
 
@@ -227,7 +248,7 @@ function ComboboxRoot({
   const highlightedRef = useRef(highlightedId);
   highlightedRef.current = highlightedId;
   const moveHighlight = useCallback((to: "next" | "previous" | "first" | "last") => {
-    const options = enabledOptions(listRef.current);
+    const options = inPaintedOrder(optionsRef.current.values());
     if (options.length === 0) return;
     const current = options.findIndex((o) => o.id === highlightedRef.current);
     const last = options.length - 1;
@@ -249,19 +270,21 @@ function ComboboxRoot({
     setHighlightedId(options[index]?.id ?? null);
   }, []);
 
-  const registerOption = useCallback(() => {
-    countRef.current += 1;
-    setCount(countRef.current);
+  const getOption = useCallback((id: string) => optionsRef.current.get(id), []);
+
+  const registerOption = useCallback((option: ComboboxOptionEntry) => {
+    optionsRef.current.set(option.id, option);
+    setCount(optionsRef.current.size);
     return () => {
-      countRef.current -= 1;
-      setCount(countRef.current);
+      optionsRef.current.delete(option.id);
+      setCount(optionsRef.current.size);
     };
   }, []);
 
   // Keep the highlighted option in view; the list scrolls, the page does not.
   useEffect(() => {
     if (!open || !highlightedId) return;
-    document.getElementById(highlightedId)?.scrollIntoView?.({ block: "nearest" });
+    optionsRef.current.get(highlightedId)?.node?.scrollIntoView?.({ block: "nearest" });
   }, [open, highlightedId]);
 
   const labels = useMemo(
@@ -269,11 +292,11 @@ function ComboboxRoot({
     [statusLabel, empty, toggle],
   );
 
-  // Options register in layout effects, which run before this one, so the
-  // ref already holds the count of the committed list; `count` state is a
-  // render behind it and must never reach the live region.
+  // Options register in layout effects, which run before this one, so the map
+  // already holds the committed list; `count` state is a render behind it and
+  // must never reach the live region.
   useLayoutEffect(() => {
-    setStatus(open ? labels.status(countRef.current) : "");
+    setStatus(open ? labels.status(optionsRef.current.size) : "");
   }, [open, count, labels]);
 
   const ctx = useMemo<ComboboxContextValue>(
@@ -292,6 +315,7 @@ function ComboboxRoot({
       releaseHighlight,
       moveHighlight,
       registerOption,
+      getOption,
       count,
       listId,
       anchorName,
@@ -313,6 +337,7 @@ function ComboboxRoot({
       releaseHighlight,
       moveHighlight,
       registerOption,
+      getOption,
       count,
       listId,
       anchorName,
@@ -361,20 +386,15 @@ interface ComboboxInputWiring {
 
 /**
  * The text box: the library's Input as the combobox, with the list's
- * state and the highlighted option reflected in ARIA. `startSection`,
- * `endSection`, `wrapperProps`, `placeholder` and every native `<input>`
- * prop pass through; inside a `Field.Root` it is named and described by
+ * state and the highlighted option reflected in ARIA. Native `<input>`
+ * props pass through; inside a `Field.Root` it is named and described by
  * the Field.
  */
-function ComboboxInput({ ref, wrapperProps, ...rest }: ComboboxInputProps) {
+function ComboboxInput({ ref, style, ...rest }: ComboboxInputProps) {
   const ctx = useComboboxContext("Combobox.Input");
   const inputRef = useMemo(() => composeRefs(ref, ctx.inputRef), [ref, ctx.inputRef]);
-  // The list is tethered to the box, which is the Input's wrapper, not
-  // the <input> inside it.
-  const wrapper: ComboboxInputProps["wrapperProps"] = {
-    ...wrapperProps,
-    style: { ...wrapperProps?.style, anchorName: ctx.anchorName } as CSSProperties,
-  };
+  // The native input itself anchors the suggestions, even inside caller markup.
+  const inputStyle = { ...style, anchorName: ctx.anchorName } as CSSProperties;
 
   const handleKeyDown = (e: ReactKeyboardEvent<HTMLInputElement>) => {
     if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
@@ -397,10 +417,12 @@ function ComboboxInput({ ref, wrapperProps, ...rest }: ComboboxInputProps) {
         break;
       case "Enter": {
         if (!ctx.open || !ctx.highlightedId) return;
-        const option = document.getElementById(ctx.highlightedId);
-        if (!option) return;
+        const option = ctx.getOption(ctx.highlightedId);
+        if (!option?.node) return;
         e.preventDefault();
-        ctx.commit(option.dataset.value ?? "", optionLabel(option));
+        // The label is the words the option renders, so it is read from the
+        // node; the value is the option's own and comes from the collection.
+        ctx.commit(option.value, optionLabel(option.node));
         break;
       }
       case "Escape":
@@ -436,9 +458,7 @@ function ComboboxInput({ ref, wrapperProps, ...rest }: ComboboxInputProps) {
   };
 
   // The browser's own suggestions would sit on top of the list.
-  return (
-    <>{renderWithProps(<Input autoComplete="off" {...rest} wrapperProps={wrapper} />, wiring)}</>
-  );
+  return <>{renderWithProps(<Input autoComplete="off" {...rest} style={inputStyle} />, wiring)}</>;
 }
 
 /** The text an option commits: its `label`, else what it says. */
@@ -592,19 +612,21 @@ function ComboboxOption({
   const highlighted = ctx.highlightedId === id;
 
   const { registerOption, releaseHighlight, adoptLabel } = ctx;
-  // A layout effect, so the Root's status reads the settled count in the
-  // same commit the options appear in.
+  const textRef = useRef<HTMLElement | null>(null);
+
+  // A layout effect, so the Root's status reads the settled collection in the
+  // same commit the options appear in. The node goes in with the entry: it is
+  // what settles painted order, and what the Root scrolls into view.
   useLayoutEffect(() => {
-    const unregister = registerOption();
+    const unregister = registerOption({ id, value, disabled, node: textRef.current });
     return () => {
       unregister();
       releaseHighlight(id);
     };
-  }, [registerOption, releaseHighlight, id]);
+  }, [registerOption, releaseHighlight, id, value, disabled]);
 
   // A defaultValue names an option before its label is known; the option
   // supplies it once, unless the user has already typed.
-  const textRef = useRef<HTMLElement | null>(null);
   useEffect(() => {
     if (!selected) return;
     const el = textRef.current;
@@ -661,11 +683,11 @@ function ComboboxEmpty({ className, children, ...rest }: ComboboxEmptyProps) {
   );
 }
 
-export const Combobox = {
-  Root: ComboboxRoot,
-  Input: ComboboxInput,
-  Trigger: ComboboxTrigger,
-  List: ComboboxList,
-  Option: ComboboxOption,
-  Empty: ComboboxEmpty,
+export {
+  ComboboxRoot,
+  ComboboxInput,
+  ComboboxTrigger,
+  ComboboxList,
+  ComboboxOption,
+  ComboboxEmpty,
 };

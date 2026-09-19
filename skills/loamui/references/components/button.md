@@ -13,7 +13,7 @@ A native button whose appearance is decided by its context, not by props.
 ## Import
 
 ```tsx
-import { Button } from "@loamui/core";
+import { Button, Checkbox, Loader, VisuallyHidden } from "@loamui/core";
 ```
 
 ## Usage
@@ -40,7 +40,7 @@ Buttons are neutral by default. Declare --loam-context on a region and the butto
 
 ```tsx
 <div style={{ "--loam-context": "danger" }}>
-  <Checkbox label="Also delete backups" defaultChecked />
+  <Field.Item><Field.Label><Checkbox defaultChecked /> Also delete backups</Field.Label></Field.Item>
   <Button>Delete account</Button>
   <Loader label="Deleting" />
 </div>

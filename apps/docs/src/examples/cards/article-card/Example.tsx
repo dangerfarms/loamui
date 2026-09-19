@@ -30,7 +30,9 @@ export default function Example() {
           set them, and what to do about the ones that bolt.
         </p>
         <div className="foot">
-          <Avatar name="Rhiannon Vaughan" aria-hidden />
+          <Avatar.Root aria-hidden>
+            <Avatar.Fallback>RV</Avatar.Fallback>
+          </Avatar.Root>
           <address>
             <a href="/growers/rhiannon-vaughan" rel="author">
               Rhiannon Vaughan

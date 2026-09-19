@@ -18,7 +18,11 @@ export default function Example() {
           <Field.Label>Password</Field.Label>
           <PasswordInput name="password" autoComplete="current-password" required />
         </Field.Root>
-        <Checkbox name="remember" label="Keep me signed in" />
+        <Field.Item>
+          <Field.Label>
+            <Checkbox name="remember" /> Keep me signed in
+          </Field.Label>
+        </Field.Item>
         <div className="actions">
           <Button type="submit">Sign in</Button>
         </div>
